@@ -1,27 +1,93 @@
-# Visual Studio Code Localization
+# Visual Studio Code Language Packs
 
-You've found the Visual Studio Code Localization GitHub repository which contains the resource files for building language packs and produced language packs. 
-Localized resource files are pulled from [Transifex](https://www.transifex.com/microsoft-oss/). Language packs will be published to [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode)
+This repository contains all of the localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
 
-If you are looking for the VS Code product GitHub repository, you can find it [here](https://github.com/Microsoft/vscode).
+Localized resource files are managed in [Transifex](https://www.transifex.com/microsoft-oss/).
 
-## Visual Studio Code
+There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional, community driven languages:  
 
-[VS Code](https://code.visualstudio.com/) is a lightweight but powerful development environment for building and debugging modern web and cloud applications.  It is free and available on your favorite platform - Linux, Mac and Windows.
+|Language|VS Code LanguageID|Transifex LanguageCode|Type|
+|--------|--------|--------|--------|
+|**French**|fr-FR|French (fr)|Core
+|**Italian**|it_IT|Italian (it)|Core
+|**German**|de-DE|German (de)|Core
+|**Spanish**|es-ES|Spanish (es)|Core
+|**Russian**|ru-RU|Russian (ru)|Core
+|**Chinese (Simplified)**|zh-CN|Chinese Simplified (zh-Hans) |Core
+|**Chinese (Traditional)**|zh-TW|Chinese Traditional (zh-Hant) |Core
+|**Japanese**|ja-JP|Japanese (ja)|Core
+|**Korean**|ko-KR|Korean (ko)|Core
+|**Bulgarian**|bg|Bulgarian (bg)|Community
+|**Hungarian**|hu|Hungarian (hu)|Community
+|**Portugese (Brazil)**|pt-BR|Portugese (Brazil) (pt_BR)) |Community
+|**Turkish**|tr|Turkish (tu)|Community
 
-If you landed here looking for other information about VS Code, head over to [our website](https://code.visualstudio.com) for additional information.
+Language pack extensions are published to the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode)
 
-## Contributing to the localization
+## Creating a Language Pack
 
-To contribute on translation of your language, please visit [https://aka.ms/vscodeloc](https://aka.ms/vscodeloc) for instructions and guidelines.
-Visual Studio Code project in Transifex is the single source of the truth of translation. Any change to translation needs to be made there. This GitHub repository is for engineering purpose only.
+* Install the next version of the VS Code yeoman generator
 
-## Feedback or report issue of Visual Studio Code language pack model
+``` bash
+npm install -g generator-code@next
+```
 
-If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/Microsoft/vscode/issues) (try to check if there isn't a topic about your issue already). And lable it as 'i18n' for visibility.
+Create a new Language Pack by running `yo code` and choosing `New Language Pack (Localization)`:
+
+``` bash
+yo code
+```
+
+![yeoman generator for VS Code](media/yocode.png)
+
+After answering the prompts, you will have a new folder called `vscode-language-pack-[language code]` containing all the files you need to get started with the extension.
+
+You will use a script from the VS Code repostiory to generate the translations, so we need to clone that repository (see [Contributing to Code](https://github.com/Microsoft/vscode/wiki/How-to-Contribute#build-and-run-from-source) for more information).
+
+``` bash
+git clone https://github.com/microsoft/vscode
+cd vscode
+yarn 
+```
+
+Now, download the language files from Transifex and generate the translations:
+
+* Get a Transifex API token from [https://www.transifex.com/user/settings/api](https://www.transifex.com/user/settings/api) that has access to projects `vscode-editor`, `vscode-workbench` and `vscode-extensions`.
+* Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
+* run the `update-localization-extension` script from VS Code:
+
+``` bash
+export TRANSIFEX_API_TOKEN=<<< Transifex Token >>>
+npm run update-localization-extension {path_to_lang_pack_ext}
+```
+
+This will add new files to `path_to_lang_pack_ext/translations` and will add a list of paths to the translations to `package.json`. You can now build and test your extension.
+
+You can now build and test your extension.
+
+``` bash
+cd [path to your extension]
+vsce package
+code --install-extension [name of your extension.vsix]
+code --locale [the new locale id, e.g. tr]
+```
+
+## Contributing Translations
+
+VS Code translations are done in the [VS Code Project in Transifex](https://aka.ms/vscodeloc). Transifex is the single source of "truth", therefore any changes need to be made there. This repository is for building the language pack extensions.
+
+## Issue Reporting
+
+If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/Microsoft/vscode-loc/issuesnew). Please check if a topic about your issue already exists!).
+
+## Legal
+Before we can accept your pull request you will need to sign a **Contribution License Agreement**. All you need to do is to submit a pull request, then the PR will get appropriately labelled (e.g. `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). If you already signed the agreement we will continue with reviewing the PR, otherwise system will tell you how you can sign the CLA. Once you sign the CLA all future PR's will be labeled as `cla-signed`.
 
 # Microsoft Open Source Code of Conduct
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+This project has adopted the [**Microsoft Open Source Code of Conduct**](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [**Code of Conduct FAQ**](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [**opencode@microsoft.com**](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## License 
+[MIT](LICENSE.md)
