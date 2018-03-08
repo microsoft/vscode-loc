@@ -2,6 +2,8 @@
 
 Adds localization for Bulgarian to VS Code.
 
+Set "locale": "bg" in locale.json to load Bulgarian Language Pack. See https://code.visualstudio.com/docs/getstarted/locales for more information.
+
 The translated strings are maintained here:
 * [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/bg/)
 * [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/bg/)
