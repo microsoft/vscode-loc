@@ -23,13 +23,13 @@ Külön köszönet a fordítóknak, akik nélkül nem készülhetett volna el ez
 
 **Fő közreműködők:**
 
-* **Tar Dániel**: a projekt nagy részét fordította (a fordítandó szövegmennyiség 95%-át, 40 ezer szót)
+* Tar Dániel: a projekt nagy részét fordította (a fordítandó szövegmennyiség 95%-át, 40 ezer szót)
 
 **További közreműködők:**
 
-* **Kovács Béla**
-* **Boleradszki Milán**
-* **Kiss Attila Csaba**
+* Kovács Béla
+* Boleradszki Milán
+* Kiss Attila Csaba
 
 #  Hungarian Language Pack for VS Code
 
