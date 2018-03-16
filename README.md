@@ -8,19 +8,19 @@ There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional,
 
 |Language|VS Code LanguageID|Transifex LanguageCode|Type|
 |--------|--------|--------|--------|
-|**French**|fr-FR|French (fr)|Core
-|**Italian**|it_IT|Italian (it)|Core
-|**German**|de-DE|German (de)|Core
-|**Spanish**|es-ES|Spanish (es)|Core
-|**Russian**|ru-RU|Russian (ru)|Core
+|**French**|fr|French (fr)|Core
+|**Italian**|it|Italian (it)|Core
+|**German**|de|German (de)|Core
+|**Spanish**|es|Spanish (es)|Core
+|**Russian**|ru|Russian (ru)|Core
 |**Chinese (Simplified)**|zh-CN|Chinese Simplified (zh-Hans) |Core
 |**Chinese (Traditional)**|zh-TW|Chinese Traditional (zh-Hant) |Core
-|**Japanese**|ja-JP|Japanese (ja)|Core
-|**Korean**|ko-KR|Korean (ko)|Core
+|**Japanese**|ja|Japanese (ja)|Core
+|**Korean**|ko|Korean (ko)|Core
 |**Bulgarian**|bg|Bulgarian (bg)|Community
 |**Hungarian**|hu|Hungarian (hu)|Community
-|**Portugese (Brazil)**|pt-BR|Portugese (Brazil) (pt_BR)) |Community
-|**Turkish**|tr|Turkish (tu)|Community
+|**Portugese (Brazil)**|pt-br|Portugese (Brazil) (pt_BR)) |Community
+|**Turkish**|tr|Turkish (tr)|Community
 
 Language pack extensions are published to the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode)
 
