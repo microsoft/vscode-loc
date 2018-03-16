@@ -14,8 +14,6 @@
 * [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/bg/)
 * [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/bg/)
 
- тук: https://github.com/Microsoft/Localization/wiki/Visual-Studio-Code-Community-Localization-Project.
-
 Ако желаете да участвате в превода, можете да намерите информация за това на [страницата за обществените преводи](https://aka.ms/vscodeloc).
 
 ## Лиценз
