@@ -3,7 +3,7 @@
 Ez a nyelvi csomag a VS Code felhasználói felületének magyar lokalizációját tartalmazza.
 
 ## Használat
-A magyar nyelvi csomag használatához a telepítés után állítsa be a `"locale": "hu"` értéket a `locale.json`-ban. Ehhez hozza elő a **parancspalettát** a `Ctrl+Shift+P` billentyűkombinációval, kezdje el gépelni a „config” szöveget a parancsok listájának szűréséhez, majd válassza a **Configure language** lehetőséget). További információ a [dokumentációban](https://go.microsoft.com/fwlink/?LinkId=761051) található.
+A magyar nyelvi csomag használatához a telepítés után állítsa be a `"locale": "hu"` értéket a `locale.json`-ban. Ehhez hozza elő a **parancspalettát** a `Ctrl+Shift+P` billentyűkombinációval, kezdje el gépelni a „config” szöveget a parancsok listájának szűréséhez, majd válassza a **Configure language** lehetőséget. További információ a [dokumentációban](https://go.microsoft.com/fwlink/?LinkId=761051) található.
 
 ## Közreműködés
 A lefordított szövegek itt találhatók meg:
