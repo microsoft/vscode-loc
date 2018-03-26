@@ -1,6 +1,6 @@
-#  Pacote de Limguagem para o VS Code em Português (Brasil)
+#  Pacote de Linguagem para o VS Code em Português Brasileiro
 
-O Pacote de linguagem para Português Brasileiro fornece uma experiência da Interface de Usuário (UI) localizada para o VS Code.
+O Pacote de linguagem para Português Brasileiro fornece uma experiência localizada da Interface de Usuário (UI) para o VS Code.
 
 ## Uso
 
