@@ -1,6 +1,6 @@
 #  Pacote de Limguagem para o VS Code em Português (Brasil)
 
-O Pacote de linguagem para Português Brasileiro fornece experiência da Interface de Usuário localizada para o VS Code.
+O Pacote de linguagem para Português Brasileiro fornece uma experiência da Interface de Usuário (UI) localizada para o VS Code.
 
 ## Uso
 
@@ -20,7 +20,7 @@ Se você deseja participar na tradução, veja a [página de localização da co
 
 O código fonte e as sequências de caracteres são licenciadas sob a licença do [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
-## Creditos
+## Créditos
 
 O pacote de linguagem em Português Brasileiro é fornecido à você pelos esforços de localização "Da comunidade, para a comunidade"
 
