@@ -10,9 +10,9 @@ Depois de instalado, configure `"locale": "pt-br"` no `locale.json` para carrega
 
 As sequências de caracteres traduzidas são mantidas aqui:
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/tr/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/tr/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/tr/)
+* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/pt_BR/)
+* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/pt_BR/)
+* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/pt_BR/)
 
 Se você deseja participar na tradução, veja a [página de localização da comunidade](https://aka.ms/vscodeloc) para mais informações.
 
@@ -61,9 +61,9 @@ Once installed, set `"locale": "pt-br"` in `locale.json` to load Portuguese (Bra
 
 The translated strings are maintained here:
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/tr/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/tr/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/tr/)
+* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/pt_BR/)
+* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/pt_BR/)
+* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/pt_BR/)
 
 If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 

@@ -51,9 +51,9 @@ Once installed, set `"locale": "bg"` in `locale.json` to load Bulgarian Language
 
 The translated strings are maintained here:
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/tr/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/tr/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/tr/)
+* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/bg/)
+* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/bg/)
+* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/bg/)
 
 If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
