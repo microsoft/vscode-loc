@@ -4,7 +4,7 @@ Chinese (Simplified) Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "zh-hans"` in `locale.json` to load Chinese (Simplified) Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+Once installed, set `"locale": "zh-cn"` in `locale.json` to load Chinese (Simplified) Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
@@ -28,10 +28,29 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* Joel Yang: localized majority of the new translation volume since open the project to community (51% of the translation volume - 25k words)
 
 **Contributors:**
 
-* Your name
+* YF
+* 陈嘉恺
+* pluwen
+* Shawn Dai
+* Wang Weixuan
+* Ying Feng
+* Simon Chan
+* bingzheyuan
+* Aifen Qin
+* lychichem
+* Bingxing Wang
+* 林昊
+* Zhijian Zeng
+* Zou Jian
+* Pig Fang
+* Ricky Wang
+* Jason Zhang
+* kui li
+* Wang Dongcheng
+* joeqi
 
 **Enjoy!**
