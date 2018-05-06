@@ -28,10 +28,34 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* Carsten Kneip
+* Levin Rickert
 
 **Contributors:**
 
-* Your name
+* Carsten Siemens
+* Christian Gräfe
+* thefreshman89
+* Dejan Dinic
+* J.M.
+* Jakob von der Haar
+* Ingo Bleile
+* Ullmie02
+* Stephan
+* Volkmar Rigo
+* felixkmh
+* Jonas Thelemann
+* Jakob Fahr
+* LosSandreas
+* Markus Weber
+* Arne Lehmann
+* Matt Bierner
+* Jens Suessmeyer
+* Sascha Corti
+* Ettore Atalan
+* Fabian Meyertöns
+* Florian Seidl
+* Max Schmitt
+* DSiekmeier
 
 **Enjoy!**
