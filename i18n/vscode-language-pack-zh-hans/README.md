@@ -28,7 +28,7 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Joel Yang: localized majority of the new translation volume since open the project to community (51% of the translation volume - 25k words)
+* Joel Yang: localized majority of the new translation volume since open the project to community (51% of the total volume - 25k words)
 
 **Contributors:**
 
