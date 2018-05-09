@@ -4,7 +4,7 @@ Chinese (Traditional) Language Pack provides localized UI experience for VS Code
 
 ## Usage
 
-Once installed, set `"locale": "zh-hant"` in `locale.json` to load Chinese (Traditional) Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+Once installed, set `"locale": "zh-tw"` in `locale.json` to load Chinese (Traditional) Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
@@ -28,10 +28,29 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* Winnie Lin 
+* Duran Hsieh
 
 **Contributors:**
 
-* Your name
+* Duran Hsieh
+* Alan Tsai
+* Alan Liu
+* Poy Chang
+* Ryan Tseng
+* Will 保哥
+* JJJ
+* Wei-Ting Shih
+* balduran
+* Han Lin
+* Ke-Hsu Chen
+* Kirk Chen
+* Kuo-Chen Lien
+* Suki Huang
+* Ricky Wang
+* Yuer Lee
+* Rex Yu
+* Terry Sheng
+* alantea 
 
 **Enjoy!**
