@@ -28,10 +28,31 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* Shunya Tajima: localized 46% of the new translation volume since opened this project to community.
+* Yuichi Nukiyama: localized 22% of the new translation volume since opened this project to community.
+* Yosuke Sano: localized 7% of the new translation volume since opened this project to community.
+* Tomoaki Yoshizawa: localized 4% of the new translation volume since opened this project to community.
 
 **Contributors:**
 
-* Your name
+* Seiji Momoto
+* Takayoshi Tanaka
+* Yuki Ueda
+* yoshioms
+* Hiroyuki Mori
+* Takashi Takebayashi
+* Toshinori Sugita
+* Tempura sukiyaki
+* Satoshi Kajiura
+* Tetsuya Fukuda
+* 得上 竜一
+* Kyohei MORIYAMA
+* Takashi Kawasaki
+* Naoto Ishida
+* Qp ringo
+* 12345
+* Miho Yamamoto
+* Abe Tsunehiko
+* 小島 富治雄
 
 **Enjoy!**
