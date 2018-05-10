@@ -28,10 +28,28 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* Antoine Griffard: localized 15k words. 60% of the total new transltion volume since we opened localization to community.
 
 **Contributors:**
 
-* Your name
+* Jonathan Menzel
+* Thierry DEMAN-BARCELO
+* JP Gouigoux
+* Vincent Biret
+* Adrien Clerbois
+* Jean-Paul Rouzé
+* Bruno Lewin
+* Aldo Donetti
+* Smrman
+* Jean Cuteaux
+* Nicholas Suter
+* Gabriel Dugny
+* Julien Brochet
+* Maxime COQUEREL
+* Alain BUFERNE
+* Lionel LOSCOS
+* Quentin BRETON
+* Victor Morgant
+
 
 **Enjoy!**
