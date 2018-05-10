@@ -28,10 +28,17 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* ChangJoon Lee
 
 **Contributors:**
 
-* Your name
+* Ian Y. Choi
+* Kyunghee Ko
+* partrita
+* Sei Kwang Chung
+* Young Rok Kim
+* HANSEULMARO KIM
+* Taehee Kim
+* Paul Lee
 
 **Enjoy!**
