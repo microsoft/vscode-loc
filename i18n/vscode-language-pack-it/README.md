@@ -28,10 +28,28 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Your name
+* Aldo Donetti
+* Alessandro Alpi
+* Piero Azi
 
 **Contributors:**
 
-* Your name
+* Michele
+* Riccardo Cappello
+* Luca Nardi
+* Francesco Mugnai
+* Gianluca Bertelli
+* Simone Chiaretta
+* Alessandro Burato
+* Steve Roger
+* Emilie Rollandin
+* Fabrizio Di Pietro
+* Andrea Dottor
+* Marco Dal Pino
+* Giuseppe Pignataro (Fasbyte01)
+* Giuliano Latini
+* Nicolò Carandini
+* Marco Parenzan
+* Michele Ceo
 
 **Enjoy!**
