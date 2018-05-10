@@ -26,12 +26,30 @@ Russian Language Pack is brought to you through "By the community, for the commu
 
 Special thanks to community contributors for making it available.
 
-**Top Contributors:**
-
-* Your name
-
 **Contributors:**
 
-* Your name
+* Svitlana Galianova
+* Aleksey Nemiro 
+* Ivan
+* sberbanker
+* Nikita Gryzlov
+* Veronika Kolesnikova
+* Valeriy Schepak
+* Kirill Moskvichev
+* Alexander Filimonov
+* Anton Afonin
+* Serge Rodionov
+* Артем Мельниченко
+* Orrchy
+* Артём Давыдов
+* Acupofspirt
+* Andrei Makarov
+* Romanenko Alexey
+* Andrei Pryymak 
+* Friedrich von Never
+* Pavel Birukou
+* Sergey Pestov
+* Rostislav Rotaru
+* Michel Ace
 
 **Enjoy!**
