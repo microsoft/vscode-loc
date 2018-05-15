@@ -1,7 +1,7 @@
 # Change Log
-All notable changes to the "vscode-language-pack-de" language pack will be documented in this file.
+Tutti i cambiamenti degni di nota al language pack "vscode-language-pack-it" saranno documentati in questo file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+Vedere [Keep a Changelog](http://keepachangelog.com/) per le raccomandazioni su come strutturare questo file.
 
 ## [Unreleased]
-- Initial release
+- Release iniziale
