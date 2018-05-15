@@ -1,39 +1,39 @@
-#  Spanish Language Pack for VS Code
+#  Paquete de idioma español para VS Code
 
-Spanish Language Pack provides localized UI experience for VS Code.
+El paquete de idioma español proporciona una experiencia de UI localizada para VS Code.
 
-## Usage
+## Uso
 
-Once installed, set `"locale": "es"` in `locale.json` to load Spanish Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+Una vez instalado, establezca `"locale": "es"` en `locale.json` para cargar el paquete de idioma español. Para modificar `locale.json` pulse `Ctrl+Shift+P` para activar la **Command Palette**, comience a teclear "config" para filtrar la lista de comandos disponibles, y luego seleccione el comando **Configure Language**. Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para más información.
 
-## Contributing
+## Cómo contribuir
 
-The translated strings are maintained here:
+Las cadenas traducidas se mantienen aquí:
 
 * [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
 * [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
 * [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+Si desea participar en este proyecto, bien contribuyendo traducciones o mejorando traducciones, vea [community localization page](https://aka.ms/vscodeloc) para más información.
 
-## License
+## Licencia
 
-The source code and strings are licensed under the [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) license.
+El código fuente y las cadenas se someten a la licencia [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
-## Credits
+## Reconocimientos
 
-Spanish Language Pack is brought to you through "By the community, for the community" community localization effort.
+El paquete de idioma español llega hasta usted gracias al esfuerzo de localización de la comunidad "By the community, for the community" ("De la comunidad, para la comunidad").
 
-Special thanks to community contributors for making it available.
+Especial agradecimiento a quienes contribuyen a la comunidad por hacerlo disponible.
 
-**Top Contributors:**
+**Principales contribuyentes:**
 
 * Andy Gonzalez
 * Alberto Poblacion
 * Raul Rama
 
 
-**Contributors:**
+**Contribuyentes:**
 
 * José M. Aguilar
 * Roberto Fonseca
@@ -56,4 +56,4 @@ Special thanks to community contributors for making it available.
 * Gabriel Peralta
 * Carlos Herrera
 
-**Enjoy!**
+**Disfrútelo!**
