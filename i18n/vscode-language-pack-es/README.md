@@ -1,39 +1,39 @@
-#  Paquete de Lenguaje en español para VS Code
+#  Paquete de idioma español para VS Code
 
-El paquete de lenguaje en Español provee una experiencia de interface de usuario de VS Code localizada en español.
+El paquete de idioma español proporciona una experiencia de UI localizada para VS Code.
 
 ## Uso
 
-Una vez instalado, configure `"locale": "es"` en `locale.json` para cargar el paquete de idioma Español. Para modificar `locale.json` presione `Ctrl+Shift+P` para mostrar la **Paleta de Comandos**, tipee "config" para filtrar la lista de comandos disponibles, seleccione el comando **Configure Language**. Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para mas información.
+Una vez instalado, establezca `"locale": "es"` en `locale.json` para cargar el paquete de idioma español. Para modificar `locale.json` pulse `Ctrl+Shift+P` para activar la **Command Palette**, comience a teclear "config" para filtrar la lista de comandos disponibles, y luego seleccione el comando **Configure Language**. Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para más información.
 
-## Contribuir
+## Cómo contribuir
 
-Las cadenas de texto traducidas son mantenidas aquí:
+Las cadenas traducidas se mantienen aquí:
 
 * [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
 * [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
 * [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
 
-Si desea participar contribuyendo a traducir o mejorar la traducción, vea [community localization page] (https://aka.ms/vscodeloc) para mas información.
+Si desea participar en este proyecto, bien contribuyendo con las traducciones o mejorando dichas traducciones, vea [community localization page](https://aka.ms/vscodeloc) para más información.
 
 ## Licencia
 
-El código fuente y las cadenas de texto están bajo la licencia [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+El código fuente y las cadenas se someten a la licencia [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
-## Créditos
+## Reconocimientos
 
-El paquete de idioma Español es provisto para ud. a través del esfuerzo de localización de la comunidad, "De la comunidad, para la comunidad".
+El paquete de idioma español llega hasta usted gracias al esfuerzo de localización de la comunidad, "By the community, for the community" ("De la comunidad, para la comunidad").
 
-Agradecemos especialmente a los contribuidores de la comunidad por permitir disponibilizarlo.
+Especial agradecimiento a quienes contribuyen a la comunidad por hacerlo disponible.
 
-**Contribuidores Top:**
+**Principales contribuyentes:**
 
 * Andy Gonzalez
 * Alberto Poblacion
 * Raul Rama
 
 
-**Contribuidores:**
+**Contribuyentes:**
 
 * José M. Aguilar
 * Roberto Fonseca
