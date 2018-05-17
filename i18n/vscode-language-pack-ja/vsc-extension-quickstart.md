@@ -5,9 +5,9 @@
 ```json
         "contributes": {
             "localization": [{
-                "languageId": "de",
-                "languageName": "German",
-                "localizedLanguageName": "Deutsch"
+                "languageId": "ja",
+                "languageName": "Japanese",
+                "localizedLanguageName": "日本語"
             }]
         }
 ```
@@ -21,6 +21,6 @@ To populate or update the `translations` folder as with the latest strings from 
 - Get an API token from https://www.transifex.com/user/settings/api.
 - Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
 - `cd` to the VS Code repo
-   - If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension de`
+   - If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension ja`
    - Otherwise: `npm run update-localization-extension {path_to_lang_pack_ext}`
 - This will download translation files to the folder `translations`, as well as populate a `translations` property in the `localizations` contribution point.
