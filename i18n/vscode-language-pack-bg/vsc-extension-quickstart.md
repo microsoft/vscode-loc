@@ -7,7 +7,7 @@
             "localization": [{
                 "languageId": "bg",
                 "languageName": "Bulgarian",
-                "localizedLanguageName": ""
+                "localizedLanguageName": "български"
             }]
         }
 ```

@@ -1,4 +1,4 @@
-# Welcome to the German language pack
+# Welcome to the Japanese language pack
 
 ## What's in the folder
 * `package.json` - the manifest file, defining the name and description of the localization extension. It also contains the `localizations` contribution point that defines the language id:

@@ -1,13 +1,13 @@
-# Welcome to the German language pack
+# Welcome to the Traditional Chinese language pack
 
 ## What's in the folder
 * `package.json` - the manifest file, defining the name and description of the localization extension. It also contains the `localizations` contribution point that defines the language id:
 ```json
         "contributes": {
             "localization": [{
-                "languageId": "de",
-                "languageName": "German",
-                "localizedLanguageName": "Deutsch"
+                "languageId": "zh-tw",
+                "languageName": "Chinese Traditional",
+                "localizedLanguageName": "中文(繁體)"
             }]
         }
 ```
@@ -21,6 +21,6 @@ To populate or update the `translations` folder as with the latest strings from 
 - Get an API token from https://www.transifex.com/user/settings/api.
 - Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
 - `cd` to the VS Code repo
-   - If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension de`
+   - If the language pack extension is placed next to the VS Code repository: `npm run update-localization-extension zh-hant`
    - Otherwise: `npm run update-localization-extension {path_to_lang_pack_ext}`
 - This will download translation files to the folder `translations`, as well as populate a `translations` property in the `localizations` contribution point.

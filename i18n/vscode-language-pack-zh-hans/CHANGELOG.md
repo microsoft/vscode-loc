@@ -1,7 +1,6 @@
 # Change Log
-All notable changes to the "vscode-language-pack-de" language pack will be documented in this file.
+All notable changes to the "vscode-language-pack-zh-hans" language pack will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-- Initial release
+## [Released]
+May 5, 2018 - Release for VS Code 1.23
+April 16, 2018 - Initial release
