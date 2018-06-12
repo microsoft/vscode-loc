@@ -3,6 +3,6 @@ All notable changes to the "vscode-language-pack-bg" language pack will be docum
 
 
 ## [Released]
-May 5, 2018  - Release for VS Code 1.23
-April 5, 2018 - Release for VS Code 1.22
-March 16, 2018 - Initial release
+* May 5, 2018  - Release for VS Code 1.23
+* April 5, 2018 - Release for VS Code 1.22
+* March 16, 2018 - Initial release
