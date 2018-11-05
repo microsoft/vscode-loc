@@ -1,28 +1,28 @@
-#  Pacote de Linguagem para o VS Code em Português Brasileiro
+#  Pacote de Idioma para o VS Code em Português Brasileiro
 
-O Pacote de linguagem para Português Brasileiro fornece uma experiência localizada da Interface de Usuário (UI) para o VS Code.
+O Pacote de idioma para Português Brasileiro fornece uma experiência de Interface de Usuário (UI) localizada para o VS Code.
 
 ## Uso
 
-Depois de instalado, configure `"locale": "pt-br"` no `locale.json` para carregar o pacote de linguagem em Português Brasileiro. Para modificar o `locale.json` pressione `Ctrl+Shift+P` para abrir a **Palheta de Comando**, inicie digitando "config" para filtrar a lista de comandos disponíveis, e depois selecione o comando **Configure Linguagem**. Veja [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para mais informações.
+Depois de instalado, configure `"locale": "pt-br"` no `locale.json` para carregar o pacote de idioma em Português Brasileiro. Para modificar o `locale.json` pressione `Ctrl+Shift+P` para abrir a **Palheta de Comandos**, comece a digitar "config" para filtrar a lista de comandos disponíveis, então selecione o comando **Configure Language**. Visite [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para mais informações.
 
 ## Contribuições
 
-As sequências de caracteres traduzidas são mantidas aqui:
+As strings traduzidas são mantidas aqui:
 
 * [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/pt_BR/)
 * [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/pt_BR/)
 * [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/pt_BR/)
 
-Se você deseja participar na tradução, veja a [página de localização da comunidade](https://aka.ms/vscodeloc) para mais informações.
+Se você deseja participar da tradução, visite a [página de localização da comunidade](https://aka.ms/vscodeloc) para mais informações.
 
 ## Licença
 
-O código fonte e as sequências de caracteres são licenciadas sob a licença do [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+O código fonte e as strings são licenciadas sob a licença [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
 ## Créditos
 
-O pacote de linguagem em Português Brasileiro é fornecido à você pelos esforços de localização "Da comunidade, para a comunidade"
+O pacote de idioma em Português Brasileiro é fornecido à você pelos esforços de localização "Da comunidade, para a comunidade"
 
 Agradecimentos especiais para a comunidade de contribuidores por tornar isso possível.
 
