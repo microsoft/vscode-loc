@@ -8,15 +8,6 @@
 	],
 	"version": "1.0.0",
 	"contents": {
-		"yaml/package": {
-			"displayName": "YAML 语言基础功能",
-			"description": "在 YAML 文件中提供语法高亮和括号匹配功能。"
-		},
-		"vs/base/common/severity": {
-			"sev.error": "错误",
-			"sev.warning": "警告",
-			"sev.info": "信息"
-		},
 		"vs/base/browser/ui/inputbox/inputBox": {
 			"alertErrorMessage": "错误: {0}",
 			"alertWarningMessage": "警告: {0}",
@@ -24,6 +15,11 @@
 		},
 		"vs/base/browser/ui/findinput/findInput": {
 			"defaultLabel": "输入"
+		},
+		"vs/base/common/severity": {
+			"sev.error": "错误",
+			"sev.warning": "警告",
+			"sev.info": "信息"
 		},
 		"vs/base/parts/quickopen/browser/quickOpenModel": {
 			"quickOpenAriaLabelEntry": "{0}，选取器",
@@ -79,6 +75,9 @@
 		},
 		"vs/base/browser/ui/menu/menu": {
 			"titleLabel": "{0} ({1})"
+		},
+		"vs/base/browser/ui/menu/menubar": {
+			"mMore": "..."
 		},
 		"vs/base/common/jsonErrorMessages": {
 			"error.invalidSymbol": "无效符号",
@@ -749,10 +748,10 @@
 			"proxy": "使用的代理设置。如果没有设置，将从 http_proxy 和 https_proxy 环境变量中获取。",
 			"strictSSL": "控制是否根据提供的 CA 列表验证代理服务器证书。",
 			"proxyAuthorization": "要作为每个网络请求的 \"Proxy-Authorization\" 标头发送的值。",
-			"systemProxyOff": "不要使用系统代理配置。",
-			"systemProxyOn": "在未指定请求选项的情况下，使用系统代理配置。",
-			"systemProxyForce": "始终使用系统代理配置。",
-			"systemProxy": "实验设置: 使用系统代理配置。"
+			"proxySupportOff": "禁用对扩展的代理支持。",
+			"proxySupportOn": "为扩展启用代理支持。",
+			"proxySupportOverride": "为扩展启用代理支持，覆盖请求选项。",
+			"proxySupport": "实验设置:对扩展使用代理支持。"
 		},
 		"vs/platform/history/electron-main/historyMainService": {
 			"newWindow": "新建窗口",
@@ -785,9 +784,6 @@
 			"invalidManifest": "扩展无效: package.json 不是 JSON 文件。",
 			"incompatible": "无法安装扩展名'{0}'，因为它不兼容VS代码'{1}。",
 			"restartCode": "请重新安装{0}之前重新启动VS代码。",
-			"installingOutdatedExtension": "已安装此扩展的新版程序。要使用旧版覆盖吗?",
-			"override": "覆盖",
-			"cancel": "取消",
 			"malicious extension": "无法安装此扩展，它被报告存在问题。",
 			"notFoundCompatibleDependency": "无法安装。找不到与 VS Code 当前版本 ({1}) 兼容的扩展“{0}”。",
 			"MarketPlaceDisabled": "商店未启用",
@@ -968,6 +964,9 @@
 			"copy": "复制(&&C)"
 		},
 		"vs/platform/issue/electron-main/issueService": {
+			"confirmCloseIssueReporter": "您的输入将不会保存。确实要关闭此窗口吗？",
+			"yes": "是",
+			"cancel": "取消",
 			"issueReporter": "问题报告程序",
 			"processExplorer": "进程管理器"
 		},
@@ -1052,12 +1051,10 @@
 			"successVsixInstall": "已成功安装扩展“{0}”!",
 			"cancelVsixInstall": "已取消安装扩展“{0}”。",
 			"updateMessage": "将扩展 \"{0}\" 更新到版本 {1}",
-			"updateConfirmationMessage": "已安装扩展“{0}”的 {1} 版本，但商店中存在新版本 {2}。是否需要更新?",
-			"yes": "是",
-			"no": "否",
-			"cancelInstall": "已取消安装扩展“{0}”。",
+			"forceUpdate": "扩展“{0}”和“{1}”已经安装，但是市场上有一个更新版本的{2}。使用“--force”选项更新到新版本。",
 			"alreadyInstalled": "已安装扩展“{0}”。",
 			"foundExtension": "在应用商店中找到了“{0}”。",
+			"forceDowngrade": "较新版本的扩展 \"{0}\" 和\"{1}\"已经安装。使用“--force”选项降级到旧版本。",
 			"installing": "正在安装...",
 			"successInstall": "已成功安装扩展“{0}” v{1}!",
 			"uninstalling": "正在卸载 {0}...",
@@ -2217,6 +2214,407 @@
 			"label.edit": "编辑",
 			"label.cancel": "取消"
 		},
+		"vs/workbench/parts/debug/electron-browser/debug.contribution": {
+			"toggleDebugViewlet": "显示调试",
+			"toggleDebugPanel": "调试控制台",
+			"debug": "调试",
+			"debugPanel": "调试控制台",
+			"variables": "变量",
+			"watch": "监视",
+			"callStack": "调用堆栈",
+			"breakpoints": "断点",
+			"loadedScripts": "已载入的脚本",
+			"view": "视图",
+			"debugCategory": "调试",
+			"debugCommands": "调试配置",
+			"debugConfigurationTitle": "调试",
+			"allowBreakpointsEverywhere": "允许在任何文件中设置断点。",
+			"openExplorerOnEnd": "在调试会话结束时，自动打开“资源管理器”视图。",
+			"inlineValues": "当处于调试过程中时，在编辑器中内联显示变量值。",
+			"toolBarLocation": "控制调试工具栏位置。其位置可为 `floating` (在所有视图之上浮动)、`docked` (停靠于“调试”视图) 或 `hidden` (隐藏)。",
+			"never": "在状态栏中不再显示调试",
+			"always": "始终在状态栏中显示调试",
+			"onFirstSessionStart": "仅于第一次启动调试后在状态栏中显示调试",
+			"showInStatusBar": "控制何时显示调试状态栏。",
+			"openDebug": "控制何时打开“调试”视图。",
+			"enableAllHovers": "控制调试过程中是否启用非调试悬停提示。启用后，将调用悬停提供程序来提供悬停提示。即使启用此项设置，普通悬停提示也不会显示。",
+			"launch": "全局的调试启动配置。应用作跨工作区共享的 \"launch.json\" 的替代。",
+			"miViewDebug": "调试(&&D)",
+			"miToggleDebugConsole": "调试控制台(&&B)",
+			"miStartDebugging": "启动调试(&&S)",
+			"miStartWithoutDebugging": "在不调试的情况下启动(&&W)",
+			"miStopDebugging": "停止调试(&&S)",
+			"miRestart Debugging": "重启调试(&&R)",
+			"miOpenConfigurations": "打开配置(&&C)",
+			"miAddConfiguration": "添加配置(&&D)...",
+			"miStepOver": "单步跳过(&&O)",
+			"miStepInto": "单步执行(&&I)",
+			"miStepOut": "单步停止(&&U)",
+			"miContinue": "继续(&&C)",
+			"miToggleBreakpoint": "切换断点(&&B)",
+			"miConditionalBreakpoint": "条件断点(&&C)...",
+			"miInlineBreakpoint": "内联断点(&&O)",
+			"miFunctionBreakpoint": "函数断点(&&F)...",
+			"miLogPoint": "记录点(&&L)...",
+			"miNewBreakpoint": "新建断点(&&N)",
+			"miEnableAllBreakpoints": "启用所有断点(&&E)",
+			"miDisableAllBreakpoints": "禁用所有断点(&&L)",
+			"miRemoveAllBreakpoints": "删除&&所有断点",
+			"miInstallAdditionalDebuggers": "安装附加调试器(&&I)..."
+		},
+		"vs/workbench/parts/debug/browser/debugQuickOpen": {
+			"entryAriaLabel": "{0}，调试",
+			"debugAriaLabel": "键入启动配置的名称以运行。",
+			"addConfigTo": "添加配置 ({0})...",
+			"addConfiguration": "添加配置...",
+			"noConfigurationsMatching": "无任何调试配置匹配",
+			"noConfigurationsFound": "找不到任何调试配置。请创建一个 \"launch.json\" 文件。"
+		},
+		"vs/workbench/parts/debug/electron-browser/repl": {
+			"replAriaLabel": "读取 Eval 打印循环面板",
+			"startDebugFirst": "请启动调试会话来计算表达式",
+			"actions.repl.acceptInput": "接受 REPL 的输入",
+			"actions.repl.copyAll": "调试: 复制控制台所有内容",
+			"selectRepl": "选择调试控制台",
+			"clearRepl": "清除控制台",
+			"debugConsoleCleared": "调试控制台已清除"
+		},
+		"vs/workbench/parts/debug/browser/debugViewlet": {
+			"startAdditionalSession": "启动其他会话"
+		},
+		"vs/workbench/parts/debug/common/debug": {
+			"internalConsoleOptions": "控制何时打开内部调试控制台。"
+		},
+		"vs/workbench/parts/debug/electron-browser/callStackView": {
+			"callstackSection": "调用堆栈部分",
+			"debugStopped": "因 {0} 已暂停",
+			"callStackAriaLabel": "调试调用堆栈",
+			"session": "会话",
+			"paused": "已暂停",
+			"running": "正在运行",
+			"thread": "线程",
+			"pausedOn": "因 {0} 已暂停",
+			"loadMoreStackFrames": "加载多个堆栈帧",
+			"showMoreAndOrigin": "显示另外 {0} 个: {1}",
+			"showMoreStackFrames": "显示另外 {0} 个堆栈帧",
+			"threadAriaLabel": "线程 {0}，调用堆栈，调试",
+			"stackFrameAriaLabel": "堆栈帧 {0} 行 {1} {2}，调用堆栈，调试"
+		},
+		"vs/workbench/parts/debug/browser/debugEditorModelManager": {
+			"topStackFrameLineHighlight": "堆栈帧中顶部一行的高亮背景色。",
+			"focusedStackFrameLineHighlight": "堆栈帧中焦点一行的高亮背景色。"
+		},
+		"vs/workbench/parts/debug/electron-browser/variablesView": {
+			"variablesSection": "变量部分",
+			"variablesAriaTreeLabel": "调试变量",
+			"variableValueAriaLabel": "键入新的变量值",
+			"variableScopeAriaLabel": "范围 {0}，变量，调试",
+			"variableAriaLabel": "{0} 值 {1}，变量，调试"
+		},
+		"vs/workbench/parts/debug/electron-browser/watchExpressionsView": {
+			"watchExpressionsSection": "“监视表达式”部分",
+			"watchAriaTreeLabel": "调试监视表达式",
+			"watchExpressionPlaceholder": "要监视的表达式",
+			"watchExpressionInputAriaLabel": "键入监视表达式",
+			"watchExpressionAriaLabel": "{0} 值 {1}，监视，调试",
+			"watchVariableAriaLabel": "{0} 值 {1}，监视，调试"
+		},
+		"vs/workbench/parts/debug/browser/debugToolbar": {
+			"debugToolBarBackground": "调试工具栏背景颜色。",
+			"debugToolBarBorder": "调试工具栏边框颜色。"
+		},
+		"vs/workbench/parts/debug/browser/breakpointsView": {
+			"breakpointsSection": "断点部分",
+			"Logpoint": "记录点",
+			"Breakpoint": "断点",
+			"editBreakpoint": "编辑{0}...",
+			"removeBreakpoint": "删除 {0}",
+			"functionBreakpointsNotSupported": "此调试类型不支持函数断点",
+			"functionBreakpointPlaceholder": "要断开的函数",
+			"functionBreakPointInputAriaLabel": "键入函数断点",
+			"disabledLogpoint": "已禁用的记录点",
+			"disabledBreakpoint": "已禁用的断点",
+			"unverifiedLogpoint": "未验证的记录点",
+			"unverifiedBreakopint": "未验证的断点",
+			"functionBreakpointUnsupported": "不受此调试类型支持的函数断点",
+			"logBreakpointUnsupported": "不受此调试类型支持的记录点",
+			"logMessage": "记录消息: {0}",
+			"conditionalBreakpointUnsupported": "不受此调试类型支持的条件断点",
+			"hitBreakpointUnsupported": "命中不受此调试类型支持的条件断点",
+			"expression": "表达式: {0}",
+			"hitCount": "点击量计数: {0}"
+		},
+		"vs/workbench/parts/debug/browser/debugActions": {
+			"openLaunchJson": "打开 {0}",
+			"launchJsonNeedsConfigurtion": "配置或修复 \"launch.json\"",
+			"noFolderDebugConfig": "请先打开一个文件夹以进行高级调试配置。",
+			"startDebug": "开始调试",
+			"startWithoutDebugging": "开始执行(不调试)",
+			"selectAndStartDebugging": "选择并开始调试",
+			"restartDebug": "重启",
+			"reconnectDebug": "重新连接",
+			"stepOverDebug": "单步跳过",
+			"stepIntoDebug": "单步调试",
+			"stepOutDebug": "单步跳出",
+			"stopDebug": "停止",
+			"disconnectDebug": "断开",
+			"continueDebug": "继续",
+			"pauseDebug": "暂停",
+			"terminateThread": "终止线程",
+			"restartFrame": "重新启动框架",
+			"removeBreakpoint": "删除断点",
+			"removeAllBreakpoints": "删除所有断点",
+			"enableAllBreakpoints": "启用所有断点",
+			"disableAllBreakpoints": "禁用所有断点",
+			"activateBreakpoints": "激活断点",
+			"deactivateBreakpoints": "停用断点",
+			"reapplyAllBreakpoints": "重新应用所有断点",
+			"addFunctionBreakpoint": "添加函数断点",
+			"setValue": "设置值",
+			"addWatchExpression": "添加表达式",
+			"editWatchExpression": "编辑表达式",
+			"addToWatchExpressions": "添加到监视",
+			"removeWatchExpression": "删除表达式",
+			"removeAllWatchExpressions": "删除所有表达式",
+			"debugConsoleAction": "调试控制台",
+			"debugFocusConsole": "聚焦到“调试控制台”视图",
+			"focusSession": "聚焦到“会话”视图",
+			"stepBackDebug": "后退",
+			"reverseContinue": "反向"
+		},
+		"vs/workbench/parts/debug/browser/debugContentProvider": {
+			"unable": "无法解析无调试会话的资源",
+			"canNotResolveSourceWithError": "无法加载源“{0}”: {1}。",
+			"canNotResolveSource": "无法加载源“{0}”。"
+		},
+		"vs/workbench/parts/debug/browser/debugCommands": {
+			"noFolderDebugConfig": "请先打开一个文件夹以进行高级调试配置。",
+			"inlineBreakpoint": "内联断点",
+			"debug": "调试",
+			"addInlineBreakpoint": "添加内联断点"
+		},
+		"vs/workbench/parts/debug/browser/statusbarColorProvider": {
+			"statusBarDebuggingBackground": "调试程序时状态栏的背景色。状态栏显示在窗口底部",
+			"statusBarDebuggingForeground": "调试程序时状态栏的前景色。状态栏显示在窗口底部",
+			"statusBarDebuggingBorder": "调试程序时区别于侧边栏和编辑器的状态栏边框颜色。状态栏显示在窗口底部。"
+		},
+		"vs/workbench/parts/debug/browser/debugStatus": {
+			"selectAndStartDebug": "选择并启动调试配置"
+		},
+		"vs/workbench/parts/debug/browser/loadedScriptsView": {
+			"loadedScriptsSection": "“已加载脚本”部分",
+			"loadedScriptsAriaLabel": "在调试中已加载的脚本",
+			"loadedScriptsSession": "调试会话",
+			"loadedScriptsRootFolderAriaLabel": "工作区文件夹 {0}，已加载的脚本，调试",
+			"loadedScriptsSessionAriaLabel": "会话 {0}，已加载的脚本，调试",
+			"loadedScriptsFolderAriaLabel": "文件夹 {0}，已加载的脚本，调试",
+			"loadedScriptsSourceAriaLabel": "{0}，已加载的脚本，调试"
+		},
+		"vs/workbench/parts/debug/browser/debugEditorActions": {
+			"toggleBreakpointAction": "调试: 切换断点",
+			"conditionalBreakpointEditorAction": "调试: 添加条件断点...",
+			"logPointEditorAction": "调试: 添加记录点...",
+			"runToCursor": "运行到光标处",
+			"debugEvaluate": "调试: 求值",
+			"debugAddToWatch": "调试: 添加到监视",
+			"showDebugHover": "调试: 显示悬停",
+			"goToNextBreakpoint": "调试: 转到下一个断点",
+			"goToPreviousBreakpoint": "调试:到前面的断点"
+		},
+		"vs/workbench/parts/debug/electron-browser/debugService": {
+			"configurationAlreadyRunning": "调试配置“{0}”已在运行。",
+			"compoundMustHaveConfigurations": "复合项必须拥有 \"configurations\" 属性集，才能启动多个配置。",
+			"noConfigurationNameInWorkspace": "在工作区中找不到启动配置“{0}”。",
+			"multipleConfigurationNamesInWorkspace": "工作区中存在多个启动配置“{0}”。请使用文件夹名称来限定配置。",
+			"noFolderWithName": "无法在复合项“{2}”中为配置“{1}”找到名为“{0}”的文件夹。",
+			"configMissing": "\"launch.json\" 中缺少配置“{0}”。",
+			"launchJsonDoesNotExist": "\"launch.json\" 不存在。",
+			"debugRequestNotSupported": "所选调试配置的属性“{0}”的值“{1}”不受支持。",
+			"debugRequesMissing": "所选的调试配置缺少属性“{0}”。",
+			"debugTypeNotSupported": "配置的类型“{0}”不受支持。",
+			"debugTypeMissing": "所选的启动配置缺少属性 \"type\"。",
+			"noFolderWorkspaceDebugError": "无法调试活动文件。请确保它保存在磁盘上，并确保已为该文件类型安装了调试扩展。",
+			"debugAdapterCrash": "调试适配器进程意外终止 ({0})",
+			"cancel": "取消",
+			"debugAnyway": "仍进行调试",
+			"preLaunchTaskErrors": "运行 preLaunchTask“{0}”后存在错误。",
+			"preLaunchTaskError": "运行 preLaunchTask“{0}”后存在错误。",
+			"preLaunchTaskExitCode": "preLaunchTask“{0}”已终止，退出代码为 {1}。",
+			"showErrors": "显示错误",
+			"invalidTaskReference": "无法在其他工作区文件夹的启动配置中引用任务“{0}”。",
+			"DebugTaskNotFoundWithTaskId": "找不到任务“{0}”。",
+			"DebugTaskNotFound": "找不到指定的任务。",
+			"taskNotTrackedWithTaskId": "无法跟踪指定的任务。",
+			"taskNotTracked": "无法跟踪任务“{0}”。",
+			"debuggingPaused": "调试暂停的 {0}, {1} {2}",
+			"breakpointAdded": "已添加断点，行 {0}, 文件 {1}",
+			"breakpointRemoved": "已删除断点，行 {0}，文件 {1}"
+		},
+		"vs/workbench/parts/debug/electron-browser/debugEditorContribution": {
+			"logPoint": "记录点",
+			"breakpoint": "断点",
+			"removeBreakpoint": "删除 {0}",
+			"editBreakpoint": "编辑{0}...",
+			"disableBreakpoint": "禁用{0}",
+			"enableBreakpoint": "启用 {0}",
+			"removeBreakpoints": "删除断点",
+			"removeInlineBreakpointOnColumn": "删除第 {0} 列的内联断点",
+			"removeLineBreakpoint": "删除行断点",
+			"editBreakpoints": "编辑断点",
+			"editInlineBreakpointOnColumn": "编辑第 {0} 列的内联断点",
+			"editLineBrekapoint": "编辑行断点",
+			"enableDisableBreakpoints": "启用/禁用断点",
+			"disableInlineColumnBreakpoint": "禁用第 {0} 列的内联断点",
+			"disableBreakpointOnLine": "禁用行断点",
+			"enableBreakpoints": "启用第 {0} 列的内联断点",
+			"enableBreakpointOnLine": "启用行断点",
+			"addBreakpoint": "添加断点",
+			"addConditionalBreakpoint": "添加条件断点...",
+			"addLogPoint": "添加记录点...",
+			"breakpointHasConditionDisabled": "此{0}的{1}将在删除后丢失。请考虑仅启用此{0}。",
+			"message": "消息",
+			"condition": "条件",
+			"breakpointHasConditionEnabled": "此{0}的{1}将在删除后丢失。请考虑仅禁用此{0}。",
+			"removeLogPoint": "删除 {0}",
+			"disableLogPoint": "{0} {1}",
+			"disable": "禁用",
+			"enable": "启用",
+			"cancel": "取消",
+			"addConfiguration": "添加配置..."
+		},
+		"vs/workbench/parts/debug/electron-browser/replViewer": {
+			"stateCapture": "对象状态捕获自第一个评估",
+			"replVariableAriaLabel": "变量 {0} 具有值 {1}、读取 Eval 打印循环，调试",
+			"replExpressionAriaLabel": "表达式 {0} 具有值 {1}，读取 Eval 打印循环，调试",
+			"replValueOutputAriaLabel": "{0}，读取 Eval 打印循环，调试",
+			"replRawObjectAriaLabel": "Repl（交互式解释器）变量 {0} 具有值 {1}，读取 求值 输出 循环，调试"
+		},
+		"vs/workbench/parts/debug/browser/debugActionItems": {
+			"debugLaunchConfigurations": "调试启动配置",
+			"noConfigurations": "没有配置",
+			"addConfigTo": "添加配置 ({0})...",
+			"addConfiguration": "添加配置...",
+			"debugSession": "调试会话"
+		},
+		"vs/workbench/parts/debug/common/debugModel": {
+			"notAvailable": "不可用",
+			"startDebugFirst": "请启动调试会话来计算表达式",
+			"breakpointDirtydHover": "未验证的断点。对文件进行了修改，请重启调试会话。"
+		},
+		"vs/workbench/parts/debug/electron-browser/electronDebugActions": {
+			"copyValue": "复制值",
+			"copyAsExpression": "复制表达式",
+			"copy": "复制",
+			"copyAll": "全部复制",
+			"copyStackTrace": "复制调用堆栈"
+		},
+		"vs/workbench/parts/debug/electron-browser/debugSession": {
+			"debuggingStarted": "已开始调试。",
+			"debuggingStopped": "已停止调试。"
+		},
+		"vs/workbench/parts/debug/electron-browser/debugConfigurationManager": {
+			"debugNoType": "不可省略调试器的 \"type\" 属性，且其类型必须是 \"string\" 。",
+			"selectDebug": "选择环境",
+			"DebugConfig.failed": "无法在 \".vscode\" 文件夹({0})内创建 \"launch.json\" 文件。",
+			"workspace": "工作区",
+			"user settings": "用户设置"
+		},
+		"vs/workbench/parts/debug/common/debugSource": {
+			"unknownSource": "未知源"
+		},
+		"vs/workbench/parts/debug/electron-browser/debugHover": {
+			"treeAriaLabel": "调试悬停"
+		},
+		"vs/workbench/parts/debug/browser/exceptionWidget": {
+			"debugExceptionWidgetBorder": "异常小组件边框颜色。",
+			"debugExceptionWidgetBackground": "异常小组件背景颜色。",
+			"exceptionThrownWithId": "发生异常: {0}",
+			"exceptionThrown": "出现异常。"
+		},
+		"vs/workbench/parts/debug/electron-browser/breakpointWidget": {
+			"breakpointWidgetLogMessagePlaceholder": "断点命中时记录的消息。{} 内的表达式将被替换。按 \"Enter\" 键确认，\"Esc\" 键取消。",
+			"breakpointWidgetHitCountPlaceholder": "在命中次数条件满足时中断。按 \"Enter\" 键确认，\"Esc\" 键取消。",
+			"breakpointWidgetExpressionPlaceholder": "在表达式结果为真时中断。按 \"Enter\" 键确认，\"Esc\" 键取消。",
+			"expression": "EXPRESSION",
+			"hitCount": "命中次数",
+			"logMessage": "记录消息",
+			"breakpointType": "断点类型"
+		},
+		"vs/workbench/parts/debug/browser/linkDetector": {
+			"fileLinkMac": "点击以跟进(Cmd + 点击打开到侧边)",
+			"fileLink": "单击打开 (按住 Ctrl 键并单击在侧边打开)"
+		},
+		"vs/workbench/parts/debug/node/debugAdapter": {
+			"debugAdapterBinNotFound": "调试适配器可执行的“{0}”不存在。",
+			"debugAdapterCannotDetermineExecutable": "无法确定调试适配器“{0}”的可执行文件。",
+			"unableToLaunchDebugAdapter": "无法从“{0}”启动调试适配器。",
+			"unableToLaunchDebugAdapterNoArgs": "无法启动调试适配器。"
+		},
+		"vs/workbench/parts/debug/electron-browser/rawDebugSession": {
+			"moreInfo": "详细信息"
+		},
+		"vs/workbench/parts/debug/electron-browser/terminalSupport": {
+			"debug.terminal.title": "调试对象"
+		},
+		"vs/workbench/parts/debug/common/replModel": {
+			"consoleCleared": "控制台已清除",
+			"snapshotObj": "仅显示了此对象的基元值。"
+		},
+		"vs/workbench/parts/debug/node/debugger": {
+			"launch.config.comment1": "使用 IntelliSense 了解相关属性。 ",
+			"launch.config.comment2": "悬停以查看现有属性的描述。",
+			"launch.config.comment3": "欲了解更多信息，请访问: {0}",
+			"debugType": "配置类型。",
+			"debugTypeNotRecognised": "无法识别此调试类型。确保已经安装并启用相应的调试扩展。",
+			"node2NotSupported": "不再支持 \"node2\"，改用 \"node\"，并将 \"protocol\" 属性设为 \"inspector\"。",
+			"debugName": "配置名称；在启动配置下拉菜单中显示。",
+			"debugRequest": "请求配置类型。可以是“启动”或“附加”。",
+			"debugServer": "仅用于调试扩展开发: 如果已指定端口，VS 代码会尝试连接到在服务器模式中运行的调试适配器",
+			"debugPrelaunchTask": "调试会话开始前要运行的任务。",
+			"debugPostDebugTask": "调试会话结束后运行的任务。",
+			"debugWindowsConfiguration": "特定于 Windows 的启动配置属性。",
+			"debugOSXConfiguration": "特定于 OS X 的启动配置属性。",
+			"debugLinuxConfiguration": "特定于 Linux 的启动配置属性。",
+			"deprecatedVariables": "已弃用 \"env.\"、\"config.\" 和 \"command.\"，改用 \"env:\"、\"config:\" 和 \"command:\"。"
+		},
+		"vs/workbench/parts/debug/common/debugSchemas": {
+			"vscode.extension.contributes.debuggers": "用于调试适配器。",
+			"vscode.extension.contributes.debuggers.type": "此调试适配器的唯一标识符。",
+			"vscode.extension.contributes.debuggers.label": "显示此调试适配器的名称。",
+			"vscode.extension.contributes.debuggers.program": "调试适配器程序的路径。该路径是绝对路径或相对于扩展文件夹的相对路径。",
+			"vscode.extension.contributes.debuggers.args": "要传递给适配器的可选参数。",
+			"vscode.extension.contributes.debuggers.runtime": "可选运行时，以防程序属性不可执行，但需要运行时。",
+			"vscode.extension.contributes.debuggers.runtimeArgs": "可选运行时参数。",
+			"vscode.extension.contributes.debuggers.variables": "将 \"launch.json\" 中的交互式变量(例如 ${action.pickProcess})映射到命令中。",
+			"vscode.extension.contributes.debuggers.initialConfigurations": "用于生成初始 \"launch.json\" 的配置。",
+			"vscode.extension.contributes.debuggers.languages": "可能被视为“默认调试程序”的调试扩展的语言列表。",
+			"vscode.extension.contributes.debuggers.adapterExecutableCommand": "如果指定的 VS Code 将调用此命令以确定调试适配器的可执行路径和要传递的参数。",
+			"vscode.extension.contributes.debuggers.configurationSnippets": "用于在 \"launch.json\" 中添加新配置的代码段。",
+			"vscode.extension.contributes.debuggers.configurationAttributes": "用于验证 \"launch.json\" 的 JSON 架构配置。",
+			"vscode.extension.contributes.debuggers.windows": "Windows 特定的设置。",
+			"vscode.extension.contributes.debuggers.windows.runtime": "用于 Windows 的运行时。",
+			"vscode.extension.contributes.debuggers.osx": "macOS 特定的设置。",
+			"vscode.extension.contributes.debuggers.osx.runtime": "用于 macOS 的运行时。",
+			"vscode.extension.contributes.debuggers.linux": "Linux 特定的设置。",
+			"vscode.extension.contributes.debuggers.linux.runtime": "用于 Linux 的运行时。",
+			"vscode.extension.contributes.breakpoints": "添加断点。",
+			"vscode.extension.contributes.breakpoints.language": "对此语言允许断点。",
+			"app.launch.json.title": "启动",
+			"app.launch.json.version": "此文件格式的版本。",
+			"app.launch.json.configurations": "配置列表。使用 IntelliSense 添加新配置或编辑现有配置。",
+			"app.launch.json.compounds": "复合列表。每个复合可引用多个配置，这些配置将一起启动。",
+			"app.launch.json.compound.name": "复合的名称。在启动配置下拉菜单中显示。",
+			"useUniqueNames": "配置名称必须唯一。",
+			"app.launch.json.compound.folder": "复合项所在的文件夹的名称。",
+			"app.launch.json.compounds.configurations": "将作为此复合的一部分启动的配置名称。"
+		},
+		"vs/workbench/parts/debug/node/terminals": {
+			"console.title": "VS Code 控制台",
+			"mac.terminal.script.failed": "脚本“{0}”失败，退出代码为 {1}",
+			"mac.terminal.type.not.supported": "不支持“{0}”",
+			"press.any.key": "按任意键继续...",
+			"linux.term.failed": "“{0}”失败，退出代码为 {1}"
+		},
 		"vs/workbench/parts/emmet/browser/actions/showEmmetCommands": {
 			"showEmmetCommands": "显示 Emmet 命令",
 			"miShowEmmetCommands": "Emmet(&&M)..."
@@ -2385,9 +2783,9 @@
 			"reloadAction": "重新加载",
 			"postUpdateTooltip": "请重新启动 Visual Studio Code 以完成对此扩展的更新。",
 			"postDisableTooltip": "请重新启动 Visual Studio Code 以禁用该扩展。",
-			"postInstallTooltip": "请重新启动Visual Studio Code以完成此扩展程序的安装。",
+			"postInstallTooltip": "请重新加载 Visual Studio Code 以完成此扩展的安装。",
 			"postEnableTooltip": "请重新加载Visual Studio代码以完成此扩展的启用。",
-			"postUninstallTooltip": "请重新加载Visual Studio代码以完成此扩展的卸载。",
+			"postUninstallTooltip": "请重新加载 Visual Studio Code 以完成此扩展的卸载。",
 			"toggleExtensionsViewlet": "显示扩展",
 			"installExtensions": "安装扩展",
 			"showEnabledExtensions": "显示启用的扩展",
@@ -2563,7 +2961,7 @@
 			"activation": "正在激活扩展..."
 		},
 		"vs/workbench/parts/extensions/electron-browser/extensionsAutoProfiler": {
-			"unresponsive-exthost": "扩展 “{0}” 花了很长时间才完成它的上一个任务，而且它还阻止了其它扩展的运行。",
+			"unresponsive-exthost": "扩展“{0}”的上一次操作花费时间较长，阻碍了其他扩展的运行。",
 			"show": "显示扩展程序",
 			"report": "报告问题"
 		},
@@ -2878,9 +3276,9 @@
 		},
 		"vs/workbench/parts/localizations/electron-browser/localizations.contribution": {
 			"updateLocale": "是否将 VS Code 的界面语言更换为 {0} 并重新启动?",
-			"activateLanguagePack": "是否重启 VS Code 并激活刚刚安装的语言包?",
+			"activateLanguagePack": "为了在{0}中使用VS代码，VS代码需要重新启动。",
 			"yes": "是",
-			"no": "否",
+			"restart now": "立即重新启动",
 			"neverAgain": "不再显示",
 			"JsonSchema.locale": "要使用的 UI 语言。",
 			"vscode.extension.contributes.localizations": "向编辑器提供本地化内容",
@@ -3119,8 +3517,8 @@
 			"openSettingsJson": "打开设置 (json)",
 			"openGlobalSettings": "打开用户设置",
 			"openGlobalKeybindings": "打开键盘快捷方式",
-			"openGlobalKeybindingsFile": "打开键盘快捷方式文件",
-			"openDefaultKeybindingsFile": "打开默认键盘快捷方式文件",
+			"openGlobalKeybindingsFile": "打开键盘快捷方式(JSON)",
+			"openDefaultKeybindingsFile": "打开默认键盘快捷键（JSON）",
 			"openWorkspaceSettings": "打开工作区设置",
 			"openFolderSettings": "打开文件夹设置",
 			"configureLanguageBasedSettings": "配置语言特定的设置...",
@@ -3387,7 +3785,7 @@
 			"search.searchRipgrepEnableDeprecated": "已弃用。请改用 \"search.runInExtensionHost\"",
 			"search.searchRipgrepEnable": "控制是否在扩展宿主中运行搜索",
 			"search.runInExtensionHost": "控制是否在扩展宿主中运行搜索。重启后才能生效。",
-			"search.usePCRE2": "是否在文本搜索中使用 PCRE2 正则表达式引擎。此选项可启用一些高级正则表达式功能，如后发断言和反向引用。需要注意的是，并非所有 PCRE2 功能都受到支持，仅支持受 JavaScript 支持的功能。",
+			"search.usePCRE2": "是否在文本搜索中使用 pcre2 正则表达式引擎。这允许使用一些高级正则表达式功能, 如前瞻和反向引用。但是, 并非所有 pcre2 功能都受支持-仅支持 javascript 也支持的功能。",
 			"search.actionsPositionAuto": "当搜索视图较窄时将操作栏置于右侧，当搜索视图较宽时，将它紧接在内容之后。",
 			"search.actionsPositionRight": "始终将操作栏放置在右侧。",
 			"search.actionsPosition": "在搜索视图中控制操作栏的位置。",
@@ -3805,8 +4203,12 @@
 			"TaskDefinitionExtPoint": "配置任务种类"
 		},
 		"vs/workbench/parts/tasks/electron-browser/runAutomaticTasks": {
+			"tasks.run.allowAutomatic": "此文件夹中含“tasks.json”中定义的任务 {0}，这些任务会在打开文件夹时自动运行。是否允许在打开此文件夹时自动运行这些任务？",
 			"allow": "Allow",
-			"disallow": "Disallow"
+			"disallow": "Disallow",
+			"openTasks": "打开tasks.json",
+			"workbench.action.tasks.allowAutomaticRunning": "允许文件夹中的自动任务",
+			"workbench.action.tasks.disallowAutomaticRunning": "禁止文件夹中的自动任务"
 		},
 		"vs/workbench/parts/tasks/electron-browser/jsonSchema_v1": {
 			"JsonSchema.version.deprecated": "任务版本 0.1.0 已被弃用。请使用 2.0.0",
@@ -4398,7 +4800,10 @@
 		},
 		"vs/workbench/services/configurationResolver/electron-browser/configurationResolverService": {
 			"stringsOnlySupported": "命令“{0}”未返回字符串结果。若命令用于替换变量，其结果仅支持字符串。",
-			"defaultInputValue": "默认值"
+			"defaultInputValue": "默认值",
+			"undefinedInputVariable": "未定义的输入变量{0}。删除或定义{0}继续。",
+			"unknownInputTypeProvided": "输入“{0}”只能是“promptString”或“pickString”类型。",
+			"pickStringRequiresOptions": "输入“{0}”的类型为“pickString”，必须包含“options”。"
 		},
 		"vs/workbench/services/configurationResolver/node/variableResolver": {
 			"missingEnvVarName": "未给出环境变量名称，因此无法解析“{0}”。",
@@ -4416,7 +4821,14 @@
 		"vs/workbench/services/configurationResolver/common/configurationResolverUtils": {
 			"deprecatedVariables": "“env.”、“config.”和“command.”已弃用，请改用“env:”、“config:”和“command:”。"
 		},
-		"vs/workbench/services/configurationResolver/electron-browser/jsonSchemaCommon": {},
+		"vs/workbench/services/configurationResolver/common/configurationResolverSchema": {
+			"JsonSchema.inputs": "用户输入。用于定义用户输入提示，例如自由字符串输入或从多个选项中进行选择。",
+			"JsonSchema.input.id": "输入id用于指定输入${input:id}。",
+			"JsonSchema.input.type": "promptString类型打开一个输入框以询问用户输入。 pickString类型显示选择列表。",
+			"JsonSchema.input.description": "当提示用户输入时，将显示说明。",
+			"JsonSchema.input.default": "输入的默认值。",
+			"JsonSchema.input.options": "用于定义快速选择选项的字符串数组。"
+		},
 		"vs/workbench/services/crashReporter/electron-browser/crashReporterService": {
 			"telemetryConfigurationTitle": "遥测",
 			"telemetry.enableCrashReporting": "将崩溃报告发送到 Microsoft 联机服务。\n此选项在重新启动后才能生效。"
@@ -4817,6 +5229,10 @@
 			"errorInvalidTaskConfiguration": "无法写入工作区配置文件。请打开文件以更正错误或警告，然后重试。",
 			"errorWorkspaceConfigurationFileDirty": "文件已变更，因此无法写入工作区配置文件。请先保存此文件，然后重试。",
 			"openWorkspaceConfigurationFile": "打开工作区配置"
+		},
+		"yaml/package": {
+			"displayName": "YAML 语言基础功能",
+			"description": "在 YAML 文件中提供语法高亮和括号匹配功能。"
 		}
 	}
 }
