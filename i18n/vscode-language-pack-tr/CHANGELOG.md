@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-tr" language pack will be documented in this file.
 
 ## [Released]
+* December 12, 2018 - Release for VS Code 1.30
 * November 7, 2018 - Release for VS Code 1.29
 * October 3, 2018 - Release for VS Code 1.28
 * September 5, 2018 - Release for VS Code 1.27
