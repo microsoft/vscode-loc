@@ -8,11 +8,7 @@
 
 ## 参与
 
-翻译的字符串在以下项目中进行维护：
-
-* [vscode-editor 项目](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench 项目](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions 项目](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+翻译的字符串在微软社区本地化平台的"DevTools - VS Code"项目中进行维护。
 
 如果你想提供或改进翻译，请参阅[社区本地化页面](https://aka.ms/vscodeloc)并获取更多信息。
 
@@ -65,11 +61,7 @@ Once installed, set `"locale": "zh-cn"` in `locale.json` to load Chinese (Simpli
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
