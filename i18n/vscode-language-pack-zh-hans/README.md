@@ -8,7 +8,7 @@
 
 ## 参与
 
-翻译的字符串在微软社区本地化平台的"DevTools - VS Code"项目中进行维护。
+翻译的字符串在微软社区本地化平台（MLCP）的"DevTools - VS Code"项目中进行维护。
 
 如果你想提供或改进翻译，请参阅[社区本地化页面](https://aka.ms/vscodeloc)并获取更多信息。
 
