@@ -9,10 +9,7 @@
 ## 參與貢獻
 
 翻譯的文字在以下專案維護
-
-* [vscode-editor 專案](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench 專案](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions 專案](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 如果您想參與翻譯或者改善翻譯，更多資訊請參考[community localization page](https://aka.ms/vscodeloc)
 
@@ -28,30 +25,26 @@
 
 **傑出的貢獻者：**
 
-* Winnie Lin 
 * Duran Hsieh
+* Winnie Lin 
+* Alan Liu
 
 **貢獻者：**
 
-* Duran Hsieh
 * Alan Tsai
-* Alan Liu
 * Poy Chang
-* Ryan Tseng
 * Will 保哥
+* Ryan Tseng
 * JJJ
 * Wei-Ting Shih
-* balduran
+* johosek
 * Han Lin
+* balduran
 * Ke-Hsu Chen
 * Kirk Chen
 * Kuo-Chen Lien
-* Suki Huang
-* Ricky Wang
-* Yuer Lee
-* Rex Yu
-* Terry Sheng
-* alantea 
+* Kevin Yang
+* Hans Chiu
 
 **請享用！**
 
@@ -65,11 +58,7 @@ Once installed, set `"locale": "zh-tw"` in `locale.json` to load Chinese (Tradit
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -85,29 +74,25 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Winnie Lin 
 * Duran Hsieh
+* Winnie Lin 
+* Alan Liu
 
 **Contributors:**
 
-* Duran Hsieh
 * Alan Tsai
-* Alan Liu
 * Poy Chang
-* Ryan Tseng
 * Will 保哥
+* Ryan Tseng
 * JJJ
 * Wei-Ting Shih
-* balduran
+* johosek
 * Han Lin
+* balduran
 * Ke-Hsu Chen
 * Kirk Chen
 * Kuo-Chen Lien
-* Suki Huang
-* Ricky Wang
-* Yuer Lee
-* Rex Yu
-* Terry Sheng
-* alantea 
+* Kevin Yang
+* Hans Chiu
 
 **Enjoy!**

@@ -23,13 +23,15 @@ Külön köszönet a fordítóknak, akik nélkül nem készülhetett volna el ez
 
 **Fő közreműködők:**
 
-* Tar Dániel: a projekt nagy részét fordította (a fordítandó szövegmennyiség 95%-át, 40 ezer szót)
+* Tar Dániel: a projekt nagy részét fordította (a fordítandó szövegmennyiség 95%-át, 60 ezer szót)
 
 **További közreműködők:**
 
-* Kovács Béla
-* Boleradszki Milán
-* Kiss Attila Csaba
+* Bence László
+* Béla Kovács
+* Milán Boleradszki
+* doczi_dominik
+* Attila Csaba Kiss
 
 #  Hungarian Language Pack for VS Code
 
@@ -39,10 +41,7 @@ Hungarian Language Pack provides localized UI experience for VS Code.
 Once installed, set `"locale": "hu"` in `locale.json` to load Hungarian Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
-The translated strings are maintained here:
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/hu/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/hu/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/hu/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -57,12 +56,15 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Dániel Tar: localized majority of the project (95% of the translation volume - 40k words)
+* Dániel Tar: localized majority of the project (95% of the translation volume - 60k words)
 
 **Further contributors:**
 
+* Bence László
 * Béla Kovács
 * Milán Boleradszki
+* doczi_dominik
 * Attila Csaba Kiss
+
 
 **Enjoy!**

@@ -8,11 +8,7 @@ Once installed, set `"locale": "fr"` in `locale.json` to load French Language Pa
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -28,28 +24,30 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Antoine Griffard: localized 15k words. 60% of the total new transltion volume since we opened localization to community.
+* Antoine Griffard: localized 22k words. 60% of the total new transltion volume since we opened localization to community.
 
 **Contributors:**
 
-* Jonathan Menzel
+* Bruno Lewin
+* Adrien Clerbois
 * Thierry DEMAN-BARCELO
+* Jonathan Menzel
 * JP Gouigoux
 * Vincent Biret
-* Adrien Clerbois
+* Guillaume Bauer
 * Jean-Paul Rouzé
-* Bruno Lewin
-* Aldo Donetti
 * Smrman
+* MayakoLyyn
+* Louis Turpinat
+* Quentin BRETON
 * Jean Cuteaux
 * Nicholas Suter
 * Gabriel Dugny
+* Grégoire Roussel
 * Julien Brochet
 * Maxime COQUEREL
 * Alain BUFERNE
-* Lionel LOSCOS
-* Quentin BRETON
-* Victor Morgant
+* Etienne Blanc-Coquand
 
 
 **Enjoy!**

@@ -29,34 +29,38 @@ Besonderen Dank an die Community-Mitwirkenden, um dies möglich zu machen.
 **Top Unterstützer:**
 
 * Carsten Kneip
-* Levin Rickert
+* J.M.
+* Carsten Siemens
 
 **Unterstützer:**
 
-* Carsten Siemens
+* Levin Rickert
 * Christian Gräfe
 * thefreshman89
 * Dejan Dinic
-* J.M.
 * Jakob von der Haar
 * Ingo Bleile
-* Ullmie02
-* Stephan
+* David Ullmer
 * Volkmar Rigo
-* felixkmh
+* Stephan
+* Felix H
 * Jonas Thelemann
+* Jakob
 * Jakob Fahr
 * LosSandreas
 * Markus Weber
+* Markus Hatvan
+* Ettore Atalan
 * Arne Lehmann
 * Matt Bierner
 * Jens Suessmeyer
 * Sascha Corti
-* Ettore Atalan
-* Fabian Meyertöns
+* Jonas Droste
+* johosek
+* Christian Studer
+* Curundor
 * Florian Seidl
-* Max Schmitt
-* DSiekmeier
+* Väinämö Łūmikērø
 
 **Viel Vergnügen!**
 
@@ -70,11 +74,7 @@ Once installed, set `"locale": "de"` in `locale.json` to load German Language Pa
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -91,33 +91,37 @@ Special thanks to community contributors for making it available.
 **Top Contributors:**
 
 * Carsten Kneip
-* Levin Rickert
+* J.M.
+* Carsten Siemens
 
 **Contributors:**
 
-* Carsten Siemens
+* Levin Rickert
 * Christian Gräfe
 * thefreshman89
 * Dejan Dinic
-* J.M.
 * Jakob von der Haar
 * Ingo Bleile
-* Ullmie02
-* Stephan
+* David Ullmer
 * Volkmar Rigo
-* felixkmh
+* Stephan
+* Felix H
 * Jonas Thelemann
+* Jakob
 * Jakob Fahr
 * LosSandreas
 * Markus Weber
+* Markus Hatvan
+* Ettore Atalan
 * Arne Lehmann
 * Matt Bierner
 * Jens Suessmeyer
 * Sascha Corti
-* Ettore Atalan
-* Fabian Meyertöns
+* Jonas Droste
+* johosek
+* Christian Studer
+* Curundor
 * Florian Seidl
-* Max Schmitt
-* DSiekmeier
+* Väinämö Łūmikērø
 
 **Enjoy!**

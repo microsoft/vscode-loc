@@ -24,7 +24,7 @@
 
 **杰出贡献者：**
 
-* Joel Yang：在此项目向社区开放之后，翻译了大部分新增字符串（占总量的 51% - 25000 词）
+* Joel Yang：在此项目向社区开放之后，翻译了大部分新增字符串。先后翻译了4万余字。
 
 **贡献者：**
 
@@ -32,22 +32,32 @@
 * 陈嘉恺
 * pluwen
 * Shawn Dai
-* Wang Weixuan
 * Ying Feng
 * Simon Chan
-* bingzheyuan
+* 王子实
+* 王韦煊
+* Zijian Zhou
+* wwj403
+* Shizeng Zhou
 * Aifen Qin
 * lychichem
+* Wang Dongcheng
+* Yurui Zhang
+* DongWei
 * Bingxing Wang
 * 林昊
+* KingofCoding
+* 潘冬冬
+* 陈仁松
+* Henry Chu
 * Zhijian Zeng
+* aimin guo
+* 刘丁明
+* hackereric
 * Zou Jian
-* Pig Fang
+* Jianfeng Fang
 * Ricky Wang
-* Jason Zhang
-* kui li
-* Wang Dongcheng
-* joeqi
+* Egg Zhang
 
 **尽情享用吧！**
 
@@ -77,7 +87,7 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Joel Yang: localized majority of the new translation volume since open the project to community (51% of the total volume - 25k words)
+* Joel Yang: localized majority of the new translation volume since open the project to community. Total 40k words localized.
 
 **Contributors:**
 
@@ -85,21 +95,31 @@ Special thanks to community contributors for making it available.
 * 陈嘉恺
 * pluwen
 * Shawn Dai
-* Wang Weixuan
 * Ying Feng
 * Simon Chan
-* bingzheyuan
+* 王子实
+* 王韦煊
+* Zijian Zhou
+* wwj403
+* Shizeng Zhou
 * Aifen Qin
 * lychichem
+* Wang Dongcheng
+* Yurui Zhang
+* DongWei
 * Bingxing Wang
 * 林昊
+* KingofCoding
+* 潘冬冬
+* 陈仁松
+* Henry Chu
 * Zhijian Zeng
+* aimin guo
+* 刘丁明
+* hackereric
 * Zou Jian
-* Pig Fang
+* Jianfeng Fang
 * Ricky Wang
-* Jason Zhang
-* kui li
-* Wang Dongcheng
-* joeqi
+* Egg Zhang
 
 **Enjoy!**

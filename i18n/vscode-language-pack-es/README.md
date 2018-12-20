@@ -31,30 +31,36 @@ Especial agradecimiento a quienes contribuyen a la comunidad por hacerlo disponi
 * Andy Gonzalez
 * Alberto Poblacion
 * Raul Rama
+* Alejandro M
+* Jorge Serrano Pérez
 
 
 **Contribuyentes:**
 
 * José M. Aguilar
 * Roberto Fonseca
-* Jorge Serrano Pérez
 * Carlos Mendible
-* David Triana
 * Eickhel Mendoza
-* Alejandro Medina
+* David Triana
 * David Silva
 * AlanThinks
+* Julián Martínez
+* Lukáš Chaloupka
 * German Sak
 * Santiago Porras Rodríguez
 * Marcos de Lafuente
+* Carlos Longarela
 * Thierry DEMAN-BARCELO
+* Jago
 * Christian Eduardo Palomares Peralta
+* Sergio Uziel Tovar Lemus
 * Juan Ramón Rodríguez
-* Pablo Jiménez Pascual
 * Pedro Sanchez
+* Pablo Jiménez Pascual
 * Juan Carlos Gonzalez Martin
-* Gabriel Peralta
-* Carlos Herrera
+* Alfonso Jesus Flores Alvarado
+* Javier Moreno
+* Matias Menich
 
 **Disfrútelo!**
 
@@ -69,11 +75,7 @@ Once installed, set `"locale": "es"` in `locale.json` to load Spanish Language P
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -92,29 +94,34 @@ Special thanks to community contributors for making it available.
 * Andy Gonzalez
 * Alberto Poblacion
 * Raul Rama
-
+* Alejandro M
+* Jorge Serrano Pérez
 
 **Contributors:**
 
 * José M. Aguilar
 * Roberto Fonseca
-* Jorge Serrano Pérez
 * Carlos Mendible
-* David Triana
 * Eickhel Mendoza
-* Alejandro Medina
+* David Triana
 * David Silva
 * AlanThinks
+* Julián Martínez
+* Lukáš Chaloupka
 * German Sak
 * Santiago Porras Rodríguez
 * Marcos de Lafuente
+* Carlos Longarela
 * Thierry DEMAN-BARCELO
+* Jago
 * Christian Eduardo Palomares Peralta
+* Sergio Uziel Tovar Lemus
 * Juan Ramón Rodríguez
-* Pablo Jiménez Pascual
 * Pedro Sanchez
+* Pablo Jiménez Pascual
 * Juan Carlos Gonzalez Martin
-* Gabriel Peralta
-* Carlos Herrera
+* Alfonso Jesus Flores Alvarado
+* Javier Moreno
+* Matias Menich
 
 **Enjoy!**

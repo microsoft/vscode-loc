@@ -34,23 +34,29 @@ Un ringraziamento speciale va a chi ha contribuito al fine di renderlo disponibi
 
 **Contributori:**
 
-* Michele
+* Marco Dal Pino
+* Andrea Dottor
 * Riccardo Cappello
+* Luca Bruni
+* Michele
 * Luca Nardi
+* Luigi Bruno
+* Emilie Rollandin
 * Francesco Mugnai
 * Gianluca Bertelli
+* Emanuele Curati
 * Simone Chiaretta
-* Alessandro Burato
 * Steve Roger
-* Emilie Rollandin
+* Alessandro Burato
+* Lukáš Chaloupka
 * Fabrizio Di Pietro
-* Andrea Dottor
-* Marco Dal Pino
+* Pascal Brax
+* Gianluca Acerbis
 * Giuseppe Pignataro (Fasbyte01)
 * Giuliano Latini
+* Kiren Paul
 * Nicolò Carandini
-* Marco Parenzan
-* Michele Ceo
+* Lorthirk
 
 **Buon divertimento!**
 
@@ -64,11 +70,7 @@ Once installed, set `"locale": "it"` in `locale.json` to load Italian Language P
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -90,22 +92,28 @@ Special thanks to community contributors for making it available.
 
 **Contributors:**
 
-* Michele
+* Marco Dal Pino
+* Andrea Dottor
 * Riccardo Cappello
+* Luca Bruni
+* Michele
 * Luca Nardi
+* Luigi Bruno
+* Emilie Rollandin
 * Francesco Mugnai
 * Gianluca Bertelli
+* Emanuele Curati
 * Simone Chiaretta
-* Alessandro Burato
 * Steve Roger
-* Emilie Rollandin
+* Alessandro Burato
+* Lukáš Chaloupka
 * Fabrizio Di Pietro
-* Andrea Dottor
-* Marco Dal Pino
+* Pascal Brax
+* Gianluca Acerbis
 * Giuseppe Pignataro (Fasbyte01)
 * Giuliano Latini
+* Kiren Paul
 * Nicolò Carandini
-* Marco Parenzan
-* Michele Ceo
+* Lorthirk
 
 **Enjoy!**

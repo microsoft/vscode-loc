@@ -28,24 +28,52 @@ Agradecimentos especiais para a comunidade de contribuidores por tornar isso pos
 
 **Maiores Contribuidores:**
 
-* Roberto Fonseca: traduziu 17k palavras, 40% do volume total de traduções.
-* Bruno Sonnino: traduziu 12k palavras, 30% do volume total de traduções.
-* Danilo Dantas: traduziu 2,5k palavras, 6% do volume total de traduções.
-* Kayky de Brito dos Santos: traduziu 1,2k palavras, 3% do volume total de traduções.
-* Alessandro Fragnani: traduziu 1,1k palavras, 3% do volume total de traduções.
+* Roberto Fonseca
+* Bruno Sonnino
+* Danilo Dantas
+* Alessandro Fragnani
+* Kayky de Brito dos Santos
+* Rodrigo Crespi
 
 **Contribuidores:**
 
-* SQLCrespi
+* Marcelo Fernandes
+* Lucas Miranda
 * Frederico Oliveira
 * Felipe Caputo
-* Marcelo Fernandes
+* douglas.martim
+* Otacilio Saraiva Maia Neto
+* Thiago Custodio
 * Douglas Eccker
 * Roberto Nunes
-* Lucas Miranda
+* Thiago Aragão
+* Marcelo Andrade
 * Rodrigo Romano
 * Luan Moreno Medeiros Maciel
-* Fábio Luiz
+* Fabio Oliveira
+* João Mesquita
+* Matheus Palu
+* Thiago Moreira de Souza Arrais
+* Bruno Ochotorena
+* Roger Figueiredo
+* Marcelo Novaes
+* Atílio Dadalto
+* Victor Hugo Schmidt
+* Alefe Souza
+* rafaeloliveiras
+* Ilton Sequeira
+* Marcelo Camargo
+* Arthur Bruel
+* Thiago Lunardi
+* Rcardo Santos
+* Vinicius Ribeiro
+* thiago_franco
+* Pedro Sereno
+* João Holanda
+* DouglasHeydt
+* Yehoshua Oliveira
+* Loiane Groner
+* leonardosnt
 
 **Aproveite!**
 
@@ -59,11 +87,7 @@ Once installed, set `"locale": "pt-br"` in `locale.json` to load Portuguese (Bra
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/pt_BR/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/pt_BR/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/pt_BR/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -79,23 +103,51 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Roberto Fonseca: localized 17k words, 40% of total translation volume.
-* Bruno Sonnino: localized 12k words, 30% of total translation volume.
-* Danilo Dantas: localized 2.5k words, 6% of total translation volume.
-* Kayky de Brito dos Santos: localized 1.2k words, 3% of total translation volume.
-* Alessandro Fragnani: localized 1.1k words, 3% of total translation volume.
+* Roberto Fonseca
+* Bruno Sonnino
+* Danilo Dantas
+* Alessandro Fragnani
+* Kayky de Brito dos Santos
+* Rodrigo Crespi
 
 **Contributors:**
 
-* SQLCrespi
+* Marcelo Fernandes
+* Lucas Miranda
 * Frederico Oliveira
 * Felipe Caputo
-* Marcelo Fernandes
+* douglas.martim
+* Otacilio Saraiva Maia Neto
+* Thiago Custodio
 * Douglas Eccker
 * Roberto Nunes
-* Lucas Miranda
+* Thiago Aragão
+* Marcelo Andrade
 * Rodrigo Romano
 * Luan Moreno Medeiros Maciel
-* Fábio Luiz
+* Fabio Oliveira
+* João Mesquita
+* Matheus Palu
+* Thiago Moreira de Souza Arrais
+* Bruno Ochotorena
+* Roger Figueiredo
+* Marcelo Novaes
+* Atílio Dadalto
+* Victor Hugo Schmidt
+* Alefe Souza
+* rafaeloliveiras
+* Ilton Sequeira
+* Marcelo Camargo
+* Arthur Bruel
+* Thiago Lunardi
+* Rcardo Santos
+* Vinicius Ribeiro
+* thiago_franco
+* Pedro Sereno
+* João Holanda
+* DouglasHeydt
+* Yehoshua Oliveira
+* Loiane Groner
+* leonardosnt
 
 **Enjoy!**

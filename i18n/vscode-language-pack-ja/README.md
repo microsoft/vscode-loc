@@ -28,32 +28,29 @@ Japanese Language Pack は "By the community, for the community" のコミュニ
 
 **トップ貢献者:**
 
-* Shunya Tajima: このプロジェクトがコミュニティに開放されて以来、新しい翻訳の 46% をローカライズしました。
-* Yuichi Nukiyama: このプロジェクトがコミュニティに開放されて以来、新しい翻訳の 22% をローカライズしました。
-* Yosuke Sano: このプロジェクトがコミュニティに開放されて以来、新しい翻訳の 7% をローカライズしました。
-* Tomoaki Yoshizawa: このプロジェクトがコミュニティに開放されて以来、新しい翻訳の 4% をローカライズしました。
+* Shunya Tajima
+* Yuichi Nukiyama
+* Satoshi Kajiura
+* Yosuke Sano
+* Seiji Momoto
+* Tomoaki Yoshizawa
 
 **貢献者:**
 
-* Seiji Momoto
 * Takayoshi Tanaka
 * Yuki Ueda
 * yoshioms
 * Hiroyuki Mori
 * Takashi Takebayashi
+* Makoto Sakaguchi
 * Toshinori Sugita
 * Tempura sukiyaki
-* Satoshi Kajiura
 * Tetsuya Fukuda
+* daisuke osada (daiskeh)
 * 得上 竜一
 * Kyohei MORIYAMA
 * Takashi Kawasaki
-* Naoto Ishida
-* Qp ringo
-* 12345
-* Miho Yamamoto
-* Abe Tsunehiko
-* 小島 富治雄
+* dkp sk
 
 **Enjoy!**
 
@@ -68,11 +65,7 @@ Once installed, set `"locale": "ja"` in `locale.json` to load Japanese Language 
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -88,31 +81,29 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Shunya Tajima: localized 46% of the new translation volume since opened this project to community.
-* Yuichi Nukiyama: localized 22% of the new translation volume since opened this project to community.
-* Yosuke Sano: localized 7% of the new translation volume since opened this project to community.
-* Tomoaki Yoshizawa: localized 4% of the new translation volume since opened this project to community.
+* Shunya Tajima
+* Yuichi Nukiyama
+* Satoshi Kajiura
+* Yosuke Sano
+* Seiji Momoto
+* Tomoaki Yoshizawa
+
 
 **Contributors:**
 
-* Seiji Momoto
 * Takayoshi Tanaka
 * Yuki Ueda
 * yoshioms
 * Hiroyuki Mori
 * Takashi Takebayashi
+* Makoto Sakaguchi
 * Toshinori Sugita
 * Tempura sukiyaki
-* Satoshi Kajiura
 * Tetsuya Fukuda
+* daisuke osada (daiskeh)
 * 得上 竜一
 * Kyohei MORIYAMA
 * Takashi Kawasaki
-* Naoto Ishida
-* Qp ringo
-* 12345
-* Miho Yamamoto
-* Abe Tsunehiko
-* 小島 富治雄
+* dkp sk
 
 **Enjoy!**

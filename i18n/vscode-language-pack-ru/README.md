@@ -8,11 +8,7 @@ Once installed, set `"locale": "ru"` in `locale.json` to load Russian Language P
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -28,9 +24,10 @@ Special thanks to community contributors for making it available.
 
 **Contributors:**
 
+* Mikhail Zabaluev
+* Ivan
 * Svitlana Galianova
 * Aleksey Nemiro 
-* Ivan
 * sberbanker
 * Nikita Gryzlov
 * Veronika Kolesnikova
@@ -41,15 +38,12 @@ Special thanks to community contributors for making it available.
 * Serge Rodionov
 * Артем Мельниченко
 * Orrchy
-* Артём Давыдов
+* Roman
 * Acupofspirt
+* Артём Давыдов
 * Andrei Makarov
 * Romanenko Alexey
+* Roman Sokolov
 * Andrei Pryymak 
-* Friedrich von Never
-* Pavel Birukou
-* Sergey Pestov
-* Rostislav Rotaru
-* Michel Ace
 
 **Enjoy!**

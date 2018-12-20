@@ -8,11 +8,7 @@ Once installed, set `"locale": "ko"` in `locale.json` to load Korean Language Pa
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -32,13 +28,16 @@ Special thanks to community contributors for making it available.
 
 **Contributors:**
 
-* Ian Y. Choi
 * Kyunghee Ko
+* Ian Y. Choi
 * partrita
 * Sei Kwang Chung
+* PaulNara
+* Woosuk Park
 * Young Rok Kim
+* jaeyeon Kim
+* Kwangjin Hwang
 * HANSEULMARO KIM
-* Taehee Kim
-* Paul Lee
+* Junseong Jang
 
 **Enjoy!**

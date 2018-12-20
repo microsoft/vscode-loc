@@ -28,26 +28,26 @@ Katkıda bulunarak bunu mümkün kılan herkese sonsuz teşekkürler.
 
 **En Çok Katkıda Bulunanlar:**
 
-* Adem Coşkuner: projenin büyük kısmını yerelleştirdi (çeviri hacminin %95'i - 38 bin kelime)
+* Adem Coşkuner: projenin büyük kısmını yerelleştirdi (çeviri hacminin %95'i - 43 bin kelime)
 
 **Katkıda Bulunanlar:**
 
 * Tuğrul Kaşıkcı
+* Ömer Büyükçelik
 * Ata Binen
-* Volkan Nazmi Metin
-* Burak Karahan
-* Ali Oğuzhan Yıldız
-* Schipunov
-* Mehmet Kut
 * Mustafa Turhan
-* Onat Yiğit Mercan
-* Selim Ata
+* Burak Karahan
+* Volkan Nazmi Metin
+* Ali Oğuzhan Yıldız
+* Eyüp DALAN
+* Meriç Bağlayan
 * Türker YILDIRIM
-* Sertaç Özercan
-* Semih KEŞKEK
-* Mehmet Tolga Avcioglu
-* Serkan Inci
-* Ramis Eren
+* Mehmet Kut
+* Özgür Öktem
+* Tuğberk Kaan Duman
+* Selim Ata
+* Onat Yiğit Mercan
+* Sertac Ozercan
 
 **Keyfini Çıkarın!**
 
@@ -61,11 +61,7 @@ Once installed, set `"locale": "tr"` in `locale.json` to load Turkish Language P
 
 ## Contributing
 
-The translated strings are maintained here:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/tr/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/tr/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/tr/)
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -81,25 +77,26 @@ Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 
-* Adem Coşkuner: localized majority of the project (95% of the translation volume - 38k words)
+* Adem Coşkuner: localized majority of the project (95% of the translation volume - 43k words)
 
 **Contributors:**
 
 * Tuğrul Kaşıkcı
+* Ömer Büyükçelik
 * Ata Binen
-* Volkan Nazmi Metin
-* Burak Karahan
-* Ali Oğuzhan Yıldız
-* Schipunov
-* Mehmet Kut
 * Mustafa Turhan
-* Onat Yiğit Mercan
-* Selim Ata
+* Burak Karahan
+* Volkan Nazmi Metin
+* Ali Oğuzhan Yıldız
+* Eyüp DALAN
+* Meriç Bağlayan
 * Türker YILDIRIM
-* Sertaç Özercan
-* Semih KEŞKEK
-* Mehmet Tolga Avcioglu
-* Serkan Inci
-* Ramis Eren
+* Mehmet Kut
+* Özgür Öktem
+* Tuğberk Kaan Duman
+* Selim Ata
+* Onat Yiğit Mercan
+* Sertac Ozercan
+
 
 **Enjoy!**
