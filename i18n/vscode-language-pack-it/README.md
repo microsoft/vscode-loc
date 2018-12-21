@@ -8,13 +8,9 @@ Una volta installato, impostare `"locale": "it"` nel file `locale.json` per cari
 
 ## Come contribuire
 
-Le stringhe tradotte sono gestite qui:
+Le stringhe tradotte vengono gestite nel progetto "DevTools - VS Code" nella piattaforma della community di localizzazione Microsoft (MLCP).
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
-
-Per partecipare proponendo nuove traduzioni o migliorando quelle già esistenti, vedere la [community localization page](https://aka.ms/vscodeloc).
+Se si è interessati a partecipare, per contribuire alla traduzione o per migliorarla, per altre informazioni visitare la [pagina del progetto di localizzazione della community](https://aka.ms/vscodeloc).
 
 ## Licenza
 

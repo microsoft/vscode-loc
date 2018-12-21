@@ -6,12 +6,10 @@ Ez a nyelvi csomag a VS Code felhasználói felületének magyar lokalizációj�
 A magyar nyelvi csomag használatához a telepítés után állítsa be a `"locale": "hu"` értéket a `locale.json`-ban. Ehhez hozza elő a **parancspalettát** a `Ctrl+Shift+P` billentyűkombinációval, kezdje el gépelni a „config” szöveget a parancsok listájának szűréséhez, majd válassza a **Configure language** lehetőséget. További információ a [dokumentációban](https://go.microsoft.com/fwlink/?LinkId=761051) található.
 
 ## Közreműködés
-A lefordított szövegek itt találhatók meg:
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/hu/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/hu/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/hu/)
 
-Ha szeretne részt venni a fordításban, a [közösségi fordítói oldalon](https://aka.ms/vscodeloc) talál további információt.
+A fordítási sztringek a DevTools - VS Code projektben vannak karbantartva a Microsoft Localization Community Platformon (MLCP). 
+
+Ha szeretne részt venni a munkában akár a fordításban való közreműködéssel, akár a fordítás javításával, a [közösségi honosítási oldalon](https://aka.ms/vscodeloc) találhat további információt.
 
 ## Licenc
 A forráskód és a szövegek az [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) licenc hatálya alatt állnak.

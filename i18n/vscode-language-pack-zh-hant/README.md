@@ -8,8 +8,7 @@
 
 ## 參與貢獻
 
-翻譯的文字在以下專案維護
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+翻譯字串會在 Microsoft Localization Community 平台 (MLCP) 內的 "DevTools - VS Code" 專案中維護。
 
 如果您想參與翻譯或者改善翻譯，更多資訊請參考[community localization page](https://aka.ms/vscodeloc)
 

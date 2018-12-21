@@ -8,13 +8,10 @@ Sobald installiert, setzen Sie `"locale": "de"` in der `locale.json` um das deut
 
 ## Unterstützen
 
-Die übersetzten Zeichenketten werden hier verwaltet:
+Die übersetzten Zeichenfolgen werden im Projekt "DevTools – VS Code" auf der Plattform der Microsoft-Lokalisierungscommunity (MLCP) verwaltet.
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
+Wenn Sie zur Übersetzung beitragen oder Übersetzungen verbessern möchten, finden Sie weitere Informationen hierzu auf der [Seite der Lokalisierungscommunity](https://aka.ms/vscodeloc).
 
-Wenn Sie an der Übersetzung teilnehmen möchten oder diese verbessern wollen, so besuchen Sie [community localization page](https://aka.ms/vscodeloc) für mehr Informationen.
 
 ## Lizenz
 

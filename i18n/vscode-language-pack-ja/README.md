@@ -8,13 +8,9 @@ Japanese Language Pack は VS Code にローカライズされた UI を提供�
 
 ## 貢献
 
-翻訳する文字列は次の場所でメンテナンスされています:
+翻訳する文字列は、Microsoft Localization Community Platform (MLCP) の DevTools - VS Code" プロジェクトでメンテナンスされています。
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
-
-翻訳に貢献したり、改善したりするために参加したい場合は、詳細を [community localization page](https://aka.ms/vscodeloc) で参照してください。
+翻訳に貢献したり、翻訳を改善したりするために参加したい場合は、詳細について [community localization page](https://aka.ms/vscodeloc) で確認してください。
 
 ## ライセンス
 

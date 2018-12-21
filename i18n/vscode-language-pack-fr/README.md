@@ -10,7 +10,7 @@ Once installed, set `"locale": "fr"` in `locale.json` to load French Language Pa
 
 The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+If you'd like to participate in the effort either to contribue translation or improve translation, see [community localisation page](https://aka.ms/vscodeloc) for more information.
 
 ## License
 
