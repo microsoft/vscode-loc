@@ -8,13 +8,9 @@ Una vez instalado, establezca `"locale": "es"` en `locale.json` para cargar el p
 
 ## Cómo contribuir
 
-Las cadenas traducidas se mantienen aquí:
+Las cadenas de traducción se mantienen en el proyecto "DevTools - VS Code" en la plataforma para la comunidad de localización de Microsoft (MLCP). 
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/dashboard/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/dashboard/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/dashboard/)
-
-Si desea participar en este proyecto, bien contribuyendo con las traducciones o mejorando dichas traducciones, vea [community localization page](https://aka.ms/vscodeloc) para más información.
+Si quiere colaborar, ya sea mediante la aportación de traducciones o la mejora de estas, consulte la [página de localización de la comunidad](https://aka.ms/vscodeloc) para obtener más información.
 
 ## Licencia
 

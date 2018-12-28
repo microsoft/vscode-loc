@@ -8,11 +8,7 @@ Depois de instalado, configure `"locale": "pt-br"` no `locale.json` para carrega
 
 ## Contribuições
 
-As strings traduzidas são mantidas aqui:
-
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/pt_BR/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/pt_BR/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/pt_BR/)
+As sequências de tradução são mantidas no projeto "DevTools – VS Code" no MLCP (Microsoft Localization Community Platform). 
 
 Se você deseja participar da tradução, visite a [página de localização da comunidade](https://aka.ms/vscodeloc) para mais informações.
 

@@ -8,13 +8,9 @@ Yüklendikten sonra, Türkçe Dil Paketi'ni etkinleştirmek için `locale.json`'
 
 ## Katkıda Bulunma
 
-Çevrilen dizeler şu adreslerde bulunur:
+Çeviri dizeleri Microsoft Yerelleştirme Topluluğu Platformu (MLCP) içindeki "DevTools - VS Code" projesinde tutulur.
 
-* [vscode-editor projesi](https://www.transifex.com/microsoft-oss/vscode-editor/language/hu/)
-* [vscode-workbench projesi](https://www.transifex.com/microsoft-oss/vscode-workbench/language/hu/)
-* [vscode-extensions projesi](https://www.transifex.com/microsoft-oss/vscode-extensions/language/hu/)
-
-Çevirilere katılmak hakkında daha fazla bilgi için [topluluk yerelleştirme sayfası](https://aka.ms/vscodeloc)'na göz atın.
+Bu çalışmaya katılarak çeviri katkısında bulunmak veya mevcut çevirileri iyileştirmek isterseniz, [topluluk yerelleştirme sayfasında](https://aka.ms/vscodeloc) daha fazla bilgi edinebilirsiniz.
 
 ## Lisans
 

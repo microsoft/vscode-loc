@@ -8,13 +8,9 @@
 
 ## Как да се включите
 
-Текстовете се съхраняват и превеждат тук:
+Низовете с превод се поддържат в проекта „DevTools - VS Code“ в платформата на общността за локализация на Microsoft (MLCP).
 
-* [vscode-editor project](https://www.transifex.com/microsoft-oss/vscode-editor/language/bg/)
-* [vscode-workbench project](https://www.transifex.com/microsoft-oss/vscode-workbench/language/bg/)
-* [vscode-extensions project](https://www.transifex.com/microsoft-oss/vscode-extensions/language/bg/)
-
-Ако желаете да участвате в превода, можете да намерите информация за това на [страницата за обществените преводи](https://aka.ms/vscodeloc).
+Ако желаете да помогнете чрез допринасянето с превод или подобряването на превод, вижте [страницата за локализация на общността](https://aka.ms/vscodeloc) за повече информация.
 
 ## Лиценз
 
