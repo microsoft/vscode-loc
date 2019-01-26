@@ -2,7 +2,7 @@
 
 This repository contains all of the localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
 
-Localized resource files are managed in [Transifex](https://www.transifex.com/microsoft-oss/).
+Localized resource files are managed in [Microsoft Localization Community Platform (MLCP)](https://envelope-community-staging.azurewebsites.net/).
 
 There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional, community driven languages:  
 
@@ -25,57 +25,9 @@ There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional,
 
 Language pack extensions are published to the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode)
 
-## Creating a Language Pack
-
-* Install the next version of the VS Code yeoman generator
-
-``` bash
-npm install -g generator-code@next
-```
-
-Create a new Language Pack by running `yo code` and choosing `New Language Pack (Localization)`:
-
-``` bash
-yo code
-```
-
-![yeoman generator for VS Code](media/yocode.png)
-
-After answering the prompts, you will have a new folder called `vscode-language-pack-[language code]` containing all the files you need to get started with the extension.
-
-You will use a script from the VS Code repostiory to generate the translations, so we need to clone that repository (see [Contributing to Code](https://github.com/Microsoft/vscode/wiki/How-to-Contribute#build-and-run-from-source) for more information).
-
-``` bash
-git clone https://github.com/microsoft/vscode
-cd vscode
-yarn 
-```
-
-Now, download the language files from Transifex and generate the translations:
-
-* Get a Transifex API token from [https://www.transifex.com/user/settings/api](https://www.transifex.com/user/settings/api) that has access to projects `vscode-editor`, `vscode-workbench` and `vscode-extensions`.
-* Set the API token to the environment variable `TRANSIFEX_API_TOKEN`.
-* run the `update-localization-extension` script from VS Code:
-
-``` bash
-export TRANSIFEX_API_TOKEN=<<< Transifex Token >>>
-npm run update-localization-extension {path_to_lang_pack_ext}
-```
-
-This will add new files to `path_to_lang_pack_ext/translations` and will add a list of paths to the translations to `package.json`. You can now build and test your extension.
-
-You can now build and test your extension.
-
-``` bash
-cd [path to your extension]
-vsce package
-code --install-extension [name of your extension.vsix]
-code --locale [the new locale id, e.g. tr]
-```
-
 ## Contributing Translations
 
-VS Code translations are done in the [VS Code Project in Transifex](https://aka.ms/vscodeloc). Transifex is the single source of "truth", therefore any changes need to be made there. This repository is for building the language pack extensions.
+VS Code translations are done in the [VS Code Project in MLCP](https://aka.ms/vscodeloc). MLCP is the single source of "truth", therefore any changes need to be made there. This repository is for building the language pack extensions.
 
 ## Issue Reporting
 
