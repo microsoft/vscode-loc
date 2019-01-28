@@ -6,22 +6,22 @@ Localized resource files are managed in [Microsoft Localization Community Platfo
 
 There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional, community driven languages:  
 
-|Language|VS Code LanguageID|Transifex LanguageCode|Type|
+|Language|VS Code LanguageID|MLCP LanguageCode|Type|
 |--------|--------|--------|--------|
-|**French**|fr|French (fr)|Core
-|**Italian**|it|Italian (it)|Core
-|**German**|de|German (de)|Core
-|**Spanish**|es|Spanish (es)|Core
-|**Russian**|ru|Russian (ru)|Core
-|**Chinese (Simplified)**|zh-cn|Chinese Simplified (zh-Hans) |Core
-|**Chinese (Traditional)**|zh-tw|Chinese Traditional (zh-Hant) |Core
-|**Japanese**|ja|Japanese (ja)|Core
-|**Korean**|ko|Korean (ko)|Core
-|**Bulgarian**|bg|Bulgarian (bg)|Community
-|**English (United Kingdom)**|en-GB|English (en-GB)|Community
-|**Hungarian**|hu|Hungarian (hu)|Community
-|**Portugese (Brazil)**|pt-br|Portuguese (Brazil) (pt_BR) |Community
-|**Turkish**|tr|Turkish (tr)|Community
+|**French**|fr|French (fr-fr)|Core
+|**Italian**|it|Italian (it-it)|Core
+|**German**|de|German (de-de)|Core
+|**Spanish**|es|Spanish (es-es)|Core
+|**Russian**|ru|Russian (ru-ru)|Core
+|**Chinese (Simplified)**|zh-cn|Chinese Simplified (zh-cn) |Core
+|**Chinese (Traditional)**|zh-tw|Chinese Traditional (zh-tw) |Core
+|**Japanese**|ja|Japanese (ja-jp)|Core
+|**Korean**|ko|Korean (ko-kr)|Core
+|**Bulgarian**|bg|Bulgarian (bg-bg)|Community
+|**English (United Kingdom)**|en-GB|English (en-gb)|Community
+|**Hungarian**|hu|Hungarian (hu-hu)|Community
+|**Portugese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br) |Community
+|**Turkish**|tr|Turkish (tr-tr)|Community
 
 Language pack extensions are published to the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode)
 
