@@ -6,7 +6,7 @@ Localized resource files are managed in [Microsoft Localization Community Platfo
 
 There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional, community driven languages:  
 
-|Language|VS Code LanguageID|MLCP LanguageCode|Type|
+|Language|VS Code Language ID|MLCP Language Code|Type|
 |--------|--------|--------|--------|
 |**French**|fr|French (fr-fr)|Core
 |**Italian**|it|Italian (it-it)|Core
