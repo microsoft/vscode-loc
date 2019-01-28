@@ -4,7 +4,7 @@ This repository contains all of the localized Language Pack extensions for Visua
 
 Localized resource files are managed in [Microsoft Localization Community Platform (MLCP)](https://envelope-community-staging.azurewebsites.net/).
 
-There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional, community driven languages:  
+There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional community driven languages:  
 
 |Language|VS Code Language ID|MLCP Language Code|Type|
 |--------|--------|--------|--------|
