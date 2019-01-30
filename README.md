@@ -4,9 +4,9 @@ This repository contains all of the localized Language Pack extensions for Visua
 
 Localized resource files are managed in [Microsoft Localization Community Platform (MLCP)](https://envelope-community-staging.azurewebsites.net/).
 
-There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional community driven languages:  
+There are 9 "Core" languages for Visual Studio Code and, currently, 4 addtional community driven languages:  
 
-|Language|VS Code Language ID|MLCP Language Code|Type|
+|Language|Visual Studio Code Language ID|MLCP Language Code|Type|
 |--------|--------|--------|--------|
 |**French**|fr|French (fr-fr)|Core
 |**Italian**|it|Italian (it-it)|Core
@@ -23,11 +23,11 @@ There are 9 "core" languages for Visual Studio Code and, currently, 4 addtional 
 |**Portugese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br) |Community
 |**Turkish**|tr|Turkish (tr-tr)|Community
 
-Language pack extensions are published to the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode)
+Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/VSCode)
 
 ## Contributing Translations
 
-VS Code translations are done in the [VS Code Project in MLCP](https://aka.ms/vscodeloc). MLCP is the single source of "truth", therefore any changes need to be made there. This repository is for building the language pack extensions.
+Visual Studio Code translations are done in the [Visual Studio Code Project in MLCP](https://aka.ms/vscodeloc). MLCP is the single source of "truth", therefore any changes need to be made there. This repository is for building the language pack extensions.
 
 ## Issue Reporting
 
