@@ -69,7 +69,8 @@ Agradecimentos especiais para a comunidade de contribuidores por tornar isso pos
 * DouglasHeydt
 * Yehoshua Oliveira
 * Loiane Groner
-* leonardosnt
+* eonardosnt
+* Junior L. Botelho
 
 **Aproveite!**
 
@@ -145,5 +146,6 @@ Special thanks to community contributors for making it available.
 * Yehoshua Oliveira
 * Loiane Groner
 * leonardosnt
+* Junior L. Botelho
 
 **Enjoy!**
