@@ -2,6 +2,7 @@
 Tutti i cambiamenti degni di nota al language pack "vscode-language-pack-it" saranno documentati in questo file.
 
 ## [Released]
+* April 3, 2019 - Release for VS Code 1.33
 * March 6, 2019 - Release for VS Code 1.32
 * February 6, 2019 - Release for VS Code 1.31
 * December 12, 2018 - Release for VS Code 1.30
