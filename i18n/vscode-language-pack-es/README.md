@@ -10,7 +10,7 @@ Una vez instalado, establezca `"locale": "es"` en `locale.json` para cargar el p
 
 Las cadenas de traducción se mantienen en el proyecto "DevTools - VS Code" en la plataforma para la comunidad de localización de Microsoft (MLCP). 
 
-Si quiere colaborar, ya sea mediante la aportación de traducciones o la mejora de estas, consulte la [página de localización de la comunidad](https://aka.ms/vscodeloc) para obtener más información.
+Si quiere colaborar, ya sea mediante la aportación de traducciones o la mejora de éstas, consulte la [página de localización de la comunidad](https://aka.ms/vscodeloc) para obtener más información.
 
 ## Licencia
 
