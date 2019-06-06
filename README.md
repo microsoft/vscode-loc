@@ -20,7 +20,7 @@ There are 9 "Core" languages for Visual Studio Code and, currently, 5 addtional 
 |**Bulgarian**|bg|Bulgarian (bg-bg)|Community
 |**English (United Kingdom)**|en-GB|English (en-gb)|Community
 |**Hungarian**|hu|Hungarian (hu-hu)|Community
-|**Portugese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br) |Community
+|**Portuguese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br) |Community
 |**Turkish**|tr|Turkish (tr-tr)|Community
 
 Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/VSCode)
