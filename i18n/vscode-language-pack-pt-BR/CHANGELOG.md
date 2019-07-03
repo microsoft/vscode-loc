@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-pt_BR" language pack will be documented in this file.
 
 ## [Released]
+* July 3, 2019 - Release for VS Code 1.36
 * June 6, 2019 - Release for VS Code 1.35
 * May 15, 2019 - Release for VS Code 1.34
 * April 3, 2019 - Release for VS Code 1.33
