@@ -1,24 +1,24 @@
-#  VS Code 的中文(繁體)語言套件
+#  VS Code 的中文 (繁體) 語言套件
 
-中文(繁體)語言套件，讓VS Code提供本地化的使用者界面。
+中文 (繁體) 語言套件，讓 VS Code 提供本地化的使用者介面。
 
 ## 使用方式
 
-安裝了之後，在 `locale.json` 裡面設定 `"locale": "zh-tw"` 即可載入中文(繁體)的語言套件。要修改`locale.json`，可以按下`Ctrl+Shift+P`來呼叫 **命令選擇區**，輸入 "config" 以從其他可用命令裡面篩選出 **Configure Language** 命令。詳細步驟請參考[文件](https://go.microsoft.com/fwlink/?LinkId=761051) 。
+安裝好之後，在 `locale.json` 裡面設定 `"locale": "zh-tw"` 即可載入中文 (繁體) 的語言套件。要修改 `locale.json`，可以按下 `Ctrl+Shift+P` 來呼叫 **命令選擇區**，輸入 "config" 以從其他可用命令裡面篩選出 **Configure Language** 命令。詳細步驟請參考[文件](https://go.microsoft.com/fwlink/?LinkId=761051) 。
 
 ## 參與貢獻
 
 翻譯字串會在 Microsoft Localization Community 平台 (MLCP) 內的 "DevTools - VS Code" 專案中維護。
 
-如果您想參與翻譯或者改善翻譯，更多資訊請參考[community localization page](https://aka.ms/vscodeloc)
+如果您想參與翻譯或者改善翻譯，更多資訊請參考 [community localization page](https://aka.ms/vscodeloc)
 
 ## 授權
 
-原始碼以及文字屬於[MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md)授權。
+原始碼以及文字屬於 [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) 授權。
 
 ## 感謝
 
-中文(繁體)的語言套件是 "從社群，到社群" 的本地化社群努力的結果。
+中文 (繁體) 的語言套件是 "從社群，到社群" 的本地化社群努力的結果。
 
 特別感謝社群的貢獻者們讓本地化變得可能。
 
