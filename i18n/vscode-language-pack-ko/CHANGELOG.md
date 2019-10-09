@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-ko" language pack will be documented in this file.
 
 ## [Released]
+* Ocbober 9, 2019 - Release for VS Code 1.39
 * September 4, 2019 - Release for VS Code 1.38
 * August 7, 2019 - Release for VS Code 1.37
 * July 3, 2019 - Release for VS Code 1.36
