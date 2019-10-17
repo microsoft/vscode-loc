@@ -2,7 +2,7 @@
 
 This repository contains all of the localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
 
-Localized resource files are managed in [Microsoft Localization Community Platform (MLCP)](https://envelope-community-staging.azurewebsites.net/).
+Localized resource files are managed in [Microsoft Localization Community Platform (MLCP)](https://envelope-community.azurewebsites.net/).
 
 There are 9 "Core" languages for Visual Studio Code and, currently, 5 addtional community driven languages:  
 
