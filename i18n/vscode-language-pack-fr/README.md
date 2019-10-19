@@ -1,4 +1,4 @@
-﻿#  Module linguistique français pour VS Code
+# Module linguistique français pour VS Code
 
 Le module linguistique français fournit une expérience d'interface utilisateur localisée pour VS Code.
 
@@ -49,10 +49,9 @@ Nous remercions particulièrement les contributeurs de la communauté de l'avoir
 * Alain BUFERNE
 * Etienne Blanc-Coquand
 
-
 **Profitez-en !**
 
-#  French Language Pack for VS Code
+# French Language Pack for VS Code
 
 French Language Pack provides localized UI experience for VS Code.
 
@@ -103,6 +102,4 @@ Special thanks to community contributors for making it available.
 * Alain BUFERNE
 * Etienne Blanc-Coquand
 
-
 **Enjoy!**
-
