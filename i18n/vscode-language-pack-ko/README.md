@@ -1,4 +1,4 @@
-﻿#  VS Code용 한국어 팩
+# VS Code용 한국어 팩
 
 한국어 팩은 지역화된 VS Code용 UI 환경을 제공합니다.
 
@@ -42,7 +42,7 @@
 
 **감사합니다.**
 
-#  Korean Language Pack for VS Code
+# Korean Language Pack for VS Code
 
 Korean Language Pack provides localized UI experience for VS Code.
 
@@ -85,4 +85,3 @@ Special thanks to community contributors for making it available.
 * Junseong Jang
 
 **Enjoy!**
-

@@ -1,4 +1,4 @@
-﻿#  Языковой пакет для русского языка для VS Code
+# Языковой пакет для русского языка для VS Code
 
 Языковой пакет для русского языка содержит локализацию интерфейса VS Code.
 
@@ -27,7 +27,7 @@
 * Mikhail Zabaluev
 * Ivan
 * Svitlana Galianova
-* Aleksey Nemiro 
+* Aleksey Nemiro
 * sberbanker
 * Nikita Gryzlov
 * Veronika Kolesnikova
@@ -44,11 +44,11 @@
 * Andrei Makarov
 * Romanenko Alexey
 * Roman Sokolov
-* Andrei Pryymak 
+* Andrei Pryymak
 
 **Приятной работы!**
 
-#  Russian Language Pack for VS Code
+# Russian Language Pack for VS Code
 
 Russian Language Pack provides localized UI experience for VS Code.
 
@@ -58,7 +58,7 @@ Once installed, set `"locale": "ru"` in `locale.json` to load Russian Language P
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP). 
+The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
 
 If you'd like to participate in the effort either to contribute translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
 
@@ -77,7 +77,7 @@ Special thanks to community contributors for making it available.
 * Mikhail Zabaluev
 * Ivan
 * Svitlana Galianova
-* Aleksey Nemiro 
+* Aleksey Nemiro
 * sberbanker
 * Nikita Gryzlov
 * Veronika Kolesnikova
@@ -94,7 +94,6 @@ Special thanks to community contributors for making it available.
 * Andrei Makarov
 * Romanenko Alexey
 * Roman Sokolov
-* Andrei Pryymak 
+* Andrei Pryymak
 
 **Enjoy!**
-
