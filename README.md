@@ -31,7 +31,7 @@ Visual Studio Code translations are done in the [Visual Studio Code Project in M
 
 ## Issue Reporting
 
-If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/Microsoft/vscode-loc/issuesnew). Please check if a topic about your issue already exists!).
+If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/microsoft/vscode-loc/issues/new). Please check if a topic about your issue already exists!).
 
 ## Legal
 Before we can accept your pull request you will need to sign a **Contribution License Agreement**. All you need to do is to submit a pull request, then the PR will get appropriately labelled (e.g. `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). If you already signed the agreement we will continue with reviewing the PR, otherwise system will tell you how you can sign the CLA. Once you sign the CLA all future PR's will be labeled as `cla-signed`.
