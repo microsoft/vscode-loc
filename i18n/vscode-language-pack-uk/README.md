@@ -1,44 +1,43 @@
-#  Ukrainian Language Pack for VS Code
+# Пакет української мови для VS Code
 
-Ukrainian Language Pack provides localized UI experience for VS Code.
+Український мовний пакет пропонує локалізований інтерфейс для VS Code.
 
-## Usage
+## Kористування
 
-Once installed, set `"locale": "uk"` in `locale.json` to load Ukrainian Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+Після встановлення внесіть `" locale ":" uk "` в `locale.json`, щоб змінити мовний пакет на український. Для зміни `locale.json` натисніть `Ctrl+Shift+P` для відкриття **Палітри команд**, почніть вводити "config", щоб відфільтрувати список доступних команд, а потім виберіть **Configure Language**. Дивися [Доку](https://go.microsoft.com/fwlink/?LinkId=761051) для отримання додаткової інформації.
 
-## Contributing
+## Сприяння (участь)
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+Рядки для перекладу зберігаються в проекті "DevTools - VS Code" на Microsoft Localization Community Platform (MLCP).
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+Якщо ви хочете взяти участь у роботі або сприяти перекладу, чи вдосконалювати переклад, загляньте в [сторінка локалізації спільноти](https://aka.ms/vscodeloc).
 
-## License
+## Ліцензія
 
-The source code and strings are licensed under the [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) license.
+Вихідний код і рядки ліцензовані відповідно до [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
-## Credits
+## Повага
 
-Ukrainian Language Pack is brought to you through "By the community, for the community" community localization effort.
+Пакет української мови пропонується вам "Громадою, для громади" завдяки участі спільноти.
 
-Special thanks to community contributors for making it available.
+Особлива подяка учасникам спільноти за те, що сприяли створенню пакету.
 
-**Top Contributors:**
+**Кращі учасники:**
 
-* Serg-zefir
-* R.M.
+- Serg-zefir
+- R.M.
 
-**Contributors:**
+**Учасники:**
 
-* Oleksandr
-* Svitlana Galianova
-* Borys Lebeda
-* Volodymyr Holovka
-* Bogdan Surai
-* Dmytro Kyrychuk
-* ivanchenkoandriy
-* Fedir Gordiienko
-* Yevhen Kuzminov
-* Victor Kubrak
+- Oleksandr
+- Svitlana Galianova
+- Borys Lebeda
+- Volodymyr Holovka
+- Bogdan Surai
+- Dmytro Kyrychuk
+- ivanchenkoandriy
+- Fedir Gordiienko
+- Yevhen Kuzminov
+- Victor Kubrak
 
-
-**Enjoy!**
+**Успіхів Вам!**
