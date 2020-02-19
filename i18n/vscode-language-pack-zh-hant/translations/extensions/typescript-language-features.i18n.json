@@ -68,6 +68,7 @@
 			"configuration.suggest.paths": "啟用/停用匯入陳述式和要求呼叫中的路徑建議。",
 			"configuration.tsserver.useSeparateSyntaxServer": "啟用/停用繁衍可更快回應語法相關作業 (例如計算摺疊或計算文件符號) 的獨立 TypeScript 伺服器。必須在工作區中使用 TypeScript 3.4.0 或更新版本。",
 			"configuration.tsserver.maxTsServerMemory": "設定要配置給 TypeScript 伺服器處理序的最大記憶體數量 (MB)",
+			"configuration.tsserver.experimental.enableProjectDiagnostics": "(Experimental) Enables project wide error reporting.",
 			"typescript.locale": "進行用以回報 JavaScript 和 TypeScript 錯誤的地區設定。需要在工作區中使用 TypeScript 2.6.0 或更新版。預設的 `null` 會使用 VS Code 的地區設定。",
 			"javascript.implicitProjectConfig.experimentalDecorators": "為不屬於專案的 JavaScript 檔案啟用/停用 'experimentalDecorators'。現有的 jsconfig.json 或 tsconfig.json 檔案會覆寫此設定。需要在工作區中使用 TypeScript 2.3.1 或更新版。",
 			"configuration.suggest.autoImports": "啟用/停用自動匯入建議。需要在工作區中使用 TypeScript 2.6.1 或更新版。",
@@ -87,6 +88,22 @@
 			"typescript.suggest.enabled": "啟用/停用自動完成建議。",
 			"configuration.surveys.enabled": "啟用/停用可協助我們改進 VS Code JavaScript 和 TypeScript 支援的不定期調查。",
 			"configuration.suggest.completeJSDocs": "啟用/停用完成 JSDoc 註解的建議。",
+			"configuration.tsserver.watchOptions": "Configure which watching strategies should be used to keep track of files and directories. Requires using TypeScript 3.8+ in the workspace.",
+			"configuration.tsserver.watchOptions.watchFile": "Strategy for how individual files are watched.",
+			"configuration.tsserver.watchOptions.watchFile.fixedPollingInterval": "Check every file for changes several times a second at a fixed interval.",
+			"configuration.tsserver.watchOptions.watchFile.priorityPollingInterval": "Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.",
+			"configuration.tsserver.watchOptions.watchFile.dynamicPriorityPolling": "Use a dynamic queue where less-frequently modified files will be checked less often.",
+			"configuration.tsserver.watchOptions.watchFile.useFsEvents": "Attempt to use the operating system/file system’s native events for file changes.",
+			"configuration.tsserver.watchOptions.watchFile.useFsEventsOnParentDirectory": "Attempt to use the operating system/file system’s native events to listen for changes on a file’s containing directories. This can use fewer file watchers, but might be less accurate.",
+			"configuration.tsserver.watchOptions.watchDirectory": "Strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality.",
+			"configuration.tsserver.watchOptions.watchDirectory.fixedPollingInterval": "Check every directory for changes several times a second at a fixed interval.",
+			"configuration.tsserver.watchOptions.watchDirectory.dynamicPriorityPolling": "Use a dynamic queue where less-frequently modified directories will be checked less often.",
+			"configuration.tsserver.watchOptions.watchDirectory.useFsEvents": "Attempt to use the operating system/file system’s native events for directory changes.",
+			"configuration.tsserver.watchOptions.fallbackPolling": "When using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn’t support native file watchers.",
+			"configuration.tsserver.watchOptions.fallbackPolling.fixedPollingInterval": "Check every file for changes several times a second at a fixed interval.",
+			"configuration.tsserver.watchOptions.fallbackPolling.priorityPollingInterval": "Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.",
+			"configuration.tsserver.watchOptions.fallbackPolling.dynamicPriorityPolling ": "Use a dynamic queue where less-frequently modified files will be checked less often.",
+			"configuration.tsserver.watchOptions.synchronousWatchDirectory": "Disable deferred watching on directories. Deferred watching is useful when lots of file changes might occur at once (e.g. a change in node_modules from running npm install), but you might want to disable it with this flag for some less-common setups.",
 			"typescript.preferences.renameShorthandProperties": "啟用/停用在重新命名期間為物件速記屬性引入別名。必須在工作區中使用 TypeScript 3.4 或更新版本。",
 			"codeActions.refactor.extract.constant.title": "擷取常數",
 			"codeActions.refactor.extract.constant.description": "將運算式擷取為常數。",
@@ -107,8 +124,7 @@
 			"codeActions.refactor.rewrite.parameters.toDestructured.title": "將參數轉換為已解構的物件",
 			"codeActions.refactor.rewrite.property.generateAccessors.title": "產生存取子",
 			"codeActions.refactor.rewrite.property.generateAccessors.description": "產生 'get' 和 'set' 存取子",
-			"codeActions.source.organizeImports.title": "組織匯入",
-			"documentation.refactoring.title": "深入了解 JS/TS 重構"
+			"codeActions.source.organizeImports.title": "組織匯入"
 		},
 		"dist/utils/api": {
 			"invalidVersion": "無效的版本"
@@ -157,7 +173,8 @@
 			"extractConstant.disabled.title": "擷取至常數",
 			"extractConstant.disabled.reason": "無法擷取目前的選取",
 			"extractFunction.disabled.title": "擷取至函式",
-			"extractFunction.disabled.reason": "無法擷取目前的選取"
+			"extractFunction.disabled.reason": "無法擷取目前的選取",
+			"refactor.documentation.title": "深入了解 JS/TS 重構"
 		},
 		"dist/features/referencesCodeLens": {
 			"oneReferenceLabel": "1 個參考",
@@ -216,12 +233,6 @@
 			"hintExclude.generic": "若要讓整個專案都能使用 JavaScript/TypeScript 語言功能，請排除內含您未使用之來源檔案的大型資料夾。",
 			"large.label": "設定排除項目",
 			"hintExclude.tooltip": "若要讓整個專案都能使用 JavaScript/TypeScript 語言功能，請排除內含您未使用之來源檔案的大型資料夾。"
-		},
-		"dist/utils/surveyor": {
-			"survey.checkJs.prompt": "請協助我們改善 VS Code 對 JavaScript 中 [checkJs](https://code.visualstudio.com/Docs/languages/javascript#_type-checking) 的支援! 既然您已經在使用此功能了，那麼是否願意接受關於您體驗的簡短調查呢?",
-			"takeShortSurvey": "填寫簡短調查問卷",
-			"remindLater": "稍後再提醒我",
-			"neverAgain": "停用 JS/TS 調查"
 		},
 		"dist/features/task": {
 			"badTsConfig": "tasks.json 中的 TypeScript 工作含有 \"\\\\\"。TypeScript 工作 tsconfig 必須使用 \"/\"",

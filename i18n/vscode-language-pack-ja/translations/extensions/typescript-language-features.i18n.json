@@ -68,6 +68,7 @@
 			"configuration.suggest.paths": "import ステートメントや require 呼び出しでパスの提案を有効/無効にします。",
 			"configuration.tsserver.useSeparateSyntaxServer": "折りたたみの計算やドキュメント シンボルのコンピューティングなど、構文に関連する操作に迅速に応答できる別の TypeScript サーバーの作成を有効または無効にします。ワークスペースで TypeScript 3.4.0 以上を使用する必要があります。",
 			"configuration.tsserver.maxTsServerMemory": "TypeScript サーバー プロセスに割り当てるメモリの最大量 (MB) を設定する",
+			"configuration.tsserver.experimental.enableProjectDiagnostics": "(Experimental) Enables project wide error reporting.",
 			"typescript.locale": "JavaScript と TypeScript のエラーを報告するために使用するロケールを設定します。ワークスペースで TypeScript 2.6.0 以上を使用する必要があります。既定値の `null` では VS Code のロケールを使用します。",
 			"javascript.implicitProjectConfig.experimentalDecorators": "プロジェクト外の JavaScript ファイルの `experimentalDecorators` を有効/無効にします。既存の jsconfig.json ファイルや tsconfig.json ファイルの設定はこれより優先されます。ワークスペースで TypeScript 2.3.1 以上を使用する必要があります。",
 			"configuration.suggest.autoImports": "自動インポートの提案を有効/無効にします。ワークスペースで TypeScript 2.6.1 以上を使用する必要があります。",
@@ -87,6 +88,22 @@
 			"typescript.suggest.enabled": "オートコンプリートの提案を有効/無効にします。",
 			"configuration.surveys.enabled": "VS Code の JavaScript と TypeScript のサポートを向上させるために、ときどき行われるアンケートを有効/無効にします。",
 			"configuration.suggest.completeJSDocs": "JSDoc のコメントを完成させるための提案を有効/無効にします。",
+			"configuration.tsserver.watchOptions": "Configure which watching strategies should be used to keep track of files and directories. Requires using TypeScript 3.8+ in the workspace.",
+			"configuration.tsserver.watchOptions.watchFile": "Strategy for how individual files are watched.",
+			"configuration.tsserver.watchOptions.watchFile.fixedPollingInterval": "Check every file for changes several times a second at a fixed interval.",
+			"configuration.tsserver.watchOptions.watchFile.priorityPollingInterval": "Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.",
+			"configuration.tsserver.watchOptions.watchFile.dynamicPriorityPolling": "Use a dynamic queue where less-frequently modified files will be checked less often.",
+			"configuration.tsserver.watchOptions.watchFile.useFsEvents": "Attempt to use the operating system/file system’s native events for file changes.",
+			"configuration.tsserver.watchOptions.watchFile.useFsEventsOnParentDirectory": "Attempt to use the operating system/file system’s native events to listen for changes on a file’s containing directories. This can use fewer file watchers, but might be less accurate.",
+			"configuration.tsserver.watchOptions.watchDirectory": "Strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality.",
+			"configuration.tsserver.watchOptions.watchDirectory.fixedPollingInterval": "Check every directory for changes several times a second at a fixed interval.",
+			"configuration.tsserver.watchOptions.watchDirectory.dynamicPriorityPolling": "Use a dynamic queue where less-frequently modified directories will be checked less often.",
+			"configuration.tsserver.watchOptions.watchDirectory.useFsEvents": "Attempt to use the operating system/file system’s native events for directory changes.",
+			"configuration.tsserver.watchOptions.fallbackPolling": "When using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn’t support native file watchers.",
+			"configuration.tsserver.watchOptions.fallbackPolling.fixedPollingInterval": "Check every file for changes several times a second at a fixed interval.",
+			"configuration.tsserver.watchOptions.fallbackPolling.priorityPollingInterval": "Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.",
+			"configuration.tsserver.watchOptions.fallbackPolling.dynamicPriorityPolling ": "Use a dynamic queue where less-frequently modified files will be checked less often.",
+			"configuration.tsserver.watchOptions.synchronousWatchDirectory": "Disable deferred watching on directories. Deferred watching is useful when lots of file changes might occur at once (e.g. a change in node_modules from running npm install), but you might want to disable it with this flag for some less-common setups.",
 			"typescript.preferences.renameShorthandProperties": "名前の変更時にオブジェクトの短縮形のプロパティ用にエイリアスを使用することを有効または無効にします。ワークスペースで TypeScript 3.4 以降を使用する必要があります。",
 			"codeActions.refactor.extract.constant.title": "定数を抽出する",
 			"codeActions.refactor.extract.constant.description": "式を定数に抽出します。",
@@ -107,8 +124,7 @@
 			"codeActions.refactor.rewrite.parameters.toDestructured.title": "パラメーターを非構造化オブジェクトに変換する",
 			"codeActions.refactor.rewrite.property.generateAccessors.title": "アクセサーを生成する",
 			"codeActions.refactor.rewrite.property.generateAccessors.description": "'get' アクセサーと 'set' アクセサーを生成する",
-			"codeActions.source.organizeImports.title": "インポートを整理",
-			"documentation.refactoring.title": "JS/TS リファクタリングの詳細"
+			"codeActions.source.organizeImports.title": "インポートを整理"
 		},
 		"dist/utils/api": {
 			"invalidVersion": "無効なバージョン"
@@ -157,7 +173,8 @@
 			"extractConstant.disabled.title": "定数への抽出",
 			"extractConstant.disabled.reason": "現在の選択範囲を抽出できません",
 			"extractFunction.disabled.title": "関数への抽出",
-			"extractFunction.disabled.reason": "現在の選択範囲を抽出できません"
+			"extractFunction.disabled.reason": "現在の選択範囲を抽出できません",
+			"refactor.documentation.title": "JS/TS リファクタリングの詳細"
 		},
 		"dist/features/referencesCodeLens": {
 			"oneReferenceLabel": "1 個の参照",
@@ -216,12 +233,6 @@
 			"hintExclude.generic": "プロジェクト全体の JavaScript/TypeScript 言語機能を有効にするには、作業していないソース ファイルが含まれるサイズの大きなフォルダーを除外します。",
 			"large.label": "除外の構成",
 			"hintExclude.tooltip": "プロジェクト全体の JavaScript/TypeScript 言語機能を有効にするには、作業していないソース ファイルが含まれるサイズの大きなフォルダーを除外します。"
-		},
-		"dist/utils/surveyor": {
-			"survey.checkJs.prompt": "JavaScript の [checkJs](https://code.visualstudio.com/Docs/languages/javascript#_type-checking) に対する VS Code のサポート改善にご協力ください! この機能を既にご利用している方の、感想について、簡単なアンケートへの協力をご検討頂けませんか?",
-			"takeShortSurvey": "簡単なアンケートの実施",
-			"remindLater": "後で通知する",
-			"neverAgain": "JS/TS のアンケートを無効にする"
 		},
 		"dist/features/task": {
 			"badTsConfig": "tasks.json の Typescript タスクに \"\\\\\" が含まれています。Typescript タスクの tsconfig では \"/\" を使用する必要があります",
