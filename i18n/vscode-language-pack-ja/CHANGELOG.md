@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-ja" language pack will be documented in this file.
 
 ## [Released]
+* March 3, 2020 -  Release for VS Code 1.43
 * February 5, 2020 -  Release for VS Code 1.42
 * December 16, 2019 -  Release for VS Code 1.41
 * November 6, 2019 -  Release for VS Code 1.40
