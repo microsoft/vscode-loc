@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-en-GB" language pack will be documented in this file.
 
 ## [Released]
+* April 7, 2020 -  Release for VS Code 1.44
 * March 3, 2020 -  Release for VS Code 1.43
 * February 5, 2020 -  Release for VS Code 1.42
 * December 16, 2019 -  Release for VS Code 1.41
