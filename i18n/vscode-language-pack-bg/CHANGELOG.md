@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-bg" language pack will be documented in this file.
 
 ## [Released]
+* May 7, 2020 -  Release for VS Code 1.45
 * April 7, 2020 -  Release for VS Code 1.44
 * March 3, 2020 -  Release for VS Code 1.43
 * February 5, 2020 -  Release for VS Code 1.42
