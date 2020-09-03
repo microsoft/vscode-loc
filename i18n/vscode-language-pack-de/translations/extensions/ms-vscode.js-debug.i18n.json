@@ -11,9 +11,11 @@
 		"package": {
 			"add.browser.breakpoint": "Browserhaltepunkt hinzufügen",
 			"attach.node.process": "An Node.js-Prozess anhängen (Vorschau)",
+			"base.cascadeTerminateToConfigurations.label": "Eine Liste der Debugsitzungen, die bei Beenden dieser Debugsitzung ebenfalls beendet werden.",
 			"browser.address.description": "IP-Adresse oder Hostname, auf die bzw. den der Browser lauscht, für den ein Debugging durchgeführt wird.",
 			"browser.attach.port.description": "Port, der beim Remotedebugging des Browsers verwendet wird, angegeben als \"--remote-debugging-port\" beim Starten des Browsers.",
 			"browser.baseUrl.description": "Die Basis-URL zum Auflösen von Pfaden (baseUrl). baseURL wird beim Zuordnen von URLs zu den Dateien auf dem Datenträger gekürzt. Der Standardwert ist die Start-URL-Domäne.",
+			"browser.browserAttachLocation.description": "Hiermit wird erzwungen, dass der Browser an einer einzigen Stelle angefügt wird. In einem Remotearbeitsbereich (beispielsweise über SSH oder WSL) kann diese Einstellung zum Anfügen des Browsers auf dem Remotecomputer statt des Browsers auf dem lokalen Computer verwendet werden.",
 			"browser.browserLaunchLocation.description": "Erzwingt, dass der Browser an einer einzigen Stelle gestartet wird. In einem Remotearbeitsbereich (beispielsweise über SSH oder WSL) kann diese Einstellung verwendet werden, um den Browser statt auf dem lokalen Computer auf dem Remotecomputer zu öffnen.",
 			"browser.cleanUp.description": "Bereinigungsvorgänge nach Beendigung der Debugsitzung. Schließen Sie nur die Registerkarte, für die das Debugging ausgeführt wird, nicht den gesamten Browser.",
 			"browser.cwd.description": "Optionales Arbeitsverzeichnis für die ausführbare Runtimedatei.",
@@ -47,16 +49,22 @@
 			"chrome.label": "Chrome (Vorschau)",
 			"chrome.launch.description": "Chrome starten, um eine URL zu debuggen",
 			"chrome.launch.label": "Chrome: Starten",
+			"configuration.autoAttachMode": "Configures which processes to automatically attach and debug when `#debug.node.autoAttach#` is on. A Node process launched with the `--inspect` flag will always be attached to, regardless of this setting.",
+			"configuration.autoAttachMode.always": "Hiermit wird automatisch an jeden Node.js-Prozess angefügt, der im Terminal gestartet wird.",
+			"configuration.autoAttachMode.explicit": "Hiermit wird nur dann automatisch angefügt, wenn \"--inspect\" angegeben wird.",
+			"configuration.autoAttachMode.smart": "Hiermit wird bei Ausführung von Skripts automatisch angefügt, die sich nicht in einem node_modules-Ordner befinden.",
+			"configuration.autoAttachSmartPatterns": "If one of these glob patterns matches the Node.jsentrypoint script in smart `#debug.javascript.autoAttachFilter#` mode, we will debug that process. `$KNOWN_TOOLS$` is replaced with a list of names of common test and code runners.",
 			"configuration.autoExpandGetters": "Hiermit wird konfiguriert, ob Getter für Eigenschaften automatisch erweitert werden sollen. Bei einer Festlegung auf FALSE erscheint der Getter als \"get propertyName\" und wird nur ausgewertet, wenn Sie darauf klicken.",
 			"configuration.automaticallyTunnelRemoteServer": "Beim Debuggen einer Remote-Web-App wird konfiguriert, ob der Remoteserver automatisch auf den lokalen Computer getunnelt werden soll.",
+			"configuration.breakOnConditionalError": "Whether to stop when conditional breakpoints throw an error. Note: your launch.json `type` must be prefixed with `pwa-` to use this, such as `pwa-node`.",
 			"configuration.debugByLinkOptions": "Optionen, die verwendet werden, wenn beim Debuggen innerhalb des Terminals auf geöffnete Links geklickt wird. Legen Sie diese Einstellung auf \"false\" fest, um dieses Verhalten zu deaktivieren.",
 			"configuration.npmScriptLensLocation": "Wo in Ihren npm-Skripts \"Ausführen\" und \"Debuggen\" für CodeLens angezeigt werden soll. Mögliche Einstellungen sind \"Alle\" Skripts, \"Oben\" im Skriptabschnitt oder \"Keine\".",
-			"configuration.onlyAutoAttachExplicit": "Bei Festlegung auf TRUE wird nur ein Debugging für Prozesse durchgeführt, die mit \"--inspect\" gestartet wurden. Bei Festlegung dieser Einstellung auf FALSE wird ein Debugging für alle Prozesse durchgeführt, die gestartet wurden, während das automatische Anfügen aktiv war.\r\n\r\nHinweis: Möglicherweise müssen Sie das automatische Anfügen deaktivieren und wieder aktivieren, damit Änderungen an dieser Einstellung wirksam werden.",
 			"configuration.pickAndAttachOptions": "Standardoptionen, die beim Debuggen eines Prozesses über den Befehl \"Debuggen: An Node.js-Prozess anfügen\" verwendet werden",
 			"configuration.suggestPrettyPrinting": "Gibt an, ob JavaScript-Code, der bei Einzelschritten verkleinert aussieht, automatisch strukturiert und eingerückt werden soll.",
 			"configuration.terminalOptions": "Standardstartoptionen für das JavaScript-Debug-Terminal und die npm-Skripts.",
 			"configuration.usePreview": "Verwenden Sie den neuen JavaScript-Debugger für Node.js und Chrome, der sich in der Vorschau befindet.",
 			"configuration.warnOnLongPrediction": "Gibt an, ob eine Ladeaufforderung angezeigt werden soll, wenn die Vorhersage eines Umbruchpunkts eine Weile dauert.",
+			"customDescriptionGenerator.description": "Customize the textual description the debugger shows for objects (local variables, etc...). Samples:\r\n      1. this.toString() // will call toString to print all objects\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Use customDescription method if available, if not return defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Use customDescription method if available, if not return defaultValue\r\n      ",
 			"debug.npm.edit": "package.json bearbeiten",
 			"debug.npm.noScripts": "In Ihrer package.json-Datei wurden keine npm-Skripts gefunden.",
 			"debug.npm.noWorkspaceFolder": "Sie müssen einen Arbeitsbereichsordner öffnen, um npm-Skripts zu debuggen.",
@@ -67,7 +75,7 @@
 			"debug.terminal.program.description": "Befehl zur Ausführung im gestarteten Terminal. Falls dieser nicht vorhanden ist, öffnet sich das Terminal, ohne ein Programm zu starten.",
 			"debug.terminal.snippet.label": "\"npm start\" in einem Debug-Terminal ausführen",
 			"debug.terminal.toggleAuto": "Automatisches Anfügen von Node.js für Terminal umschalten",
-			"debug.terminal.welcome": "[Node.js-Debugterminal](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nNutzen Sie das Node.js-Debugterminal, um über die Befehlszeile ausgeführten JavaScript-Code sofort zu debuggen.",
+			"debug.terminal.welcome": "[JavaScript Debug Terminal](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nYou can use the JavaScript Debug Terminal to debug Node.js processes run on the command line.",
 			"debugLink.label": "Link öffnen",
 			"edge.address.description": "Beim Debuggen von Webansichten die IP-Adresse oder der Hostname, auf die bzw. den die Webansicht lauscht. Sofern nicht festgelegt, wird eine automatische Erkennung durchgeführt.",
 			"edge.attach.description": "An eine Microsoft Edge-Instanz anfügen, die sich bereits im Debugmodus befindet",
@@ -160,6 +168,7 @@
 			"node.stopOnEntry.description": "Hiermit wird das Programm nach dem Start automatisch beendet.",
 			"node.timeout.description": "Gibt den Zeitraum in Millisekunden an, nach dem erneut versucht wird, eine Verbindung mit Node.js herzustellen. Der Standardwert ist 10000 ms.",
 			"node.versionHint.descriotion": "Ermöglicht Ihnen die explizite Angabe der ausgeführten Knotenversion, die zum Deaktivieren oder Aktivieren bestimmter Verhaltensweisen verwendet werden kann, wenn die automatische Versionserkennung nicht funktioniert.",
+			"node.websocket.address.description": "Genaue WebSocket-Adresse für den Anfügevorgang. Bei fehlender Angabe wird sie aus der Adresse und dem Port ermittelt.",
 			"outFiles.description": "Wenn Quellzuordnungsdateien aktiviert sind, geben diese Globmuster die generierten JavaScript-Dateien an. Wenn ein Muster mit \"!\" beginnt, werden die Dateien ausgeschlossen. Sofern nicht angegeben, wird der generierte Code im selben Verzeichnis wie die zugehörige Quelle erwartet.",
 			"pretty.print.script": "Schöndruck zum Debuggen",
 			"profile.start": "Leistungsprofil übernehmen",
@@ -189,11 +198,14 @@
 		"/src/debugServer": {
 			"breakpoint.provisionalBreakpoint": "Ungebundener Haltepunkt"
 		},
+		"/src/vsDebugServer": {
+			"session.rootSessionName": "JavaScript-Debugadapter"
+		},
 		"/src/adapter/customBreakpoints": {
 			"breakpoint.webglErrorNamed": "WebGL-Fehler \"{0}\"",
 			"breakpoint.webglErrorNamedDetails": "Bei Instrumentierungshaltepunkt für WebGL-Fehler angehalten. Fehler: \"{0}\".",
 			"breakpoint.cspViolationNamed": "Inhaltssicherheitsrichtlinien-Verstoß \"{0}\"",
-			"breakpoint.cspViolationNamedDetails": "Bei Instrumentierungshaltepunkt für Inhaltssicherheitsrichtlinien-Verstöße angehalten. Direktive: \"{0}\".",
+			"breakpoint.cspViolationNamedDetails": "Bei Instrumentierungshaltepunkt für Verstöße gegen die Inhaltssicherheitsrichtlinie angehalten. Direktive: \"{0}\".",
 			"breakpoint.instrumentationNamed": "Bei Instrumentierungshaltepunkt \"{0}\" angehalten",
 			"breakpoint.eventListenerNamed": "Bei Ereignislistener-Haltepunkt \"{0}\" angehalten, ausgelöst für \"{1}\"",
 			"breakpoint.requestAnimationFrame": "Animationsframe anfordern",
@@ -215,7 +227,7 @@
 		"/src/adapter/debugAdapter": {
 			"breakpoint.caughtExceptions": "Abgefangene Ausnahmen",
 			"breakpoint.uncaughtExceptions": "Nicht abgefangene Ausnahmen",
-			"`errors.setExceptionBreakpoints.async.failed`": "Fehler beim Konfigurieren der Ausnahmen, die aufgrund von \"{0}\" angehalten werden sollen.",
+			"`errors.setExceptionBreakpoints.async.failed`": "Fehler beim Konfigurieren der Ausnahmen, die ein Anhalten erfordern. Grund: {0}",
 			"errors.unknown": "Unbekannter Fehler.",
 			"error.sourceNotFound": "Quelle nicht gefunden.",
 			"error.sourceContentDidFail": "Quellinhalte können nicht abgerufen werden.",
@@ -264,14 +276,15 @@
 			"pause.xhr": "Bei XMLHttpRequest oder Fetch angehalten",
 			"pause.oom": "Vor Speicherausnahmefehler angehalten",
 			"pause.eventListener": "Bei Ereignislistener angehalten",
-			"console.assert": "Assertionsfehler",
 			"warnings.handleSourceMapPause.didNotWait": "WARNUNG: Die Verarbeitung von Quellzuordnungen von \"{0}\" hat mehr als {1} ms gedauert. Aus diesem Grund wurde die Ausführung fortgesetzt, ohne auf die Festlegung aller Haltepunkte für das Skript zu warten."
 		},
 		"/src/adapter/variables": {
 			"error.variableNotFound": "Variable nicht gefunden.",
-			"error.emptyExpression": "Leerer Wert kann nicht festgelegt werden.",
+			"error.emptyExpression": "Es darf kein leerer Wert festgelegt werden.",
 			"error.invalidExpression": "Ungültiger Ausdruck",
-			"error.setVariableDidFail": "Der Variablenwert kann nicht festgelegt werden."
+			"error.setVariableDidFail": "Der Variablenwert kann nicht festgelegt werden.",
+			"error.unknown": "Unknown error",
+			"error.customValueDescriptionGeneratorFailed": "{0} (couldn't describe: {1})"
 		},
 		"/src/dap/errors": {
 			"NVS_HOME.not.found.message": "Für das Attribut \"runtimeVersion\" muss der Node.js-Versions-Manager \"nvs\" oder \"nvm\" installiert sein.",
@@ -279,7 +292,7 @@
 			"runtime.version.not.found.message": "Die Node.js-Version {0} wurde nicht mit dem Versions-Manager \"{1}\" installiert.",
 			"VSND2011": "Das Debugziel im Terminal kann nicht gestartet werden ({0}).",
 			"VSND2029": "Umgebungsvariablen können nicht aus Datei geladen werden ({0}).",
-			"runtime.node.notfound": "Die Node.js-Binärdatei \"{0}\" wurde nicht gefunden. Stellen Sie sicher, dass Node.js installiert und in PATH vorhanden ist, oder legen Sie \"runtimeExecutable\" in der Datei \"launch.json\" fest.",
+			"runtime.node.notfound": "Can't find Node.js binary \"{0}\": {1}. Make sure Node.js is installed and in your PATH, or set the \"runtimeExecutable\" in your launch.json",
 			"runtime.node.outdated": "Die Node-Version in \"{0}\" ist veraltet (Version {1}), es ist mindestens Node 8.x erforderlich.",
 			"invalidHitCondition": "Ungültige Trefferbedingung \"{0}\". Es wurde ein Ausdruck wie \"> 42\" oder \"== 2\" erwartet.",
 			"profile.error.generic": "Fehler beim Übernehmen eines Profils aus dem Ziel.",
@@ -292,6 +305,9 @@
 			"asyncScopesNotAvailable": "Nicht verfügbare Variablen in asynchronen Stapeln.",
 			"breakpointSyntaxError": "Syntaxfehler beim Festlegen des Haltepunkts mit Bedingung \"{0}\" in Zeile {1}: {2}",
 			"sourcemapParseError": "Die Quellzuordnung für \"{0}\" konnte nicht gelesen werden: {1}"
+		},
+		"/src/ui/autoAttach": {
+			"details": "Details"
 		},
 		"/src/ui/companionBrowserLaunch": {
 			"cannotDebugInBrowser": "Von hier aus kann kein Browser im Debugmodus gestartet werden. Öffnen Sie diesen Arbeitsbereich in VS Code auf Ihrem Desktop, um das Debugging zu aktivieren."
@@ -331,10 +347,19 @@
 			"cannot.enable.debug.mode.error": "An den Prozess anhängen: Der Debugmodus für den Prozess \"{0}\" kann nicht aktiviert werden ({1})."
 		},
 		"/src/ui/terminalLinkHandler": {
+			"terminalLinkHover.debug": "Debug-URL",
 			"cantOpenChromeOnWeb": "Von hier aus kann kein Browser im Debugmodus gestartet werden. Wenn Sie diese Webseite debuggen möchten, öffnen Sie diesen Arbeitsbereich über VS Code auf Ihrem Desktop."
 		},
 		"/src/adapter/breakpoints/userDefinedBreakpoint": {
 			"breakpoint.provisionalBreakpoint": "Ungebundener Haltepunkt"
+		},
+		"/src/adapter/console/queryObjectsMessage": {
+			"queryObject.invalidObject": "Es können nur Objekte abgefragt werden.",
+			"queryObject.couldNotQuery": "Das bereitgestellte Objekt konnte nicht abgefragt werden.",
+			"queryObject.errorPreview": "Die Vorschau konnte generiert werden: {0}"
+		},
+		"/src/adapter/console/textualMessage": {
+			"console.assert": "Assertionsfehler"
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
 			"profile.cpu.label": "CPU-Profil",
@@ -347,10 +372,19 @@
 		"/src/targets/node/nodeAttacher": {
 			"node.attach.restart.message": "Die Verbindung mit der zu debuggenden Komponente wurde getrennt. Die Verbindung wird in {0} ms wiederhergestellt.\r\n"
 		},
+		"/src/targets/node/nodeBinaryProvider": {
+			"runtime.node.notfound.enoent": "path does not exist",
+			"runtime.node.notfound.spawnErr": "error getting version: {0}"
+		},
 		"/src/targets/node/terminalProgramLauncher": {
 			"node.console.title": "Node-Debugging-Konsole"
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
+			"existingBrowser.debugAnyway": "Dennoch debuggen",
+			"existingBrowser.alert": "Offenbar wird über {0} bereits ein Browser ausgeführt. Schließen Sie ihn vor dem Debuggen, weil VS Code andernfalls möglicherweise keine Verbindung herstellen kann.",
+			"existingBrowser.location.default": "eine alte Debugsitzung",
+			"existingBrowser.location.userDataDir": "das konfigurierte userDataDir",
+			"cancel": "Abbrechen",
 			"chrome.launch.name": "Chrome mit \"localhost\" starten"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationProvider": {
