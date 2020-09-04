@@ -11,9 +11,11 @@
 		"package": {
 			"add.browser.breakpoint": "Добавить точку останова браузера",
 			"attach.node.process": "Подключение к процессу узла (предварительная версия)",
+			"base.cascadeTerminateToConfigurations.label": "Список сеансов отладки, которые также будут остановлены при завершении этого сеанса отладки.",
 			"browser.address.description": "IP-адрес или имя узла, которые слушает отлаживаемый браузер.",
 			"browser.attach.port.description": "Порт для удаленной отладки браузера, указываемый в качестве параметра --remote-debugging-port при запуске браузера.",
 			"browser.baseUrl.description": "Базовый URL-адрес для разрешения baseUrl путей. baseURL обрезается при сопоставлении URL-адресов с файлами на диске. По умолчанию используется домен URL-адреса запуска.",
+			"browser.browserAttachLocation.description": "Принудительное подключение к браузеру в одном расположении. В удаленной рабочей области (например, через SSH или WSL) это можно использовать для подключения к браузеру на удаленном компьютере, а не локально.",
 			"browser.browserLaunchLocation.description": "Принуждает браузер запускаться в одном расположении. В удаленной рабочей области (например, через SSH или WSL) это можно использовать для открытия браузера на удаленном компьютере, а не локально.",
 			"browser.cleanUp.description": "Что необходимо сделать после завершения сеанса отладки: закрыть только отлаживаемую вкладку или весь браузер.",
 			"browser.cwd.description": "Дополнительный рабочий каталог для исполняемого файла среды выполнения.",
@@ -47,16 +49,22 @@
 			"chrome.label": "Chrome (предварительная версия)",
 			"chrome.launch.description": "Запуск Chrome для отладки URL-адреса",
 			"chrome.launch.label": "Chrome: запуск",
+			"configuration.autoAttachMode": "Configures which processes to automatically attach and debug when `#debug.node.autoAttach#` is on. A Node process launched with the `--inspect` flag will always be attached to, regardless of this setting.",
+			"configuration.autoAttachMode.always": "Автоматически присоединяться к каждому процессу Node.js, запущенному в терминале.",
+			"configuration.autoAttachMode.explicit": "Присоединяться только в том случае, если указан параметр \"--inspect\".",
+			"configuration.autoAttachMode.smart": "Автоматически присоединяться при запуске сценариев, не находящихся в папке node_modules.",
+			"configuration.autoAttachSmartPatterns": "If one of these glob patterns matches the Node.jsentrypoint script in smart `#debug.javascript.autoAttachFilter#` mode, we will debug that process. `$KNOWN_TOOLS$` is replaced with a list of names of common test and code runners.",
 			"configuration.autoExpandGetters": "Определяет, будут ли автоматически разворачиваться методы получения свойств. Если для этого параметра задано значение false, метод получения свойства будет отображаться как get propertyName и будет оцениваться только при нажатии на него.",
 			"configuration.automaticallyTunnelRemoteServer": "При отладке удаленного веб-приложения определяет, следует ли автоматически туннелировать удаленный сервер на локальный компьютер.",
+			"configuration.breakOnConditionalError": "Whether to stop when conditional breakpoints throw an error. Note: your launch.json `type` must be prefixed with `pwa-` to use this, such as `pwa-node`.",
 			"configuration.debugByLinkOptions": "Параметры, используемые при отладке открытых ссылок, выбранных изнутри терминала отладки. Можно задать значение \"false\", чтобы отключить это поведение.",
 			"configuration.npmScriptLensLocation": "Где требуется отобразить группы связанных элементов кода \"Run\" и \"Debug\" в ваших скриптах npm. Можно использовать значение \"all\" — во всех скриптах, \"top\" — сверху раздела скриптов или \"never\" — нигде.",
-			"configuration.onlyAutoAttachExplicit": "Если задано значение true (по умолчанию), отладка будет выполняться только для процессов, запущенных с параметром --inspect. Если для этого параметра задано значение false, будет выполняться отладка всех процессов, запущенных при включенном автоприсоединении.\r\n\r\nПримечание. Для вступления изменений этого параметра в силу может потребоваться отключить автоприсоединение, а затем снова включить его.",
 			"configuration.pickAndAttachOptions": "Параметры по умолчанию, используемые при отладке процесса с помощью команды \"Отладка: присоединить к процессу Node.js\"",
 			"configuration.suggestPrettyPrinting": "Следует ли предлагать код автоматического форматирования JavaScript, который выглядит минифицированным при заходе в него.",
 			"configuration.terminalOptions": "Параметры запуска по умолчанию для терминала отладки JavaScript и скриптов npm.",
 			"configuration.usePreview": "Используйте предварительную версию нового отладчика JavaScript для Node.js и Chrome.",
 			"configuration.warnOnLongPrediction": "Следует ли выводить запрос на загрузку, если прогнозирование точки останова занимает некоторое время.",
+			"customDescriptionGenerator.description": "Customize the textual description the debugger shows for objects (local variables, etc...). Samples:\r\n      1. this.toString() // will call toString to print all objects\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Use customDescription method if available, if not return defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Use customDescription method if available, if not return defaultValue\r\n      ",
 			"debug.npm.edit": "Изменить файл package.json",
 			"debug.npm.noScripts": "Скрипты npm в вашем package.json не найдены",
 			"debug.npm.noWorkspaceFolder": "Для отладки скриптов npm нужно открыть папку рабочей области.",
@@ -67,7 +75,7 @@
 			"debug.terminal.program.description": "Команда для выполнения в запущенном терминале. Если параметр не задан, терминал откроется без запуска программы.",
 			"debug.terminal.snippet.label": "Выполнить \"npm start\" в терминале отладки",
 			"debug.terminal.toggleAuto": "Переключение автоприсоединения Node.js терминала",
-			"debug.terminal.welcome": "[Отладочный терминал Node.js](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nВы можете использовать отладочный терминал Node.js для мгновенной отладки кода JavaScript, запущенного из командной строки.",
+			"debug.terminal.welcome": "[JavaScript Debug Terminal](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nYou can use the JavaScript Debug Terminal to debug Node.js processes run on the command line.",
 			"debugLink.label": "Открыть ссылку",
 			"edge.address.description": "IP-адрес или имя узла, которые прослушивает веб-представление, при отладке веб-представлений. Если этот параметр не установлен, он будет определен автоматически.",
 			"edge.attach.description": "Подключить к экземпляру Microsoft Edge уже в режиме отладки",
@@ -160,6 +168,7 @@
 			"node.stopOnEntry.description": "Автоматически остановить программу после запуска.",
 			"node.timeout.description": "Повторять в течение этого количества миллисекунд для подключения к Node.js. Значение по умолчанию — 10 000 мс.",
 			"node.versionHint.descriotion": "Позволяет явно указать запущенную версию Node, которую можно использовать для отключения или включения определенных вариантов поведения в случаях, когда автоматическое обнаружение версий не работает.",
+			"node.websocket.address.description": "Точный адрес веб-сокета для подключения. Если не указан, то он будет определен по адресу и порту.",
 			"outFiles.description": "Если включены сопоставители с исходным кодом, эти стандартные маски указывают созданные файлы JavaScript. Если маска начинается с \"!\", файлы исключаются. Если значение не указано, предполагается, что созданный код находится в том же каталоге, что и исходный.",
 			"pretty.print.script": "Качественная печать для отладки",
 			"profile.start": "Использовать профиль производительности",
@@ -188,6 +197,9 @@
 		},
 		"/src/debugServer": {
 			"breakpoint.provisionalBreakpoint": "Неограниченная точка останова"
+		},
+		"/src/vsDebugServer": {
+			"session.rootSessionName": "Адаптер отладки JavaScript"
 		},
 		"/src/adapter/customBreakpoints": {
 			"breakpoint.webglErrorNamed": "Ошибка WebGL \"{0}\".",
@@ -264,14 +276,15 @@
 			"pause.xhr": "Приостановлено в XMLHttpRequest или при получении.",
 			"pause.oom": "Приостановлено перед исключением \"Недостаточно памяти\".",
 			"pause.eventListener": "Приостановлено в прослушивателе событий.",
-			"console.assert": "Сбой утверждения",
 			"warnings.handleSourceMapPause.didNotWait": "Предупреждение! Обработка сопоставителей с исходным кодом {0} заняла больше {1} мс, поэтому мы продолжили выполнение, не дожидаясь установки всех точек останова для скрипта."
 		},
 		"/src/adapter/variables": {
 			"error.variableNotFound": "Переменная не найдена.",
 			"error.emptyExpression": "Не удается задать пустое значение",
 			"error.invalidExpression": "Недопустимое выражение",
-			"error.setVariableDidFail": "Не удалось задать значение переменной."
+			"error.setVariableDidFail": "Не удалось задать значение переменной.",
+			"error.unknown": "Unknown error",
+			"error.customValueDescriptionGeneratorFailed": "{0} (couldn't describe: {1})"
 		},
 		"/src/dap/errors": {
 			"NVS_HOME.not.found.message": "Для атрибута \"runtimeVersion\" необходимо установить диспетчер версий Node.js \"nvs\" или \"nvm\".",
@@ -279,7 +292,7 @@
 			"runtime.version.not.found.message": "Версия Node.js \"{0}\" не установлена с помощью диспетчера версий {1}.",
 			"VSND2011": "Не удается запустить целевой объект отладки в терминале ({0}).",
 			"VSND2029": "Не удается загрузить переменные среды из файла ({0}).",
-			"runtime.node.notfound": "Не удается найти двоичный файл \"{0}\" Node.js. Убедитесь, что Node.js установлен и путь к нему указан в переменной PATH, или задайте \"runtimeExecutable\" в файле launch.json",
+			"runtime.node.notfound": "Can't find Node.js binary \"{0}\": {1}. Make sure Node.js is installed and in your PATH, or set the \"runtimeExecutable\" in your launch.json",
 			"runtime.node.outdated": "Версия Node в \"{0}\" устарела (версия {1}), требуется версия Node 8.x или более поздняя.",
 			"invalidHitCondition": "Недопустимое условие попадания \"{0}\". Ожидается выражение, например, \"> 42\" или \"== 2\".",
 			"profile.error.generic": "Произошла ошибка при извлечении профиля из целевого объекта.",
@@ -292,6 +305,9 @@
 			"asyncScopesNotAvailable": "Переменные недоступны в асинхронных стеках",
 			"breakpointSyntaxError": "Синтаксическая ошибка при задании точки останова с условием {0} в строке {1}: {2}",
 			"sourcemapParseError": "Не удалось считать сопоставление источника для {0}: {1}"
+		},
+		"/src/ui/autoAttach": {
+			"details": "Подробные сведения"
 		},
 		"/src/ui/companionBrowserLaunch": {
 			"cannotDebugInBrowser": "Не удается запустить браузер в режиме отладки. Откройте эту рабочую область в VS Code на компьютере, чтобы включить отладку."
@@ -331,10 +347,19 @@
 			"cannot.enable.debug.mode.error": "Присоединение к процессу: не удается включить режим отладки для процесса \"{0}\" ({1})."
 		},
 		"/src/ui/terminalLinkHandler": {
+			"terminalLinkHover.debug": "URL-адрес отладки",
 			"cantOpenChromeOnWeb": "Не удается запустить браузер в режиме отладки. Если вы хотите выполнить отладку этой веб-страницы, откройте эту рабочую область в VS Code на компьютере."
 		},
 		"/src/adapter/breakpoints/userDefinedBreakpoint": {
 			"breakpoint.provisionalBreakpoint": "Неограниченная точка останова"
+		},
+		"/src/adapter/console/queryObjectsMessage": {
+			"queryObject.invalidObject": "Запросы можно отправлять только к объектам.",
+			"queryObject.couldNotQuery": "Не удалось отправить запрос к указанному объекту.",
+			"queryObject.errorPreview": "Не удалось создать предварительную версию: {0}"
+		},
+		"/src/adapter/console/textualMessage": {
+			"console.assert": "Сбой утверждения"
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
 			"profile.cpu.label": "Профиль ЦП",
@@ -347,10 +372,19 @@
 		"/src/targets/node/nodeAttacher": {
 			"node.attach.restart.message": "Потеряно подключение к отлаживаемому компоненту, повторное подключение через {0} мс\r\n"
 		},
+		"/src/targets/node/nodeBinaryProvider": {
+			"runtime.node.notfound.enoent": "path does not exist",
+			"runtime.node.notfound.spawnErr": "error getting version: {0}"
+		},
 		"/src/targets/node/terminalProgramLauncher": {
 			"node.console.title": "Консоль отладки узла"
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
+			"existingBrowser.debugAnyway": "Все равно выполнить отладку",
+			"existingBrowser.alert": "Похоже, браузер уже запущен из {0}. Закройте его перед отладкой, в противном случае подключение к браузеру из VS Code может завершиться неудачно.",
+			"existingBrowser.location.default": "старый сеанс отладки",
+			"existingBrowser.location.userDataDir": "настроенный каталог данных пользователя",
+			"cancel": "Отмена",
 			"chrome.launch.name": "Запустить Chrome на localhost"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationProvider": {

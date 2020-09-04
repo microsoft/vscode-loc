@@ -11,9 +11,11 @@
 		"package": {
 			"add.browser.breakpoint": "新增瀏覽器中斷點",
 			"attach.node.process": "附加至節點處理序 (預覽)",
+			"base.cascadeTerminateToConfigurations.label": "當此偵錯工作階段終止時，也會一併停止的偵錯工作階段清單。",
 			"browser.address.description": "已偵錯瀏覽器所接聽的 IP 位址或主機名稱。",
 			"browser.attach.port.description": "要用於對瀏覽器進行遠端偵錯的連接埠，會在啟動瀏覽器時指定為 `--remote-debugging-port`。",
 			"browser.baseUrl.description": "用於解析路徑 baseUrl 的基底 URL。將 URL 對應至磁碟上的檔案時，baseURL 會受到修剪。預設為啟動 URL 網域。",
+			"browser.browserAttachLocation.description": "強制瀏覽器附加至一個位置。在遠端工作區中 (例如，透過 SSH 或 WSL)，這可用來附加至遠端電腦上的瀏覽器，而非在本機附加。",
 			"browser.browserLaunchLocation.description": "強制瀏覽器在一個位置啟動。在遠端工作區中 (例如，透過 ssh 或 WSL)，這可用來在遠端電腦上開啟瀏覽器，而非在本機開啟瀏覽器。",
 			"browser.cleanUp.description": "偵錯工作階段完成之後要執行的清除。只關閉正在偵錯的索引標籤與關閉整個瀏覽器的比較。",
 			"browser.cwd.description": "執行階段可執行檔的選用工作目錄。",
@@ -47,16 +49,22 @@
 			"chrome.label": "Chrome (預覽)",
 			"chrome.launch.description": "啟動 Chrome 以偵錯 URL",
 			"chrome.launch.label": "Chrome: 啟動",
+			"configuration.autoAttachMode": "Configures which processes to automatically attach and debug when `#debug.node.autoAttach#` is on. A Node process launched with the `--inspect` flag will always be attached to, regardless of this setting.",
+			"configuration.autoAttachMode.always": "自動附加至在終端機中啟動的每個 Node.js 處理序。",
+			"configuration.autoAttachMode.explicit": "只有在指定 `--inspect` 時才自動附加。",
+			"configuration.autoAttachMode.smart": "執行不在 node_modules 資料夾中的指令碼時自動附加。",
+			"configuration.autoAttachSmartPatterns": "If one of these glob patterns matches the Node.jsentrypoint script in smart `#debug.javascript.autoAttachFilter#` mode, we will debug that process. `$KNOWN_TOOLS$` is replaced with a list of names of common test and code runners.",
 			"configuration.autoExpandGetters": "設定是否要自動展開屬性 getter。如果設為 false，getter 將顯示為 `get propertyName`，並且只在按一下該屬性時才會進行評估。",
 			"configuration.automaticallyTunnelRemoteServer": "偵測遠端 Web 應用程式時，設定是否自動打開遠端伺服器到本機電腦的通道。",
+			"configuration.breakOnConditionalError": "Whether to stop when conditional breakpoints throw an error. Note: your launch.json `type` must be prefixed with `pwa-` to use this, such as `pwa-node`.",
 			"configuration.debugByLinkOptions": "在偵錯終端機內按一下偵錯開啟連結時所使用的選項。可設為 \"false\"，停用此行為。",
 			"configuration.npmScriptLensLocation": "\"Run\" 與 \"Debug\" 程式碼濾鏡應在您 npm 指令碼中顯示的位置。可以是「全部」、指令碼、指令碼區段的「頂端」或「永不」。",
-			"configuration.onlyAutoAttachExplicit": "若為 true (預設)，則只會針對以 --inspect 啟動的處理序進行偵錯。若此設定切換為 false，則會在開啟 [自動附加] 時，針對所有啟動的處理序進行偵錯。\r\n\r\n請注意: 您可能需要先將 [自動附加] 切換為 [已停用]，然後再次切換為 [開啟]，讓此設定中的變更生效。",
 			"configuration.pickAndAttachOptions": "透過 `Debug: Attach to Node.js Process` 命令偵錯處理序時所用的預設選項",
 			"configuration.suggestPrettyPrinting": "是否要在您進入時建議看起來已縮小的美化顯示 JavaScript 程式碼。",
 			"configuration.terminalOptions": "JavaScript 偵錯終端機和 npm 指令碼的預設啟動選項。",
 			"configuration.usePreview": "使用 Node.js 和 Chrome 適用的全新預覽版 JavaScript 偵錯工具。",
 			"configuration.warnOnLongPrediction": "如果中斷點預測需要一段時間，是否應顯示載入提示。",
+			"customDescriptionGenerator.description": "Customize the textual description the debugger shows for objects (local variables, etc...). Samples:\r\n      1. this.toString() // will call toString to print all objects\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Use customDescription method if available, if not return defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Use customDescription method if available, if not return defaultValue\r\n      ",
 			"debug.npm.edit": "編輯 package.json",
 			"debug.npm.noScripts": "未在您的 package.json 找到 npm 指令碼",
 			"debug.npm.noWorkspaceFolder": "您需要開啟工作區資料夾，才能偵錯 npm 指令碼。",
@@ -67,7 +75,7 @@
 			"debug.terminal.program.description": "要在啟動終端機執行的指令。如未提供，終端機將不會在開啟時啟動程式。",
 			"debug.terminal.snippet.label": "在偵錯終端機執行 \"npm start\"",
 			"debug.terminal.toggleAuto": "切換終端 Node.js 自動附加",
-			"debug.terminal.welcome": "[Node.js 偵測終端機](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n您可以使用 Node.js 偵測終端機，立即從命令列偵測您執行的 JavaScript。",
+			"debug.terminal.welcome": "[JavaScript Debug Terminal](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nYou can use the JavaScript Debug Terminal to debug Node.js processes run on the command line.",
 			"debugLink.label": "開啟連結",
 			"edge.address.description": "對 Web 檢視進行偵錯時，該 Web 檢視所接聽的 IP 位址或主機名稱。如果未設定，則會自動探索。",
 			"edge.attach.description": "附加至已經進入偵錯模式的 Microsoft Edge 執行個體",
@@ -160,6 +168,7 @@
 			"node.stopOnEntry.description": "啟動後自動停止程式。",
 			"node.timeout.description": "重試連線到 Node.js 的毫秒數。預設值為 10000 毫秒。",
 			"node.versionHint.descriotion": "允許您明確指定正在執行的節點版本，以在無法自動偵測版本時，用以停用或啟用特定行為。",
+			"node.websocket.address.description": "要附加至的確切 WebSocket 位址。若未指定，則會從位址和連接埠進行探索。",
 			"outFiles.description": "若已啟用來源對應，則這些 glob 模式會指定產生的 JavaScript 檔案。若模式的開頭為 `!` ，即會排除檔案。若未指定，則產生的程式碼應與其來源位於相同的目錄中。",
 			"pretty.print.script": "偵錯的美化顯示",
 			"profile.start": "使用效能設定檔",
@@ -188,6 +197,9 @@
 		},
 		"/src/debugServer": {
 			"breakpoint.provisionalBreakpoint": "未繫結的中斷點"
+		},
+		"/src/vsDebugServer": {
+			"session.rootSessionName": "JavaScript 偵錯配接器"
 		},
 		"/src/adapter/customBreakpoints": {
 			"breakpoint.webglErrorNamed": "WebGL 錯誤 \"{0}\"",
@@ -264,14 +276,15 @@
 			"pause.xhr": "已在 XMLHttpRequest 或擷取時暫停",
 			"pause.oom": "已在發生記憶體不足例外狀況之前暫停",
 			"pause.eventListener": "已在事件接聽程式時暫停",
-			"console.assert": "判斷提示失敗",
 			"warnings.handleSourceMapPause.didNotWait": "警告: 處理 {0} 來源對應的時間超過 {1} 毫秒，因此繼續執行，但不會等候指令碼的所有中斷點完成設定。"
 		},
 		"/src/adapter/variables": {
 			"error.variableNotFound": "找不到變數",
 			"error.emptyExpression": "無法設定空白值",
 			"error.invalidExpression": "運算式無效",
-			"error.setVariableDidFail": "無法設定變數值"
+			"error.setVariableDidFail": "無法設定變數值",
+			"error.unknown": "Unknown error",
+			"error.customValueDescriptionGeneratorFailed": "{0} (couldn't describe: {1})"
 		},
 		"/src/dap/errors": {
 			"NVS_HOME.not.found.message": "屬性 'runtimeVersion' 需要安裝 Node.js 版本管理員 'nvs' 或 'nvm'。",
@@ -279,7 +292,7 @@
 			"runtime.version.not.found.message": "未使用版本管理員 {1} 安裝 Node.js '{0}' 版。",
 			"VSND2011": "在終端機 ({0}) 中無法啟動偵錯目標。",
 			"VSND2029": "無法從檔案 ({0}) 載入環境變數。",
-			"runtime.node.notfound": "找不到 Node.js 二進位檔 \"{0}\"。請務必安裝 Node.js，而且您的 PATH 中或您的 launch.json 中，必須設定 \"runtimeExecutable\"",
+			"runtime.node.notfound": "Can't find Node.js binary \"{0}\": {1}. Make sure Node.js is installed and in your PATH, or set the \"runtimeExecutable\" in your launch.json",
 			"runtime.node.outdated": "\"{0}\" 中的 Node 版本已過期 ({1} 版)。最低需要 Node 8.x。",
 			"invalidHitCondition": "到達條件 \"{0}\" 無效。需要 \"> 42\" 或 \"== 2\" 之類的運算式。",
 			"profile.error.generic": "從目標擷取設定檔時發生錯誤。",
@@ -292,6 +305,9 @@
 			"asyncScopesNotAvailable": "變數在非同步堆疊中無法使用",
 			"breakpointSyntaxError": "使用條件 {0} 在第 {1}: {2} 行設定中斷點時發生語法錯誤",
 			"sourcemapParseError": "無法讀取 {0} 的原始檔對應: {1}"
+		},
+		"/src/ui/autoAttach": {
+			"details": "詳細資料"
 		},
 		"/src/ui/companionBrowserLaunch": {
 			"cannotDebugInBrowser": "在偵錯模式中時，無法由此啟動瀏覽器。請從您桌面的 VS Code 中開啟此工作區，以啟用偵錯。"
@@ -331,10 +347,19 @@
 			"cannot.enable.debug.mode.error": "附加至處理序: 無法啟用處理序 '{0}' ({1}) 的偵錯模式。"
 		},
 		"/src/ui/terminalLinkHandler": {
+			"terminalLinkHover.debug": "偵錯 URL",
 			"cantOpenChromeOnWeb": "在偵錯模式中時，無法由此啟動瀏覽器。若要對此網頁執行偵錯，請從您桌面的 VS Code 中開啟此工作區。"
 		},
 		"/src/adapter/breakpoints/userDefinedBreakpoint": {
 			"breakpoint.provisionalBreakpoint": "未繫結的中斷點"
+		},
+		"/src/adapter/console/queryObjectsMessage": {
+			"queryObject.invalidObject": "只能查詢物件",
+			"queryObject.couldNotQuery": "無法查詢提供的物件",
+			"queryObject.errorPreview": "可產生預覽: {0}"
+		},
+		"/src/adapter/console/textualMessage": {
+			"console.assert": "判斷提示失敗"
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
 			"profile.cpu.label": "CPU 設定檔",
@@ -347,10 +372,19 @@
 		"/src/targets/node/nodeAttacher": {
 			"node.attach.restart.message": "與偵錯項目的連線已中斷。將於 {0} 毫秒內重新連線\r\n"
 		},
+		"/src/targets/node/nodeBinaryProvider": {
+			"runtime.node.notfound.enoent": "path does not exist",
+			"runtime.node.notfound.spawnErr": "error getting version: {0}"
+		},
 		"/src/targets/node/terminalProgramLauncher": {
 			"node.console.title": "節點偵錯主控台"
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
+			"existingBrowser.debugAnyway": "仍要偵錯",
+			"existingBrowser.alert": "瀏覽器似乎已從 {0} 執行。請先將其關閉再嘗試進行偵錯，否則 VS Code 可能無法與其連線。",
+			"existingBrowser.location.default": "舊的偵錯工作階段",
+			"existingBrowser.location.userDataDir": "設定的 userDataDir",
+			"cancel": "取消",
 			"chrome.launch.name": "對 localhost 啟動 Chrome"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationProvider": {
