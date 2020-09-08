@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-ko" language pack will be documented in this file.
 
 ## [Released]
+* September 9, 2020 - Release for VS Code 1.49
 * August 12, 2020 -  Release for VS Code 1.48
 * July 8, 2020 -  Release for VS Code 1.47
 * June 10, 2020 -  Release for VS Code 1.46
