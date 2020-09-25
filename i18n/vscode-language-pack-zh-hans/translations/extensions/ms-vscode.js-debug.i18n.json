@@ -51,9 +51,10 @@
 			"chrome.launch.label": "Chrome: 启动",
 			"configuration.autoAttachMode": "配置在 \"#debug.node.autoAttach#\" 处于启用状态时自动附加和调试的进程。无论此设置如何，都始终附加到启动的带有 \"--inspect\" 标志的节点进程。",
 			"configuration.autoAttachMode.always": "自动附加到终端中启动的每个 Node.js 进程。",
+			"configuration.autoAttachMode.disabled": "自动附加被禁用，且不在状态栏中显示。",
 			"configuration.autoAttachMode.explicit": "仅在给定 \"--inspect\" 时自动附加。",
 			"configuration.autoAttachMode.smart": "运行不在 node_modules 文件夹中的脚本时自动附加。",
-			"configuration.autoAttachSmartPatterns": "如果这些 glob 模式之一与智能 \"#debug.javascript.autoAttachFilter#\" 模式中的 Node.jsentrypoint 脚本匹配，我们将调试该进程。\"$KNOWN_TOOLS$\" 将替换为常见测试和代码运行器的名称列表。",
+			"configuration.autoAttachSmartPatterns": "配置用于确定何时在 \"smart\" \"#debug.javascript.autoAttachFilter#\" 模式下进行附加的 glob 模式。\"$KNOWN_TOOLS$\" 将被替换为常见测试和代码运行器的名称的列表。[在 VS Code 文档上了解详细信息](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns)。",
 			"configuration.autoExpandGetters": "配置是否自动扩展属性 getter。如果为 false，getter 将显示为 `get propertyName`，并且仅在单击时才进行评估。",
 			"configuration.automaticallyTunnelRemoteServer": "调试远程 Web 应用时，配置是否自动将远程服务器通过隧道传输到本地计算机。",
 			"configuration.breakOnConditionalError": "当条件断点引发错误时是否停止。请注意: launch.json `type` 必须带有 \"pwa-\" 前缀才能使用它，例如 \"pwa-node\"。",
@@ -63,7 +64,6 @@
 			"configuration.suggestPrettyPrinting": "是否建议在单步执行时将看起来被压缩的 JavaScript 代码美观打印。",
 			"configuration.terminalOptions": "JavaScript 调试终端和 npm 脚本的默认启动选项。",
 			"configuration.usePreview": "为 Node.js 和 Chrome 使用新的预览版 JavaScript 调试器。",
-			"configuration.warnOnLongPrediction": "如果断点预测需要一段时间，是否应显示加载提示。",
 			"customDescriptionGenerator.description": "自定义调试程序为对象(本地变量等)显示的文本说明。示例:\r\n      1. this.toString() // 将调用 toString 来打印所有对象\r\n      2. this.customDescription ? this.customDescription() : defaultValue // 如果未返回 defaultValue，则使用 customDescription 方法(若可用)\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // 如果未返回 defaultValue，则使用 customDescription 方法(若可用)\r\n      ",
 			"debug.npm.edit": "编辑 package.json",
 			"debug.npm.noScripts": "在 package.json 中找不到 npm 脚本",
@@ -75,7 +75,7 @@
 			"debug.terminal.program.description": "在启动的终端中运行命令。如果未提供命令，终端将在不启动程序的情况下打开。",
 			"debug.terminal.snippet.label": "在调试终端中运行 \"npm start\"",
 			"debug.terminal.toggleAuto": "切换终端 Node.js 自动附加",
-			"debug.terminal.welcome": "[JavaScript 调试终端](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n可使用 JavaScript 调试终端调试在命令行上运行的 Node.js 进程。",
+			"debug.terminal.welcome": "[JavaScript 调试终端](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n可使用 JavaScript 调试终端调试在命令行上运行的 Node.js 进程。\r\n\r\n[调试 URL](command:extension.js-debug.debugLink)",
 			"debugLink.label": "打开链接",
 			"edge.address.description": "调试 Web 视图时，Web 视图正在侦听的 IP 地址或主机名。如果未设置，则自动发现。",
 			"edge.attach.description": "附加到已在调试模式下的 Edge 实例",
@@ -91,7 +91,7 @@
 			"extensionHost.label": "VS Code 扩展开发(预览)",
 			"extensionHost.launch.config.name": "启动扩展",
 			"extensionHost.launch.debugWebWorkerHost": "配置是否应尝试附加到 Web 辅助进程扩展主机。",
-			"extensionHost.launch.debugWebviews": "配置是否应尝试附加到已启动的 VS Code 实例中的 Web 视图。**请注意:** 要使其正常工作，当前需要设置 \"webview.experimental.useExternalEndpoint\": true，并且此功能仅适用于桌面 VS Code。",
+			"extensionHost.launch.debugWebviews": "配置是否应尝试附加到已启动的 VS Code 实例中的 Web 视图。**请注意:** 要使其正常工作，当前需要设置 \"webview.experimental.useIframes\": true，并且此功能仅适用于桌面 VS Code。",
 			"extensionHost.launch.env.description": "传递给扩展主机的环境变量。",
 			"extensionHost.launch.rendererDebugOptions": "附加到呈现器进程时使用的 Chrome 启动选项，具有 \"debugWebviews\" 或 \"debugWebWorkerHost\"。",
 			"extensionHost.launch.runtimeExecutable.description": "VS Code 的绝对路径。",
@@ -313,7 +313,11 @@
 			"cannotDebugInBrowser": "无法从此处启动调试模式下的浏览器。要启用调试，请在桌面上的 VS Code 中打开此工作区。"
 		},
 		"/src/ui/debugLinkUI": {
-			"debugLink.invalidUrl": "提供的 URL 无效"
+			"debugLink.invalidUrl": "提供的 URL 无效",
+			"yes": "是",
+			"never": "从不",
+			"debugLink.savePrompt": "是否要将配置保存在 launch.json 中以便日后访问?",
+			"no": "否"
 		},
 		"/src/ui/debugNpmScript": {
 			"debug.npm.noWorkspaceFolder": "需要打开工作区文件夹来调试 npm 脚本。",

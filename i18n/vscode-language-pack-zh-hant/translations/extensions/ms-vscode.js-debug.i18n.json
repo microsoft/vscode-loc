@@ -51,9 +51,10 @@
 			"chrome.launch.label": "Chrome: 啟動",
 			"configuration.autoAttachMode": "Configures which processes to automatically attach and debug when `#debug.node.autoAttach#` is on. A Node process launched with the `--inspect` flag will always be attached to, regardless of this setting.",
 			"configuration.autoAttachMode.always": "自動附加至在終端機中啟動的每個 Node.js 處理序。",
+			"configuration.autoAttachMode.disabled": "自動附加已停用且不顯示於狀態列。",
 			"configuration.autoAttachMode.explicit": "只有在指定 `--inspect` 時才自動附加。",
 			"configuration.autoAttachMode.smart": "執行不在 node_modules 資料夾中的指令碼時自動附加。",
-			"configuration.autoAttachSmartPatterns": "If one of these glob patterns matches the Node.jsentrypoint script in smart `#debug.javascript.autoAttachFilter#` mode, we will debug that process. `$KNOWN_TOOLS$` is replaced with a list of names of common test and code runners.",
+			"configuration.autoAttachSmartPatterns": "設定 Glob 模式以決定要在「智慧型」`#debug.javascript.autoAttachFilter#` 模式中附加的時機。已使用通用測試和程式碼執行器的名稱清單取代 `$KNOWN_TOOLS$`。[在 VS Code 文件閱讀更多內容](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns)。",
 			"configuration.autoExpandGetters": "設定是否要自動展開屬性 getter。如果設為 false，getter 將顯示為 `get propertyName`，並且只在按一下該屬性時才會進行評估。",
 			"configuration.automaticallyTunnelRemoteServer": "偵測遠端 Web 應用程式時，設定是否自動打開遠端伺服器到本機電腦的通道。",
 			"configuration.breakOnConditionalError": "當條件式中斷點擲回錯誤時是否停止。請注意: 您的 launch.json `type` 前面必須加上 `pwa-`，才可使用此設定，例如 `pwa-node`。",
@@ -63,7 +64,6 @@
 			"configuration.suggestPrettyPrinting": "是否要在您進入時建議看起來已縮小的美化顯示 JavaScript 程式碼。",
 			"configuration.terminalOptions": "JavaScript 偵錯終端機和 npm 指令碼的預設啟動選項。",
 			"configuration.usePreview": "使用 Node.js 和 Chrome 適用的全新預覽版 JavaScript 偵錯工具。",
-			"configuration.warnOnLongPrediction": "如果中斷點預測需要一段時間，是否應顯示載入提示。",
 			"customDescriptionGenerator.description": "自訂偵錯工具為物件 (例如區域變數等...) 所顯示的文字描述。範例:\r\n      1. this.toString() // 會呼叫 toString 列印所有物件\r\n      2. this.customDescription ? this.customDescription() : defaultValue // 使用 customDescription 方法 (如果有的話)，如果沒有則傳回 defaultValue\r\n      3. 函式 (def) { return this.customDescription ? this.customDescription() : def } // 使用 customDescription 方法 (如果有的話)，如果沒有則傳回 defaultValue\r\n      ",
 			"debug.npm.edit": "編輯 package.json",
 			"debug.npm.noScripts": "未在您的 package.json 找到 npm 指令碼",
@@ -75,7 +75,7 @@
 			"debug.terminal.program.description": "要在啟動終端機執行的指令。如未提供，終端機將不會在開啟時啟動程式。",
 			"debug.terminal.snippet.label": "在偵錯終端機執行 \"npm start\"",
 			"debug.terminal.toggleAuto": "切換終端 Node.js 自動附加",
-			"debug.terminal.welcome": "[JavaScript Debug Terminal](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nYou can use the JavaScript Debug Terminal to debug Node.js processes run on the command line.",
+			"debug.terminal.welcome": "[JavaScript 偵錯終端機](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n您可以使用 JavaScript 偵錯終端機為命令列上執行的 Node.js 處理序進行偵錯。\r\n\r\n[偵錯 URL](command:extension.js-debug.debugLink)",
 			"debugLink.label": "開啟連結",
 			"edge.address.description": "對 Web 檢視進行偵錯時，該 Web 檢視所接聽的 IP 位址或主機名稱。如果未設定，則會自動探索。",
 			"edge.attach.description": "附加至已經進入偵錯模式的 Microsoft Edge 執行個體",
@@ -91,7 +91,7 @@
 			"extensionHost.label": "VS Code 延伸模組開發 (預覽)",
 			"extensionHost.launch.config.name": "啟動延伸模組",
 			"extensionHost.launch.debugWebWorkerHost": "設定是否應嘗試附加到 Web 背景工作延伸主機。",
-			"extensionHost.launch.debugWebviews": "設定是否應嘗試連結到已經啟動之 VS Code 執行個體中的 Web 檢視。**注意:** 目前必須設定 '\"webview.experimental.useExternalEndpoint\": true' 才能正常運作，而且只能在 VS Code 桌面運作。",
+			"extensionHost.launch.debugWebviews": "設定是否應嘗試連結到已經啟動之 VS Code 執行個體中的 Web 檢視。**注意:** 目前必須設定 `\"webview.experimental.useIframes\": true` 才能正常運作，而且只能在 VS Code 桌面運作。",
 			"extensionHost.launch.env.description": "傳遞至延伸模組主機的環境變數。",
 			"extensionHost.launch.rendererDebugOptions": "附加到轉譯器處理序時所使用的 Chrome 啟動選項，包含 `debugWebviews` 或 `debugWebWorkerHost`。",
 			"extensionHost.launch.runtimeExecutable.description": "到達 VS 程式碼的絕對路徑。",
@@ -313,7 +313,11 @@
 			"cannotDebugInBrowser": "在偵錯模式中時，無法由此啟動瀏覽器。請從您桌面的 VS Code 中開啟此工作區，以啟用偵錯。"
 		},
 		"/src/ui/debugLinkUI": {
-			"debugLink.invalidUrl": "提供的 URL 無效"
+			"debugLink.invalidUrl": "提供的 URL 無效",
+			"yes": "是",
+			"never": "一律不要",
+			"debugLink.savePrompt": "您要將設定儲存在您的 launch.json 中，以便日後存取嗎?",
+			"no": "否"
 		},
 		"/src/ui/debugNpmScript": {
 			"debug.npm.noWorkspaceFolder": "您需要開啟工作區資料夾，才能偵錯 npm 指令碼。",

@@ -51,9 +51,10 @@
 			"chrome.launch.label": "Chrome: Avvia",
 			"configuration.autoAttachMode": "Consente di configurare i processi da collegare e di cui eseguire automaticamente il debug quando `#debug.node.autoAttach#` è impostato su on. Un processo Node avviato con il flag `--inspect` verrà sempre collegato indipendentemente da questa impostazione.",
 			"configuration.autoAttachMode.always": "Collega automaticamente a ogni processo Node.js avviato nel terminale.",
+			"configuration.autoAttachMode.disabled": "La funzionalità di collegamento automatico è disabilitata e non visualizzata nella barra di stato.",
 			"configuration.autoAttachMode.explicit": "Collega automaticamente solo quando è specificato `--inspect`.",
 			"configuration.autoAttachMode.smart": "Collega automaticamente durante l'esecuzione di script non presenti in una cartella node_modules.",
-			"configuration.autoAttachSmartPatterns": "Se uno di questi criteri GLOB corrisponde dallo script Node.jsentrypoint nella modalità smart `#debug.javascript.autoAttachFilter#`, verrà eseguito il debug del processo. `$KNOWN_TOOLS$` viene sostituito da un elenco di nomi di strumenti di esecuzione codice e test comuni.",
+			"configuration.autoAttachSmartPatterns": "Consente di configurare i criteri GLOB per determinare quando collegarsi in modalità `#debug.javascript.autoAttachFilter#` \"intelligente\". `$KNOWN_TOOLS$` viene sostituito con un elenco di nomi di strumenti di esecuzione codice e test comuni. [Altre informazioni disponibili nella documentazione di VS Code] (https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns).",
 			"configuration.autoExpandGetters": "Consente di configurare l'espansione automatica dei getter di proprietà. Se è false, il getter verrà visualizzato come `get propertyName` e sarà necessario farvi clic sopra per valutarlo.",
 			"configuration.automaticallyTunnelRemoteServer": "Durante il debug di un'app Web remota, configura l'eventuale tunneling automatico del server remoto nel computer locale.",
 			"configuration.breakOnConditionalError": "Indica se arrestare l'esecuzione quando i punti di interruzione condizionali generano un errore. Nota: per usare questa opzione l'attributo `type` di launch.json deve includere il prefisso `pwa-`, ad esempio `pwa-node`.",
@@ -63,7 +64,6 @@
 			"configuration.suggestPrettyPrinting": "Indica se suggerire la riformattazione del codice JavaScript che sembra ridotto quando si eseguono le istruzioni.",
 			"configuration.terminalOptions": "Opzioni di avvio predefinite per gli script npm e del terminale di debug di JavaScript.",
 			"configuration.usePreview": "Usa il nuovo debugger JavaScript in anteprima per Node.js e Chrome.",
-			"configuration.warnOnLongPrediction": "Indica se visualizzare un prompt di caricamento se la previsione dei punti di interruzione richiede tempo.",
 			"customDescriptionGenerator.description": "Consente di personalizzare la descrizione testuale degli oggetti (variabili locali e così via) visualizzata dal debugger. Esempi:\r\n      1. this.toString() // Viene chiamato toString per stampare tutti gli oggetti\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Usa il metodo customDescription, se disponibile; altrimenti restituisce defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Usa il metodo customDescription, se disponibile; altrimenti restituisce defaultValue\r\n      ",
 			"debug.npm.edit": "Modifica package.json",
 			"debug.npm.noScripts": "Nel file package.json non sono stati trovati script npm",
@@ -75,7 +75,7 @@
 			"debug.terminal.program.description": "Comando da eseguire nel terminale avviato. Se non viene specificato, il terminale verrà aperto senza avviare alcun programma.",
 			"debug.terminal.snippet.label": "Esegui \"npm start\" in un terminale di debug",
 			"debug.terminal.toggleAuto": "Attiva/Disattiva collegamento automatico al terminale Node.js",
-			"debug.terminal.welcome": "[Terminale di debug di JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nÈ possibile usare il terminale di debug di JavaScript per eseguire il debug di processi Node.js eseguiti dalla riga di comando.",
+			"debug.terminal.welcome": "[Terminale di debug di JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nÈ possibile usare il terminale di debug di JavaScript per eseguire il debug di processi Node.js eseguiti dalla riga di comando.\r\n\r\n[URL di debug](command:extension.js-debug.debugLink)",
 			"debugLink.label": "Apri collegamento",
 			"edge.address.description": "Durante il debug di webview, indirizzo IP o nome host su cui è in ascolto la webview. Se non è impostato, verrà individuato automaticamente.",
 			"edge.attach.description": "Si collega a un'istanza di Microsoft Edge già in modalità di debug",
@@ -91,7 +91,7 @@
 			"extensionHost.label": "Sviluppo di estensioni per VS Code (anteprima)",
 			"extensionHost.launch.config.name": "Avvia estensione",
 			"extensionHost.launch.debugWebWorkerHost": "Consente di configurare se è necessario provare a collegarsi all'host dell'estensione Web worker.",
-			"extensionHost.launch.debugWebviews": "Configura i tentativi di collegamento alle webview nell'istanza di VS Code avviata. **Nota:** per il corretto funzionamento, al momento richiede l'impostazione `\"webview.experimental.useExternalEndpoint\": true` e funzionerà solo nella versione desktop di VS Code.",
+			"extensionHost.launch.debugWebviews": "Configura i tentativi di collegamento alle webview nell'istanza di VS Code avviata. **Nota:** per il corretto funzionamento, al momento richiede l'impostazione `\"webview.experimental.useIframes\": true` e funzionerà solo nella versione desktop di VS Code.",
 			"extensionHost.launch.env.description": "Variabili di ambiente passate all'host dell'estensione.",
 			"extensionHost.launch.rendererDebugOptions": "Opzioni di avvio di Chrome usate durante il collegamento al processo del renderer con `debugWebviews` o `debugWebWorkerHost`.",
 			"extensionHost.launch.runtimeExecutable.description": "Percorso assoluto di VS Code.",
@@ -313,7 +313,11 @@
 			"cannotDebugInBrowser": "Non è possibile avviare un browser in modalità di debug da questa posizione. Per abilitare il debug, aprire l'area di lavoro in VS Code sul desktop."
 		},
 		"/src/ui/debugLinkUI": {
-			"debugLink.invalidUrl": "L'URL specificato non è valido"
+			"debugLink.invalidUrl": "L'URL specificato non è valido",
+			"yes": "Sì",
+			"never": "Mai",
+			"debugLink.savePrompt": "Salvare una configurazione nel file launch.json per accedervi più facilmente in un secondo momento?",
+			"no": "No"
 		},
 		"/src/ui/debugNpmScript": {
 			"debug.npm.noWorkspaceFolder": "Per eseguire il debug di script npm, è necessario aprire una cartella dell'area di lavoro.",

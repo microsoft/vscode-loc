@@ -51,9 +51,10 @@
 			"chrome.launch.label": "Chrome : lancer",
 			"configuration.autoAttachMode": "Configure les processus à attacher et déboguer automatiquement quand '#debug.node.autoAttach#' est activé. Un processus Node lancé avec l'indicateur '--inspect' est toujours attaché, quel que soit ce paramètre.",
 			"configuration.autoAttachMode.always": "Effectue l'attachement automatique à chaque processus Node.js lancé dans le terminal.",
+			"configuration.autoAttachMode.disabled": "L'attachement automatique est désactivé et n'est pas affiché dans la barre d’état.",
 			"configuration.autoAttachMode.explicit": "Effectue l'attachement automatique uniquement quand '--inspect' est indiqué.",
 			"configuration.autoAttachMode.smart": "Effectue l'attachement automatique durant l'exécution de scripts qui ne se trouvent pas dans un dossier node_modules.",
-			"configuration.autoAttachSmartPatterns": "Si l'un de ces modèles Glob correspond au script Node.jsentrypoint en mode '#debug.javascript.autoAttachFilter#' intelligent, nous déboguons ce processus. '$KNOWN_TOOLS$' est remplacé par une liste de noms d'exécuteurs de tests et de codes courants.",
+			"configuration.autoAttachSmartPatterns": "Configure des modèles Glob qui permettent de déterminer quand effectuer l'attachement en mode '#debug.javascript.autoAttachFilter#' \"intelligent\". '$KNOWN_TOOLS$' est remplacé par une liste de noms d'exécuteurs de tests et de codes courants. [Pour plus d'informations, lisez la documentation de VS Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns).",
 			"configuration.autoExpandGetters": "Configure le développement automatique ou non des getters de propriété. Si la valeur est false, le getter apparaît en tant que 'get propertyName' et est évalué uniquement quand vous cliquez dessus.",
 			"configuration.automaticallyTunnelRemoteServer": "Quand vous déboguez une application web à distance, configure s'il faut automatiquement \"tunneler\" le serveur distant vers votre machine locale.",
 			"configuration.breakOnConditionalError": "Indique si un arrêt doit être effectué quand des points d'arrêt conditionnels génèrent une erreur. Remarque : Dans launch.json, 'type' doit être précédé de 'pwa-', par exemple 'pwa-node'.",
@@ -63,7 +64,6 @@
 			"configuration.suggestPrettyPrinting": "Indique s'il faut suggérer l'impression en mode Pretty du code JavaScript qui semble minifié lors d'un pas à pas détaillé.",
 			"configuration.terminalOptions": "Options de lancement par défaut pour le terminal de débogage JavaScript et les scripts npm.",
 			"configuration.usePreview": "Utilisez le nouveau débogueur JavaScript en préversion pour Node.js et Chrome.",
-			"configuration.warnOnLongPrediction": "Indique s'il faut afficher une invitation de chargement si une prédiction de point d'arrêt prend du temps.",
 			"customDescriptionGenerator.description": "Personnalisez la description textuelle que le débogueur affiche pour les objets (variables locales, etc.). Exemples :\r\n      1. this.toString() // va appeler toString pour afficher tous les objets\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Utiliser la méthode customDescription, si elle est disponible. Sinon, retourner defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Utiliser la méthode customDescription, si elle est disponible. Sinon, retourner defaultValue\r\n      ",
 			"debug.npm.edit": "Modifier package.json",
 			"debug.npm.noScripts": "Aucun script npm dans votre package.json",
@@ -75,7 +75,7 @@
 			"debug.terminal.program.description": "Commande à exécuter dans le terminal lancé. Si non fournie, le terminal s'ouvre sans lancer de programme.",
 			"debug.terminal.snippet.label": "Exécuter \"npm start\" dans un terminal de débogage",
 			"debug.terminal.toggleAuto": "Activer/désactiver l'attachement automatique au terminal Node.js",
-			"debug.terminal.welcome": "[Terminal de débogage JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nVous pouvez utiliser le terminal de débogage JavaScript pour déboguer les processus Node.js exécutés sur la ligne de commande.",
+			"debug.terminal.welcome": "[Terminal de débogage JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nVous pouvez utiliser le terminal de débogage JavaScript pour déboguer les processus Node.js exécutés sur la ligne de commande.\r\n\r\n[URL de débogage](command:extension.js-debug.debugLink)",
 			"debugLink.label": "Ouvrir le lien",
 			"edge.address.description": "Au moment du débogage des vues web, adresse IP ou nom d'hôte écouté par la vue web. La découverte s'effectue automatiquement, si aucune valeur n'est définie.",
 			"edge.attach.description": "Attacher à une instance de Microsoft Edge déjà en mode débogage",
@@ -91,7 +91,7 @@
 			"extensionHost.label": "Développement d'extension VS Code (préversion)",
 			"extensionHost.launch.config.name": "Lancer l'extension",
 			"extensionHost.launch.debugWebWorkerHost": "Indique si nous devons effectuer une tentative d'attachement à l'hôte d'extension worker web.",
-			"extensionHost.launch.debugWebviews": "Nous permet de configurer l'attachement ou non aux vues web dans l'instance de VS Code lancée. **Remarque :** Pour le moment, le paramètre '\"webview.experimental.useExternalEndpoint\": true' est nécessaire pour garantir un fonctionnement correct. De plus, cela ne fonctionne que dans l'application de bureau VS Code.",
+			"extensionHost.launch.debugWebviews": "Nous permet de configurer l'attachement ou non aux vues web dans l'instance de VS Code lancée. **Remarque :** Pour le moment, le paramètre '\"webview.experimental.useIframes\": true' est nécessaire pour garantir un fonctionnement correct. De plus, l'opération ne fonctionne que dans l'application de bureau VS Code.",
 			"extensionHost.launch.env.description": "Variables d'environnement passées à l'hôte d'extension.",
 			"extensionHost.launch.rendererDebugOptions": "Options de lancement de Chrome utilisées lors de l'attachement au processus renderer, avec 'debugWebviews' ou 'debugWebWorkerHost'.",
 			"extensionHost.launch.runtimeExecutable.description": "Chemin absolu de VS Code.",
@@ -313,7 +313,11 @@
 			"cannotDebugInBrowser": "Nous ne pouvons pas lancer un navigateur en mode débogage à partir d'ici. Ouvrez cet espace de travail dans VS Code sur votre poste de travail pour activer le débogage."
 		},
 		"/src/ui/debugLinkUI": {
-			"debugLink.invalidUrl": "L'URL fournie n'est pas valide"
+			"debugLink.invalidUrl": "L'URL fournie n'est pas valide",
+			"yes": "Oui",
+			"never": "Jamais",
+			"debugLink.savePrompt": "Voulez-vous enregistrer une configuration dans votre fichier launch.json pour y accéder facilement plus tard ?",
+			"no": "Non"
 		},
 		"/src/ui/debugNpmScript": {
 			"debug.npm.noWorkspaceFolder": "Vous devez ouvrir un dossier d'espace de travail pour déboguer les scripts npm.",
