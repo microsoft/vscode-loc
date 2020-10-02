@@ -36,6 +36,7 @@
 * Simon Chan
 * 王子实
 * 王韦煊
+* 王旭晨
 * Zijian Zhou
 * wwj403
 * Shizeng Zhou
