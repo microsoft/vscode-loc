@@ -1,26 +1,26 @@
-#  Pacote de Idioma para o VS Code em Português Brasileiro
+#  Pacote de Idioma Português Brasileiro para VS Code
 
-O Pacote de idioma para Português Brasileiro fornece uma experiência de Interface de Usuário (UI) localizada para o VS Code.
+O Pacote de Idioma Português Brasileiro fornece uma Interface de Usuário (UI) localizada para o VS Code.
 
-## Uso
+## Como Utilizar
 
 Depois de instalado, configure `"locale": "pt-br"` no `locale.json` para carregar o pacote de idioma em Português Brasileiro. Para modificar o `locale.json` pressione `Ctrl+Shift+P` para abrir a **Palheta de Comandos**, comece a digitar "config" para filtrar a lista de comandos disponíveis, então selecione o comando **Configure Language**. Visite [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para mais informações.
 
 ## Contribuições
 
-As sequências de tradução são mantidas no projeto "DevTools – VS Code" no MLCP (Microsoft Localization Community Platform). 
+As sentenças para tradução são mantidas no projeto "DevTools – VS Code" no MLCP (Microsoft Localization Community Platform). 
 
 Se você deseja participar da tradução, visite a [página de localização da comunidade](https://aka.ms/vscodeloc) para mais informações.
 
 ## Licença
 
-O código fonte e as strings são licenciadas sob a licença [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+O código fonte e as sentenças traduzidas são licenciadas sob a licença [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
 ## Créditos
 
-O pacote de idioma em Português Brasileiro é fornecido à você pelos esforços de localização "Da comunidade, para a comunidade"
+O Pacote de Idioma Português Brasileiro é fornecido a você "Pela comunidade, para a comunidade"
 
-Agradecimentos especiais para a comunidade de contribuidores por tornar isso possível.
+Agradecimentos especiais a comunidade de contribuidores por tornar isso possível.
 
 **Maiores Contribuidores:**
 
