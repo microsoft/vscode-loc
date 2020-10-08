@@ -2,5 +2,5 @@
 All notable changes to the "vscode-language-pack-pl" language pack will be documented in this file.
 
 ## [Released]
-* May 1x, 201x - Release for VS Code 1.3x
+* October 7, 2020 - Release for VS Code 1.50
 
