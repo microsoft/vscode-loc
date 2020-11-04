@@ -2,6 +2,7 @@
 All notable changes to the "vscode-language-pack-pt_BR" language pack will be documented in this file.
 
 ## [Released]
+* November 4, 2020 - Release for VS Code 1.51
 * October 7, 2020 - Release for VS Code 1.50
 * August 12, 2020 -  Release for VS Code 1.48
 * July 8, 2020 -  Release for VS Code 1.47
