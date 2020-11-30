@@ -57,7 +57,7 @@ Japanese Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "ja"` in `locale.json` to load Japanese Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+Once installed, set `"locale": "ja"` in `locale.json` to load Japanese Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Display Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
