@@ -23,7 +23,7 @@
 			"browser.env.description": "Dictionnaire facultatif des paires clés/valeur de l'environnement pour le navigateur.",
 			"browser.file.description": "Fichier html local à ouvrir dans le navigateur",
 			"browser.includeDefaultArgs.description": "Indique si les arguments de lancement de navigateur par défaut (pour désactiver les fonctionnalités qui peuvent compliquer le débogage) sont inclus dans le lancement.",
-			"browser.inspectUri.description": "Format à utiliser pour réécrire inspectUri : il s'agit d'une chaîne de modèle qui interpole les clés dans '{curlyBraces}'. Les clés disponibles sont :\r\n - 'url.*' est l'adresse analysée de l'application en cours d'exécution. Par exemple, '{url.port}', '{url.hostname}'\r\n - 'port' est le port de débogage sur lequel Chrome écoute.\r\n - 'browserInspectUri' est l'URI d'inspecteur sur le navigateur lancé\r\n - 'wsProtocol' est le protocole websocket avec indicateur. Il est défini sur 'wss' si l'URL d'origine est 'https', sinon sur 'ws'.\r\n",
+			"browser.inspectUri.description": "Format to use to rewrite the inspectUri: It's a template string that interpolates keys in `{curlyBraces}`. Available keys are:\r\n - `url.*` is the parsed address of the running application. For instance, `{url.port}`, `{url.hostname}`\r\n - `port` is the debug port that Chrome is listening on.\r\n - `browserInspectUri` is the inspector URI on the launched browser\r\n - `browserInspectUriPath` is the path part of the inspector URI on the launched browser (e.g.: \"/devtools/browser/e9ec0098-306e-472a-8133-5e42488929c2\").\r\n - `wsProtocol` is the hinted websocket protocol. This is set to `wss` if the original URL is `https`, or `ws` otherwise.\r\n",
 			"browser.launch.port.description": "Port d'écoute du navigateur. La valeur par défaut est \"0\", ce qui entraîne le débogage du navigateur via des canaux. Cette méthode, généralement plus sécurisée, est recommandée, sauf si vous devez effectuer un attachement au navigateur à partir d'un autre outil.",
 			"browser.pathMapping.description": "Mappage des URL/chemins de dossiers locaux pour résoudre les scripts dans le navigateur en scripts sur le disque",
 			"browser.perScriptSourcemaps.description": "Indique si les scripts sont chargés individuellement avec des mappages de source uniques contenant le nom de base du fichier source. Ce paramètre peut être défini pour optimiser la gestion des mappages de source en présence d'un grand nombre de petits scripts. Si la valeur est \"auto\", nous détectons les cas connus le cas échéant.",
@@ -60,6 +60,7 @@
 			"configuration.automaticallyTunnelRemoteServer": "Quand vous déboguez une application web à distance, configure s'il faut automatiquement \"tunneler\" le serveur distant vers votre machine locale.",
 			"configuration.breakOnConditionalError": "Indique si un arrêt doit être effectué quand des points d'arrêt conditionnels génèrent une erreur. Remarque : Dans launch.json, 'type' doit être précédé de 'pwa-', par exemple 'pwa-node'.",
 			"configuration.debugByLinkOptions": "Options utilisées pendant le débogage de liens ouverts sur lesquels l'utilisateur a cliqué à partir du terminal de débogage. Peut être défini sur \"false\" pour désactiver ce comportement.",
+			"configuration.defaultRuntimeExecutables": "The default `runtimeExecutable` used for launch configurations, if unspecified. This can be used to config custom paths to Node.js or browser installations.",
 			"configuration.npmScriptLensLocation": "Indique où CodeLens doit être affiché pour \"Exécuter\" et \"Déboguer\" dans vos scripts npm. Les options sont : \"tous\" les scripts, \"en haut\" de la section de script ou \"jamais\".",
 			"configuration.pickAndAttachOptions": "Options par défaut utilisées pour le débogage d'un processus via la commande Déboguer : attacher au processus Node.js",
 			"configuration.suggestPrettyPrinting": "Indique s'il faut suggérer l'impression en mode Pretty du code JavaScript qui semble minifié lors d'un pas à pas détaillé.",
@@ -68,6 +69,7 @@
 			"configuration.usePreview": "Utilisez le nouveau débogueur JavaScript en préversion pour Node.js et Chrome.",
 			"createDiagnostics.label": "Créer des informations de diagnostic pour la session actuelle",
 			"customDescriptionGenerator.description": "Personnalisez la description textuelle que le débogueur affiche pour les objets (variables locales, etc.). Exemples :\r\n      1. this.toString() // va appeler toString pour afficher tous les objets\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Utiliser la méthode customDescription, si elle est disponible. Sinon, retourner defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Utiliser la méthode customDescription, si elle est disponible. Sinon, retourner defaultValue\r\n      ",
+			"customPropertiesGenerator.description": "Customize the properties shown for an object in the debugger (local variables, etc...). Samples:\r\n    1. { ...this, extraProperty: '12345' } // Add an extraProperty 12345 to all objects\r\n    2. this.customProperties ? this.customProperties() : this // Use customProperties method if available, if not use the properties in this (the default properties)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // Use customDescription method if available, if not return the default properties\r\n\r\n    Deprecated: This is a temporary implementation of this feature until we have time to implement it in the way described here: https://github.com/microsoft/vscode/issues/102181",
 			"debug.npm.edit": "Modifier package.json",
 			"debug.npm.noScripts": "Aucun script npm dans votre package.json",
 			"debug.npm.noWorkspaceFolder": "Vous devez ouvrir un dossier d'espace de travail pour déboguer les scripts npm.",
@@ -78,7 +80,8 @@
 			"debug.terminal.program.description": "Commande à exécuter dans le terminal lancé. Si non fournie, le terminal s'ouvre sans lancer de programme.",
 			"debug.terminal.snippet.label": "Exécuter \"npm start\" dans un terminal de débogage",
 			"debug.terminal.toggleAuto": "Activer/désactiver l'attachement automatique au terminal Node.js",
-			"debug.terminal.welcome": "[Terminal de débogage JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nVous pouvez utiliser le terminal de débogage JavaScript pour déboguer les processus Node.js exécutés sur la ligne de commande.\r\n\r\n[URL de débogage](command:extension.js-debug.debugLink)",
+			"debug.terminal.welcome": "[Terminal de débogage JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nVous pouvez utiliser le terminal de débogage JavaScript pour déboguer les processus Node.js exécutés sur la ligne de commande.",
+			"debug.terminal.welcomeWithLink": "[Terminal de débogage JavaScript](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nVous pouvez utiliser le terminal de débogage JavaScript pour déboguer les processus Node.js exécutés sur la ligne de commande.\r\n\r\n[URL de débogage](command:extension.js-debug.debugLink)",
 			"debugLink.label": "Ouvrir le lien",
 			"edge.address.description": "Au moment du débogage des vues web, adresse IP ou nom d'hôte écouté par la vue web. La découverte s'effectue automatiquement, si aucune valeur n'est définie.",
 			"edge.attach.description": "Attacher à une instance de Microsoft Edge déjà en mode débogage",
@@ -115,6 +118,7 @@
 			"node.attachSimplePort.description": "Si l'option correspondante est définie, l'attachement au processus s'effectue par le biais du port indiqué. En règle générale, cela n'est plus nécessaire pour les programmes Node.js. Le débogage des processus enfants n'est alors plus possible, mais ce choix peut être utile dans des scénarios plus rares, tels que les lancements de Deno et Docker. Si l'option est définie avec la valeur 0, un port aléatoire est choisi et --inspect-brk est automatiquement ajouté aux arguments de lancement.",
 			"node.console.title": "Console de débogage Node",
 			"node.disableOptimisticBPs.description": "Ne définissez pas de points d'arrêt dans un fichier tant qu'un mappage de source n'a pas été chargé pour ce fichier.",
+			"node.killBehavior.description": "Configures how debug process are killed when stopping the sesssion. Can be:\r\n\r\n- forceful (default): forcefully tears down the process tree. Sends SIGKILL on posix, or `taskkill.exe /F` on Windows.\r\n- polite: gracefully tears down the process tree. It's possible that misbehaving processes continue to run after shutdown in this way. Sends SIGTERM on posix, or `taskkill.exe` with no `/F` (force) flag on Windows.\r\n- none: no termination will happen.",
 			"node.label": "Node.js (préversion)",
 			"node.launch.args.description": "Arguments de ligne de commande passés au programme.",
 			"node.launch.autoAttachChildProcesses.description": "Attacher le débogueur aux nouveaux processus enfants automatiquement.",
@@ -287,6 +291,7 @@
 			"error.invalidExpression": "Expression non valide",
 			"error.setVariableDidFail": "Impossible de définir la valeur de la variable",
 			"error.unknown": "Erreur inconnue",
+			"error.failedToCustomizeObjectProperties": "Failed properties customization",
 			"error.customValueDescriptionGeneratorFailed": "{0} (description impossible : {1})"
 		},
 		"/src/dap/errors": {
@@ -330,9 +335,6 @@
 		},
 		"/src/ui/debugTerminalUI": {
 			"terminal.cwdpick": "Sélectionner le répertoire de travail actuel pour le nouveau terminal"
-		},
-		"/src/ui/diagnosticsUI": {
-			"createDiagnostics.copied": "Le chemin du rapport de diagnostic a été copié dans le presse-papiers"
 		},
 		"/src/ui/disableSourceMapUI": {
 			"always": "Toujours",

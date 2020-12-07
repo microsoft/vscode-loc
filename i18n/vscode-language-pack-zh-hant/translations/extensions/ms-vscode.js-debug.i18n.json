@@ -23,7 +23,7 @@
 			"browser.env.description": "瀏覽器環境索引鍵/值組的選用字典。",
 			"browser.file.description": "要在瀏覽器中開啟的本機 html 檔案",
 			"browser.includeDefaultArgs.description": "啟動中是否將包含預設的瀏覽器啟動引數 (以停用可能會讓偵錯更加困難的功能)。",
-			"browser.inspectUri.description": "用於重寫 inspectUri 的格式: 這是在 `{curlyBraces}` 中插入索引鍵的範本字串。可用的索引鍵包括:\r\n - `url.*` 是正在執行之應用程式的剖析位址。例如 `{url.port}`、`{url.hostname}`\r\n - `port` 是 Chrome 聆聽的偵錯連接埠。\r\n - `browserInspectUri` 是已啟動瀏覽器的偵測器 URI。\r\n - `wsProtocol` 是提示的 WebSocket 通訊協定。如果原始 URL 為 `https` 或 `ws` 等其他項目，此項目會設定為 `wss`。",
+			"browser.inspectUri.description": "Format to use to rewrite the inspectUri: It's a template string that interpolates keys in `{curlyBraces}`. Available keys are:\r\n - `url.*` is the parsed address of the running application. For instance, `{url.port}`, `{url.hostname}`\r\n - `port` is the debug port that Chrome is listening on.\r\n - `browserInspectUri` is the inspector URI on the launched browser\r\n - `browserInspectUriPath` is the path part of the inspector URI on the launched browser (e.g.: \"/devtools/browser/e9ec0098-306e-472a-8133-5e42488929c2\").\r\n - `wsProtocol` is the hinted websocket protocol. This is set to `wss` if the original URL is `https`, or `ws` otherwise.\r\n",
 			"browser.launch.port.description": "瀏覽器接聽的連接埠。預設為 \"0\"，會透過管道對瀏覽器進行偵錯，這種方式一般是較安全的建議選項，除非您需要透過其他工具連結至瀏覽器。",
 			"browser.pathMapping.description": "URL/路徑對本機資料夾的對應，可將瀏覽器中的指令碼解析至磁碟上的指令碼",
 			"browser.perScriptSourcemaps.description": "是否使用包含來源檔案之主檔名的唯一 sourcemap 個別載入指令碼。這可以設定為在處理大量小型指令碼時，將 sourcemap 處理最佳化。若設定為「自動」，我們將在適當情況下偵測已知案例。",
@@ -60,6 +60,7 @@
 			"configuration.automaticallyTunnelRemoteServer": "偵測遠端 Web 應用程式時，設定是否自動打開遠端伺服器到本機電腦的通道。",
 			"configuration.breakOnConditionalError": "當條件式中斷點擲回錯誤時是否停止。請注意: 您的 launch.json `type` 前面必須加上 `pwa-`，才可使用此設定，例如 `pwa-node`。",
 			"configuration.debugByLinkOptions": "在偵錯終端機內按一下偵錯開啟連結時所使用的選項。可設為 \"false\"，停用此行為。",
+			"configuration.defaultRuntimeExecutables": "The default `runtimeExecutable` used for launch configurations, if unspecified. This can be used to config custom paths to Node.js or browser installations.",
 			"configuration.npmScriptLensLocation": "\"Run\" 與 \"Debug\" 程式碼濾鏡應在您 npm 指令碼中顯示的位置。可以是「全部」、指令碼、指令碼區段的「頂端」或「永不」。",
 			"configuration.pickAndAttachOptions": "透過 `Debug: Attach to Node.js Process` 命令偵錯處理序時所用的預設選項",
 			"configuration.suggestPrettyPrinting": "是否要在您進入時建議看起來已縮小的美化顯示 JavaScript 程式碼。",
@@ -68,6 +69,7 @@
 			"configuration.usePreview": "使用 Node.js 和 Chrome 適用的全新預覽版 JavaScript 偵錯工具。",
 			"createDiagnostics.label": "建立目前工作階段的診斷資訊",
 			"customDescriptionGenerator.description": "自訂偵錯工具為物件 (例如區域變數等...) 所顯示的文字描述。範例:\r\n      1. this.toString() // 會呼叫 toString 列印所有物件\r\n      2. this.customDescription ? this.customDescription() : defaultValue // 使用 customDescription 方法 (如果有的話)，如果沒有則傳回 defaultValue\r\n      3. 函式 (def) { return this.customDescription ? this.customDescription() : def } // 使用 customDescription 方法 (如果有的話)，如果沒有則傳回 defaultValue\r\n      ",
+			"customPropertiesGenerator.description": "Customize the properties shown for an object in the debugger (local variables, etc...). Samples:\r\n    1. { ...this, extraProperty: '12345' } // Add an extraProperty 12345 to all objects\r\n    2. this.customProperties ? this.customProperties() : this // Use customProperties method if available, if not use the properties in this (the default properties)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // Use customDescription method if available, if not return the default properties\r\n\r\n    Deprecated: This is a temporary implementation of this feature until we have time to implement it in the way described here: https://github.com/microsoft/vscode/issues/102181",
 			"debug.npm.edit": "編輯 package.json",
 			"debug.npm.noScripts": "未在您的 package.json 找到 npm 指令碼",
 			"debug.npm.noWorkspaceFolder": "您需要開啟工作區資料夾，才能偵錯 npm 指令碼。",
@@ -78,7 +80,8 @@
 			"debug.terminal.program.description": "要在啟動終端機執行的指令。如未提供，終端機將不會在開啟時啟動程式。",
 			"debug.terminal.snippet.label": "在偵錯終端機執行 \"npm start\"",
 			"debug.terminal.toggleAuto": "切換終端 Node.js 自動附加",
-			"debug.terminal.welcome": "[JavaScript 偵錯終端機](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n您可以使用 JavaScript 偵錯終端機為命令列上執行的 Node.js 處理序進行偵錯。\r\n\r\n[偵錯 URL](command:extension.js-debug.debugLink)",
+			"debug.terminal.welcome": "[JavaScript 偵錯終端機](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n您可以使用 JavaScript 偵錯終端機為命令列上執行的 Node.js 處理序進行偵錯。",
+			"debug.terminal.welcomeWithLink": "[JavaScript 偵錯終端機](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\n您可以使用 JavaScript 偵錯終端機為命令列上執行的 Node.js 處理序進行偵錯。\r\n\r\n[偵錯 URL](command:extension.js-debug.debugLink)",
 			"debugLink.label": "開啟連結",
 			"edge.address.description": "對 Web 檢視進行偵錯時，該 Web 檢視所接聽的 IP 位址或主機名稱。如果未設定，則會自動探索。",
 			"edge.attach.description": "附加至已經進入偵錯模式的 Microsoft Edge 執行個體",
@@ -115,6 +118,7 @@
 			"node.attachSimplePort.description": "如有設定，則會透過指定的連接埠附加到處理序。Node.js 程式通常已不需要此設定，而且無法對子處理序進行偵錯，但在較特殊的情況下 (例如啟動 Deno 和 Docker 時)，可能會有幫助。若設為 0，則會選擇隨機的連接埠，並自動將 --inspect-brk 新增到啟動引數。",
 			"node.console.title": "節點偵錯主控台",
 			"node.disableOptimisticBPs.description": "在為該檔案載入 sourcemap 之前，請勿在任何檔案中設定中斷點。",
+			"node.killBehavior.description": "Configures how debug process are killed when stopping the sesssion. Can be:\r\n\r\n- forceful (default): forcefully tears down the process tree. Sends SIGKILL on posix, or `taskkill.exe /F` on Windows.\r\n- polite: gracefully tears down the process tree. It's possible that misbehaving processes continue to run after shutdown in this way. Sends SIGTERM on posix, or `taskkill.exe` with no `/F` (force) flag on Windows.\r\n- none: no termination will happen.",
 			"node.label": "Node.js (預覽)",
 			"node.launch.args.description": "傳遞至程式的命令列引數。",
 			"node.launch.autoAttachChildProcesses.description": "自動附加偵錯工具至新的子處理序。",
@@ -287,6 +291,7 @@
 			"error.invalidExpression": "運算式無效",
 			"error.setVariableDidFail": "無法設定變數值",
 			"error.unknown": "未知的錯誤",
+			"error.failedToCustomizeObjectProperties": "Failed properties customization",
 			"error.customValueDescriptionGeneratorFailed": "{0} (無法描述: {1})"
 		},
 		"/src/dap/errors": {
@@ -330,9 +335,6 @@
 		},
 		"/src/ui/debugTerminalUI": {
 			"terminal.cwdpick": "為新的終端機選擇目前的工作目錄"
-		},
-		"/src/ui/diagnosticsUI": {
-			"createDiagnostics.copied": "診斷報告的路徑已複製到剪貼簿"
 		},
 		"/src/ui/disableSourceMapUI": {
 			"always": "永遠",

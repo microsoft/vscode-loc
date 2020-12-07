@@ -23,7 +23,7 @@
 			"browser.env.description": "Tarayıcı için isteğe bağlı ortam anahtarı/değer çiftleri sözlüğü.",
 			"browser.file.description": "Tarayıcıda açmak için bir yerel html dosyası",
 			"browser.includeDefaultArgs.description": "Varsayılan tarayıcı başlatma bağımsız değişkenlerinin (hata ayıklamayı daha zor hale getirebilecek özellikleri devre dışı bırakmak için) başlatmaya dahil edilip edilmeyeceğini belirtir.",
-			"browser.inspectUri.description": "inspectUri'yi yeniden yazmak için kullanılacak biçim: `{curlyBraces}` içindeki anahtarları ilişkilendiren bir şablon dizesidir. Mevcut anahtarlar:\r\n - `url.*` çalışan uygulamanın ayrıştırılmış adresidir. Örneğin, `{url.port}`, `{url.hostname}`\r\n - `port` Chrome'un dinlediği hata ayıklama bağlantı noktasıdır.\r\n - `browserInspectUri`, başlatılan tarayıcıdaki denetçi URI'dir\r\n - `wsProtocol` ipuçlu WebSocket protokolüdür. Asıl URL `https` ise `wss` olarak ayarlanır. Aksi takdirde `ws` olarak ayarlanır.\r\n",
+			"browser.inspectUri.description": "Format to use to rewrite the inspectUri: It's a template string that interpolates keys in `{curlyBraces}`. Available keys are:\r\n - `url.*` is the parsed address of the running application. For instance, `{url.port}`, `{url.hostname}`\r\n - `port` is the debug port that Chrome is listening on.\r\n - `browserInspectUri` is the inspector URI on the launched browser\r\n - `browserInspectUriPath` is the path part of the inspector URI on the launched browser (e.g.: \"/devtools/browser/e9ec0098-306e-472a-8133-5e42488929c2\").\r\n - `wsProtocol` is the hinted websocket protocol. This is set to `wss` if the original URL is `https`, or `ws` otherwise.\r\n",
 			"browser.launch.port.description": "Dinlenecek tarayıcı için bağlantı noktası. Varsayılan değer \"0\" olduğundan, tarayıcıda kanallar aracılığıyla hata ayıklaması yapılır. Bu işlem genellikle daha güvenlidir ve tarayıcıya başka bir araçtan eklemeniz gerekmedikçe bu seçilmelidir.",
 			"browser.pathMapping.description": "Tarayıcıdaki betikleri diskteki betiklere çözümlemek için URL'lerin/yolların yerel klasörlere eşlenmesi",
 			"browser.perScriptSourcemaps.description": "Betiklerin, kaynak dosyanın temel adını içeren benzersiz kaynak eşlemeleri ile tek tek yüklenip yüklenmediğini belirtir. Bu, çok sayıda küçük betik ile çalışırken kaynak eşlemesini iyileştirmek için ayarlanabilir. \"Otomatik\" olarak ayarlanırsa bunun uygun olduğu bilinen durumları algılarız.",
@@ -60,6 +60,7 @@
 			"configuration.automaticallyTunnelRemoteServer": "Uzak bir web uygulamasında hata ayıklarken, uzak sunucuyu yerel makinenize otomatik olarak tünelleyip tünellemeyeceğinizi yapılandırın.",
 			"configuration.breakOnConditionalError": "Koşullu kesme noktaları bir hata verdiğinde durdurulup durdurulmayacağını belirtir. Not: Bunu kullanabilmek için `type` launch.json dosyanız `pwa-node` gibi bir `pwa-` eki ile başlamalıdır.",
 			"configuration.debugByLinkOptions": "Options used when debugging open links clicked from inside the debug terminal. Can be set to \"false\" to disable this behavior.",
+			"configuration.defaultRuntimeExecutables": "The default `runtimeExecutable` used for launch configurations, if unspecified. This can be used to config custom paths to Node.js or browser installations.",
 			"configuration.npmScriptLensLocation": "Npm komut dosyalarınızda \"Çalıştır\" ve \"Hata Ayıkla\" kod lensinin gösterilmesi gereken yer. \"Tümü\" seçeneğinin üzerinde, betik bölümünün \"üstünde\" veya \"hiçbir zaman\" olabilir.",
 			"configuration.pickAndAttachOptions": "`Debug: Attach to Node.js Process` komutu aracılığıyla bir işlemde hata ayıklarken kullanılan varsayılan seçenekler",
 			"configuration.suggestPrettyPrinting": "İçine girdiğinizde küçültülmüş görünen düzgün yazdırma JavaScript kodunun önerilip önerilmeyeceğini belirtir.",
@@ -68,6 +69,7 @@
 			"configuration.usePreview": "Node.js ve Chrome için önizlemedeki yeni JavaScript hata ayıklayıcısını kullanın.",
 			"createDiagnostics.label": "Geçerli Oturum için Tanılama Bilgileri oluştur",
 			"customDescriptionGenerator.description": "Hata ayıklayıcısının nesneler (yerel değişkenler vb.) için gösterdiği metinsel açıklamayı özelleştirin. Örnekler:\r\n      1. this.toString () // tüm nesneleri yazdırmak için toString çağırır\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Varsa customDescription metodunu kullanın. Yoksa defaultValue döndürün\r\n      3. işlev (def) { return this.customDescription ? this.customDescription() : def } // Varsa customDescription metodunu kullanın. Yoksa defaultValue döndürün\r\n      ",
+			"customPropertiesGenerator.description": "Customize the properties shown for an object in the debugger (local variables, etc...). Samples:\r\n    1. { ...this, extraProperty: '12345' } // Add an extraProperty 12345 to all objects\r\n    2. this.customProperties ? this.customProperties() : this // Use customProperties method if available, if not use the properties in this (the default properties)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // Use customDescription method if available, if not return the default properties\r\n\r\n    Deprecated: This is a temporary implementation of this feature until we have time to implement it in the way described here: https://github.com/microsoft/vscode/issues/102181",
 			"debug.npm.edit": "package.json dosyasını düzenle",
 			"debug.npm.noScripts": "package.json dosyanızda npm betiği bulunamadı",
 			"debug.npm.noWorkspaceFolder": "Npm betiklerinde hata ayıklamak için bir çalışma alanı klasörü açmalısınız.",
@@ -78,7 +80,8 @@
 			"debug.terminal.program.description": "Başlatılan terminalde çalıştırılacak komut. Bir komut sağlanmazsa terminal bir program başlatmadan açılır.",
 			"debug.terminal.snippet.label": "Hata ayıklama terminalinde \"npm start\" çalıştırın",
 			"debug.terminal.toggleAuto": "Terminal Node.js Otomatik Eklemeyi Aç/Kapat",
-			"debug.terminal.welcome": "[JavaScript Hata Ayıklama Terminali](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nKomut satırında çalıştırılan Node.js işlemlerinde hata ayıklamak için JavaScript Hata Ayıklama Terminalini kullanabilirsiniz.\r\n\r\n[Hata Ayıklama URL'si](command:extension.js-debug.debugLink)",
+			"debug.terminal.welcome": "[JavaScript Hata Ayıklama Terminali](komut:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nKomut satırında çalıştırılan Node.js işlemlerinde hata ayıklamak için JavaScript Hata Ayıklama Terminalini kullanabilirsiniz.",
+			"debug.terminal.welcomeWithLink": "[JavaScript Hata Ayıklama Terminali](command:extension.pwa-node-debug.createDebuggerTerminal)\r\n\r\nKomut satırında çalıştırılan Node.js işlemlerinde hata ayıklamak için JavaScript Hata Ayıklama Terminalini kullanabilirsiniz.\r\n\r\n[Hata Ayıklama URL'si](command:extension.js-debug.debugLink)",
 			"debugLink.label": "Bağlantıyı Aç",
 			"edge.address.description": "Web görünümlerinde hata ayıklarken web görünümünün dinlediği IP adresi veya konak adı. Ayarlanmazsa otomatik olarak bulunur.",
 			"edge.attach.description": "Edge'in zaten hata ayıklama modunda bulunan bir örneğine ekleyin",
@@ -115,6 +118,7 @@
 			"node.attachSimplePort.description": "Ayarlanırsa, işleme verilen bağlantı noktası üzerinden eklenir. Bu genellikle Node.js programları için artık gerekli değildir ve alt işlemlerde hata ayıklama özelliğini kaybeder ancak Deno ve Docker başlatmaları gibi daha gizli senaryolarda yararlı olabilir. 0 olarak ayarlanırsa, rastgele bir bağlantı noktası seçilir ve başlatma bağımsız değişkenlerine otomatik olarak --inspect-brk eklenir.",
 			"node.console.title": "Düğüm Hata Ayıklama Konsolu",
 			"node.disableOptimisticBPs.description": "İlgili dosya için bir kaynak eşlemesi yüklenene kadar hiçbir dosyada kesme noktası ayarlamayın.",
+			"node.killBehavior.description": "Configures how debug process are killed when stopping the sesssion. Can be:\r\n\r\n- forceful (default): forcefully tears down the process tree. Sends SIGKILL on posix, or `taskkill.exe /F` on Windows.\r\n- polite: gracefully tears down the process tree. It's possible that misbehaving processes continue to run after shutdown in this way. Sends SIGTERM on posix, or `taskkill.exe` with no `/F` (force) flag on Windows.\r\n- none: no termination will happen.",
 			"node.label": "Node.js (önizleme)",
 			"node.launch.args.description": "Programa geçirilen komut satırı bağımsız değişkenleri.",
 			"node.launch.autoAttachChildProcesses.description": "Yeni alt işlemlere hata ayıklayıcıyı otomatik olarak bağla.",
@@ -287,6 +291,7 @@
 			"error.invalidExpression": "Geçersiz ifade",
 			"error.setVariableDidFail": "Değişken değeri ayarlanamıyor",
 			"error.unknown": "Bilinmeyen hata",
+			"error.failedToCustomizeObjectProperties": "Failed properties customization",
 			"error.customValueDescriptionGeneratorFailed": "{0} ({1} tanımlanamadı)"
 		},
 		"/src/dap/errors": {
@@ -330,9 +335,6 @@
 		},
 		"/src/ui/debugTerminalUI": {
 			"terminal.cwdpick": "Yeni terminal için geçerli çalışma dizinini seçin"
-		},
-		"/src/ui/diagnosticsUI": {
-			"createDiagnostics.copied": "Tanılama raporunun yolu panonuza kopyalandı"
 		},
 		"/src/ui/disableSourceMapUI": {
 			"always": "Her Zaman",
