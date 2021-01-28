@@ -25,7 +25,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Czech Language Pack had been received contribution through "By the community, for the community" community localization effort.
+Czech Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 
