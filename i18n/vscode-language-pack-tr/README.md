@@ -4,13 +4,14 @@ Türkçe Dil Paketi, VS Code için yerelleştirilmiş kullanıcı arayüzü dene
 
 ## Kullanım
 
-Yüklendikten sonra, Türkçe Dil Paketi'ni etkinleştirmek için `locale.json`'da `"locale": "tr"` şeklinde ayarlama yapın. `locale.json`'ı düzenlemek üzere **Komut Paleti**'ni açmak için `Ctrl+Shift+P` tuşlarına basın, mevcut komutlar listesini filtrelemek için "config" yazın, daha sonra **Configure Language** komutunu seçin. Daha fazla bilgi için [Dokümanlar](https://go.microsoft.com/fwlink/?LinkId=761051)'a göz atın.
+"Görüntüleme Dilini Yapılandır" komutunu kullanıp VS Code görüntüleme dilini açıkça ayarlayarak varsayılan kullanıcı arabirimi dilini geçersiz kılabilirsiniz.
+"Komut Paleti" aracını açmak için "Ctrl+Shift+P" düğmesine basın ve "Görüntüleme Dilini Yapılandır" komutunu filtreleyip görüntülemek için "görüntüle" yazmaya başlayın. "Enter" düğmesine bastığınızda, vurgulanan yerel ayarlar ile birlikte yerel ayarlara göre yüklenen dillerin listesi görüntülenir. Kullanıcı arabirimi dilini değiştirmek için başka bir "yerel ayar" seçin.
+Daha fazla bilgi için [Dokümanlar](https://go.microsoft.com/fwlink/?LinkId=761051)'a göz atın.
 
 ## Katkıda Bulunma
 
-Çeviri dizeleri Microsoft Yerelleştirme Topluluğu Platformu (MLCP) içindeki "DevTools - VS Code" projesinde tutulur.
-
-Bu çalışmaya katılarak çeviri katkısında bulunmak veya mevcut çevirileri iyileştirmek isterseniz, [topluluk yerelleştirme sayfasında](https://aka.ms/vscodeloc) daha fazla bilgi edinebilirsiniz.
+Çeviri iyileştirmesi hakkında geri bildirim için lütfen [vscode-loc](https://github.com/microsoft/vscode-loc) deposunda Sorun oluşturun.
+Çeviri dizeleri Microsoft Yerelleştirme Platformu'nda saklanır. Değişiklik yalnızca Microsoft Yerelleştirme Platform'unda yapılabilir, daha sonra vscode-loc deposuna aktarılır. Bu nedenle, vscode-loc deposunda çekme isteği kabul edilmez.
 
 ## Lisans
 
@@ -53,13 +54,19 @@ Turkish Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "tr"` in `locale.json` to load Turkish Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -67,7 +74,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Turkish Language Pack is brought to you from "By the community, for the community" community localization effort.
+Turkish Language Pack had received contribution from "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

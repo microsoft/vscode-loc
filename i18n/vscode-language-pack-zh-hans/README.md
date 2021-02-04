@@ -4,13 +4,14 @@
 
 ## 使用方法
 
-安装后，在 `locale.json` 中添加 `"locale": "zh-cn"`，即可载入中文（简体）语言包。要修改 `locale.json`，你可以同时按下 `Ctrl+Shift+P` 打开**命令面板**，之后输入 "config" 筛选可用命令列表，最后选择**配置语言**命令。请参阅[文档](https://go.microsoft.com/fwlink/?LinkId=761051)并获取更多信息。
+通过使用“配置显示语言”命令显式设置 VS Code 显示语言，可以替代默认 UI 语言。
+按 "Ctrl+Shift+P" 以显示“命令面板”，然后开始键入 "display" 以筛选和显示“配置显示语言”命令。按 "Enter"，然后会按区域设置显示安装的语言列表，并突出显示当前语言设置。选择另一个“语言”以切换 UI 语言。
+请参阅[文档](https://go.microsoft.com/fwlink/?LinkId=761051)并获取更多信息。
 
 ## 参与
 
-翻译的字符串在微软社区本地化平台（MLCP）的"DevTools - VS Code"项目中进行维护。
-
-如果你想提供或改进翻译，请参阅[社区本地化页面](https://aka.ms/vscodeloc)并获取更多信息。
+有关翻译改进的反馈，请在[vscode-loc](https://github.com/microsoft/vscode-loc)存储库中创建问题。
+翻译字符串在 Microsoft 本地化平台中维护。只能在 Microsoft 本地化平台中进行更改，然后才能导出到 vscode-loc 存储库。因此，vscode-loc 存储库中不接受拉取请求。
 
 ## 许可证
 
@@ -68,13 +69,19 @@ Chinese (Simplified) Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "zh-cn"` in `locale.json` to load Chinese (Simplified) Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -82,7 +89,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Chinese (Simplified) Language Pack is brought to you through "By the community, for the community" community localization effort.
+Chinese (Simplified) Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

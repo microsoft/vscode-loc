@@ -4,13 +4,14 @@
 
 ## 사용법
 
-설치가 완료되면 `locale.json`에서 `"locale": "ko"`를 설정하여 한국어 팩을 로드합니다. `locale.json`을 수정하려면 `Ctrl+Shift+P`를 눌러 **명령 팔레트**를 불러온 이후 "config"를 입력하여 사용 가능한 명령 목록을 필터링합니다. 그다음 **언어 구성** 명령을 선택합니다. 자세한 내용은 [Docs](https://go.microsoft.com/fwlink/?LinkId=761051)를 참조하세요.
+"표시 언어 구성" 명령을 사용하여 VS Code 표시 언어를 명시적으로 설정함으로써 기본 UI 언어를 재정의할 수 있습니다.
+"Ctrl+Shift+P"를 눌러 "명령 팔레트"를 표시한 후 "표시"를 입력하기 시작하여 "표시 언어 구성" 명령을 필터링 및 표시합니다. "Enter" 키를 누르면 현재 로캘이 강조 표시된 상태로 로캘별로 설치된 언어의 목록이 표시됩니다. UI 언어를 전환하려면 다른 "로캘"을 선택합니다.
+자세한 내용은 [Docs](https://go.microsoft.com/fwlink/?LinkId=761051)를 참조하세요.
 
 ## 기여
 
-번역 문자열은 MLCP(Microsoft 지역화 커뮤니티 플랫폼)의 "DevTools - VS Code" 프로젝트에 유지 관리됩니다.
-
-번역에 기여하거나 번역을 향상하려면 [커뮤니티 지역화 페이지](https://aka.ms/vscodeloc)에서 자세히 알아보세요.
+번역 개선 사항에 대한 피드백이 있는 경우 [vscode-loc](https://github.com/microsoft/vscode-loc) 리포지토리에서 이슈를 만드세요.
+번역 문자열은 Microsoft 지역화 플랫폼에서 유지 관리됩니다. Microsoft 지역화 플랫폼에서만 내용을 변경할 수 있으며, 변경한 후 vscode-loc 리포지토리로 내보낼 수 있습니다. 따라서 vscode-loc 리포지토리에서 끌어오기 요청은 허용되지 않습니다.
 
 ## 라이선스
 
@@ -48,13 +49,19 @@ Korean Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "ko"` in `locale.json` to load Korean Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP). 
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribute translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -62,7 +69,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Korean Language Pack is brought to you through "By the community, for the community" community localization effort.
+Korean Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

@@ -4,13 +4,16 @@ Il Language Pack italiano offre un'esperienza localizzata per le UI di VS Code.
 
 ## Come applicare il Language Pack
 
-Una volta installato, impostare `"locale": "it"` nel file `locale.json` per caricare il Language Pack italiano. Per modificare il file `locale.json`, premere `Ctrl+Maiusc+P` ed accedere al **Riquadro comandi**; scrivere "config" per filtrare la lista dei comandi disponibili, quindi selezionare **Configura Lingua**. Per maggiori informazioni, consultare la [documentazione](https://go.microsoft.com/fwlink/?LinkId=761051).
+Per eseguire l'override della lingua predefinita dell'interfaccia utente, impostare in modo esplicito la lingua visualizzata di VS Code con il comando "Configura la lingua visualizzata".
+Premere "CTRL+MAIUSC+P" per visualizzare il riquadro comandi, quindi iniziare a digitare "visualizza" per filtrare e visualizzare il comando "Configura la lingua visualizzata".
+Premere INVIO per visualizzare un elenco delle lingue installate in base alle impostazioni locali, con le impostazioni locali correnti evidenziate. Selezionare altre impostazioni locali per cambiare la lingua dell'interfaccia utente.
+Per maggiori informazioni, consultare la [documentazione](https://go.microsoft.com/fwlink/?LinkId=761051).
 
 ## Come contribuire
 
-Le stringhe tradotte vengono gestite nel progetto "DevTools - VS Code" nella piattaforma della community di localizzazione Microsoft (MLCP).
+Per un feedback sul miglioramento della traduzione, creare un problema nel repository [vscode-loc](https://github.com/microsoft/vscode-loc).
 
-Se si è interessati a partecipare, per contribuire alla traduzione o per migliorarla, per altre informazioni visitare la [pagina del progetto di localizzazione della community](https://aka.ms/vscodeloc).
+Le stringhe di traduzione vengono gestite in Microsoft Localization Platform. È possibile apportare modifiche solo in Microsoft Localization Platform e quindi esportarle nel repository vscode-loc. Di conseguenza, la richiesta pull non verrà accettata nel repository vscode-loc.
 
 ## Licenza
 
@@ -62,13 +65,19 @@ Italian Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "it"` in `locale.json` to load Italian Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -76,7 +85,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Italian Language Pack is brought to you through "By the community, for the community" community localization effort.
+Italian Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

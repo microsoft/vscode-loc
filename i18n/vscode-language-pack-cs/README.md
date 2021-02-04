@@ -1,5 +1,30 @@
 # Czech Language Pack for VS Code
 
+Jazyková sada nabízí lokalizované uživatelské rozhraní pro VS Code.
+
+## Použití
+
+Výchozí jazyk uživatelského rozhraní můžete přepsat tak, že explicitně nastavíte jazyk zobrazení VS Code pomocí příkazu Konfigurovat jazyk zobrazení.
+
+Stisknutím kláves Ctrl+Shift+P zobrazte Paletu příkazů a začněte psát slovo zobrazení, aby se vyfiltroval a zobrazil příkaz Konfigurovat jazyk zobrazení.
+
+Stiskněte klávesu Enter a zobrazí se vám seznam nainstalovaných jazyků podle národního prostředí. Aktuální národní prostředí se zvýrazní. Pokud chcete přepnout jazyk uživatelského rozhraní, vyberte jiné národní prostředí.
+
+Další informace najdete v e [Docs](https://go.microsoft.com/fwlink/?LinkId=761051).
+
+## Přispívá
+
+Pro zpětnou vazbu k vylepšení překladu prosím vytvořte problém v úložišti  [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
+
+Řetězce pro překlady se udržují na platformě Microsoft Localization. Změna se dá provést pouze na této platformě, pak ji můžete exportovat do úložiště vscode-loc. Úložiště vscode-loc proto nebude přijímat žádosti o přijetí změn.
+
+
+## License
+
+Na zdrojový kód a řetězce se vztahuje licence [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+
+# Czech Language Pack for VS Code
+
 Czech Language Pack provides localized UI experience for VS Code.
 
 ## Usage
@@ -22,19 +47,3 @@ The translation strings are maintained in Microsoft Localization Platform. Chang
 ## License
 
 The source code and strings are licensed under the [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) license.
-
-## Credits
-
-Czech Language Pack had received contribution through "By the community, for the community" community localization effort.
-
-Special thanks to community contributors for making it available.
-
-**Top Contributors:**
-
-* 
-
-**Contributors:**
-
-* 
-
-**Enjoy!**

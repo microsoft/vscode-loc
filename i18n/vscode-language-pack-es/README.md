@@ -4,13 +4,15 @@ El paquete de idioma español proporciona una experiencia de UI localizada para 
 
 ## Uso
 
-Una vez instalado, establezca `"locale": "es"` en `locale.json` para cargar el paquete de idioma español. Para modificar `locale.json` pulse `Ctrl+Shift+P` para activar la **Command Palette**, comience a teclear "config" para filtrar la lista de comandos disponibles, y luego seleccione el comando **Configure Language**. Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para más información.
+Puede invalidar el idioma predeterminado de la interfaz de usuario si establece explícitamente el idioma de VS Code con el comando "Configure Display Language". 
+Presione "Ctrl+Mayús+P" para que aparezca la instancia de "Paleta de comandos" y empiece a escribir "display" para filtrar y mostrar el comando "Configure Display Language".
+Presione "Entrar" y se mostrará una lista de los idiomas instalados por configuración regional, con la actual resaltada. Seleccione otra "configuración regional" para cambiar el idioma de la interfaz de usuario.
+Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para más información.
 
 ## Cómo contribuir
 
-Las cadenas de traducción se mantienen en el proyecto "DevTools - VS Code" en la plataforma para la comunidad de localización de Microsoft (MLCP). 
-
-Si quiere colaborar, ya sea mediante la aportación de traducciones o la mejora de éstas, consulte la [página de localización de la comunidad](https://aka.ms/vscodeloc) para obtener más información.
+Para obtener información sobre la mejora de traducción, cree una incidencia en el repositorio [vscode-loc](https://github.com/microsoft/vscode-loc).
+Las cadenas de traducción se mantienen en la plataforma de localización de Microsoft. Solo pueden realizarse cambios en dicha plataforma y, después, exportarlos al repositorio vscode-loc, por lo que no se aceptarán solicitudes de incorporación de cambios "pull request" en ese repositorio.
 
 ## Licencia
 
@@ -67,13 +69,19 @@ Spanish Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "es"` in `locale.json` to load Spanish Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -81,9 +89,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Spanish Language Pack is brought to you through "By the community, for the community" community localization effort.
-
-Special thanks to community contributors for making it available.
+Spanish Language Pack had received contribution through "By the community, for the community" community localization effort. Special thanks to community contributors for making it available.
 
 **Top Contributors:**
 

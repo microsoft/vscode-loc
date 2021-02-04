@@ -4,13 +4,14 @@ O Pacote de Idioma Português Brasileiro fornece uma Interface de Usuário (UI) 
 
 ## Como Utilizar
 
-Depois de instalado, configure `"locale": "pt-br"` no `locale.json` para carregar o pacote de idioma em Português Brasileiro. Para modificar o `locale.json` pressione `Ctrl+Shift+P` para abrir a **Palheta de Comandos**, comece a digitar "config" para filtrar a lista de comandos disponíveis, então selecione o comando **Configure Language**. Visite [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para mais informações.
+Você pode substituir o idioma da interface do usuário padrão definindo explicitamente o idioma de exibição do VS Code com o comando "Configurar o Idioma de Exibição".
+Pressione "Ctrl+Shift+P" para exibir a "Paleta de Comandos" e comece a digitar "display" para filtrar e exibir o comando "Configurar o Idioma de Exibição". Pressione "Enter" e será exibida uma lista de idiomas instalados por localidade, com a localidade atual realçada. Selecione outra "localidade" para mudar o idioma da interface do usuário.
+Visite [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para mais informações.
 
 ## Contribuições
 
-As sentenças para tradução são mantidas no projeto "DevTools – VS Code" no MLCP (Microsoft Localization Community Platform). 
-
-Se você deseja participar da tradução, visite a [página de localização da comunidade](https://aka.ms/vscodeloc) para mais informações.
+Para obter comentários sobre a melhoria da tradução, crie um Problema no repositório [vscode-loc](https://github.com/microsoft/vscode-loc).
+As cadeias de caracteres de tradução são mantidas na Plataforma de Localização da Microsoft. As alterações só podem ser feitas na Plataforma de Localização da Microsoft e depois exportadas para o repositório vscode-loc. Portanto, a solicitação de pull não será aceita no repositório vscode-loc.
 
 ## Licença
 
@@ -79,13 +80,19 @@ Portuguese (Brazil) Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "pt-br"` in `locale.json` to load Portuguese (Brazil) Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -93,7 +100,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Portuguese (Brazil) Language Pack is brought to you from "By the community, for the community" community localization effort.
+Portuguese (Brazil) Language Pack had received contribution from "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

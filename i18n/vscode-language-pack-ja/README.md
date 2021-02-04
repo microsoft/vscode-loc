@@ -4,13 +4,15 @@ Japanese Language Pack は VS Code にローカライズされた UI を提供�
 
 ## 使用法
 
-インストールが完了したら、Japanese Language Pack を読み込むために `locale.json` 内で `"locale": "ja"` を設定します。`locale.json` を編集するには `Ctrl+Shift+P` を押して**コマンド パレット**を表示させ、"config" と入力し、利用できるコマンドのリストをフィルター処理してから **Configure Display Language** コマンドを選択します。詳細については [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) を参照してください。
+既定の UI 言語をオーバーライドするには、"Configure Display Language" コマンドを使用して、VS Code の表示言語を明示的に設定します。
+"Ctrl+Shift+P" を押して "コマンド パレット" を表示し、"display" と入力して "Configure Display Language" コマンドをフィルターして表示します。Enter キーを押すと、インストールされている言語の一覧がロケールごとに表示され、現在のロケールが強調表示されます。UI 言語を切り替えるには、別の "ロケール" を選択してください。
+
+詳細については [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) を参照してください。
 
 ## 貢献
 
-翻訳する文字列は、Microsoft Localization Community Platform (MLCP) の DevTools - VS Code" プロジェクトでメンテナンスされています。
-
-翻訳に貢献したり、翻訳を改善したりするために参加したい場合は、詳細について [community localization page](https://aka.ms/vscodeloc) で確認してください。
+翻訳改善のためのフィードバックについては、[vscode-loc](https://github.com/microsoft/vscode-loc) リポジトリにイシューを作成してください。
+その翻訳文字列は Microsoft Localization Platform で管理されています。変更は Microsoft Localization Platform でのみ行うことができ、その後 vscode-loc リポジトリにエクスポートします。そのため、pull request は vscode loc リポジトリでは受け入れられません。
 
 ## ライセンス
 
@@ -57,13 +59,19 @@ Japanese Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "ja"` in `locale.json` to load Japanese Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Display Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -71,7 +79,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Japanese Language Pack is brought to you through "By the community, for the community" community localization effort.
+Japanese Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

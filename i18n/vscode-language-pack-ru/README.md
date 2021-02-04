@@ -4,13 +4,14 @@
 
 ## Использование
 
-Чтобы загрузить языковой пакет для русского языка, после установки в файле `locale.json` задайте `"locale": "ru"`. Для редактирования `locale.json` нажмите клавиши `CTRL+SHIFT+P`, чтобы открыть **Палитру команд**, и начните вводить "config", чтобы отфильтровать список доступных команд, после чего выберите команду **Настроить язык**. Дополнительные сведения: [Документация](https://go.microsoft.com/fwlink/?LinkId=761051).
+Вы можете переопределить язык пользовательского интерфейса по умолчанию, явно задав язык отображения VS Code с помощью команды "Настроить язык отображения".
+Нажмите CTRL + SHIFT + P, чтобы открыть палитру команд, а затем начните вводить "отображен…", чтобы отфильтровать команду "Настроить язык отображения". Нажмите клавишу ВВОД, и откроется список установленных языков по языковым стандартам, в котором будет выбран текущий языковой стандарт. Чтобы изменить язык пользовательского интерфейса, выберите другой языковой стандарт.
+Дополнительные сведения: [Документация](https://go.microsoft.com/fwlink/?LinkId=761051).
 
 ## Участие
 
-Строки для перевода хранятся в проекте "DevTools - VS Code" на платформе Microsoft Localization Community Platform (MLCP).
-
-Если вы хотите внести вклад и предложить свои варианты переводов или улучшить существующие, см. дополнительную информацию по следующей ссылке: [страница локализации для сообщества](https://aka.ms/vscodeloc)
+Чтобы отправить отзыв об улучшении перевода, создайте вопрос в репозитории [vscode-loc](https://github.com/microsoft/vscode-loc).
+Строки перевода находятся на платформе локализации Майкрософт. Изменения можно внести только на ней, а затем экспортировать в репозиторий vscode-loc. Поэтому запросы на вытягивание в репозитории vscode-loc приниматься не будут.
 
 ## Лицензия
 
@@ -54,13 +55,19 @@ Russian Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "ru"` in `locale.json` to load Russian Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribute translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -68,7 +75,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-Russian Language Pack is brought to you through "By the community, for the community" community localization effort.
+Russian Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 

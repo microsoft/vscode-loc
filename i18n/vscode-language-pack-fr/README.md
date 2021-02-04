@@ -4,13 +4,15 @@ Le module linguistique français fournit une expérience d'interface utilisateur
 
 ## Utilisation
 
-Une fois installé, définissez `"locale": "fr"` dans `locale.json` pour charger le module linguistique français. Pour modifier `locale.json`, appuyez sur `Ctrl+Alt+P` pour afficher la **Palette de commandes**, commencez à taper "config" pour filtrer la liste des commandes disponibles, puis sélectionnez la commande **Configurer la langue**. Consultez la [documentation](https://go.microsoft.com/fwlink/?LinkId=761051) pour plus d'informations.
+Vous pouvez remplacer la langue d'IU par défaut en définissant explicitement la langue d'affichage de VS Code à l'aide de la commande Configurer la langue d'affichage.
+Appuyez sur Ctrl+Maj+P pour faire apparaître la Palette de commandes, puis commencez à taper "afficher" pour filtrer le contenu et afficher la commande Configurer la langue d'affichage.
+Appuyez sur Entrée pour afficher une liste de langues installées en fonction des paramètres régionaux. Les paramètres régionaux actuels sont en surbrillance. Sélectionnez une autre entrée relative aux paramètres régionaux pour changer de langue d'IU.
+
+Consultez la [documentation](https://go.microsoft.com/fwlink/?LinkId=761051) pour plus d'informations.
 
 ## Contribution
 
-Les chaînes de traduction sont gérées dans le projet « DevTools - VS Code » de la Plateforme de la communauté de traduction Microsoft (MLCP).
-
-Si vous souhaitez participer à l'effort de contribution ou d'amélioration des traductions, consultez la [page de la communauté de traduction](https://aka.ms/vscodeloc) pour plus d'informations.
+Pour apporter des commentaires visant à améliorer la traduction, créez une entrée sous Issues dans le dépôt [vscode-loc](https://github.com/microsoft/vscode-loc).
 
 ## Licence
 
@@ -57,13 +59,19 @@ French Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "fr"` in `locale.json` to load French Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP). 
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribute translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
@@ -71,7 +79,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-French Language Pack is brought to you through "By the community, for the community" community localization effort.
+French Language Pack had received contribution through "By the community, for the community" community localization effort. 
 
 Special thanks to community contributors for making it available.
 

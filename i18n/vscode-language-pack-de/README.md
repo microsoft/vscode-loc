@@ -4,13 +4,19 @@ Das deutsche Sprachpaket bietet eine lokalisierte Benutzeroberfläche für VS Co
 
 ## Verwendung
 
-Sobald installiert, setzen Sie `"locale": "de"` in der `locale.json` um das deutsche Sprachpaket zu laden. Um die `locale.json` zu bearbeiten, drücken Sie `STRG+UMSCHALT+P` um die **Command Palette** aufzurufen. Beginnen Sie "config" zu schreiben, um die Liste der verfügbaren Befehle zu filtern. Danach wählen Sie den **Configure Language** Befehl. Siehe [Dokumentation](https://go.microsoft.com/fwlink/?LinkId=761051) für mehr Informationen.
+Sie können die Standardsprache der Benutzeroberfläche außer Kraft setzen, indem Sie die VS Code-Anzeigesprache explizit über den Befehl "Anzeigesprache konfigurieren" festlegen. 
+
+Drücken Sie "STRG+UMSCHALT+P", um die Befehlspalette aufzurufen, und beginnen Sie mit der Eingabe von "Anzeige", um den Befehl "Anzeigesprache konfigurieren" zu filtern und anzuzeigen.
+
+Drücken Sie die EINGABETASTE, und eine Liste installierter Sprachen nach Gebietsschema wird angezeigt. Das aktuelle Gebietsschema ist hervorgehoben. Wählen Sie ein anderes Gebietsschema aus, um die Sprache der Benutzeroberfläche zu wechseln.
+
+Siehe [Dokumentation](https://go.microsoft.com/fwlink/?LinkId=761051) für mehr Informationen.
 
 ## Unterstützen
 
-Die übersetzten Zeichenfolgen werden im Projekt "DevTools – VS Code" auf der Plattform der Microsoft-Lokalisierungscommunity (MLCP) verwaltet.
+Um Feedback zur Verbesserung der Übersetzung zu übermitteln, erstellen Sie ein Issue im Repository "vscode-loc".
 
-Wenn Sie zur Übersetzung beitragen oder Übersetzungen verbessern möchten, finden Sie weitere Informationen hierzu auf der [Seite der Lokalisierungscommunity](https://aka.ms/vscodeloc).
+Die Übersetzungszeichenfolgen werden in Microsoft Localization Platform verwaltet. Die Änderung kann nur in Microsoft Localization Platform durchgeführt und dann in das Repository "vscode-loc" exportiert werden. Der Pull Request wird daher im Repository "vscode-loc" nicht akzeptiert.
 
 
 ## Lizenz
@@ -19,9 +25,7 @@ Der Quellcode und die Zeichenketten sind unter der Lizenz [MIT](https://github.c
 
 ## Credits
 
-Das deutsche Sprachpaket ist durch Übersetzungsarbeit "von der Community, für die Community" bereitgestellt.
-
-Besonderen Dank an die Community-Mitwirkenden, um dies möglich zu machen.
+Dieses Sprachpaket wurde durch Beiträge von der Community für die Community lokalisiert. Herzlichen Dank an die Mitwirkenden aus der Community, die dieses Paket verfügbar gemacht haben.
 
 **Top Unterstützer:**
 
@@ -67,13 +71,19 @@ German Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
-Once installed, set `"locale": "de"` in `locale.json` to load German Language Pack. To modify `locale.json` press `Ctrl+Shift+P` to bring up the **Command Palette**, start typing "config" to filter the list of available commands, then select the **Configure Language** command. See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+
+Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+
+Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+
+See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 ## Contributing
 
-The translation strings are maintained in "DevTools - VS Code" project in Microsoft Localization Community Platform (MLCP).
+For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-If you'd like to participate in the effort either to contribue translation or improve translation, see [community localization page](https://aka.ms/vscodeloc) for more information.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
 
 ## License
 
