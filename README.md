@@ -1,10 +1,13 @@
 # Visual Studio Code Language Packs
 
-This repository contains all of the localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
+This repository contains files to build localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
 
-Localized resource files are managed in [Microsoft Localization Community Platform (MLCP)](https://envelope-community.azurewebsites.net/).
+Localized resource files are managed and edited in Microsoft Localization Community. Files will be exported to this repository when prepare the publishing of language pack.
 
-There are 13 "Core" languages for Visual Studio Code and, currently, 3 additional community driven languages:  
+Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs)
+
+There are 13 "Core" languages for Visual Studio Code.
+Previous 3 additional community driven languages are putting on hold while we are looking for the way how community can contribute.
 
 |Language|Visual Studio Code Language ID|MLCP Language Code|Type|
 |--------|--------|--------|--------|
@@ -25,15 +28,12 @@ There are 13 "Core" languages for Visual Studio Code and, currently, 3 additiona
 |**Hungarian**|hu|Hungarian (hu-hu)|Community
 
 
-Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs)
 
-## Contributing Translations
 
-Visual Studio Code translations are done in the [Visual Studio Code Project in MLCP](https://aka.ms/vscodeloc). MLCP is the single source of "truth", therefore any changes need to be made there. This repository is for building the language pack extensions.
-
-## Issue Reporting
+## Contributing
 
 If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/microsoft/vscode-loc/issues/new). Please check if a topic about your issue already exists!).
+Since translation strings are managed and edited in Microsoft Localization Platform. Change can only be made there. So pull request won't be accepted in vscode-loc repo except language pack readme.md.
 
 ## Legal
 Before we can accept your pull request you will need to sign a **Contribution License Agreement**. All you need to do is to submit a pull request, then the PR will get appropriately labelled (e.g. `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). If you already signed the agreement we will continue with reviewing the PR, otherwise system will tell you how you can sign the CLA. Once you sign the CLA all future PR's will be labeled as `cla-signed`.
