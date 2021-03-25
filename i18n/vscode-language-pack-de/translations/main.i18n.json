@@ -89,6 +89,11 @@
 			"error.closeBracketExpected": "Eine schließende Klammer wurde erwartet.",
 			"error.endOfFileExpected": "Ende der Datei erwartet."
 		},
+		"vs/base/browser/ui/inputbox/inputBox": {
+			"alertErrorMessage": "Fehler: {0}",
+			"alertWarningMessage": "Warnung: {0}",
+			"alertInfoMessage": "Info: {0}"
+		},
 		"vs/base/browser/ui/tree/treeDefaults": {
 			"collapse all": "Alle zuklappen"
 		},
@@ -104,11 +109,6 @@
 		},
 		"vs/base/browser/ui/toolbar/toolbar": {
 			"moreActions": "Weitere Aktionen..."
-		},
-		"vs/base/browser/ui/inputbox/inputBox": {
-			"alertErrorMessage": "Fehler: {0}",
-			"alertWarningMessage": "Warnung: {0}",
-			"alertInfoMessage": "Info: {0}"
 		},
 		"vs/base/parts/quickinput/browser/quickInput": {
 			"quickInput.back": "Zurück",
@@ -138,12 +138,12 @@
 		"vs/base/browser/ui/iconLabel/iconLabel": {
 			"iconLabel.loading": "Wird geladen..."
 		},
+		"vs/base/browser/ui/findinput/findInput": {
+			"defaultLabel": "Eingabe"
+		},
 		"vs/base/browser/ui/findinput/replaceInput": {
 			"defaultLabel": "Eingabe",
 			"label.preserveCaseCheckbox": "Groß-/Kleinschreibung beibehalten"
-		},
-		"vs/base/browser/ui/findinput/findInput": {
-			"defaultLabel": "Eingabe"
 		},
 		"vs/base/browser/ui/findinput/findInputCheckboxes": {
 			"caseDescription": "Groß-/Kleinschreibung beachten",
@@ -271,7 +271,7 @@
 			"suggest.insertMode.replace": "Vorschlag einfügen und Text auf der rechten Seite des Cursors überschreiben",
 			"suggest.insertMode": "Legt fest, ob Wörter beim Akzeptieren von Vervollständigungen überschrieben werden. Beachten Sie, dass dies von Erweiterungen abhängt, die für dieses Features aktiviert sind.",
 			"suggest.filterGraceful": "Steuert, ob Filter- und Suchvorschläge geringfügige Tippfehler berücksichtigen.",
-			"suggest.localityBonus": "Steuert, ob bei der Suche Wörter eine höhere Trefferquote erhalten, die in der Nähe des Cursors stehen.",
+			"suggest.localityBonus": "Steuert, ob bei der Sortierung Wörter priorisiert werden, die in der Nähe des Cursors stehen.",
 			"suggest.shareSuggestSelections": "Steuert, ob gespeicherte Vorschlagauswahlen in verschiedenen Arbeitsbereichen und Fenstern gemeinsam verwendet werden (dafür ist \"#editor.suggestSelection#\" erforderlich).",
 			"suggest.snippetsPreventQuickSuggestions": "Steuert, ob ein aktiver Ausschnitt verhindert, dass der Bereich \"Schnelle Vorschläge\" angezeigt wird.",
 			"suggest.showIcons": "Steuert, ob Symbole in Vorschlägen ein- oder ausgeblendet werden.",
@@ -312,11 +312,13 @@
 			"acceptSuggestionOnEnterSmart": "Einen Vorschlag nur mit der EINGABETASTE akzeptieren, wenn dieser eine Änderung am Text vornimmt.",
 			"acceptSuggestionOnEnter": "Steuert, ob Vorschläge mit der EINGABETASTE (zusätzlich zur TAB-Taste) akzeptiert werden sollen. Vermeidet Mehrdeutigkeit zwischen dem Einfügen neuer Zeilen oder dem Annehmen von Vorschlägen.",
 			"accessibilityPageSize": "Steuert die Anzahl von Zeilen im Editor, die von einer Sprachausgabe in einem Arbeitsschritt gelesen werden können. Bei Erkennung einer Sprachausgabe wird der Standardwert automatisch auf 2000 festgelegt. Warnung: Eine Festlegung auf einen höheren als den Standardwert kann sich auf die Leistung auswirken.",
-			"accessibilityPageSize.deprecated": "This setting is deprecated, editor will automatically choose the accessibility page size when we detect a screen reader. 2000 lines will be the new default.",
+			"accessibilityPageSize.deprecated": "Diese Einstellung ist veraltet. Der Editor wählt automatisch die Seitengröße für Barrierefreiheit aus, wenn eine Sprachausgabe erkannt wird. Neuer Standardwert: 2000 Zeilen.",
 			"editorViewAccessibleLabel": "Editor-Inhalt",
 			"editor.autoClosingBrackets.languageDefined": "Verwenden Sie Sprachkonfigurationen, um zu bestimmen, wann Klammern automatisch geschlossen werden sollen.",
 			"editor.autoClosingBrackets.beforeWhitespace": "Schließe Klammern nur automatisch, wenn der Cursor sich links von einem Leerzeichen befindet.",
 			"autoClosingBrackets": "Steuert, ob der Editor automatisch Klammern schließen soll, nachdem der Benutzer eine öffnende Klammer hinzugefügt hat.",
+			"editor.autoClosingDelete.auto": "Angrenzende schließende Anführungszeichen oder Klammern werden nur überschrieben, wenn sie automatisch eingefügt wurden.",
+			"autoClosingDelete": "Steuert, ob der Editor angrenzende schließende Anführungszeichen oder Klammern beim Löschen entfernen soll.",
 			"editor.autoClosingOvertype.auto": "Schließende Anführungszeichen oder Klammern werden nur überschrieben, wenn sie automatisch eingefügt wurden.",
 			"autoClosingOvertype": "Steuert, ob der Editor schließende Anführungszeichen oder Klammern überschreiben soll.",
 			"editor.autoClosingQuotes.languageDefined": "Verwende die Sprachkonfiguration, um zu ermitteln, wann Anführungsstriche automatisch geschlossen werden.",
@@ -479,7 +481,7 @@
 		},
 		"vs/editor/browser/controller/coreCommands": {
 			"stickydesc": "Auch bei längeren Zeilen am Ende bleiben",
-			"removedCursor": "Removed secondary cursors"
+			"removedCursor": "Sekundäre Cursor entfernt"
 		},
 		"vs/editor/browser/widget/codeEditorWidget": {
 			"cursors.maximum": "Die Anzahl der Cursors wurde auf {0} beschränkt."
@@ -587,14 +589,10 @@
 			"actions.clipboard.cutLabel": "Ausschneiden",
 			"miCopy": "&&Kopieren",
 			"actions.clipboard.copyLabel": "Kopieren",
-			"copy as": "Copy As...",
+			"copy as": "Kopieren als...",
 			"miPaste": "&&Einfügen",
 			"actions.clipboard.pasteLabel": "Einfügen",
 			"actions.clipboard.copyWithSyntaxHighlightingLabel": "Mit Syntaxhervorhebung kopieren"
-		},
-		"vs/editor/contrib/caretOperations/caretOperations": {
-			"caret.moveLeft": "Ausgewählten Text nach links verschieben",
-			"caret.moveRight": "Ausgewählten Text nach rechts verschieben"
 		},
 		"vs/editor/contrib/anchorSelect/anchorSelect": {
 			"selectionAnchor": "Auswahlanker",
@@ -604,14 +602,18 @@
 			"selectFromAnchorToCursor": "Auswahl von Anker zu Cursor",
 			"cancelSelectionAnchor": "Auswahlanker abbrechen"
 		},
-		"vs/editor/contrib/caretOperations/transpose": {
-			"transposeLetters.label": "Buchstaben austauschen"
-		},
 		"vs/editor/contrib/bracketMatching/bracketMatching": {
 			"overviewRulerBracketMatchForeground": "Übersichtslineal-Markierungsfarbe für zusammengehörige Klammern.",
 			"smartSelect.jumpBracket": "Gehe zu Klammer",
 			"smartSelect.selectToBracket": "Auswählen bis Klammer",
 			"miGoToBracket": "Gehe zu &&Klammer"
+		},
+		"vs/editor/contrib/caretOperations/caretOperations": {
+			"caret.moveLeft": "Ausgewählten Text nach links verschieben",
+			"caret.moveRight": "Ausgewählten Text nach rechts verschieben"
+		},
+		"vs/editor/contrib/caretOperations/transpose": {
+			"transposeLetters.label": "Buchstaben austauschen"
 		},
 		"vs/editor/contrib/codelens/codelensController": {
 			"showLensOnLine": "CodeLens-Befehle für aktuelle Zeile anzeigen"
@@ -624,8 +626,9 @@
 			"comment.block": "Blockkommentar umschalten",
 			"miToggleBlockComment": "&&Blockkommentar umschalten"
 		},
-		"vs/editor/contrib/contextmenu/contextmenu": {
-			"action.showContextMenu.label": "Editor-Kontextmenü anzeigen"
+		"vs/editor/contrib/cursorUndo/cursorUndo": {
+			"cursor.undo": "Mit Cursor rückgängig machen",
+			"cursor.redo": "Wiederholen mit Cursor"
 		},
 		"vs/editor/contrib/find/findController": {
 			"startFindAction": "Suchen",
@@ -638,9 +641,8 @@
 			"startReplace": "Ersetzen",
 			"miReplace": "&&Ersetzen"
 		},
-		"vs/editor/contrib/cursorUndo/cursorUndo": {
-			"cursor.undo": "Mit Cursor rückgängig machen",
-			"cursor.redo": "Wiederholen mit Cursor"
+		"vs/editor/contrib/contextmenu/contextmenu": {
+			"action.showContextMenu.label": "Editor-Kontextmenü anzeigen"
 		},
 		"vs/editor/contrib/folding/folding": {
 			"unfoldAction.label": "Auffalten",
@@ -651,6 +653,8 @@
 			"foldAllBlockComments.label": "Alle Blockkommentare falten",
 			"foldAllMarkerRegions.label": "Alle Regionen falten",
 			"unfoldAllMarkerRegions.label": "Alle Regionen auffalten",
+			"foldAllExcept.label": "Alle Regionen mit Ausnahme der ausgewählten zuklappen",
+			"unfoldAllExcept.label": "Alle Regionen mit Ausnahme der ausgewählten auffalten",
 			"foldAllAction.label": "Alle falten",
 			"unfoldAllAction.label": "Alle auffalten",
 			"foldLevelAction.label": "Faltebene {0}",
@@ -780,8 +784,8 @@
 			"label": "Link öffnen"
 		},
 		"vs/editor/contrib/multicursor/multicursor": {
-			"cursorAdded": "Cursor added: {0}",
-			"cursorsAdded": "Cursors added: {0}",
+			"cursorAdded": "Hinzugefügter Cursor: {0}",
+			"cursorsAdded": "Hinzugefügte Cursor: {0}",
 			"mutlicursor.insertAbove": "Cursor oberhalb hinzufügen",
 			"miInsertCursorAbove": "Cursor oberh&&alb hinzufügen",
 			"mutlicursor.insertBelow": "Cursor unterhalb hinzufügen",
@@ -803,6 +807,12 @@
 		"vs/editor/contrib/parameterHints/parameterHints": {
 			"parameterHints.trigger.label": "Parameterhinweise auslösen"
 		},
+		"vs/editor/contrib/smartSelect/smartSelect": {
+			"smartSelect.expand": "Auswahl aufklappen",
+			"miSmartSelectGrow": "Auswahl &&erweitern",
+			"smartSelect.shrink": "Markierung verkleinern",
+			"miSmartSelectShrink": "Au&&swahl verkleinern"
+		},
 		"vs/editor/contrib/rename/rename": {
 			"no result": "Kein Ergebnis.",
 			"resolveRenameLocationFailed": "Ein unbekannter Fehler ist beim Auflösen der Umbenennung eines Ortes aufgetreten.",
@@ -814,16 +824,10 @@
 			"rename.label": "Symbol umbenennen",
 			"enablePreview": "Möglichkeit aktivieren/deaktivieren, Änderungen vor dem Umbenennen als Vorschau anzeigen zu lassen"
 		},
-		"vs/editor/contrib/smartSelect/smartSelect": {
-			"smartSelect.expand": "Auswahl aufklappen",
-			"miSmartSelectGrow": "Auswahl &&erweitern",
-			"smartSelect.shrink": "Markierung verkleinern",
-			"miSmartSelectShrink": "Au&&swahl verkleinern"
-		},
 		"vs/editor/contrib/snippet/snippetController2": {
-			"inSnippetMode": "Whether the editor in current in snippet mode",
-			"hasNextTabstop": "Whether there is a next tab stop when in snippet mode",
-			"hasPrevTabstop": "Whether there is a previous tab stop when in snippet mode"
+			"inSnippetMode": "Gibt an, ob der Editor sich zurzeit im Ausschnittmodus befindet.",
+			"hasNextTabstop": "Gibt an, ob ein nächster Tabstopp im Ausschnittmodus vorhanden ist.",
+			"hasPrevTabstop": "Gibt an, ob ein vorheriger Tabstopp im Ausschnittmodus vorhanden ist."
 		},
 		"vs/editor/contrib/suggest/suggestController": {
 			"aria.alert.snippet": "Das Akzeptieren von \"{0}\" ergab {1} zusätzliche Bearbeitungen.",
@@ -834,13 +838,13 @@
 			"detail.less": "mehr anzeigen",
 			"suggest.reset.label": "Größe des Vorschlagswidgets zurücksetzen"
 		},
-		"vs/editor/contrib/tokenization/tokenization": {
-			"forceRetokenize": "Entwickler: Force Retokenize"
-		},
 		"vs/editor/contrib/toggleTabFocusMode/toggleTabFocusMode": {
 			"toggle.tabMovesFocus": "TAB-Umschalttaste verschiebt Fokus",
 			"toggle.tabMovesFocus.on": "Beim Drücken auf Tab wird der Fokus jetzt auf das nächste fokussierbare Element verschoben",
 			"toggle.tabMovesFocus.off": "Beim Drücken von Tab wird jetzt das Tabulator-Zeichen eingefügt"
+		},
+		"vs/editor/contrib/tokenization/tokenization": {
+			"forceRetokenize": "Entwickler: Force Retokenize"
 		},
 		"vs/editor/contrib/unusualLineTerminators/unusualLineTerminators": {
 			"unusualLineTerminators.title": "Ungewöhnliche Zeilentrennzeichen",
@@ -864,24 +868,24 @@
 			"deleteInsideWord": "Wort löschen"
 		},
 		"vs/editor/contrib/suggest/suggest": {
-			"suggestWidgetVisible": "Whether suggestion are visible",
-			"suggestWidgetDetailsVisible": "Whether suggestion details are visible",
-			"suggestWidgetMultipleSuggestions": "Whether there are multiple suggestions to pick from",
-			"suggestionMakesTextEdit": "Whether inserting the current suggestion yields in a change or has everything already been typed",
-			"acceptSuggestionOnEnter": "Whether suggestions are inserted when pressing Enter",
-			"suggestionHasInsertAndReplaceRange": "Whether the current suggestion has insert and replace behaviour",
-			"suggestionInsertMode": "Whether the default behaviour is to insert or replace",
-			"suggestionCanResolve": "Whether the current suggestion supports to resolve further details"
+			"suggestWidgetVisible": "Gibt an, ob Vorschläge sichtbar sind.",
+			"suggestWidgetDetailsVisible": "Gibt an, ob Vorschlagsdetails sichtbar sind.",
+			"suggestWidgetMultipleSuggestions": "Gibt an, ob mehrere Vorschläge zur Auswahl stehen.",
+			"suggestionMakesTextEdit": "Gibt an, ob das Einfügen des aktuellen Vorschlags zu einer Änderung führt oder ob bereits alles eingegeben wurde.",
+			"acceptSuggestionOnEnter": "Gibt an, ob Vorschläge durch Drücken der EINGABETASTE eingefügt werden.",
+			"suggestionHasInsertAndReplaceRange": "Gibt an, ob der aktuelle Vorschlag Verhalten zum Einfügen und Ersetzen aufweist.",
+			"suggestionInsertMode": "Gibt an, ob Einfügen oder Ersetzen als Standardverhalten verwendet wird.",
+			"suggestionCanResolve": "Gibt an, ob der aktuelle Vorschlag die Auflösung weiterer Details unterstützt."
 		},
 		"vs/editor/contrib/quickAccess/gotoLineQuickAccess": {
 			"cannotRunGotoLine": "Öffnen Sie zuerst einen Text-Editor, um zu einer Zeile zu wechseln.",
-			"gotoLineColumnLabel": "Wechseln Sie zu Zeile {0} und Spalte {1}.",
+			"gotoLineColumnLabel": "Wechseln Sie zu Zeile {0} und Zeichen {1}.",
 			"gotoLineLabel": "Zu Zeile {0} wechseln.",
 			"gotoLineLabelEmptyWithLimit": "Aktuelle Zeile: {0}, Zeichen: {1}. Geben Sie eine Zeilennummer zwischen 1 und {2} ein, zu der Sie navigieren möchten.",
 			"gotoLineLabelEmpty": "Aktuelle Zeile: {0}, Zeichen: {1}. Geben Sie eine Zeilennummer ein, zu der Sie navigieren möchten."
 		},
 		"vs/editor/contrib/peekView/peekView": {
-			"inReferenceSearchEditor": "Whether the current code editor is embedded inside peek",
+			"inReferenceSearchEditor": "Gibt an, ob der aktuelle Code-Editor in der Vorschau eingebettet ist.",
 			"label.close": "Schließen",
 			"peekViewTitleBackground": "Hintergrundfarbe des Titelbereichs der Peek-Ansicht.",
 			"peekViewTitleForeground": "Farbe des Titels in der Peek-Ansicht.",
@@ -967,6 +971,11 @@
 			"hint1n": "1 Formatierung zwischen Zeilen {0} und {1} vorgenommen",
 			"hintnn": "{0} Formatierungen zwischen Zeilen {1} und {2} vorgenommen"
 		},
+		"vs/editor/contrib/gotoSymbol/peek/referencesController": {
+			"referenceSearchVisible": "Gibt an, ob die Verweisvorschau sichtbar ist, z. B. \"Verweisvorschau\" oder \"Definition einsehen\".",
+			"labelLoading": "Wird geladen...",
+			"metaTitle.N": "{0} ({1})"
+		},
 		"vs/editor/contrib/message/messageController": {
 			"messageVisible": "Gibt an, ob der Editor zurzeit eine Inlinenachricht anzeigt.",
 			"editor.readonly": "Ein Bearbeiten ist im schreibgeschützten Editor nicht möglich"
@@ -981,13 +990,8 @@
 			"aria.result.n1": "{0} Symbole in {1} gefunden",
 			"aria.result.nm": "{0} Symbole in {1} Dateien gefunden"
 		},
-		"vs/editor/contrib/gotoSymbol/peek/referencesController": {
-			"referenceSearchVisible": "Whether reference peek is visible, like 'Peek References' or 'Peek Definition'",
-			"labelLoading": "Wird geladen...",
-			"metaTitle.N": "{0} ({1})"
-		},
 		"vs/editor/contrib/gotoSymbol/symbolNavigation": {
-			"hasSymbols": "Whether there are symbol locations that can be navigated via keyboard-only.",
+			"hasSymbols": "Gibt an, ob Symbolpositionen vorliegen, bei denen die Navigation nur über die Tastatur möglich ist.",
 			"location.kb": "Symbol {0} von {1}, {2} für nächstes",
 			"location": "Symbol {0} von {1}"
 		},
@@ -1010,7 +1014,7 @@
 			"hint": "{0}, Hinweis"
 		},
 		"vs/editor/contrib/rename/renameInputField": {
-			"renameInputVisible": "Whether the rename input widget is visible",
+			"renameInputVisible": "Gibt an, ob das Widget zum Umbenennen der Eingabe sichtbar ist.",
 			"renameAriaLabel": "Benennen Sie die Eingabe um. Geben Sie einen neuen Namen ein, und drücken Sie die EINGABETASTE, um den Commit auszuführen.",
 			"label": "{0} zur Umbenennung, {1} zur Vorschau"
 		},
@@ -1191,7 +1195,7 @@
 			"fileNotFoundError": "Die nicht vorhandene Datei \"{0}\" kann nicht aufgelöst werden.",
 			"fileExists": "Die bereits vorhandene Datei \"{0}\" kann nicht erstellt werden, wenn das Flag zum Überschreiben nicht festgelegt ist.",
 			"err.write": "Datei \"{0}\" kann nicht gespeichert werden ({1}).",
-			"writeFailedUnlockUnsupported": "Unable to unlock file '{0}' because provider does not support it.",
+			"writeFailedUnlockUnsupported": "Die Datei \"{0}\" kann nicht entsperrt werden, weil der Anbieter dies nicht unterstützt.",
 			"fileIsDirectoryWriteError": "Die Datei \"{0}\", kann nicht gespeichert werden, da sie eigentlich ein Verzeichnis ist.",
 			"fileModifiedError": "Datei geändert seit",
 			"err.read": "Die Datei \"{0}\" kann nicht gelesen werden ({1}).",
@@ -1482,7 +1486,7 @@
 			"listFilterMatchHighlightBorder": "Rahmenfarbe der gefilterten Übereinstimmung",
 			"treeIndentGuidesStroke": "Strukturstrichfarbe für die Einzugsführungslinien.",
 			"listDeemphasizedForeground": "Hintergrundfarbe für nicht hervorgehobene Listen-/Strukturelemente.",
-			"quickInput.list.focusBackground deprecation": "Please use quickInputList.focusBackground instead",
+			"quickInput.list.focusBackground deprecation": "Verwenden Sie stattdessen \"quickInputList.focusBackground\".",
 			"quickInput.listFocusBackground": "Die Hintergrundfarbe der Schnellauswahl für das fokussierte Element.",
 			"menuBorder": "Rahmenfarbe von Menüs.",
 			"menuForeground": "Vordergrundfarbe von Menüelementen.",
@@ -1790,257 +1794,6 @@
 			"morecCommands": "andere Befehle",
 			"canNotRun": "Der Befehl {0} hat einen Fehler ausgelöst ({1})."
 		},
-		"readme.md": {
-			"LanguagePackTitle": "Sprachpaket bietet lokalisierte Benutzeroberfläche für VS Code.",
-			"Usage": "Syntax",
-			"displayLanguage": "Sie können die Standardsprache der Benutzeroberfläche außer Kraft setzen, indem Sie die VS Code-Anzeigesprache explizit über den Befehl \"Anzeigesprache konfigurieren\" festlegen.",
-			"Command Palette": "Drücken Sie \"STRG+UMSCHALT+P\", um die Befehlspalette aufzurufen, und beginnen Sie mit der Eingabe von \"Anzeige\", um den Befehl \"Anzeigesprache konfigurieren\" zu filtern und anzuzeigen.",
-			"ShowLocale": "Drücken Sie die EINGABETASTE, und eine Liste installierter Sprachen nach Gebietsschema wird angezeigt. Das aktuelle Gebietsschema ist hervorgehoben.",
-			"SwtichUI": "Wählen Sie ein anderes Gebietsschema aus, um die Sprache der Benutzeroberfläche zu wechseln.",
-			"DocLink": "Weitere Informationen finden Sie in der Dokumentation.",
-			"Contributing": "Mitwirkende",
-			"Feedback": "Um Feedback zur Verbesserung der Übersetzung zu übermitteln, erstellen Sie ein Issue im Repository \"vscode-loc\".",
-			"LocPlatform": "Die Übersetzungszeichenfolgen werden in Microsoft Localization Platform verwaltet. Die Änderung kann nur in Microsoft Localization Platform durchgeführt und dann in das Repository \"vscode-loc\" exportiert werden. Der Pull Request wird daher im Repository \"vscode-loc\" nicht akzeptiert.",
-			"LicenseTitle": "Lizenz",
-			"LicenseMessage": "Der Quellcode und die Zeichenfolgen sind unter der MIT-Lizenz lizenziert.",
-			"Credits": "Info",
-			"Contributed": "Dieses Sprachpaket wurde durch Beiträge von der Community für die Community lokalisiert. Herzlichen Dank an die Mitwirkenden aus der Community, die dieses Paket verfügbar gemacht haben.",
-			"TopContributors": "Wichtigste Mitwirkende:",
-			"Contributors": "Mitwirkende:",
-			"EnjoyLanguagePack": "Viel Spaß!"
-		},
-		"win32/i18n/Default": {
-			"SetupAppTitle": "Setup",
-			"SetupWindowTitle": "Setup – %1",
-			"UninstallAppTitle": "Deinstallieren",
-			"UninstallAppFullTitle": "%1 deinstallieren",
-			"InformationTitle": "Informationen",
-			"ConfirmTitle": "Bestätigen",
-			"ErrorTitle": "Fehler",
-			"SetupLdrStartupMessage": "Hiermit wird %1 installiert. Möchten Sie den Vorgang fortsetzen?",
-			"LdrCannotCreateTemp": "Eine temporäre Datei konnte nicht erstellt werden. Die Installation wurde abgebrochen.",
-			"LdrCannotExecTemp": "Eine Datei im temporären Verzeichnis kann nicht ausgeführt werden. Die Installation wurde abgebrochen.",
-			"LastErrorMessage": "%1.%n%nFehler %2: %3",
-			"SetupFileMissing": "Die Datei %1 fehlt im Installationsverzeichnis. Beheben Sie das Problem, oder beziehen Sie eine neue Kopie des Programms.",
-			"SetupFileCorrupt": "Die Setupdateien sind beschädigt. Beziehen Sie eine neue Kopie des Programms.",
-			"SetupFileCorruptOrWrongVer": "Die Setupdateien sind beschädigt oder nicht kompatibel mit dieser Version von Setup. Beheben Sie das Problem, oder beziehen Sie eine neue Kopie des Programms.",
-			"InvalidParameter": "Ein ungültiger Parameter wurde in der Befehlszeile übergeben:%n%n%1",
-			"SetupAlreadyRunning": "Setup wird bereits ausgeführt.",
-			"WindowsVersionNotSupported": "Dieses Programm unterstützt nicht die Version von Windows, die auf Ihrem Computer ausgeführt wird.",
-			"WindowsServicePackRequired": "Dieses Programm erfordert %1 Service Pack %2 oder höher.",
-			"NotOnThisPlatform": "Dieses Programm kann unter %1 nicht ausgeführt werden.",
-			"OnlyOnThisPlatform": "Dieses Programm muss unter %1 ausgeführt werden.",
-			"OnlyOnTheseArchitectures": "Dieses Programm kann nur unter Versionen von Windows installiert werden, die für die folgenden Prozessorarchitekturen konzipiert wurden:%n%n%1",
-			"MissingWOW64APIs": "Die Version von Windows, die Sie ausführen, enthält nicht die Funktionen, die von Setup zum Ausführen einer 64-Bit-Installation benötigt werden. Installieren Sie Service Pack %1, um dieses Problem zu beheben.",
-			"WinVersionTooLowError": "Dieses Programm erfordert %1 Version %2 oder höher.",
-			"WinVersionTooHighError": "Das Programm kann nicht unter %1 Version %2 oder höher installiert werde.",
-			"AdminPrivilegesRequired": "Sie müssen als Administrator angemeldet sein, wenn Sie dieses Programm installieren.",
-			"PowerUserPrivilegesRequired": "Sie müssen als Administrator oder als Mitglied der Gruppe \"Poweruser\" angemeldet sein, wenn Sie dieses Programm installieren.",
-			"SetupAppRunningError": "Setup hat festgestellt, dass %1 zurzeit ausgeführt wird.%n%nSchließen Sie jetzt alle Instanzen, und klicken Sie dann auf \"OK\", um fortzufahren, oder auf \"Abbrechen\", um die Installation zu beenden.",
-			"UninstallAppRunningError": "Die Deinstallation hat festgestellt, dass %1 zurzeit ausgeführt wird.%n%nSchließen Sie jetzt alle Instanzen, und klicken Sie dann auf \"OK\", um fortzufahren, oder auf \"Abbrechen\", um die Installation zu beenden.",
-			"ErrorCreatingDir": "Setup konnte das Verzeichnis \"%1\" nicht erstellen.",
-			"ErrorTooManyFilesInDir": "Eine Datei kann im Verzeichnis \"%1\" nicht erstellt werden, weil es zu viele Dateien enthält.",
-			"ExitSetupTitle": "Setup beenden",
-			"ExitSetupMessage": "Setup wurde nicht abgeschlossen. Wenn Sie die Installation jetzt beenden, wird das Programm nicht installiert.%n%nSie können Setup zu einem späteren Zeitpunkt erneut ausführen, um die Installation abzuschließen.%n%nSetup beenden?",
-			"AboutSetupMenuItem": "&Info zum Setup...",
-			"AboutSetupTitle": "Info zum Setup",
-			"AboutSetupMessage": "%1 Version %2%n%3%n%n%1 Startseite:%n%4",
-			"ButtonBack": "< &Zurück",
-			"ButtonNext": "&Weiter >",
-			"ButtonInstall": "&Installieren",
-			"ButtonOK": "OK",
-			"ButtonCancel": "Abbrechen",
-			"ButtonYes": "&Ja",
-			"ButtonYesToAll": "Ja für &alle",
-			"ButtonNo": "&Nein",
-			"ButtonNoToAll": "N&ein für alle",
-			"ButtonFinish": "&Fertig stellen",
-			"ButtonBrowse": "&Durchsuchen...",
-			"ButtonWizardBrowse": "D&urchsuchen...",
-			"ButtonNewFolder": "&Neuen Ordner erstellen",
-			"SelectLanguageTitle": "Setupsprache auswählen",
-			"SelectLanguageLabel": "Sprache auswählen, die während der Installation verwendet wird:",
-			"ClickNext": "Klicken Sie auf \"Weiter\", um den Vorgang fortzusetzen, oder auf \"Abbrechen\", um Setup zu beenden.",
-			"BrowseDialogTitle": "Ordner suchen",
-			"BrowseDialogLabel": "Wählen Sie einen Ordner in der Liste unten aus, und klicken Sie dann auf \"OK\".",
-			"NewFolderName": "Neuer Ordner",
-			"WelcomeLabel1": "Willkommen beim Setup-Assistenten von [name]",
-			"WelcomeLabel2": "Hiermit wird [name/ver] auf Ihrem Computer installiert.%n%nEs wird empfohlen, alle anderen Anwendungen zu schließen, bevor Sie fortfahren.",
-			"WizardPassword": "Kennwort",
-			"PasswordLabel1": "Die Installation ist durch ein Kennwort geschützt.",
-			"PasswordLabel3": "Geben Sie das Kennwort an, und klicken Sie dann auf \"Weiter\", um fortzufahren. Für Kennwörter wird zwischen Groß-und Kleinschreibung unterschieden.",
-			"PasswordEditLabel": "&Kennwort:",
-			"IncorrectPassword": "Das eingegebene Kennwort ist falsch. Versuchen Sie es noch mal.",
-			"WizardLicense": "Lizenzvereinbarung",
-			"LicenseLabel": "Lesen Sie die folgenden wichtigen Informationen, bevor Sie fortfahren.",
-			"LicenseLabel3": "Lesen Sie die folgenden Lizenzbedingungen. Sie müssen den Bedingungen dieser Vereinbarung zustimmen, bevor Sie die Installation fortsetzen können.",
-			"LicenseAccepted": "Ich stimme der Vereinb&arung zu",
-			"LicenseNotAccepted": "Ich &stimme der Vereinbarung nicht zu",
-			"WizardInfoBefore": "Informationen",
-			"InfoBeforeLabel": "Lesen Sie die folgenden wichtigen Informationen, bevor Sie fortfahren.",
-			"InfoBeforeClickLabel": "Klicken Sie auf \"Weiter\", um mit der Installation fortzufahren.",
-			"WizardInfoAfter": "Informationen",
-			"InfoAfterLabel": "Lesen Sie die folgenden wichtigen Informationen, bevor Sie fortfahren.",
-			"InfoAfterClickLabel": "Klicken Sie auf \"Weiter\", um mit der Installation fortzufahren.",
-			"WizardUserInfo": "Benutzerinformationen",
-			"UserInfoDesc": "Geben Sie Ihre Informationen ein.",
-			"UserInfoName": "&Benutzername:",
-			"UserInfoOrg": "&Organisation:",
-			"UserInfoSerial": "&Seriennummer:",
-			"UserInfoNameRequired": "Sie müssen einen Namen eingeben.",
-			"WizardSelectDir": "Zielspeicherort auswählen",
-			"SelectDirDesc": "Wo soll [name] installiert werden?",
-			"SelectDirLabel3": "Setup installiert [name] im folgenden Ordner.",
-			"SelectDirBrowseLabel": "Klicken Sie auf \"Weiter\", um fortzufahren. Wenn Sie einen anderen Ordner auswählen möchten, klicken Sie auf \"Durchsuchen\".",
-			"DiskSpaceMBLabel": "Mindestens [mb] MB freier Speicherplatz ist auf dem Datenträger erforderlich.",
-			"CannotInstallToNetworkDrive": "Setup kann die Installation nicht auf einem Netzlaufwerk ausführen.",
-			"CannotInstallToUNCPath": "Setup kann die Installation nicht in einem UNC-Pfad ausführen.",
-			"InvalidPath": "Sie müssen einen vollständigen Pfad mit Laufwerkbuchstaben eingeben; z.B. %n%nC:\\APP%n%n oder einen UNC-Pfad im Format %n%n\\\\server\\share",
-			"InvalidDrive": "Das ausgewählte Laufwerk oder die UNC-Freigabe ist nicht vorhanden oder es kann kein Zugriff darauf erfolgen. Wählen Sie ein anderes Laufwerk oder eine andere UNC-Freigabe aus.",
-			"DiskSpaceWarningTitle": "Nicht genügend Speicherplatz auf dem Datenträger.",
-			"DiskSpaceWarning": "Setup benötigt mindestens %1 KB freien Speicherplatz für die Installation. Auf dem ausgewählten Laufwerk sind aber nur %2 KB verfügbar.%n%nMöchten Sie trotzdem fortfahren?",
-			"DirNameTooLong": "Der Ordnername oder -pfad ist zu lang.",
-			"InvalidDirName": "Der Ordnername ist ungültig.",
-			"BadDirName32": "Ordnernamen dürfen keines der folgenden Zeichen enthalten: %n%n%1",
-			"DirExistsTitle": "Der Ordner ist vorhanden.",
-			"DirExists": "Der Ordner%n%n%1%n%nist bereits vorhanden. Möchten Sie trotzdem in diesem Ordner installieren?",
-			"DirDoesntExistTitle": "Der Ordner ist nicht vorhanden.",
-			"DirDoesntExist": "Der Ordner%n%n%1%n%nist nicht vorhanden. Soll der Ordner erstellt werden?",
-			"WizardSelectComponents": "Komponenten auswählen",
-			"SelectComponentsDesc": "Welche Komponenten sollen installiert werden?",
-			"SelectComponentsLabel2": "Wählen Sie die zu installierenden Komponenten aus. Deaktivieren Sie die Komponenten, die Sie nicht installieren möchten. Klicken Sie auf \"Weiter\", wenn Sie zum Fortfahren bereit sind.",
-			"FullInstallation": "Vollständige Installation",
-			"CompactInstallation": "Kompakte Installation",
-			"CustomInstallation": "Benutzerdefinierte Installation",
-			"NoUninstallWarningTitle": "Komponenten sind vorhanden.",
-			"NoUninstallWarning": "Setup hat festgestellt, dass die folgenden Komponenten bereits auf Ihrem Computer installiert sind:%n%n%1%n%nDurch das Deaktivieren dieser Komponenten werden diese nicht deinstalliert.%n%nMöchten Sie trotzdem fortfahren?",
-			"ComponentSize1": "%1 KB",
-			"ComponentSize2": "%1 MB",
-			"ComponentsDiskSpaceMBLabel": "Für die aktuelle Auswahl sind mindestens [mb] MB Speicherplatz auf dem Datenträger erforderlich.",
-			"WizardSelectTasks": "Weitere Aufgaben auswählen",
-			"SelectTasksDesc": "Welche weiteren Aufgaben sollen ausgeführt werden?",
-			"SelectTasksLabel2": "Wählen Sie die zusätzlichen Aufgaben aus, die Setup während der Installation von [name] ausführen soll, und klicken Sie dann auf \"Weiter\".",
-			"WizardSelectProgramGroup": "Startmenüordner auswählen",
-			"SelectStartMenuFolderDesc": "Wo soll Setup die Verknüpfungen des Programms platzieren?",
-			"SelectStartMenuFolderLabel3": "Setup erstellt die Verknüpfungen des Programms im folgenden Startmenüordner.",
-			"SelectStartMenuFolderBrowseLabel": "Klicken Sie auf \"Weiter\", um fortzufahren. Wenn Sie einen anderen Ordner auswählen möchten, klicken Sie auf \"Durchsuchen\".",
-			"MustEnterGroupName": "Sie müssen einen Ordnernamen eingeben.",
-			"GroupNameTooLong": "Der Ordnername oder -pfad ist zu lang.",
-			"InvalidGroupName": "Der Ordnername ist ungültig.",
-			"BadGroupName": "Der Ordnername darf keines der folgenden Zeichen enthalten: %n%n%1",
-			"NoProgramGroupCheck2": "&Keinen Startmenüordner erstellen",
-			"WizardReady": "Bereit für die Installation",
-			"ReadyLabel1": "Setup ist nun bereitet, mit der Installation von [name] auf Ihrem Computer zu beginnen.",
-			"ReadyLabel2a": "Klicken Sie auf \"Installieren\", um die Installation fortzusetzen, oder klicken Sie auf \"Zurück\", wenn Sie Einstellungen überprüfen oder ändern möchten.",
-			"ReadyLabel2b": "Klicken Sie auf \"Installieren\", um die Installation fortzusetzen.",
-			"ReadyMemoUserInfo": "Benutzerinformationen:",
-			"ReadyMemoDir": "Zielspeicherort:",
-			"ReadyMemoType": "Installationsart:",
-			"ReadyMemoComponents": "Ausgewählte Komponenten:",
-			"ReadyMemoGroup": "Startmenüordner:",
-			"ReadyMemoTasks": "Weitere Aufgaben:",
-			"WizardPreparing": "Die Installation wird vorbereitet.",
-			"PreparingDesc": "Setup bereitet die Installation von [name] auf Ihrem Computer vor.",
-			"PreviousInstallNotCompleted": "Die Installation/Entfernung eines vorherigen Programms wurde nicht abgeschlossen. Sie müssen den Computer zum Abschließen dieser Installation neu starten.%n%nNach dem Neustart des Computers führen Sie Setup erneut aus, um die Installation von [name] abzuschließen.",
-			"CannotContinue": "Setup kann nicht fortgesetzt werden. Klicken Sie auf \"Abbrechen\", um Setup zu beenden.",
-			"ApplicationsFound": "Die folgenden Anwendungen verwenden Dateien, die von Setup aktualisiert werden müssen. Es wird empfohlen, Setup das automatische Schließen dieser Anwendungen zu erlauben.",
-			"ApplicationsFound2": "Die folgenden Anwendungen verwenden Dateien, die von Setup aktualisiert werden müssen. Es wird empfohlen, Setup das automatische Schließen dieser Anwendungen zu erlauben. Nach Abschluss der Installation versucht Setup, die Anwendungen neu zu starten.",
-			"CloseApplications": "&Anwendungen automatisch schließen",
-			"DontCloseApplications": "A&nwendungen nicht schließen",
-			"ErrorCloseApplications": "Setup konnte nicht alle Programme automatisch schließen. Es wird empfohlen, alle Anwendungen zu schließen, die Dateien verwenden, die von Setup aktualisiert werden, bevor Sie den Vorgang fortsetzen.",
-			"WizardInstalling": "Wird installiert.",
-			"InstallingLabel": "Warten Sie, während Setup [name] auf Ihrem Computer installiert.",
-			"FinishedHeadingLabel": "Der Setup-Assistent für [name] wird abgeschlossen.",
-			"FinishedLabelNoIcons": "Setup hat die Installation von [name] auf Ihrem Computer abgeschlossen.",
-			"FinishedLabel": "Das Setup hat die Installation von [Name] auf Ihrem Computer abgeschlossen. Sie können die Anwendung über das installierte Symbol starten.",
-			"ClickFinish": "Klicken Sie auf \"Fertig stellen\", um Setup zu beenden.",
-			"FinishedRestartLabel": "Setup muss den Computer neu starten, damit die Installation von [name] abgeschlossen werden kann. Soll der Computer jetzt neu gestartet werden?",
-			"FinishedRestartMessage": "Setup muss den Computer neu starten, damit die Installation von [name] abgeschlossen werden kann.%n%nSoll der Computer jetzt neu gestartet werden?",
-			"ShowReadmeCheck": "Ja, ich möchte die Infodatei anzeigen",
-			"YesRadio": "&Ja, den Computer jetzt neu starten",
-			"NoRadio": "&Nein, ich starte den Computer später neu",
-			"RunEntryExec": "%1 ausführen",
-			"RunEntryShellExec": "%1 anzeigen",
-			"ChangeDiskTitle": "Setup benötigt den nächsten Datenträger.",
-			"SelectDiskLabel2": "Legen Sie den Datenträger %1 ein, und klicken Sie auf \"OK\".%n%nWenn sich die Dateien auf diesem Datenträger in einem anderen als dem unten angezeigten Ordner befinden, geben Sie den richtigen Pfad ein, oder klicken Sie auf \"Durchsuchen\".",
-			"PathLabel": "&Pfad:",
-			"FileNotInDir2": "Die Datei \"%1\" wurde in \"%2\" nicht gefunden. Legen Sie den richtigen Datenträger ein, oder wählen Sie einen anderen Ordner aus.",
-			"SelectDirectoryLabel": "Geben Sie den Speicherort des nächsten Datenträgers an.",
-			"SetupAborted": "Setup wurde nicht abgeschlossen.%n%nBeheben Sie das Problem, und führen Sie Setup erneut aus.",
-			"EntryAbortRetryIgnore": "Klicken Sie auf \"Wiederholen\", um es erneut zu versuchen, auf \"Ignorieren\", um den Vorgang trotzdem fortzusetzen, oder auf \"Abbrechen\", um die Installation abzubrechen.",
-			"StatusClosingApplications": "Anwendungen werden geschlossen...",
-			"StatusCreateDirs": "Verzeichnisse werden erstellt...",
-			"StatusExtractFiles": "Dateien werden extrahiert...",
-			"StatusCreateIcons": "Verknüpfungen werden erstellt...",
-			"StatusCreateIniEntries": "INI-Einträge werden erstellt...",
-			"StatusCreateRegistryEntries": "Registrierungseinträge werden erstellt...",
-			"StatusRegisterFiles": "Dateien werden registriert...",
-			"StatusSavingUninstall": "Die Deinstallationsinformationen werden gespeichert...",
-			"StatusRunProgram": "Die Installation wird abgeschlossen...",
-			"StatusRestartingApplications": "Anwendung werden erneut gestartet...",
-			"StatusRollback": "Rollback der Änderungen...",
-			"ErrorInternal2": "Interner Fehler: %1",
-			"ErrorFunctionFailedNoCode": "Fehler von %1.",
-			"ErrorFunctionFailed": "Fehler von %1. Code %2",
-			"ErrorFunctionFailedWithMessage": "Fehler von %1. Code %2.%n%3",
-			"ErrorExecutingProgram": "Die Datei kann nicht ausgeführt werden:%n%1",
-			"ErrorRegOpenKey": "Fehler beim Öffnen des Registrierungsschlüssels:%n%1\\%2",
-			"ErrorRegCreateKey": "Fehler beim Erstellen des Registrierungsschlüssels:%n%1\\%2",
-			"ErrorRegWriteKey": "Fehler beim Schreiben in den Registrierungsschlüssel:%n%1\\%2",
-			"ErrorIniEntry": "Fehler beim Erstellen des INI-Eintrags in der Datei \"%1\".",
-			"FileAbortRetryIgnore": "Klicken Sie auf \"Wiederholen\", um es erneut zu versuchen, auf \"Ignorieren\", um diese Datei zu überspringen (nicht empfohlen), oder auf \"Abbrechen\", um die Installation abzubrechen.",
-			"FileAbortRetryIgnore2": "Klicken Sie auf \"Wiederholen\", um es erneut zu versuchen, auf \"Ignorieren\", um den Vorgang trotzdem fortzusetzen (nicht empfohlen), oder auf \"Abbrechen\", um die Installation abzubrechen.",
-			"SourceIsCorrupted": "Die Quelldatei ist fehlerhaft.",
-			"SourceDoesntExist": "Die Quelldatei \"%1\" ist nicht vorhanden.",
-			"ExistingFileReadOnly": "Die vorhandene Datei ist als schreibgeschützt markiert.%n%nKlicken Sie auf \"Wiederholen\", um das Schreibschutzattribut zu entfernen und es erneut zu versuchen, auf \"Ignorieren\", um diese Datei zu überspringen, oder auf \"Abbrechen\", um die Installation abzubrechen.",
-			"ErrorReadingExistingDest": "Fehler beim Versuch, die vorhandene Datei zu lesen:",
-			"FileExists": "Die Datei ist bereits vorhanden.%n%nSoll Sie von Setup überschrieben werden?",
-			"ExistingFileNewer": "Die vorhandene Datei ist neuer als die Datei, die Setup installieren möchte. Es wird empfohlen, die vorhandene Datei beizubehalten.%n%nMöchten Sie die vorhandene Datei beibehalten?",
-			"ErrorChangingAttr": "Fehler beim Versuch, die Attribute der vorhandenen Datei zu ändern:",
-			"ErrorCreatingTemp": "Fehler beim Versuch, eine Datei im Zielverzeichnis zu erstellen:",
-			"ErrorReadingSource": "Fehler beim Versuch, die Quelldatei zu lesen:",
-			"ErrorCopying": "Fehler beim Versuch, eine Datei zu kopieren:",
-			"ErrorReplacingExistingFile": "Fehler beim Versuch, die vorhandene Datei zu ersetzen:",
-			"ErrorRestartReplace": "Fehler von \"RestartReplace\":",
-			"ErrorRenamingTemp": "Fehler beim Versuch, eine Datei im Zielverzeichnis umzubenennen:",
-			"ErrorRegisterServer": "Die DLL-/OCX-Datei kann nicht registriert werden: %1",
-			"ErrorRegSvr32Failed": "Fehler von RegSvr32 mit dem Exitcode %1.",
-			"ErrorRegisterTypeLib": "Die Typbibliothek kann nicht registriert werden: %1",
-			"ErrorOpeningReadme": "Fehler beim Versuch, die Infodatei zu öffnen.",
-			"ErrorRestartingComputer": "Setup konnte den Computer nicht neu starten. Führen Sie den Neustart manuell aus.",
-			"UninstallNotFound": "Die Datei \"%1\" ist nicht vorhanden. Die Deinstallation kann nicht ausgeführt werden.",
-			"UninstallOpenError": "Die Datei \"%1\" konnte nicht geöffnet werden. Die Deinstallation kann nicht ausgeführt werden.",
-			"UninstallUnsupportedVer": "Die Deinstallationsprotokolldatei \"%1\" liegt in einem Format vor, das von dieser Version des Deinstallationsprogramms nicht erkannt wird. Die Deinstallation kann nicht ausgeführt werden.",
-			"UninstallUnknownEntry": "Unbekannter Eintrag (%1) im Deinstallationsprotokoll.",
-			"ConfirmUninstall": "Sind Sie sicher, dass Sie %1 vollständig löschen möchten? Erweiterungen und Einstellungen werden nicht gelöscht.",
-			"UninstallOnlyOnWin64": "Diese Installation kann nur unter 64-Bit-Windows deinstalliert werden.",
-			"OnlyAdminCanUninstall": "Diese Installation kann nur von einem Benutzer mit Administratorberechtigungen deinstalliert werden.",
-			"UninstallStatusLabel": "Warten Sie, während %1 von Ihrem Computer entfernt wird.",
-			"UninstalledAll": "%1 wurde erfolgreich von Ihrem Computer entfernt.",
-			"UninstalledMost": "Die Deinstallation von %1 wurde abgeschlossen.%n%nEinige Elemente konnten nicht entfernt werden. Diese können manuell entfernt werden.",
-			"UninstalledAndNeedsRestart": "Ihr Computer muss neu gestartet werden, damit die Deinstallation von %1 abgeschlossen werden kann.%n%nSoll der Computer jetzt neu gestartet werden?",
-			"UninstallDataCorrupted": "Die Datei \"%1\" ist beschädigt. Kann nicht deinstalliert werden",
-			"ConfirmDeleteSharedFileTitle": "Freigegebene Datei entfernen?",
-			"ConfirmDeleteSharedFile2": "Das System zeigt an, dass die folgende freigegebene Datei nicht mehr von Programmen verwendet wird. Soll die Deinstallation diese freigegebene Datei entfernen?%n%nWenn Programme diese Datei noch verwenden und die Datei entfernt wird, funktionieren diese Programme ggf. nicht mehr ordnungsgemäß. Wenn Sie nicht sicher sind, wählen Sie \"Nein\" aus. Sie können die Datei problemlos im System belassen.",
-			"SharedFileNameLabel": "Dateiname:",
-			"SharedFileLocationLabel": "Speicherort:",
-			"WizardUninstalling": "Deinstallationsstatus",
-			"StatusUninstalling": "%1 wird deinstalliert...",
-			"ShutdownBlockReasonInstallingApp": "%1 wird installiert.",
-			"ShutdownBlockReasonUninstallingApp": "%1 wird deinstalliert.",
-			"NameAndVersion": "%1 Version %2",
-			"AdditionalIcons": "Zusätzliche Symbole:",
-			"CreateDesktopIcon": "Desktopsymbol &erstellen",
-			"CreateQuickLaunchIcon": "Schnellstartsymbol &erstellen",
-			"ProgramOnTheWeb": "%1 im Web",
-			"UninstallProgram": "%1 deinstallieren",
-			"LaunchProgram": "%1 starten",
-			"AssocFileExtension": "%1 der &Dateierweiterung \"%2\" zuordnen",
-			"AssocingFileExtension": "%1 wird der Dateierweiterung \"%2\" zugeordnet...",
-			"AutoStartProgramGroupDescription": "Start:",
-			"AutoStartProgram": "%1 automatisch starten",
-			"AddonHostProgramNotFound": "%1 wurde im von Ihnen ausgewählten Ordner nicht gefunden.%n%nMöchten Sie trotzdem fortfahren?"
-		},
 		"vscode/vscode/": {
 			"FinishedLabel": "Das Setup hat die Installation von [Name] auf Ihrem Computer abgeschlossen. Sie können die Anwendung über die installierten Verknüpfungen starten.",
 			"ConfirmUninstall": "Möchten Sie \"%1\" und alle zugehörigen Komponenten vollständig entfernen?",
@@ -2082,8 +1835,8 @@
 			"selectSource": "Quelle auswählen",
 			"vscode": "Visual Studio Code",
 			"extension": "Eine Erweiterung",
-			"marketplace": "Extensions marketplace",
-			"unknown": "Don't know",
+			"marketplace": "Marketplace für Erweiterungen",
+			"unknown": "Nicht bekannt",
 			"stepsToReproduce": "Schritte für Reproduktion",
 			"bugDescription": "Geben Sie an, welche Schritte ausgeführt werden müssen, um das Problem zuverlässig zu reproduzieren. Was sollte geschehen, und was ist stattdessen geschehen? Wir unterstützen GitHub Flavored Markdown. Sie können während der Vorschau in GitHub Ihr Problem bearbeiten und Screenshots hinzufügen.",
 			"performanceIssueDesciption": "Wann ist dieses Leistungsproblem aufgetreten? Tritt es beispielsweise beim Start oder nach einer bestimmten Reihe von Aktionen auf? Wir unterstützen GitHub Flavored Markdown. Sie können während der Vorschau in GitHub Ihr Problem bearbeiten und Screenshots hinzufügen.",
@@ -2187,6 +1940,7 @@
 			"argv.enableCrashReporter": "Ermöglicht das Deaktivieren der Absturzberichterstellung. Bei Änderung des Werts muss die App neu gestartet werden.",
 			"argv.crashReporterId": "Eindeutige ID zum Korrelieren von Absturzberichten, die von dieser App-Instanz gesendet werden.",
 			"argv.enebleProposedApi": "Aktivieren Sie vorgeschlagene APIs für eine Liste mit Erweiterungs-IDs (z. B. \"vscode.git\"). Vorgeschlagene APIs sind instabil und können jederzeit ohne Warnung unterbrochen werden. Diese Option sollte nur zum Entwickeln und Testen von Erweiterungen festgelegt werden.",
+			"argv.logLevel": "Log-Level zu verwenden. Standardwert ist \"Info\". Zulässige Werte sind \"kritisch\", \"Fehler\", \"warnen\", \"Info\", \"debug\", \"verfolgen\", \"aus\".",
 			"argv.force-renderer-accessibility": "Erzwingt, dass der Renderer zugänglich ist. Ändern Sie diese Einstellung nur, wenn Sie eine Sprachausgabe unter Linux verwenden. Auf anderen Plattformen ist der Renderer automatisch zugänglich. Dieses Flag wird automatisch festgelegt, wenn editor.accessibilitySupport: aktiviert ist."
 		},
 		"vs/workbench/common/actions": {
@@ -2338,7 +2092,7 @@
 			"focusedView": "Der Bezeichner der Ansicht mit dem Tastaturfokus"
 		},
 		"vs/workbench/api/common/extHostExtensionService": {
-			"extensionTestError1": "Cannot load test runner.",
+			"extensionTestError1": "Test Runner kann nicht geladen werden.",
 			"extensionTestError": "Der Pfad \"{0}\" verweist nicht auf einen gültigen Test Runner für eine Erweiterung."
 		},
 		"vs/workbench/api/common/extHostTerminalService": {
@@ -2346,6 +2100,41 @@
 		},
 		"vs/workbench/api/common/extHostWorkspace": {
 			"updateerror": "Die Erweiterung \"{0}\" konnte die Arbeitsbereichsordner nicht aktualisieren: {1}"
+		},
+		"vs/workbench/browser/parts/dialogs/dialogHandler": {
+			"yesButton": "&&Ja",
+			"cancelButton": "Abbrechen",
+			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDatum: {2}\r\nBrowser: {3}",
+			"copy": "Kopieren",
+			"ok": "OK"
+		},
+		"vs/workbench/electron-sandbox/parts/dialogs/dialogHandler": {
+			"yesButton": "&&Ja",
+			"cancelButton": "Abbrechen",
+			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDatum: {2}\r\nElectron: {3}\r\nChrome: {4}\r\nNode.js: {5}\r\nV8: {6}\r\nBetriebssystem: {7}",
+			"okButton": "OK",
+			"copy": "&&Kopieren"
+		},
+		"vs/workbench/browser/actions/textInputActions": {
+			"undo": "Rückgängig",
+			"redo": "Wiederholen",
+			"cut": "Ausschneiden",
+			"copy": "Kopieren",
+			"paste": "Einfügen",
+			"selectAll": "Alle auswählen"
+		},
+		"vs/workbench/browser/actions/developerActions": {
+			"inspect context keys": "Kontextschlüssel prüfen",
+			"toggle screencast mode": "Screencastmodus umschalten",
+			"logStorage": "Inhalt der Speicherdatenbank protokollieren",
+			"logWorkingCopies": "Arbeitskopien protokollieren",
+			"screencastModeConfigurationTitle": "Screencastmodus",
+			"screencastMode.location.verticalPosition": "Steuert den vertikalen Offset der Überlagerung des Screencast-Modus von unten als Prozentsatz der Workbenchhöhe.",
+			"screencastMode.fontSize": "Steuert die Schriftgröße (in Pixeln) der Tastatur im Screencastmodus.",
+			"screencastMode.onlyKeyboardShortcuts": "Hiermit werden Tastenkombinationen nur im Screencastmodus angezeigt.",
+			"screencastMode.keyboardOverlayTimeout": "Steuert den Zeitraum (in Millisekunden), für den die Tastaturüberlagerung im Screencastmodus angezeigt wird.",
+			"screencastMode.mouseIndicatorColor": "Steuert im Screencastmodus die Farbe des Mauszeigers im Hexadezimalformat (#RGB, #RGBA, #RRGGBB oder #RRGGBBAA).",
+			"screencastMode.mouseIndicatorSize": "Steuert die Größe der Mausanzeige im Screencastmodus (in Pixel)."
 		},
 		"vs/workbench/browser/workbench.contribution": {
 			"workbench.editor.titleScrollbarSizing.default": "Die Standardgröße.",
@@ -2421,6 +2210,7 @@
 			"settings.editor.ui": "Einstellungs-Editor für die Benutzeroberfläche verwenden.",
 			"settings.editor.json": "JSON-Datei-Editor verwenden",
 			"settings.editor.desc": "Legt fest, welcher Einstellungs-Editor standardmäßig verwendet wird.",
+			"workbench.hover.delay": "Steuert die Verzögerung in Millisekunden, nach der der Hover für Workbench-Elemente angezeigt wird (z. B. einige von der Erweiterung bereitgestellte Strukturansichtselemente). Bereits angezeigte Elemente müssen möglicherweise aktualisiert werden, damit diese Einstellungsänderung übernommen wird.",
 			"windowTitle": "Steuert den Fenstertitel abhängig vom aktiven Editor. Variablen werden abhängig vom Kontext ersetzt:",
 			"activeEditorShort": "`${activeEditorShort}`: der Dateiname (z. B. myFile.txt).",
 			"activeEditorMedium": "`${activeEditorMedium}`: der Pfad der Datei, in Relation zum Arbeitsbereichsordner (z. B. myFolder/myFileFolder/myFile.txt).",
@@ -2471,27 +2261,6 @@
 			"zenMode.hideLineNumbers": "Steuert, ob durch Aktivieren des Zen-Modus auch die Zeilennummern im Editor ausgeblendet werden.",
 			"zenMode.restore": "Steuert, ob ein Fenster im Zen-Modus wiederhergestellt werden soll, wenn es im Zen-Modus beendet wurde.",
 			"zenMode.silentNotifications": "Legt fest, ob im Zenmodus Benachrichtigungen angezeigt werden. Wenn \"true\" festgelegt ist, werden nur Fehlerbenachrichtigungen angezeigt."
-		},
-		"vs/workbench/browser/actions/textInputActions": {
-			"undo": "Rückgängig",
-			"redo": "Wiederholen",
-			"cut": "Ausschneiden",
-			"copy": "Kopieren",
-			"paste": "Einfügen",
-			"selectAll": "Alle auswählen"
-		},
-		"vs/workbench/browser/actions/developerActions": {
-			"inspect context keys": "Kontextschlüssel prüfen",
-			"toggle screencast mode": "Screencastmodus umschalten",
-			"logStorage": "Inhalt der Speicherdatenbank protokollieren",
-			"logWorkingCopies": "Arbeitskopien protokollieren",
-			"screencastModeConfigurationTitle": "Screencastmodus",
-			"screencastMode.location.verticalPosition": "Steuert den vertikalen Offset der Überlagerung des Screencast-Modus von unten als Prozentsatz der Workbenchhöhe.",
-			"screencastMode.fontSize": "Steuert die Schriftgröße (in Pixeln) der Tastatur im Screencastmodus.",
-			"screencastMode.onlyKeyboardShortcuts": "Hiermit werden Tastenkombinationen nur im Screencastmodus angezeigt.",
-			"screencastMode.keyboardOverlayTimeout": "Steuert den Zeitraum (in Millisekunden), für den die Tastaturüberlagerung im Screencastmodus angezeigt wird.",
-			"screencastMode.mouseIndicatorColor": "Steuert im Screencastmodus die Farbe des Mauszeigers im Hexadezimalformat (#RGB, #RGBA, #RRGGBB oder #RRGGBBAA).",
-			"screencastMode.mouseIndicatorSize": "Steuert die Größe der Mausanzeige im Screencastmodus (in Pixel)."
 		},
 		"vs/workbench/browser/actions/helpActions": {
 			"keybindingsReference": "Referenz für Tastenkombinationen",
@@ -2639,7 +2408,7 @@
 			"menus.editorTitle": "Das Editor-Titelmenü.",
 			"menus.editorTitleRun": "Untermenü innerhalb des Editor-Titelmenüs ausführen",
 			"menus.editorContext": "Das Editor-Kontextmenü.",
-			"menus.editorContextCopyAs": "'Copy as' submenu in the editor context menu",
+			"menus.editorContextCopyAs": "Untermenü \"Kopieren als\" im Kontextmenü des Editors",
 			"menus.explorerContext": "Das Kontextmenü des Datei-Explorers.",
 			"menus.editorTabContext": "Das Kontextmenü für die Editor-Registerkarten",
 			"menus.debugCallstackContext": "Das Kontextmenü für die Ansicht der Debugaufrufliste",
@@ -2647,12 +2416,12 @@
 			"menus.debugToolBar": "Das Debug-Symbolleistenmenü",
 			"menus.file": "Das Dateimenü der obersten Ebene",
 			"menus.home": "Kontextmenü für Startseitenindikator (nur Web)",
-			"menus.opy": "'Copy as' submenu in the top level Edit menu",
+			"menus.opy": "Untermenü \"Kopieren als\" im Menü \"Bearbeiten\" der obersten Ebene",
 			"menus.scmTitle": "Das Titelmenü der Quellcodeverwaltung",
 			"menus.scmSourceControl": "Das Menü \"Quellcodeverwaltung\"",
-			"menus.resourceGroupContext": "Das Ressourcengruppen-Kontextmenü der Quellcodeverwaltung",
 			"menus.resourceStateContext": "Das Ressourcenstatus-Kontextmenü der Quellcodeverwaltung",
 			"menus.resourceFolderContext": "Kontextmenü für den Ressourcenordner der Quellcodeverwaltung",
+			"menus.resourceGroupContext": "Das Ressourcengruppen-Kontextmenü der Quellcodeverwaltung",
 			"menus.changeTitle": "Menü für Inlineänderungen der Quellcodeverwaltung",
 			"menus.statusBarWindowIndicator": "Das Fensterindikatormenü in der Statusleiste",
 			"view.viewTitle": "Das beigetragene Editor-Titelmenü.",
@@ -2661,6 +2430,7 @@
 			"commentThread.actions": "Das beigetragene Kommentarthread-Kontextmenü, gerendert als Schaltflächen unterhalb des Kommentar-Editors",
 			"comment.title": "Das beigetragene Titelmenü für Kommentare",
 			"comment.actions": "Das Kontextmenü des Kommentarbeitrags, gerendert als Schaltflächen unter dem Kommentar-Editor",
+			"notebook.toolbar": "Das Symbolleistenmenü des hinzugefügten Notebooks",
 			"notebook.cell.title": "Das Zelltitelmenü des hinzugefügten Notebooks",
 			"testing.item.title": "Das beigetragene Testelementmenü.",
 			"menus.extensionContext": "Das Erweiterungskontextmenü",
@@ -2888,30 +2658,16 @@
 		"vs/workbench/browser/parts/sidebar/sidebarPart": {
 			"focusSideBar": "Fokus auf Seitenleiste"
 		},
-		"vs/workbench/browser/parts/views/viewsService": {
-			"show view": "{0} anzeigen",
-			"toggle view": "\"{0}\" umschalten",
-			"focus view": "Fokus auf Ansicht \"{0}\"",
-			"resetViewLocation": "Speicherort zurücksetzen"
-		},
 		"vs/workbench/browser/parts/statusbar/statusbarPart": {
 			"statusBarFocused": "Gibt an, ob die Statusleiste über den Tastaturfokus verfügt.",
 			"hide": "\"{0}\" ausblenden",
 			"hideStatusBar": "Statusleiste ausblenden"
 		},
-		"vs/workbench/browser/parts/dialogs/dialogHandler": {
-			"yesButton": "&&Ja",
-			"cancelButton": "Abbrechen",
-			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDatum: {2}\r\nBrowser: {3}",
-			"copy": "Kopieren",
-			"ok": "OK"
-		},
-		"vs/workbench/electron-sandbox/parts/dialogs/dialogHandler": {
-			"yesButton": "&&Ja",
-			"cancelButton": "Abbrechen",
-			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDatum: {2}\r\nElectron: {3}\r\nChrome: {4}\r\nNode.js: {5}\r\nV8: {6}\r\nBetriebssystem: {7}",
-			"okButton": "OK",
-			"copy": "&&Kopieren"
+		"vs/workbench/browser/parts/views/viewsService": {
+			"show view": "{0} anzeigen",
+			"toggle view": "\"{0}\" umschalten",
+			"focus view": "Fokus auf Ansicht \"{0}\"",
+			"resetViewLocation": "Speicherort zurücksetzen"
 		},
 		"vs/workbench/electron-sandbox/actions/developerActions": {
 			"toggleDevTools": "Entwicklertools umschalten",
@@ -2942,6 +2698,9 @@
 			"resourceSet": "Gibt an, ob eine Ressource vorhanden ist.",
 			"isFileSystemResource": "Gibt an, ob die Ressource von einem Dateisystemanbieter unterstützt wird."
 		},
+		"vs/workbench/browser/workbench": {
+			"loaderErrorNative": "Fehler beim Laden einer erforderlichen Datei. Starten Sie die Anwendung neu, und versuchen Sie es dann erneut. Details: {0}"
+		},
 		"vs/workbench/electron-sandbox/window": {
 			"learnMore": "Weitere Informationen",
 			"shellEnvSlowWarning": "Das Auflösen Ihrer Shell-Umgebung dauert sehr lange. Überprüfen Sie Ihre Shell-Konfiguration.",
@@ -2956,9 +2715,6 @@
 			"runningAsRoot": "Es wird nicht empfohlen, {0} als Root-Benutzer auszuführen.",
 			"loaderCycle": "In den AMD-Modulen gibt es einen Abhängigkeitszyklus, der aufgelöst werden muss.",
 			"ok": "OK"
-		},
-		"vs/workbench/browser/workbench": {
-			"loaderErrorNative": "Fehler beim Laden einer erforderlichen Datei. Starten Sie die Anwendung neu, und versuchen Sie es dann erneut. Details: {0}"
 		},
 		"vs/workbench/common/configuration": {
 			"workbenchConfigurationTitle": "Workbench"
@@ -3079,13 +2835,6 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "Gibt an, ob sich der Tastaturfokus innerhalb des Quick Open-Steuerelements befindet."
 		},
-		"vs/workbench/browser/parts/views/viewPaneContainer": {
-			"views": "Ansichten",
-			"viewMoveUp": "Ansicht nach oben verschieben",
-			"viewMoveLeft": "Ansicht nach links verschieben",
-			"viewMoveDown": "Ansicht nach unten verschieben",
-			"viewMoveRight": "Ansicht nach rechts verschieben"
-		},
 		"vs/workbench/browser/parts/views/treeView": {
 			"no-dataprovider": "Es ist kein Datenanbieter registriert, der Sichtdaten bereitstellen kann.",
 			"treeView.enableCollapseAll": "Gibt an, ob in der Strukturansicht mit der ID {0} alle Elemente reduziert werden können.",
@@ -3094,6 +2843,13 @@
 			"refresh": "Aktualisieren",
 			"collapseAll": "Alle zuklappen",
 			"command-error": "Fehler beim Ausführen des Befehls {1}: {0}. Dies wird vermutlich durch die Erweiterung verursacht, die {1} beiträgt."
+		},
+		"vs/workbench/browser/parts/views/viewPaneContainer": {
+			"views": "Ansichten",
+			"viewMoveUp": "Ansicht nach oben verschieben",
+			"viewMoveLeft": "Ansicht nach links verschieben",
+			"viewMoveDown": "Ansicht nach unten verschieben",
+			"viewMoveRight": "Ansicht nach rechts verschieben"
 		},
 		"vs/workbench/browser/parts/editor/textResourceEditor": {
 			"textEditor": "Text-Editor"
@@ -3390,6 +3146,16 @@
 			"alertWarningMessage": "Warnung: {0}",
 			"alertInfoMessage": "Info: {0}"
 		},
+		"vs/workbench/browser/parts/notifications/notificationsCommands": {
+			"notificationFocus": "Gibt an, ob eine Benachrichtigung über den Tastaturfokus verfügt.",
+			"notificationCenterVisible": "Gibt an, ob die Mitteilungszentrale sichtbar ist.",
+			"notificationToastsVisible": "Gibt an, ob ein Benachrichtigungspopup sichtbar ist.",
+			"notifications": "Benachrichtigungen",
+			"showNotifications": "Benachrichtigungen anzeigen",
+			"hideNotifications": "Benachrichtigungen ausblenden",
+			"clearAllNotifications": "Alle Benachrichtigungen löschen",
+			"focusNotificationToasts": "Benachrichtigungspopup fokussieren"
+		},
 		"vs/workbench/browser/parts/notifications/notificationsStatus": {
 			"status.notifications": "Benachrichtigungen",
 			"hideNotifications": "Benachrichtigungen ausblenden",
@@ -3401,16 +3167,6 @@
 			"oneNotificationWithProgress": "1 neue Benachrichtigung ({0} in Bearbeitung)",
 			"notificationsWithProgress": "{0} neue Benachrichtigungen ({1} in Bearbeitung)",
 			"status.message": "Statusmeldung"
-		},
-		"vs/workbench/browser/parts/notifications/notificationsCommands": {
-			"notificationFocus": "Gibt an, ob eine Benachrichtigung über den Tastaturfokus verfügt.",
-			"notificationCenterVisible": "Gibt an, ob die Mitteilungszentrale sichtbar ist.",
-			"notificationToastsVisible": "Gibt an, ob ein Benachrichtigungspopup sichtbar ist.",
-			"notifications": "Benachrichtigungen",
-			"showNotifications": "Benachrichtigungen anzeigen",
-			"hideNotifications": "Benachrichtigungen ausblenden",
-			"clearAllNotifications": "Alle Benachrichtigungen löschen",
-			"focusNotificationToasts": "Benachrichtigungspopup fokussieren"
 		},
 		"vs/workbench/api/common/extHostDiagnostics": {
 			"limitHit": "{0} weitere Fehler und Warnungen werden nicht angezeigt."
@@ -3468,9 +3224,9 @@
 			"draggedEditorGroup": "{0} (+{1})"
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbsControl": {
-			"breadcrumbsPossible": "Whether the editor can show breadcrumbs",
-			"breadcrumbsVisible": "Whether breadcrumbs are currently visible",
-			"breadcrumbsActive": "Whether breadcrumbs have focus",
+			"breadcrumbsPossible": "Gibt an, ob der Editor Breadcrumbs anzeigen kann.",
+			"breadcrumbsVisible": "Gibt an, ob Breadcrumbs zurzeit sichtbar sind.",
+			"breadcrumbsActive": "Gibt an, ob Breadcrumbs den Fokus besitzen.",
 			"cmd.toggle": "Breadcrumbs umschalten",
 			"miShowBreadcrumbs": "&&Breadcrumbs anzeigen",
 			"cmd.focus": "Fokus auf Breadcrumbs"
@@ -3803,6 +3559,7 @@
 			"miToggleRenderWhitespace": "&&Leerraumzeichen rendern"
 		},
 		"vs/workbench/contrib/codeEditor/browser/toggleWordWrap": {
+			"editorWordWrap": "Gibt an, ob der Editor zurzeit Zeilenumbrüche verwendet.",
 			"toggle.wordwrap": "Ansicht: Zeilenumbruch umschalten",
 			"unwrapMinified": "Umbruch für diese Datei deaktivieren",
 			"wrapMinified": "Umbruch für diese Datei aktivieren",
@@ -3903,7 +3660,7 @@
 			"pickReactions": "Reaktionen auswählen..."
 		},
 		"vs/workbench/contrib/customEditor/common/customEditor": {
-			"context.customEditor": "The viewType of the currently active custom editor."
+			"context.customEditor": "Der viewType des zurzeit aktiven benutzerdefinierten Editors."
 		},
 		"vs/workbench/contrib/customEditor/common/contributedCustomEditors": {
 			"promptOpenWith.defaultEditor.displayName": "Text-Editor",
@@ -3934,7 +3691,9 @@
 			"copyValue": "Wert kopieren",
 			"copyAsExpression": "Als Ausdruck kopieren",
 			"addToWatchExpressions": "Zur Überwachung hinzufügen",
+			"breakWhenValueIsRead": "Bei Lesen des Werts unterbrechen",
 			"breakWhenValueChanges": "Bei Wertänderungen unterbrechen",
+			"breakWhenValueIsAccessed": "Bei Zugriff auf den Wert unterbrechen",
 			"editWatchExpression": "Ausdruck bearbeiten",
 			"removeWatchExpression": "Ausdruck entfernen",
 			"miStartDebugging": "&&Debugging starten",
@@ -3968,7 +3727,7 @@
 			"onFirstSessionStart": "Debuggen nur in Statusleiste anzeigen, nachdem das Debuggen erstmals gestartet wurde",
 			"showInStatusBar": "Steuert, wann die Debugstatusleiste angezeigt werden soll.",
 			"debug.console.closeOnEnd": "Steuert, ob die Debugging-Konsole automatisch geschlossen werden soll, wenn die Debugsitzung endet.",
-			"debug.terminal.clearBeforeReusing": "Before starting a new debug session in an integrated or external terminal, clear the terminal.",
+			"debug.terminal.clearBeforeReusing": "Bevor Sie eine neue Debugsitzung in einem integrierten oder externen Terminal starten, löschen Sie das Terminal.",
 			"openDebug": "Steuert, wann die Debugansicht geöffnet werden soll.",
 			"showSubSessionsInToolBar": "Legt fest, ob die untergeordneten Sitzungen der Debugsitzung auf der Debugsymbolleiste angezeigt werden. Wenn diese Einstellung deaktiviert ist, wird mit dem Beenden einer untergeordneten Sitzung auch die übergeordnete Sitzung beendet.",
 			"debug.console.fontSize": "Legt die Schriftgröße der Debugging-Konsole in Pixeln fest.",
@@ -4060,7 +3819,7 @@
 			"debugType": "Der Debugtyp der aktiven Debugsitzung. Beispiel: python.",
 			"debugConfigurationType": "Der Debugtyp der ausgewählten Startkonfiguration. Beispiel: python.",
 			"debugState": "Zustand, in dem sich die Debugsitzung mit dem Fokus befindet. Mögliche Werte: \"inactive\", \"initializing\", \"stopped\" und \"running\".",
-			"debugUX": "Debug UX state. When there are no debug configurations it is 'simple', otherwise 'default'. Used to decide when to show welcome views in the debug viewlet.",
+			"debugUX": "Der Zustand der Debugbenutzeroberfläche. Wenn keine Debugkonfigurationen vorliegen, lautet er \"simple\", andernfalls \"default\". Hiermit wird festgelegt, wann Begrüßungsansichten im Debugviewlet angezeigt werden.",
 			"inDebugMode": "TRUE beim Debuggen, andernfalls FALSE.",
 			"inDebugRepl": "TRUE, wenn der Fokus auf der Debugging-Konsole liegt, andernfalls FALSE.",
 			"breakpointWidgetVisibile": "TRUE, wenn das Widget für die Zone des Haltepunkt-Editors sichtbar ist, andernfalls FALSE.",
@@ -4072,11 +3831,12 @@
 			"expressionSelected": "TRUE, wenn ein Ausdruckseingabefeld entweder in der Ansicht WATCH oder in der Ansicht VARIABLES geöffnet ist, andernfalls FALSE.",
 			"breakpointInputFocused": "TRUE, wenn das Eingabefeld in der Ansicht BREAKPOINTS den Fokus besitzt.",
 			"callStackItemType": "Repräsentiert den Elementtyp des Elements mit dem Fokus in der CALL STACK-Ansicht. Beispiele: \"session\", \"thread\", \"stackFrame\"",
-			"callStackSessionIsAttach": "True when the session in the CALL STACK view is attach, false otherwise. Used internally for inline menus in the CALL STACK view.",
-			"callStackItemStopped": "True when the focused item in the CALL STACK is stopped. Used internaly for inline menus in the CALL STACK view.",
-			"callStackSessionHasOneThread": "True when the focused session in the CALL STACK view has exactly one thread. Used internally for inline menus in the CALL STACK view.",
+			"callStackSessionIsAttach": "TRUE, wenn die Sitzung in der CALL STACK-Ansicht vom Typ \"Anfügen\" ist, andernfalls FALSE. Wird intern für Inlinemenüs in der CALL STACK-Ansicht verwendet.",
+			"callStackItemStopped": "TRUE, wenn das Element mit dem Fokus in CALL STACK beendet wird. Wird intern für Inlinemenüs in der CALL STACK-Ansicht verwendet.",
+			"callStackSessionHasOneThread": "TRUE, wenn die Sitzung mit dem Fokus in der CALL STACK-Ansicht genau einen Thread aufweist. Wird intern für Inlinemenüs in der CALL STACK-Ansicht verwendet.",
 			"watchItemType": "Repräsentiert den Elementtyp des Elements mit dem Fokus in der WATCH-Ansicht. Beispiele: \"expression\", \"variable\"",
 			"breakpointItemType": "Stellt den Elementtyp des Elements, auf dem der Fokus liegt, in der Ansicht BREAKPOINTS dar. Beispiel: \"breakpoint\", \"exceptionBreakppint\", \"functionBreakpoint\", \"dataBreakpoint\"",
+			"breakpointAccessType": "Stellt den Zugriffstyp des Datenbreakpoints mit dem Fokus in der Ansicht BREAKPOINTS dar. Beispiel: \"read\", \"readWrite\", \"write\"",
 			"breakpointSupportsCondition": "TRUE, wenn der Haltepunkt, auf dem der Fokus liegt, Bedingungen unterstützt.",
 			"loadedScriptsSupported": "TRUE, wenn die Sitzung mit dem Fokus die Ansicht LOADED SCRIPTS unterstützt.",
 			"loadedScriptsItemType": "Stellt den Elementtyp des Elements dar, das in der Ansicht LOADED SCRIPTS den Fokus besitzt.",
@@ -4091,6 +3851,8 @@
 			"debugProtocolVariableMenuContext": "Stellt den Kontext dar, der vom Debugadapter für die Variable festgelegt wird, die in der Ansicht VARIABLES den Fokus besitzt.",
 			"debugSetVariableSupported": "TRUE, wenn die Sitzung mit dem Fokus die Anforderung \"setVariable\" unterstützt.",
 			"breakWhenValueChangesSupported": "TRUE, wenn die Sitzung mit dem Fokus die Unterbrechung bei Wertänderungen unterstützt.",
+			"breakWhenValueIsAccessedSupported": "TRUE, wenn der Breakpoint mit dem Fokus die Unterbrechung beim Zugriff auf Werte unterstützt.",
+			"breakWhenValueIsReadSupported": "TRUE, wenn der Breakpoint mit dem Fokus die Unterbrechung bei Lesen von Werten unterstützt.",
 			"variableEvaluateNamePresent": "TRUE, wenn für die Variable mit dem Fokus ein Feld \"evaluateName\" festgelegt wurde.",
 			"exceptionWidgetVisible": "TRUE, wenn das Ausnahmewidget sichtbar ist.",
 			"multiSessionRepl": "TRUE, wenn mehrere Debugging-Konsolen vorhanden sind.",
@@ -4142,10 +3904,6 @@
 			"editHitCount": "Trefferanzahl bearbeiten...",
 			"editBreakpoint": "Funktionshaltepunkt bearbeiten..."
 		},
-		"vs/workbench/contrib/debug/browser/debugToolBar": {
-			"stepBackDebug": "Schritt zurück",
-			"reverseContinue": "Umkehren"
-		},
 		"vs/workbench/contrib/debug/browser/callStackView": {
 			"running": "Wird ausgeführt",
 			"showMoreStackFrames2": "Mehr Stapelrahmen anzeigen",
@@ -4160,6 +3918,10 @@
 			"stackFrameAriaLabel": "Stapelrahmen \"{0}\", Zeile {1}, {2}",
 			"sessionLabel": "Sitzung \"{0}\": {1}",
 			"collapse": "Alle zuklappen"
+		},
+		"vs/workbench/contrib/debug/browser/debugToolBar": {
+			"stepBackDebug": "Schritt zurück",
+			"reverseContinue": "Umkehren"
 		},
 		"vs/workbench/contrib/debug/browser/debugService": {
 			"1activeSession": "1 aktive Sitzung",
@@ -4208,11 +3970,6 @@
 			"statusBarDebuggingForeground": "Vordergrundfarbe der Statusleiste beim Debuggen eines Programms. Die Statusleiste wird unten im Fenster angezeigt.",
 			"statusBarDebuggingBorder": "Rahmenfarbe der Statusleiste zur Abtrennung von der Randleiste und dem Editor, wenn ein Programm debuggt wird. Die Statusleiste wird unten im Fenster angezeigt."
 		},
-		"vs/workbench/contrib/debug/browser/debugStatus": {
-			"status.debug": "Debuggen",
-			"debugTarget": "Debuggen: {0}",
-			"selectAndStartDebug": "Debug Konfiguration auswählen und starten"
-		},
 		"vs/workbench/contrib/debug/browser/loadedScriptsView": {
 			"loadedScriptsSession": "Debugsitzung",
 			"loadedScriptsAriaLabel": "Geladen Skripts debuggen",
@@ -4220,6 +3977,11 @@
 			"loadedScriptsSessionAriaLabel": "Sitzung {0}, geladenes Skript, Debuggen",
 			"loadedScriptsFolderAriaLabel": "Ordner {0}, geladenes Skript, Debuggen",
 			"loadedScriptsSourceAriaLabel": "{0}, geladenes Skript, Debuggen"
+		},
+		"vs/workbench/contrib/debug/browser/debugStatus": {
+			"status.debug": "Debuggen",
+			"debugTarget": "Debuggen: {0}",
+			"selectAndStartDebug": "Debug Konfiguration auswählen und starten"
 		},
 		"vs/workbench/contrib/debug/browser/debugEditorActions": {
 			"toggleBreakpointAction": "Debuggen: Haltepunkt umschalten",
@@ -4594,12 +4356,6 @@
 			"showLanguageExtensionsShort": "Spracherweiterungen",
 			"checkForUpdates": "Nach Updates für Erweiterungen suchen",
 			"noUpdatesAvailable": "Alle Erweiterungen sind auf dem aktuellen Stand.",
-			"singleUpdateAvailable": "Ein Update für eine Erweiterung ist verfügbar.",
-			"updatesAvailable": "{0} Updates für Erweiterungen sind verfügbar.",
-			"singleDisabledUpdateAvailable": "Ein Update für eine Erweiterung, die deaktiviert ist, ist verfügbar.",
-			"updatesAvailableOneDisabled": "{0} Updates für Erweiterungen sind verfügbar. Ein Update ist für eine deaktivierte Erweiterung.",
-			"updatesAvailableAllDisabled": "{0} Updates für Erweiterungen sind verfügbar. Alle sind für deaktivierte Erweiterungen.",
-			"updatesAvailableIncludingDisabled": "{0} Updates für Erweiterungen sind verfügbar. {1} davon sind für deaktivierte Erweiterungen.",
 			"disableAutoUpdate": "Automatische Aktualisierung von Erweiterungen deaktivieren",
 			"updateAll": "Alle Erweiterungen aktualisieren",
 			"enableAutoUpdate": "Automatische Aktualisierung von Erweiterungen aktivieren",
@@ -4691,6 +4447,9 @@
 			"malicious warning": "\"{0}\" wurde als problematisch gemeldet und wurde daher deinstalliert.",
 			"reloadNow": "Jetzt erneut laden"
 		},
+		"vs/workbench/contrib/extensions/electron-browser/reportExtensionIssueAction": {
+			"reportExtensionIssue": "Problem melden"
+		},
 		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
 			"cmd.reportOrShow": "Leistungsproblem",
 			"cmd.report": "Problem melden",
@@ -4699,9 +4458,6 @@
 			"attach.msg": "Denken Sie daran, \"{0}\" an das gerade erstellte Problem anzufügen.",
 			"cmd.show": "Probleme anzeigen",
 			"attach.msg2": "Denken Sie daran, \"{0}\" an ein bestehendes Leistungsproblem anzufügen."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/reportExtensionIssueAction": {
-			"reportExtensionIssue": "Problem melden"
 		},
 		"vs/workbench/contrib/extensions/browser/abstractRuntimeExtensionsEditor": {
 			"starActivation": "Beim Start durch {0} aktiviert.",
@@ -4839,12 +4595,6 @@
 			"extensionButtonProminentForeground": "Vordergrundfarbe für markante Aktionenerweiterungen (z.B. die Schaltfläche zum Installieren).",
 			"extensionButtonProminentHoverBackground": "Hoverhintergrundfarbe für markante Aktionenerweiterungen (z.B. die Schaltfläche zum Installieren)."
 		},
-		"vs/workbench/contrib/extensions/common/extensionsFileTemplate": {
-			"app.extensions.json.title": "Erweiterungen",
-			"app.extensions.json.recommendations": "Liste von Erweiterungen, die für Benutzer dieses Arbeitsbereichs zu empfehlen sind. Der Bezeichner einer Erweiterung lautet immer \"${herausgeber}.${name}\". Beispiel: \"vscode.csharp\".",
-			"app.extension.identifier.errorMessage": "Erwartetes Format: \"${publisher}.${name}\". Beispiel: \"vscode.csharp\".",
-			"app.extensions.json.unwantedRecommendations": "Liste von Erweiterungen, die für Benutzer dieses Arbeitsbereichs nicht empfohlen werden sollen. Der Bezeichner einer Erweiterung lautet immer \"${herausgeber}.${name}\". Beispiel: \"vscode.csharp\"."
-		},
 		"vs/workbench/contrib/extensions/browser/extensionEditor": {
 			"name": "Erweiterungsname",
 			"extension id": "Erweiterungsbezeichner",
@@ -4903,6 +4653,7 @@
 			"authentication.id": "ID",
 			"colorThemes": "Farbdesigns ({0})",
 			"iconThemes": "Symboldesigns ({0})",
+			"productThemes": "Produktsymboldesigns ({0})",
 			"colors": "Farben ({0})",
 			"colorId": "ID",
 			"defaultDark": "Standard, dunkel",
@@ -4925,6 +4676,12 @@
 			"find": "Suchen",
 			"find next": "Weitersuchen",
 			"find previous": "Vorheriges Element suchen"
+		},
+		"vs/workbench/contrib/extensions/common/extensionsFileTemplate": {
+			"app.extensions.json.title": "Erweiterungen",
+			"app.extensions.json.recommendations": "Liste von Erweiterungen, die für Benutzer dieses Arbeitsbereichs zu empfehlen sind. Der Bezeichner einer Erweiterung lautet immer \"${herausgeber}.${name}\". Beispiel: \"vscode.csharp\".",
+			"app.extension.identifier.errorMessage": "Erwartetes Format: \"${publisher}.${name}\". Beispiel: \"vscode.csharp\".",
+			"app.extensions.json.unwantedRecommendations": "Liste von Erweiterungen, die für Benutzer dieses Arbeitsbereichs nicht empfohlen werden sollen. Der Bezeichner einer Erweiterung lautet immer \"${herausgeber}.${name}\". Beispiel: \"vscode.csharp\"."
 		},
 		"vs/workbench/contrib/extensions/common/extensionsUtils": {
 			"disableOtherKeymapsConfirmation": "Andere Tastenzuordnungen ({0}) deaktivieren, um Konflikte zu vermeiden?",
@@ -5444,6 +5201,7 @@
 			"moving": "\"{0}\" wird verschoben"
 		},
 		"vs/workbench/contrib/format/browser/formatActionsMultiple": {
+			"null": "Keine",
 			"nullFormatterDescription": "NONE",
 			"miss": "Erweiterung '{0}' kann '{1}' nicht formatieren",
 			"config.needed": "Es gibt mehrere Formatierer für {0}-Dateien. Wählen Sie einen Standardformatierer aus, um fortzufahren.",
@@ -5648,9 +5406,11 @@
 		"vs/workbench/contrib/notebook/browser/diff/notebookTextDiffEditor": {
 			"notebookTreeAriaLabel": "Notebook-Textdiff"
 		},
-		"vs/workbench/contrib/notebook/browser/contrib/find/findController": {
-			"notebookActions.hideFind": "Suche in Notebook ausblenden",
-			"notebookActions.findInNotebook": "In Notebook suchen"
+		"vs/workbench/contrib/notebook/browser/contrib/clipboard/notebookClipboard": {
+			"notebookActions.copy": "Zelle kopieren",
+			"notebookActions.cut": "Zelle ausschneiden",
+			"notebookActions.paste": "Zelle einfügen",
+			"notebookActions.pasteAbove": "Zelle oben einfügen"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/coreActions": {
 			"notebookActions.category": "Notebook",
@@ -5680,10 +5440,6 @@
 			"notebookActions.menu.insertMarkdown.tooltip": "Markdownzelle hinzufügen",
 			"notebookActions.editCell": "Zelle bearbeiten",
 			"notebookActions.quitEdit": "Bearbeitung der Zelle beenden",
-			"notebookActions.copy": "Zelle kopieren",
-			"notebookActions.cut": "Zelle ausschneiden",
-			"notebookActions.paste": "Zelle einfügen",
-			"notebookActions.pasteAbove": "Zelle oben einfügen",
 			"cursorMoveDown": "Fokus auf nächsten Zellen-Editor",
 			"cursorMoveUp": "Fokus auf vorherigen Zellen-Editor",
 			"focusOutput": "Fokus in Ausgabe der aktiven Zelle",
@@ -5696,15 +5452,20 @@
 			"languageDescriptionConfigured": "({0})",
 			"pickLanguageToConfigure": "Sprachmodus auswählen",
 			"clearAllCellsOutputs": "Ausgaben aller Zellen löschen",
-			"notebookActions.splitCell": "Zelle teilen",
-			"notebookActions.joinCellAbove": "Mit vorheriger Zelle verknüpfen",
-			"notebookActions.joinCellBelow": "Mit nächster Zelle verknüpfen",
 			"notebookActions.centerActiveCell": "Aktive Zelle zentrieren",
 			"notebookActions.collapseCellInput": "Zelleneingabe reduzieren",
 			"notebookActions.expandCellContent": "Zelleninhalt aufklappen",
 			"notebookActions.collapseCellOutput": "Zellenausgabe zuklappen",
 			"notebookActions.expandCellOutput": "Zellenausgabe aufklappen",
 			"notebookActions.inspectLayout": "Notebook-Layout überprüfen"
+		},
+		"vs/workbench/contrib/notebook/browser/contrib/find/findController": {
+			"notebookActions.hideFind": "Suche in Notebook ausblenden",
+			"notebookActions.findInNotebook": "In Notebook suchen"
+		},
+		"vs/workbench/contrib/notebook/browser/contrib/fold/folding": {
+			"fold.cell": "Zelle falten",
+			"unfold.cell": "Zelle auffalten"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/format/formatting": {
 			"format.title": "Notebook formatieren",
@@ -5726,21 +5487,26 @@
 			"notebook.selectKernel": "Kernel für aktuelles Notebook auswählen"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/cellOperations/cellOperations": {
-			"notebookActions.moveCellUp": "Move Cell Up",
-			"notebookActions.moveCellDown": "Move Cell Down",
-			"notebookActions.copyCellUp": "Copy Cell Up",
-			"notebookActions.copyCellDown": "Copy Cell Down"
+			"notebookActions.moveCellUp": "Zelle nach oben verschieben",
+			"notebookActions.moveCellDown": "Zelle nach unten verschieben",
+			"notebookActions.copyCellUp": "Zelle nach oben kopieren",
+			"notebookActions.copyCellDown": "Zelle nach unten kopieren",
+			"notebookActions.splitCell": "Zelle teilen",
+			"notebookActions.joinCellAbove": "Mit vorheriger Zelle verknüpfen",
+			"notebookActions.joinCellBelow": "Mit nächster Zelle verknüpfen"
 		},
 		"vs/workbench/contrib/notebook/browser/diff/notebookDiffActions": {
 			"notebook.diff.switchToText": "Text-Diff-Editor öffnen",
 			"notebook.diff.cell.revertMetadata": "Metadaten wiederherstellen",
 			"notebook.diff.cell.switchOutputRenderingStyleToText": "Ausgaberendering umschalten",
 			"notebook.diff.cell.revertOutputs": "Ausgaben wiederherstellen",
-			"notebook.diff.cell.revertInput": "Eingabe wiederherstellen"
-		},
-		"vs/workbench/contrib/notebook/browser/contrib/fold/folding": {
-			"fold.cell": "Zelle falten",
-			"unfold.cell": "Zelle auffalten"
+			"notebook.diff.cell.revertInput": "Eingabe wiederherstellen",
+			"notebook.diff.showOutputs": "Ausgabeunterschiede anzeigen",
+			"notebook.diff.hideOutputs": "Ausgabeunterschiede ausblenden",
+			"notebook.diff.showMetadata": "Metadatenunterschiede anzeigen",
+			"notebook.diff.hideMetadata": "Metadatenunterschiede ausblenden",
+			"notebook.diff.ignoreMetadata": "Metadatenunterschiede ausblenden",
+			"notebook.diff.ignoreOutputs": "Ausgabeunterschiede ausblenden"
 		},
 		"vs/workbench/contrib/notebook/browser/extensionPoint": {
 			"contributes.notebook.provider": "Fügt Notebook-Dokumentanbieter hinzu.",
@@ -5769,7 +5535,8 @@
 		"vs/workbench/contrib/notebook/common/notebookEditorModel": {
 			"notebook.staleSaveError": "Der Inhalt der Datei wurde auf dem Datenträger geändert. Möchten Sie die aktualisierte Version öffnen oder die Datei mit Ihren Änderungen überschreiben?",
 			"notebook.staleSaveError.revert": "Zurücksetzen",
-			"notebook.staleSaveError.overwrite.": "Überschreiben"
+			"notebook.staleSaveError.overwrite.": "Überschreiben",
+			"save": "Notebook speichern"
 		},
 		"vs/workbench/contrib/notebook/browser/notebookEditorWidget": {
 			"notebookTreeAriaLabel": "Notebook",
@@ -5784,7 +5551,8 @@
 			"selectedCellBackground": "Die Hintergrundfarbe einer Zelle, wenn die Zelle ausgewählt wird.",
 			"notebook.cellHoverBackground": "Die Hintergrundfarbe einer Zelle, wenn mit dem Mauszeiger auf die Zelle gezeigt wird.",
 			"notebook.selectedCellBorder": "Die Farbe des oberen und unteren Rahmens der Zelle, wenn die Zelle zwar ausgewählt ist, aber nicht im Fokus liegt.",
-			"notebook.focusedCellBorder": "Die Farbe des oberen und unteren Rahmens der Zelle, wenn der Fokus auf der Zelle liegt.",
+			"notebook.inactiveSelectedCellBorder": "Die Farbe der Rahmen der Zelle, wenn mehrere Zellen ausgewählt sind.",
+			"notebook.focusedCellBorder": "Die Farbe der Rahmen der Zelle, wenn der Fokus auf der Zelle liegt.",
 			"notebook.inactiveFocusedCellBorder": "Die Farbe des oberen und unteren Rahmens der Zelle, wenn der Fokus auf eine Zelle gesetzt wird, während sich der primäre Fokus außerhalb des Editors befindet.",
 			"notebook.cellStatusBarItemHoverBackground": "Die Hintergrundfarbe der Statusleistenelemente für Notebook-Zellen.",
 			"notebook.cellInsertionIndicator": "Die Farbe des Indikators für das Einfügen von Notebook-Zellen.",
@@ -5821,7 +5589,9 @@
 			"notebook.promptKernel.setDefaultTooltip": "Als Standardkernelanbieter für \"{0}\" festlegen"
 		},
 		"vs/workbench/contrib/notebook/browser/view/renderers/cellRenderer": {
-			"cellExpandButtonLabel": "Erweitern"
+			"cellExpandButtonLabel": "Erweitern",
+			"runStateExecuting": "Wird ausgeführt",
+			"runStatePending": "Ausstehend"
 		},
 		"vs/workbench/contrib/notebook/browser/viewModel/markdownCellViewModel": {
 			"notebook.emptyMarkdownPlaceholder": "Leere Markdownzelle. Um diese zu bearbeiten, doppelklicken Sie, oder drücken Sie die EINGABETASTE."
@@ -5923,13 +5693,13 @@
 			"show.label": "Startleistung"
 		},
 		"vs/workbench/contrib/performance/electron-sandbox/startupProfiler": {
-			"prof.message": "Successfully created profiles.",
+			"prof.message": "Profile wurden erfolgreich erstellt.",
 			"prof.detail": "Erstellen Sie ein Issue, und fügen Sie die folgenden Dateien manuell an:\r\n{0}",
 			"prof.restartAndFileIssue": "&&Issue erstellen und neu starten",
-			"prof.restart": "&&Restart",
+			"prof.restart": "&&Neu starten",
 			"prof.thanks": "Vielen Dank für Ihre Mithilfe!",
 			"prof.detail.restart": "Ein abschließender Neustart ist erforderlich, um \"{0}\" verwenden zu können. Vielen Dank für Ihre Mithilfe!",
-			"prof.restart.button": "&&Restart"
+			"prof.restart.button": "&&Neu starten"
 		},
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "Startleistung"
@@ -6084,7 +5854,7 @@
 			"replaceDefaultValue": "In Einstellungen ersetzen",
 			"copyDefaultValue": "In Einstellungen kopieren",
 			"unknown configuration setting": "Unbekannte Konfigurationseinstellung",
-			"unsupportedRemoteMachineSetting": "Diese Einstellung kann in diesem Fenster nicht angewendet werden. Sie wird angewendet, wenn Sie das lokale Fenster öffnen.",
+			"unsupportedRemoteMachineSetting": "Diese Einstellung kann in diesem Fenster nicht angewendet werden. Sie wird angewendet, wenn Sie ein lokales Fenster öffnen.",
 			"unsupportedWindowSetting": "Diese Einstellung kann in diesem Arbeitsbereich nicht angewendet werden. Sie wird angewendet, wenn Sie den enthaltenden Arbeitsbereichordner direkt öffnen.",
 			"unsupportedApplicationSetting": "Diese Einstellungen kann nur über die Benutzereinstellungen in der Anwendung angewendet werden.",
 			"unsupportedMachineSetting": "Diese Einstellung kann nur in den Benutzereinstellungen im lokalen Fenster oder in den Remoteeinstellungen im Remotefenster angewendet werden.",
@@ -6265,7 +6035,7 @@
 			"remote.autoForwardPortsSource": "Legt die Quelle fest, aus der Ports automatisch weitergeleitet werden, wenn \"remote.autoForwardPorts\" den Wert TRUE aufweist. Auf Windows- und Mac-Remotegeräten besitzt die Option \"process\" keine Auswirkungen, und \"output\" wird verwendet. Damit die Option in Kraft tritt, muss der Vorgang neu geladen werden.",
 			"remote.autoForwardPortsSource.process": "Ports werden automatisch weitergeleitet, wenn sie bei der Suche nach Prozessen ermittelt werden, die gestartet wurden und einen Port umfassen.",
 			"remote.autoForwardPortsSource.output": "Ports werden automatisch weitergeleitet, wenn sie durch Auslesen der Terminal- und der Debugausgabe ermittelt werden. Nicht bei allen Prozessen, die Ports verwenden, erfolgt eine Ausgabe an die integrierte Terminal- oder Debugging-Konsole, daher werden einige Ports nicht berücksichtigt. Die Weiterleitung von Ports basierend auf der Ausgabe wird erst eingestellt, wenn der Vorgang neu geladen oder der Port durch den Benutzer in der Ansicht \"Ports\" geschlossen wird.",
-			"remote.portsAttributes.port": "A port, range of ports (ex. \"40000-55000\"), or regular expression (ex. \".+\\\\/server.js\").  For a port number or range, the attributes will apply to that port number or range of port numbers. Attributes which use a regular expression will apply to ports whose associated process command line matches the expression.",
+			"remote.portsAttributes.port": "Ein Port, ein Portbereich (z. B. \"40000-55000\") oder ein regulärer Ausdruck (z. B. \".+\\\\/server.js\"). Bei einer Portnummer oder einem Bereich gelten die Attribute für die jeweilige Portnummer oder den Bereich von Portnummern. Attribute, die einen regulären Ausdruck verwenden, werden auf Ports angewendet, deren zugehörige Prozessbefehlszeile mit dem Ausdruck übereinstimmt.",
 			"remote.portsAttributes.notify": "Zeigt eine Benachrichtigung an, wenn ein Port automatisch weitergeleitet wird.",
 			"remote.portsAttributes.openBrowser": "Öffnet den Browser, wenn der Port automatisch weitergeleitet wird. Je nach Einstellungen kann dadurch ein eingebetteter Browser geöffnet werden.",
 			"remote.portsAttributes.openPreview": "Öffnet eine Vorschau in demselben Fenster, wenn der Port automatisch weitergeleitet wird.",
@@ -6274,10 +6044,10 @@
 			"remote.portsAttributes.onForward": "Definiert die durchzuführende Aktion, wenn der Port für die automatische Weiterleitung ermittelt wird.",
 			"remote.portsAttributes.elevateIfNeeded": "Beim Weiterleiten dieses Ports automatisch eine Eingabeaufforderung zur Rechteerweiterung anzeigen (falls erforderlich). Die Rechteerweiterung ist erforderlich, wenn es sich beim lokalen Port um einen privilegierten Port handelt.",
 			"remote.portsAttributes.label": "Bezeichnung, die in der Benutzeroberfläche für diesen Port angezeigt wird.",
-			"remote.portsAttributes.labelDefault": "Application",
-			"remote.portsAttributes": "Set properties that are applied when a specific port number is forwarded. For example:\r\n\r\n```\r\n\"3000\": {\r\n  \"label\": \"Application\"\r\n},\r\n\"40000-55000\": {\r\n  \"onAutoForward\": \"ignore\"\r\n},\r\n\".+\\\\/server.js\": {\r\n \"onAutoForward\": \"openPreview\"\r\n}\r\n```",
-			"remote.portsAttributes.patternError": "Must be a port number, range of port numbers, or regular expression.",
-			"remote.portsAttributes.defaults": "Set default properties that are applied to all ports that don't get properties from the setting `remote.portsAttributes`. For example:\r\n\r\n```\r\n{\r\n  \"onAutoForward\": \"ignore\"\r\n}\r\n```"
+			"remote.portsAttributes.labelDefault": "Anwendung",
+			"remote.portsAttributes": "Legen Sie Eigenschaften fest, die angewendet werden, wenn eine bestimmte Portnummer weitergeleitet wird. Beispiel:\r\n\r\n```\r\n\"3000\": {\r\n  \"label\": \"Anwendung\"\r\n},\r\n\"40000-55000\": {\r\n  \"onAutoForward\": \"ignore\"\r\n},\r\n\".+\\\\/server.js\": {\r\n \"onAutoForward\": \"openPreview\"\r\n}\r\n```",
+			"remote.portsAttributes.patternError": "Muss eine Portnummer, ein Bereich von Portnummern oder ein regulärer Ausdruck sein.",
+			"remote.portsAttributes.defaults": "Legen Sie Standardeigenschaften fest, die auf alle Ports angewendet werden, welche keine Eigenschaften aus der Einstellung \"remote.portsAttributes\" abrufen. Beispiel:\r\n\r\n```\r\n{\r\n  \"onAutoForward\": \"ignore\"\r\n}\r\n```"
 		},
 		"vs/workbench/contrib/remote/browser/remote": {
 			"RemoteHelpInformationExtPoint": "Trägt Hilfeinformationen für Remoteelement bei.",
@@ -6310,7 +6080,7 @@
 			"status.forwardedPorts": "Weitergeleitete Ports",
 			"remote.forwardedPorts.statusbarTextNone": "Keine Ports weitergeleitet",
 			"remote.forwardedPorts.statusbarTooltip": "Weitergeleitete Ports: {0}",
-			"remote.tunnelsView.automaticForward": "Your application running on port {0} is available.  ",
+			"remote.tunnelsView.automaticForward": "Ihre an Port {0} ausgeführte Anwendung ist verfügbar. ",
 			"remote.tunnelsView.notificationLink": "[Alle weitergeleiteten Ports anzeigen](command:{0}.focus)",
 			"remote.tunnelsView.elevationMessage": "Die Ausführung muss als Superuser erfolgen, um Port {0} lokal zu verwenden.  ",
 			"remote.tunnelsView.elevationButton": "{0} als sudo verwenden..."
@@ -6330,7 +6100,7 @@
 			"disconnectedFrom": "Von \"{0}\" getrennt",
 			"host.tooltipDisconnected": "Von \"{0}\" getrennt",
 			"host.tooltip": "Bearbeitung auf \"{0}\"",
-			"workspace.tooltip": "Editing on {0}",
+			"workspace.tooltip": "Bearbeitung auf \"{0}\"",
 			"noHost.tooltip": "Remotefenster öffnen",
 			"remoteHost": "Remotehost",
 			"cat.title": "{0}: {1}",
@@ -6352,6 +6122,7 @@
 			"openBrowserIcon": "Symbol für die Aktion zum Öffnen des Browsers",
 			"openPreviewIcon": "Symbol für die Aktion zum Öffnen der Vorschau.",
 			"copyAddressIcon": "Symbol für die Aktion zum Kopieren lokaler Adressen.",
+			"labelPortIcon": "Symbol für die Aktion des Bezeichnungsports.",
 			"forwardedPortWithoutProcessIcon": "Symbol für weitergeleitete Ports ohne aktiven Prozess.",
 			"forwardedPortWithProcessIcon": "Symbol für weitergeleitete Ports, die einen aktiven Prozess aufweisen."
 		},
@@ -6389,6 +6160,7 @@
 			"remote.tunnelsView.portNumberValid": "Der weitergeleitete Port ist ungültig.",
 			"remote.tunnelsView.portNumberToHigh": "Die Portnummer muss ≥ 0 und < {0} sein.",
 			"remote.tunnelView.inlineElevationMessage": "Möglicherweise ist sudo erforderlich.",
+			"remote.tunnelView.alreadyForwarded": "Der Port wurde bereits weitergeleitet.",
 			"remote.tunnel.forward": "Port weiterleiten",
 			"remote.tunnel.forwardItem": "Port weiterleiten",
 			"remote.tunnel.forwardPrompt": "Portnummer oder Adresse (z. B. 3000 oder 10.10.10.10:2000).",
@@ -6413,7 +6185,7 @@
 		},
 		"vs/workbench/contrib/sash/browser/sash.contribution": {
 			"sashSize": "Steuert die Reaktionsbereichsgröße für den Ziehbereich zwischen Ansichten/Editoren (in Pixeln). Legen Sie einen höheren Wert fest, wenn Sie es schwierig finden, die Größe von Ansichten mithilfe der Maus zu ändern.",
-			"sashHoverDelay": "Controls the hover feedback delay in milliseconds of the dragging area in between views/editors."
+			"sashHoverDelay": "Steuert die Hover-Feedbackverzögerung des Ziehbereichs zwischen Ansichten/Editoren (in Millisekunden)."
 		},
 		"vs/workbench/contrib/scm/browser/scm.contribution": {
 			"sourceControlViewIcon": "Ansichtssymbol der Quellcodeverwaltungsansicht.",
@@ -6449,16 +6221,13 @@
 			"scm.defaultViewMode": "Steuert den Standardansichtsmodus für das Repository der Quellcodeverwaltung.",
 			"autoReveal": "Legt fest, ob die SCM-Ansicht beim Öffnen automatisch Dateien anzeigen und auswählen soll",
 			"inputFontFamily": "Steuert die Schriftart für die Eingabenachricht. Verwenden Sie \"default\" für die Schriftfamilie der Workbench-Benutzeroberfläche, \"editor\" für den Wert von \"#editor.fontFamily\" oder eine benutzerdefinierte Schriftfamilie.",
+			"inputFontSize": "Steuert den Schriftgrad für die Eingabenachricht (in Pixeln).",
 			"alwaysShowRepository": "Steuert, ob Repositorys immer in der SCM-Sicht sichtbar sein sollen.",
 			"providersVisible": "Steuert, wie viele Repositorys im Abschnitt \"Repositorys der Quellcodeverwaltung\" sichtbar sind. Setzen Sie diese Option auf \"0\", um die Größe der Ansicht manuell anzupassen.",
 			"scm accept": "SCM: Eingaben akzeptieren",
 			"scm view next commit": "SCM: Nächsten Commit anzeigen",
 			"scm view previous commit": "SCM: Vorherigen Commit anzeigen",
 			"open in terminal": "In Terminal öffnen"
-		},
-		"vs/workbench/contrib/scm/browser/activity": {
-			"status.scm": "Quellcodeverwaltung",
-			"scmPendingChangesBadge": "{0} ausstehende Änderungen"
 		},
 		"vs/workbench/contrib/scm/browser/dirtydiffDecorator": {
 			"changes": "{0} von {1} Änderungen",
@@ -6480,11 +6249,12 @@
 			"overviewRulerAddedForeground": "Übersichtslineal-Markierungsfarbe für hinzugefügte Inhalte.",
 			"overviewRulerDeletedForeground": "Übersichtslineal-Markierungsfarbe für gelöschte Inhalte."
 		},
+		"vs/workbench/contrib/scm/browser/activity": {
+			"status.scm": "Quellcodeverwaltung",
+			"scmPendingChangesBadge": "{0} ausstehende Änderungen"
+		},
 		"vs/workbench/contrib/scm/browser/scmViewPaneContainer": {
 			"source control": "Quellcodeverwaltung"
-		},
-		"vs/workbench/contrib/scm/browser/scmRepositoriesViewPane": {
-			"scm": "Repositorys der Quellcodeverwaltung"
 		},
 		"vs/workbench/contrib/scm/browser/scmViewPane": {
 			"scm": "Quellcodeverwaltung",
@@ -6499,6 +6269,9 @@
 			"collapse all": "Alle Repositorys zuklappen",
 			"expand all": "Alle Repositorys aufklappen",
 			"scm.providerBorder": "Trennlinienrahmen für SCM-Anbieter."
+		},
+		"vs/workbench/contrib/scm/browser/scmRepositoriesViewPane": {
+			"scm": "Repositorys der Quellcodeverwaltung"
 		},
 		"vs/workbench/contrib/search/browser/search.contribution": {
 			"search": "Suchen",
@@ -6583,8 +6356,10 @@
 			"moreSearch": "Suchdetails umschalten",
 			"searchScope.includes": "Einzuschließende Dateien",
 			"label.includes": "Sucheinschlussmuster",
+			"placeholder.includes": "(Beispiel: *.ts, src/**/include)",
 			"searchScope.excludes": "Auszuschließende Dateien",
 			"label.excludes": "Suchausschlussmuster",
+			"placeholder.excludes": "(Beispiel: *.ts, src/**/exclude)",
 			"replaceAll.confirmation.title": "Alle ersetzen",
 			"replaceAll.confirm.button": "&&Ersetzen",
 			"replaceAll.occurrence.file.message": "{0} Vorkommen in {1} Datei durch \"{2}\" ersetzt.",
@@ -6621,8 +6396,8 @@
 			"openSettings.learnMore": "Weitere Informationen",
 			"ariaSearchResultsStatus": "Die Suche hat {0} Ergebnisse in {1} Dateien zurückgegeben.",
 			"forTerm": " – Suche: {0}",
-			"useIgnoresAndExcludesDisabled": "exclude settings and ignore files are disabled",
-			"excludes.enable": "enable",
+			"useIgnoresAndExcludesDisabled": "Ausschlusseinstellungen und das Ignorieren von Dateien sind deaktiviert.",
+			"excludes.enable": "Aktivieren",
 			"useExcludesAndIgnoreFilesDescription": "Ausschlusseinstellungen und Ignorieren von Dateien verwenden",
 			"openInEditor.tooltip": "Aktuelle Suchergebnisse in einen Editor kopieren",
 			"openInEditor.message": "Im Editor öffnen",
@@ -7250,6 +7025,10 @@
 			"terminal.integrated.shellArgs.osx": "Die Befehlszeilenargumente, die im macOS-Terminal verwendet werden sollen. [Erfahren Sie mehr über das Konfigurieren der Shell](https://code.visualstudio.com/docs/editor/integrated-terminal#_configuration).",
 			"terminal.integrated.shellArgs.windows": "Die Befehlszeilenargumente, die im Windows-Terminal verwendet werden sollen. [Weitere Informationen über das Konfigurieren der Shell](https://code.visualstudio.com/docs/editor/integrated-terminal#_configuration)",
 			"terminal.integrated.shellArgs.windows.string": "Die Befehlszeilenargumente im [Befehlszeilenformat](https://msdn.microsoft.com/en-au/08dfcab2-eb6e-49a4-80eb-87d4076c98c6), die im Windows-Terminal verwendet werden sollen. [Weitere Informationen über das Konfigurieren der Shell](https://code.visualstudio.com/docs/editor/integrated-terminal#_configuration)",
+			"terminal.integrated.profiles.windows": "Die Windows-Profile, die beim Erstellen eines neuen Terminals über die Dropdownliste \"Terminal\" angezeigt werden. Legen Sie sie Auf NULL fest, um sie auszuschließen, verwenden Sie die Eigenschaft \"{0}\", um die standardmäßig erkannte Konfiguration zu verwenden, oder legen Sie \"{1}\" und optional \"{2}\" fest.",
+			"terminal.integrated.profile.osx": "Die macOS-Profile, die beim Erstellen eines neuen Terminals über die Dropdownliste \"Terminal\" angezeigt werden. Wenn sie festgelegt sind, setzen sie die erkannten Standardprofile außer Kraft. Sie bestehen aus den Einstellungen \"{0}\" und optional \"{1}\".",
+			"terminal.integrated.profile.linux": "Die Linux-Profile, die beim Erstellen eines neuen Terminals über die Dropdownliste \"Terminal\" angezeigt werden. Wenn sie festgelegt sind, setzen sie die erkannten Standardprofile außer Kraft. Sie bestehen aus den Einstellungen \"{0}\" und optional \"{1}\".",
+			"terminal.integrated.showQuickLaunchWslProfiles": "Steuert, ob WSL-Distributionen in der Dropdownliste für den Schnellstart angezeigt werden.",
 			"terminal.integrated.macOptionIsMeta": "Steuert, ob die WAHLTASTE im Terminal unter macOS als Meta-Taste betrachtet wird.",
 			"terminal.integrated.macOptionClickForcesSelection": "Steuert, ob eine Auswahl erzwungen werden soll, wenn unter macOS die Tastenkombination WAHLTASTE+Klick verwendet wird. Hiermit wird eine reguläre (Zeilen-) Auswahl erzwungen und die Verwendung des Modus zur Spaltenauswahl unterbunden. Dies ermöglicht das Kopieren und Einfügen über die reguläre Terminalauswahl, wenn beispielsweise der Mausmodus in tmux aktiviert ist.",
 			"terminal.integrated.altClickMovesCursor": "Wenn diese Einstellung aktiviert und \"#editor.multiCursorModifier#\" auf \"alt\" (Standardwert) festgelegt ist, wird der Cursor der Eingabeaufforderung durch Klicken bei gedrückter ALT-/OPTIONSTASTE unter den Mauszeiger platziert. Abhängig von Ihrer Shell funktioniert dies möglicherweise nicht zuverlässig.",
@@ -7297,7 +7076,7 @@
 			"terminal.integrated.environmentChangesIndicator.off": "Hiermit wird die Anzeige deaktiviert.",
 			"terminal.integrated.environmentChangesIndicator.on": "Hiermit wird die Anzeige aktiviert.",
 			"terminal.integrated.environmentChangesIndicator.warnonly": "Hiermit wird nur eine Warnung angezeigt, wenn die Umgebung eines Terminals veraltet ist. Die Information, die auf Umgebungsänderungen durch eine Erweiterung hinweist, wird nicht angezeigt.",
-			"terminal.integrated.environmentChangesRelaunch": "Whether to relaunch terminals automatically if extension want to contribute to their environment and have not been interacted with yet.",
+			"terminal.integrated.environmentChangesRelaunch": "Gibt an, ob Terminals automatisch neu gestartet werden, wenn die Erweiterung zur Umgebung beitragen soll und noch keine Interaktion stattgefunden hat.",
 			"terminal.integrated.showExitAlert": "Steuert, ob die Warnung \"Der Terminalprozess wurde mit einem Exitcode beendet\" angezeigt wird, wenn der Exitcode nicht 0 lautet.",
 			"terminal.integrated.splitCwd": "Steuert das Arbeitsverzeichnis, mit dem ein geteiltes Terminal gestartet wird.",
 			"terminal.integrated.splitCwd.workspaceRoot": "Ein neues geteiltes Terminal verwendet den Arbeitsbereichsstamm als Arbeitsverzeichnis. In einem Arbeitsbereich mit mehreren Stämmen können Sie auswählen, welcher Stamm als Arbeitsverzeichnis verwendet werden soll.",
@@ -7346,14 +7125,23 @@
 			"terminalConnectingLabel": "Wird gestartet..."
 		},
 		"vs/workbench/contrib/terminal/electron-sandbox/localTerminalService": {
-			"restartPtyHost": "Restart pty host",
+			"restartPtyHost": "PTY-Host neu starten",
 			"nonResponsivePtyHost": "Die Verbindung mit dem PTY-Hostprozess des Terminals reagiert nicht, die Terminals funktionieren möglicherweise nicht mehr."
 		},
 		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
 			"workbench.action.terminal.newLocal": "Neues integriertes Terminal erstellen (lokal)"
 		},
+		"vs/workbench/contrib/terminal/common/terminalColorRegistry": {
+			"terminal.background": "Die Hintergrundfarbe des Terminals, dies ermöglicht eine unterschiedliche Färbung des Terminals im Panel.",
+			"terminal.foreground": "Die Vordergrundfarbe des Terminal.",
+			"terminalCursor.foreground": "Die Vordergrundfarbe des Terminalcursors.",
+			"terminalCursor.background": "Die Hintergrundfarbe des Terminalcursors. Ermöglicht das Anpassen der Farbe eines Zeichens, das von einem Blockcursor überdeckt wird.",
+			"terminal.selectionBackground": "Die Auswahlvordergrundfarbe des Terminals.",
+			"terminal.border": "Die Farbe des Rahmens, der Panels innerhalb des Terminals teilt. Der Standardwert ist panel.border.",
+			"terminal.ansiColor": "\"{0}\" ANSI-Farbe im Terminal"
+		},
 		"vs/workbench/contrib/terminal/browser/terminalActions": {
-			"workbench.action.terminal.selectDefaultShell": "Standardshell auswählen",
+			"workbench.action.terminal.selectDefaultProfile": "Standardprofil auswählen",
 			"workbench.action.terminal.openSettings": "Terminaleinstellungen konfigurieren",
 			"workbench.action.terminal.newWorkspacePlaceholder": "Aktuelles Arbeitsverzeichnis für neues Terminal auswählen",
 			"terminalLaunchHelp": "Hilfe öffnen",
@@ -7423,27 +7211,21 @@
 			"workbench.action.terminal.paste.short": "Einfügen",
 			"workbench.action.terminal.switchTerminal": "Terminal wechseln"
 		},
-		"vs/workbench/contrib/terminal/common/terminalColorRegistry": {
-			"terminal.background": "Die Hintergrundfarbe des Terminals, dies ermöglicht eine unterschiedliche Färbung des Terminals im Panel.",
-			"terminal.foreground": "Die Vordergrundfarbe des Terminal.",
-			"terminalCursor.foreground": "Die Vordergrundfarbe des Terminalcursors.",
-			"terminalCursor.background": "Die Hintergrundfarbe des Terminalcursors. Ermöglicht das Anpassen der Farbe eines Zeichens, das von einem Blockcursor überdeckt wird.",
-			"terminal.selectionBackground": "Die Auswahlvordergrundfarbe des Terminals.",
-			"terminal.border": "Die Farbe des Rahmens, der Panels innerhalb des Terminals teilt. Der Standardwert ist panel.border.",
-			"terminal.ansiColor": "\"{0}\" ANSI-Farbe im Terminal"
+		"vs/workbench/contrib/terminal/common/terminalMenu": {
+			"miNewTerminal": "&&Neues Terminal",
+			"miSplitTerminal": "&&Geteiltes Terminal",
+			"miRunActiveFile": "&&Aktive Datei ausführen",
+			"miRunSelectedText": "&&Ausgewählten Text ausführen"
 		},
 		"vs/workbench/contrib/terminal/browser/terminalService": {
 			"workbench.action.terminal.allowWorkspaceShell": "Shell-Konfiguration des Arbeitsbereichs zulassen",
 			"workbench.action.terminal.disallowWorkspaceShell": "Shell-Konfiguration des Arbeitsbereichs verbieten",
 			"terminalService.terminalCloseConfirmationSingular": "Eine aktive Terminalsitzung ist vorhanden. Möchten Sie sie beenden?",
 			"terminalService.terminalCloseConfirmationPlural": "{0} aktive Terminalsitzungen sind vorhanden. Möchten Sie sie beenden?",
-			"terminal.integrated.chooseWindowsShell": "Wählen Sie Ihre bevorzugte Terminalshell. Sie können diese später in Ihren Einstellungen ändern."
-		},
-		"vs/workbench/contrib/terminal/common/terminalMenu": {
-			"miNewTerminal": "&&Neues Terminal",
-			"miSplitTerminal": "&&Geteiltes Terminal",
-			"miRunActiveFile": "&&Aktive Datei ausführen",
-			"miRunSelectedText": "&&Ausgewählten Text ausführen"
+			"terminal.integrated.chooseWindowsShell": "Wählen Sie Ihre bevorzugte Terminalshell. Sie können diese später in Ihren Einstellungen ändern.",
+			"enterTerminalProfileName": "Geben Sie einen Namen für das Profil ein.",
+			"terminalProfileAlreadyExists": "Ein Profil mit diesem Namen ist bereits vorhanden.",
+			"createQuickLaunchProfile": "Schnellstartprofil basierend auf dieser Shell erstellen"
 		},
 		"vs/workbench/contrib/terminal/browser/terminalQuickAccess": {
 			"renameTerminal": "Terminal umbenennen",
@@ -7454,10 +7236,11 @@
 			"terminalViewIcon": "Ansichtssymbol der Terminalansicht.",
 			"renameTerminalIcon": "Symbol für das Umbenennen im Schnellmenü des Terminals.",
 			"killTerminalIcon": "Symbol für das Beenden einer Terminalinstanz.",
-			"newTerminalIcon": "Symbol für das Erstellen einer neuen Terminalinstanz."
+			"newTerminalIcon": "Symbol für das Erstellen einer neuen Terminalinstanz.",
+			"newQuickLaunchProfile": "Symbol zum Erstellen eines neuen Terminal-Schnellstartprofils."
 		},
 		"vs/workbench/contrib/terminal/browser/remoteTerminalService": {
-			"restartPtyHost": "Restart pty host",
+			"restartPtyHost": "PTY-Host neu starten",
 			"nonResponsivePtyHost": "Die Verbindung mit dem PTY-Hostprozess des Terminals reagiert nicht, die Terminals funktionieren möglicherweise nicht mehr."
 		},
 		"vs/workbench/contrib/terminal/browser/terminalConfigHelper": {
@@ -7470,7 +7253,7 @@
 		"vs/workbench/contrib/terminal/browser/terminalInstance": {
 			"terminal.integrated.a11yPromptLabel": "Terminaleingabe",
 			"terminal.integrated.a11yTooMuchOutput": "Zu viele Ausgaben zum Anzeigen, navigieren Sie manuell zu den Zeilen, um sie zu lesen",
-			"configure terminal settings": "Einige Tastenzuordnungen werden standardmäßig an die Workbench gesendet.",
+			"keybindingHandling": "Einige Tastenzuordnungen werden nicht standardmäßig an das Terminal geleitet und werden stattdessen von {0} verarbeitet.",
 			"configureTerminalSettings": "Terminaleinstellungen konfigurieren",
 			"yes": "Ja",
 			"no": "Nein",
@@ -7487,7 +7270,7 @@
 			"terminalStaleTextBoxAriaLabel": "Die Umgebung für Terminal \"{0}\" ist veraltet, führen Sie den Befehl \"Umgebungsinformationen anzeigen\" aus, um weitere Informationen zu erhalten."
 		},
 		"vs/workbench/contrib/terminal/browser/terminalTab": {
-			"ptyDisconnected": "{0} (disconnected)"
+			"ptyDisconnected": "{0} (getrennt)"
 		},
 		"vs/workbench/contrib/terminal/browser/links/terminalLinkManager": {
 			"terminalLinkHandler.followLinkAlt.mac": "WAHLTASTE + Klick",
@@ -7497,6 +7280,9 @@
 			"followForwardedLink": "Dem Link über den weitergeleiteten Port folgen",
 			"followLink": "Link folgen",
 			"followLinkUrl": "Link"
+		},
+		"vs/workbench/contrib/terminal/browser/terminalProcessManager": {
+			"ptyHostRelaunch": "Das Terminal wird neu gestartet, weil die Verbindung mit dem Shellprozess unterbrochen wurde..."
 		},
 		"vs/workbench/contrib/terminal/browser/links/terminalWordLinkProvider": {
 			"searchWorkspace": "Arbeitsbereich suchen"
@@ -7526,7 +7312,7 @@
 			"testingCancelIcon": "Symbol zum Abbrechen von Testläufen",
 			"filterIcon": "Symbol für die Aktion \"Filtern\" in der Testansicht.",
 			"autoRunIcon": "Symbol für die Umschaltfläche \"AutoAusführen\" in der Testansicht.",
-			"hiddenIcon": "Icon shown beside hidden tests, when they've been shown.",
+			"hiddenIcon": "Das Symbol, das neben ausgeblendeten Tests angezeigt wird, wenn sie eingeblendet wurden.",
 			"testingShowAsList": "Symbol, wenn der Test-Explorer als Struktur deaktiviert ist.",
 			"testingShowAsTree": "Symbol, wenn der Test-Explorer als Liste deaktiviert ist",
 			"testingErrorIcon": "Symbol für Tests mit Fehler",
@@ -7568,8 +7354,8 @@
 			"close": "Schließen"
 		},
 		"vs/workbench/contrib/testing/browser/testingProgressUiService": {
-			"testProgress.running": "Running {0} tests, {1}/{2} passed ({3}%)",
-			"testProgressWithSkip.running": "Running {0} tests, {1}/{2} tests passed ({3}%, {4} skipped)",
+			"testProgress.running": "{0} Tests werden ausgeführt, {1}/{2} erfolgreich ({3} %)",
+			"testProgressWithSkip.running": "{0} Tests werden ausgeführt, {1}/{2} Tests erfolgreich ({3} %, {4} übersprungen)",
 			"testProgress.completed": "{0}/{1} Tests bestanden ({2}%)",
 			"testProgressWithSkip.completed": "{0}/{1} Tests bestanden ({2} %, {3} übersprungen)"
 		},
@@ -7578,9 +7364,9 @@
 		},
 		"vs/workbench/contrib/testing/common/configuration": {
 			"testConfigurationTitle": "Test",
-			"testing.autoRun.mode": "Controls which tests are automatically run.",
-			"testing.autoRun.mode.allInWorkspace": "Automatically run and then re-run all tests in the workspace.",
-			"testing.autoRun.mode.onlyPreviouslyRun": "Only re-run tests that have been run before, when they change.",
+			"testing.autoRun.mode": "Steuert, welche Tests automatisch ausgeführt werden.",
+			"testing.autoRun.mode.allInWorkspace": "Hiermit werden alle Tests im Arbeitsbereich automatisch ausgeführt und anschließend erneut ausgeführt.",
+			"testing.autoRun.mode.onlyPreviouslyRun": "Hiermit werden nur Tests, die bereits ausgeführt wurden, bei Änderungen erneut ausgeführt.",
 			"testing.autoRun.delay": "Die Wartezeit in Millisekunden, nach der ein Test als veraltet markiert und eine neue Ausführung gestartet wird.",
 			"testing.automaticallyOpenPeekView": "Konfiguriert, wann die Vorschauansicht für Fehler automatisch geöffnet wird.",
 			"testing.automaticallyOpenPeekView.failureAnywhere": "Unabhängig vom Bereich des Fehlers automatisch öffnen.",
@@ -7589,6 +7375,9 @@
 		},
 		"vs/workbench/contrib/testing/common/testingContextKeys": {
 			"testing.testId": "Die ID des aktuellen Testelements, die beim Erstellen oder Öffnen von Menüs für Testelemente festgelegt wird."
+		},
+		"vs/workbench/contrib/testing/common/testServiceImpl": {
+			"testError": "Fehler beim Ausführen von Tests: {0}"
 		},
 		"vs/workbench/contrib/testing/browser/testExplorerActions": {
 			"testing.category": "Test",
@@ -7623,9 +7412,6 @@
 			"testing.reRunLastRun": "Letzte Ausführung erneut ausführen",
 			"testing.debugLastRun": "Letzte Ausführung debuggen",
 			"testing.searchForTestExtension": "Nach Testerweiterung suchen"
-		},
-		"vs/workbench/contrib/testing/common/testServiceImpl": {
-			"testError": "Fehler beim Ausführen von Tests: {0}"
 		},
 		"vs/workbench/contrib/testing/browser/theme": {
 			"testing.iconFailed": "Farbe für das Symbol \"Fehler\" im Test-Explorer",
@@ -7971,7 +7757,29 @@
 			"gettingStarted.goBack": "Zurück",
 			"gettingStarted.goNext": "Weiter",
 			"gettingStarted.goPrev": "Zurück",
-			"welcomePage.hiddenCategories": "Hide categories of the welcome page's getting started section that are not relevant to you."
+			"gettingStarted.markTaskComplete": "Aufgabe als abgeschlossen markieren",
+			"gettingStarted.markTaskInomplete": "Aufgabe als unvollständig markieren",
+			"welcomePage.hiddenCategories": "Blenden Sie die Kategorien des Abschnitts \"Erste Schritte\" auf der Willkommensseite aus, die für Sie nicht relevant sind.",
+			"walkthroughs": "Tragen Sie Sammlungen von Aufgaben bei, um Benutzer bei der Verwendung Ihrer Erweiterung zu unterstützen. Experimentell, nur in VS Code Insiders verfügbar.",
+			"walkthroughs.id": "Eindeutiger Bezeichner für diese exemplarische Vorgehensweise.",
+			"walkthroughs.title": "Titel der exemplarischen Vorgehensweise.",
+			"walkthroughs.description": "Beschreibung der exemplarischen Vorgehensweise.",
+			"walkthroughs.primary": "Wenn es sich um eine exemplarische Vorgehensweise für Einsteiger handelt, wird hiermit angegeben, ob diese beim Installieren der Erweiterung geöffnet werden soll. Die erste exemplarischen Vorgehensweise für Einsteiger mit einer when-Bedingung, die dem aktuellen Kontext entspricht, kann von Core beim Installieren der Erweiterung geöffnet werden.",
+			"walkthroughs.when": "Kontextschlüsselausdruck zum Steuern der Sichtbarkeit dieser exemplarischen Vorgehensweise.",
+			"walkthroughs.tasks": "Aufgaben, die im Rahmen dieser exemplarischen Vorgehensweise durchgeführt werden.",
+			"walkthroughs.tasks.id": "Eindeutiger Bezeichner für diese Aufgabe. Hiermit wird nachverfolgt, welche Aufgaben abgeschlossen wurden.",
+			"walkthroughs.tasks.title": "Titel der Aufgabe.",
+			"walkthroughs.tasks.description": "Die Beschreibung der Aufgabe.",
+			"walkthroughs.tasks.button": "Die Schaltfläche der Aufgabe, die entweder eine Verknüpfung mit einer externen Ressource herstellen oder einen Befehl ausführen kann",
+			"walkthroughs.tasks.button.title": "Der Titel der Schaltfläche.",
+			"walkthroughs.tasks.button.command": "Der Befehl, der bei einem Klick auf die Schaltfläche ausgeführt werden soll.",
+			"walkthroughs.tasks.button.link": "Die Verknüpfung, die bei einem Klick auf die Schaltfläche geöffnet werden soll. Durch Öffnen dieser Verknüpfung wird die Aufgabe als abgeschlossen markiert.",
+			"walkthroughs.tasks.media": "Bild, das neben dieser Aufgabe angezeigt werden soll.",
+			"walkthroughs.tasks.media.path": "Pfad zu einem Image, relativ zum Erweiterungsverzeichnis.",
+			"walkthroughs.tasks.media.altText": "Alternativer Text, der angezeigt werden soll, wenn das Bild nicht geladen werden kann, oder der bei der Sprachausgabe verwendet werden soll.",
+			"walkthroughs.tasks.doneOn": "Signal zum Markieren der Aufgabe als abgeschlossen.",
+			"walkthroughs.tasks.oneOn.command": "Hiermit wird die Aufgabe als durchgeführt markiert, wenn der angegebene Befehl ausgeführt wird.",
+			"walkthroughs.tasks.when": "Kontextschlüsselausdruck zum Steuern der Sichtbarkeit dieser Aufgabe."
 		},
 		"vs/workbench/contrib/welcome/walkThrough/browser/walkThrough.contribution": {
 			"walkThrough.editor.label": "Interaktiver Playground",
@@ -8015,24 +7823,26 @@
 			"details": "Details"
 		},
 		"vs/workbench/contrib/welcome/gettingStarted/browser/gettingStarted": {
-			"gettingStarted": "Erste Schritte",
 			"gettingStartedLabel": "Erste Schritte. Übersicht für den schnellen Einstieg in Ihren Editor.",
 			"more": "Mehr",
-			"pressEnterToSelect": "Drücken Sie zur Auswahl die EINGABETASTE.",
-			"close": "Hide",
+			"close": "Ausblenden",
 			"gettingStarted.vscode": "Visual Studio Code",
-			"gettingStarted.editingEvolved": "Editing evolved",
+			"gettingStarted.editingEvolved": "Fortschrittliche Bearbeitung",
+			"gettingStarted": "Erste Schritte",
 			"welcomePage.showOnStartup": "Beim Start Willkommensseite anzeigen",
 			"welcomePage.openFolderWithPath": "Ordner {0} mit Pfad {1} öffnen",
-			"recent": "Recent",
+			"recent": "Zuletzt verwendet",
 			"start": "Start",
-			"imageShowing": "Bild mit {0}",
 			"next": "Weiter",
-			"nextPage": "Nächste Seite"
+			"nextPage": "Nächste Seite",
+			"imageShowing": "Bild mit {0}"
 		},
 		"vs/workbench/contrib/welcome/gettingStarted/browser/gettingStartedIcons": {
 			"gettingStartedUnchecked": "Hiermit werden Erste-Schritte-Elemente dargestellt, die nicht abgeschlossen wurden.",
 			"gettingStartedChecked": "Hiermit werden Erste-Schritte-Elemente dargestellt, die abgeschlossen wurden."
+		},
+		"vs/workbench/contrib/welcome/gettingStarted/browser/gettingStartedInput": {
+			"gettingStarted": "Erste Schritte"
 		},
 		"vs/workbench/contrib/welcome/walkThrough/browser/walkThroughPart": {
 			"walkThrough.unboundCommand": "Ungebunden",
@@ -8043,6 +7853,9 @@
 			"editorWalkThrough.title": "Interaktiver Playground",
 			"editorWalkThrough": "Interaktiver Playground"
 		},
+		"vs/workbench/contrib/welcome/common/viewsWelcomeContribution": {
+			"ViewsWelcomeExtensionPoint.proposedAPI": "Der viewsWelcome-Beitrag in \"{0}\" erfordert die Aktivierung von \"enableProposedApi\"."
+		},
 		"vs/workbench/contrib/welcome/common/viewsWelcomeExtensionPoint": {
 			"contributes.viewsWelcome": "Willkommensinhalte in beigetragenen Ansichten. Willkommensinhalte werden in Strukturansichten gerendert, wenn sie keine aussagekräftigen Inhalte enthalten (Beispiel: Datei-Explorer, wenn kein Ordner geöffnet ist). Solche Inhalte sind als produktinterne Dokumentation nützlich, um Benutzer zur Verwendung bestimmter Features zu motivieren, bevor diese verfügbar sind. Ein gutes Beispiel hierfür ist eine Schaltfläche \"Repository klonen\" in der Willkommensansicht des Datei-Explorers.",
 			"contributes.viewsWelcome.view": "Beigetragene Begrüßungsinhalte für eine bestimmte Ansicht.",
@@ -8052,9 +7865,6 @@
 			"contributes.viewsWelcome.view.group": "Die Gruppe, zu der diese Willkommensinhalte gehören.",
 			"contributes.viewsWelcome.view.enablement": "Bedingung für die Aktivierung der Schaltflächen mit Willkommensinhalten und Befehlslinks."
 		},
-		"vs/workbench/contrib/welcome/common/viewsWelcomeContribution": {
-			"ViewsWelcomeExtensionPoint.proposedAPI": "Der viewsWelcome-Beitrag in \"{0}\" erfordert die Aktivierung von \"enableProposedApi\"."
-		},
 		"vs/workbench/contrib/welcome/telemetryOptOut/browser/telemetryOptOut": {
 			"telemetryOptOut.optOutNotice": "Tragen Sie zur Verbesserung von VS Code bei, und lassen Sie zu, dass Microsoft Nutzungsdaten erfasst. Lesen Sie unsere [Datenschutzvereinbarung]({0}), und erfahren Sie, wie Sie dies [deaktivieren]({1}).",
 			"telemetryOptOut.optInNotice": "Tragen Sie zur Verbesserung von VS Code bei, und lassen Sie zu, dass Microsoft Nutzungsdaten erfasst. Lesen Sie unsere [Datenschutzvereinbarung]({0}), und erfahren Sie, wie Sie dies [aktivieren]({1}).",
@@ -8062,6 +7872,15 @@
 			"telemetryOptOut.optOutOption": "Tragen Sie zur Verbesserung von Visual Studio Code bei, indem Sie Microsoft gewähren, Nutzungsdaten zu erfassen. Weitere Informationen finden Sie in unserer [Datenschutzerklärung]({0}).",
 			"telemetryOptOut.OptIn": "Ja, ich möchte helfen.",
 			"telemetryOptOut.OptOut": "Nein, danke."
+		},
+		"vs/workbench/contrib/welcome/page/browser/welcomePageColors": {
+			"welcomePage.buttonBackground": "Hintergrundfarbe für die Schaltflächen auf der Willkommensseite.",
+			"welcomePage.buttonHoverBackground": "Hoverhintergrundfarbe für die Schaltflächen auf der Willkommensseite.",
+			"welcomePage.background": "Hintergrundfarbe für die Startseite.",
+			"welcomePage.tileBackground": "Hintergrundfarbe für die Kacheln auf der Seite \"Erste Schritte\".",
+			"welcomePage.tileHoverBackground": "Hoverhintergrundfarbe für die Kacheln auf der Seite \"Erste Schritte\".",
+			"welcomePage.progress.background": "Vordergrundfarbe für die Statusleisten der Willkommensseite.",
+			"welcomePage.progress.foreground": "Hintergrundfarbe für die Statusleisten der Willkommensseite."
 		},
 		"vs/workbench/contrib/welcome/page/browser/vs_code_welcome_page": {
 			"welcomePage.vscode": "Visual Studio Code",
@@ -8101,24 +7920,81 @@
 			"welcomePage.interactivePlayground": "Interaktiver Playground",
 			"welcomePage.interactivePlaygroundDescription": "In einer exemplarischen Vorgehensweise können Sie die Hauptfeatures des Editors ausprobieren."
 		},
-		"vs/workbench/contrib/welcome/page/browser/welcomePageColors": {
-			"welcomePage.buttonBackground": "Hintergrundfarbe für die Schaltflächen auf der Willkommensseite.",
-			"welcomePage.buttonHoverBackground": "Hoverhintergrundfarbe für die Schaltflächen auf der Willkommensseite.",
-			"welcomePage.background": "Hintergrundfarbe für die Startseite.",
-			"welcomePage.tileBackground": "Hintergrundfarbe für die Kacheln auf der Seite \"Erste Schritte\".",
-			"welcomePage.tileHoverBackground": "Hoverhintergrundfarbe für die Kacheln auf der Seite \"Erste Schritte\".",
-			"welcomePage.progress.background": "Vordergrundfarbe für die Statusleisten der Willkommensseite.",
-			"welcomePage.progress.foreground": "Hintergrundfarbe für die Statusleisten der Willkommensseite."
+		"vs/workbench/contrib/welcome/gettingStarted/common/gettingStartedContent": {
+			"getting-started-setup-icon": "Symbol für die Kategorie \"Setup\" in \"Erste Schritte\"",
+			"getting-started-beginner-icon": "Symbol für die Kategorie \"Anfänger\" in \"Erste Schritte\"",
+			"getting-started-codespaces-icon": "Symbol für die Kategorie \"Codespaces\" in \"Erste Schritte\"",
+			"gettingStarted.newFile.title": "Neue Datei",
+			"gettingStarted.newFile.description": "Hiermit beginnen Sie mit einer neuen, leeren Datei.",
+			"gettingStarted.openMac.title": "Öffnen...",
+			"gettingStarted.openMac.description": "Hiermit öffnen Sie eine Datei oder einen Ordner, um mit der Arbeit zu beginnen.",
+			"gettingStarted.openFile.title": "Datei öffnen...",
+			"gettingStarted.openFile.description": "Hiermit öffnen Sie eine Datei, um mit der Arbeit zu beginnen.",
+			"gettingStarted.openFolder.title": "Ordner öffnen...",
+			"gettingStarted.openFolder.description": "Hiermit öffnen Sie einen Ordner, um mit der Arbeit zu beginnen.",
+			"gettingStarted.cloneRepo.title": "Git-Repository klonen...",
+			"gettingStarted.cloneRepo.description": "Git-Repository klonen",
+			"gettingStarted.topLevelCommandPalette.title": "Befehl ausführen...",
+			"gettingStarted.topLevelCommandPalette.description": "Verwenden Sie die Befehlspalette, um alle VSCode-Befehle anzuzeigen und auszuführen.",
+			"gettingStarted.codespaces.title": "Einführung zu Codespaces",
+			"gettingStarted.codespaces.description": "Durch die Umgebung mit sofort einsetzbarem Code sind Sie sofort startbereit.",
+			"gettingStarted.runProject.title": "App erstellen und ausführen",
+			"gettingStarted.runProject.description": "Sie können Ihren Code direkt im Browser erstellen, ausführen und debuggen.",
+			"gettingStarted.runProject.button": "Debuggen starten (F5)",
+			"gettingStarted.forwardPorts.title": "Zugreifen auf die ausgeführte Anwendung",
+			"gettingStarted.forwardPorts.description": "In Ihrem Codespace ausgeführte Ports werden automatisch an das Web weitergeleitet, damit Sie sie in Ihrem Browser öffnen können.",
+			"gettingStarted.forwardPorts.button": "Portpanel anzeigen",
+			"gettingStarted.pullRequests.title": "Pull Requests sofort verfügbar",
+			"gettingStarted.pullRequests.description": "Bringen Sie Ihren GitHub-Workflow und Ihren Code näher zusammen. So können Sie beispielsweise Pull Requests anzeigen, Kommentare hinzufügen oder Branches mergen.",
+			"gettingStarted.pullRequests.button": "GitHub-Ansicht öffnen",
+			"gettingStarted.remoteTerminal.title": "Ausführen von Aufgaben im integrierten Terminal",
+			"gettingStarted.remoteTerminal.description": "Führen Sie mit dem integrierten Terminal schnell Befehlszeilenaufgaben aus.",
+			"gettingStarted.remoteTerminal.button": "Fokus auf Terminal",
+			"gettingStarted.openVSC.title": "Remoteentwicklung in VS Code",
+			"gettingStarted.openVSC.description": "Profitieren Sie in Ihrer lokalen VS Code-Instanz von der Leistungsfähigkeit Ihrer Cloudentwicklungsumgebung. Richten Sie diese ein, indem Sie die GitHub Codespaces-Erweiterung installieren und Ihr GitHub-Konto verbinden.",
+			"gettingStarted.openVSC.button": "In VS Code öffnen",
+			"gettingStarted.setup.title": "Express-Setup",
+			"gettingStarted.setup.description": "Erweitern und optimieren Sie VS Code, um es perfekt auf Ihre Anforderungen abzustimmen.",
+			"gettingStarted.pickColor.title": "Anpassen des Erscheinungsbilds mithilfe von Designs",
+			"gettingStarted.pickColor.description": "Wählen Sie ein Farbdesign aus, das Ihrem Geschmack und Ihrer Stimmung beim Codieren entspricht.",
+			"gettingStarted.pickColor.button": "Design auswählen",
+			"gettingStarted.findLanguageExts.title": "Codieren Sie in einer Sprache Ihrer Wahl, ohne Editor-Wechsel",
+			"gettingStarted.findLanguageExts.description": "VS Code unterstützt mehr als 50 Programmiersprachen. Viele sind bereits integriert, andere können mit nur einem Mausklick als Erweiterung installiert werden.",
+			"gettingStarted.findLanguageExts.button": "Spracherweiterungen durchsuchen",
+			"gettingStarted.settingsSync.title": "Synchronisieren Ihres bevorzugten Setups",
+			"gettingStarted.settingsSync.description": "Kein Verlust des perfekten VS Code-Setups! Dank der Einstellungssynchronisierung werden Einstellungen, Tastenzuordnungen und installierte Erweiterungen gesichert und in mehreren VS Code-Instanzen übernommen.",
+			"gettingStarted.settingsSync.button": "Einstellungssynchronisierung aktivieren",
+			"gettingStarted.setup.OpenFolder.title": "Öffnen Ihres Projekts",
+			"gettingStarted.setup.OpenFolder.description": "Öffnen Sie einen Projektordner, um loszulegen.",
+			"gettingStarted.setup.OpenFolder.button": "Ordner auswählen",
+			"gettingStarted.setup.OpenFolder.description2": "Öffnen Sie einen Ordner, um zu starten.",
+			"gettingStarted.beginner.title": "Grundlegende Informationen",
+			"gettingStarted.beginner.description": "Sparen Sie Zeit mit diesen praktischen Verknüpfungen und Features.",
+			"gettingStarted.commandPalette.title": "Suchen und Ausführen von Befehlen",
+			"gettingStarted.commandPalette.description": "Die einfachste Möglichkeit zum Finden sämtlicher Aktionen, die in VS Code ausgeführt werden können. Wenn Sie nach einem Feature oder einer Verknüpfung suchen, lesen Sie zuerst diese Inhalte!",
+			"gettingStarted.commandPalette.button": "Befehlspalette öffnen",
+			"gettingStarted.terminal.title": "Ausführen von Aufgaben im integrierten Terminal",
+			"gettingStarted.terminal.description": "Führen Sie schnell Shellbefehle aus, und überwachen Sie die Buildausgabe direkt neben Ihrem Code.",
+			"gettingStarted.terminal.button": "Terminal öffnen",
+			"gettingStarted.extensions.title": "Unbegrenzte Erweiterbarkeit",
+			"gettingStarted.extensions.description": "Durch Erweiterungen können Sie VS Code noch umfassender nutzen. Diese reichen von praktischen Hacks zur Produktivitätssteigerung über Erweiterungen für vorkonfigurierte Features bis hin zu völlig neuen Funktionen.",
+			"gettingStarted.extensions.button": "Empfohlene Erweiterungen durchsuchen",
+			"gettingStarted.settings.title": "Alles ist Einstellungssache",
+			"gettingStarted.settings.description": "Passen Sie jedes Detail des VS Code-Erscheinungsbilds nach Ihrem Geschmack an. Wenn Sie die Option \"Einstellungen synchronisieren\" aktivieren, werden Ihre persönlichen Optimierungen computerübergreifend übernommen.",
+			"gettingStarted.settings.button": "Einstellungen optimieren",
+			"gettingStarted.videoTutorial.title": "Entspanntes Lernen",
+			"gettingStarted.videoTutorial.description": "Sehen Sie sich das erste in einer Reihe von kurzen und praktischen Videotutorials zu den wichtigsten VS Code-Features an.",
+			"gettingStarted.videoTutorial.button": "Tutorial ansehen"
 		},
 		"vs/workbench/contrib/workspace/browser/workspace.contribution": {
 			"workspaceTrustIcon": "Symbol für das Badge der Arbeitsbereichsvertrauensstellung.",
 			"requestTrustIconText": "Für einige Features muss der Arbeitsbereich als vertrauenswürdig eingestuft werden.",
-			"immediateTrustRequestMessage": "A feature you are trying to use may be a security risk if you do not trust the source of the files or folders you currently have open.",
-			"grantWorkspaceTrustButton": "Continue",
-			"manageWorkspaceTrustButton": "Learn More",
+			"immediateTrustRequestMessage": "Ein Feature, das Sie verwenden möchten, stellt möglicherweise ein Sicherheitsrisiko dar, wenn Sie der Quelle der zurzeit geöffneten Dateien oder Ordner nicht vertrauen.",
+			"grantWorkspaceTrustButton": "Weiter",
+			"manageWorkspaceTrustButton": "Weitere Informationen",
 			"cancelWorkspaceTrustButton": "Abbrechen",
 			"immediateTrustRequestTitle": "Vertrauen Sie den Dateien in diesem Ordner?",
-			"immediateTrustRequestDetail": "{0}\r\n\r\nYou should only trust this workspace if you trust its source. Otherwise, features will be enabled that may compromise your device or personal information.",
+			"immediateTrustRequestDetail": "{0}\r\n\r\nSie sollten diesem Arbeitsbereich nur vertrauen, wenn Sie seiner Quelle vertrauen. Andernfalls werden Features aktiviert, die möglicherweise zur Gefährdung Ihres Geräts oder personenbezogener Informationen führen.",
 			"trustConfigurationChangeMessage": "Damit diese Änderung wirksam wird, muss das Fenster erneut geladen werden. Möchten Sie das Fenster jetzt erneut laden?",
 			"status.WorkspaceTrust": "Arbeitsbereichsvertrauensstellung",
 			"workspaceTrustEditor": "Editor für Arbeitsbereichsvertrauensstellung",
@@ -8133,18 +8009,22 @@
 			"manageWorkspaceTrustPending": "Arbeitsbereichsvertrauensstellung verwalten (1)"
 		},
 		"vs/workbench/contrib/workspace/browser/workspaceTrustEditor": {
-			"trustedHeader": "This workspace is trusted",
-			"untrustedHeader": "This workspace is not trusted",
-			"unknownHeader": "Do you want to trust this workspace?",
-			"unknownHeaderDescription": "Trust is required for certain extensions to function in this workspace. [Learn more](https://aka.ms/vscode-workspace-trust).",
+			"trustedHeader": "Dieser Arbeitsbereich wird als vertrauenswürdig eingestuft",
+			"untrustedHeader": "Dieser Arbeitsbereich wird nicht als vertrauenswürdig eingestuft",
+			"unknownHeader": "Möchten Sie diesen Arbeitsbereich als vertrauenswürdig einstufen?",
+			"unknownHeaderDescription": "Die Einstufung als vertrauenswürdig ist erforderlich, damit bestimmte Erweiterungen in diesem Arbeitsbereich funktionieren. [Weitere Informationen](https://aka.ms/vscode-workspace-trust).",
 			"trustButton": "Vertrauen",
 			"doNotTrustButton": "Nicht vertrauen",
-			"onStartExtensions": "Disabled Extensions",
-			"onStartExtensionsDescription": "The following extensions require the workspace to be trusted. They will be disabled while the workspace is not trusted.",
-			"onDemandExtensions": "Limited Extensions",
-			"onDemandExtensionsDescription": "The following extensions can function partially in a non-trusted workspace. Some functionality will be turned off while the workspace is not trusted.",
-			"configurationSectionTitle": "Configure All Workspaces",
-			"affectedFeaturesTitle": "Features Affected By Workspace Trust"
+			"onStartExtensions": "Deaktivierte Erweiterungen",
+			"onStartExtensionsDescription": "Für die folgenden Erweiterungen muss der Arbeitsbereich als vertrauenswürdig eingestuft werden. Sie werden deaktiviert, solange der Arbeitsbereich als nicht vertrauenswürdig eingestuft wird.",
+			"onDemandExtensions": "Eingeschränkte Erweiterungen",
+			"onDemandExtensionsDescription": "Die folgenden Erweiterungen können in einem nicht vertrauenswürdigen Arbeitsbereich teilweise eingesetzt werden. Einige Funktionen werden deaktiviert, solange der Arbeitsbereich nicht als vertrauenswürdig eingestuft wird.",
+			"configurationSectionTitle": "Alle Arbeitsbereiche konfigurieren",
+			"affectedFeaturesTitle": "Von der Arbeitsbereichsvertrauensstellung betroffene Features"
+		},
+		"vs/workbench/contrib/workspace/browser/workspaceTrustColors": {
+			"workspaceTrustTrustedColor": "Farbe zum Anzeigen eines vertrauenswürdigen Arbeitsbereichs.",
+			"workspaceTrustUntrustedColor": "Farbe zum Anzeigen eines nicht vertrauenswürdigen Arbeitsbereichs."
 		},
 		"vs/workbench/contrib/workspace/browser/workspaceTrustTree": {
 			"modified": "Geändert",
@@ -8153,10 +8033,6 @@
 			"untrustedFolders": "Nicht vertrauenswürdige Ordner",
 			"untrustedFoldersDescription": "Alle Arbeitsbereiche unter den folgenden Ordnern werden als nicht vertrauenswürdig eingestuft. Im Falle eines Konflikts mit vertrauenswürdigen Ordnern wird die Vertrauensstellung durch das nächste übergeordnete Element festgelegt.",
 			"settings": "Einstellung für Arbeitsbereichsvertrauensstellung"
-		},
-		"vs/workbench/contrib/workspace/browser/workspaceTrustColors": {
-			"workspaceTrustTrustedColor": "Color used when indicating a workspace is trusted.",
-			"workspaceTrustUntrustedColor": "Color used when indicating a workspace is not trusted."
 		},
 		"vs/workbench/contrib/workspaces/browser/workspaces.contribution": {
 			"workspaceFound": "Dieser Ordner enthält die Arbeitsbereichsdatei \"{0}\". Möchten Sie diese öffnen? [Weitere Informationen]({1}) zu Arbeitsbereichsdateien.",
@@ -8323,9 +8199,6 @@
 			"local": "LOCAL",
 			"remote": "Remote"
 		},
-		"vs/workbench/services/extensionManagement/common/webExtensionsScannerService": {
-			"cannot be installed": "\"{0}\" kann nicht installiert werden, weil es sich bei dieser Erweiterung nicht um eine Weberweiterung handelt."
-		},
 		"vs/workbench/services/extensionManagement/browser/extensionEnablementService": {
 			"extensionsDisabled": "Alle installierten Erweiterungen sind vorübergehend deaktiviert.",
 			"Reload": "Erweiterungen erneut laden und aktivieren",
@@ -8334,12 +8207,18 @@
 			"noWorkspace": "Kein Arbeitsbereich.",
 			"cannot disable auth extension in workspace": "Die Aktivierung der Erweiterung \"{0}\" kann im Arbeitsbereich nicht geändert werden, weil sie Authentifizierungsanbieter beiträgt."
 		},
+		"vs/workbench/services/extensionManagement/common/webExtensionsScannerService": {
+			"cannot be installed": "\"{0}\" kann nicht installiert werden, weil es sich bei dieser Erweiterung nicht um eine Weberweiterung handelt."
+		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"singleDependentError": "Die Erweiterung \"{0}\" kann nicht deinstalliert werden. Die Erweiterung \"{1}\" hängt von dieser Erweiterung ab.",
 			"twoDependentsError": "Die Erweiterung \"{0}\" kann nicht deinstalliert werden. Die Erweiterungen \"{1}\" und \"{2}\" hängen von dieser Erweiterung ab.",
 			"multipleDependentsError": "Die Erweiterung \"{0}\" kann nicht deinstalliert werden. Die Erweiterungen \"{1}\" und \"{2}\" sowie weitere hängen von dieser Erweiterung ab.",
 			"Manifest is not found": "Fehler beim Installieren der Erweiterung {0}: Manifest konnte nicht gefunden werden.",
-			"cannot be installed": "Die Erweiterung \"{0}\" kann nicht installiert werden, weil sie gemäß der Deklaration in diesem Setup nicht ausgeführt werden soll.",
+			"vscode web": "VS Code Web",
+			"cannot be installed": "Die Erweiterung \"{0}\" ist in {1} nicht verfügbar. Klicken Sie auf \"Weitere Informationen\", um weitere Informationen zu erhalten.",
+			"more information": "Weitere Informationen",
+			"ok": "OK",
 			"install extension": "Erweiterung installieren",
 			"install extensions": "Erweiterungen installieren",
 			"install": "Installieren",
@@ -8408,13 +8287,13 @@
 		},
 		"vs/workbench/services/extensions/common/abstractExtensionService": {
 			"looping": "Folgende Erweiterungen enthalten Abhängigkeitsschleifen und wurden deaktiviert: {0}",
-			"extensionTestError": "No extension host found that can launch the test runner at {0}."
-		},
-		"vs/workbench/services/extensions/browser/webWorkerExtensionHost": {
-			"name": "Workererweiterungshost"
+			"extensionTestError": "Es wurde kein Erweiterungshost gefunden, der den Test Runner auf {0} starten kann."
 		},
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "Remoteerweiterungshost"
+		},
+		"vs/workbench/services/extensions/browser/webWorkerExtensionHost": {
+			"name": "Workererweiterungshost"
 		},
 		"vs/workbench/services/extensions/browser/extensionUrlHandler": {
 			"confirmUrl": "Öffnen dieser URI durch eine Erweiterung zulassen?",
@@ -8513,44 +8392,22 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Latenz des Hosts der Measureerweiterung"
 		},
-		"vs/workbench/services/gettingStarted/common/gettingStartedRegistry": {
-			"gettingStarted": "Contribute items to help users in getting started with your extension. Keys correspond to categories contributed via welcomeCategories contribution point. Experimental, available in VS Code Insiders only.",
-			"gettingStarted.id": "Eindeutiger Bezeichner für dieses Element.",
-			"gettingStarted.title": "Titel des Elements.",
-			"gettingStarted.description": "Die Beschreibung des Elements.",
-			"gettingStarted.button": "Die Schaltfläche des Elements, die entweder eine Verknüpfung mit einer externen Ressource herstellen oder einen Befehl ausführen kann",
-			"gettingStarted.button.title": "Der Titel der Schaltfläche.",
-			"gettingStarted.button.command": "Der Befehl, der bei einem Klick auf die Schaltfläche ausgeführt werden soll. Durch Ausführen dieses Befehls wird das Element als abgeschlossen markiert.",
-			"gettingStarted.button.link": "Die Verknüpfung, die bei einem Klick auf die Schaltfläche geöffnet werden soll. Durch Öffnen dieser Verknüpfung wird das Element als abgeschlossen markiert.",
-			"gettingStarted.media": "Bild, das neben diesem Element angezeigt werden soll.",
-			"gettingStarted.media.path": "Entweder ein einzelner Zeichenfolgenpfad zu einem Bild, das für alle Farbdesigns verwendet werden soll, oder separate Pfade für helle, dunkle und kontrastreiche Designs.",
-			"gettingStarted.media.altText": "Alternativer Text, der angezeigt werden soll, wenn das Bild nicht geladen werden kann, oder der bei der Sprachausgabe verwendet werden soll.",
-			"gettingStarted.oneOn.event": "Mark item done when the specified event is marked via the invoking the `welcomeItems.markEvent` command.",
-			"gettingStarted.oneOn.command": "Mark item done when the specified command is executed.",
-			"gettingStarted.doneOn": "Signal to mark item as complete. If not defined, running the button's command will mark the item complete.",
-			"gettingStarted.when": "Kontextschlüsselausdruck, um die Sichtbarkeit dieses Elements für die ersten Schritte zu steuern.",
-			"welcomeCategories": "Contribute categories of items to help users in getting started with your extension. Items themselves are contributed via welcomeItems contribution point. Experimental, available in VS Code Insiders only.",
-			"welcomeCategories.id": "Unique identifier for this category.",
-			"welcomeCategories.title": "Title of category.",
-			"welcomeCategories.description": "Description of category.",
-			"welcomeCategories.when": "Context key expression to control the visibility of this category."
-		},
 		"vs/workbench/services/gettingStarted/common/gettingStartedContent": {
 			"getting-started-setup-icon": "Symbol für die Kategorie \"Setup\" in \"Erste Schritte\"",
 			"getting-started-beginner-icon": "Symbol für die Kategorie \"Anfänger\" in \"Erste Schritte\"",
 			"getting-started-codespaces-icon": "Symbol für die Kategorie \"Codespaces\" in \"Erste Schritte\"",
-			"gettingStarted.newFile.title": "New File",
-			"gettingStarted.newFile.description": "Start with a new empty file",
-			"gettingStarted.openMac.title": "Open...",
-			"gettingStarted.openMac.description": "Open a file or folder to start working",
-			"gettingStarted.openFile.title": "Open File...",
-			"gettingStarted.openFile.description": "Open a file to start working",
-			"gettingStarted.openFolder.title": "Open Folder...",
-			"gettingStarted.openFolder.description": "Open a folder to start working",
-			"gettingStarted.cloneRepo.title": "Clone Git Repository...",
-			"gettingStarted.cloneRepo.description": "Clone a git repository",
-			"gettingStarted.languageSupport.title": "Install Language Support",
-			"gettingStarted.languageSupport.description": "Want even more features? Install extensions to add support for languages like Python, C, or Java.",
+			"gettingStarted.newFile.title": "Neue Datei",
+			"gettingStarted.newFile.description": "Hiermit beginnen Sie mit einer neuen, leeren Datei.",
+			"gettingStarted.openMac.title": "Öffnen...",
+			"gettingStarted.openMac.description": "Hiermit öffnen Sie eine Datei oder einen Ordner, um mit der Arbeit zu beginnen.",
+			"gettingStarted.openFile.title": "Datei öffnen...",
+			"gettingStarted.openFile.description": "Hiermit öffnen Sie eine Datei, um mit der Arbeit zu beginnen.",
+			"gettingStarted.openFolder.title": "Ordner öffnen...",
+			"gettingStarted.openFolder.description": "Hiermit öffnen Sie einen Ordner, um mit der Arbeit zu beginnen.",
+			"gettingStarted.cloneRepo.title": "Git-Repository klonen...",
+			"gettingStarted.cloneRepo.description": "Git-Repository klonen",
+			"gettingStarted.topLevelCommandPalette.title": "Befehl ausführen...",
+			"gettingStarted.topLevelCommandPalette.description": "Verwenden Sie die Befehlspalette, um alle VSCode-Befehle anzuzeigen und auszuführen.",
 			"gettingStarted.codespaces.title": "Einführung zu Codespaces",
 			"gettingStarted.codespaces.description": "Durch die Umgebung mit sofort einsetzbarem Code sind Sie sofort startbereit.",
 			"gettingStarted.runProject.title": "App erstellen und ausführen",
@@ -8941,6 +8798,18 @@
 			"reqid": "In \"contributes.{0}.id\" wurde eine Zeichenfolge erwartet. Bereitgestellter Wert: {1}",
 			"invalid.path.1": "Es wurde eine Einbindung von \"contributes.{0}.path\" ({1}) in den Erweiterungsordner ({2}) erwartet. Möglicherweise ist die Erweiterung nicht portierbar."
 		},
+		"vs/workbench/services/themes/browser/productIconThemeData": {
+			"error.parseicondefs": "Probleme beim Verarbeiten der Produktsymboldefinitionen in \"{0}\":\r\n{1}",
+			"defaultTheme": "Standard",
+			"error.cannotparseicontheme": "Probleme beim Analysieren der Produktsymboldatei: {0}",
+			"error.invalidformat": "Ungültiges Format für Produktsymbol-Designdatei: Objekt erwartet.",
+			"error.missingProperties": "Ungültiges Format für Produktsymboldesigndatei: Muss iconDefinitions und Schriftarten enthalten.",
+			"error.fontWeight": "Ungültige Schriftbreite in Schriftart \"{0}\". Die Einstellung wird ignoriert.",
+			"error.fontStyle": "Ungültiger Schriftschnitt in Schriftart \"{0}\". Die Einstellung wird ignoriert.",
+			"error.fontId": "Die Schriftart-ID \"{0}\" fehlt oder ist ungültig. Die Schriftartdefinition wird übersprungen.",
+			"error.icon.fontId": "Die Symboldefinition \"{0}\" wird übersprungen. Unbekannte Schriftart.",
+			"error.icon.fontCharacter": "Die Symboldefinition \"{0}\" wird übersprungen. Unbekannter fontCharacter-Wert."
+		},
 		"vs/workbench/services/themes/common/themeConfiguration": {
 			"colorTheme": "Gibt das in der Workbench verwendete Farbdesign an.",
 			"colorThemeError": "Das Design ist unbekannt oder nicht installiert.",
@@ -8975,18 +8844,6 @@
 			"semanticTokenColors": "Überschreibt die Farben und Stile für Semantiktoken im Editor aus dem aktuell ausgewählten Farbdesign.",
 			"editorColors.experimentalTokenStyling.deprecationMessage": "Verwenden Sie stattdessen \"editor.semanticTokenColorCustomizations\".",
 			"editorColors.experimentalTokenStyling.deprecationMessageMarkdown": "Verwenden Sie stattdessen \"#editor.semanticTokenColorCustomizations#\"."
-		},
-		"vs/workbench/services/themes/browser/productIconThemeData": {
-			"error.parseicondefs": "Probleme beim Verarbeiten der Produktsymboldefinitionen in \"{0}\":\r\n{1}",
-			"defaultTheme": "Standard",
-			"error.cannotparseicontheme": "Probleme beim Analysieren der Produktsymboldatei: {0}",
-			"error.invalidformat": "Ungültiges Format für Produktsymbol-Designdatei: Objekt erwartet.",
-			"error.missingProperties": "Ungültiges Format für Produktsymboldesigndatei: Muss iconDefinitions und Schriftarten enthalten.",
-			"error.fontWeight": "Ungültige Schriftbreite in Schriftart \"{0}\". Die Einstellung wird ignoriert.",
-			"error.fontStyle": "Ungültiger Schriftschnitt in Schriftart \"{0}\". Die Einstellung wird ignoriert.",
-			"error.fontId": "Die Schriftart-ID \"{0}\" fehlt oder ist ungültig. Die Schriftartdefinition wird übersprungen.",
-			"error.icon.fontId": "Die Symboldefinition \"{0}\" wird übersprungen. Unbekannte Schriftart.",
-			"error.icon.fontCharacter": "Die Symboldefinition \"{0}\" wird übersprungen. Unbekannter fontCharacter-Wert."
 		},
 		"vs/workbench/services/themes/common/productIconThemeSchema": {
 			"schema.id": "Die ID der Schriftart.",
@@ -9066,6 +8923,257 @@
 		},
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "Arbeitsbereichsvertrauensstellung"
+		},
+		"readme.md": {
+			"LanguagePackTitle": "Sprachpaket bietet lokalisierte Benutzeroberfläche für VS Code.",
+			"Usage": "Syntax",
+			"displayLanguage": "Sie können die Standardsprache der Benutzeroberfläche außer Kraft setzen, indem Sie die VS Code-Anzeigesprache explizit über den Befehl \"Anzeigesprache konfigurieren\" festlegen.",
+			"Command Palette": "Drücken Sie \"STRG+UMSCHALT+P\", um die Befehlspalette aufzurufen, und beginnen Sie mit der Eingabe von \"Anzeige\", um den Befehl \"Anzeigesprache konfigurieren\" zu filtern und anzuzeigen.",
+			"ShowLocale": "Drücken Sie die EINGABETASTE, und eine Liste installierter Sprachen nach Gebietsschema wird angezeigt. Das aktuelle Gebietsschema ist hervorgehoben.",
+			"SwtichUI": "Wählen Sie ein anderes Gebietsschema aus, um die Sprache der Benutzeroberfläche zu wechseln.",
+			"DocLink": "Weitere Informationen finden Sie in der Dokumentation.",
+			"Contributing": "Mitwirkende",
+			"Feedback": "Um Feedback zur Verbesserung der Übersetzung zu übermitteln, erstellen Sie ein Issue im Repository \"vscode-loc\".",
+			"LocPlatform": "Die Übersetzungszeichenfolgen werden in Microsoft Localization Platform verwaltet. Die Änderung kann nur in Microsoft Localization Platform durchgeführt und dann in das Repository \"vscode-loc\" exportiert werden. Der Pull Request wird daher im Repository \"vscode-loc\" nicht akzeptiert.",
+			"LicenseTitle": "Lizenz",
+			"LicenseMessage": "Der Quellcode und die Zeichenfolgen sind unter der MIT-Lizenz lizenziert.",
+			"Credits": "Info",
+			"Contributed": "Dieses Sprachpaket wurde durch Beiträge von der Community für die Community lokalisiert. Herzlichen Dank an die Mitwirkenden aus der Community, die dieses Paket verfügbar gemacht haben.",
+			"TopContributors": "Wichtigste Mitwirkende:",
+			"Contributors": "Mitwirkende:",
+			"EnjoyLanguagePack": "Viel Spaß!"
+		},
+		"win32/i18n/Default": {
+			"SetupAppTitle": "Setup",
+			"SetupWindowTitle": "Setup – %1",
+			"UninstallAppTitle": "Deinstallieren",
+			"UninstallAppFullTitle": "%1 deinstallieren",
+			"InformationTitle": "Informationen",
+			"ConfirmTitle": "Bestätigen",
+			"ErrorTitle": "Fehler",
+			"SetupLdrStartupMessage": "Hiermit wird %1 installiert. Möchten Sie den Vorgang fortsetzen?",
+			"LdrCannotCreateTemp": "Eine temporäre Datei konnte nicht erstellt werden. Die Installation wurde abgebrochen.",
+			"LdrCannotExecTemp": "Eine Datei im temporären Verzeichnis kann nicht ausgeführt werden. Die Installation wurde abgebrochen.",
+			"LastErrorMessage": "%1.%n%nFehler %2: %3",
+			"SetupFileMissing": "Die Datei %1 fehlt im Installationsverzeichnis. Beheben Sie das Problem, oder beziehen Sie eine neue Kopie des Programms.",
+			"SetupFileCorrupt": "Die Setupdateien sind beschädigt. Beziehen Sie eine neue Kopie des Programms.",
+			"SetupFileCorruptOrWrongVer": "Die Setupdateien sind beschädigt oder nicht kompatibel mit dieser Version von Setup. Beheben Sie das Problem, oder beziehen Sie eine neue Kopie des Programms.",
+			"InvalidParameter": "Ein ungültiger Parameter wurde in der Befehlszeile übergeben:%n%n%1",
+			"SetupAlreadyRunning": "Setup wird bereits ausgeführt.",
+			"WindowsVersionNotSupported": "Dieses Programm unterstützt nicht die Version von Windows, die auf Ihrem Computer ausgeführt wird.",
+			"WindowsServicePackRequired": "Dieses Programm erfordert %1 Service Pack %2 oder höher.",
+			"NotOnThisPlatform": "Dieses Programm kann unter %1 nicht ausgeführt werden.",
+			"OnlyOnThisPlatform": "Dieses Programm muss unter %1 ausgeführt werden.",
+			"OnlyOnTheseArchitectures": "Dieses Programm kann nur unter Versionen von Windows installiert werden, die für die folgenden Prozessorarchitekturen konzipiert wurden:%n%n%1",
+			"MissingWOW64APIs": "Die Version von Windows, die Sie ausführen, enthält nicht die Funktionen, die von Setup zum Ausführen einer 64-Bit-Installation benötigt werden. Installieren Sie Service Pack %1, um dieses Problem zu beheben.",
+			"WinVersionTooLowError": "Dieses Programm erfordert %1 Version %2 oder höher.",
+			"WinVersionTooHighError": "Das Programm kann nicht unter %1 Version %2 oder höher installiert werde.",
+			"AdminPrivilegesRequired": "Sie müssen als Administrator angemeldet sein, wenn Sie dieses Programm installieren.",
+			"PowerUserPrivilegesRequired": "Sie müssen als Administrator oder als Mitglied der Gruppe \"Poweruser\" angemeldet sein, wenn Sie dieses Programm installieren.",
+			"SetupAppRunningError": "Setup hat festgestellt, dass %1 zurzeit ausgeführt wird.%n%nSchließen Sie jetzt alle Instanzen, und klicken Sie dann auf \"OK\", um fortzufahren, oder auf \"Abbrechen\", um die Installation zu beenden.",
+			"UninstallAppRunningError": "Die Deinstallation hat festgestellt, dass %1 zurzeit ausgeführt wird.%n%nSchließen Sie jetzt alle Instanzen, und klicken Sie dann auf \"OK\", um fortzufahren, oder auf \"Abbrechen\", um die Installation zu beenden.",
+			"ErrorCreatingDir": "Setup konnte das Verzeichnis \"%1\" nicht erstellen.",
+			"ErrorTooManyFilesInDir": "Eine Datei kann im Verzeichnis \"%1\" nicht erstellt werden, weil es zu viele Dateien enthält.",
+			"ExitSetupTitle": "Setup beenden",
+			"ExitSetupMessage": "Setup wurde nicht abgeschlossen. Wenn Sie die Installation jetzt beenden, wird das Programm nicht installiert.%n%nSie können Setup zu einem späteren Zeitpunkt erneut ausführen, um die Installation abzuschließen.%n%nSetup beenden?",
+			"AboutSetupMenuItem": "&Info zum Setup...",
+			"AboutSetupTitle": "Info zum Setup",
+			"AboutSetupMessage": "%1 Version %2%n%3%n%n%1 Startseite:%n%4",
+			"ButtonBack": "< &Zurück",
+			"ButtonNext": "&Weiter >",
+			"ButtonInstall": "&Installieren",
+			"ButtonOK": "OK",
+			"ButtonCancel": "Abbrechen",
+			"ButtonYes": "&Ja",
+			"ButtonYesToAll": "Ja für &alle",
+			"ButtonNo": "&Nein",
+			"ButtonNoToAll": "N&ein für alle",
+			"ButtonFinish": "&Fertig stellen",
+			"ButtonBrowse": "&Durchsuchen...",
+			"ButtonWizardBrowse": "D&urchsuchen...",
+			"ButtonNewFolder": "&Neuen Ordner erstellen",
+			"SelectLanguageTitle": "Setupsprache auswählen",
+			"SelectLanguageLabel": "Sprache auswählen, die während der Installation verwendet wird:",
+			"ClickNext": "Klicken Sie auf \"Weiter\", um den Vorgang fortzusetzen, oder auf \"Abbrechen\", um Setup zu beenden.",
+			"BrowseDialogTitle": "Ordner suchen",
+			"BrowseDialogLabel": "Wählen Sie einen Ordner in der Liste unten aus, und klicken Sie dann auf \"OK\".",
+			"NewFolderName": "Neuer Ordner",
+			"WelcomeLabel1": "Willkommen beim Setup-Assistenten von [name]",
+			"WelcomeLabel2": "Hiermit wird [name/ver] auf Ihrem Computer installiert.%n%nEs wird empfohlen, alle anderen Anwendungen zu schließen, bevor Sie fortfahren.",
+			"WizardPassword": "Kennwort",
+			"PasswordLabel1": "Die Installation ist durch ein Kennwort geschützt.",
+			"PasswordLabel3": "Geben Sie das Kennwort an, und klicken Sie dann auf \"Weiter\", um fortzufahren. Für Kennwörter wird zwischen Groß-und Kleinschreibung unterschieden.",
+			"PasswordEditLabel": "&Kennwort:",
+			"IncorrectPassword": "Das eingegebene Kennwort ist falsch. Versuchen Sie es noch mal.",
+			"WizardLicense": "Lizenzvereinbarung",
+			"LicenseLabel": "Lesen Sie die folgenden wichtigen Informationen, bevor Sie fortfahren.",
+			"LicenseLabel3": "Lesen Sie die folgenden Lizenzbedingungen. Sie müssen den Bedingungen dieser Vereinbarung zustimmen, bevor Sie die Installation fortsetzen können.",
+			"LicenseAccepted": "Ich stimme der Vereinb&arung zu",
+			"LicenseNotAccepted": "Ich &stimme der Vereinbarung nicht zu",
+			"WizardInfoBefore": "Informationen",
+			"InfoBeforeLabel": "Lesen Sie die folgenden wichtigen Informationen, bevor Sie fortfahren.",
+			"InfoBeforeClickLabel": "Klicken Sie auf \"Weiter\", um mit der Installation fortzufahren.",
+			"WizardInfoAfter": "Informationen",
+			"InfoAfterLabel": "Lesen Sie die folgenden wichtigen Informationen, bevor Sie fortfahren.",
+			"InfoAfterClickLabel": "Klicken Sie auf \"Weiter\", um mit der Installation fortzufahren.",
+			"WizardUserInfo": "Benutzerinformationen",
+			"UserInfoDesc": "Geben Sie Ihre Informationen ein.",
+			"UserInfoName": "&Benutzername:",
+			"UserInfoOrg": "&Organisation:",
+			"UserInfoSerial": "&Seriennummer:",
+			"UserInfoNameRequired": "Sie müssen einen Namen eingeben.",
+			"WizardSelectDir": "Zielspeicherort auswählen",
+			"SelectDirDesc": "Wo soll [name] installiert werden?",
+			"SelectDirLabel3": "Setup installiert [name] im folgenden Ordner.",
+			"SelectDirBrowseLabel": "Klicken Sie auf \"Weiter\", um fortzufahren. Wenn Sie einen anderen Ordner auswählen möchten, klicken Sie auf \"Durchsuchen\".",
+			"DiskSpaceMBLabel": "Mindestens [mb] MB freier Speicherplatz ist auf dem Datenträger erforderlich.",
+			"CannotInstallToNetworkDrive": "Setup kann die Installation nicht auf einem Netzlaufwerk ausführen.",
+			"CannotInstallToUNCPath": "Setup kann die Installation nicht in einem UNC-Pfad ausführen.",
+			"InvalidPath": "Sie müssen einen vollständigen Pfad mit Laufwerkbuchstaben eingeben; z.B. %n%nC:\\APP%n%n oder einen UNC-Pfad im Format %n%n\\\\server\\share",
+			"InvalidDrive": "Das ausgewählte Laufwerk oder die UNC-Freigabe ist nicht vorhanden oder es kann kein Zugriff darauf erfolgen. Wählen Sie ein anderes Laufwerk oder eine andere UNC-Freigabe aus.",
+			"DiskSpaceWarningTitle": "Nicht genügend Speicherplatz auf dem Datenträger.",
+			"DiskSpaceWarning": "Setup benötigt mindestens %1 KB freien Speicherplatz für die Installation. Auf dem ausgewählten Laufwerk sind aber nur %2 KB verfügbar.%n%nMöchten Sie trotzdem fortfahren?",
+			"DirNameTooLong": "Der Ordnername oder -pfad ist zu lang.",
+			"InvalidDirName": "Der Ordnername ist ungültig.",
+			"BadDirName32": "Ordnernamen dürfen keines der folgenden Zeichen enthalten: %n%n%1",
+			"DirExistsTitle": "Der Ordner ist vorhanden.",
+			"DirExists": "Der Ordner%n%n%1%n%nist bereits vorhanden. Möchten Sie trotzdem in diesem Ordner installieren?",
+			"DirDoesntExistTitle": "Der Ordner ist nicht vorhanden.",
+			"DirDoesntExist": "Der Ordner%n%n%1%n%nist nicht vorhanden. Soll der Ordner erstellt werden?",
+			"WizardSelectComponents": "Komponenten auswählen",
+			"SelectComponentsDesc": "Welche Komponenten sollen installiert werden?",
+			"SelectComponentsLabel2": "Wählen Sie die zu installierenden Komponenten aus. Deaktivieren Sie die Komponenten, die Sie nicht installieren möchten. Klicken Sie auf \"Weiter\", wenn Sie zum Fortfahren bereit sind.",
+			"FullInstallation": "Vollständige Installation",
+			"CompactInstallation": "Kompakte Installation",
+			"CustomInstallation": "Benutzerdefinierte Installation",
+			"NoUninstallWarningTitle": "Komponenten sind vorhanden.",
+			"NoUninstallWarning": "Setup hat festgestellt, dass die folgenden Komponenten bereits auf Ihrem Computer installiert sind:%n%n%1%n%nDurch das Deaktivieren dieser Komponenten werden diese nicht deinstalliert.%n%nMöchten Sie trotzdem fortfahren?",
+			"ComponentSize1": "%1 KB",
+			"ComponentSize2": "%1 MB",
+			"ComponentsDiskSpaceMBLabel": "Für die aktuelle Auswahl sind mindestens [mb] MB Speicherplatz auf dem Datenträger erforderlich.",
+			"WizardSelectTasks": "Weitere Aufgaben auswählen",
+			"SelectTasksDesc": "Welche weiteren Aufgaben sollen ausgeführt werden?",
+			"SelectTasksLabel2": "Wählen Sie die zusätzlichen Aufgaben aus, die Setup während der Installation von [name] ausführen soll, und klicken Sie dann auf \"Weiter\".",
+			"WizardSelectProgramGroup": "Startmenüordner auswählen",
+			"SelectStartMenuFolderDesc": "Wo soll Setup die Verknüpfungen des Programms platzieren?",
+			"SelectStartMenuFolderLabel3": "Setup erstellt die Verknüpfungen des Programms im folgenden Startmenüordner.",
+			"SelectStartMenuFolderBrowseLabel": "Klicken Sie auf \"Weiter\", um fortzufahren. Wenn Sie einen anderen Ordner auswählen möchten, klicken Sie auf \"Durchsuchen\".",
+			"MustEnterGroupName": "Sie müssen einen Ordnernamen eingeben.",
+			"GroupNameTooLong": "Der Ordnername oder -pfad ist zu lang.",
+			"InvalidGroupName": "Der Ordnername ist ungültig.",
+			"BadGroupName": "Der Ordnername darf keines der folgenden Zeichen enthalten: %n%n%1",
+			"NoProgramGroupCheck2": "&Keinen Startmenüordner erstellen",
+			"WizardReady": "Bereit für die Installation",
+			"ReadyLabel1": "Setup ist nun bereitet, mit der Installation von [name] auf Ihrem Computer zu beginnen.",
+			"ReadyLabel2a": "Klicken Sie auf \"Installieren\", um die Installation fortzusetzen, oder klicken Sie auf \"Zurück\", wenn Sie Einstellungen überprüfen oder ändern möchten.",
+			"ReadyLabel2b": "Klicken Sie auf \"Installieren\", um die Installation fortzusetzen.",
+			"ReadyMemoUserInfo": "Benutzerinformationen:",
+			"ReadyMemoDir": "Zielspeicherort:",
+			"ReadyMemoType": "Installationsart:",
+			"ReadyMemoComponents": "Ausgewählte Komponenten:",
+			"ReadyMemoGroup": "Startmenüordner:",
+			"ReadyMemoTasks": "Weitere Aufgaben:",
+			"WizardPreparing": "Die Installation wird vorbereitet.",
+			"PreparingDesc": "Setup bereitet die Installation von [name] auf Ihrem Computer vor.",
+			"PreviousInstallNotCompleted": "Die Installation/Entfernung eines vorherigen Programms wurde nicht abgeschlossen. Sie müssen den Computer zum Abschließen dieser Installation neu starten.%n%nNach dem Neustart des Computers führen Sie Setup erneut aus, um die Installation von [name] abzuschließen.",
+			"CannotContinue": "Setup kann nicht fortgesetzt werden. Klicken Sie auf \"Abbrechen\", um Setup zu beenden.",
+			"ApplicationsFound": "Die folgenden Anwendungen verwenden Dateien, die von Setup aktualisiert werden müssen. Es wird empfohlen, Setup das automatische Schließen dieser Anwendungen zu erlauben.",
+			"ApplicationsFound2": "Die folgenden Anwendungen verwenden Dateien, die von Setup aktualisiert werden müssen. Es wird empfohlen, Setup das automatische Schließen dieser Anwendungen zu erlauben. Nach Abschluss der Installation versucht Setup, die Anwendungen neu zu starten.",
+			"CloseApplications": "&Anwendungen automatisch schließen",
+			"DontCloseApplications": "A&nwendungen nicht schließen",
+			"ErrorCloseApplications": "Setup konnte nicht alle Programme automatisch schließen. Es wird empfohlen, alle Anwendungen zu schließen, die Dateien verwenden, die von Setup aktualisiert werden, bevor Sie den Vorgang fortsetzen.",
+			"WizardInstalling": "Wird installiert.",
+			"InstallingLabel": "Warten Sie, während Setup [name] auf Ihrem Computer installiert.",
+			"FinishedHeadingLabel": "Der Setup-Assistent für [name] wird abgeschlossen.",
+			"FinishedLabelNoIcons": "Setup hat die Installation von [name] auf Ihrem Computer abgeschlossen.",
+			"FinishedLabel": "Das Setup hat die Installation von [Name] auf Ihrem Computer abgeschlossen. Sie können die Anwendung über das installierte Symbol starten.",
+			"ClickFinish": "Klicken Sie auf \"Fertig stellen\", um Setup zu beenden.",
+			"FinishedRestartLabel": "Setup muss den Computer neu starten, damit die Installation von [name] abgeschlossen werden kann. Soll der Computer jetzt neu gestartet werden?",
+			"FinishedRestartMessage": "Setup muss den Computer neu starten, damit die Installation von [name] abgeschlossen werden kann.%n%nSoll der Computer jetzt neu gestartet werden?",
+			"ShowReadmeCheck": "Ja, ich möchte die Infodatei anzeigen",
+			"YesRadio": "&Ja, den Computer jetzt neu starten",
+			"NoRadio": "&Nein, ich starte den Computer später neu",
+			"RunEntryExec": "%1 ausführen",
+			"RunEntryShellExec": "%1 anzeigen",
+			"ChangeDiskTitle": "Setup benötigt den nächsten Datenträger.",
+			"SelectDiskLabel2": "Legen Sie den Datenträger %1 ein, und klicken Sie auf \"OK\".%n%nWenn sich die Dateien auf diesem Datenträger in einem anderen als dem unten angezeigten Ordner befinden, geben Sie den richtigen Pfad ein, oder klicken Sie auf \"Durchsuchen\".",
+			"PathLabel": "&Pfad:",
+			"FileNotInDir2": "Die Datei \"%1\" wurde in \"%2\" nicht gefunden. Legen Sie den richtigen Datenträger ein, oder wählen Sie einen anderen Ordner aus.",
+			"SelectDirectoryLabel": "Geben Sie den Speicherort des nächsten Datenträgers an.",
+			"SetupAborted": "Setup wurde nicht abgeschlossen.%n%nBeheben Sie das Problem, und führen Sie Setup erneut aus.",
+			"EntryAbortRetryIgnore": "Klicken Sie auf \"Wiederholen\", um es erneut zu versuchen, auf \"Ignorieren\", um den Vorgang trotzdem fortzusetzen, oder auf \"Abbrechen\", um die Installation abzubrechen.",
+			"StatusClosingApplications": "Anwendungen werden geschlossen...",
+			"StatusCreateDirs": "Verzeichnisse werden erstellt...",
+			"StatusExtractFiles": "Dateien werden extrahiert...",
+			"StatusCreateIcons": "Verknüpfungen werden erstellt...",
+			"StatusCreateIniEntries": "INI-Einträge werden erstellt...",
+			"StatusCreateRegistryEntries": "Registrierungseinträge werden erstellt...",
+			"StatusRegisterFiles": "Dateien werden registriert...",
+			"StatusSavingUninstall": "Die Deinstallationsinformationen werden gespeichert...",
+			"StatusRunProgram": "Die Installation wird abgeschlossen...",
+			"StatusRestartingApplications": "Anwendung werden erneut gestartet...",
+			"StatusRollback": "Rollback der Änderungen...",
+			"ErrorInternal2": "Interner Fehler: %1",
+			"ErrorFunctionFailedNoCode": "Fehler von %1.",
+			"ErrorFunctionFailed": "Fehler von %1. Code %2",
+			"ErrorFunctionFailedWithMessage": "Fehler von %1. Code %2.%n%3",
+			"ErrorExecutingProgram": "Die Datei kann nicht ausgeführt werden:%n%1",
+			"ErrorRegOpenKey": "Fehler beim Öffnen des Registrierungsschlüssels:%n%1\\%2",
+			"ErrorRegCreateKey": "Fehler beim Erstellen des Registrierungsschlüssels:%n%1\\%2",
+			"ErrorRegWriteKey": "Fehler beim Schreiben in den Registrierungsschlüssel:%n%1\\%2",
+			"ErrorIniEntry": "Fehler beim Erstellen des INI-Eintrags in der Datei \"%1\".",
+			"FileAbortRetryIgnore": "Klicken Sie auf \"Wiederholen\", um es erneut zu versuchen, auf \"Ignorieren\", um diese Datei zu überspringen (nicht empfohlen), oder auf \"Abbrechen\", um die Installation abzubrechen.",
+			"FileAbortRetryIgnore2": "Klicken Sie auf \"Wiederholen\", um es erneut zu versuchen, auf \"Ignorieren\", um den Vorgang trotzdem fortzusetzen (nicht empfohlen), oder auf \"Abbrechen\", um die Installation abzubrechen.",
+			"SourceIsCorrupted": "Die Quelldatei ist fehlerhaft.",
+			"SourceDoesntExist": "Die Quelldatei \"%1\" ist nicht vorhanden.",
+			"ExistingFileReadOnly": "Die vorhandene Datei ist als schreibgeschützt markiert.%n%nKlicken Sie auf \"Wiederholen\", um das Schreibschutzattribut zu entfernen und es erneut zu versuchen, auf \"Ignorieren\", um diese Datei zu überspringen, oder auf \"Abbrechen\", um die Installation abzubrechen.",
+			"ErrorReadingExistingDest": "Fehler beim Versuch, die vorhandene Datei zu lesen:",
+			"FileExists": "Die Datei ist bereits vorhanden.%n%nSoll Sie von Setup überschrieben werden?",
+			"ExistingFileNewer": "Die vorhandene Datei ist neuer als die Datei, die Setup installieren möchte. Es wird empfohlen, die vorhandene Datei beizubehalten.%n%nMöchten Sie die vorhandene Datei beibehalten?",
+			"ErrorChangingAttr": "Fehler beim Versuch, die Attribute der vorhandenen Datei zu ändern:",
+			"ErrorCreatingTemp": "Fehler beim Versuch, eine Datei im Zielverzeichnis zu erstellen:",
+			"ErrorReadingSource": "Fehler beim Versuch, die Quelldatei zu lesen:",
+			"ErrorCopying": "Fehler beim Versuch, eine Datei zu kopieren:",
+			"ErrorReplacingExistingFile": "Fehler beim Versuch, die vorhandene Datei zu ersetzen:",
+			"ErrorRestartReplace": "Fehler von \"RestartReplace\":",
+			"ErrorRenamingTemp": "Fehler beim Versuch, eine Datei im Zielverzeichnis umzubenennen:",
+			"ErrorRegisterServer": "Die DLL-/OCX-Datei kann nicht registriert werden: %1",
+			"ErrorRegSvr32Failed": "Fehler von RegSvr32 mit dem Exitcode %1.",
+			"ErrorRegisterTypeLib": "Die Typbibliothek kann nicht registriert werden: %1",
+			"ErrorOpeningReadme": "Fehler beim Versuch, die Infodatei zu öffnen.",
+			"ErrorRestartingComputer": "Setup konnte den Computer nicht neu starten. Führen Sie den Neustart manuell aus.",
+			"UninstallNotFound": "Die Datei \"%1\" ist nicht vorhanden. Die Deinstallation kann nicht ausgeführt werden.",
+			"UninstallOpenError": "Die Datei \"%1\" konnte nicht geöffnet werden. Die Deinstallation kann nicht ausgeführt werden.",
+			"UninstallUnsupportedVer": "Die Deinstallationsprotokolldatei \"%1\" liegt in einem Format vor, das von dieser Version des Deinstallationsprogramms nicht erkannt wird. Die Deinstallation kann nicht ausgeführt werden.",
+			"UninstallUnknownEntry": "Unbekannter Eintrag (%1) im Deinstallationsprotokoll.",
+			"ConfirmUninstall": "Sind Sie sicher, dass Sie %1 vollständig löschen möchten? Erweiterungen und Einstellungen werden nicht gelöscht.",
+			"UninstallOnlyOnWin64": "Diese Installation kann nur unter 64-Bit-Windows deinstalliert werden.",
+			"OnlyAdminCanUninstall": "Diese Installation kann nur von einem Benutzer mit Administratorberechtigungen deinstalliert werden.",
+			"UninstallStatusLabel": "Warten Sie, während %1 von Ihrem Computer entfernt wird.",
+			"UninstalledAll": "%1 wurde erfolgreich von Ihrem Computer entfernt.",
+			"UninstalledMost": "Die Deinstallation von %1 wurde abgeschlossen.%n%nEinige Elemente konnten nicht entfernt werden. Diese können manuell entfernt werden.",
+			"UninstalledAndNeedsRestart": "Ihr Computer muss neu gestartet werden, damit die Deinstallation von %1 abgeschlossen werden kann.%n%nSoll der Computer jetzt neu gestartet werden?",
+			"UninstallDataCorrupted": "Die Datei \"%1\" ist beschädigt. Kann nicht deinstalliert werden",
+			"ConfirmDeleteSharedFileTitle": "Freigegebene Datei entfernen?",
+			"ConfirmDeleteSharedFile2": "Das System zeigt an, dass die folgende freigegebene Datei nicht mehr von Programmen verwendet wird. Soll die Deinstallation diese freigegebene Datei entfernen?%n%nWenn Programme diese Datei noch verwenden und die Datei entfernt wird, funktionieren diese Programme ggf. nicht mehr ordnungsgemäß. Wenn Sie nicht sicher sind, wählen Sie \"Nein\" aus. Sie können die Datei problemlos im System belassen.",
+			"SharedFileNameLabel": "Dateiname:",
+			"SharedFileLocationLabel": "Speicherort:",
+			"WizardUninstalling": "Deinstallationsstatus",
+			"StatusUninstalling": "%1 wird deinstalliert...",
+			"ShutdownBlockReasonInstallingApp": "%1 wird installiert.",
+			"ShutdownBlockReasonUninstallingApp": "%1 wird deinstalliert.",
+			"NameAndVersion": "%1 Version %2",
+			"AdditionalIcons": "Zusätzliche Symbole:",
+			"CreateDesktopIcon": "Desktopsymbol &erstellen",
+			"CreateQuickLaunchIcon": "Schnellstartsymbol &erstellen",
+			"ProgramOnTheWeb": "%1 im Web",
+			"UninstallProgram": "%1 deinstallieren",
+			"LaunchProgram": "%1 starten",
+			"AssocFileExtension": "%1 der &Dateierweiterung \"%2\" zuordnen",
+			"AssocingFileExtension": "%1 wird der Dateierweiterung \"%2\" zugeordnet...",
+			"AutoStartProgramGroupDescription": "Start:",
+			"AutoStartProgram": "%1 automatisch starten",
+			"AddonHostProgramNotFound": "%1 wurde im von Ihnen ausgewählten Ordner nicht gefunden.%n%nMöchten Sie trotzdem fortfahren?"
 		}
 	}
 }
