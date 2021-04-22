@@ -2,6 +2,7 @@
 Tutti i cambiamenti degni di nota al language pack "vscode-language-pack-it" saranno documentati in questo file.
 
 ## [Released]
+* March 31, 2021 - Release for VS Code 1.55
 * March 3, 2021 - Release for VS Code 1.54
 * February 3, 2021 - Release for VS Code 1.53
 * December 9, 2020 - Release for VS Code 1.52
