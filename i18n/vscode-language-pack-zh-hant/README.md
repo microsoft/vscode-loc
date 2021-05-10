@@ -28,6 +28,8 @@
 * Duran Hsieh
 * Winnie Lin 
 * Alan Liu
+* Daniel Ye
+* Neng Xue
 
 **貢獻者：**
 
