@@ -29,16 +29,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Generate Name
-        run: node -e "console.log('PACKAGE_NAME=' + require('./${{ matrix.languagePack }}/package.json').name + '-g' + require('.${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+        run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-g' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
       - name: Install
-        run: cd ${{ matrix.languagePack }} && npm i
+        run: cd ./i18n/${{ matrix.languagePack }} && npm i
       - name: Build Extension
-        run: npx vsce package -o ./${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
+        run: npx vsce package -o ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
       - name: Publish Test Artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.PACKAGE_NAME }}.vsix
-          path: ./${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
+          path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
 
 #   build:
 #     needs: determine-matrix
