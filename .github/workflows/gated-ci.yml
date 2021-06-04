@@ -19,13 +19,26 @@ jobs:
           }
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
         shell: pwsh
-  job2:
+  build:
+    name: Build Stable
     needs: determine-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
     steps:
-      - run: echo ${{ matrix.languagePack }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Generate Name
+        run: node -e "console.log('PACKAGE_NAME=' + require('./${{ matrix.languagePack }}/package.json').name + '-g' + require('.${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+      - name: Install
+        run: cd ${{ matrix.languagePack }} && npm i
+      - name: Build Extension
+        run: npx vsce package -o ./${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
+      - name: Publish Test Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.PACKAGE_NAME }}.vsix
+          path: ./${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
 
 #   build:
 #     needs: determine-matrix
