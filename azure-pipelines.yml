@@ -10,16 +10,28 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - task: AzureKeyVault@1
   displayName: "Azure Key Vault: Get Secrets"
   inputs:
     azureSubscription: "vscode-builds-subscription"
     KeyVaultName: vscode
 
+- task: NodeTool@0
+  inputs:
+    versionSpec: "14.x"
+
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+  inputs:
+    versionSpec: "1.x"
+
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    npm install -g vsce
+  displayName: Install vsce
+
+- pwsh: |
+    Get-ChildItem ./i18n | ForEach-Object {
+      cd $_.FullName
+      vsce verify-pat $env:vsce_pat
+    }
+  env:
+    vsce_pat: $(devops_pat)
