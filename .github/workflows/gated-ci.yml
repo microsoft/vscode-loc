@@ -17,13 +17,13 @@ jobs:
           $obj = @{
             languagePack = Get-ChildItem i18n | ForEach-Object Name
           }
-          Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json)"
+          Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100)"
         shell: pwsh
   job2:
     needs: determine-matrix
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
+      matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
     steps:
       - run: echo ${{ matrix.languagePack }}
 
