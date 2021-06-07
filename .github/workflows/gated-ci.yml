@@ -1,0 +1,100 @@
+on:
+  workflow_dispatch:
+
+name: Publish Stable (Gated)
+
+jobs:
+  determine-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - id: set-matrix
+        run: |
+          $obj = @{
+            languagePack = Get-ChildItem i18n | ForEach-Object Name
+          }
+          Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
+        shell: pwsh
+  build:
+    name: Build Stable
+    needs: determine-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Generate Name
+        run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+      - name: Install
+        run: cd ./i18n/${{ matrix.languagePack }} && npm i
+      - name: Build Extension
+        run: cd ./i18n/${{ matrix.languagePack }} && npx vsce package -o ${{ env.PACKAGE_NAME }}.vsix
+      - name: Publish Test Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.PACKAGE_NAME }}.vsix
+          path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
+
+#   build:
+#     needs: determine-matrix
+#     name: Build Stable
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+# #       - name: Verify Versions
+# #         run: node -e "if ('refs/tags/g' + require('./package.json').version !== '${{ github.ref }}') { console.log('::error' + 'Version Mismatch. refs/tags/g' + require('./package.json').version, '${{ github.ref }}'); throw Error('Version Mismatch')} "
+#       - name: Generate Name
+#         run: node -e "console.log('PACKAGE_NAME=' + require('./package.json').name + '-g' + require('./package.json').version)" >> $GITHUB_ENV
+#       - name: Install
+#         run: npm i
+#       - name: Build Extension
+#         run: npx vsce package -o ./${{ env.PACKAGE_NAME }}.vsix
+#       - name: Publish Test Artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: ${{ env.PACKAGE_NAME }}.vsix
+#           path: ./${{ env.PACKAGE_NAME }}.vsix
+#       - name: Create Release
+#         id: create_release
+#         uses: actions/create-release@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           tag_name: ${{ github.ref }}
+#           release_name: Gated Release ${{ github.ref }}
+#           # draft: true # uncomment to make the release a draft at first then manually mark it released after testing
+#       - name: Upload GitHub Release
+#         id: upload-release-asset
+#         uses: actions/upload-release-asset@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           upload_url: ${{ steps.create_release.outputs.upload_url }}
+#           asset_path: ./${{ env.PACKAGE_NAME }}.vsix
+#           asset_name: ${{ env.PACKAGE_NAME }}.vsix
+#           asset_content_type: application/zip
+
+#   deploy:
+#     name: Publish Stable
+#     needs: build
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
+#     environment: deploy
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Generate Name
+#         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+#       - name: Fetch Test Artifact
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: ${{ env.PACKAGE_NAME }}.vsix
+#       - name: Publish Extension
+#         run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
