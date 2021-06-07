@@ -25,7 +25,7 @@ There are currently 13 "Core" languages for Visual Studio Code.
 
 ## Contributing
 
-If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/microsoft/vscode-loc/issues/new). Please check if a topic about your issue already exists!).
+If you want to give feedback or report issue, please create a [new GitHub issue](https://github.com/microsoft/vscode-loc/issues/new). Please check if a topic about your issue already exists!.
 Since translation strings are managed and edited in Microsoft Localization Platform. Change can only be made there. So pull request won't be accepted in vscode-loc repo except language pack readme.md.
 
 ## Legal
