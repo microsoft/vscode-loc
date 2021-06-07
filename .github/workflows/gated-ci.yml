@@ -80,21 +80,21 @@ jobs:
 #           asset_name: ${{ env.PACKAGE_NAME }}.vsix
 #           asset_content_type: application/zip
 
-  deploy:
-    name: Publish Stable
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
-    environment: deploy
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Generate Name
-        run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
-      - name: Fetch Test Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.PACKAGE_NAME }}.vsix
-      - name: Publish Extension
-        run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
+#   deploy:
+#     name: Publish Stable
+#     needs: build
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
+#     environment: deploy
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Generate Name
+#         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+#       - name: Fetch Test Artifact
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: ${{ env.PACKAGE_NAME }}.vsix
+#       - name: Publish Extension
+#         run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
