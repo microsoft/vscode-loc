@@ -1,0 +1,53 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  pull_request:
+    branches: [ main ]
+    paths: [ i18n ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  determine-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - id: set-matrix
+        run: |
+          $obj = @{
+            languagePack = Get-ChildItem i18n | ForEach-Object Name
+          }
+          Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
+        shell: pwsh
+  build:
+    name: Build
+    needs: determine-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate Name
+        run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+
+      - name: Install
+        run: cd ./i18n/${{ matrix.languagePack }} && npm i
+
+      - name: Build Extension
+        run: cd ./i18n/${{ matrix.languagePack }} && npx vsce package -o ${{ env.PACKAGE_NAME }}.vsix
+
+      - name: Publish Test Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.PACKAGE_NAME }}.vsix
+          path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
