@@ -81,7 +81,20 @@ jobs:
               npm version patch
           }
         shell: pwsh
-      - name: Commit revved versions
-        uses: EndBug/add-and-commit@v7
+      - name: Expose version
+        run: node -e "console.log('PACKAGE_VERSION=' + require('./i18n/vscode-language-pack-cs/package.json').version)" >> $GITHUB_ENV
+      - name: Create Pull Request on vscode-loc
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
         with:
-          default_author: github_actions
+          title: Rev patch versions to ${{ env.PACKAGE_VERSION }}
+          body: Automated changes
+          branch: rev-patch-versions-to-${{ env.PACKAGE_VERSION }}
+          commit-message: rev patch versions to ${{ env.PACKAGE_VERSION }}
+          delete-branch: true
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
