@@ -5,6 +5,7 @@ name: Publish (Gated)
 
 jobs:
   determine-matrix:
+    name: Determine matrix
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -21,31 +22,9 @@ jobs:
           }
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
         shell: pwsh
-      - name: Set latest release branch
-        id: set-engine
-        run: |
-          $branches = Invoke-RestMethod https://api.github.com/graphql -MaximumRetryCount 5 -Method POST -Body (@{
-            query = '
-            query {
-              repository(name: "vscode", owner: "microsoft") {
-                refs(refPrefix: "refs/heads/release/", first: 10, direction: DESC) {
-                  edges {
-                    node {
-                      branchName: name
-                    }
-                  }
-                }
-              }
-            }
-            '
-            } | ConvertTo-Json) -Headers @{ Authorization = "bearer ${{ github.token }}" }
-            
-          $branch = $branches.data.repository.refs.edges.node.branchName | Select-Object -First 1
-          Write-Host "::set-output name=release_branch::$branch"
-        shell: pwsh
 
   build:
-    name: Build Stable
+    name: Build
     needs: determine-matrix
     runs-on: ubuntu-latest
     strategy:
@@ -57,8 +36,6 @@ jobs:
         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
       - name: Install
         run: cd ./i18n/${{ matrix.languagePack }} && npm i
-      - name: Update version
-        run: echo ${{ needs.determine-matrix.outputs.engine }}
       - name: Build Extension
         run: cd ./i18n/${{ matrix.languagePack }} && npx vsce package -o ${{ env.PACKAGE_NAME }}.vsix
       - name: Publish Test Artifact
@@ -68,7 +45,7 @@ jobs:
           path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
 
   deploy:
-    name: Publish Stable
+    name: Publish
     needs:
       - build
       - determine-matrix
@@ -89,3 +66,22 @@ jobs:
         run: npx vsce verify-pat -p ${{ secrets.MARKETPLACE_PAT }} MS-CEINTL
 #       - name: Publish Extension
 #         run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
+  
+  update-version:
+    name: Update version
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Rev patch versions
+        run: |
+          Get-ChildItem i18n | ForEach-Object {
+              cd $_.FullName
+              npm version patch
+          }
+        shell: pwsh
+      - name: Commit revved versions
+        uses: EndBug/add-and-commit@v7
+        with:
+          default_author: github_actions
