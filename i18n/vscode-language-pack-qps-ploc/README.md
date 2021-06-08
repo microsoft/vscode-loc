@@ -1,4 +1,8 @@
-#  Pseudo Language Language Pack for VS Code
+# Þƨèúδô £áñϱúáϱè £áñϱúáϱè Þáçƙ ƒôř V§ Çôδè
+
+Âδδƨ ℓôçáℓïƺáƭïôñ ƒôř Þƨèúδô £áñϱúáϱè ƭô V§ Çôδè. Þƨèúδô £áñϱúáϱè ïƨ á ℓáñϱúáϱè úƨèδ ƭô ƭèƨƭ úñïçôδè çλářáçƭèř ƨúƥƥôřƭ ïñ áƥƥℓïçáƭïôñƨ.
+
+# Pseudo Language Language Pack for VS Code
 
 Adds localization for Pseudo Language to VS Code. Pseudo Language is a language used to test unicode character support in applications.
 
