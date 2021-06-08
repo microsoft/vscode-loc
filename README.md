@@ -6,7 +6,7 @@ Localized resource files are managed and edited in Microsoft Localization Commun
 
 Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs)
 
-There are currently 13 "Core" languages for Visual Studio Code.
+There are currently 14 "Core" languages for Visual Studio Code.
 
 |Language|Visual Studio Code Language ID|MLCP Language Code|
 |--------|--------|--------|
@@ -22,6 +22,7 @@ There are currently 13 "Core" languages for Visual Studio Code.
 |**Czech**|cs|Czech (cs-CZ)
 |**Portuguese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br)
 |**Turkish**|tr|Turkish (tr-tr)
+|**Pseudo Language**|qps-ploc|Pseudo (qps-ploc)
 
 ## Contributing
 
