@@ -1,5 +1,7 @@
 # Visual Studio Code Language Packs
 
+[![CI](https://github.com/microsoft/vscode-loc/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/vscode-loc/actions/workflows/ci.yml)
+
 This repository contains files to build localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
 
 Localized resource files are managed and edited in Microsoft Localization Community. Files will be exported to this repository when prepare the publishing of language pack.
