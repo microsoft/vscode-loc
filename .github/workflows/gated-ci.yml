@@ -8,16 +8,40 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      engine: ${{ steps.set-engine.outputs.release_branch }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
   
-      - id: set-matrix
+      - name: Set matrix output
+        id: set-matrix
         run: |
           $obj = @{
             languagePack = Get-ChildItem i18n | ForEach-Object Name
           }
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
+        shell: pwsh
+      - name: Set latest release branch
+        id: set-engine
+        run: |
+          $branches = Invoke-RestMethod https://api.github.com/graphql -MaximumRetryCount 5 -Method POST -Body (@{
+            query = '
+            query {
+              repository(name: "vscode", owner: "microsoft") {
+                refs(refPrefix: "refs/heads/release/", first: 10, direction: DESC) {
+                  edges {
+                    node {
+                      branchName: name
+                    }
+                  }
+                }
+              }
+            }
+            '
+            } | ConvertTo-Json) -Headers @{ Authorization = "bearer ${{ github.token }}" }
+            
+          $branch = $branches.data.repository.refs.edges.node.branchName | Select-Object -First 1
+          Write-Host "::set-output name=release_branch::$branch"
         shell: pwsh
 
   build:
@@ -33,6 +57,8 @@ jobs:
         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
       - name: Install
         run: cd ./i18n/${{ matrix.languagePack }} && npm i
+      - name: Update version
+        run: echo ${{ needs.determine-matrix.outputs.engine }}
       - name: Build Extension
         run: cd ./i18n/${{ matrix.languagePack }} && npx vsce package -o ${{ env.PACKAGE_NAME }}.vsix
       - name: Publish Test Artifact
