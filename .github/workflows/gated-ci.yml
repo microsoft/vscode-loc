@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.get-tag.outputs.tag }}
+      version: ${{ steps.get-tag.outputs.version }}
       matrix: ${{ steps.get-matrix.outputs.matrix }}
+      release_upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -20,6 +22,7 @@ jobs:
           $version = (Get-Content ./i18n/vscode-language-pack-cs/package.json -Raw | ConvertFrom-Json).version
           Write-Host "tag: release/$version"
           Write-Host "::set-output name=tag::release/$version"
+          Write-Host "::set-output name=version::$version"
         shell: pwsh
 
       - name: Commit tagger
@@ -27,6 +30,17 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.get-tag.outputs.tag }}
+          
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get-tag.outputs.tag }}
+          release_name: Release ${{ steps.get-tag.outputs.version }}
+          draft: false
+          prerelease: false
           
       - name: Get matrix
         id: get-matrix
@@ -37,9 +51,10 @@ jobs:
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
         shell: pwsh
 
-  build:
-    name: Build
+  build-publish:
+    name: 'Build & Publish'
     needs: setup-variables
+    environment: deploy
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJSON(needs.setup-variables.outputs.matrix)}}
@@ -63,39 +78,34 @@ jobs:
         with:
           name: ${{ env.PACKAGE_NAME }}.vsix
           path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
-
-  deploy:
-    name: Publish
-    needs:
-      - build
-      - setup-variables
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJSON(needs.setup-variables.outputs.matrix)}}
-    environment: deploy
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ needs.setup-variables.outputs.tag }}
-
-      - name: Generate Name
-        run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
-
-      - name: Fetch Test Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.PACKAGE_NAME }}.vsix
-
+          
       - name: Verify access to publisher
         run: npx vsce verify-pat -p ${{ secrets.MARKETPLACE_PAT }} MS-CEINTL
 
-      - name: Publish Extension
-        run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
+#       - name: Publish Extension
+#         run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
+        
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.setup-variables.outputs.release_upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./${{ env.PACKAGE_NAME }}.vsix
+          asset_name: ${{ env.PACKAGE_NAME }}.vsix
+          asset_content_type: application/zip
+          
+      - name: Upload assets to a Release
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: ./${{ env.PACKAGE_NAME }}.vsix
+          release-tag: ${{ needs.setup-variables.outputs.tag }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
   
   update-version:
     name: Update version
-    needs: setup-variables
+    needs: build-publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
