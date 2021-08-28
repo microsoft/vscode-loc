@@ -1,6 +1,6 @@
 # VS Code용 한국어 팩
 
-한국어 팩은 지역화된 VS Code용 UI 환경을 제공합니다.
+한국어 팩은 현지화된 VS Code용 UI 환경을 제공합니다.
 
 ## 사용법
 
@@ -11,7 +11,7 @@
 ## 기여
 
 번역 개선 사항에 대한 피드백이 있는 경우 [vscode-loc](https://github.com/microsoft/vscode-loc) 리포지토리에서 이슈를 만드세요.
-번역 문자열은 Microsoft 지역화 플랫폼에서 유지 관리됩니다. Microsoft 지역화 플랫폼에서만 내용을 변경할 수 있으며, 변경한 후 vscode-loc 리포지토리로 내보낼 수 있습니다. 따라서 vscode-loc 리포지토리에서 끌어오기 요청은 허용되지 않습니다.
+번역 문자열은 Microsoft 현지화 플랫폼에서 유지 관리됩니다. Microsoft 현지화 플랫폼에서만 내용을 변경할 수 있으며, 변경한 후 vscode-loc 리포지토리로 내보낼 수 있습니다. 따라서 vscode-loc 리포지토리에서 끌어오기 요청은 허용되지 않습니다.
 
 ## 라이선스
 
@@ -19,7 +19,7 @@
 
 ## 크레딧
 
-한국어 팩은 "커뮤니티에 의한, 커뮤니티를 위한" 커뮤니티 지역화 노력의 산물입니다.
+한국어 팩은 "커뮤니티에 의한, 커뮤니티를 위한" 커뮤니티 현지화 노력의 산물입니다.
 
 도움을 주신 커뮤니티 기여자분들께 진심으로 감사드립니다.
 
@@ -40,6 +40,7 @@
 * Kwangjin Hwang
 * HANSEULMARO KIM
 * Junseong Jang
+* Jonghyeon Ko
 
 **감사합니다.**
 
@@ -90,5 +91,6 @@ Special thanks to community contributors for making it available.
 * Kwangjin Hwang
 * HANSEULMARO KIM
 * Junseong Jang
+* Jonghyeon Ko
 
 **Enjoy!**
