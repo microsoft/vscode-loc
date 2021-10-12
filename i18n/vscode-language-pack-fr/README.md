@@ -4,15 +4,17 @@ Le module linguistique français fournit une expérience d'interface utilisateur
 
 ## Utilisation
 
-Vous pouvez remplacer la langue d'IU par défaut en définissant explicitement la langue d'affichage de VS Code à l'aide de la commande Configurer la langue d'affichage.
-Appuyez sur Ctrl+Maj+P pour faire apparaître la Palette de commandes, puis commencez à taper "afficher" pour filtrer le contenu et afficher la commande Configurer la langue d'affichage.
-Appuyez sur Entrée pour afficher une liste de langues installées en fonction des paramètres régionaux. Les paramètres régionaux actuels sont en surbrillance. Sélectionnez une autre entrée relative aux paramètres régionaux pour changer de langue d'IU.
+Vous pouvez remplacer la langue d'IU par défaut en définissant explicitement la langue d'affichage de VS Code à l'aide de la commande **Configurer la langue d'affichage**.
+Appuyez sur `Ctrl+Maj+P` pour faire apparaître la Palette de commandes, puis commencez à taper `afficher` pour filtrer le contenu et afficher la commande **Configurer la langue d'affichage**.
+Appuyez sur `Entrée` pour afficher une liste de langues installées en fonction des paramètres régionaux. Les paramètres régionaux actuels sont en surbrillance. Sélectionnez une autre entrée relative aux paramètres régionaux pour changer de langue d'IU.
 
 Consultez la [documentation](https://go.microsoft.com/fwlink/?LinkId=761051) pour plus d'informations.
 
 ## Contribution
 
 Pour apporter des commentaires visant à améliorer la traduction, créez une entrée sous Issues dans le dépôt [vscode-loc](https://github.com/microsoft/vscode-loc).
+
+Les traductions sont gérées sur la plateforme Microsoft Localisation Platform. Leur édition ne peut s'effectuer que sur la Microsoft Localisation Platform, d'où elles sont exportées vers le dépôt vscode-loc. Les demandes de fusion sur le dépôt vscode-loc ne seront donc pas acceptées, à l'exception de celles concernant les readme.md des modules linguistiques.
 
 ## Licence
 
@@ -51,7 +53,7 @@ Nous remercions particulièrement les contributeurs de la communauté de l'avoir
 * Alain BUFERNE
 * Etienne Blanc-Coquand
 
-**Profitez-en !**
+**Profitez-en bien !**
 
 # French Language Pack for VS Code
 
@@ -71,7 +73,7 @@ See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
 
 For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
 
-The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
+The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo except language pack readme.md.
 
 ## License
 

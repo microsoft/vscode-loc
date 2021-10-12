@@ -1,20 +1,52 @@
 on:
+  schedule:
+    # Run every Wednesday
+    - cron: 0 0 * * WED
   workflow_dispatch:
 
-name: Publish (Gated)
+name: Release
 
 jobs:
-  determine-matrix:
-    name: Determine matrix
+  setup-variables:
+    name: Setup variables
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      tag: ${{ steps.get-tag.outputs.tag }}
+      version: ${{ steps.get-tag.outputs.version }}
+      matrix: ${{ steps.get-matrix.outputs.matrix }}
+      release_upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-  
-      - name: Set matrix output
-        id: set-matrix
+
+      - name: Get tag
+        id: get-tag
+        run: |
+          $version = (Get-Content ./i18n/vscode-language-pack-cs/package.json -Raw | ConvertFrom-Json).version
+          Write-Host "tag: release/$version"
+          Write-Host "::set-output name=tag::release/$version"
+          Write-Host "::set-output name=version::$version"
+        shell: pwsh
+
+      - name: Commit tagger
+        uses: tvdias/github-tagger@v0.0.2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.get-tag.outputs.tag }}
+          
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get-tag.outputs.tag }}
+          release_name: Release ${{ steps.get-tag.outputs.version }}
+          draft: false
+          prerelease: false
+          
+      - name: Get matrix
+        id: get-matrix
         run: |
           $obj = @{
             languagePack = Get-ChildItem i18n | ForEach-Object Name
@@ -22,57 +54,55 @@ jobs:
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
         shell: pwsh
 
-  build:
-    name: Build
-    needs: determine-matrix
+  build-publish:
+    name: 'Build & Publish'
+    needs: setup-variables
+    environment: deploy
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
+      matrix: ${{fromJSON(needs.setup-variables.outputs.matrix)}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.setup-variables.outputs.tag }}
+
       - name: Generate Name
         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
+
       - name: Install
         run: cd ./i18n/${{ matrix.languagePack }} && npm i
+
       - name: Build Extension
         run: cd ./i18n/${{ matrix.languagePack }} && npx vsce package -o ${{ env.PACKAGE_NAME }}.vsix
+
       - name: Publish Test Artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.PACKAGE_NAME }}.vsix
           path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
-
-  deploy:
-    name: Publish
-    needs:
-      - build
-      - determine-matrix
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
-    environment: deploy
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Generate Name
-        run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
-      - name: Fetch Test Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.PACKAGE_NAME }}.vsix
+          
       - name: Verify access to publisher
         run: npx vsce verify-pat -p ${{ secrets.MARKETPLACE_PAT }} MS-CEINTL
+
       - name: Publish Extension
-        run: npx vsce publish --packagePath ./${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
+        run: npx vsce publish --packagePath ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix -p ${{ secrets.MARKETPLACE_PAT }}
+          
+      - name: Upload assets to a Release
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
+          release-tag: ${{ needs.setup-variables.outputs.tag }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
   
   update-version:
     name: Update version
-    needs: deploy
+    needs: build-publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Rev patch versions
         run: |
           Get-ChildItem i18n | ForEach-Object {
@@ -80,8 +110,10 @@ jobs:
               npm version patch
           }
         shell: pwsh
+
       - name: Expose version
         run: node -e "console.log('PACKAGE_VERSION=' + require('./i18n/vscode-language-pack-cs/package.json').version)" >> $GITHUB_ENV
+
       - name: Create Pull Request on vscode-loc
         id: cpr
         uses: peter-evans/create-pull-request@v3
@@ -92,6 +124,7 @@ jobs:
           branch: rev-patch-versions-to-${{ env.PACKAGE_VERSION }}
           commit-message: rev patch versions to ${{ env.PACKAGE_VERSION }}
           delete-branch: true
+
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v1
