@@ -24,7 +24,7 @@ Japanese Language Pack は "By the community, for the community" のコミュニ
 
 これを可能にするコミュニティの貢献者達に感謝します。
 
-**トップ貢献者:**
+**トップ貢献者：**
 
 * Shunya Tajima
 * Yuichi Nukiyama
@@ -33,7 +33,7 @@ Japanese Language Pack は "By the community, for the community" のコミュニ
 * Seiji Momoto
 * Tomoaki Yoshizawa
 
-**貢献者:**
+**貢献者：**
 
 * Takayoshi Tanaka
 * Yuki Ueda

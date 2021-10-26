@@ -4,8 +4,8 @@
 
 ## 使用方法
 
-通过使用“Configure Display Language”命令显式设置 VS Code 显示语言，可以替代默认 UI 语言。
-按下“Ctrl+Shift+P”组合键以显示“命令面板”，然后键入“display”以筛选并显示“Configure Display Language”命令。按“Enter”，然后会按区域设置显示安装的语言列表，并突出显示当前语言设置。选择另一个“语言”以切换 UI 语言。
+通过使用 “Configure Display Language” 命令显式设置 VS Code 显示语言，可以替代默认 UI 语言。
+按下 “Ctrl+Shift+P” 组合键以显示 “命令面板”，然后键入 “display” 以筛选并显示 “Configure Display Language” 命令。按 “Enter”，然后会按区域设置显示安装的语言列表，并突出显示当前语言设置。选择另一个 “语言” 以切换 UI 语言。
 请参阅[文档](https://go.microsoft.com/fwlink/?LinkId=761051)并获取更多信息。
 
 ## 参与
@@ -19,13 +19,13 @@
 
 ## 感谢
 
-此中文（简体）语言包是“来自社区，奉献社区”的社区本地化工作的成果。
+此中文（简体）语言包是 “来自社区，奉献社区” 的社区本地化工作的成果。
 
 特别感谢社区中每一位向这个项目做出贡献的朋友。
 
 **杰出贡献者：**
 
-* Joel Yang：在此项目向社区开放之后，翻译了大部分新增字符串。先后翻译了4万余字。
+* Joel Yang：在此项目向社区开放之后，翻译了大部分新增字符串。先后翻译了 4 万余字。
 * Daniel Ye
 * Neng Xue
 
