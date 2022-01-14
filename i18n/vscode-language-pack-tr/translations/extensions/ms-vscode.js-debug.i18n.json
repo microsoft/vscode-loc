@@ -49,7 +49,6 @@
 			"error.cannotPrettyPrint": "Düzgün yazdırılamıyor",
 			"error.sourceContentDidFail": "Kaynak içeriği alınamıyor",
 			"error.sourceNotFound": "Kaynak bulunamadı",
-			"error.threadNotFound": "İş parçacığı bulunamadı",
 			"error.variableNotFound": "Değişken bulunamadı"
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
@@ -75,7 +74,8 @@
 			"scope.returnValue": "Dönüş değeri",
 			"scope.script": "Betik",
 			"scope.with": "With Bloğu",
-			"smartStepSkipLabel": "smartStep tarafından atlandı"
+			"smartStepSkipLabel": "smartStep tarafından atlandı",
+			"source.skipFiles": "skipFiles tarafından atlandı"
 		},
 		"/src/adapter/threads": {
 			"error.evaluateDidFail": "Değerlendirilemiyor",
@@ -127,7 +127,7 @@
 			"error.browserLaunchError": "Tarayıcı başlatılamadı: \"{0}\"",
 			"error.threadNotFound": "Hedef sayfa bulunamadı. Hata ayıklamak istediğiniz sayfayla eşleştirmek için \"urlFilter\" seçeneğinizi güncelleştirmeniz gerekebilir.",
 			"invalidHitCondition": "İsabet koşulu (\"{0}\") geçersiz. \"> 42\" veya \"= = 2\" gibi bir ifade bekleniyordu.",
-			"noBrowserInstallFound": "Sisteminizde bir {0} kurulumu bulunamadı. Kurulumu başlatmayı veya launch.json dosyanızdaki \"runtimeExecutable\" bölümünde tarayıcıya mutlak bir yol sağlamayı deneyin.",
+			"noBrowserInstallFound": "Sisteminizde tarayıcının yüklemesi bulunamadı. Kurulumu başlatmayı veya launch.json dosyanızdaki \"runtimeExecutable\" bölümünde tarayıcıya mutlak bir yol sağlamayı deneyin.",
 			"profile.error.concurrent": "Yeni bir profil başlatmadan önce lütfen çalışan profili durdurun.",
 			"profile.error.generic": "Hedeften profil alınırken bir hata oluştu.",
 			"runtime.node.notfound": "\"{0}\" Node.js ikili dosyası bulunamıyor: {1}. Node.js'nin yüklendiğinden ve PATH içinde bulunduğundan emin olun veya launch.json dosyanızda \"runtimeExecutable\" değerini ayarlayın",
@@ -160,7 +160,6 @@
 			"cannotDebugInBrowser": "Buradan hata ayıklama modundaki bir tarayıcıyı başlatamıyoruz. Hata ayıklamayı etkinleştirmek için masaüstünüzdeki VS Code'dan bu çalışma alanını açın."
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
-			"cancel": "İptal",
 			"chrome.launch.name": "Chrome'u localhost'ta başlat",
 			"existingBrowser.alert": "Zaten {0} konumundan bir tarayıcı çalışıyor. Hata ayıklamaya başlamadan önce lütfen tarayıcıyı kapatın. Aksi takdirde VS Code tarayıcıya bağlanamayabilir.",
 			"existingBrowser.debugAnyway": "Yine de Hata Ayıkla",
@@ -176,6 +175,7 @@
 			"node.launch.script": "{0} Betiğini Çalıştır"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationResolver": {
+			"cwd.notFound": "Yapılandırılmış “cwd” {0} mevcut değil.",
 			"mern.starter.explanation": "'{0}' projesi için başlatma yapılandırması oluşturuldu.",
 			"node.launch.config.name": "Programı Başlat",
 			"outFiles.explanation": "'outFiles' özniteliğindeki glob desen veya desenlerini ayarlayın böylece onlar, oluşturulan JavaScript'leri kapsasınlar.",
@@ -313,7 +313,7 @@
 			"browser.timeout.description": "Tarayıcıya bağlanmak için belirtilen milisaniye kadar yeniden deneyin. Varsayılan: 10000 ms",
 			"browser.url.description": "Tam olarak bu URL'ye sahip bir sekme arayacak ve bulunursa ona eklenecek",
 			"browser.urlFilter.description": "Bu URL'yi içeren bir sayfa arar ve bulunursa sayfaya ekler. * joker karakterler içerebilir.",
-			"browser.userDataDir.description": "Varsayılan olarak tarayıcı, geçici klasöre ayrı bir kullanıcı profiliyle yüklenir. Bu ayarı geçersiz kılmak için bu seçeneği kullanın. Varsayılan kullanıcı profilinizle başlatmak için ayarı false olarak belirleyin.",
+			"browser.userDataDir.description": "Varsayılan olarak tarayıcı, geçici klasöre ayrı bir kullanıcı profiliyle yüklenir. Bu ayarı geçersiz kılmak için bu seçeneği kullanın. Varsayılan kullanıcı profilinizle başlatmak için ayarı false olarak belirleyin. Bir örnek zaten \"userDataDir\" öğesinden çalışıyorsa yeni bir tarayıcı başlatılamaz.",
 			"browser.vueComponentPaths": "`*.vue` bileşenlerini bulmaya yönelik dosya glob desenlerinin listesi. Varsayılan olarak, tüm çalışma alanını arar. Vue'nun kaynak eşlemelerinin Vue CLI 4'te gerektirdiği ek aramalar nedeniyle bunun belirtilmesi gerekir. Bunu boş bir diziye ayarlayarak bu özel işlemeyi devre dışı bırakabilirsiniz.",
 			"browser.webRoot.description": "Bu, web sunucusu kökü için çalışma alanı mutlak yolunu belirtir. `/app.js` gibi yolları diskte dosyalara çözümlemek için kullanılır. \"/\" için pathMapping öğesine yönelik kısaltma",
 			"chrome.attach.description": "Chrome'un zaten hata ayıklama modunda bulunan bir örneğine ekleyin",
@@ -329,7 +329,7 @@
 			"configuration.autoAttachSmartPatterns": "\"Akıllı\" `#debug.javascript.autoAttachFilter#` moduna iliştirilmeyi algılama için glob desenlerini yapılandırır. `$KNOWN_TOOLS$`, ortak test ve kod çalıştıranlar adları listesiyle değiştirilir. [VS Code belgelerinde daha fazla bilgi edinin](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns).",
 			"configuration.autoExpandGetters": "Özellik alıcılarının otomatik olarak genişletilip genişletilmeyeceğini yapılandırır. Bu false ise, alıcı `get propertyName` olarak görünür ve yalnızca üzerine tıkladığınızda değerlendirilir.",
 			"configuration.automaticallyTunnelRemoteServer": "Uzak bir web uygulamasında hata ayıklarken, uzak sunucuyu yerel makinenize otomatik olarak tünelleyip tünellemeyeceğinizi yapılandırın.",
-			"configuration.breakOnConditionalError": "Koşullu kesme noktaları bir hata verdiğinde durdurulup durdurulmayacağını belirtir. Not: Bunu kullanabilmek için `type` launch.json dosyanız `pwa-node` gibi bir `pwa-` eki ile başlamalıdır.",
+			"configuration.breakOnConditionalError": "Koşullu kesme noktaları hata oluşturduğunda durdurulup durdurulmayacağını belirtir.",
 			"configuration.debugByLinkOptions": "Options used when debugging open links clicked from inside the debug terminal. Can be set to \"false\" to disable this behavior.",
 			"configuration.defaultRuntimeExecutables": "Belirtilmemişse, başlatma yapılandırmaları için varsayılan `runtimeExecutable` kullanılır. Bu, Node.js veya tarayıcı yüklemelerine özel yolları yapılandırmada kullanılabilir.",
 			"configuration.npmScriptLensLocation": "Npm komut dosyalarınızda \"Çalıştır\" ve \"Hata Ayıkla\" kod lensinin gösterilmesi gereken yer. \"Tümü\" seçeneğinin üzerinde, betik bölümünün \"üstünde\" veya \"hiçbir zaman\" olabilir.",
@@ -338,7 +338,6 @@
 			"configuration.suggestPrettyPrinting": "İçine girdiğinizde küçültülmüş görünen düzgün yazdırma JavaScript kodunun önerilip önerilmeyeceğini belirtir.",
 			"configuration.terminalOptions": "JavaScript hata ayıklama terminali ve npm betikleri için varsayılan başlatma seçenekleri.",
 			"configuration.unmapMissingSources": "Özgün dosyanın okunamadığı, kaynağa eşlenmiş dosyanın eşlemesinin otomatik olarak kaldırılıp kaldırılmayacağını yapılandırır. Bu false ise (varsayılan) bir istem görüntülenir.",
-			"configuration.usePreview": "Node.js ve Chrome için önizlemedeki yeni JavaScript hata ayıklayıcısını kullanın.",
 			"createDiagnostics.label": "Kesme Noktası Sorunlarını Tanıla",
 			"customDescriptionGenerator.description": "Hata ayıklayıcısının nesneler (yerel değişkenler vb.) için gösterdiği metinsel açıklamayı özelleştirin. Örnekler:\r\n      1. this.toString () // tüm nesneleri yazdırmak için toString çağırır\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Varsa customDescription metodunu kullanın. Yoksa defaultValue döndürün\r\n      3. işlev (def) { return this.customDescription ? this.customDescription() : def } // Varsa customDescription metodunu kullanın. Yoksa defaultValue döndürün\r\n     ",
 			"customPropertiesGenerator.description": "Hata ayıklamada bir nesne için gösterilen özellikleri özelleştirin (yerel değişkenler, vb...). Örnekler:\r\n    1. { ...this, extraProperty: '12345' } // Tüm nesnelere extraProperty 12345 ekleyin\r\n    2. this.customProperties ? this.customProperties() : this // Varsa customProperties yöntemini kullanın, yoksa buradaki özellikleri kullanın (varsayılan özellikler)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // Varsa customDescription yöntemini kullanın, yoksa varsayılan özellikleri döndürün\r\n\r\n    Kullanım dışı: Bu, burada açıklanan şekilde uygulanana kadar bu özelliğin geçici bir uygulamasıdır: https://github.com/microsoft/vscode/issues/102181",
@@ -369,7 +368,7 @@
 			"extensionHost.label": "VS Code Uzantı Geliştirme",
 			"extensionHost.launch.config.name": "Eklentiyi Başlat",
 			"extensionHost.launch.debugWebWorkerHost": "Web çalışanı uzantı konağına eklemeyi denememizin gerekip gerekmediğini yapılandırır.",
-			"extensionHost.launch.debugWebviews": "Başlatılan VS Code örneğindeki web görünümlerine eklemeyi denememiz gerekip gerekmediğini yapılandırır. **Not:** Şu anda bu ayarının düzgün çalışabilmesi için `\"webview.experimental.useIframes\": true` ayarı gerekir ve bu ayar yalnızca masaüstü VS Code'da çalışır.",
+			"extensionHost.launch.debugWebviews": "Başlatılan VS Code örneğinde web görünümlerine eklemeye çalışmamız gerekip gerekmediğini yapılandırır. Bu yalnızca masaüstü VS Kodunda çalışır.",
 			"extensionHost.launch.env.description": "Uzantı konağına geçirilen ortam değişkenleri.",
 			"extensionHost.launch.rendererDebugOptions": "`debugWebviews` veya `debugWebWorkerHost` ile işleyici işlemine eklenirken kullanılan Chrome başlatma seçenekleri.",
 			"extensionHost.launch.runtimeExecutable.description": "VS Code mutlak yolu.",
@@ -410,7 +409,7 @@
 			"node.launch.restart.description": "Program sıfır olmayan bir çıkış koduyla mevcutsa programı yeniden başlatmayı deneyin.",
 			"node.launch.runtimeArgs.description": "Çalışma zamanı yürütülebilir dosyasına geçirilen isteğe bağlı bağımsız değişkenler.",
 			"node.launch.runtimeExecutable.description": "Kullanılacak çalışma zamanı. Mutlak bir yol veya PATH üzerinde bulunan çalışma zamanının adı. Atlanırsa `düğüm` olarak değerlendirilir.",
-			"node.launch.runtimeSourcemapPausePatterns": "Giriş noktası kesme noktalarının el ile ekleneceği desenlerin listesi. Bu, hata ayıklayıcıya mevcut olmayan veya başlatmadan önce algılanamayan kaynak eşlemelerini (Sunucusuz çerçeve ile)(https://github.com/microsoft/vscode-js-debug/issues/492) kullanırken kesme noktalarını ayarlama fırsatı vermek için yararlı olabilir.",
+			"node.launch.runtimeSourcemapPausePatterns": "A list of patterns at which to manually insert entrypoint breakpoints. This can be useful to give the debugger an opportunity to set breakpoints when using sourcemaps that don't exist or can't be detected before launch, such as [with the Serverless framework](https://github.com/microsoft/vscode-js-debug/issues/492).",
 			"node.launch.runtimeVersion.description": "\"node\" çalışma ortamını yürütmek için Nvm Gerekir.",
 			"node.launch.useWSL.deprecation": "'useWSL' kullanımdan kaldırıldı ve artık desteklenmeyecek. Bunun yerine 'Remote - WSL' uzantısını kullanın.",
 			"node.launch.useWSL.description": "Linux için Windows Alt Sistemi'ni kullanın.",

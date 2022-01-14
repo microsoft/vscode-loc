@@ -49,7 +49,6 @@
 			"error.cannotPrettyPrint": "Nie można wyświetlić widoku strukturalnego",
 			"error.sourceContentDidFail": "Nie można pobrać zawartości źródłowej",
 			"error.sourceNotFound": "Nie znaleziono źródła",
-			"error.threadNotFound": "Nie znaleziono wątku",
 			"error.variableNotFound": "Nie znaleziono zmiennej"
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
@@ -75,7 +74,8 @@
 			"scope.returnValue": "Wartość zwracana",
 			"scope.script": "Skrypt",
 			"scope.with": "Z blokiem",
-			"smartStepSkipLabel": "Pominięte przez smartStep"
+			"smartStepSkipLabel": "Pominięte przez smartStep",
+			"source.skipFiles": "Pominięte przez skipFiles"
 		},
 		"/src/adapter/threads": {
 			"error.evaluateDidFail": "Nie można obliczyć",
@@ -127,7 +127,7 @@
 			"error.browserLaunchError": "Nie można uruchomić przeglądarki: „{0}”",
 			"error.threadNotFound": "Nie znaleziono strony docelowej. W celu dopasowania do strony, która ma być debugowana, może być konieczna aktualizacja parametru „urlFilter”.",
 			"invalidHitCondition": "Nieprawidłowy stan trafienia „{0}”. Oczekiwano wyrażenia, takiego jak „> 42” lub „== 2”.",
-			"noBrowserInstallFound": "Nie można znaleźć instalacji elementu {0} w systemie. Spróbuj go zainstalować lub podać bezwzględną ścieżkę do przeglądarki w parametrze „runtimeExecutable” w pliku launch.json.",
+			"noBrowserInstallFound": "Nie można odnaleźć instalacji przeglądarki w systemie. Spróbuj ją zainstalować lub podać ścieżkę bezwzględną do przeglądarki w parametrze „runtimeExecutable” w pliku launch.json.",
 			"profile.error.concurrent": "Zatrzymaj uruchomiony profil przed rozpoczęciem nowego.",
 			"profile.error.generic": "Wystąpił błąd podczas pobierania profilu z elementu docelowego.",
 			"runtime.node.notfound": "Nie można odnaleźć pliku binarnego Node.js „{0}”: {1}. Upewnij się, że oprogramowanie Node.js jest zainstalowane i znajduje się w ścieżce lub ustaw parametr „runtimeExecutable” w pliku launch.json",
@@ -160,7 +160,6 @@
 			"cannotDebugInBrowser": "Z tego miejsca nie można uruchomić przeglądarki w trybie debugowania. Otwórz ten obszar roboczy w programie VS Code na pulpicie, aby włączyć debugowanie."
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
-			"cancel": "Anuluj",
 			"chrome.launch.name": "Uruchom przeglądarkę Chrome względem hosta lokalnego",
 			"existingBrowser.alert": "Wygląda na to, że przeglądarka już działa z {0}. Zamknij ją przed podjęciem próby debugowania, w przeciwnym razie program VS Code może nie być w stanie nawiązać z nią połączenia.",
 			"existingBrowser.debugAnyway": "Debuguj mimo to",
@@ -176,6 +175,7 @@
 			"node.launch.script": "Uruchom skrypt: {0}"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationResolver": {
+			"cwd.notFound": "Skonfigurowany katalog „cwd” {0} nie istnieje.",
 			"mern.starter.explanation": "Uruchom konfigurację dla utworzonego projektu '{0}'.",
 			"node.launch.config.name": "Uruchom program",
 			"outFiles.explanation": "Dostosuj wzorce globalne w atrybucie „outFiles”, aby obejmowały wygenerowany kod JavaScript.",
@@ -313,7 +313,7 @@
 			"browser.timeout.description": "Ponów próbę połączenia z przeglądarką dla tej liczby milisekund. Wartość domyślna to 10 000 ms.",
 			"browser.url.description": "Wyszuka kartę z tym dokładnym adresem URL i dołączy do niej, jeśli zostanie znaleziona",
 			"browser.urlFilter.description": "Wyszuka kartę z tym adresem URL i dołączy do niej, jeśli zostanie znaleziona. Może zawierać symbole wieloznaczne *.",
-			"browser.userDataDir.description": "Domyślnie przeglądarka jest uruchamiana z oddzielnym profilem użytkownika w folderze tymczasowym. Użyj tej opcji, aby go przesłonić. Ustaw wartość false, aby uruchomić z domyślnym profilem użytkownika.",
+			"browser.userDataDir.description": "Domyślnie przeglądarka jest uruchamiana przy użyciu oddzielnego profilu użytkownika w folderze tymczasowym. Użyj tej opcji, aby zastąpić to działanie. Ustaw wartość „false”, aby uruchomić przeglądarkę przy użyciu domyślnego profilu użytkownika. Nie można uruchomić nowej przeglądarki, jeśli wystąpienie jest już uruchomione z katalogu `userDataDir`.",
 			"browser.vueComponentPaths": "Lista globalnych wzorców plików, aby znaleźć składniki „*.vue”. Domyślnie przeszukuje cały obszar roboczy. Należy to określić ze względu na dodatkowe wyszukiwania, których wymagają mapy źródła platformy Vue w interfejsie CLI 4 Vue. Możesz wyłączyć tę specjalną obsługę, ustawiając ją na pustą tablicę.",
 			"browser.webRoot.description": "Określa ścieżkę bezwzględną obszaru roboczego do katalogu głównego serwera internetowego. Służy do znajdowania plików na dysku dla ścieżek takich jak „/app.js”. Skrócona forma opcji pathMapping dla „/”",
 			"chrome.attach.description": "Dołącz do wystąpienia przeglądarki Chrome już w trybie debugowania",
@@ -329,7 +329,7 @@
 			"configuration.autoAttachSmartPatterns": "Konfiguruje wzorce glob w celu określenia, kiedy należy dołączyć w trybie „inteligentnym” `#debug.javascript.autoAttachFilter#`. Element `$KNOWN_TOOLS$` jest zastępowany listą nazw wspólnych modułów uruchamiających testy i kod. [Przeczytaj więcej w dokumentacji programu VS Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns).",
 			"configuration.autoExpandGetters": "Konfiguruje, czy metody pobierające właściwości będą rozwijane automatycznie. W przypadku wartości false metoda pobierająca będzie wyświetlana jako „get propertyName” i zostanie przetworzona tylko wtedy, gdy ją klikniesz.",
 			"configuration.automaticallyTunnelRemoteServer": "Podczas debugowania zdalnej aplikacji internetowej konfiguruje, czy automatycznie tunelować serwer zdalny do maszyny lokalnej.",
-			"configuration.breakOnConditionalError": "Czy zatrzymać, gdy warunkowe punkty przerwania zgłoszą błąd. Uwaga: wartość „type” w pliku launch.json musi mieć przedrostek „pwa-”, aby tego użyć, na przykład „pwa-node”.",
+			"configuration.breakOnConditionalError": "Określa, czy zatrzymać, gdy warunkowe punkty przerwania zgłaszają błąd.",
 			"configuration.debugByLinkOptions": "Opcje używane przy debugowaniu otwartych linków, które zostały kliknięte w obrębie terminalu debugowania języka JavaScript. Można wybrać opcję „off”, aby wyłączyć to zachowanie, lub „always”, aby włączyć debugowanie we wszystkich terminalach.",
 			"configuration.defaultRuntimeExecutables": "Domyślny element `runtimeExecutable` używany na potrzeby konfiguracji uruchamiania, jeśli nie określono. Za jego pomocą można konfigurować ścieżki niestandardowe do instalacji przeglądarki lub platformy Node.js.",
 			"configuration.npmScriptLensLocation": "Gdzie wskaźniki CodeLens „Run” i „Debug” powinny być wyświetlane w skryptach menedżera npm. Dopuszczalne wartości: wszystkie skrypty („all”), na górze sekcji skryptu („top”) lub nigdy („never”).",
@@ -338,7 +338,6 @@
 			"configuration.suggestPrettyPrinting": "Określa, czy zaproponować widok strukturalny kodu JavaScript, który będzie zminimalizowany po wkroczeniu do niego.",
 			"configuration.terminalOptions": "Domyślne opcje uruchamiania dla terminali debugowania JavaScript i skryptów npm.",
 			"configuration.unmapMissingSources": "Określa, czy mapowanie pliku, w przypadku którego przeprowadzono mapowanie źródła, zostanie automatycznie usunięte, gdy nie można odczytać oryginalnego pliku. Jeśli zostanie podana wartość false (domyślna), będzie wyświetlany monit.",
-			"configuration.usePreview": "Użyj nowego debugera języka JavaScript w wersji zapoznawczej dla oprogramowania Node.js i przeglądarki Chrome.",
 			"createDiagnostics.label": "Diagnozuj problemy z punktem przerwania",
 			"customDescriptionGenerator.description": "Dostosuj opis tekstowy debugera wyświetlany dla obiektów (zmienne lokalne itp.). Przykłady:\r\n      1. this.toString() // wywoła metodę toString, aby wydrukować wszystkie obiekty\r\n      2. this.customDescription ? this.customDescription () : DefaultValue // Używa metody customDescription, jeśli jest dostępna; jeśli nie, zwraca atrybut DefaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Używa metody customDescription, jeśli jest dostępna; jeśli nie, zwraca atrybut DefaultValue\r\n      ",
 			"customPropertiesGenerator.description": "Dostosuj właściwości wyświetlane dla obiektu w debugerze (zmienne lokalne itp.). Przykłady:\r\n    1. { ...this, extraProperty: '12345' } // Dodaj właściwość extraProperty 12345 do wszystkich obiektów\r\n    2. this.customProperties ? this.customProperties() : this // Użyj metody customProperties, jeśli jest dostępna; w przeciwnym razie użyj właściwości w elemencie this (właściwości domyślnych)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // Użyj metody customDescription, jeśli jest dostępna; w przeciwnym razie zwróć właściwości domyślne\r\n\r\n    Przestarzałe: to jest tymczasowa implementacja tej funkcji, dopóki nie znajdziemy czasu na jej zaimplementowanie w sposób opisany tutaj: https://github.com/microsoft/vscode/issues/102181",
@@ -369,7 +368,7 @@
 			"extensionHost.label": "Opracowywanie rozszerzenia programu VS Code",
 			"extensionHost.launch.config.name": "Uruchom rozszerzenie",
 			"extensionHost.launch.debugWebWorkerHost": "Określa, czy powinniśmy próbować dołączyć do hosta rozszerzenia internetowego procesu roboczego.",
-			"extensionHost.launch.debugWebviews": "Konfiguruje, czy chcemy próbować dołączyć do aplikacji WebView w uruchomionym wystąpieniu programu VS Code. **Uwaga:** obecnie do prawidłowego działania wymaga to ustawienia „„webview.experimental.useIframes”: true” i będzie działać tylko w klasycznym programie VS Code.",
+			"extensionHost.launch.debugWebviews": "Konfiguruje, czy mamy próbować dołączyć do widoków sieci Web w uruchomionym wystąpieniu edytora VS Code. Będzie to działać tylko w klasycznym edytorze VS Code.",
 			"extensionHost.launch.env.description": "Zmienne środowiskowe przekazane do hosta rozszerzenia.",
 			"extensionHost.launch.rendererDebugOptions": "Opcje uruchamiania przeglądarki Chrome używane podczas dołączania do procesu renderowania przy użyciu elementu „debugWebviews” lub „debugWebWorkerHost”.",
 			"extensionHost.launch.runtimeExecutable.description": "Ścieżka bezwzględna do programu VS Code.",

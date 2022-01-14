@@ -49,7 +49,6 @@
 			"error.cannotPrettyPrint": "Не удалось применить стилевые форматы.",
 			"error.sourceContentDidFail": "Не удалось получить содержимое источника.",
 			"error.sourceNotFound": "Источник не найден.",
-			"error.threadNotFound": "Поток не найден.",
 			"error.variableNotFound": "Переменная не найдена."
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
@@ -75,7 +74,8 @@
 			"scope.returnValue": "Возвращаемое значение",
 			"scope.script": "Сценарий",
 			"scope.with": "Блок With",
-			"smartStepSkipLabel": "Пропущено smartStep"
+			"smartStepSkipLabel": "Пропущено smartStep",
+			"source.skipFiles": "Пропущено skipFiles"
 		},
 		"/src/adapter/threads": {
 			"error.evaluateDidFail": "Не удается выполнить оценку.",
@@ -127,7 +127,7 @@
 			"error.browserLaunchError": "Не удалось запустить браузер: \"{0}\"",
 			"error.threadNotFound": "Целевая страница не найдена. Возможно, потребуется обновить \"urlFilter\" для соответствия странице, отладку которой необходимо выполнить.",
 			"invalidHitCondition": "Недопустимое условие попадания \"{0}\". Ожидается выражение, например, \"> 42\" или \"== 2\".",
-			"noBrowserInstallFound": "Не удается найти установку {0} в системе. Попробуйте установить браузер или укажите абсолютный путь к браузеру в качестве значения параметра \"runtimeExecutable\" в файле launch.json.",
+			"noBrowserInstallFound": "Не удается найти установку браузера в вашей системе. Попробуйте установить его или укажите абсолютный путь к браузеру для \"runtimeExecutable\" в файле launch.json.",
 			"profile.error.concurrent": "Остановите выполняющийся профиль, прежде чем запускать новый.",
 			"profile.error.generic": "Произошла ошибка при извлечении профиля из целевого объекта.",
 			"runtime.node.notfound": "Не удается найти двоичный файл \"{0}\" Node.js: {1}. Убедитесь, что Node.js установлен и путь к нему указан в переменной PATH, или установите параметр \"runtimeExecutable\" в файле launch.json",
@@ -160,7 +160,6 @@
 			"cannotDebugInBrowser": "Не удается запустить браузер в режиме отладки. Откройте эту рабочую область в VS Code на компьютере, чтобы включить отладку."
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
-			"cancel": "Отмена",
 			"chrome.launch.name": "Запустить Chrome на localhost",
 			"existingBrowser.alert": "Похоже, браузер уже запущен из {0}. Закройте его перед отладкой, в противном случае подключение к браузеру из VS Code может завершиться неудачно.",
 			"existingBrowser.debugAnyway": "Все равно выполнить отладку",
@@ -176,6 +175,7 @@
 			"node.launch.script": "Запустить сценарий: {0}"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationResolver": {
+			"cwd.notFound": "Настроенный параметр \"cwd\" {0} не существует.",
 			"mern.starter.explanation": "Создана конфигурация запуска для проекта «{0}».",
 			"node.launch.config.name": "Запустить программу",
 			"outFiles.explanation": "Установите шаблон(ы) поиска в артибуте 'outFiles' так, что бы они покрывали сгенерированый JavaScript",
@@ -313,7 +313,7 @@
 			"browser.timeout.description": "Длительность повторных попыток подключения к браузеру в миллисекундах. Значение по умолчанию — 10 000 мс.",
 			"browser.url.description": "Будет искать вкладку с этим точным URL-адресом и подключаться к нему, если он найден",
 			"browser.urlFilter.description": "Будет искать страницу с этим URL-адресом и подключится к ней, если она найдена. Можно использовать подстановочные знаки *.",
-			"browser.userDataDir.description": "По умолчанию браузер запускается с отдельным профилем пользователя во временной папке. Используйте этот параметр, чтобы переопределить его. Задайте значение false, чтобы запустить с использованием профиля пользователя по умолчанию.",
+			"browser.userDataDir.description": "По умолчанию браузер запускается с отдельным профилем пользователя во временной папке. Используйте этот параметр, чтобы переопределить его. Установите значение false для запуска с профилем пользователя по умолчанию. Новый браузер не может быть запущен, если экземпляр уже запущен из \"userDataDir\".",
 			"browser.vueComponentPaths": "Список шаблонов масок файлов для поиска компонентов \"*.vue\". По умолчанию поиск выполняется во всей рабочей области. Этот список должен быть указан из-за дополнительных операций поиска, которые требуются сопоставителям с исходным кодом в Vue CLI 4. Чтобы отключить эту особую обработку, укажите пустой массив в качестве значения параметра.",
 			"browser.webRoot.description": "Этот параметр указывает абсолютный путь рабочей области к корневому каталогу веб-сервера. Используется для разрешения путей к файлам на диске (например, \"/app.js\"). Сокращение для pathMapping для \"/\".",
 			"chrome.attach.description": "Прикрепить к экземпляру Chrome, уже находящемуся в режиме отладки",
@@ -329,7 +329,7 @@
 			"configuration.autoAttachSmartPatterns": "Настраивает стандартные маски определения момента присоединения в интеллектуальном режиме \"#debug.javascript.autoAttachFilter#\". \"$KNOWN_TOOLS$\" заменяется списком имен распространенных средства запуска тестов и кода. [Дополнительные сведения см. в документации по VS Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns).",
 			"configuration.autoExpandGetters": "Определяет, будут ли автоматически разворачиваться методы получения свойств. Если для этого параметра задано значение false, метод получения свойства будет отображаться как get propertyName и будет оцениваться только при нажатии на него.",
 			"configuration.automaticallyTunnelRemoteServer": "При отладке удаленного веб-приложения определяет, следует ли автоматически туннелировать удаленный сервер на локальный компьютер.",
-			"configuration.breakOnConditionalError": "Следует ли останавливать выполнение, если в условной точке останова возникла ошибка. Примечание: для использования этого параметра необходимо указать префикс \"pwa-\" для типа \"type\" в launch.json, например, \"pwa-node\".",
+			"configuration.breakOnConditionalError": "Следует ли останавливать выполнение, если в условной точке останова возникла ошибка.",
 			"configuration.debugByLinkOptions": "Параметры, используемые при отладке открытых ссылок, выбранных изнутри терминала отладки. Можно задать значение \"false\", чтобы отключить это поведение.",
 			"configuration.defaultRuntimeExecutables": "Значение \"runtimeExecutable\" по умолчанию, используемое для конфигураций запуска, если значение не указано. Оно может использоваться для настройки пользовательских путей для Node.js или установок браузера.",
 			"configuration.npmScriptLensLocation": "Где требуется отобразить группы связанных элементов кода \"Run\" и \"Debug\" в ваших скриптах npm. Можно использовать значение \"all\" — во всех скриптах, \"top\" — сверху раздела скриптов или \"never\" — нигде.",
@@ -338,7 +338,6 @@
 			"configuration.suggestPrettyPrinting": "Следует ли предлагать код автоматического форматирования JavaScript, который выглядит минифицированным при заходе в него.",
 			"configuration.terminalOptions": "Параметры запуска по умолчанию для терминала отладки JavaScript и скриптов npm.",
 			"configuration.unmapMissingSources": "Определяет, будет ли автоматически отменено сопоставление с исходным кодом для файла, если исходный файл не может быть прочитан. Если этот параметр имеет значение false (по умолчанию), отображается запрос.",
-			"configuration.usePreview": "Используйте предварительную версию нового отладчика JavaScript для Node.js и Chrome.",
 			"createDiagnostics.label": "Диагностика проблем с точкой останова",
 			"customDescriptionGenerator.description": "Настройте текстовое описание, которое отладчик отображает для объектов (локальные переменные и т. д.). Примеры:\r\n      1. this.toString() // Вызовет метод toString для печати всех объектов\r\n      2. this.customDescription ? this.customDescription() : defaultValue // Использовать метод customDescription, если он доступен, в противном случае возвратить значение defaultValue\r\n      3. function (def) { return this.customDescription ? this.customDescription() : def } // Использовать метод customDescription, если он доступен, в противном случае возвратить значение defaultValue\r\n      ",
 			"customPropertiesGenerator.description": "Настройте свойства, отображаемые для объекта в отладчике (локальные переменные и т. д.). Примеры:\r\n    1. { ...this, extraProperty: \"12345\" } // Добавить extraProperty 12345 ко всем объектам\r\n    2. this.customProperties ? this.customProperties() : this // Использовать метод customProperties, если он доступен, в противном случае использовать свойства this (свойства по умолчанию)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // Использовать метод customDescription, если он доступен, в противном случае возвращать свойства по умолчанию\r\n\r\n    Не рекомендуется: это временная реализация этой функции до тех пор, пока функция не будет реализована в соответствии с описанием на странице https://github.com/microsoft/vscode/issues/102181.",
@@ -369,7 +368,7 @@
 			"extensionHost.label": "Разработка расширения VS Code",
 			"extensionHost.launch.config.name": "Запуск расширения",
 			"extensionHost.launch.debugWebWorkerHost": "Указывает, следует ли попытаться подключиться к узлу расширений рабочих веб-процессов.",
-			"extensionHost.launch.debugWebviews": "Указывает, следует ли попытаться подключиться к веб-представлениям в запущенном экземпляре VS Code. **Примечание:** сейчас для правильной работы этого параметра необходимо задать значение \"true\" для параметра \"webview.experimental.useIframes\", и этот параметр работает только в версии VS Code для компьютера.",
+			"extensionHost.launch.debugWebviews": "Определяет, следует ли пытаться подключиться к веб-представлениям в запущенном экземпляре VS Code. Это будет работать только в классических VS Code.",
 			"extensionHost.launch.env.description": "Переменные среды, переданные в хост-процесс для расширений.",
 			"extensionHost.launch.rendererDebugOptions": "Параметры запуска Chrome, используемые при подключении к процессу визуализации с \"debugWebviews\" или \"debugWebWorkerHost\".",
 			"extensionHost.launch.runtimeExecutable.description": "Абсолютный путь к VS Code.",

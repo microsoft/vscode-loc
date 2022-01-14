@@ -49,7 +49,6 @@
 			"error.cannotPrettyPrint": "再フォーマットできません",
 			"error.sourceContentDidFail": "ソース コンテンツを取得できません",
 			"error.sourceNotFound": "ソースが見つかりません",
-			"error.threadNotFound": "スレッドが見つかりません",
 			"error.variableNotFound": "変数が見つかりません"
 		},
 		"/src/adapter/profiling/basicCpuProfiler": {
@@ -75,7 +74,8 @@
 			"scope.returnValue": "戻り値",
 			"scope.script": "スクリプト",
 			"scope.with": "With ブロック",
-			"smartStepSkipLabel": "smartStep によりスキップされました"
+			"smartStepSkipLabel": "smartStep によりスキップされました",
+			"source.skipFiles": "skipFiles によってスキップされました"
 		},
 		"/src/adapter/threads": {
 			"error.evaluateDidFail": "評価できません",
@@ -127,7 +127,7 @@
 			"error.browserLaunchError": "ブラウザーを起動できません: \"{0}\"",
 			"error.threadNotFound": "ターゲット ページが見つかりません。デバッグするページと一致するように \"urlFilter\" を更新する必要がある場合があります。",
 			"invalidHitCondition": "ヒット条件 \"{0}\" が無効です。\"> 42\" または \"== 2\" のような式が必要です。",
-			"noBrowserInstallFound": "システムに {0} インストールが見つかりません。それをインストールするか、launch.json の \"runtimeExecutable\" でブラウザーへの絶対パスを指定してみてください。",
+			"noBrowserInstallFound": "システムにブラウザーのインストールが見つかりません。インストールするか、launch.json の \"runtimeExecutable\" でブラウザーへの絶対パスを指定してみてください。",
 			"profile.error.concurrent": "新しいプロファイルを開始するのは、実行中のものを停止した後にしてください。",
 			"profile.error.generic": "ターゲットからのプロファイルの取得でエラーが発生しました。",
 			"runtime.node.notfound": "Node.js バイナリ \"{0}\" が見つかりません: {1}。Node.js がインストールされていて PATH に含まれていることを確認するか、launch.json で \"runtimeExecutable\" を設定してください",
@@ -160,7 +160,6 @@
 			"cannotDebugInBrowser": "こちらからデバッグ モードでブラウザーを起動することはできません。デバッグを有効にするには、このワークスペースをデスクトップ上の VS Code で開きます。"
 		},
 		"/src/ui/configuration/chromiumDebugConfigurationProvider": {
-			"cancel": "キャンセル",
 			"chrome.launch.name": "localhost に対して Chrome を起動する",
 			"existingBrowser.alert": "ブラウザーは既に {0} から実行されているようです。それを閉じてからデバッグしてみてください。それ以外の場合は、VS Code がそれに接続できない可能性があります。",
 			"existingBrowser.debugAnyway": "このままデバッグ",
@@ -176,6 +175,7 @@
 			"node.launch.script": "スクリプトの実行: {0}"
 		},
 		"/src/ui/configuration/nodeDebugConfigurationResolver": {
+			"cwd.notFound": "構成された 'cwd' {0} が存在しません。",
 			"mern.starter.explanation": "'{0}' プロジェクトのための起動構成を生成しました。",
 			"node.launch.config.name": "プログラムの起動",
 			"outFiles.explanation": "生成された JavaScript をカバーするように、 'outFiles' 属性で glob パターンを調整します。",
@@ -313,7 +313,7 @@
 			"browser.timeout.description": "ブラウザーに接続するには、このミリ秒の間再試行してください。既定値は、10000 ミリ秒です。",
 			"browser.url.description": "これとまったく同じ URL のタブを検索し、見つかった場合はそれにアタッチします",
 			"browser.urlFilter.description": "この URL のページを検索し、見つかった場合はそれにアタッチします。ワイルドカード * を使用できます。",
-			"browser.userDataDir.description": "既定では、ブラウザーは一時フォルダー内の個別のユーザー プロファイルで起動されます。このオプションを使用して、上書きします。false に設定すると、既定のユーザー プロファイルで起動します。",
+			"browser.userDataDir.description": "既定では、ブラウザーは一時フォルダー内の個別のユーザー プロファイルで起動されます。このオプションを使用して、上書きします。false に設定すると、既定のユーザー プロファイルで起動します。既に `userDataDir` でインスタンスを起動している場合は、新しいブラウザーを起動することはできません。",
 			"browser.vueComponentPaths": "'*.vue' コンポーネントを検索するファイル glob パターンの一覧。既定では、ワークスペース全体を検索します。これは、Vue CLI 4 で Vue のソースマップに必要な追加のルックアップのために指定する必要があります。この特殊な処理を無効にするには、この値を空の配列に設定します。",
 			"browser.webRoot.description": "これは、Web サーバー ルートに対するワークスペースの絶対パスを指定します。ディスク上のファイルへの `/app.js` などのパスを解決するために使用されます。\"/\" は、pathMapping の短縮形です",
 			"chrome.attach.description": "既にデバッグ モードになっている Chrome のインスタンスにアタッチする",
@@ -329,16 +329,15 @@
 			"configuration.autoAttachSmartPatterns": "\"スマート\" `#debug.javascript.autoAttachFilter#` モードでアタッチするタイミングを決定するために glob パターンを構成します。`$KNOWN_TOOLS$` は、共通テストとコード ランナーの名前の一覧で置き換えられます。[VS Code ドキュメントで詳細をご確認ください](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-smart-patterns)。",
 			"configuration.autoExpandGetters": "プロパティのゲッターを自動的に展開するかどうかを構成します。これを false にすると、ゲッターは 'get propertyName' と表示され、それをクリックした場合にのみ評価されます。",
 			"configuration.automaticallyTunnelRemoteServer": "リモート Web アプリをデバッグするときに、リモート サーバーを自動的にローカル マシンにトンネルするかどうかを構成します。",
-			"configuration.breakOnConditionalError": "条件付きブレークポイントでエラーがスローされたときに停止するかどうかを指定します。注: これを使用するには、launch.json の 'type' の先頭に 'pwa-' が付いている必要があります (例: 'pwa-node')。",
+			"configuration.breakOnConditionalError": "条件付きブレークポイントでエラーが発生したときに停止するかどうかを指定します。",
 			"configuration.debugByLinkOptions": "デバッグ時に使用したオプションによって、デバッグ ターミナル内からクリックしたリンクが開きます。\"false\" に設定にすると、この動作を無効にできます。",
 			"configuration.defaultRuntimeExecutables": "指定されていない場合に起動構成に使用される、既定の 'runtimeExecutable'。これは、Node.js またはブラウザーのインストールのカスタム パスを構成するために使用できます。",
 			"configuration.npmScriptLensLocation": "npm スクリプトで \"実行\" と \"デバッグ\" のコード レンズが表示される場所。\"すべて\" のスクリプトまたはスクリプト セクションの \"上\" に表示するか、\"表示しない\" を指定できます。",
 			"configuration.pickAndAttachOptions": "'デバッグ: Node.js のプロセスにアタッチ' コマンドでプロセスをデバッグするときに使用する既定のオプション",
-			"configuration.resourceRequestOptions": "デバッガーでソース マップなどのリソースを読み込むときに使用する要求オプションです。ソースマップで認証が必要な場合または自己署名証明書を使用する場合などに、これを構成する必要がある可能性があります。オプションは、[`got`] (https://github.com/sindresorhus/got) ライブラリを使用して要求を作成するために使用されます。\r\n\r\n通常、証明書の検証を無効にするためには、'{\"https\": {\"rejectUnauthorized\": false}}' をパスします。",
+			"configuration.resourceRequestOptions": "Request options to use when loading resources, such as source maps, in the debugger. You may need to configure this if your sourcemaps require authentication or use a self-signed certificate, for instance. Options are used to create a request using the [`got`](https://github.com/sindresorhus/got) library.\r\n\r\nA common case to disable certificate verification can be done by passing `{ \"https\": { \"rejectUnauthorized\": false } }`.",
 			"configuration.suggestPrettyPrinting": "お客様がそれにステップ インしたときに縮小されたように見える JavaScript コードの再フォーマットを提案するかどうか。",
 			"configuration.terminalOptions": "JavaScript デバッグ ターミナルおよび npm スクリプトの既定の起動オプション。",
 			"configuration.unmapMissingSources": "元のファイルを読み取ることができない sourcemapped ファイルが自動的にマップ解除されるかどうかを構成します。これが False (既定) の場合は、プロンプトが表示されます。",
-			"configuration.usePreview": "Node.js と Chrome にプレビュー段階の新しい JavaScript デバッガーを使用します。",
 			"createDiagnostics.label": "ブレークポイントの問題を診断する",
 			"customDescriptionGenerator.description": "デバッガーがオブジェクト (ローカル変数など) に対して表示するテキスト形式の説明をカスタマイズします。サンプル:\r\n      1. this.toString() // は toString を呼び出して、すべてのオブジェクトを出力します\r\n      2. this.customDescription ? this.customDescription() : defaultValue // 利用可能な場合は customDescription メソッドを使用し、そうでない場合は defaultValue を返します\r\n      3. 関数 (def) { return this.customDescription ? this.customDescription() : def } // 利用可能な場合は customDescription メソッドを使用し、そうでない場合は defaultValue を返します\r\n      ",
 			"customPropertiesGenerator.description": "デバッガーのオブジェクトに表示されるプロパティ (ローカル変数など) をカスタマイズします。サンプル:\r\n    1. { ...this, extraProperty: '12345' } //すべてのオブジェクトに extraProperty 12345 を追加します。\r\n    2. this.customProperties ? this.customProperties() : this // 使用可能であれば customProperties メソッドを使用します。そうでない場合は this 内のプロパティを使用します (既定のプロパティ)\r\n    3. function () { return this.customProperties ? this.customProperties() : this } // 使用可能であれば customDescription メソッドを使用します。そうでない場合は既定のプロパティを返します\r\n\r\n    非推奨: これは、https://github.com/microsoft/vscode/issues/102181 で説明されている方法でこの機能が実装されるまでの間の、一時的な実装です。",
@@ -369,7 +368,7 @@
 			"extensionHost.label": "VS Code 拡張機能の開発",
 			"extensionHost.launch.config.name": "拡張機能の起動",
 			"extensionHost.launch.debugWebWorkerHost": "Web ワーカー拡張機能ホストにアタッチする必要があるかどうかを構成します。",
-			"extensionHost.launch.debugWebviews": "起動した VS Code インスタンスで Web ビューへのアタッチを試行するかどうかを構成します。**注:** 正常に動作するために、現時点で、これには `\"webview.experimental.useIframes\": true` の設定が必要です。また、デスクトップの VS Code でのみ機能します。",
+			"extensionHost.launch.debugWebviews": "起動した VS Code インスタンスで Web ビューへのアタッチを試行するかどうかを構成します。これはデスクトップの VS Code でのみ機能します。",
 			"extensionHost.launch.env.description": "拡張機能ホストに渡される環境変数。",
 			"extensionHost.launch.rendererDebugOptions": "レンダラー プロセスにアタッチするときに使用される Chrome の起動オプション ('debugWebviews' または 'debugWebWorkerHost' を使用)。",
 			"extensionHost.launch.runtimeExecutable.description": "VS Code への絶対パス。",
@@ -410,7 +409,7 @@
 			"node.launch.restart.description": "ゼロ以外の終了コードでプログラムが終了した場合は、プログラムを再起動してみてください。",
 			"node.launch.runtimeArgs.description": "省略可能な引数がランタイム実行可能ファイルに渡されました。",
 			"node.launch.runtimeExecutable.description": "使用するランタイム。絶対パス、または PATH 上で使用可能なランタイムの名前のいずれかです。省略した場合は、`node` とみなされます。",
-			"node.launch.runtimeSourcemapPausePatterns": "エントリポイント ブレークポイントを手動で挿入するパターンの一覧。これは、[Serverless Framework を使用する場合] (https://github.com/microsoft/vscode-js-debug/issues/492) のように、存在しない、または起動前には検出できないソースマップを使用している場合に、デバッガーでブレークポイントを設定できるようにするために役立ちます。",
+			"node.launch.runtimeSourcemapPausePatterns": "A list of patterns at which to manually insert entrypoint breakpoints. This can be useful to give the debugger an opportunity to set breakpoints when using sourcemaps that don't exist or can't be detected before launch, such as [with the Serverless framework](https://github.com/microsoft/vscode-js-debug/issues/492).",
 			"node.launch.runtimeVersion.description": "使用する `node` ランタイムのバージョン。`nvm` が必要です。",
 			"node.launch.useWSL.deprecation": "'useWSL' は廃止され、サポートが終了されます。代わりに 'Remote - WSL' 拡張機能を使用します。",
 			"node.launch.useWSL.description": "Windows Subsystem for Linux を使用します。",
