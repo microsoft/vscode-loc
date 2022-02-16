@@ -4,10 +4,10 @@ on:
     - cron: 0 0 * * WED
   workflow_dispatch:
     inputs:
-      create-release:
+      skip-tag-creation:
         required: false
         type: boolean
-        description: Decides whether this run will create a GitHub release. Defaults to true.
+        description: Decides whether this run will create a GitHub release. Defaults to false.
       extension:
         required: false
         type: string
@@ -29,7 +29,7 @@ jobs:
         shell: pwsh
         run: |
           "Inputs"
-          "create-release: ${{ github.event.inputs.create-release }}"
+          "skip-tag-creation: ${{ github.event.inputs.skip-tag-creation }}"
           "extension: ${{ github.event.inputs.extension }}"
   
       - name: Checkout code
@@ -45,14 +45,14 @@ jobs:
         shell: pwsh
 
       - name: Commit tagger
-        if: ${{ github.event.inputs.create-release != false }}
+        if: ${{ !github.event.inputs.skip-tag-creation }}
         uses: tvdias/github-tagger@v0.0.2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.get-tag.outputs.tag }}
           
       - name: Create Release
-        if: ${{ github.event.inputs.create-release != false }}
+        if: ${{ !github.event.inputs.skip-tag-creation }}
         id: create-release
         uses: actions/create-release@v1
         env:
