@@ -68,7 +68,11 @@ jobs:
         run: |
           $specifiedExtension = '${{ github.event.inputs.extension }}'
           $packs = if ($specifiedExtension) {
-            Get-ChildItem i18n | Where-Object Name -eq '${{ github.event.inputs.extension }}' | ForEach-Object Name
+            if (!(Test-Path "i18n/$specifiedExtension")) {
+              throw "specified extension not found"
+            }
+            # emit the extension to the pipeline as an array
+            @($specifiedExtension)
           } else {
             Get-ChildItem i18n | ForEach-Object Name
           }
