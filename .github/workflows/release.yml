@@ -67,17 +67,17 @@ jobs:
         id: get-matrix
         run: |
           $specifiedExtension = '${{ github.event.inputs.extension }}'
-          $packs = if ($specifiedExtension) {
+          $obj = if ($specifiedExtension) {
             if (!(Test-Path "i18n/$specifiedExtension")) {
               throw "specified extension not found"
             }
-            # emit the extension to the pipeline as an array
-            @($specifiedExtension)
+            @{
+              languagePack = @($specifiedExtension)
+            }
           } else {
-            Get-ChildItem i18n | ForEach-Object Name
-          }
-          $obj = @{
-            languagePack = $packs
+            @{
+              languagePack = Get-ChildItem i18n | ForEach-Object Name
+            }
           }
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
         shell: pwsh
