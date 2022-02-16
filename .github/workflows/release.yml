@@ -25,6 +25,13 @@ jobs:
       matrix: ${{ steps.get-matrix.outputs.matrix }}
       release_upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
+      - name: Print inputs
+        shell: pwsh
+        run: |
+          "Inputs"
+          "create-release: ${{ github.event.inputs.create-release }}"
+          "extension: ${{ github.event.inputs.extension }}"
+  
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -57,21 +64,16 @@ jobs:
           prerelease: false
           
       - name: Get full matrix
-        if: github.event.inputs.extension == ''
         id: get-matrix
         run: |
-          $obj = @{
-            languagePack = Get-ChildItem i18n | ForEach-Object Name
+          $specifiedExtension = '${{ github.event.inputs.extension }}'
+          $packs = if ($specifiedExtension) {
+            Get-ChildItem i18n | Where-Object Name -eq '${{ github.event.inputs.extension }}' | ForEach-Object Name
+          } else {
+            Get-ChildItem i18n | ForEach-Object Name
           }
-          Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
-        shell: pwsh
-
-      - name: Get single extension matrix
-        if: github.event.inputs.extension != ''
-        id: get-matrix
-        run: |
           $obj = @{
-            languagePack = Get-ChildItem i18n | Where-Object Name -eq '${{ github.event.inputs.extension }}' | ForEach-Object Name
+            languagePack = $packs
           }
           Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
         shell: pwsh
