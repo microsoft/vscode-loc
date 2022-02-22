@@ -971,14 +971,6 @@
 			"indentationToTabs": "Převést odsazení na tabulátory",
 			"selectTabWidth": "Vybrat velikost tabulátoru pro aktuální soubor"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "Informace o kódu s naznačovací nápovědou",
-			"isReadingLineWithInlayHints": "Jestli jsou současný řádek a jeho naznačovací nápověda prioritní"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "Číst řádek s naznačovací nápovědou",
-			"stop.title": "Přestat číst naznačovací nápovědu"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "Zobrazit další vložený návrh",
 			"action.inlineSuggest.showPrevious": "Zobrazit předchozí vložený návrh",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "Umožňuje zobrazit název souboru, za kterým bude následovat cesta k němu, a to relativně vzhledem ke složce pracovního prostoru.",
 			"workbench.editor.labelFormat.short": "Umožňuje zobrazit název souboru, za kterým následuje název jeho adresáře.",
 			"workbench.editor.languageDetection": "Určuje, jestli se jazyk v textovém editoru zjistí automaticky, pokud nebyl explicitně nastaven výběrem jazyka. To může být také vymezeno podle jazyka, takže můžete určit, které jazyky nechcete vypnout. To je užitečné pro jazyky, jako je Markdown, které často obsahují jiné jazyky, které by mohly rozpoznávání jazyka oklamat, takže by si myslelo, že se jedná o vložený jazyk, a ne Markdown.",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "Procházet napříč všemi otevřenými editory a skupinami editorů.",
 			"workbench.editor.navigationScopeEditor": "Procházet pouze v aktivním editoru.",
 			"workbench.editor.navigationScopeEditorGroup": "Procházet pouze ze skupiny aktivních editorů.",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "Line has Error",
 			"audioCues.lineHasFoldedArea.name": "Line has Folded Area",
 			"audioCues.lineHasInlineSuggestion.name": "Line has Inline Suggestion Available",
-			"audioCues.lineHasWarning.name": "Line has Warning"
+			"audioCues.lineHasWarning.name": "Line has Warning",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "Plays a sound when the debugger stopped on a breakpoint.",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "Plays a sound when the active line has an error.",
 			"audioCues.lineHasFoldedArea": "Plays a sound when the active line has a folded area that can be unfolded.",
 			"audioCues.lineHasInlineSuggestion": "Plays a sound when the active line has an inline suggestion.",
-			"audioCues.lineHasWarning": "Plays a sound when the active line has a warning."
+			"audioCues.lineHasWarning": "Plays a sound when the active line has a warning.",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "Help: List Audio Cues",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "Povolit toto rozšíření",
 			"enabled": "Povoleno",
 			"enabled by environment": "Toto rozšíření je povoleno, protože je v aktuálním prostředí vyžadováno.",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "Toto rozšíření je povolené v místním hostiteli rozšíření, protože ho upřednostňuje pro spuštění.",
 			"enabled remotely": "Toto rozšíření je povolené ve vzdáleném hostiteli rozšíření, protože ho upřednostňuje pro spuštění.",
 			"extension disabled because of dependency": "Toto rozšíření se zakázalo, protože závisí na zakázaném rozšíření.",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "Formátovat upravené řádky"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "Barva ohraničení pro aktuální buňku interaktivního kódu, pokud má fokus editor",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Měřit latenci hostitele rozšíření"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "Definujte typ rozšíření. Rozšíření typu „ui“ se instalují a spouštějí na místním počítači, zatímco rozšíření typu „workspace“ se spouštějí na vzdáleném počítači.",
 			"extensionKind.empty": "Definujte rozšíření, které nelze spustit ve vzdáleném kontextu, a to ani na místním ani na vzdáleném počítači.",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "Vzdálený hostitel rozšíření"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Rozšíření byla upravena na disku. Načtěte prosím okno znovu.",
-			"reloadWindow": "Znovu načíst okno"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "Otevřít vývojářské nástroje",
 			"enable": "Povolit a znovu načíst",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "Hostitel rozšíření se nespustil do 10 sekund. Může být zastavený na prvním řádku a může k pokračování potřebovat ladicí program.",
 			"reloadWindow": "Znovu načíst okno"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "Vlastnost {0} může být vynechána nebo musí být typu string[].",
-			"extensionDescription.activationEvents2": "Vlastnosti {0} a {1} musí být buď obě zadány, nebo musí být obě vynechány.",
-			"extensionDescription.browser1": "Vlastnost {0} může být vynechána nebo musí být typu string.",
-			"extensionDescription.browser2": "Očekávalo se, že bude browser ({0}) zahrnuto do složky rozšíření ({1}). To by mohlo způsobit, že rozšíření nebude přenosné.",
-			"extensionDescription.browser3": "Vlastnosti {0} a {1} musí být buď obě zadány, nebo musí být obě vynechány.",
-			"extensionDescription.empty": "Prázdný popis rozšíření",
-			"extensionDescription.engines": "vlastnost {0} je povinná a musí být typu object",
-			"extensionDescription.engines.vscode": "Vlastnost {0} je povinná a musí být typu string.",
-			"extensionDescription.extensionDependencies": "Vlastnost {0} může být vynechána nebo musí být typu string[].",
-			"extensionDescription.main1": "Vlastnost {0} může být vynechána nebo musí být typu string.",
-			"extensionDescription.main2": "Očekávalo se, že bude main ({0}) zahrnuto do složky rozšíření ({1}). To by mohlo způsobit, že rozšíření nebude přenosné.",
-			"extensionDescription.main3": "Vlastnosti {0} a {1} musí být buď obě zadány, nebo musí být obě vynechány.",
-			"extensionDescription.name": "Vlastnost {0} je povinná a musí být typu string.",
-			"extensionDescription.publisher": "vydavatel vlastnosti musí být typu string",
-			"extensionDescription.version": "Vlastnost {0} je povinná a musí být typu string.",
-			"fileReadFail": "Nelze číst soubor {0}: {1}.",
-			"jsonInvalidFormat": "Neplatný formát {0}: Očekával se objekt JSON.",
-			"jsonParseFail": "Nepovedlo se parsovat {0}: [{1}, {2}] {3}.",
-			"jsonParseInvalidType": "Neplatný soubor manifestu {0}: Není to objekt JSON.",
-			"jsonsParseReportErrors": "Nepovedlo se parsovat {0}: {1}.",
-			"missingNLSKey": "Nepovedlo se najít zprávu pro klíč {0}.",
-			"notSemver": "Verze rozšíření není kompatibilní se sémantickým verzováním (semver)."
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "{0} se nepovedlo přesunout do koše.",

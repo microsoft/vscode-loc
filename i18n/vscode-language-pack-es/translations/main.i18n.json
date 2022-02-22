@@ -971,14 +971,6 @@
 			"indentationToTabs": "Convertir sangría en tabulaciones",
 			"selectTabWidth": "Seleccionar tamaño de tabulación para el archivo actual"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "Código con información de sugerencia de incrustación",
-			"isReadingLineWithInlayHints": "Si la línea actual y sus sugerencias de incrustación están centradas actualmente"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "Leer línea con sugerencias insertadas",
-			"stop.title": "Detener lectura de sugerencias incrustación"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "Mostrar sugerencia alineada siguiente",
 			"action.inlineSuggest.showPrevious": "Mostrar sugerencia alineada anterior",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "Muestre el nombre del archivo seguido de su ruta de acceso relativa a la carpeta del área de trabajo.",
 			"workbench.editor.labelFormat.short": "Muestre el nombre del archivo seguido de su nombre de directorio.",
 			"workbench.editor.languageDetection": "Controla si el lenguaje de programación en un editor de texto se detecta automáticamente, a menos que se haya establecido el lenguaje de forma explícita con el selector de lenguaje. El ámbito puede ajustarse en función del lenguaje para poder especificar los lenguajes de los que no desea que se le desconecte. Esto es útil para lenguajes como Markdown, que a menudo contiene otros lenguajes, por lo que la detección de idioma puede identificar erróneamente el lenguaje incrustado en vez de Markdown.",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "Navegue por todos los editores y grupos de editores abiertos.",
 			"workbench.editor.navigationScopeEditor": "Navegue solo en el editor activo.",
 			"workbench.editor.navigationScopeEditorGroup": "Navegue solo en los editores del grupo de editores activo.",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "La línea tiene un error",
 			"audioCues.lineHasFoldedArea.name": "La línea tiene un área doblada",
 			"audioCues.lineHasInlineSuggestion.name": "La línea tiene una sugerencia insertada disponible",
-			"audioCues.lineHasWarning.name": "La línea tiene una advertencia"
+			"audioCues.lineHasWarning.name": "La línea tiene una advertencia",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "Reproduce un sonido cuando el depurador se detiene en un punto de interrupción.",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "Reproduce un sonido cuando la línea activa tiene un error.",
 			"audioCues.lineHasFoldedArea": "Reproduce un sonido cuando la línea activa tiene un área doblada que se puede desplegar.",
 			"audioCues.lineHasInlineSuggestion": "Reproduce un sonido cuando la línea activa tiene una sugerencia insertada.",
-			"audioCues.lineHasWarning": "Reproduce un sonido cuando la línea activa tiene una advertencia."
+			"audioCues.lineHasWarning": "Reproduce un sonido cuando la línea activa tiene una advertencia.",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "Ayuda: Enumerar indicaciones de audio",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "Habilitar esta extensión",
 			"enabled": "Habilitado",
 			"enabled by environment": "Esta extensión está habilitada porque es necesaria en el entorno actual.",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "Esta extensión está habilitada en el host de extensión local porque prefiere ejecutarse allí.",
 			"enabled remotely": "Esta extensión está habilitada en el host de extensión remota porque prefiere ejecutarse allí.",
 			"extension disabled because of dependency": "Esta extensión ha sido desactivada porque depende de una extensión que está desactivada.",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "Formatear las líneas modificadas"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "Color del borde de la celda de código interactivo actual cuando el editor tiene el foco.",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Medir la latencia del host de extensión"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "Define el tipo de extensión. Las extensiones \"ui\" se instalan y ejecutan en la máquina local, mientras que las extensiones \"workspace\" se ejecutan en la remota.",
 			"extensionKind.empty": "Defina una extensión que no se pueda ejecutar en un contexto remoto, ni en el equipo local o el remoto.",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "Host de extensión remota"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Las extensiones han sido modificadas en disco. Por favor, vuelva a cargar la ventana.",
-			"reloadWindow": "Recargar ventana"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "Abrir herramientas de desarrollo",
 			"enable": "Habilitar y cargar",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "El host de extensiones no se inició en 10 segundos, puede que se detenga en la primera línea y necesita un depurador para continuar.",
 			"reloadWindow": "Recargar ventana"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "la propiedad `{0}` se puede omitir o debe ser de tipo \"string[]\"",
-			"extensionDescription.activationEvents2": "las propiedades `{0}` y `{1}` deben especificarse u omitirse conjuntamente",
-			"extensionDescription.browser1": "la propiedad \"{0}\" se puede omitir o debe ser de tipo \"string\"",
-			"extensionDescription.browser2": "Se esperaba que \"browser\" ({0}) se hubiera incluido en la carpeta de la extensión ({1}). Esto puede hacer que la extensión no sea portátil.",
-			"extensionDescription.browser3": "las propiedades `{0}` y `{1}` deben especificarse u omitirse conjuntamente",
-			"extensionDescription.empty": "Se obtuvo una descripción vacía de la extensión.",
-			"extensionDescription.engines": "la propiedad `{0}` es obligatoria y debe ser de tipo \"object\"",
-			"extensionDescription.engines.vscode": "la propiedad \"{0}\" es obligatoria y debe ser de tipo \"string\"",
-			"extensionDescription.extensionDependencies": "la propiedad `{0}` se puede omitir o debe ser de tipo \"string[]\"",
-			"extensionDescription.main1": "la propiedad \"{0}\" se puede omitir o debe ser de tipo \"string\"",
-			"extensionDescription.main2": "Se esperaba que \"main\" ({0}) se hubiera incluido en la carpeta de la extensión ({1}). Esto puede hacer que la extensión no sea portátil.",
-			"extensionDescription.main3": "las propiedades `{0}` y `{1}` deben especificarse u omitirse conjuntamente",
-			"extensionDescription.name": "la propiedad \"{0}\" es obligatoria y debe ser de tipo \"string\"",
-			"extensionDescription.publisher": "El publicador de propiedades debe ser de tipo \"string\".",
-			"extensionDescription.version": "la propiedad \"{0}\" es obligatoria y debe ser de tipo \"string\"",
-			"fileReadFail": "No se puede leer el archivo {0}: {1}.",
-			"jsonInvalidFormat": "Formato no válido {0}: se esperaba un objeto JSON.",
-			"jsonParseFail": "No se ha podido analizar {0}: [{1}, {2}] {3}.",
-			"jsonParseInvalidType": "Archivo de manifiesto {0} no válido: no es un objeto JSON.",
-			"jsonsParseReportErrors": "No se pudo analizar {0}: {1}.",
-			"missingNLSKey": "No se encontró un mensaje para la clave {0}.",
-			"notSemver": "La versión de la extensión no es compatible con semver."
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "No se pudo mover \"{0}\" a la papelera de reciclaje",

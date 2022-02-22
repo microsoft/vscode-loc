@@ -971,14 +971,6 @@
 			"indentationToTabs": "Преобразовать отступ в шаги табуляции",
 			"selectTabWidth": "Выбрать размер шага табуляции для текущего файла"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "Код со сведениями встроенных подсказок",
-			"isReadingLineWithInlayHints": "Находится ли фокус на текущей строке и ее встроенных подсказках"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "Чтение строки со встроенными подсказками",
-			"stop.title": "Остановить чтение встроенных подсказок."
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "Показывать следующее встроенное предложение",
 			"action.inlineSuggest.showPrevious": "Показать предыдущее встроенное предложение",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "Отображать имя файла и путь к файлу относительно папки рабочей области.",
 			"workbench.editor.labelFormat.short": "Отображать имя файла и имя каталога.",
 			"workbench.editor.languageDetection": "Управляет тем, определяется ли язык в текстовом редакторе автоматически, если язык не был явным образом установлен в средстве выбора языка. Область также можно определить с помощью языка, поэтому вы можете указать языки, которые не нужно отключать. Это удобно для таких языков, как Markdown, которые часто содержат другие языки, из-за чего средство определения языка может выбрать внедренный язык, а не Markdown.",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "Переходить по всем открытым редакторам и группам редакторов.",
 			"workbench.editor.navigationScopeEditor": "Переходить только в активном редакторе.",
 			"workbench.editor.navigationScopeEditorGroup": "Переходить только в редакторах активной группы редакторов.",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "Строка содержит ошибку",
 			"audioCues.lineHasFoldedArea.name": "Строка содержит сложенную область",
 			"audioCues.lineHasInlineSuggestion.name": "В строке доступна встроенная подсказка",
-			"audioCues.lineHasWarning.name": "Строка содержит предупреждение"
+			"audioCues.lineHasWarning.name": "Строка содержит предупреждение",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "Воспроизводит звук при остановке отладчика в точке останова.",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "Воспроизводит звук при наличии ошибки в активной строке.",
 			"audioCues.lineHasFoldedArea": "Воспроизводит звук, если активная строка содержит сложенную область, которую можно развернуть.",
 			"audioCues.lineHasInlineSuggestion": "Воспроизводит звук при наличии встроенной подсказки в активной строке.",
-			"audioCues.lineHasWarning": "Воспроизводит звук при наличии предупреждения в активной строке."
+			"audioCues.lineHasWarning": "Воспроизводит звук при наличии предупреждения в активной строке.",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "Справка: перечисление звуковых сигналов",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "Включить это расширение",
 			"enabled": "Включено",
 			"enabled by environment": "Это расширение включено, поскольку оно является обязательным в текущей среде.",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "Это расширение включено на локальном хост-процессе для расширений, так как оно предпочтительно для работы на нем.",
 			"enabled remotely": "Это расширение включено на удаленном хост-процессе для расширений, так как оно предпочтительно для работы на нем.",
 			"extension disabled because of dependency": "Это расширение было отключено, так как оно зависит от расширения, которое отключено.",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "Форматировать измененные строки"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "Цвет границы для текущей интерактивной ячейки кода, когда редактор находится в фокусе.",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Измерить задержку хост-процесса для расширений"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "Определите тип расширения. Расширения \"ui\" устанавливаются и запускаются на локальном компьютере, а расширения \"workspace\" — на удаленном компьютере.",
 			"extensionKind.empty": "Определите расширение, которое не может выполняться в удаленном контексте ни на локальном, ни на удаленном компьютере.",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "Удаленный хост-процесс для расширений"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Расширения были изменены на диске. Обновите окно.",
-			"reloadWindow": "Перезагрузить окно"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "Открыть средства разработчика",
 			"enable": "Включить и Перезагрузить",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "Хост-процесс для расширений не был запущен в течение 10 секунд. Возможно, он был остановлен в первой строке, а для продолжения требуется отладчик.",
 			"reloadWindow": "Перезагрузить окно"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "свойство \"{0}\" может быть опущено или должно быть типа \"string []\"",
-			"extensionDescription.activationEvents2": "оба свойства, \"{0}\" и \"{1}\", должны быть либо указаны, либо опущены",
-			"extensionDescription.browser1": "свойство \"{0}\" может быть опущено; если оно указано, оно должно иметь тип \"string\"",
-			"extensionDescription.browser2": "Ожидалось, что папка расширения ({1}) будет включать \"browser\" ({0}). Из-за этого расширение может стать непереносимым.",
-			"extensionDescription.browser3": "оба свойства, \"{0}\" и \"{1}\", должны быть либо указаны, либо опущены",
-			"extensionDescription.empty": "Пустое описание расширения",
-			"extensionDescription.engines": "свойство \"{0}\" является обязательным и должно быть типа object",
-			"extensionDescription.engines.vscode": "свойство \"{0}\" является обязательным и должно иметь тип string",
-			"extensionDescription.extensionDependencies": "свойство \"{0}\" может быть опущено или должно быть типа \"string []\"",
-			"extensionDescription.main1": "свойство \"{0}\" может быть опущено или должно иметь тип string",
-			"extensionDescription.main2": "Ожидается, что функция main ({0}) будет включена в папку расширения ({1}). Из-за этого расширение может стать непереносимым.",
-			"extensionDescription.main3": "оба свойства, \"{0}\" и \"{1}\", должны быть либо указаны, либо опущены",
-			"extensionDescription.name": "свойство \"{0}\" является обязательным и должно иметь тип string",
-			"extensionDescription.publisher": "издатель свойства должен иметь тип \"string\".",
-			"extensionDescription.version": "свойство \"{0}\" является обязательным и должно иметь тип string",
-			"fileReadFail": "Не удается прочитать файл {0}: {1}.",
-			"jsonInvalidFormat": "Недопустимый формат {0}: ожидается объект JSON.",
-			"jsonParseFail": "Не удалось проанализировать {0}: [{1}, {2}] {3}.",
-			"jsonParseInvalidType": "Недопустимый файл манифеста {0}: не является объектом JSON.",
-			"jsonsParseReportErrors": "Не удалось проанализировать {0}: {1}.",
-			"missingNLSKey": "Не удалось найти сообщение для ключа {0}.",
-			"notSemver": "Версия расширения несовместима с semver."
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "Не удалось переместить \"{0}\" в корзину",

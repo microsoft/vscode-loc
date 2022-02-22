@@ -971,14 +971,6 @@
 			"indentationToTabs": "Konwertuj wcięcia na tabulatory",
 			"selectTabWidth": "Wybierz rozmiar tabulatora dla bieżącego pliku"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "Kod z informacjami o wbudowanych wskazówkach",
-			"isReadingLineWithInlayHints": "Czy bieżący wiersz i jego wbudowane wskazówki są obecnie skoncentrowane"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "Odczytywanie wiersza z wbudowanymi wskazówkami",
-			"stop.title": "Zatrzymaj odczytywanie wskazówek wbudowanych"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "Pokaż następną wbudowaną sugestię",
 			"action.inlineSuggest.showPrevious": "Pokaż poprzednią wbudowaną sugestię",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "Pokaż nazwę pliku, po której następuje jego ścieżka względem folderu obszaru roboczego.",
 			"workbench.editor.labelFormat.short": "Pokaż nazwę pliku, po której następuje nazwa jego katalogu.",
 			"workbench.editor.languageDetection": "Określa, czy język w edytorze tekstów jest wykrywany automatycznie, chyba że język został jawnie określony przez selektor języka. Można to również określić według języka, aby wybrać, których języków nie chcesz wyłączać. Jest to przydatne w przypadku języków takich jak Markdown, które często zawierają inne języki, które mogą utrudniać wykrywanie języka, aby uznać, że jest to język osadzony, a nie język Markdown.",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "Nawiguj po wszystkich otwartych edytorach i grupach edytorów.",
 			"workbench.editor.navigationScopeEditor": "Nawiguj tylko w aktywnym edytorze.",
 			"workbench.editor.navigationScopeEditorGroup": "Nawiguj tylko w edytorach aktywnej grupy edytorów.",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "Wiersz zawiera błąd",
 			"audioCues.lineHasFoldedArea.name": "Wiersz zawiera składany obszar",
 			"audioCues.lineHasInlineSuggestion.name": "Wiersz ma dostępną śródwierszową sugestię",
-			"audioCues.lineHasWarning.name": "Wiersz zawiera ostrzeżenie"
+			"audioCues.lineHasWarning.name": "Wiersz zawiera ostrzeżenie",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "Odtwarza dźwięk, gdy debuger został zatrzymany w punkcie przerwania.",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "Odtwarza dźwięk, gdy aktywny wiersz zawiera błąd.",
 			"audioCues.lineHasFoldedArea": "Odtwarza dźwięk, gdy aktywny wiersz zawiera składany obszar, który można rozłożyć.",
 			"audioCues.lineHasInlineSuggestion": "Odtwarza sygnał dźwiękowy, gdy aktywny wiersz zawiera śródwierszową sugestię.",
-			"audioCues.lineHasWarning": "Odtwarza dźwięk, gdy aktywny wiersz zawiera ostrzeżenie."
+			"audioCues.lineHasWarning": "Odtwarza dźwięk, gdy aktywny wiersz zawiera ostrzeżenie.",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "Pomoc: Wyświetl listę podpowiedzi dźwiękowych",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "Włącz to rozszerzenie",
 			"enabled": "Włączone",
 			"enabled by environment": "To rozszerzenie jest włączone, ponieważ jest wymagane w aktualnym środowisku.",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "To rozszerzenie jest włączone na lokalnym hoście rozszerzeń, ponieważ woli je tam uruchamiać.",
 			"enabled remotely": "To rozszerzenie jest włączone na zdalnym hoście rozszerzeń, ponieważ woli je tam uruchamiać.",
 			"extension disabled because of dependency": "To rozszerzenie zostało wyłączone, ponieważ jest ono zależne od wyłączonego rozszerzenia.",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "Formatuj zmodyfikowane wiersze"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "Kolor obramowania bieżącej interakcyjnej komórki kodu, gdy edytor ma fokus.",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Mierz opóźnienia hosta rozszerzenia"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "Zdefiniuj rodzaj rozszerzenia. Rozszerzenia interfejsu użytkownika są instalowane i uruchamiane na maszynie lokalnej, a rozszerzenia obszaru roboczego są uruchamiane na komputerze zdalnym.",
 			"extensionKind.empty": "Zdefiniuj rozszerzenie, którego nie można uruchomić w kontekście zdalnym ani na maszynie lokalnej, ani zdalnej.",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "Zdalny host rozszerzeń"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Rozszerzenia zostały zmodyfikowane na dysku. Załaduj ponownie okno.",
-			"reloadWindow": "Załaduj ponownie okno"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "Otwórz narzędzia deweloperskie",
 			"enable": "Włącz i załaduj ponownie",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "Host rozszerzenia nie zaczął działać w ciągu 10 sekund. Być może został zatrzymany w pierwszym wierszu i wymaga debugera, aby kontynuować.",
 			"reloadWindow": "Załaduj ponownie okno"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "właściwość „{0}” może zostać pominięta lub musi być typu „string[]”",
-			"extensionDescription.activationEvents2": "obie właściwości „{0}” i „{1}” muszą zostać albo określone, albo pominięte",
-			"extensionDescription.browser1": "właściwość `{0}` może zostać pominięta albo musi być ciągiem znaków",
-			"extensionDescription.browser2": "Oczekiwano elementu „browser” ({0}) dołączonego wewnątrz folderu rozszerzenia ({1}). Może to spowodować, że rozszerzenie nie będzie przenośne.",
-			"extensionDescription.browser3": "obie właściwości „{0}” i „{1}” muszą zostać albo określone, albo pominięte",
-			"extensionDescription.empty": "Otrzymano pusty opis rozszerzenia",
-			"extensionDescription.engines": "właściwość „{0}” jest obowiązkowa i musi być typu „obiekt”",
-			"extensionDescription.engines.vscode": "właściwość „{0}” jest obowiązkowa i musi być typu „string”",
-			"extensionDescription.extensionDependencies": "właściwość „{0}” może zostać pominięta lub musi być typu „string[]”",
-			"extensionDescription.main1": "właściwość „{0}” może zostać pominięta lub musi być typu „string”",
-			"extensionDescription.main2": "Oczekiwano elementu „main” ({0}) dołączonego wewnątrz folderu rozszerzenia ({1}). Może to spowodować, że rozszerzenie nie będzie przenośne.",
-			"extensionDescription.main3": "obie właściwości „{0}” i „{1}” muszą zostać albo określone, albo pominięte",
-			"extensionDescription.name": "właściwość „{0}” jest obowiązkowa i musi być typu „string”",
-			"extensionDescription.publisher": "wydawca właściwości musi być typu „ciąg”.",
-			"extensionDescription.version": "właściwość „{0}” jest obowiązkowa i musi być typu „string”",
-			"fileReadFail": "Nie można odczytać pliku {0}: {1}.",
-			"jsonInvalidFormat": "Nieprawidłowy format {0}: oczekiwano obiektu JSON.",
-			"jsonParseFail": "Nie można przeanalizować elementu {0}: [{1}, {2}] {3}.",
-			"jsonParseInvalidType": "Nieprawidłowy plik manifestu {0}: to nie jest obiekt JSON.",
-			"jsonsParseReportErrors": "Nie można przeanalizować elementu {0}: {1}.",
-			"missingNLSKey": "Nie można znaleźć komunikatu dla klucza {0}.",
-			"notSemver": "Wersja rozszerzenia nie jest zgodna z wersją semantyczną."
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "Nie można przenieść elementu „{0}” do kosza",

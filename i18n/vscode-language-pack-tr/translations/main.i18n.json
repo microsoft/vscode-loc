@@ -971,14 +971,6 @@
 			"indentationToTabs": "Girintiyi Sekmelere Dönüştür",
 			"selectTabWidth": "Geçerli Dosya için Sekme Boyutunu Seç"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "Döşeme İpucu Bilgilerine Sahip Kod",
-			"isReadingLineWithInlayHints": "Geçerli satırın ve döşeme ipuçlarının şu anda odaklanmış olup olmadığı"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "Satır İçi İpuçları olan Satırı Oku",
-			"stop.title": "Döşeme İpuçlarını Okumayı Durdur"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "Sonraki Satır İçi Öneriyi Göster",
 			"action.inlineSuggest.showPrevious": "Önceki Satır İçi Öneriyi Göster",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "Dosyanın adını ve ardından çalışma alanı klasörüne göreli yolunu gösterin.",
 			"workbench.editor.labelFormat.short": "Dosyanın adını ve ardından gelen dizin adını gösterin.",
 			"workbench.editor.languageDetection": "Dil seçici tarafından açıkça ayarlanmadıkça metin düzenleyicideki dilin otomatik olarak algılanıp algılanmayacağını denetler. Bu, devre dışı bırakmak istemediğiniz dilleri belirtmek için dil kapsamına da eklenebilir. Bu, genellikle dil algılamayı kandırarak, dilin Markdown değil ekli dil olduğunu düşünmesine neden olabilecek diğer dilleri içeren Markdown gibi diller için kullanışlıdır.",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "Tüm açık düzenleyiciler ve düzenleyici grupları arasında gezin.",
 			"workbench.editor.navigationScopeEditor": "Yalnızca etkin düzenleyicide gezin.",
 			"workbench.editor.navigationScopeEditorGroup": "Yalnızca etkin düzenleyici grubunun düzenleyicileri içinde gezin.",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "Satırda Hata Var",
 			"audioCues.lineHasFoldedArea.name": "Satırda Katlanmış Alan Var",
 			"audioCues.lineHasInlineSuggestion.name": "Satırda Satır İçi Öneri Var",
-			"audioCues.lineHasWarning.name": "Satırda Uyarı Var"
+			"audioCues.lineHasWarning.name": "Satırda Uyarı Var",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "Hata ayıklayıcı bir kesme noktası üzerinde durduğunda ses çalar.",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "Etkin satırda bir hata olduğunda ses çalar.",
 			"audioCues.lineHasFoldedArea": "Etkin satırda açılabilecek bir katlanmış alan olduğunda ses çalar.",
 			"audioCues.lineHasInlineSuggestion": "Etkin satırda bir satır içi öneri olduğunda ses çalar.",
-			"audioCues.lineHasWarning": "Etkin satırda bir uyarı olduğunda ses çalar."
+			"audioCues.lineHasWarning": "Etkin satırda bir uyarı olduğunda ses çalar.",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "Yardım: Sesli İpuçlarını Listele",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "Bu uzantıyı etkinleştir",
 			"enabled": "Etkin",
 			"enabled by environment": "Bu uzantı, geçerli ortamda gerekli olduğundan etkinleştirildi.",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "Bu uzantı, Yerel Uzantı Konağında çalıştırılmayı tercih ettiğinden orada etkinleştirildi.",
 			"enabled remotely": "Bu uzantı, Uzak Uzantı Konağında çalıştırılmayı tercih ettiğinden orada etkinleştirildi.",
 			"extension disabled because of dependency": "Bu uzantı, devre dışı bırakılmış bir uzantıya bağımlı olduğundan devre dışı bırakıldı.",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "Değiştirilen Satırları Biçimlendir"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "Düzenleyicinin odağı olduğunda geçerli etkileşimli kod hücresinin kenarlık rengi.",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Uzantı Konak Gecikme Süresini Ölç"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "Bir uzantının türünü tanımlayın. `workspace` uzantıları uzak makinede çalıştırılırken `ui` uzantıları yerel makineye yüklenip çalıştırılır.",
 			"extensionKind.empty": "Ne yerel ne de uzak makinede uzak bir bağlamda çalıştırılamayan bir uzantı tanımlayın.",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "Uzak Uzantı Konağı"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Uzantılar diskte değiştirilmiş. Lütfen pencereyi yeniden yükleyin.",
-			"reloadWindow": "Pencereyi Yeniden Yükle"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "Açık Geliştirici Araçları",
 			"enable": "Etkinleştir ve Yeniden Yükle",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "Uzantı konağı 10 saniye içinde başlamadı; ilk satırda durdurulmuş olabilir; devam edebilmek için bir hata ayıklayıcı gerekiyor.",
 			"reloadWindow": "Pencereyi Yeniden Yükle"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "`{0}` özelliği atlanamaz veya `string[]` türünde olmalıdır",
-			"extensionDescription.activationEvents2": "`{0}` ve `{1}` özelliklerinin ikisi de belirtilmeli ya da ikisi de atlanmalıdır",
-			"extensionDescription.browser1": "`{0}` özelliği atlanabilir veya `string` türünde olmalıdır",
-			"extensionDescription.browser2": "`browser` ({0}) öğesinin uzantının klasörü ({1}) içine eklenmiş olması bekleniyordu. Bu, eklentiyi taşınamaz hale getirebilir.",
-			"extensionDescription.browser3": "`{0}` ve `{1}` özelliklerinin ikisi birden belirtilmeli veya ikisi birden atlanmalıdır",
-			"extensionDescription.empty": "Boş uzantı açıklaması alındı",
-			"extensionDescription.engines": "`{0}` özelliği zorunludur ve `object` türünde olması gerekir",
-			"extensionDescription.engines.vscode": "`{0}` özelliği zorunludur ve `string` türünde olmalıdır",
-			"extensionDescription.extensionDependencies": "`{0}` özelliği atlanamaz veya `string[]` türünde olmalıdır",
-			"extensionDescription.main1": "`{0}` özelliği atlanabilir veya `string` türünde olması gerekir",
-			"extensionDescription.main2": "`main` ({0}) öğesinin uzantının klasörünün ({1}) içine eklenmiş olması bekleniyordu. Bu, uzantıyı taşınamaz hale getirebilir.",
-			"extensionDescription.main3": "`{0}` ve `{1}` özelliklerinin ikisi de belirtilmeli ya da ikisi de atlanmalıdır",
-			"extensionDescription.name": "`{0}` özelliği zorunludur ve `string` türünde olmalıdır",
-			"extensionDescription.publisher": "özellik yayımcısı `string` türünde olmalıdır.",
-			"extensionDescription.version": "`{0}` özelliği zorunludur ve `string` türünde olmalıdır",
-			"fileReadFail": "'{0}' dosyası okunamıyor: {1}.",
-			"jsonInvalidFormat": "Geçersiz biçim {0}: JSON nesnesi bekleniyor.",
-			"jsonParseFail": "{0} ayrıştırılamadı: [{1}, {2}] {3}.",
-			"jsonParseInvalidType": "{0} bildirim dosyası geçersiz: JSON nesnesi değil.",
-			"jsonsParseReportErrors": "{0} ayrıştırılamadı: {1}.",
-			"missingNLSKey": "{0} tuşu için ileti bulunamadı.",
-			"notSemver": "Uzantı sürümü semver uyumlu değil."
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "'{0}' geri dönüşüm kutusuna taşınamadı",
