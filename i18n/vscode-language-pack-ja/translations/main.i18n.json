@@ -971,14 +971,6 @@
 			"indentationToTabs": "インデントをタブに変換",
 			"selectTabWidth": "現在のファイルのタブのサイズを選択"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "インレイ ヒント情報を使用したコード",
-			"isReadingLineWithInlayHints": "現在の行とそのインレイ ヒントが現在フォーカスされているかどうか"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "インライン ヒントを使用した行の読み取り",
-			"stop.title": "インレイ ヒントの読み取りを停止する"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "次のインライン候補を表示する",
 			"action.inlineSuggest.showPrevious": "前のインライン候補を表示する",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "ワークスペース フォルダーからの相対パスに続けてファイル名を表示します。",
 			"workbench.editor.labelFormat.short": "ディレクトリ名に続けてファイル名を表示します。",
 			"workbench.editor.languageDetection": "言語の選択で言語が明示的に設定されている場合を除き、テキスト エディターの言語を自動的に検出するかどうかを制御します。これは、オフにしたくない言語を指定できるように、言語でスコープを設定することもできます。これは、Markdown のような言語 (多くの場合、言語検出で Markdown ではなく埋め込み言語であると認識させる可能性のある他の言語が含まれている) で便利です。",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "開いているすべてのエディターやエディター グループの間を移動します。",
 			"workbench.editor.navigationScopeEditor": "アクティブ エディター内でのみ移動します。",
 			"workbench.editor.navigationScopeEditorGroup": "アクティブ エディター グループのエディター内でのみ移動します。",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "行にエラーがあります",
 			"audioCues.lineHasFoldedArea.name": "行に折りたたまれた領域があります",
 			"audioCues.lineHasInlineSuggestion.name": "行にインライン候補があります",
-			"audioCues.lineHasWarning.name": "行に警告があります"
+			"audioCues.lineHasWarning.name": "行に警告があります",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "デバッガーがブレークポイントで停止したときに、音を鳴らします。",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "アクティブ行にエラーがある場合、音を鳴らします。",
 			"audioCues.lineHasFoldedArea": "アクティブ行に、展開可能だが、折りたたまれた領域がある場合、音を鳴らします。",
 			"audioCues.lineHasInlineSuggestion": "アクティブ行にインライン候補が発生した場合、音を鳴らします。",
-			"audioCues.lineHasWarning": "アクティブ行に警告がある場合、音を鳴らします。"
+			"audioCues.lineHasWarning": "アクティブ行に警告がある場合、音を鳴らします。",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "ヘルプ: オーディオ キューの一覧表示",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "この拡張機能を有効にする",
 			"enabled": "有効",
 			"enabled by environment": "この拡張機能は有効化されています。なぜなら、現在の環境で必要とされているからです。",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "この拡張機能はローカル拡張ホストで有効になります。ローカル拡張ホストで実行する方が好ましいためです。",
 			"enabled remotely": "この拡張機能はリモート拡張ホストで有効になります。リモート拡張ホストで実行する方が好ましいためです。",
 			"extension disabled because of dependency": "この拡張機能は無効になっている拡張機能に依存しているため、無効になりました。",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "変更された行をフォーマットする"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "エディターにフォーカスがある場合の、現在の対話型コード セルの境界線の色。",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "拡張機能ホストの待ち時間を測定"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "拡張機能の種類を定義します。'ui' 拡張機能はローカル マシンにインストールされて実行されますが、'workspace' 拡張機能はリモート上で実行されます。",
 			"extensionKind.empty": "ローカルとリモート マシンのいずれのリモート コンテキストでも実行できない拡張機能を定義します。",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "リモート拡張ホスト"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "拡張機能がディスク上で変更されています。ウィンドウを再読み込みしてください。",
-			"reloadWindow": "ウィンドウの再読み込み"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "開発者ツールを開く",
 			"enable": "有効にしてリロード",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "拡張機能ホストが 10 秒以内に開始されませんでした。先頭行で停止している可能性があり、続行するにはデバッガーが必要です。",
 			"reloadWindow": "ウィンドウの再読み込み"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "プロパティ `{0}` は省略するか、型 `string[]` にする必要があります",
-			"extensionDescription.activationEvents2": "プロパティ `{0}` と `{1}` は、両方とも指定するか両方とも省略しなければなりません",
-			"extensionDescription.browser1": "プロパティ '{0}' は省略可能であるか、'string' 型である必要があります",
-			"extensionDescription.browser2": "拡張機能のフォルダー ({1}) 内に `browser` ({0}) が含まれることが想定されていました。これにより拡張機能が移植不能になることがあります。",
-			"extensionDescription.browser3": "プロパティ `{0}` と `{1}` は、両方とも指定するか両方とも省略しなければなりません",
-			"extensionDescription.empty": "空の拡張機能の説明を入手しました",
-			"extensionDescription.engines": "`{0}` プロパティは必須で、`string` 型でなければなりません",
-			"extensionDescription.engines.vscode": "プロパティ `{0}` は必須で、`string` 型でなければなりません",
-			"extensionDescription.extensionDependencies": "プロパティ `{0}` は省略するか、型 `string[]` にする必要があります",
-			"extensionDescription.main1": "プロパティ `{0}` は省略するか、`string` 型にする必要があります",
-			"extensionDescription.main2": "拡張機能のフォルダー ({1}) の中に `main` ({0}) が含まれることが予期されます。これにより拡張機能を移植できなくなる可能性があります。",
-			"extensionDescription.main3": "プロパティ `{0}` と `{1}` は、両方とも指定するか両方とも省略しなければなりません",
-			"extensionDescription.name": "プロパティ `{0}` は必須で、`string` 型でなければなりません",
-			"extensionDescription.publisher": "publisher プロパティは `string` 型でなければなりません。",
-			"extensionDescription.version": "プロパティ `{0}` は必須で、`string` 型でなければなりません",
-			"fileReadFail": "ファイル {0} を読み取れません: {1}。",
-			"jsonInvalidFormat": "無効な形式 {0}: JSON オブジェクトが必要です。",
-			"jsonParseFail": "{0}: [{1}, {2}] {3}の解析に失敗しました。",
-			"jsonParseInvalidType": "無効なマニフェスト ファイル {0}: JSON オブジェクトではありません。",
-			"jsonsParseReportErrors": "{0} を解析できません: {1}。",
-			"missingNLSKey": "キー {0} のメッセージが見つかりませんでした。",
-			"notSemver": "拡張機能のバージョンが semver と互換性がありません。"
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "'{0}' をごみ箱に移動できませんでした",

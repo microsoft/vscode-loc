@@ -971,14 +971,6 @@
 			"indentationToTabs": "将缩进转换为制表符",
 			"selectTabWidth": "选择当前文件的制表符大小"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "具有内嵌提示信息的代码",
-			"isReadingLineWithInlayHints": "当前行及其内嵌提示是否是当前焦点"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "使用内联提示读取行",
-			"stop.title": "停止内嵌提示读取"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "显示下一个内联建议",
 			"action.inlineSuggest.showPrevious": "显示上一个内联建议",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "在文件相对当前工作区文件夹的路径之后显示文件名。",
 			"workbench.editor.labelFormat.short": "在文件的目录名之后显示文件名。",
 			"workbench.editor.languageDetection": "控制是否自动检测文本编辑器中的语言，除非该语言已由语言选择器显式设置。这也可以按语言确定范围，以便你可以指定不希望关闭的语言。这对于像 Markdown 这样的语言很有用，因为它通常包含可能会欺骗语言检测的其他语言，使其认为它是嵌入语言而不是 Markdown。",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "浏览所有打开的编辑器和编辑器组。",
 			"workbench.editor.navigationScopeEditor": "仅在活动编辑器中导航。",
 			"workbench.editor.navigationScopeEditorGroup": "仅在活动编辑器组的编辑器中导航。",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "行有错误",
 			"audioCues.lineHasFoldedArea.name": "行有折叠区域",
 			"audioCues.lineHasInlineSuggestion.name": "行具有可用的内联建议",
-			"audioCues.lineHasWarning.name": "行有警告"
+			"audioCues.lineHasWarning.name": "行有警告",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "当调试程序在断点上停止时播放声音。",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "当有效行出现错误时播放声音。",
 			"audioCues.lineHasFoldedArea": "当有效行具有可展开的折叠区域时播放声音。",
 			"audioCues.lineHasInlineSuggestion": "当有效行具有内联建议时播放声音。",
-			"audioCues.lineHasWarning": "当有效行出现警告时播放声音。"
+			"audioCues.lineHasWarning": "当有效行出现警告时播放声音。",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "帮助: 列出音频提示",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "启用此扩展",
 			"enabled": "已启用",
 			"enabled by environment": "已启用此扩展，因为在当前环境中需要此扩展。",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "此扩展在本地扩展主机中被启用，因为这是其首选运行处。",
 			"enabled remotely": "此扩展在远程扩展主机中被启用，因为这是其首选运行处。",
 			"extension disabled because of dependency": "已禁用此扩展，因为它依赖于已禁用的扩展。",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "设置修改过的行的格式"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "当编辑器具有焦点时，当前交互式代码单元格的边框颜色。",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "测量扩展主机延迟"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "定义扩展的类型。\"ui\"扩展在本地计算机上安装和运行，而 \"工作区\" 扩展则在远程计算机上运行。",
 			"extensionKind.empty": "定义一个无法在远程上下文中运行的扩展，既不能在本地上，也不能在远程计算机上运行。",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "远程扩展主机"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "扩展在磁盘上已被修改。请重新加载窗口。",
-			"reloadWindow": "重新加载窗口"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "打开开发人员工具",
 			"enable": "启用和重新加载",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "扩展未在 10 秒内启动，可能在第一行已停止，需要调试器才能继续。",
 			"reloadWindow": "重新加载窗口"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "属性“{0}”可以省略，否则其类型必须是 \"string[]\"",
-			"extensionDescription.activationEvents2": "必须同时指定或同时省略属性”{0}“和”{1}“",
-			"extensionDescription.browser1": "属性 \"{0}\" 可以省略，或者必须为 \"string\" 类型",
-			"extensionDescription.browser2": "应在扩展文件夹({1})中包含 \"browser\" ({0})。这可能会使扩展不可移植。",
-			"extensionDescription.browser3": "必须同时指定或同时省略属性”{0}“和”{1}“",
-			"extensionDescription.empty": "已获得空扩展说明",
-			"extensionDescription.engines": "属性“{0}”是必要属性，其类型必须是 \"object\"",
-			"extensionDescription.engines.vscode": "属性“{0}”是必需的，其类型必须是 \"string\"",
-			"extensionDescription.extensionDependencies": "属性“{0}”可以省略，否则其类型必须是 \"string[]\"",
-			"extensionDescription.main1": "属性“{0}”可以省略，否则其类型必须是 \"string\"",
-			"extensionDescription.main2": "应在扩展文件夹({1})中包含 \"main\" ({0})。这可能会使扩展不可移植。",
-			"extensionDescription.main3": "必须同时指定或同时省略属性”{0}“和”{1}“",
-			"extensionDescription.name": "属性“{0}”是必需的，其类型必须是 \"string\"",
-			"extensionDescription.publisher": "属性 publisher 的类型必须是 \"string\"。",
-			"extensionDescription.version": "属性“{0}”是必需的，其类型必须是 \"string\"",
-			"fileReadFail": "无法读取文件 {0}: {1}。",
-			"jsonInvalidFormat": "格式 {0} 无效: 应为 JSON 对象。",
-			"jsonParseFail": "无法解析 {0}: [{1}, {2}] {3}.",
-			"jsonParseInvalidType": "清单文件 {0} 无效: 不是 JSON 对象。",
-			"jsonsParseReportErrors": "未能分析 {0}: {1}。",
-			"missingNLSKey": "无法找到键 {0} 的消息。",
-			"notSemver": "扩展版本与 semver 不兼容。"
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "未能将“{0}”移动到回收站",

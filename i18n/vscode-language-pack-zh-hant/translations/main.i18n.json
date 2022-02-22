@@ -971,14 +971,6 @@
 			"indentationToTabs": "將縮排轉換成定位點",
 			"selectTabWidth": "選取目前檔案的定位點大小"
 		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsAccessibility": {
-			"description": "具有內嵌提示資訊的代碼",
-			"isReadingLineWithInlayHints": "目前行及其內嵌提示是否是目前焦點"
-		},
-		"vs/editor/contrib/inlayHints/browser/inlayHintsController": {
-			"read.title": "使用內嵌提示讀取行",
-			"stop.title": "停止內嵌提示讀取"
-		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
 			"action.inlineSuggest.showNext": "顯示下一個內嵌建議",
 			"action.inlineSuggest.showPrevious": "顯示上一個內嵌建議",
@@ -3638,6 +3630,7 @@
 			"workbench.editor.labelFormat.medium": "顯示檔案的名稱，後面接著其對工作區資料夾相關的路徑。",
 			"workbench.editor.labelFormat.short": "顯示檔案的名稱，後面接著其目錄名稱。",
 			"workbench.editor.languageDetection": "控制是否自動偵測文字編輯器中的語言，除非該語言已由語言選擇器明確設定。這也可以依語言確定範圍，以便您可以指定不希望關閉的語言。這對於像 Markdown 這樣的語言很有用，因為它通常包含其他可能會欺騙語言偵測的語言，使其認為它是內嵌語言而不是 Markdown。",
+			"workbench.editor.languageDetectionPreferredLanguages": "Configures languages automatic language detection will prefer to select for a given document. This applies primarily to short documents where there is insufficient data to confidently predict a language.",
 			"workbench.editor.navigationScopeDefault": "巡覽所有開啟的編輯器和編輯器群組。",
 			"workbench.editor.navigationScopeEditor": "僅在使用中的編輯器中巡覽。",
 			"workbench.editor.navigationScopeEditorGroup": "僅在使用中的編輯器群組的編輯器中巡覽。",
@@ -3981,7 +3974,8 @@
 			"audioCues.lineHasError.name": "程式行有錯誤",
 			"audioCues.lineHasFoldedArea.name": "程式行有摺疊區域",
 			"audioCues.lineHasInlineSuggestion.name": "程式行有可用的內嵌建議",
-			"audioCues.lineHasWarning.name": "程式行有警告"
+			"audioCues.lineHasWarning.name": "程式行有警告",
+			"audioCues.noInlayHints": "No Inlay Hints available for the current line"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.debuggerStoppedOnBreakpoint": "當偵錯工具在中斷點停止時，播放音效。",
@@ -3992,7 +3986,8 @@
 			"audioCues.lineHasError": "當使用中的程式行出現錯誤時，播放音效。",
 			"audioCues.lineHasFoldedArea": "當使用中的程式行具有可展開的摺疊區域時，播放音效。",
 			"audioCues.lineHasInlineSuggestion": "當使用中的程式行有內嵌建議時，播放音效。",
-			"audioCues.lineHasWarning": "當使用中的程式行出現警告時，播放音效。"
+			"audioCues.lineHasWarning": "當使用中的程式行出現警告時，播放音效。",
+			"audioCues.noInlayHints": "Plays a sound when trying to read a line with inlay hints that has no inlay hints."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
 			"audioCues.help": "說明: 列出音訊提示",
@@ -5391,6 +5386,7 @@
 			"enableGloballyActionToolTip": "啟用此延伸模組",
 			"enabled": "啟用",
 			"enabled by environment": "由於目前環境中需要此延伸模組，因此已加以啟用。",
+			"enabled in web worker": "This extension is enabled in the Web Worker Extension Host because it prefers to run there.",
 			"enabled locally": "因為此延伸模組偏好在本機延伸主機中執行，所以已在其中啟用。",
 			"enabled remotely": "因為此延伸模組偏好在遠端延伸主機中執行，所以已在其中啟用。",
 			"extension disabled because of dependency": "此延伸模組已停用，因為它依賴已停用的延伸模組。",
@@ -6130,6 +6126,12 @@
 		},
 		"vs/workbench/contrib/format/browser/formatModified": {
 			"formatChanges": "將修改的程式行格式化"
+		},
+		"vs/workbench/contrib/inlayHints/browser/inlayHintsAccessibilty": {
+			"description": "Code with Inlay Hint Information",
+			"isReadingLineWithInlayHints": "Whether the current line and its inlay hints are currently focused",
+			"read.title": "Read Line With Inline Hints",
+			"stop.title": "Stop Inlay Hints Reading"
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "當編輯器有焦點時，目前互動式程式碼資料格的框線色彩。",
@@ -10177,6 +10179,30 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "測量延伸主機延遲"
 		},
+		"vs/workbench/services/extensions/common/extensionPoints": {
+			"extensionDescription.activationEvents1": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.activationEvents2": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.browser1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.browser2": "Expected `browser` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.browser3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.empty": "Got empty extension description",
+			"extensionDescription.engines": "property `{0}` is mandatory and must be of type `object`",
+			"extensionDescription.engines.vscode": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.extensionDependencies": "property `{0}` can be omitted or must be of type `string[]`",
+			"extensionDescription.main1": "property `{0}` can be omitted or must be of type `string`",
+			"extensionDescription.main2": "Expected `main` ({0}) to be included inside extension's folder ({1}). This might make the extension non-portable.",
+			"extensionDescription.main3": "properties `{0}` and `{1}` must both be specified or must both be omitted",
+			"extensionDescription.name": "property `{0}` is mandatory and must be of type `string`",
+			"extensionDescription.publisher": "property publisher must be of type `string`.",
+			"extensionDescription.version": "property `{0}` is mandatory and must be of type `string`",
+			"fileReadFail": "Cannot read file {0}: {1}.",
+			"jsonInvalidFormat": "Invalid format {0}: JSON object expected.",
+			"jsonParseFail": "Failed to parse {0}: [{1}, {2}] {3}.",
+			"jsonParseInvalidType": "Invalid manifest file {0}: Not an JSON object.",
+			"jsonsParseReportErrors": "Failed to parse {0}: {1}.",
+			"missingNLSKey": "Couldn't find message for key {0}.",
+			"notSemver": "Extension version is not semver compatible."
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "定義延伸模組的種類。`ui` 延伸模組會於本機電腦安裝並執行，而 `workspace` 延伸模組則會在遠端執行。",
 			"extensionKind.empty": "定義無法在遠端內容中執行的延伸模組 (既不在本機，也不在遠端電腦上)。",
@@ -10259,10 +10285,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "遠端延伸主機"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "延伸模組在磁碟上已修改。請重新載入視窗。",
-			"reloadWindow": "重新載入視窗"
-		},
 		"vs/workbench/services/extensions/electron-browser/extensionService": {
 			"devTools": "開啟開發人員工具",
 			"enable": "啟用並重新載入",
@@ -10286,29 +10308,9 @@
 			"extensionHost.startupFailDebug": "延伸主機未於 10 秒內開始，可能在第一行就已停止，並需要偵錯工具才能繼續。",
 			"reloadWindow": "重新載入視窗"
 		},
-		"vs/workbench/services/extensions/node/extensionPoints": {
-			"extensionDescription.activationEvents1": "屬性 `{0}` 可以省略或必須屬於 `string[]` 類型",
-			"extensionDescription.activationEvents2": "屬性 `{0}` 和 `{1}` 必須同時指定或同時忽略",
-			"extensionDescription.browser1": "`{0}` 屬性可省略，否則必須屬於 `string` 類型",
-			"extensionDescription.browser2": "`browser` ({0}) 必須包含在延伸模組的資料夾 ({1}) 中。這可能會使延伸模組無法移植。",
-			"extensionDescription.browser3": "屬性 `{0}` 和 `{1}` 必須同時指定或同時忽略",
-			"extensionDescription.empty": "得到空白延伸模組描述",
-			"extensionDescription.engines": "屬性 '{0}' 為強制項目且必須屬於 `object` 類型",
-			"extensionDescription.engines.vscode": "屬性 '{0}' 為強制項目且必須屬於 `string` 類型",
-			"extensionDescription.extensionDependencies": "屬性 `{0}` 可以省略或必須屬於 `string[]` 類型",
-			"extensionDescription.main1": "屬性 `{0}` 可以省略或必須屬於 `string` 類型",
-			"extensionDescription.main2": "`main` ({0}) 必須包含在延伸模組的資料夾 ({1}) 中。這可能會使延伸模組無法移植。",
-			"extensionDescription.main3": "屬性 `{0}` 和 `{1}` 必須同時指定或同時忽略",
-			"extensionDescription.name": "屬性 '{0}' 為強制項目且必須屬於 `string` 類型",
-			"extensionDescription.publisher": "屬性發行者必須屬於 `string` 類型。",
-			"extensionDescription.version": "屬性 '{0}' 為強制項目且必須屬於 `string` 類型",
-			"fileReadFail": "無法讀取檔案 {0}: {1}。",
-			"jsonInvalidFormat": "格式 {0} 無效: 必須是 JSON 物件。",
-			"jsonParseFail": "無法剖析 {0}: [{1}, {2}] {3}。",
-			"jsonParseInvalidType": "資訊清單檔案 {0} 無效: 不是 JSON 物件。",
-			"jsonsParseReportErrors": "無法剖析 {0}: {1}。",
-			"missingNLSKey": "找不到金鑰 {0} 的訊息。",
-			"notSemver": "延伸模組版本與 semver 不相容。"
+		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
+			"extensionCache.invalid": "Extensions have been modified on disk. Please reload the window.",
+			"reloadWindow": "Reload Window"
 		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"binFailed": "無法將 '{0}' 移至資源回收筒",
