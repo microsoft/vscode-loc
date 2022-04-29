@@ -24,6 +24,7 @@ There are currently 14 "Core" languages for Visual Studio Code.
 |**Czech**|cs|Czech (cs-CZ)
 |**Portuguese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br)
 |**Turkish**|tr|Turkish (tr-tr)
+|**Polish**|pl| Polish (pl-pl)
 |**Pseudo Language**|qps-ploc|Pseudo (qps-ploc)
 
 ## Contributing
