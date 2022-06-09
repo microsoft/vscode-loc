@@ -1,0 +1,40 @@
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+#*************
+#* IMPORTANT *
+#*************
+# This pipeline needs a variable called `languagePack` set to the name of the directory that
+# contains the language pack we want to work with. Set this via the Azure Pipelines UI.
+
+trigger: none
+pr: none
+
+schedules:
+  # Run every Wednesday
+  - cron: '0 9 * * Wed'
+    displayName: Weekly Release Schedule
+    always: true
+    branches:
+      include:
+        - main
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: microsoft/vscode-engineering
+      ref: main
+      endpoint: Monaco
+
+extends:
+  template: azure-pipelines/extension/pre-release.yml@templates
+  parameters:
+    usePreReleaseChannel: false
+    workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
+    buildSteps:
+      - pwsh: |
+          [version]$version = Get-Content -Raw ./package.json | ConvertFrom-Json | Select-Object -ExpandProperty version
+          $patch = Get-Date -Format MddHHmm
+          npm version "$($version.Major).$($version.Minor).$patch"
+        displayName: Update version
+        workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
