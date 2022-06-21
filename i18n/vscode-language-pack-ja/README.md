@@ -4,8 +4,8 @@ Japanese Language Pack は VS Code にローカライズされた UI を提供�
 
 ## 使用法
 
-既定の UI 言語をオーバーライドするには、"Configure Display Language" コマンドを使用して、VS Code の表示言語を明示的に設定します。
-"Ctrl+Shift+P" を押して "コマンド パレット" を表示し、"display" と入力して "Configure Display Language" コマンドをフィルターして表示します。Enter キーを押すと、インストールされている言語の一覧がロケールごとに表示され、現在のロケールが強調表示されます。UI 言語を切り替えるには、別の "ロケール" を選択してください。
+既定の UI 言語をオーバーライドするには、**Configure Display Language** コマンドを使用して、VS Code の表示言語を明示的に設定します。
+`Ctrl+Shift+P` を押して "コマンド パレット" を表示し、`display` と入力して **Configure Display Language** コマンドをフィルターして表示します。`Enter` キーを押すと、インストールされている言語の一覧がロケールごとに表示され、現在のロケールが強調表示されます。UI 言語を切り替えるには、別の "ロケール" を選択してください。
 
 詳細については [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) を参照してください。
 
