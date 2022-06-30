@@ -93,6 +93,7 @@
 			"error.stepOverDidFail": "Не удалось выполнить следующий шаг.",
 			"error.threadNotPaused": "Поток не был приостановлен.",
 			"error.threadNotPausedOnException": "Поток не был приостановлен во время исключения.",
+			"error.unknownRestartError": "Frame could not be restarted",
 			"pause.DomBreakpoint": "Приостановлено в точке останова DOM.",
 			"pause.assert": "Приостановлено в утверждении.",
 			"pause.breakpoint": "Приостановлено в точке останова.",
@@ -229,11 +230,6 @@
 			"longPredictionWarning.noFolder": "Папка рабочей области не открыта.",
 			"longPredictionWarning.open": "Открыть launch.json"
 		},
-		"/src/ui/prettyPrint": {
-			"never": "Никогда",
-			"no": "Нет",
-			"yes": "Да"
-		},
 		"/src/ui/processPicker": {
 			"cannot.enable.debug.mode.error": "Присоединение к процессу: не удается включить режим отладки для процесса \"{0}\" ({1}).",
 			"pickNodeProcess": "Выберите процесс node.js, к которому нужно подключиться",
@@ -332,6 +328,8 @@
 			"commands.callersGoToTarget.label": "Перейти к целевому расположению",
 			"commands.callersRemove.label": "Удалить исключенного вызывающего",
 			"commands.callersRemoveAll.label": "Удалить всех исключенных вызывающих",
+			"commands.disableSourceMapStepping.label": "Disable Source Mapped Stepping",
+			"commands.enableSourceMapStepping.label": "Enable Source Mapped Stepping",
 			"configuration.autoAttachMode": "Определяет, к каким процессам необходимо автоматически присоединяться для отладки, если установлен параметр \"#debug.node.autoAttach#\". Присоединение к процессам Node, запущенным с флагом \"--inspect\", будет осуществляться всегда, независимо от значения этого параметра.",
 			"configuration.autoAttachMode.always": "Автоматически присоединяться к каждому процессу Node.js, запущенному в терминале.",
 			"configuration.autoAttachMode.disabled": "Автоматическое подключение отключено и не отображается в строке состояния.",
@@ -345,7 +343,6 @@
 			"configuration.npmScriptLensLocation": "Где требуется отобразить группы связанных элементов кода \"Run\" и \"Debug\" в ваших скриптах npm. Можно использовать значение \"all\" — во всех скриптах, \"top\" — сверху раздела скриптов или \"never\" — нигде.",
 			"configuration.pickAndAttachOptions": "Параметры по умолчанию, используемые при отладке процесса с помощью команды \"Отладка: присоединить к процессу Node.js\"",
 			"configuration.resourceRequestOptions": "Параметры запроса, используемые при загрузке ресурсов в отладчике, таких как сопоставители с исходным кодом. Этот параметр может потребоваться задать в том случае, если для сопоставителей с исходным кодом требуется проверка подлинности или самозаверяющий сертификат. Параметры используются для создания запроса с помощью библиотеки [\"got\"](https://github.com/sindresorhus/got).\r\n\r\nВ общем случае для отключения проверки сертификата можно передать параметр \"{ \"https\": { \"rejectUnauthorized\": false } }\".",
-			"configuration.suggestPrettyPrinting": "Следует ли предлагать код автоматического форматирования JavaScript, который выглядит минифицированным при заходе в него.",
 			"configuration.terminalOptions": "Параметры запуска по умолчанию для терминала отладки JavaScript и скриптов npm.",
 			"configuration.unmapMissingSources": "Определяет, будет ли автоматически отменено сопоставление с исходным кодом для файла, если исходный файл не может быть прочитан. Если этот параметр имеет значение false (по умолчанию), отображается запрос.",
 			"createDiagnostics.label": "Диагностика проблем с точкой останова",
@@ -363,6 +360,7 @@
 			"debug.terminal.toggleAuto": "Переключение автоприсоединения Node.js терминала",
 			"debug.terminal.welcome": "[Терминал отладки JavaScript](command:extension.js-debug.createDebuggerTerminal)\r\n\r\nВы можете использовать терминал отладки JavaScript для отладки процессов Node.js, запущенных в командной строке.",
 			"debug.terminal.welcomeWithLink": "[Терминал отладки JavaScript](command:extension.js-debug.createDebuggerTerminal)\r\n\r\nВы можете использовать терминал отладки JavaScript для отладки процессов Node.js, запущенных в командной строке.\r\n\r\n[URL-адрес отладки](command:extension.js-debug.debugLink).",
+			"debug.unverifiedBreakpoints": "Some of your breakpoints could not be set. If you're having an issue, you can [troubleshoot your launch configuration](command:extension.js-debug.createDiagnostics).",
 			"debugLink.label": "Открыть ссылку",
 			"edge.address.description": "IP-адрес или имя узла, которые прослушивает веб-представление, при отладке веб-представлений. Если этот параметр не установлен, он будет определен автоматически.",
 			"edge.attach.description": "Подключить к экземпляру Microsoft Edge уже в режиме отладки",
@@ -386,6 +384,7 @@
 			"extensionHost.launch.stopOnEntry.description": "Автоматическая остановка хост-процесса для расширений после запуска.",
 			"extensionHost.snippet.launch.description": "Запустить расширение VS Code в режиме отладки",
 			"extensionHost.snippet.launch.label": "Разработка расширения VS Code",
+			"getDiagnosticLogs.label": "Save Diagnostic JS Debug Logs",
 			"longPredictionWarning.disable": "Больше не показывать",
 			"longPredictionWarning.message": "Настройка точек остановка занимает некоторое время. Вы можете ускорить этот процесс, изменив \"outFiles\" в файле launch.json.",
 			"longPredictionWarning.noFolder": "Папка рабочей области не открыта.",
@@ -478,12 +477,9 @@
 			"timeouts.sourceMaps.sourceMapMinPause.description": "Минимальное время в миллисекундах, затраченное на ожидание обработки каждого сопоставления исходного кода при синтаксическом анализе сценария.",
 			"toggle.skipping.this.file": "Переключить пропуск этого файла",
 			"trace.boolean.description": "Для Trace можно установить значение \"true\", чтобы записывать диагностические журналы на диск.",
-			"trace.console.description": "Настраивает, возвращаются ли журналы также в консоль отладки.",
 			"trace.description": "Настраивает то, какие диагностические выходные данные создаются.",
-			"trace.level.description": "Настраивает уровень записываемых журналов.",
 			"trace.logFile.description": "Настраивает, в какое место на диске записываются журналы.",
 			"trace.stdio.description": "Возвращать ли данные трассировки из запущенного приложения или браузера.",
-			"trace.tags.description": "Настраивает, какие типы регистров регистрируются.",
 			"workspaceTrust.description": "Для отладки кода в этой рабочей области требуется доверие."
 		}
 	}
