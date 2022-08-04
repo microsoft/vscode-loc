@@ -20,7 +20,20 @@ jobs:
           git reset --hard ${{ github.ref_name }}
 
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
           labels: updated-translations
           delete-branch: true
+      
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+      # # Enable auto-merge if this is coming from a bot
+      # - uses: alexwilson/enable-github-automerge-action@main
+      #   if: github.event.pull_request.user.login == 'vscode'
+      #   with:
+      #     github-token: "${{ secrets.GITHUB_TOKEN }}"
