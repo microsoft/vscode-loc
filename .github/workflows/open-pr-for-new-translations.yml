@@ -18,11 +18,16 @@ jobs:
         run: |
           git fetch origin ${{ github.ref_name }}:${{ github.ref_name }}
           git reset --hard ${{ github.ref_name }}
+      
+      - name: Get commit message
+        run: echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
+          title: ${{ env.commit_message }}
+          body: ${{ env.commit_message }}
           labels: updated-translations
           delete-branch: true
       
@@ -32,8 +37,3 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-      # # Enable auto-merge if this is coming from a bot
-      # - uses: alexwilson/enable-github-automerge-action@main
-      #   if: github.event.pull_request.user.login == 'vscode'
-      #   with:
-      #     github-token: "${{ secrets.GITHUB_TOKEN }}"
