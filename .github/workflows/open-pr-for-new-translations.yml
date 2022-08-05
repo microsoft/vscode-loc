@@ -11,9 +11,29 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Add commits on top
+        run: |
+          git fetch origin ${{ github.ref_name }}:${{ github.ref_name }}
+          git reset --hard ${{ github.ref_name }}
+      
+      - name: Get commit message
+        run: echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v4
         with:
+          title: ${{ env.commit_message }}
+          body: ${{ env.commit_message }}
           labels: updated-translations
           delete-branch: true
+      
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
