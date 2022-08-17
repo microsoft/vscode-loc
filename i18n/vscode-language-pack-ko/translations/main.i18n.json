@@ -22,6 +22,9 @@
 			"dialogWarningMessage": "경고",
 			"ok": "확인"
 		},
+		"vs/base/browser/ui/dropdown/dropdownActionViewItem": {
+			"moreActions": "More Actions..."
+		},
 		"vs/base/browser/ui/findinput/findInput": {
 			"defaultLabel": "입력"
 		},
@@ -162,9 +165,6 @@
 		"vs/base/common/platform": {
 			"ensureLoaderPluginIsLoaded": "_"
 		},
-		"vs/base/node/processes": {
-			"TaskRunner.UNC": "UNC 드라이브에서 셸 명령을 실행할 수 없습니다."
-		},
 		"vs/base/node/zip": {
 			"incompleteExtract": "완료되지 않았습니다. {1}개 항목 중 {0}개를 찾았습니다.",
 			"invalid file": "{0}을(를) 추출하는 동안 오류가 발생했습니다. 잘못된 파일입니다.",
@@ -238,10 +238,12 @@
 		},
 		"vs/editor/common/config/editorConfigurationSchema": {
 			"codeLens": "편집기에서 CodeLens를 표시할 것인지 여부를 제어합니다.",
-			"detectIndentation": "파일을 열 때 파일 콘텐츠를 기반으로 `#editor.tabSize#`와 `#editor.insertSpaces#`가 자동으로 검색되는지 여부를 제어합니다.",
+			"detectIndentation": "Controls whether {0} and {1} will be automatically detected when a file is opened based on the file contents.",
+			"diffAlgorithm.experimental": "Uses an experimental diffing algorithm.",
+			"diffAlgorithm.smart": "Uses the default diffing algorithm.",
 			"editorConfigurationTitle": "편집기",
 			"ignoreTrimWhitespace": "사용하도록 설정하면 Diff 편집기가 선행 또는 후행 공백의 변경 내용을 무시합니다.",
-			"insertSpaces": "'탭' 키를 누를 때 공백을 삽입합니다. `#editor.detectIndentation#`이 켜져 있는 경우 이 설정은 파일 콘텐츠에 따라 재정의됩니다.",
+			"insertSpaces": "Insert spaces when pressing `Tab`. This setting is overridden based on the file contents when {0} is on.",
 			"largeFileOptimizations": "큰 파일에 대한 특수 처리로, 메모리를 많이 사용하는 특정 기능을 사용하지 않도록 설정합니다.",
 			"maxComputationTime": "diff 계산이 취소된 후 밀리초 단위로 시간을 제한합니다. 제한 시간이 없는 경우 0을 사용합니다.",
 			"maxFileSize": "차이를 계산할 최대 파일 크기(MB)입니다. 제한이 없으면 0을 사용합니다.",
@@ -258,14 +260,14 @@
 			"semanticHighlighting.true": "모든 색 테마에 대해 의미 체계 강조 표시를 사용합니다.",
 			"sideBySide": "diff 편집기에서 diff를 나란히 표시할지 인라인으로 표시할지를 제어합니다.",
 			"stablePeek": "해당 콘텐츠를 두 번 클릭하거나 'Esc' 키를 누르더라도 Peek 편집기를 열린 상태로 유지합니다.",
-			"tabSize": "탭 한 개에 해당하는 공백 수입니다. `#editor.detectIndentation#`이 켜져 있는 경우 이 설정은 파일 콘텐츠에 따라 재정의됩니다.",
+			"tabSize": "The number of spaces a tab is equal to. This setting is overridden based on the file contents when {0} is on.",
 			"trimAutoWhitespace": "끝에 자동 삽입된 공백을 제거합니다.",
 			"wordBasedSuggestions": "문서 내 단어를 기반으로 완성을 계산할지 여부를 제어합니다.",
 			"wordBasedSuggestionsMode": "단어 기반 완성이 컴퓨팅되는 문서에서 제어합니다.",
 			"wordBasedSuggestionsMode.allDocuments": "모든 열린 문서에서 단어를 제안합니다.",
 			"wordBasedSuggestionsMode.currentDocument": "활성 문서에서만 단어를 제안합니다.",
 			"wordBasedSuggestionsMode.matchingDocuments": "같은 언어의 모든 열린 문서에서 단어를 제안합니다.",
-			"wordWrap.inherit": "`#editor.wordWrap#` 설정에 따라 줄이 바뀝니다.",
+			"wordWrap.inherit": "Lines will wrap according to the {0} setting.",
 			"wordWrap.off": "줄이 바뀌지 않습니다.",
 			"wordWrap.on": "뷰포트 너비에서 줄이 바뀝니다."
 		},
@@ -332,6 +334,7 @@
 			"editor.editor.gotoLocation.multipleReferences": "여러 대상 위치가 있는 경우 '참조로 이동' 명령 동작을 제어합니다.",
 			"editor.editor.gotoLocation.multipleTypeDefinitions": "여러 대상 위치가 있는 경우 '유형 정의로 이동' 명령 동작을 제어합니다.",
 			"editor.experimental.stickyScroll": "편집기 위쪽에서 스크롤하는 동안 중첩된 현재 범위를 표시합니다.",
+			"editor.experimental.stickyScroll.": "Defines the maximum number of sticky lines to show.",
 			"editor.find.autoFindInSelection.always": "선택 영역에서 찾기를 항상 자동으로 켭니다.",
 			"editor.find.autoFindInSelection.multiline": "여러 줄의 콘텐츠를 선택하면 선택 항목에서 찾기가 자동으로 켜집니다.",
 			"editor.find.autoFindInSelection.never": "선택 영역에서 찾기를 자동으로 켜지 않습니다(기본값).",
@@ -762,7 +765,13 @@
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionMenu": {
 			"CodeActionMenuVisible": "코드 작업 목록 위젯이 표시되는지 여부",
-			"label": "리팩터링할 {0}, 미리 보기할 {1}"
+			"codeAction.widget.id.convert": "Convert...",
+			"codeAction.widget.id.extract": "Extract...",
+			"codeAction.widget.id.more": "More Actions...",
+			"codeAction.widget.id.quickfix": "Quick Fix...",
+			"codeAction.widget.id.source": "Source Action...",
+			"codeAction.widget.id.surround": "Surround With...",
+			"label": "{0} to Apply, {1} to Preview"
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionWidgetContribution": {
 			"codeActionWidget": "활성화하면 코드 작업 메뉴가 렌더링되는 방식이 조정됩니다."
@@ -1440,13 +1449,6 @@
 			"moreFile": "...1개의 추가 파일이 표시되지 않음",
 			"moreFiles": "...{0}개의 추가 파일이 표시되지 않음"
 		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "열기",
-			"openFile": "파일 열기",
-			"openFolder": "폴더 열기",
-			"openWorkspace": "열기(&&O)",
-			"openWorkspaceTitle": "파일에서 작업 영역 열기"
-		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "파일이 너무 커서 제목 없는 편집기로 열 수 없습니다. 먼저 파일을 파일 탐색기에 업로드한 후 다시 시도하세요."
 		},
@@ -1555,9 +1557,6 @@
 			"jsonsParseReportErrors": "{0}을(를) 구문 분석하지 못함: {1}.",
 			"missingNLSKey": "키 {0}에 대한 메시지를 찾을 수 없습니다."
 		},
-		"vs/platform/extensionManagement/electron-sandbox/extensionTipsService": {
-			"exeRecommended": "시스템에 {0}이(가) 설치되어 있습니다. 권장되는 확장을 설치하시겠습니까?"
-		},
 		"vs/platform/extensionManagement/node/extensionManagementService": {
 			"cannot read": "{0}에서 확장을 읽을 수 없음",
 			"errorDeleting": "'{1}' 확장을 설치하는 동안 기존 '{0}' 폴더를 삭제할 수 없습니다. 폴더를 수동으로 삭제하고 다시 시도하세요.",
@@ -1606,6 +1605,13 @@
 			"fileSystemNotAllowedError": "권한이 부족합니다. 작업을 다시 시도하고 허용하세요.",
 			"fileSystemRenameError": "이름 바꾸기는 파일에 대해서만 지원됩니다."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Directory is not empty",
+			"fileIsDirectory": "File is Directory",
+			"fileNotDirectory": "File is not a directory",
+			"fileNotExists": "File does not exist",
+			"internal": "Internal error occurred in IndexedDB File System Provider. ({0})"
+		},
 		"vs/platform/files/common/fileService": {
 			"deleteFailedNonEmptyFolder": "비어 있지 않은 폴더 '{0}'을(를) 삭제할 수 없습니다.",
 			"deleteFailedNotFound": "존재하지 않는 파일 '{0}'을(를) 삭제할 수 없습니다.",
@@ -1641,10 +1647,6 @@
 			"fileTooLargeError": "파일이 너무 커서 열 수 없음",
 			"fileTooLargeForHeapError": "이 크기의 파일을 열려면 다시 시작하여 더 많은 메모리를 사용하도록 허용해야 합니다"
 		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "'{0}'을(를) 휴지통으로 이동하지 못함",
-			"trashFailed": "'{0}'을(를) 휴지통으로 이동하지 못함"
-		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "'{0}'을(를) '{1}'({2})(으)로 복사할 수 없습니다.",
 			"fileCopyErrorExists": "대상에 파일이 이미 있습니다.",
@@ -1655,16 +1657,6 @@
 		},
 		"vs/platform/history/browser/contextScopedHistoryWidget": {
 			"suggestWidgetVisible": "제안이 표시되는지 여부"
-		},
-		"vs/platform/issue/electron-main/issueMainService": {
-			"cancel": "취소(&&C)",
-			"confirmCloseIssueReporter": "입력이 저장되지 않습니다. 이 창을 닫으시겠습니까?",
-			"issueReporter": "문제 보고자",
-			"issueReporterWriteToClipboard": "GitHub에 직접 보낼 데이터가 너무 많으므로 데이터가 클립보드에 복사됩니다. 열려 있는 GitHub 문제 페이지에 해당 데이터를 붙여넣으세요.",
-			"local": "LOCAL",
-			"ok": "확인(&&O)",
-			"processExplorer": "프로세스 탐색기",
-			"yes": "예(&&Y)"
 		},
 		"vs/platform/keybinding/common/abstractKeybindingService": {
 			"first.chord": "({0})을(를) 눌렀습니다. 둘째 키는 잠시 기다렸다가 누르십시오...",
@@ -1704,53 +1696,6 @@
 			"sev.error": "오류",
 			"sev.info": "정보",
 			"sev.warning": "경고"
-		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "취소(&&C)",
-			"mAbout": "{0} 정보",
-			"mBringToFront": "모두 맨 앞으로 가져오기",
-			"mEdit": "편집(&&E)",
-			"mFile": "파일(&&F)",
-			"mGoto": "이동(&&G)",
-			"mHelp": "도움말(&&H)",
-			"mHide": "{0} 숨기기",
-			"mHideOthers": "기타 숨기기",
-			"mMergeAllWindows": "모든 창 병합",
-			"mMinimize": "최소화",
-			"mMoveTabToNewWindow": "새 창으로 탭 이동",
-			"mNewTab": "새 탭",
-			"mRun": "실행(&&R)",
-			"mSelection": "선택 영역(&&S)",
-			"mServices": "서비스",
-			"mShowAll": "모두 표시",
-			"mShowNextTab": "다음 탭 표시",
-			"mShowPreviousTab": "이전 탭 표시",
-			"mTerminal": "터미널(&&T)",
-			"mView": "보기(&&V)",
-			"mWindow": "창",
-			"mZoom": "확대/축소",
-			"miCheckForUpdates": "업데이트 확인(&&U)...",
-			"miCheckingForUpdates": "업데이트를 확인하는 중...",
-			"miDownloadUpdate": "사용할 수 있는 업데이트 다운로드(&&O)",
-			"miDownloadingUpdate": "업데이트를 다운로드하는 중...",
-			"miInstallUpdate": "업데이트 설치(&&U)...",
-			"miInstallingUpdate": "업데이트를 설치하는 중...",
-			"miNewWindow": "새 창(&&W)",
-			"miPreferences": "기본 설정(&&P)",
-			"miQuit": "{0} 종료",
-			"miRestartToUpdate": "다시 시작 및 업데이트(&&U)",
-			"miSwitchWindow": "창 전환(&&W)...",
-			"quit": "종료(&&Q)",
-			"quitMessage": "종료하시겠습니까?"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "취소(&&C)",
-			"cantCreateBinFolder": "셸 명령 '{0}'을(를) 설치할 수 없습니다.",
-			"cantUninstall": "셸 명령 '{0}'을(를) 제거할 수 없습니다.",
-			"ok": "확인(&&O)",
-			"sourceMissing": "'{0}'에서 셸 스크립트를 찾을 수 없습니다.",
-			"warnEscalation": "이제 {0}에서 'osascript'를 사용하여 관리자에게 셸 명령을 설치할 권한이 있는지를 묻습니다.",
-			"warnEscalationUninstall": "이제 {0}에서 'osascript'를 사용하여 셸 명령을 제거할 관리자 권한이 있는지를 묻습니다."
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "명령 '{0}'에서 오류({1})가 발생했습니다.",
@@ -1798,9 +1743,9 @@
 			"telemetryConfigurationTitle": "원격 분석"
 		},
 		"vs/platform/terminal/common/terminalPlatformConfiguration": {
-			"terminal.integrated.automationProfile.linux": "작업 및 디버그와 같은 자동화 관련 터미널 사용을 위해 Linux에서 사용할 터미널 프로필입니다. 이 설정은 현재 {0}이(가) 설정된 경우 무시됩니다.",
-			"terminal.integrated.automationProfile.osx": "작업 및 디버그와 같은 자동화 관련 터미널 사용을 위해 macOS에서 사용할 터미널 프로필입니다. 이 설정은 현재 {0}이(가) 설정된 경우 무시됩니다.",
-			"terminal.integrated.automationProfile.windows": "작업 및 디버그와 같은 자동화 관련 터미널 사용을 위해 사용할 터미널 프로필입니다. 이 설정은 현재 {0}이(가) 설정된 경우 무시됩니다.",
+			"terminal.integrated.automationProfile.linux": "The terminal profile to use on Linux for automation-related terminal usage like tasks and debug. This setting will currently be ignored if {0} (now deprecated) is set.",
+			"terminal.integrated.automationProfile.osx": "The terminal profile to use on macOS for automation-related terminal usage like tasks and debug. This setting will currently be ignored if {0} (now deprecated) is set.",
+			"terminal.integrated.automationProfile.windows": "The terminal profile to use for automation-related terminal usage like tasks and debug. This setting will currently be ignored if {0} (now deprecated) is set.",
 			"terminal.integrated.automationShell.linux": "설정 시 작업 및 디버그와 같은 자동화 관련 터미널 사용의 {0}을(를) 재정의하고 {1} 값을 무시하는 경로입니다.",
 			"terminal.integrated.automationShell.linux.deprecation": "더 이상 사용되지 않습니다. 자동화 셸을 구성하는 새로운 권장 방법은 {0}을(를) 사용하여 터미널 자동화 프로필을 만드는 것입니다. 이는 현재 새 자동화 프로필 설정보다 우선하지만 나중에 변경될 예정입니다.",
 			"terminal.integrated.automationShell.osx": "설정 시 작업 및 디버그와 같은 자동화 관련 터미널 사용의 {0}을(를) 재정의하고 {1} 값을 무시하는 경로입니다.",
@@ -2184,25 +2129,6 @@
 		"vs/platform/userDataSync/common/userDataSyncMachines": {
 			"error incompatible": "현재 버전이 호환되지 않아서 머신 데이터를 읽을 수 없습니다. {0}을(를) 업데이트하고 다시 시도하세요."
 		},
-		"vs/platform/windows/electron-main/window": {
-			"appCrashed": "창이 충돌했습니다.",
-			"appCrashedDetail": "불편을 드려서 죄송합니다. 창을 다시 열면 중단된 위치에서 계속할 수 있습니다.",
-			"appCrashedDetails": "창이 충돌했습니다(원인: '{0}', 코드: '{1}').",
-			"appStalled": "창이 응답하지 않습니다.",
-			"appStalledDetail": "창을 다시 열거나, 닫거나, 계속 기다릴 수 있습니다.",
-			"close": "닫기(&&C)",
-			"doNotRestoreEditors": "편집기를 복원하지 않음",
-			"hiddenMenuBar": "<Alt> 키를 눌러 메뉴 모음에 계속 액세스할 수 있습니다.",
-			"reopen": "다시 열기(&&R)",
-			"wait": "계속 대기(&&K)"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"ok": "확인(&&O)",
-			"pathNotExistDetail": "'{0}' 경로가 이 컴퓨터에 없습니다.",
-			"pathNotExistTitle": "경로가 없습니다.",
-			"uriInvalidDetail": "URI '{0}'이(가) 유효한 것으로 확인되지 않아 열 수 없습니다.",
-			"uriInvalidTitle": "URI를 열 수 없습니다."
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "코드 작업 영역"
 		},
@@ -2210,18 +2136,19 @@
 			"trusted": "신뢰할 수 있음",
 			"untrusted": "제한 모드"
 		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"newWindow": "새 창",
-			"newWindowDesc": "새 창을 엽니다.",
-			"recentFolders": "최근 폴더",
-			"recentFoldersAndWorkspaces": "최근 폴더 및 작업 영역",
-			"untitledWorkspace": "제목 없음(작업 영역)",
-			"workspaceName": "{0}(작업 영역)"
-		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "확인(&&O)",
-			"workspaceOpenedDetail": "작업 영역이 이미 다른 창에 열렸습니다. 먼저 해당 창을 닫은 후 다시 시도하세요.",
-			"workspaceOpenedMessage": "'{0}' 작업 영역을 저장할 수 없음"
+		"vs/server/node/serverEnvironmentService": {
+			"acceptLicenseTerms": "If set, the user accepts the server license terms and the server will be started without a user prompt.",
+			"connection-token": "A secret that must be included with all requests.",
+			"connection-token-file": "Path to a file that contains the connection token.",
+			"default-folder": "The workspace folder to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.",
+			"default-workspace": "The workspace to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.",
+			"host": "The host name or IP address the server should listen to. If not set, defaults to 'localhost'.",
+			"port": "The port the server should listen to. If 0 is passed a random free port is picked. If a range in the format num-num is passed, a free port from the range (end inclusive) is selected.",
+			"serverDataDir": "Specifies the directory that server data is kept in.",
+			"socket-path": "The path to a socket file for the server to listen to.",
+			"start-server": "Start the server when installing or uninstalling extensions. To be used in combination with 'install-extension', 'install-builtin-extension' and 'uninstall-extension'.",
+			"telemetry-level": "Sets the initial telemetry level. Valid levels are: 'off', 'crash', 'error' and 'all'. If not specified, the server will send telemetry until a client connects, it will then use the clients telemetry setting. Setting this to 'off' is equivalent to --disable-telemetry",
+			"without-connection-token": "Run without a connection token. Only use this if the connection is secured by other means."
 		},
 		"win32/i18n/messages": {
 			"AddContextMenuFiles": "\"%1(으)로 열기\" 작업을 Windows 탐색기 파일의 상황에 맞는 메뉴에 추가",
@@ -3447,6 +3374,25 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "키보드 포커스가 Quick Open 컨트롤 내에 있는지 여부"
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "Reset User Data",
+			"reset user data message": "Would you like to reset your data (settings, keybindings, extensions, snippets and UI State) and reload?",
+			"vscode.dev": "vscode.dev"
+		},
+		"vs/workbench/browser/window": {
+			"cancel": "Cancel",
+			"learnMore": "Learn More",
+			"open": "Open",
+			"openExternalDialogButtonContinue": "Continue here",
+			"openExternalDialogButtonInstall": "Install {0}",
+			"openExternalDialogButtonRetry": "Try again",
+			"openExternalDialogDetail": "We tried opening {0} on your computer.",
+			"openExternalDialogTitle": "All done. You can close this tab now.",
+			"reload": "Reload",
+			"shutdownError": "An unexpected error occurred that requires a reload of this page.",
+			"shutdownErrorDetail": "The workbench was unexpectedly disposed while running.",
+			"unableToOpenExternal": "The browser interrupted the opening of a new tab or window. Press 'Open' to open it anyway."
+		},
 		"vs/workbench/browser/workbench": {
 			"loaderErrorNative": "필요한 파일을 로드하지 못했습니다. 애플리케이션을 다시 시작하여 다시 시도하세요. 세부 정보: {0}"
 		},
@@ -3807,136 +3753,12 @@
 			"titleBarInactiveForeground": "창이 비활성화된 경우 제목 표시줄 전경입니다.",
 			"unfocusedActiveModifiedBorder": "포커스가 없는 그룹에서 수정된 활성 탭 맨 위의 테두리입니다. 탭은 편집기 영역에서 편집기의 컨테이너입니다. 한 편집기 그룹에 여러 탭을 열 수 있습니다. 여러 편집기 그룹이 있을 수 있습니다.",
 			"unfocusedINactiveModifiedBorder": "포커스가 없는 그룹에서 수정된 비활성 탭 맨 위의 테두리입니다. 탭은 편집기 영역에서 편집기의 컨테이너입니다. 한 편집기 그룹에 여러 탭을 열 수 있습니다. 여러 편집기 그룹이 있을 수 있습니다.",
-			"windowActiveBorder": "창이 활성화되어 있을 때 창 테두리에 사용되는 색상입니다. 사용자 지정 제목 표시줄을 사용할 때만 데스크톱 클라이언트에서 지원됩니다.",
-			"windowInactiveBorder": "비활성 상태일 때 창의 테두리에 사용되는 색상입니다. 사용자 지정 제목 표시줄을 사용할 때만 데스크톱 클라이언트에서 지원됩니다."
+			"windowActiveBorder": "The color used for the border of the window when it is active. Only supported in the macOS and Linux desktop client when using the custom title bar.",
+			"windowInactiveBorder": "The color used for the border of the window when it is inactive. Only supported in the macOS and Linux desktop client when using the custom title bar."
 		},
 		"vs/workbench/common/views": {
 			"defaultViewIcon": "기본 뷰 아이콘입니다.",
 			"duplicateId": "ID가 '{0}'인 뷰가 이미 등록되어 있습니다."
-		},
-		"vs/workbench/electron-sandbox/actions/developerActions": {
-			"configureRuntimeArguments": "런타임 인수 구성",
-			"reloadWindowWithExtensionsDisabled": "확장을 사용하지 않도록 설정한 후 다시 로드",
-			"toggleDevTools": "개발자 도구 설정/해제",
-			"toggleSharedProcess": "공유 프로세스 설정/해제"
-		},
-		"vs/workbench/electron-sandbox/actions/installActions": {
-			"install": "PATH에 '{0}' 명령 설치",
-			"shellCommand": "셸 명령",
-			"successFrom": "셸 명령 '{0}'이(가) PATH에서 제거되었습니다.",
-			"successIn": "셸 명령 '{0}'이(가) PATH에 설치되었습니다.",
-			"uninstall": "PATH에서 '{0}' 명령 제거"
-		},
-		"vs/workbench/electron-sandbox/actions/windowActions": {
-			"close": "창 닫기",
-			"closeWindow": "창 닫기",
-			"current": "현재 창",
-			"miCloseWindow": "창 닫기(&&E)",
-			"miZoomIn": "확대(&&Z)",
-			"miZoomOut": "축소(&&Z)",
-			"miZoomReset": "확대/축소 다시 설정(&&R)",
-			"quickSwitchWindow": "빠른 창 전환...",
-			"switchWindow": "창 전환...",
-			"switchWindowPlaceHolder": "전환할 창 선택",
-			"windowDirtyAriaLabel": "{0}, 저장되지 않은 변경 내용이 있는 창",
-			"zoomIn": "확대",
-			"zoomOut": "축소",
-			"zoomReset": "확대/축소 다시 설정"
-		},
-		"vs/workbench/electron-sandbox/desktop.contribution": {
-			"argv.crashReporterId": "이 앱 인스턴스에서 보낸 크래시 보고서와 상관 관계에 사용되는 고유 ID입니다.",
-			"argv.disableHardwareAcceleration": "하드웨어 가속을 사용하지 않도록 설정합니다. 그래픽 문제가 발생한 경우에만 이 옵션을 변경하세요.",
-			"argv.enableCrashReporter": "크래시 보고를 사용하지 않도록 설정하고, 값이 변경되는 경우 앱을 다시 시작해야 합니다.",
-			"argv.enebleProposedApi": "확장 ID 목록에 대해 제안된 API를 사용합니다(예: `vscode.git`). 제안된 API는 불안정하며 언제든지 경고 없이 중단될 수 있습니다. 확장 개발 및 테스트 용도로만 설정해야 합니다.",
-			"argv.force-renderer-accessibility": "강제로 렌더러에 액세스할 수 있도록 합니다. Linux에서 화면 읽기 프로그램을 사용하는 경우에만 변경할 수 있습니다. 다른 플랫폼에서는 렌더러에 자동으로 액세스할 수 있습니다. 이 플래그는 editor.accessibilitySupport: on인 경우 자동으로 설정됩니다.",
-			"argv.forceColorProfile": "사용할 색 프로필을 재정의할 수 있습니다. 색이 잘못 표시되면 색 프로필을 'srgb'로 설정하고 다시 시작해 보세요.",
-			"argv.locale": "사용할 표시 언어입니다. 다른 언어를 선택하려면 연결된 언어 팩을 설치해야 합니다.",
-			"argv.logLevel": "사용할 로그 수준이며 기본값은 'info'입니다. 허용되는 값은 'critical', 'error', 'warn', 'info', 'debug', 'trace', 'off'입니다.",
-			"closeWhenEmpty": "마지막 편집기를 닫을 때 창도 닫을지 여부를 제어합니다. 이 설정은 폴더를 표시하지 않는 창에만 적용됩니다.",
-			"dialogStyle": "대화 상자 창의 모양을 조정합니다.",
-			"enableCrashReporterDeprecated": "이 설정이 false이면 새 설정 값에 관계없이 원격 분석이 전송되지 않습니다. {0} 설정에 결합되어 더 이상 사용되지 않습니다.",
-			"experimentalUseSandbox": "실험적: 사용하도록 설정하면 창에 Electron API를 통해 샌드박스 모드가 활성화됩니다.",
-			"keyboardConfigurationTitle": "키보드",
-			"mergeAllWindowTabs": "모든 창 병합",
-			"miExit": "끝내기(&&X)",
-			"moveWindowTabToNewWindow": "창 탭을 새 창으로 이동",
-			"newTab": "새 창 탭",
-			"newWindowDimensions": "하나 이상의 창이 이미 열려 있을 때 새 창을 여는 크기를 제어합니다. 이 설정은 여는 첫 번째 창에는 적용되지 않습니다. 첫 번째 창의 경우 항상 창을 닫기 전의 크기와 위치가 복원됩니다.",
-			"openWithoutArgumentsInNewWindow": "인수 없이 두 번째 인스턴스를 시작할 때 새로운 빈 창을 열지 또는 실행 중인 마지막 인스턴스에 포커스가 생기는지 여부를 제어합니다.\r\n이 설정이 무시되는 경우도 있을 수 있습니다(예: '--new-window' 또는 '--reuse-window' 명령줄 옵션을 사용할 경우).",
-			"restoreFullscreen": "창이 전체 화면 모드에서 종료된 경우 창을 전체 화면 모드로 복원할지 여부를 제어합니다.",
-			"restoreWindows": "처음 시작한 후 창이 다시 열리는 방식을 제어합니다. 이 설정은 애플리케이션이 이미 실행 중인 경우에는 아무런 영향을 주지 않습니다.",
-			"showNextWindowTab": "다음 창 탭 표시",
-			"showPreviousTab": "이전 창 탭 표시",
-			"telemetry.enableCrashReporting": "크래시 보고서를 수집할 수 있습니다. 이는 안정성을 개선하는 데 도움이 됩니다. \r\n이 옵션을 적용하려면 다시 시작해야 합니다.",
-			"telemetryConfigurationTitle": "원격 분석",
-			"titleBarStyle": "창 제목 표시줄의 모양을 조정합니다. Linux와 Windows에서 이 설정은 애플리케이션 및 상황에 맞는 메뉴 모양에도 영향을 미칩니다. 변경 내용을 적용하려면 전체 다시 시작해야 합니다.",
-			"toggleWindowTabsBar": "창 탭 모음 설정/해제",
-			"touchbar.enabled": "사용 가능한 경우 키보드의 macOS Touch Bar 단추를 사용하도록 설정합니다.",
-			"touchbar.ignored": "표시되지 않아야 하는 터치바에 있는 항목의 식별자 세트입니다(예: 'workbench.action.navigateBack').",
-			"window.clickThroughInactive": "사용하도록 설정한 경우 비활성 창을 클릭하면 창도 활성화되고 클릭 가능한 경우 마우스 아래의 요소도 트리거됩니다. 사용하지 않도록 설정한 경우 비활성 창에서 아무곳이나 클릭하면 창만 활성화되며 요소는 또 한번 클릭해야 합니다.",
-			"window.doubleClickIconToClose": "사용하도록 설정하는 경우 제목 표시줄에서 애플리케이션 아이콘을 두 번 클릭하면 창을 닫으며 해당 창은 아이콘을 사용하여 끌어올 수 없습니다. 이 설정은 `#window.titleBarStyle#`이 `custom`으로 설정된 경우에만 영향을 줍니다.",
-			"window.nativeFullScreen": "macOS에서 기본 전체 화면을 사용할지 여부를 제어합니다. macOS에서 전체 화면으로 전환할 때 새로운 공간을 만들지 않게 하려면 이 옵션을 사용하지 않도록 설정하세요.",
-			"window.nativeTabs": "macOS Sierra 창 탭을 사용하도록 설정합니다. 변경 내용을 적용하려면 전체 다시 시작해야 하고, 기본 탭에서 사용자 지정 제목 표시줄 스타일(구성된 경우)을 비활성화합니다.",
-			"window.newWindowDimensions.default": "화면 가운데에서 새 창을 엽니다.",
-			"window.newWindowDimensions.fullscreen": "전체 화면 모드에서 새 창을 엽니다.",
-			"window.newWindowDimensions.inherit": "마지막 활성 창과 동일한 크기로 새 창을 엽니다.",
-			"window.newWindowDimensions.maximized": "최대화된 새 창을 엽니다.",
-			"window.newWindowDimensions.offset": "오프셋 위치에 있는 마지막 활성 창과 차원이 같은 새 창을 엽니다.",
-			"window.openWithoutArgumentsInNewWindow.off": "실행 중인 마지막 활성 인스턴스에 포커스가 생깁니다.",
-			"window.openWithoutArgumentsInNewWindow.on": "빈 창을 새로 엽니다.",
-			"window.reopenFolders.all": "폴더, 작업 영역 또는 파일이 열려 있지 않은 한(예: 명령줄에서) 모든 창을 다시 엽니다.",
-			"window.reopenFolders.folders": "폴더, 작업 영역 또는 파일이 열려 있지 않은 한(예: 명령줄에서) 열린 폴더 또는 작업 영역이 있는 모든 창을 다시 엽니다.",
-			"window.reopenFolders.none": "창을 다시 열지 않습니다. 폴더 또는 작업 영역이 열려 있지 않은 한(예: 명령줄에서) 빈 창이 표시됩니다.",
-			"window.reopenFolders.one": "폴더, 작업 영역 또는 파일이 열려 있지 않은 한(예: 명령줄에서) 마지막 활성 창을 다시 엽니다.",
-			"window.reopenFolders.preserve": "항상 모든 창을 다시 엽니다. 폴더 또는 작업 영역이 열려 있는 경우(예: 명령줄에서) 이전에 열리지 않은 한 새 창으로 엽니다. 파일이 열려 있는 경우 파일이 복원된 창 중 하나에서 열립니다.",
-			"windowConfigurationTitle": "창",
-			"windowControlsOverlay": "HTML 기반 창 컨트롤 대신 플랫폼에서 제공하는 창 컨트롤을 사용합니다. 변경 내용을 적용하려면 완전히 다시 시작해야 합니다.",
-			"zoomLevel": "창의 확대/축소 수준을 조정합니다. 원래 크기는 0이고 각 상한 증분(예: 1) 또는 하한 증분(예: -1)은 20% 더 크거나 더 작게 확대/축소하는 것을 나타냅니다. 10진수를 입력하여 확대/축소 수준을 세부적으로 조정할 수도 있습니다."
-		},
-		"vs/workbench/electron-sandbox/desktop.main": {
-			"join.closeStorage": "UI 상태 저장 중"
-		},
-		"vs/workbench/electron-sandbox/parts/dialogs/dialogHandler": {
-			"aboutDetail": "버전: {0}\r\n커밋: {1}\r\n날짜: {2}\r\nElectron: {3}\r\nChromium: {4}\r\nNode.js: {5}\r\nV8: {6}\r\nOS: {7}",
-			"cancelButton": "취소",
-			"copy": "복사(&&C)",
-			"okButton": "확인",
-			"yesButton": "예(&&Y)"
-		},
-		"vs/workbench/electron-sandbox/window": {
-			"cancelButton": "취소(&&C)",
-			"closeWindowButtonLabel": "창 닫기(&&C)",
-			"closeWindowMessage": "창을 닫으시겠습니까?",
-			"doNotAskAgain": "이 메시지를 다시 표시 안 함",
-			"exitButtonLabel": "종료(&&E)",
-			"keychainWriteError": "'{0}' 오류로 인해 로그인 정보를 키 집합에 쓰지 못했습니다.",
-			"learnMore": "자세한 정보",
-			"loaderCycle": "AMD 모듈에 해결해야 할 종속성 주기가 있습니다!",
-			"loginButton": "로그인(&&L)",
-			"password": "암호",
-			"proxyAuthRequired": "프록시 인증 필요",
-			"proxyDetail": "{0} 프록시에는 사용자 이름과 암호가 필요합니다.",
-			"quitButtonLabel": "종료(&&Q)",
-			"quitMessage": "종료하시겠습니까?",
-			"quitMessageMac": "종료하시겠습니까?",
-			"rememberCredentials": "내 자격 증명 기억",
-			"runningAsRoot": "{0}을(를) 루트 사용자로 실행하지 않는 것이 좋습니다.",
-			"shutdownErrorClose": "예기치 않은 오류로 인해 창이 닫히지 않았습니다.",
-			"shutdownErrorDetail": "오류: {0}",
-			"shutdownErrorLoad": "작업 영역을 변경하는 데 예상치 못한 오류가 발생했습니다.",
-			"shutdownErrorQuit": "예기치 않은 오류로 인해 응용 프로그램이 종료되지 않았습니다.",
-			"shutdownErrorReload": "예기치 않은 오류로 인해 창을 다시 로드할 수 없습니다.",
-			"shutdownForceClose": "닫기",
-			"shutdownForceLoad": "계속 변경",
-			"shutdownForceQuit": "그래도 종료",
-			"shutdownForceReload": "그래도 다시 로드",
-			"shutdownTitleClose": "창을 닫는 데 시간이 조금 더 걸리고 있습니다.",
-			"shutdownTitleLoad": "작업 영역을 변경하는 데 시간이 조금 더 걸리고 있습니다.",
-			"shutdownTitleQuit": "애플리케이션을 종료하는 데 시간이 조금 더 걸리고 있습니다.",
-			"shutdownTitleReload": "창을 다시 로드하는 데 시간이 조금 더 걸리고 있습니다.",
-			"troubleshooting": "문제 해결 가이드",
-			"username": "사용자 이름",
-			"willShutdownDetail": "다음 작업이 계속 실행 중입니다. \r\n{0}"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCueService": {
 			"audioCues.lineHasBreakpoint.name": "줄의 중단점",
@@ -4274,12 +4096,6 @@
 		"vs/workbench/contrib/codeEditor/browser/untitledTextEditorHint": {
 			"message": "[[언어 선택]] 또는 [[다른 편집기 열기]]를 선택하여 시작합니다.\r\n시작하여 해제하거나 [[표시 안 함]] 다시 시작합니다."
 		},
-		"vs/workbench/contrib/codeEditor/electron-sandbox/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "선택 영역을 클립보드에 붙여넣기"
-		},
-		"vs/workbench/contrib/codeEditor/electron-sandbox/startDebugTextMate": {
-			"startDebugTextMate": "TextMate 구문 문법 기록 시작"
-		},
 		"vs/workbench/contrib/comments/browser/commentColors": {
 			"commentThreadActiveRangeBackground": "현재 선택되었거나 가리킨 메모 범위의 배경 색상입니다.",
 			"commentThreadActiveRangeBorder": "현재 선택되거나 가리킨 댓글 범위의 테두리 색상입니다.",
@@ -4336,6 +4152,7 @@
 			"commentCount": "1개 주석",
 			"commentLine": "[Ln {0}]",
 			"commentRange": "[Ln {0}-{1}]",
+			"comments.view.title": "Comments",
 			"commentsCount": "{0}개 주석",
 			"image": "이미지",
 			"imageWithLabel": "이미지: {0}",
@@ -4346,6 +4163,19 @@
 			"resourceWithCommentLabel": "{3}의 열 {2} 줄 {1}에 있는 ${0}의 주석, 소스: {4}",
 			"resourceWithCommentThreadsLabel": "{0}에 있는 주석, 전체 경로 {1}",
 			"rootCommentsLabel": "현재 작업 영역에 대한 주석"
+		},
+		"vs/workbench/contrib/comments/browser/commentsViewActions": {
+			"comments.filter.ariaLabel": "Filter comments",
+			"comments.filter.placeholder": "Filter (e.g. text, author)",
+			"comments.filterIcon": "Icon for the filter configuration in the Comments view.",
+			"commentsClearFilterText": "Clear filter text",
+			"commentsFiltersAction": "More Filters...",
+			"filter": "Filter",
+			"focusCommentsFilter": "Focus comments filter",
+			"focusCommentsList": "Focus Comments view",
+			"showResolved": "Show Resolved",
+			"showUnresolved": "Show Unresolved",
+			"showing filtered comments": "Showing {0} of {1}"
 		},
 		"vs/workbench/contrib/comments/browser/reactionsAction": {
 			"pickReactions": "반응 선택..."
@@ -4596,7 +4426,8 @@
 			"installExt": "확장 설치...",
 			"installLanguage": "{0}대한 확장 설치...",
 			"selectDebug": "디버거 선택",
-			"suggestedDebuggers": "제안됨"
+			"suggestedDebuggers": "제안됨",
+			"suppressMultipleSessionWarning": "Disable the warning when trying to start the same debug configuration more than once."
 		},
 		"vs/workbench/contrib/debug/browser/debugColors": {
 			"debugIcon.continueForeground": "계속하기 위한 디버그 도구 모음 아이콘입니다.",
@@ -5101,10 +4932,15 @@
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsViews": {
 			"confirm delete": "참조 {0}의 편집 세션을 영구적으로 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.",
-			"edit sessions data": "모든 세션",
+			"confirm delete all": "Are you sure you want to permanently delete all edit sessions? You cannot undo this action.",
+			"noEditSessions": "You have no stored edit sessions to display.\r\n{0}",
 			"open file": "파일 열기",
+			"storeEditSessionCommand": "[{0}](command:workbench.editSessions.actions.store)",
+			"storeEditSessionTitle": "Store Edit Session",
 			"workbench.editSessions.actions.delete": "세션 편집 삭제",
-			"workbench.editSessions.actions.resume": "세션 편집 다시 시작"
+			"workbench.editSessions.actions.deleteAll": "Delete All Edit Sessions",
+			"workbench.editSessions.actions.resume": "세션 편집 다시 시작",
+			"workbench.editSessions.actions.store": "Store Edit Session"
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsWorkbenchService": {
 			"account preference": "로그인하여 편집 세션 사용",
@@ -5113,6 +4949,7 @@
 			"delete all edit sessions": "클라우드에서 저장된 모든 편집 세션을 삭제합니다.",
 			"others": "기타",
 			"reset auth.v2": "세션 편집에서 로그아웃",
+			"sign in": "Sign In",
 			"sign in using account": "{0}(으)로 로그인",
 			"sign out of edit sessions clear data prompt": "편집 세션에서 로그아웃하시겠습니까?",
 			"signed in": "로그인됨"
@@ -5399,6 +5236,9 @@
 			"workbench.extensions.uninstallExtension.arg.name": "제거할 확장의 ID",
 			"workbench.extensions.uninstallExtension.description": "지정한 확장 제거",
 			"workspace unsupported filter": "작업 영역이 지원되지 않음"
+		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "Running Extensions"
 		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "이 확장은 웹용 {0}에서 지원되지 않으므로 사용할 수 없습니다.",
@@ -5715,67 +5555,11 @@
 		"vs/workbench/contrib/extensions/common/runtimeExtensionsInput": {
 			"extensionsInputName": "확장 실행 중"
 		},
-		"vs/workbench/contrib/extensions/electron-sandbox/debugExtensionHostAction": {
-			"cancel": "취소(&&C)",
-			"debugExtensionHost": "확장 호스트 디버깅 시작",
-			"debugExtensionHost.launch.name": "확장 호스트 연결",
-			"restart1": "확장 프로파일링",
-			"restart2": "확장을 프로파일링하려면 다시 시작해야 합니다. 지금 '{0}'을(를) 다시 시작하시겠습니까?",
-			"restart3": "다시 시작(&&R)"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/extensionProfileService": {
-			"cancel": "취소(&&C)",
-			"profilingExtensionHost": "프로파일링 확장 호스트",
-			"profilingExtensionHostTime": "프로파일링 확장 호스트({0}초)",
-			"restart1": "확장 프로파일링",
-			"restart2": "확장을 프로파일링하려면 다시 시작해야 합니다. 지금 '{0}'을(를) 다시 시작하시겠습니까?",
-			"restart3": "다시 시작(&&R)",
-			"selectAndStartDebug": "프로파일링을 중지하려면 클릭하세요.",
-			"status.profiler": "확장 프로파일러"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/extensions.contribution": {
-			"runtimeExtension": "실행 중인 확장"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/extensionsActions": {
-			"openExtensionsFolder": "Extensions 폴더 열기"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/extensionsAutoProfiler": {
-			"show": "확장 표시",
-			"unresponsive-exthost": "확장 '{0}'이(가) 마지막 작업을 완료하는 데 시간이 매우 오래 걸렸으므로 다른 확장이 실행되지 못했습니다."
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/extensionsSlowActions": {
-			"attach.msg": "방금 만든 문제에 '{0}'을(를) 연결하는 것을 잊지 않도록 알려드립니다.",
-			"attach.msg2": "기존 성능 문제에 '{0}'을(를) 연결하는 것을 잊지 않도록 알려드립니다.",
-			"attach.title": "CPU 프로필을 연결하셨습니까?",
-			"cmd.report": "문제 신고",
-			"cmd.reportOrShow": "성능 문제",
-			"cmd.show": "문제 표시"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/reportExtensionIssueAction": {
-			"reportExtensionIssue": "문제 신고"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "확장 호스트 프로필 시작",
-			"saveExtensionHostProfile": "확장 호스트 프로필 저장",
-			"saveprofile.dialogTitle": "확장 호스트 프로필 저장",
-			"saveprofile.saveButton": "저장",
-			"stopExtensionHostProfileStart": "확장 호스트 프로필 중지"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction": "터미널에서 열기",
-			"scopedConsoleAction.external": "외부 터미널에서 열기",
-			"scopedConsoleAction.integrated": "통합 터미널에서 열기",
-			"scopedConsoleAction.wt": "Windows 터미널에서 열기"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-sandbox/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "터미널의 탐색기에서 파일을 열 때 어떤 종류의 터미널이 실행될 것인지 결정합니다.",
-			"globalConsoleAction": "새 외부 터미널 열기",
-			"terminal.explorerKind.external": "구성된 외부 터미널을 사용합니다.",
-			"terminal.explorerKind.integrated": "VS Code의 통합 터미널을 사용합니다.",
-			"terminal.external.linuxExec": "Linux에서 실행할 터미널을 사용자 지정합니다.",
-			"terminal.external.osxExec": "macOS에서 실행할 터미널 애플리케이션을 사용자 지정합니다.",
-			"terminal.external.windowsExec": "Windows에서 실행할 터미널을 사용자 지정합니다.",
-			"terminalConfigurationTitle": "외부 터미널"
+			"scopedConsoleAction": "Open in Terminal",
+			"scopedConsoleAction.external": "Open in External Terminal",
+			"scopedConsoleAction.integrated": "Open in Integrated Terminal",
+			"scopedConsoleAction.wt": "Open in Windows Terminal"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "외부 URI(http, https)에 사용할 opener를 구성합니다.",
@@ -5911,12 +5695,12 @@
 			"moveFileBulkEdit": "{0} 이동",
 			"movingBulkEdit": "{0}개 파일 이동 중",
 			"movingFileBulkEdit": "{0} 이동 중",
-			"newFile": "새 파일",
-			"newFolder": "새 폴더",
+			"newFile": "New File...",
+			"newFolder": "New Folder...",
 			"openFileInNewWindow": "새 창에서 활성 파일 열기",
 			"openFileToShowInNewWindow.unsupportedschema": "활성 편집기에 열 수 있는 리소스가 포함되어야 합니다.",
 			"pasteFile": "붙여넣기",
-			"rename": "이름 바꾸기",
+			"rename": "Rename...",
 			"renameBulkEdit": "{0} 이름을 {1}(으)로 바꾸기",
 			"renamingBulkEdit": "{1}에 {0} 이름 바꾸기",
 			"restore": "[실행 취소] 명령을 사용하여 해당 파일을 복원할 수 있습니다.",
@@ -6113,6 +5897,9 @@
 			"watcherExclude": "파일 감시에서 제외할 경로 또는 glob 패턴을 구성합니다. 상대적인 경로 또는 기본 glob 패턴(예: '빌드/출력' 또는 `*.js`)는 현재 열려 있는 작업 영역을 사용하여 절대 경로로 확인됩니다. 복잡한 glob 패턴이 제대로 일치하려면 절대 경로(예: 경로 내의 파일을 일치시키기 위한 접두사 `**/` 또는 전체 경로 및 접미사 `/**`)에서 일치해야 합니다(예: `**/build/output/**` 또는 `/Users/name/workspaces/project/build/output/**`). 파일 감시자 프로세스가 CPU를 많이 사용하는 경우 중요도가 적은 대용량 폴더(예: 빌드 출력 폴더)를 제외해야 합니다.",
 			"watcherInclude": "작업 영역 내부의 변경 내용을 감시할 추가 경로를 구성합니다. 기본적으로 기호 링크인 폴더를 제외한 모든 작업 영역 폴더는 재귀적으로 감시됩니다. 기호 링크인 감시 폴더를 지원하기 위해 절대 또는 상대 경로를 명시적으로 추가할 수 있습니다. 상대 경로는 현재 열려 있는 작업 영역을 사용하여 절대 경로로 해석됩니다."
 		},
+		"vs/workbench/contrib/files/browser/files.web.contribution": {
+			"textFileEditor": "Text File Editor"
+		},
 		"vs/workbench/contrib/files/browser/views/emptyView": {
 			"noWorkspace": "열린 폴더 없음"
 		},
@@ -6124,8 +5911,8 @@
 		},
 		"vs/workbench/contrib/files/browser/views/explorerView": {
 			"collapseExplorerFolders": "탐색기에서 폴더 축소",
-			"createNewFile": "새 파일",
-			"createNewFolder": "새 폴더",
+			"createNewFile": "New File...",
+			"createNewFolder": "New Folder...",
 			"explorerSection": "탐색기 섹션: {0}",
 			"refreshExplorer": "탐색기 새로 고침"
 		},
@@ -6178,20 +5965,6 @@
 			"openEditorsFocus": "포커스가 OPEN EDITORS 뷰 내에 있는 경우 true입니다.",
 			"openEditorsVisible": "OPEN EDITORS 뷰가 표시되는 경우 true입니다.",
 			"viewHasSomeCollapsibleItem": "탐색기 보기의 작업 영역에 축소 가능한 루트 자식이 있는 경우 True입니다."
-		},
-		"vs/workbench/contrib/files/electron-sandbox/fileActions.contribution": {
-			"filesCategory": "파일",
-			"openContainer": "상위 폴더 열기",
-			"revealInMac": "Finder에 표시",
-			"revealInWindows": "파일 탐색기에 표시"
-		},
-		"vs/workbench/contrib/files/electron-sandbox/files.contribution": {
-			"textFileEditor": "텍스트 파일 편집기"
-		},
-		"vs/workbench/contrib/files/electron-sandbox/textFileEditor": {
-			"configureMemoryLimit": "메모리 제한 구성",
-			"fileTooLargeForHeapError": "이 크기의 파일을 열려면 다시 시작하여 {0}에서 더 많은 메모리를 사용하도록 허용해야 합니다",
-			"relaunchWithIncreasedMemoryLimit": "{0}MB로 다시 시작"
 		},
 		"vs/workbench/contrib/format/browser/formatActionsMultiple": {
 			"cancel": "취소",
@@ -6246,14 +6019,9 @@
 		"vs/workbench/contrib/interactive/browser/interactiveEditor": {
 			"interactiveInputPlaceHolder": "여기에 '{0}' 코드를 입력하고 '{1}'을(를) 눌러 실행합니다."
 		},
-		"vs/workbench/contrib/issue/electron-sandbox/issue.contribution": {
-			"miOpenProcessExplorerer": "프로세스 탐색기 열기(&&P)",
-			"miReportIssue": "문제 보고(&&I)",
-			"reportIssueInEnglish": "영어로 문제 보고..."
-		},
-		"vs/workbench/contrib/issue/electron-sandbox/issueActions": {
-			"openProcessExplorer": "프로세스 탐색기 열기",
-			"reportPerformanceIssue": "성능 문제 보고..."
+		"vs/workbench/contrib/issue/browser/issue.web.contribution": {
+			"reportIssueInEnglish": "Report Issue",
+			"statusUnsupported": "The --status argument is not yet supported in browsers."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "바로 가기 키 문제 해결 토글"
@@ -6317,10 +6085,12 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "로컬 기록"
 		},
-		"vs/workbench/contrib/localHistory/electron-sandbox/localHistoryCommands": {
-			"openContainer": "상위 폴더 열기",
-			"revealInMac": "Finder에 표시",
-			"revealInWindows": "파일 탐색기에 표시"
+		"vs/workbench/contrib/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "Press the reload button to refresh the page and use your browser's language.",
+			"clearDisplayLanguageMessage": "To change the display language, {0} needs to reload",
+			"relaunchDisplayLanguageDetail": "Press the reload button to refresh the page and set the display language to {0}.",
+			"relaunchDisplayLanguageMessage": "To change the display language, {0} needs to reload",
+			"reload": "&&Reload"
 		},
 		"vs/workbench/contrib/localization/browser/localizationsActions": {
 			"available": "사용 가능",
@@ -6329,39 +6099,9 @@
 			"configureLocale": "표시 언어 구성",
 			"installed": "설치됨"
 		},
-		"vs/workbench/contrib/localization/electron-sandbox/localeService": {
-			"argvInvalid": "표시 언어를 쓸 수 없습니다. 런타임 설정을 열고 오류/경고를 수정한 후 다시 시도하세요.",
-			"installing": "{0} 언어 지원을 설치하는 중...",
-			"openArgv": "런타임 설정 열기",
-			"restart": "다시 시작(&&R)",
-			"restartDisplayLanguageDetail": "다시 시작 단추를 눌러 {0}을(를) 다시 시작하고 표시 언어를 {1}(으)로 설정합니다.",
-			"restartDisplayLanguageMessage": "표시 언어를 변경하려면 {0}을(를) 다시 시작해야 합니다."
-		},
-		"vs/workbench/contrib/localization/electron-sandbox/localization.contribution": {
-			"activateLanguagePack": "{0}에서 VS Code를 사용하려면 VS Code를 다시 시작해야 합니다.",
-			"changeAndRestart": "언어 변경 후 다시 시작",
-			"doNotChangeAndRestart": "언어를 변경하지 마세요.",
-			"doNotRestart": "다시 시작하지 마세요.",
-			"neverAgain": "다시 표시 안 함",
-			"restart": "다시 시작",
-			"updateLocale": "VS Code의 UI 언어를 {0}(으)로 변경하고 다시 시작하시겠습니까?",
-			"vscode.extension.contributes.localizations": "편집기에 지역화를 적용합니다.",
-			"vscode.extension.contributes.localizations.languageId": "표시 문자열이 번역되는 언어의 ID입니다.",
-			"vscode.extension.contributes.localizations.languageName": "영어로 된 언어 이름입니다.",
-			"vscode.extension.contributes.localizations.languageNameLocalized": "적용된 언어로 된 언어 이름입니다.",
-			"vscode.extension.contributes.localizations.translations": "해당 언어에 연결된 번역 목록입니다.",
-			"vscode.extension.contributes.localizations.translations.id": "이 변환이 적용되는 VS Code 또는 확장의 ID입니다. VS Code의 ID는 항상 `vscode`이고 확장의 ID는 `publisherId.extensionName` 형식이어야 합니다.",
-			"vscode.extension.contributes.localizations.translations.id.pattern": "ID는 VS Code를 변환하거나 확장을 변환하는 경우 각각 `vscode` 또는 `publisherId.extensionName` 형식이어야 합니다.",
-			"vscode.extension.contributes.localizations.translations.path": "언어에 대한 변환을 포함하는 파일의 상대 경로입니다."
-		},
-		"vs/workbench/contrib/localization/electron-sandbox/minimalTranslations": {
-			"installAndRestart": "설치 및 다시 시작",
-			"installAndRestartMessage": "언어 팩을 설치하여 표시 언어를 {0}(으)로 변경합니다.",
-			"searchMarketplace": "Marketplace 검색",
-			"showLanguagePackExtensions": "Marketplace에서 언어 팩을 검색하여 표시 언어를 {0}(으)로 변경합니다."
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"editSessionsLog": "세션 편집",
+			"extensionTelemetryLog": "Extension Telemetry",
 			"rendererLog": "창",
 			"show window log": "창 로그 표시",
 			"telemetryLog": "원격 분석",
@@ -6383,14 +6123,6 @@
 			"setLogLevel": "로그 수준 설정...",
 			"trace": "추적",
 			"warn": "경고"
-		},
-		"vs/workbench/contrib/logs/electron-sandbox/logs.contribution": {
-			"mainLog": "기본",
-			"sharedLog": "공유"
-		},
-		"vs/workbench/contrib/logs/electron-sandbox/logsActions": {
-			"openExtensionLogsFolder": "확장 로그 폴더 열기",
-			"openLogsFolder": "Logs 폴더 열기"
 		},
 		"vs/workbench/contrib/markers/browser/markers.contribution": {
 			"clearFiltersText": "필터 텍스트 지우기",
@@ -6509,15 +6241,9 @@
 			"openfile": "파일 열기",
 			"title": "병합 편집기 열기"
 		},
-		"vs/workbench/contrib/mergeEditor/browser/commands/devCommands": {
-			"merge.dev.copyState": "병합 편집기 상태를 JSON으로 복사",
-			"merge.dev.openState": "JSON에서 병합 편집기 상태 열기",
-			"mergeEditor.enterJSON": "JSON 입력",
-			"mergeEditor.name": "병합 편집기",
-			"mergeEditor.noActiveMergeEditor": "활성 병합 편집기가 없습니다.",
-			"mergeEditor.successfullyCopiedMergeEditorContents": "병합 편집기 상태를 복사했습니다."
-		},
 		"vs/workbench/contrib/mergeEditor/browser/mergeEditor.contribution": {
+			"diffAlgorithm.experimental": "Uses an experimental diffing algorithm.",
+			"diffAlgorithm.smart": "Uses the default diffing algorithm.",
 			"name": "병합 편집기"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/mergeEditorInput": {
@@ -6552,7 +6278,6 @@
 			"mergeEditor.remainingConflicts": "{0} 남은 충돌"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/view/mergeEditor": {
-			"editor.mergeEditor.label": "병합 편집기",
 			"input1": "입력 1",
 			"input2": "입력 2",
 			"mergeEditor": "텍스트 병합 편집기",
@@ -6780,29 +6505,6 @@
 		"vs/workbench/contrib/notebook/browser/diff/notebookTextDiffEditor": {
 			"notebookTreeAriaLabel": "Notebook 텍스트 차이"
 		},
-		"vs/workbench/contrib/notebook/browser/extensionPoint": {
-			"contributes.notebook.provider": "노트북 문서 공급자를 제공합니다.",
-			"contributes.notebook.provider.displayName": "사람이 읽을 수 있는 Notebook 이름.",
-			"contributes.notebook.provider.selector": "Notebook용 glob 집합.",
-			"contributes.notebook.provider.selector.filenamePattern": "Notebook을 사용하도록 설정한 glob.",
-			"contributes.notebook.provider.viewType": "전자 필기장 형식입니다.",
-			"contributes.notebook.renderer": "Notebook 출력 렌더러 공급자를 제공합니다.",
-			"contributes.notebook.renderer.displayName": "사람이 읽을 수 있는 Notebook 출력 렌더러 이름.",
-			"contributes.notebook.renderer.entrypoint": "확장을 렌더링하기 위해 웹 보기에 로드할 파일입니다.",
-			"contributes.notebook.renderer.entrypoint.extends": "이 렌더러가 확장되는 기존 렌더러입니다.",
-			"contributes.notebook.renderer.hardDependencies": "렌더러에 필요한 커널 종속성 목록입니다. 'NotebookKernel.preloads'에 종속성이 있는 경우 렌더러를 사용할 수 있습니다.",
-			"contributes.notebook.renderer.optionalDependencies": "렌더러가 사용할 수 있는 소프트 커널 종속성 목록입니다. 'NotebookKernel.preloads'에 종속성이 있는 경우 렌더러는 커널과 상호 작용하지 않는 렌더러보다 선호됩니다.",
-			"contributes.notebook.renderer.requiresMessaging": "렌더러가 'createRendererMessaging'을 통해 확장 호스트와 통신해야 하는 방법과 경우를 정의합니다. 메시징 요구 사항이 더 강력한 렌더러는 일부 환경에서 작동하지 않을 수 있습니다.",
-			"contributes.notebook.renderer.requiresMessaging.always": "메시징이 필요합니다. 렌더러는 확장 호스트에서 실행할 수 있는 확장 프로그램의 일부일 때만 사용됩니다.",
-			"contributes.notebook.renderer.requiresMessaging.never": "렌더러에는 메시징이 필요하지 않습니다.",
-			"contributes.notebook.renderer.requiresMessaging.optional": "렌더러는 메시징을 사용할 때 더 좋지만 필수는 아닙니다.",
-			"contributes.notebook.renderer.viewType": "Notebook 출력 렌더러의 고유 식별자.",
-			"contributes.notebook.selector": "Notebook용 glob 집합.",
-			"contributes.notebook.selector.provider.excludeFileNamePattern": "Notebook을 사용하지 않도록 설정한 glob.",
-			"contributes.priority": "사용자가 파일을 열 때 사용자 지정 편집기를 자동으로 사용할지를 제어합니다. 사용자가 `workbench.editorAssociations` 설정을 사용하여 재정의할 수 있습니다.",
-			"contributes.priority.default": "이 편집기는 사용자가 리소스를 열 때 해당 리소스에 대해 다른 기본 사용자 지정 편집기가 등록되지 않은 경우 자동으로 사용됩니다.",
-			"contributes.priority.option": "이 편집기는 사용자가 리소스를 열 때 자동으로 사용되지 않지만, 사용자가 '다음으로 다시 열기' 명령을 사용하여 이 편집기로 전환할 수 있습니다."
-		},
 		"vs/workbench/contrib/notebook/browser/notebook.contribution": {
 			"insertToolbarLocation.betweenCells": "셀 사이에 마우스를 가져가면 표시되는 도구 모음입니다.",
 			"insertToolbarLocation.both": "두 도구 모음입니다.",
@@ -6869,13 +6571,32 @@
 			"notebookTreeAriaLabel": "Notebook",
 			"selectedCellBackground": "셀이 선택되었을 때 셀의 배경색입니다."
 		},
-		"vs/workbench/contrib/notebook/browser/notebookExecutionServiceImpl": {
-			"notebookRunTrust": "Notebook 셀을 실행하면 이 작업 영역의 코드가 실행됩니다."
+		"vs/workbench/contrib/notebook/browser/notebookExtensionPoint": {
+			"contributes.notebook.provider": "Contributes notebook document provider.",
+			"contributes.notebook.provider.displayName": "Human readable name of the notebook.",
+			"contributes.notebook.provider.selector": "Set of globs that the notebook is for.",
+			"contributes.notebook.provider.selector.filenamePattern": "Glob that the notebook is enabled for.",
+			"contributes.notebook.provider.viewType": "Type of the notebook.",
+			"contributes.notebook.renderer": "Contributes notebook output renderer provider.",
+			"contributes.notebook.renderer.displayName": "Human readable name of the notebook output renderer.",
+			"contributes.notebook.renderer.entrypoint": "File to load in the webview to render the extension.",
+			"contributes.notebook.renderer.entrypoint.extends": "Existing renderer that this one extends.",
+			"contributes.notebook.renderer.hardDependencies": "List of kernel dependencies the renderer requires. If any of the dependencies are present in the `NotebookKernel.preloads`, the renderer can be used.",
+			"contributes.notebook.renderer.optionalDependencies": "List of soft kernel dependencies the renderer can make use of. If any of the dependencies are present in the `NotebookKernel.preloads`, the renderer will be preferred over renderers that don't interact with the kernel.",
+			"contributes.notebook.renderer.requiresMessaging": "Defines how and if the renderer needs to communicate with an extension host, via `createRendererMessaging`. Renderers with stronger messaging requirements may not work in all environments.",
+			"contributes.notebook.renderer.requiresMessaging.always": "Messaging is required. The renderer will only be used when it's part of an extension that can be run in an extension host.",
+			"contributes.notebook.renderer.requiresMessaging.never": "The renderer does not require messaging.",
+			"contributes.notebook.renderer.requiresMessaging.optional": "The renderer is better with messaging available, but it's not requried.",
+			"contributes.notebook.renderer.viewType": "Unique identifier of the notebook output renderer.",
+			"contributes.notebook.selector": "Set of globs that the notebook is for.",
+			"contributes.notebook.selector.provider.excludeFileNamePattern": "Glob that the notebook is disabled for.",
+			"contributes.priority": "Controls if the custom editor is enabled automatically when the user opens a file. This may be overridden by users using the `workbench.editorAssociations` setting.",
+			"contributes.priority.default": "The editor is automatically used when the user opens a resource, provided that no other default custom editors are registered for that resource.",
+			"contributes.priority.option": "The editor is not automatically used when the user opens a resource, but a user can switch to the editor using the `Reopen With` command."
 		},
 		"vs/workbench/contrib/notebook/browser/notebookIcons": {
 			"clearIcon": "Notebook 편집기에서 셀 출력을 지우는 아이콘입니다.",
 			"collapsedIcon": "Notebook 편집기에서 축소된 섹션에 주석을 다는 아이콘입니다.",
-			"configureKernel": "Notebook 편집기의 커널 구성 위젯에 있는 구성 아이콘입니다.",
 			"deleteCellIcon": "Notebook 편집기에서 셀을 삭제하는 아이콘입니다.",
 			"editIcon": "Notebook 편집기에서 셀을 편집하는 아이콘입니다.",
 			"errorStateIcon": "Notebook 편집기에서 오류 상태를 나타내는 아이콘입니다.",
@@ -6896,8 +6617,10 @@
 			"splitCellIcon": "Notebook 편집기에서 셀을 분할하는 아이콘입니다.",
 			"stopEditIcon": "Notebook 편집기에서 셀 편집을 중지하는 아이콘입니다.",
 			"stopIcon": "Notebook 편집기에서 실행을 중지하는 아이콘입니다.",
-			"successStateIcon": "Notebook 편집기에서 성공 상태를 나타내는 아이콘입니다.",
-			"unfoldIcon": "Notebook 편집기에서 셀을 펼치는 아이콘입니다."
+			"successStateIcon": "Notebook 편집기에서 성공 상태를 나타내는 아이콘입니다."
+		},
+		"vs/workbench/contrib/notebook/browser/services/notebookExecutionServiceImpl": {
+			"notebookRunTrust": "Executing a notebook cell will run code from this workspace."
 		},
 		"vs/workbench/contrib/notebook/browser/services/notebookKeymapServiceImpl": {
 			"disableOtherKeymapsConfirmation": "키 바인딩 간 충돌을 피하기 위해 다른 키 맵({0})을 사용하지 않도록 설정할까요?",
@@ -6942,9 +6665,9 @@
 			"hiddenCellsLabel": "셀 1개 숨김",
 			"hiddenCellsLabelPlural": "셀 {0}개 숨김"
 		},
-		"vs/workbench/contrib/notebook/browser/view/cellParts/markdownCell": {
-			"cellExpandInputButtonLabel": "셀 입력 확장({0})",
-			"cellExpandInputButtonLabelWithDoubleClick": "두 번 클릭하여 셀 입력 확장({0})"
+		"vs/workbench/contrib/notebook/browser/view/cellParts/markupCell": {
+			"cellExpandInputButtonLabel": "Expand Cell Input ({0})",
+			"cellExpandInputButtonLabelWithDoubleClick": "Double click to expand cell input ({0})"
 		},
 		"vs/workbench/contrib/notebook/browser/view/renderers/backLayerWebView": {
 			"notebook.emptyMarkdownPlaceholder": "빈 Markdown 셀입니다. 편집하려면 두 번 클릭하거나 <Enter> 키를 누르세요.",
@@ -6960,6 +6683,12 @@
 			"notebook.staleSaveError": "디스크에서 파일의 내용이 변경되었습니다. 업데이트된 버전을 여시겠습니까 아니면 변경 내용으로 파일을 덮어쓰시겠습니까?",
 			"notebook.staleSaveError.overwrite.": "덮어쓰기",
 			"notebook.staleSaveError.revert": "되돌리기"
+		},
+		"vs/workbench/contrib/offline/browser/offline.contribution": {
+			"offline": "Network appears to be offline, certain features might be unavailable.",
+			"statusBarOfflineBackground": "Status bar background color when the workbench is offline. The status bar is shown in the bottom of the window",
+			"statusBarOfflineBorder": "Status bar border color separating to the sidebar and editor when the workbench is offline. The status bar is shown in the bottom of the window",
+			"statusBarOfflineForeground": "Status bar foreground color when the workbench is offline. The status bar is shown in the bottom of the window"
 		},
 		"vs/workbench/contrib/outline/browser/outline.contribution": {
 			"filteredTypes.array": "사용하도록 설정되면 개요에 '배열' 기호가 표시됩니다.",
@@ -7043,15 +6772,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "시작 성능"
 		},
-		"vs/workbench/contrib/performance/electron-sandbox/startupProfiler": {
-			"prof.detail": "문제를 만들고 다음 파일을 수동으로 연결하세요.\r\n{0}",
-			"prof.detail.restart": "계속 '{0}'을(를) 사용하려면 마지막으로 다시 시작해야 합니다. 기여해 주셔서 다시 한번 감사드립니다.",
-			"prof.message": "프로필을 만들었습니다.",
-			"prof.restart": "다시 시작(&&R)",
-			"prof.restart.button": "다시 시작(&&R)",
-			"prof.restartAndFileIssue": "문제 만들기 및 다시 시작(&&C)",
-			"prof.thanks": "도움을 주셔서 감사합니다."
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingWidgets": {
 			"defineKeybinding.chordsTo": "현",
 			"defineKeybinding.existing": "{0}개의 기존 명령에 이 키 바인딩이 있습니다.",
@@ -7096,6 +6816,19 @@
 			"defineKeybinding.kbLayoutLocalAndUSMessage": "현재 자판 배열의 경우 **{0}**입니다(**{1}**: 미국 표준).",
 			"defineKeybinding.kbLayoutLocalMessage": "현재 자판 배열의 경우 **{0}**입니다.",
 			"defineKeybinding.start": "키 바인딩 정의"
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"preferences": "Preferences",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"Keyboard Shortcuts": "바로 가기 키",
@@ -7577,10 +7310,6 @@
 			"triggerReconnect": "연결: 트리거 다시 연결",
 			"ui": "UI 확장 종류입니다. 원격 창에서, 이러한 확장은 로컬 머신에서 사용 가능한 경우에만 사용할 수 있습니다.",
 			"workspace": "작업 영역 확장 종류입니다. 원격 창에서, 이러한 확장은 원격에서 사용 가능한 경우에만 사용할 수 있습니다."
-		},
-		"vs/workbench/contrib/remote/electron-sandbox/remote.contribution": {
-			"remote": "원격",
-			"remote.downloadExtensionsLocally": "활성화된 확장이 로컬로 다운로드되고 원격으로 설치됩니다."
 		},
 		"vs/workbench/contrib/sash/browser/sash.contribution": {
 			"sashHoverDelay": "보기/편집기 간 끌기 영역의 호버 피드백 지연 시간(밀리초)을 제어합니다.",
@@ -8170,7 +7899,6 @@
 			"task.allowAutomaticTasks.auto": "각 폴더에 대한 사용 권한 확인",
 			"task.allowAutomaticTasks.off": "사용 안 함",
 			"task.autoDetect": "모든 작업 공급자 확장에 `provideTasks`의 사용 여부를 제어합니다. Tasks: Run Task 명령이 느린 경우 작업 공급자에 대한 자동 검색을 사용하지 않도록 설정하면 도움이 될 수 있습니다. 또한 개별 확장은 자동 검색을 사용하지 않도록 하는 설정을 제공합니다.",
-			"task.experimental.reconnection": "창 다시 로드 시 실행 중인 감시/백그라운드 작업에 다시 연결합니다. 실험적이므로 문제가 발생할 수 있습니다.",
 			"task.problemMatchers.neverPrompt": "작업을 실행할 때 문제 선택기 프롬프트를 표시할지 여부를 구성합니다. 'true'로 설정하여 프롬프트하지 않거나 작업 유형 사전을 사용하여 특정 작업 유형에 대해서만 프롬프트를 해제합니다.",
 			"task.problemMatchers.neverPrompt.array": "작업 형식 부울 쌍을 포함하는 개체에는 문제 선택기에 대한 프롬프트가 표시되지 않습니다.",
 			"task.problemMatchers.neverPrompt.boolean": "모든 작업에 대해 문제 선택기 프롬프트 동작을 설정합니다.",
@@ -8178,10 +7906,11 @@
 			"task.quickOpen.history": "작업 Quick Open 대화 상자에서 추적된 최근 항목의 수를 제어합니다.",
 			"task.quickOpen.showAll": "작업: 작업 실행 명령에서 공급자별로 작업을 그룹화하는 빠른 두 수준 선택기 대신 느린 \"모두 표시\" 동작을 사용하게 합니다.",
 			"task.quickOpen.skip": "선택할 작업이 하나만 있는 경우 작업 빠른 선택을 건너뛰는지 여부를 제어합니다.",
+			"task.reconnection": "On window reload, reconnect to tasks that have problem matchers.",
 			"task.saveBeforeRun": "작업을 실행하기 전에 모든 더티 편집기를 저장합니다.",
 			"task.saveBeforeRun.always": "실행하기 전에 항상 모든 편집기를 저장합니다.",
 			"task.saveBeforeRun.never": "실행하기 전에 편집기를 저장하지 않습니다.",
-			"task.showDecorations": "감시 작업을 통해 발견된 첫 번째 문제와 같이 터미널 버퍼의 관심 지점에 장식을 표시합니다. 이는 향후 작업에만 적용됩니다.",
+			"task.showDecorations": "Shows decorations at points of interest in the terminal buffer such as the first problem found via a watch task. Note that this will only take effect for future tasks. {0} will take precedence over this setting",
 			"task.slowProviderWarning": "공급자 속도가 느린 경우 경고를 표시할지 여부를 구성합니다.",
 			"task.slowProviderWarning.array": "느린 공급자 경고를 표시하지 않는 작업 유형의 배열입니다.",
 			"task.slowProviderWarning.boolean": "모든 작업에 대해 느린 공급자 경고를 설정합니다.",
@@ -8193,7 +7922,7 @@
 			"workbench.action.tasks.openWorkspaceFileTasks": "작업 영역 작업 열기"
 		},
 		"vs/workbench/contrib/tasks/browser/taskQuickPick": {
-			"TaskQuickPick.changeSettingDetails": "{0} 작업에 대한 작업 검색은 사용자가 여는 모든 작업 영역의 파일을 코드로 실행시킵니다. {0} 작업 검색을 사용하는 것은 사용자 설정이며 사용자가 여는 모든 작업 영역에 적용됩니다. 모든 작업 영역에 대해 {0} 작업 검색을 사용하시겠습니까?",
+			"TaskQuickPick.changeSettingDetails": "Task detection for {0} tasks causes files in any workspace you open to be run as code. Enabling {0} task detection is a user setting and will apply to any workspace you open. \r\n\r\n Do you want to enable {0} task detection for all workspaces?",
 			"TaskQuickPick.changeSettingNo": "아니요",
 			"TaskQuickPick.changeSettingYes": "예",
 			"TaskQuickPick.changeSettingsOptions": "$(gear) {0} 작업 검색을 껐습니다. {1} 작업 검색 사용...",
@@ -8210,6 +7939,9 @@
 			"removeTaskIcon": "작업 선택 목록의 제거 아이콘입니다.",
 			"taskQuickPick.showAll": "작업 모두 표시...",
 			"taskType": "모든 {0} 작업"
+		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "Process task system is not support in the web."
 		},
 		"vs/workbench/contrib/tasks/browser/taskTerminalStatus": {
 			"task.watchFirstError": "이 실행에 대해 검색된 오류의 시작",
@@ -8237,6 +7969,8 @@
 			"dependencyFailed": "작업 영역 폴더 '{1}'에서 종속 작업 '{0}'을(를) 확인할 수 없습니다.",
 			"reuseTerminal": "터미널이 작업에서 다시 사용됩니다. 닫으려면 아무 키나 누르세요.",
 			"task.executing": "작업 실행 중: {0}",
+			"task.executing.shell-integration": "Executing task: {0}",
+			"task.executing.shellIntegration": "Executing task: {0}",
 			"task.executingInFolder": "폴더 {0}에서 작업 실행 중: {1}",
 			"unknownProblemMatcher": "문제 선택기 {0}을(를) 확인할 수 없습니다. 선택기가 무시됩니다."
 		},
@@ -8472,12 +8206,6 @@
 			"TaskDefinition.missingRequiredProperty": "오류: 작업 식별자 '{0}'에 필요한 속성 '{1}'이(가) 없습니다. 작업 식별자가 무시됩니다.",
 			"tasks.taskRunningContext": "작업이 현재 실행 중인지 여부입니다.",
 			"tasksCategory": "작업"
-		},
-		"vs/workbench/contrib/tasks/electron-sandbox/taskService": {
-			"TaskSystem.exitAnyways": "종료(&&E)",
-			"TaskSystem.noProcess": "시작된 작업이 더 이상 존재하지 않습니다. 작업에서 생성된, VS Code를 끝내는 백그라운드 프로세스가 분리된 프로세스가 될 수 있습니다. 이를 방지하려면 wait 플래그를 사용하여 마지막 백그라운드 프로세스를 시작하세요.",
-			"TaskSystem.runningTask": "실행 중인 작업이 있습니다. 이 작업을 종료할까요?",
-			"TaskSystem.terminateTask": "작업 종료(&&T)"
 		},
 		"vs/workbench/contrib/terminal/browser/baseTerminalBackend": {
 			"nonResponsivePtyHost": "터미널의 pty 호스트 프로세스에 대한 연결이 응답하지 않습니다. 터미널 작동이 중지될 수 있습니다.",
@@ -8758,9 +8486,6 @@
 			"terminals": "터미널을 엽니다."
 		},
 		"vs/workbench/contrib/terminal/browser/xterm/decorationAddon": {
-			"changeDefaultIcon": "기본 아이콘 변경",
-			"changeErrorIcon": "오류 아이콘 변경",
-			"changeSuccessIcon": "성공 변경 아이콘",
 			"gutter": "여백 명령 장식",
 			"overviewRuler": "개요 눈금자 명령 장식",
 			"terminal.configureCommandDecorations": "명령 장식 구성",
@@ -8804,6 +8529,7 @@
 			"terminal.findMatchHighlightBackground": "터미널의 다른 검색 일치 색입니다. 기본 터미널 콘텐츠를 숨기지 않도록 색은 불투명하지 않아야 합니다.",
 			"terminal.findMatchHighlightBorder": "터미널에서 다른 검색과 일치하는 테두리 색입니다.",
 			"terminal.foreground": "터미널의 전경색입니다.",
+			"terminal.inactiveSelectionBackground": "The selection background color of the terminal when it does not have focus.",
 			"terminal.selectionBackground": "터미널의 선택 영역 배경색입니다.",
 			"terminal.selectionForeground": "터미널의 선택 영역 전경색입니다. Null이면 선택 영역 전경이 유지되고 최소 대비 비율 기능이 적용됩니다.",
 			"terminal.tab.activeBorder": "패널의 터미널 탭 측면에 있는 테두리입니다. 이 기본값은 tab.activeBorder입니다.",
@@ -8903,9 +8629,6 @@
 			"terminal.integrated.rightClickBehavior.selectWord": "커서 아래 단어를 선택하고 상황에 맞는 메뉴를 표시합니다.",
 			"terminal.integrated.scrollback": "터미널이 버퍼에 유지하는 최대 줄 수를 제어합니다.",
 			"terminal.integrated.sendKeybindingsToShell": "대부분의 키 바인딩을 워크벤치 대신 터미널에 디스패치하여 미세 조정을 위해 대신 사용할 수 있는 {0}을(를) 재정의합니다.",
-			"terminal.integrated.shellIntegration.decorationIcon": "건너뛰거나 비어 있는 명령에 사용할 아이콘을 제어합니다. 아이콘을 숨기거나 {1}(으)로 장식을 비활성화하려면 {0}(으)로 설정하세요.",
-			"terminal.integrated.shellIntegration.decorationIconError": "연결된 종료 코드가 있는 셸 통합을 사용하도록 설정된 터미널의 각 명령에 사용할 아이콘을 제어합니다. 아이콘을 숨기거나 {0}을(를) 사용하여 장식을 사용하지 않도록 설정하려면 {1}(으)로 설정합니다.",
-			"terminal.integrated.shellIntegration.decorationIconSuccess": "연결된 종료 코드가 없는 셸 통합을 사용하도록 설정된 터미널의 각 명령에 사용할 아이콘을 제어합니다. 아이콘을 숨기거나 {0}을(를) 사용하여 장식을 사용하지 않도록 설정하려면 {1}(으)로 설정합니다.",
 			"terminal.integrated.shellIntegration.decorationsEnabled": "쉘 통합이 사용되면 각 명령에 대한 장식을 추가합니다.",
 			"terminal.integrated.shellIntegration.decorationsEnabled.both": "여백에 장식 표시(왼쪽) 및 개요 눈금자(오른쪽)",
 			"terminal.integrated.shellIntegration.decorationsEnabled.gutter": "터미널 왼쪽에 여백 장식 표시",
@@ -8914,6 +8637,7 @@
 			"terminal.integrated.shellIntegration.enabled": "향상된 명령 추적 및 현재 작업 디렉토리 감지와 같은 기능을 지원하기 위해 셸 통합이 자동 삽입되는지 여부를 결정합니다. \r\n\r\n셸 통합은 시작 스크립트와 함께 셸을 삽입하여 작동합니다. 이 스크립트는 터미널 내에서 발생하는 일에 대한 VS Code 인사이트를 제공합니다.\r\n\r\n지원되는 셸:\r\n\r\n- Linux/macOS: bash, pwsh, zsh\r\n - Windows: pwsh\r\n\r\n이 설정은 터미널이 생성될 때만 적용되므로 적용하려면 터미널을 다시 시작해야 합니다.\r\n\r\n터미널 프로필, [complex bash 'PROMPT_COMMAND'](https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand), 또는 지원되지 않는 기타 설정에 사용자 지정 인수가 정의된 경우 스크립트 삽입이 작동하지 않을 수 있습니다. 장식을 비활성화하려면 {0}을(를) 참조하세요.",
 			"terminal.integrated.shellIntegration.history": "터미널 명령 기록에 보관할 최근에 사용한 명령의 수를 제어합니다. 터미널 명령 기록을 사용하지 않도록 설정하려면 0으로 설정합니다.",
 			"terminal.integrated.showExitAlert": "종료 코드가 0이 아닌 경우 \"터미널 프로세스가 다음 종료 코드로 종료되었습니다\"라는 경고를 표시할지 여부를 제어합니다.",
+			"terminal.integrated.smoothScrolling": "Controls whether the terminal will scroll using an animation.",
 			"terminal.integrated.splitCwd": "분할된 터미널이 시작되는 작업 디렉터리를 제어합니다.",
 			"terminal.integrated.splitCwd.inherited": "macOS 및 Linux에서 새 분할 터미널은 부모 터미널의 작업 디렉터리를 사용합니다. Windows에서는 초기 설정과 동일하게 동작합니다.",
 			"terminal.integrated.splitCwd.initial": "새 분할 터미널은 부모 터미널이 시작된 작업 디렉터리를 사용합니다.",
@@ -8985,9 +8709,6 @@
 			"workbench.action.terminal.moveToTerminalPanel": "터미널을 패널로 이동",
 			"workbench.action.terminal.rename": "이름 바꾸기...",
 			"workbench.action.terminal.sizeToContentWidthInstance": "크기를 콘텐츠 너비로 전환"
-		},
-		"vs/workbench/contrib/terminal/electron-sandbox/terminalRemote": {
-			"workbench.action.terminal.newLocal": "새 통합 터미널 만들기(로컬)"
 		},
 		"vs/workbench/contrib/testing/browser/icons": {
 			"filterIcon": "테스트 보기의 '필터' 작업 아이콘입니다.",
@@ -9095,6 +8816,7 @@
 			"selectDefaultConfigs": "기본 프로필 선택",
 			"testExplorer": "테스트 탐색기",
 			"testing.treeElementLabelDuration": "{1}의 {0}",
+			"testing.treeElementLabelOutdated": "{0}, outdated result",
 			"testingFindExtension": "작업 영역 테스트 표시",
 			"testingNoTest": "이 파일에서 테스트를 찾을 수 없습니다."
 		},
@@ -9242,7 +8964,6 @@
 		"vs/workbench/contrib/timeline/browser/timeline.contribution": {
 			"files.openTimeline": "타임라인 열기",
 			"filterTimeline": "타임라인 필터링",
-			"timeline.excludeSources": "타임라인 보기에서 제외해야 하는 타임라인 소스 배열입니다.",
 			"timeline.pageOnScroll": "실험적 설정입니다. 목록 끝까지 스크롤한 경우 타임라인 보기에서 다음 항목 페이지를 로드할지 여부를 제어합니다.",
 			"timeline.pageSize": "기본적으로, 그리고 추가 항목을 로드할 때 타임라인 보기에 표시할 항목 수입니다. 'null'(기본값)로 설정하면 타임라인 보기의 표시 영역에 따라 페이지 크기가 자동으로 선택됩니다.",
 			"timelineConfigurationTitle": "타임라인",
@@ -9367,33 +9088,36 @@
 			"statusBarItemSettingsProfileForeground": "상태 표시줄에 있는 설정 프로필 항목의 전경색입니다.",
 			"workbench.experimental.settingsProfiles.enabled": "설정 프로필 미리 보기 기능을 사용할지 여부를 제어합니다."
 		},
-		"vs/workbench/contrib/userDataProfile/common/userDataProfileActions": {
-			"cleanup profile": "정리 설정 프로필",
-			"confiirmation message": "이렇게 하면 현재 설정이 대체됩니다. 계속하시겠습니까?",
-			"create and enter empty profile": "빈 프로필 만들기...",
-			"create empty profile": "빈 설정 프로필 만들기...",
-			"create profile": "만들기...",
-			"create settings profile": "{0}: 만들기...",
-			"current": "현재",
-			"delete profile": "삭제...",
-			"edit settings profile": "설정 프로필 이름 바꾸기...",
-			"export profile": "내보내기...",
-			"export profile dialog": "프로필 저장",
-			"export success": "{0}: 내보냈습니다.",
-			"import profile": "가져오기...",
-			"import profile dialog": "프로필 가져오기",
-			"import profile placeholder": "프로필 URL 제공 또는 가져올 프로필 파일 선택",
-			"import profile quick pick title": "프로필에서 설정 가져오기",
-			"import profile title": "프로필에서 설정 가져오기",
-			"name": "프로필 이름",
-			"pick profile": "설정 프로필 선택",
-			"pick profile to delete": "삭제할 설정 프로필 선택",
-			"pick profile to rename": "이름을 바꿀 설정 프로필 선택",
-			"rename profile": "이름 바꾸기...",
-			"save profile as": "현재 설정 프로필에서 만들기...",
-			"select from file": "프로필 파일에서 가져오기",
-			"select from url": "URL에서 가져오기",
-			"switch profile": "전환하기..."
+		"vs/workbench/contrib/userDataProfile/browser/userDataProfileActions": {
+			"cleanup profile": "Cleanup Settings Profiles",
+			"confiirmation message": "This will replace your current settings. Are you sure you want to continue?",
+			"create and enter empty profile": "Create an Empty Profile...",
+			"create empty profile": "Create an Empty Settings Profile...",
+			"create profile": "Create...",
+			"create settings profile": "{0}: Create...",
+			"current": "Current",
+			"delete profile": "Delete...",
+			"edit settings profile": "Rename Settings Profile...",
+			"export profile": "Export...",
+			"export profile dialog": "Save Profile",
+			"export success": "{0}: Exported successfully.",
+			"import profile": "Import...",
+			"import profile dialog": "Import Profile",
+			"import profile placeholder": "Provide profile URL or select profile file to import",
+			"import profile quick pick title": "Import Settings from a Profile",
+			"import profile title": "Import Settings from a Profile",
+			"mange": "Manage...",
+			"name": "Profile name",
+			"pick profile": "Select Settings Profile",
+			"pick profile to delete": "Select Settings Profiles to Delete",
+			"pick profile to rename": "Select Settings Profile to Rename",
+			"profileExists": "Settings Profile with name {0} already exists.",
+			"rename profile": "Rename...",
+			"reset workspaces": "Reset Workspace Settings Profiles Associations",
+			"save profile as": "Create from Current Settings Profile...",
+			"select from file": "Import from profile file",
+			"select from url": "Import from URL",
+			"switch profile": "Switch..."
 		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSync": {
 			"Theirs": "다른 사용자들의 항목",
@@ -9542,10 +9266,6 @@
 			"workbench.actions.sync.resolveResourceRef": "원시 JSON 동기화 데이터 표시",
 			"workbench.actions.sync.turnOffSyncOnMachine": "설정 동기화 끄기"
 		},
-		"vs/workbench/contrib/userDataSync/electron-sandbox/userDataSync.contribution": {
-			"Open Backup folder": "로컬 백업 폴더 열기",
-			"no backups": "로컬 백업 폴더가 없습니다."
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "사용하도록 설정되면 편집기가 열리지 않았을 때 워터마크 팁이 표시됩니다.",
 			"watermark.findInFiles": "파일에서 찾기",
@@ -9569,16 +9289,15 @@
 		"vs/workbench/contrib/webview/browser/webviewElement": {
 			"fatalErrorMessage": "{0} 웹 보기를 로드하는 동안 오류가 발생했습니다."
 		},
-		"vs/workbench/contrib/webview/electron-sandbox/webviewCommands": {
-			"iframeWebviewAlert": "표준 개발 도구를 사용하여 iframe 기반 웹 보기 디버그",
-			"openToolsLabel": "Webview 개발자 도구 열기"
-		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "다음 찾기",
 			"editor.action.webvieweditor.findPrevious": "이전 찾기",
 			"editor.action.webvieweditor.hideFind": "찾기 중지",
 			"editor.action.webvieweditor.showFind": "찾기 표시",
 			"refreshWebviewLabel": "웹 보기 다시 로드"
+		},
+		"vs/workbench/contrib/webviewPanel/browser/webviewEditor": {
+			"context.activeWebviewId": "The viewType of the currently active webview panel."
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewPanel.contribution": {
 			"webview.editor.label": "웹 보기 편집기"
@@ -9991,9 +9710,11 @@
 		},
 		"vs/workbench/services/actions/common/menusExtensionPoint": {
 			"comment.actions": "주석 편집기 아래에 단추로 렌더링되는, 제공된 주석 상황에 맞는 메뉴",
+			"comment.commentContext": "The contributed comment context menu, rendered as a right click menu on the an individual comment in the comment thread's peek view.",
 			"comment.title": "제공한 주석 제목 메뉴",
 			"commentThread.actions": "주석 편집기 아래에 단추로 렌더링된, 제공된 주석 스레드 컨텍스트 메뉴",
 			"commentThread.title": "제공한 주석 스레드 제목 메뉴",
+			"commentThread.titleContext": "The contributed comment thread title's peek context menu, rendered as a right click menu on the comment thread's peek title.",
 			"dup": "`명령` 섹션에 `{0}` 명령이 여러 번 나타납니다.",
 			"dupe.command": "메뉴 항목이 동일한 명령을 기본값과 alt 명령으로 참조합니다.",
 			"file.newFile": "'새 파일...' 시작 페이지 및 파일 메뉴에 표시되는 빠른 선택입니다.",
@@ -10098,6 +9819,11 @@
 			"sign in": "로그인이 요청됨",
 			"signInRequest": "{0}(으)로 로그인하여 {1} 사용(1)",
 			"useOtherAccount": "다른 계정에 로그인"
+		},
+		"vs/workbench/services/clipboard/browser/clipboardService": {
+			"clipboardError": "Unable to read from the browser's clipboard. Please make sure you have granted access for this website to read from the clipboard.",
+			"learnMore": "Learn More",
+			"retry": "Retry"
 		},
 		"vs/workbench/services/configuration/browser/configurationService": {
 			"configurationDefaults.description": "구성에 대한 기본값 기여",
@@ -10212,6 +9938,15 @@
 			"saveChangesMessages": "다음 {0}개 파일에 대한 변경 내용을 저장할까요?",
 			"saveFileAs.title": "다른 이름으로 저장"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "Learn More",
+			"openFiles": "Open Files...",
+			"openRemote": "Open Remote...",
+			"pickFolderAndOpen": "Can't open folders, try adding a folder to the workspace instead.",
+			"pickWorkspaceAndOpen": "Can't open workspaces, try adding a folder to the workspace instead.",
+			"unsupportedBrowserDetail": "Your browser doesn't support opening local folders.\r\nYou can either open single files or open a remote repository.",
+			"unsupportedBrowserMessage": "Opening Local Folders is Unsupported"
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "로컬 파일 열기...",
 			"openLocalFileFolder": "로컬 열기...",
@@ -10222,6 +9957,7 @@
 			"remoteFileDialog.local": "로컬 표시",
 			"remoteFileDialog.notConnectedToRemote": "{0}의 파일 시스템 공급자를 사용할 수 없습니다.",
 			"remoteFileDialog.validateBadFilename": "올바른 파일 이름을 입력하세요.",
+			"remoteFileDialog.validateCreateDirectory": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "{0}이(가) 이미 있습니다. 덮어쓰시겠습니까?",
 			"remoteFileDialog.validateFileOnly": "파일을 선택하세요.",
 			"remoteFileDialog.validateFolder": "폴더가 이미 존재합니다. 새 파일 이름을 사용하세요.",
@@ -10280,6 +10016,14 @@
 			"extensionsDisabled": "설치된 모든 확장을 일시적으로 사용할 수 없습니다.",
 			"noWorkspace": "작업 영역이 없습니다."
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "이 확장은 웹 확장이 아니므로 '{0}'을(를) 추가할 수 없습니다.",
+			"openInstalledWebExtensionsResource": "설치된 웹 확장 리소스 열기"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "Browser",
+			"remote": "Remote"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "{0} 확장을 설치하지 못함: 매니페스트를 찾을 수 없습니다.",
 			"VS Code for Web": "웹용 {0}",
@@ -10304,20 +10048,14 @@
 			"singleDependentError": "확장 '{0}'을(를) 제거할 수 없습니다. 확장 '{1}'이(가) 이 확장에 종속됩니다.",
 			"twoDependentsError": "확장 '{0}'을(를) 제거할 수 없습니다. 확장 '{1}' 및 '{2}'이(가) 이 확장에 종속됩니다."
 		},
-		"vs/workbench/services/extensionManagement/electron-sandbox/extensionManagementServerService": {
-			"local": "LOCAL",
-			"remote": "원격"
-		},
-		"vs/workbench/services/extensionManagement/electron-sandbox/remoteExtensionManagementService": {
-			"notFoundCompatibleDependency": "'{0}' 확장은 현재 버전의 {1}(버전 {2})와 호환되지 않기 때문에 설치할 수 없습니다.",
-			"notFoundCompatiblePrereleaseDependency": "'{0}' 확장 시험판은 현재 버전의 {1}(버전 {2})와 호환되지 않기 때문에 설치할 수 없습니다.",
-			"notFoundReleaseExtension": "릴리스 버전이 없으므로 '{0}' 확장의 릴리스 버전을 설치할 수 없습니다."
-		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "다음에 확장 권장 사항 추가",
 			"select for remove": "다음에서 확장 권장 사항 제거",
 			"workspace": "작업 영역",
 			"workspace folder": "작업 영역 폴더"
+		},
+		"vs/workbench/services/extensions/browser/extensionService": {
+			"looping": "The following extensions contain dependency loops and have been disabled: {0}"
 		},
 		"vs/workbench/services/extensions/browser/extensionUrlHandler": {
 			"Installing": "'{0}' 확장을 설치하는 중...",
@@ -10430,34 +10168,6 @@
 		"vs/workbench/services/extensions/common/remoteExtensionHost": {
 			"remote extension host Log": "원격 확장 호스트"
 		},
-		"vs/workbench/services/extensions/electron-sandbox/cachedExtensionScanner": {
-			"extensionCache.invalid": "확장이 디스크에서 수정되었습니다. 창을 다시 로드하세요.",
-			"reloadWindow": "창 다시 로드"
-		},
-		"vs/workbench/services/extensions/electron-sandbox/electronExtensionService": {
-			"devTools": "개발자 도구 열기",
-			"enable": "활성화하고 다시 로드",
-			"enableResolver": "원격 창을 열려면 '{0}' 확장이 필요합니다.\r\n사용하도록 설정하시겠습니까?",
-			"extensionService.autoRestart": "확장 호스트가 예기치 않게 종료되었습니다. 다시 시작 중...",
-			"extensionService.crash": "확장 호스트가 지난 5분 동안 3번 예기치 않게 종료되었습니다.",
-			"extensionService.versionMismatchCrash": "확장 호스트를 시작할 수 없습니다. 버전이 일치하지 않습니다.",
-			"getEnvironmentFailure": "원격 환경을 페치할 수 없습니다.",
-			"install": "설치 및 다시 로드",
-			"installResolver": "원격 창을 열려면 확장 '{0}'이(가) 필요합니다.\r\n확장을 설치하시겠습니까?",
-			"looping": "다음 확장은 종속성 루프가 포함되어 있으며 사용하지 않도록 설정되어 있습니다. {0}",
-			"relaunch": "VS Code 다시 시작",
-			"resolverExtensionNotFound": "마켓플레이스에서 '{0}'을(를) 찾을 수 없음",
-			"restart": "확장 호스트 다시 시작",
-			"restartExtensionHost": "확장 호스트 다시 시작"
-		},
-		"vs/workbench/services/extensions/electron-sandbox/localProcessExtensionHost": {
-			"extension host Log": "확장 호스트",
-			"extensionHost.error": "확장 호스트에서 오류 발생: {0}",
-			"extensionHost.startupFail": "확장 호스트가 10초 이내에 시작되지 않았습니다. 문제가 발생했을 수 있습니다.",
-			"extensionHost.startupFailDebug": "확장 호스트가 10초 내에 시작되지 않았습니다. 첫 번째 줄에서 중지되었을 수 있습니다. 계속하려면 디버거가 필요합니다.",
-			"join.extensionDevelopment": "확장 디버그 세션을 종료하는 중",
-			"reloadWindow": "창 다시 로드"
-		},
 		"vs/workbench/services/history/browser/historyService": {
 			"canNavigateBack": "편집기 기록에서 뒤로 이동할 수 있는지 여부",
 			"canNavigateBackInEditLocations": "편집기 편집 위치 기록에서 다시 탐색할 수 있는지 여부",
@@ -10468,6 +10178,11 @@
 			"canNavigateToLastEditLocation": "마지막 편집기 편집 위치로 이동할 수 있는지 여부",
 			"canNavigateToLastNavigationLocation": "마지막 편집기 탐색 위치로 이동할 수 있는지 여부",
 			"canReopenClosedEditor": "마지막으로 닫힌 편집기를 다시 열 수 있는지 여부"
+		},
+		"vs/workbench/services/host/browser/browserHostService": {
+			"cancel": "Cancel",
+			"open": "Open",
+			"unableToOpenExternal": "The browser interrupted the opening of a new tab or window. Press 'Open' to open it anyway."
 		},
 		"vs/workbench/services/integrity/electron-sandbox/integrityService": {
 			"integrity.dontShowAgain": "다시 표시 안 함",
@@ -10495,6 +10210,10 @@
 			"vscode.extension.contributes.keybindings.mac": "Mac 특정 키 또는 키 시퀀스입니다.",
 			"vscode.extension.contributes.keybindings.when": "키가 활성화되는 조건입니다.",
 			"vscode.extension.contributes.keybindings.win": "Windows 특정 키 또는 키 시퀀스"
+		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Control the keyboard layout used in web.",
+			"keyboardConfigurationTitle": "Keyboard"
 		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "키 바인딩을 이 파일에 넣어서 기본값 재정의",
@@ -10540,6 +10259,9 @@
 			"vscode.extension.contributes.languages.icon.light": "밝은 테마를 사용하는 경우의 아이콘 경로",
 			"vscode.extension.contributes.languages.id": "언어의 ID입니다.",
 			"vscode.extension.contributes.languages.mimetypes": "Mime 형식이 언어에 연결되어 있습니다."
+		},
+		"vs/workbench/services/lifecycle/browser/lifecycleService": {
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again."
 		},
 		"vs/workbench/services/notification/common/notificationService": {
 			"neverShowAgain": "다시 표시 안 함"
@@ -10606,19 +10328,23 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "진행 메시지"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "An unexpected error occurred that requires a reload of this page.",
+			"connectionErrorDetail": "The workbench failed to connect to the server (Error: {0})",
+			"reload": "Reload"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"remote.localPortMismatch.single": "원격 포트 {1} 전달에 로컬 포트 {0}을(를) 사용할 수 없습니다.\r\n\r\n이 문제는 일반적으로 로컬 포트 {0}을(를) 사용하는 다른 프로세스가 이미 있는 경우에 발생합니다.\r\n\r\n 포트 번호 {2}이(가) 대신 사용되었습니다.",
 			"tunnel.source.auto": "자동 전달됨",
 			"tunnel.source.user": "사용자가 전달함",
 			"tunnel.staticallyForwarded": "정적으로 전달됨"
 		},
-		"vs/workbench/services/remote/electron-sandbox/remoteAgentService": {
-			"connectionError": "원격 확장 호스트 서버에 연결하지 못했습니다(오류: {0}).",
-			"devTools": "개발자 도구 열기",
-			"directUrl": "브라우저에서 열려"
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
 		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "작업 영역 폴더가 없음: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/textfile/browser/textFileService": {
 			"confirmOverwrite": "’{0}'이(가) 이미 있습니다. 바꾸시겠습니까?",
@@ -10640,9 +10366,6 @@
 		},
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants": "'{0}'을(를) 저장하는 중"
-		},
-		"vs/workbench/services/textfile/electron-sandbox/nativeTextFileService": {
-			"join.textFiles": "텍스트 파일 저장 중"
 		},
 		"vs/workbench/services/textMate/browser/abstractTextMateService": {
 			"alreadyDebugging": "이미 로깅 중입니다.",
@@ -10981,22 +10704,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "실행 취소/다시 실행"
 		},
-		"vs/workbench/services/workingCopy/electron-sandbox/workingCopyBackupService": {
-			"join.workingCopyBackups": "백업 작업 복사본"
-		},
-		"vs/workbench/services/workingCopy/electron-sandbox/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "대기를 중지하고 저장되지 않은 변경 내용으로 편집기를 저장하거나 되돌리려면 '취소'를 클릭합니다.",
-			"backupBeforeShutdownMessage": "저장되지 않은 변경 내용이 있는 편집기를 백업하는 데 시간이 조금 더 걸리고 있습니다.",
-			"backupErrorDetails": "저장되지 않은 변경 내용이 있는 편집기를 저장하거나 되돌려본 후 다시 시도하세요.",
-			"backupTrackerBackupFailed": "저장되지 않은 변경 내용이 있는 다음 편집기를 백업 위치에 저장할 수 없습니다.",
-			"backupTrackerConfirmFailed": "저장되지 않은 변경 내용이 있는 다음 편집기를 저장하거나 되돌릴 수 없습니다.",
-			"discardBackupsBeforeShutdown": "백업을 삭제하는 데 시간이 조금 더 걸리고 있습니다.",
-			"revertBeforeShutdown": "저장되지 않은 변경 내용이 있는 편집기를 되돌리는 데 시간이 조금 더 걸리고 있습니다.",
-			"saveBeforeShutdown": "저장되지 않은 변경 내용이 있는 편집기를 저장하는 데 시간이 조금 더 걸리고 있습니다."
-		},
-		"vs/workbench/services/workingCopy/electron-sandbox/workingCopyHistoryService": {
-			"join.workingCopyHistory": "로컬 기록 저장 중"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "작업 영역 구성 파일에 쓸 수 없습니다. 파일을 열고 오류/경고를 수정한 다음 다시 시도하세요.",
 			"errorWorkspaceConfigurationFileDirty": "파일에 저장되지 않은 변경 내용이 있어 작업 영역 구성 파일에 쓸 수 없습니다. 저장하고 다시 시도하세요.",
@@ -11006,15 +10713,6 @@
 		},
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "작업 영역 신뢰"
-		},
-		"vs/workbench/services/workspaces/electron-sandbox/workspaceEditingService": {
-			"cancel": "취소",
-			"doNotSave": "저장 안 함",
-			"save": "저장",
-			"saveWorkspaceDetail": "작업 영역을 다시 열려면 작업 영역을 저장하세요.",
-			"saveWorkspaceMessage": "작업 영역 구성을 파일로 저장하시겠습니까?",
-			"workspaceOpenedDetail": "작업 영역이 이미 다른 창에 열렸습니다. 먼저 해당 창을 닫은 후 다시 시도하세요.",
-			"workspaceOpenedMessage": "'{0}' 작업 영역을 저장할 수 없음"
 		}
 	}
 }
