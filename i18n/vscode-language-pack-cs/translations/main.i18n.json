@@ -22,6 +22,9 @@
 			"dialogWarningMessage": "Upozornění",
 			"ok": "OK"
 		},
+		"vs/base/browser/ui/dropdown/dropdownActionViewItem": {
+			"moreActions": "More Actions..."
+		},
 		"vs/base/browser/ui/findinput/findInput": {
 			"defaultLabel": "vstup"
 		},
@@ -162,9 +165,6 @@
 		"vs/base/common/platform": {
 			"ensureLoaderPluginIsLoaded": "_"
 		},
-		"vs/base/node/processes": {
-			"TaskRunner.UNC": "Nelze provést příkaz shellu na jednotce UNC."
-		},
 		"vs/base/node/zip": {
 			"incompleteExtract": "Neúplné. Nalezené položky: {0} z {1}",
 			"invalid file": "Při extrahování souboru {0} došlo k chybě. Soubor je neplatný.",
@@ -238,10 +238,12 @@
 		},
 		"vs/editor/common/config/editorConfigurationSchema": {
 			"codeLens": "Určuje, jestli editor zobrazí CodeLens.",
-			"detectIndentation": "Určuje, jestli se má při otevření souboru na základě obsahu souboru automaticky detekovat nastavení #editor.tabSize# a #editor.insertSpaces#.",
+			"detectIndentation": "Controls whether {0} and {1} will be automatically detected when a file is opened based on the file contents.",
+			"diffAlgorithm.experimental": "Uses an experimental diffing algorithm.",
+			"diffAlgorithm.smart": "Uses the default diffing algorithm.",
 			"editorConfigurationTitle": "Editor",
 			"ignoreTrimWhitespace": "Když je povoleno, editor rozdílů ignoruje změny v počátečních nebo koncových prázdných znacích.",
-			"insertSpaces": "Umožňuje vkládat mezery při stisknutí klávesy Tab. Toto nastavení je přepsáno na základě obsahu souboru, pokud je zapnuto nastavení #editor.detectIndentation#.",
+			"insertSpaces": "Insert spaces when pressing `Tab`. This setting is overridden based on the file contents when {0} is on.",
 			"largeFileOptimizations": "Speciální zpracování velkých souborů za účelem zakázání určitých funkcí náročných na paměť",
 			"maxComputationTime": "Časový limit v milisekundách, po kterém je zrušen výpočet rozdílů. Pokud nechcete nastavit žádný časový limit, zadejte hodnotu 0.",
 			"maxFileSize": "Maximální velikost souboru v MB, pro který se mají vypočítat rozdíly. Pro zrušení omezení použijte 0.",
@@ -258,14 +260,14 @@
 			"semanticHighlighting.true": "Sémantické zvýrazňování je u všech barevných motivů povolené.",
 			"sideBySide": "Určuje, jestli má editor rozdílů zobrazovat rozdíly vedle sebe nebo vloženě (inline).",
 			"stablePeek": "Udržuje editory náhledu otevřené i po poklikání na jejich obsah nebo stisknutí klávesy Esc.",
-			"tabSize": "Počet mezer, které odpovídají tabulátoru. Pokud je zapnuto nastavení #editor.detectIndentation#, je toto nastavení přepsáno na základě obsahu souboru.",
+			"tabSize": "The number of spaces a tab is equal to. This setting is overridden based on the file contents when {0} is on.",
 			"trimAutoWhitespace": "Odebrat automaticky vložené koncové prázdné znaky",
 			"wordBasedSuggestions": "Určuje, jestli se dokončení mají počítat na základě slov v dokumentu.",
 			"wordBasedSuggestionsMode": "Určuje, ze kterých dokumentů se počítá doplňování na základě slov.",
 			"wordBasedSuggestionsMode.allDocuments": "Navrhovaná slova ze všech otevřených dokumentů",
 			"wordBasedSuggestionsMode.currentDocument": "Navrhovat jen slova z aktivního dokumentu",
 			"wordBasedSuggestionsMode.matchingDocuments": "Navrhovat slova ze všech otevřených dokumentů stejného jazyka",
-			"wordWrap.inherit": "Řádky se zalomí podle nastavení #editor.wordWrap#.",
+			"wordWrap.inherit": "Lines will wrap according to the {0} setting.",
 			"wordWrap.off": "Řádky se nebudou nikdy zalamovat.",
 			"wordWrap.on": "Řádky se budou zalamovat podle šířky viewportu (zobrazení)."
 		},
@@ -332,6 +334,7 @@
 			"editor.editor.gotoLocation.multipleReferences": "Určuje chování příkazu Přejít na odkazy, pokud existuje několik cílových umístění.",
 			"editor.editor.gotoLocation.multipleTypeDefinitions": "Určuje chování příkazu Přejít k definici typu, pokud existuje několik cílových umístění.",
 			"editor.experimental.stickyScroll": "Zobrazí vnořené aktuální obory během posouvání v horní části editoru.",
+			"editor.experimental.stickyScroll.": "Defines the maximum number of sticky lines to show.",
 			"editor.find.autoFindInSelection.always": "Vždy automaticky zapnout možnost Najít ve výběru.",
 			"editor.find.autoFindInSelection.multiline": "Automaticky zapnout možnost Najít ve výběru, pokud je vybráno více řádků obsahu.",
 			"editor.find.autoFindInSelection.never": "Nikdy automaticky nezapínat možnost Najít ve výběru (výchozí)",
@@ -762,7 +765,13 @@
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionMenu": {
 			"CodeActionMenuVisible": "Určuje, jestli je widget seznamu akcí kódu viditelný.",
-			"label": "{0} refaktorovat, {1} do náhledu"
+			"codeAction.widget.id.convert": "Convert...",
+			"codeAction.widget.id.extract": "Extract...",
+			"codeAction.widget.id.more": "More Actions...",
+			"codeAction.widget.id.quickfix": "Quick Fix...",
+			"codeAction.widget.id.source": "Source Action...",
+			"codeAction.widget.id.surround": "Surround With...",
+			"label": "{0} to Apply, {1} to Preview"
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionWidgetContribution": {
 			"codeActionWidget": "Když se tato možnost povolí, upraví se způsob vykreslování nabídky akcí kódu."
@@ -1606,6 +1615,13 @@
 			"fileSystemNotAllowedError": "Nedostatečná oprávnění. Zkuste to prosím znovu a povolte operaci.",
 			"fileSystemRenameError": "Přejmenování je podporováno pouze u souborů."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Directory is not empty",
+			"fileIsDirectory": "File is Directory",
+			"fileNotDirectory": "File is not a directory",
+			"fileNotExists": "File does not exist",
+			"internal": "Internal error occurred in IndexedDB File System Provider. ({0})"
+		},
 		"vs/platform/files/common/fileService": {
 			"deleteFailedNonEmptyFolder": "Nelze odstranit složku {0}, která není prázdná.",
 			"deleteFailedNotFound": "Nejde odstranit neexistující soubor{0}.",
@@ -1798,9 +1814,9 @@
 			"telemetryConfigurationTitle": "Telemetrie"
 		},
 		"vs/platform/terminal/common/terminalPlatformConfiguration": {
-			"terminal.integrated.automationProfile.linux": "Profil terminálu, který se má použít v Linuxu pro využití terminálu souvisejícího s automatizací, jako jsou úlohy a ladění. Toto nastavení bude v současné době ignorováno, pokud je nastavena hodnota {0}.",
-			"terminal.integrated.automationProfile.osx": "Profil terminálu, který se má použít na macOS pro využití terminálu souvisejícího s automatizací, jako jsou úlohy a ladění. Toto nastavení bude v současné době ignorováno, pokud je nastavena hodnota {0}.",
-			"terminal.integrated.automationProfile.windows": "Profil terminálu, který se má použít pro využití terminálu souvisejícího s automatizací, jako jsou úlohy a ladění. Toto nastavení bude v současné době ignorováno, pokud je nastavena hodnota {0}.",
+			"terminal.integrated.automationProfile.linux": "The terminal profile to use on Linux for automation-related terminal usage like tasks and debug. This setting will currently be ignored if {0} (now deprecated) is set.",
+			"terminal.integrated.automationProfile.osx": "The terminal profile to use on macOS for automation-related terminal usage like tasks and debug. This setting will currently be ignored if {0} (now deprecated) is set.",
+			"terminal.integrated.automationProfile.windows": "The terminal profile to use for automation-related terminal usage like tasks and debug. This setting will currently be ignored if {0} (now deprecated) is set.",
 			"terminal.integrated.automationShell.linux": "Cesta, která (pokud je nastavena) přepíše {0} a ignoruje hodnoty {1} pro použití terminálu souvisejícího s automatizací, jako jsou úlohy a ladění.",
 			"terminal.integrated.automationShell.linux.deprecation": "To je zastaralé. Nový doporučený způsob konfigurace automatizačního prostředí je vytvořením profilu automatizace terminálu s {0}. V současné době to bude mít přednost před nastavením nového profilu automatizace, ale to se v budoucnu změní.",
 			"terminal.integrated.automationShell.osx": "Cesta, která (pokud je nastavena) přepíše {0} a ignoruje hodnoty {1} pro použití terminálu souvisejícího s automatizací, jako jsou úlohy a ladění.",
@@ -2184,17 +2200,17 @@
 		"vs/platform/userDataSync/common/userDataSyncMachines": {
 			"error incompatible": "Nelze číst data počítačů, protože aktuální verze není kompatibilní. Aktualizujte prosím {0} a zkuste to znovu."
 		},
-		"vs/platform/windows/electron-main/window": {
-			"appCrashed": "Došlo k chybovému ukončení okna.",
-			"appCrashedDetail": "Omlouváme se za způsobené nepříjemnosti. Okno můžete znovu otevřít a pokračovat tam, kde jste přestali.",
-			"appCrashedDetails": "Okno se chybově ukončilo (důvod: {0}, kód: {1})",
-			"appStalled": "Okno neodpovídá.",
-			"appStalledDetail": "Okno můžete znovu otevřít nebo zavřít nebo také můžete dál čekat.",
-			"close": "&&Zavřít",
-			"doNotRestoreEditors": "Neobnovovat editory",
-			"hiddenMenuBar": "K řádku nabídek máte stále přístup pomocí klávesy Alt.",
-			"reopen": "&&Znovu otevřít",
-			"wait": "&&Nadále čekat"
+		"vs/platform/windows/electron-main/windowImpl": {
+			"appCrashed": "The window has crashed",
+			"appCrashedDetail": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
+			"appCrashedDetails": "The window has crashed (reason: '{0}', code: '{1}')",
+			"appStalled": "The window is not responding",
+			"appStalledDetail": "You can reopen or close the window or keep waiting.",
+			"close": "&&Close",
+			"doNotRestoreEditors": "Don't restore editors",
+			"hiddenMenuBar": "You can still access the menu bar by pressing the Alt-key.",
+			"reopen": "&&Reopen",
+			"wait": "&&Keep Waiting"
 		},
 		"vs/platform/windows/electron-main/windowsMainService": {
 			"ok": "&&OK",
@@ -2237,6 +2253,20 @@
 			"Other": "Jiné:",
 			"RunAfter": "Po instalaci spustit %1",
 			"SourceFile": "Zdrojový soubor %1"
+		},
+		"vs/server/node/serverEnvironmentService": {
+			"acceptLicenseTerms": "If set, the user accepts the server license terms and the server will be started without a user prompt.",
+			"connection-token": "A secret that must be included with all requests.",
+			"connection-token-file": "Path to a file that contains the connection token.",
+			"default-folder": "The workspace folder to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.",
+			"default-workspace": "The workspace to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.",
+			"host": "The host name or IP address the server should listen to. If not set, defaults to 'localhost'.",
+			"port": "The port the server should listen to. If 0 is passed a random free port is picked. If a range in the format num-num is passed, a free port from the range (end inclusive) is selected.",
+			"serverDataDir": "Specifies the directory that server data is kept in.",
+			"socket-path": "The path to a socket file for the server to listen to.",
+			"start-server": "Start the server when installing or uninstalling extensions. To be used in combination with 'install-extension', 'install-builtin-extension' and 'uninstall-extension'.",
+			"telemetry-level": "Sets the initial telemetry level. Valid levels are: 'off', 'crash', 'error' and 'all'. If not specified, the server will send telemetry until a client connects, it will then use the clients telemetry setting. Setting this to 'off' is equivalent to --disable-telemetry",
+			"without-connection-token": "Run without a connection token. Only use this if the connection is secured by other means."
 		},
 		"vs/code/electron-main/app": {
 			"cancel": "&&Ne",
@@ -2298,6 +2328,7 @@
 			"issueTitleLabel": "Název",
 			"issueTitleRequired": "Zadejte prosím název.",
 			"issueTypeLabel": "Toto je",
+			"reviewGuidanceLabel": "Before you report an issue here please <a href=\"https://github.com/microsoft/vscode/wiki/Submitting-Bugs-and-Suggestions\" target=\"_blank\">review the guidance we provide</a>.",
 			"sendExperiments": "Zahrnout informace o experimentu A/B",
 			"sendExtensions": "Zahrnout moje povolená rozšíření",
 			"sendProcessInfo": "Zahrnout moje aktuálně spuštěné procesy",
@@ -3447,6 +3478,25 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "Určuje, jestli je fokus klávesnice uvnitř ovládacího prvku rychlého otevření."
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "Reset User Data",
+			"reset user data message": "Would you like to reset your data (settings, keybindings, extensions, snippets and UI State) and reload?",
+			"vscode.dev": "vscode.dev"
+		},
+		"vs/workbench/browser/window": {
+			"cancel": "Cancel",
+			"learnMore": "Learn More",
+			"open": "Open",
+			"openExternalDialogButtonContinue": "Continue here",
+			"openExternalDialogButtonInstall": "Install {0}",
+			"openExternalDialogButtonRetry": "Try again",
+			"openExternalDialogDetail": "We tried opening {0} on your computer.",
+			"openExternalDialogTitle": "All done. You can close this tab now.",
+			"reload": "Reload",
+			"shutdownError": "An unexpected error occurred that requires a reload of this page.",
+			"shutdownErrorDetail": "The workbench was unexpectedly disposed while running.",
+			"unableToOpenExternal": "The browser interrupted the opening of a new tab or window. Press 'Open' to open it anyway."
+		},
 		"vs/workbench/browser/workbench": {
 			"loaderErrorNative": "Požadovaný soubor se nepovedlo načíst. Pokud to chcete zkusit znovu, restartujte prosím aplikaci. Podrobnosti: {0}"
 		},
@@ -3807,8 +3857,8 @@
 			"titleBarInactiveForeground": "Popředí záhlaví okna, když je okno neaktivní",
 			"unfocusedActiveModifiedBorder": "Ohraničení v horní části upravených aktivních karet ve skupině bez fokusu. Karty jsou kontejnery pro editory v oblasti editorů. V jedné skupině editorů můžete otevřít více karet. Může existovat více skupin editorů.",
 			"unfocusedINactiveModifiedBorder": "Ohraničení v horní části upravených neaktivních karet ve skupině bez fokusu. Karty jsou kontejnery pro editory v oblasti editorů. V jedné skupině editorů můžete otevřít více karet. Může existovat více skupin editorů.",
-			"windowActiveBorder": "Barva použitá pro ohraničení okna, když je okno aktivní. Podporuje se pouze v desktopových klientech při používání vlastního záhlaví okna.",
-			"windowInactiveBorder": "Barva použitá pro ohraničení okna, když je okno neaktivní. Podporuje se pouze v desktopových klientech při používání vlastního záhlaví okna."
+			"windowActiveBorder": "The color used for the border of the window when it is active. Only supported in the macOS and Linux desktop client when using the custom title bar.",
+			"windowInactiveBorder": "The color used for the border of the window when it is inactive. Only supported in the macOS and Linux desktop client when using the custom title bar."
 		},
 		"vs/workbench/common/views": {
 			"defaultViewIcon": "Ikona výchozího zobrazení",
@@ -3897,7 +3947,7 @@
 			"join.closeStorage": "Ukládá se stav uživatelského rozhraní."
 		},
 		"vs/workbench/electron-sandbox/parts/dialogs/dialogHandler": {
-			"aboutDetail": "Verze: {0}\r\nPotvrzení: {1}\r\nDatum: {2}\r\nElectron: {3}\r\nChromium: {4}\r\nNode.js: {5}\r\nV8: {6}\r\nOperační systém: {7}",
+			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDate: {2}\r\nElectron: {3}\r\nChromium: {4}\r\nNode.js: {5}\r\nV8: {6}\r\nOS: {7}\r\nSandboxed: {8}",
 			"cancelButton": "Zrušit",
 			"copy": "&&Kopírovat",
 			"okButton": "OK",
@@ -4336,6 +4386,7 @@
 			"commentCount": "1 komentář",
 			"commentLine": "[Ln {0}]",
 			"commentRange": "[Ln {0}–{1}]",
+			"comments.view.title": "Comments",
 			"commentsCount": "Počet komentářů: {0}",
 			"image": "Obrázek",
 			"imageWithLabel": "Obrázek: {0}",
@@ -4346,6 +4397,19 @@
 			"resourceWithCommentLabel": "Komentář ze ${0} – řádek {1}, sloupec {2} v {3}, zdroj: {4}",
 			"resourceWithCommentThreadsLabel": "Komentáře v {0}, úplná cesta: {1}",
 			"rootCommentsLabel": "Komentáře pro aktuální pracovní prostor"
+		},
+		"vs/workbench/contrib/comments/browser/commentsViewActions": {
+			"comments.filter.ariaLabel": "Filter comments",
+			"comments.filter.placeholder": "Filter (e.g. text, author)",
+			"comments.filterIcon": "Icon for the filter configuration in the Comments view.",
+			"commentsClearFilterText": "Clear filter text",
+			"commentsFiltersAction": "More Filters...",
+			"filter": "Filter",
+			"focusCommentsFilter": "Focus comments filter",
+			"focusCommentsList": "Focus Comments view",
+			"showResolved": "Show Resolved",
+			"showUnresolved": "Show Unresolved",
+			"showing filtered comments": "Showing {0} of {1}"
 		},
 		"vs/workbench/contrib/comments/browser/reactionsAction": {
 			"pickReactions": "Vybrat reakce..."
@@ -4596,7 +4660,8 @@
 			"installExt": "Nainstalovat rozšíření...",
 			"installLanguage": "Nainstalovat rozšíření pro {0}...",
 			"selectDebug": "Vybrat ladicí program",
-			"suggestedDebuggers": "Navrhováno"
+			"suggestedDebuggers": "Navrhováno",
+			"suppressMultipleSessionWarning": "Disable the warning when trying to start the same debug configuration more than once."
 		},
 		"vs/workbench/contrib/debug/browser/debugColors": {
 			"debugIcon.continueForeground": "Ikona panelu nástrojů ladění pro pokračování",
@@ -5101,10 +5166,15 @@
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsViews": {
 			"confirm delete": "Opravdu chcete trvale odstranit relaci úprav s odkazem {0}? Tuto akci nelze vrátit zpět.",
-			"edit sessions data": "Všechny relace",
+			"confirm delete all": "Are you sure you want to permanently delete all edit sessions? You cannot undo this action.",
+			"noEditSessions": "You have no stored edit sessions to display.\r\n{0}",
 			"open file": "Otevřít soubor",
+			"storeEditSessionCommand": "[{0}](command:workbench.editSessions.actions.store)",
+			"storeEditSessionTitle": "Store Edit Session",
 			"workbench.editSessions.actions.delete": "Odstranit relaci úprav",
-			"workbench.editSessions.actions.resume": "Pokračovat relaci úprav"
+			"workbench.editSessions.actions.deleteAll": "Delete All Edit Sessions",
+			"workbench.editSessions.actions.resume": "Pokračovat relaci úprav",
+			"workbench.editSessions.actions.store": "Store Edit Session"
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsWorkbenchService": {
 			"account preference": "Přihlaste se, abyste mohli používat úpravy relací",
@@ -5113,6 +5183,7 @@
 			"delete all edit sessions": "Odstraňte všechny uložené relace úprav z cloudu.",
 			"others": "Jiné",
 			"reset auth.v2": "Odhlásit z relací úprav",
+			"sign in": "Sign In",
 			"sign in using account": "Přihlásit přes {0}",
 			"sign out of edit sessions clear data prompt": "Chcete se odhlásit z relací úprav?",
 			"signed in": "Přihlášený"
@@ -5399,6 +5470,9 @@
 			"workbench.extensions.uninstallExtension.arg.name": "ID rozšíření, které má být odinstalováno",
 			"workbench.extensions.uninstallExtension.description": "Odinstalovat dané rozšíření",
 			"workspace unsupported filter": "Nepodporovaný pracovní prostor"
+		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "Running Extensions"
 		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "Toto rozšíření je zakázané, protože se nepodporuje v {0} pro Web.",
@@ -5911,12 +5985,12 @@
 			"moveFileBulkEdit": "Přesunout {0}",
 			"movingBulkEdit": "Přesouvá se tento počet souborů: {0}",
 			"movingFileBulkEdit": "Přesouvá se {0}.",
-			"newFile": "Nový soubor",
-			"newFolder": "Nová složka",
+			"newFile": "New File...",
+			"newFolder": "New Folder...",
 			"openFileInNewWindow": "Otevřít aktivní soubor v novém okně",
 			"openFileToShowInNewWindow.unsupportedschema": "Aktivní editor musí obsahovat prostředek, který lze otevřít.",
 			"pasteFile": "Vložit",
-			"rename": "Přejmenovat",
+			"rename": "Rename...",
 			"renameBulkEdit": "Přejmenovat {0} na {1}",
 			"renamingBulkEdit": "{0} se přejmenovává na {1}.",
 			"restore": "Pomocí příkazu Zpět můžete tento soubor obnovit.",
@@ -6113,6 +6187,9 @@
 			"watcherExclude": "Nakonfigurujte cesty nebo vzory globů, které se mají vyloučit ze sledování souborů. Cesty nebo základní vzory glob, které jsou relativní (například sestava/výstup nebo *.js), se pomocí aktuálně otevřeného pracovního prostoru přeloží na absolutní cestu. Komplexní vzory glob se musí shodovat s absolutními cestami (tj. předpona s **/ nebo úplná cesta a přípona s /**, aby odpovídala souborům v cestě), aby se správně shodovaly (například **/build/output/* *nebo /Users/name/workspaces/project/build/output/** ). Pokud proces sledování souborů spotřebovává velké množství CPU, nezapomeňte vyloučit velké složky, o které je menší zájem (například výstupní složky sestavení).",
 			"watcherInclude": "Nakonfigurujte další cesty pro sledování změn v pracovním prostoru. Ve výchozím nastavení se všechny složky pracovního prostoru budou sledovat rekurzivně s výjimkou složek, které jsou symbolickými odkazy. Můžete explicitně přidat absolutní nebo relativní cesty pro podporu sledování složek, které jsou symbolickými odkazy. Relativní cesty se budou vztahovat na absolutní cestu pomocí aktuálně otevřeného pracovního prostoru."
 		},
+		"vs/workbench/contrib/files/browser/files.web.contribution": {
+			"textFileEditor": "Text File Editor"
+		},
 		"vs/workbench/contrib/files/browser/views/emptyView": {
 			"noWorkspace": "Neotevřena žádná složka"
 		},
@@ -6124,8 +6201,8 @@
 		},
 		"vs/workbench/contrib/files/browser/views/explorerView": {
 			"collapseExplorerFolders": "Sbalit složky v Průzkumníkovi",
-			"createNewFile": "Nový soubor",
-			"createNewFolder": "Nová složka",
+			"createNewFile": "New File...",
+			"createNewFolder": "New Folder...",
 			"explorerSection": "Oddíl průzkumníka: {0}",
 			"refreshExplorer": "Aktualizovat Průzkumníka"
 		},
@@ -6246,6 +6323,10 @@
 		"vs/workbench/contrib/interactive/browser/interactiveEditor": {
 			"interactiveInputPlaceHolder": "Zde zadejte kód {0} a spusťte stisknutím {1}"
 		},
+		"vs/workbench/contrib/issue/browser/issue.web.contribution": {
+			"reportIssueInEnglish": "Report Issue",
+			"statusUnsupported": "The --status argument is not yet supported in browsers."
+		},
 		"vs/workbench/contrib/issue/electron-sandbox/issue.contribution": {
 			"miOpenProcessExplorerer": "Otevřít &&Průzkumníka procesů",
 			"miReportIssue": "&&Nahlásit problém",
@@ -6322,6 +6403,13 @@
 			"revealInMac": "Zobrazit ve Finderu",
 			"revealInWindows": "Zobrazit v Průzkumníkovi souborů"
 		},
+		"vs/workbench/contrib/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "Press the reload button to refresh the page and use your browser's language.",
+			"clearDisplayLanguageMessage": "To change the display language, {0} needs to reload",
+			"relaunchDisplayLanguageDetail": "Press the reload button to refresh the page and set the display language to {0}.",
+			"relaunchDisplayLanguageMessage": "To change the display language, {0} needs to reload",
+			"reload": "&&Reload"
+		},
 		"vs/workbench/contrib/localization/browser/localizationsActions": {
 			"available": "K dispozici",
 			"chooseLocale": "Vybrat jazyk zobrazení",
@@ -6362,6 +6450,7 @@
 		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"editSessionsLog": "Upravit Relace",
+			"extensionTelemetryLog": "Extension Telemetry",
 			"rendererLog": "Okno",
 			"show window log": "Zobrazit protokol okna",
 			"telemetryLog": "Telemetrie",
@@ -6509,15 +6598,9 @@
 			"openfile": "Otevřít soubor",
 			"title": "Otevřít editor slučování"
 		},
-		"vs/workbench/contrib/mergeEditor/browser/commands/devCommands": {
-			"merge.dev.copyState": "Kopírovat stav editoru sloučení jako JSON",
-			"merge.dev.openState": "Otevřít stav editoru sloučení z JSON",
-			"mergeEditor.enterJSON": "Zadat JSON",
-			"mergeEditor.name": "Editor slučování",
-			"mergeEditor.noActiveMergeEditor": "Žádný aktivní editor sloučení",
-			"mergeEditor.successfullyCopiedMergeEditorContents": "Stav editoru sloučení se úspěšně zkopíroval"
-		},
 		"vs/workbench/contrib/mergeEditor/browser/mergeEditor.contribution": {
+			"diffAlgorithm.experimental": "Uses an experimental diffing algorithm.",
+			"diffAlgorithm.smart": "Uses the default diffing algorithm.",
 			"name": "Editor slučování"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/mergeEditorInput": {
@@ -6552,7 +6635,6 @@
 			"mergeEditor.remainingConflicts": "{0} Zbývající konflikt"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/view/mergeEditor": {
-			"editor.mergeEditor.label": "Merge Editor",
 			"input1": "Vstup 1",
 			"input2": "Vstup 2",
 			"mergeEditor": "Editor sloučení textu",
@@ -6563,6 +6645,18 @@
 			"editorLayout": "Režim rozložení slučovacího editoru",
 			"is": "Editor je editor sloučení.",
 			"resultUri": "Identifikátor URI výsledku editoru sloučení"
+		},
+		"vs/workbench/contrib/mergeEditor/electron-sandbox/devCommands": {
+			"merge.dev.copyState": "Copy Merge Editor State as JSON",
+			"merge.dev.loadContentsFromFolder": "Load Merge Editor State from Folder",
+			"merge.dev.openState": "Open Merge Editor State from JSON",
+			"merge.dev.saveContentsToFolder": "Save Merge Editor State to Folder",
+			"mergeEditor.enterJSON": "Enter JSON",
+			"mergeEditor.name": "Merge Editor",
+			"mergeEditor.noActiveMergeEditor": "No active merge editor",
+			"mergeEditor.selectFolderToSaveTo": "Select folder to save to",
+			"mergeEditor.successfullyCopiedMergeEditorContents": "Successfully copied merge editor state",
+			"mergeEditor.successfullySavedMergeEditorContentsToFolder": "Successfully saved merge editor state to folder"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/cellCommands/cellCommands": {
 			"notebookActions.changeCellToCode": "Změnit buňku na kód",
@@ -6780,29 +6874,6 @@
 		"vs/workbench/contrib/notebook/browser/diff/notebookTextDiffEditor": {
 			"notebookTreeAriaLabel": "Rozdíly v textu poznámkového bloku"
 		},
-		"vs/workbench/contrib/notebook/browser/extensionPoint": {
-			"contributes.notebook.provider": "Přidává zprostředkovatele dokumentu poznámkového bloku.",
-			"contributes.notebook.provider.displayName": "Lidsky čitelný název poznámkového bloku",
-			"contributes.notebook.provider.selector": "Sada vzorů glob, pro kterou je poznámkový blok určený",
-			"contributes.notebook.provider.selector.filenamePattern": "Vzor glob, pro který je poznámkový blok povolen",
-			"contributes.notebook.provider.viewType": "Typ poznámkového bloku",
-			"contributes.notebook.renderer": "Přidává zprostředkovatele rendereru výstupu poznámkového bloku.",
-			"contributes.notebook.renderer.displayName": "Lidsky čitelný název rendereru výstupu poznámkového bloku",
-			"contributes.notebook.renderer.entrypoint": "Soubor, který má být načten ve webovém zobrazení za účelem vykreslení rozšíření",
-			"contributes.notebook.renderer.entrypoint.extends": "Existující zobrazovací modul, který tento rozšiřuje.",
-			"contributes.notebook.renderer.hardDependencies": "Seznam závislostí jádra, které renderer vyžaduje. Pokud je některá z těchto závislostí přítomná v „NotebookKernel.preloads“, může být renderer použit.",
-			"contributes.notebook.renderer.optionalDependencies": "Seznam závislostí softwarového jádra, které může renderer využívat. Pokud je některá ze závislostí přítomná v „NotebookKernel.preloads“, bude tento renderer upřednostňován před rendery, které s jádrem nekomunikují.",
-			"contributes.notebook.renderer.requiresMessaging": "Definuje, jak a jestli musí renderer komunikovat s hostitelem rozšíření přes „createRendererMessaging“. Renderery s přísnějšími požadavky na zasílání zpráv nemusí fungovat ve všech prostředích.",
-			"contributes.notebook.renderer.requiresMessaging.always": "Je vyžadováno zasílání zpráv. Renderer bude použit pouze v případě, když bude součástí rozšíření, které může být spuštěno v hostiteli rozšíření.",
-			"contributes.notebook.renderer.requiresMessaging.never": "Renderer nevyžaduje zasílání zpráv.",
-			"contributes.notebook.renderer.requiresMessaging.optional": "Renderer je lepší, když je k dispozici zasílání zpráv, ale není to vyžadováno.",
-			"contributes.notebook.renderer.viewType": "Jedinečný identifikátor rendereru výstupu poznámkového bloku",
-			"contributes.notebook.selector": "Sada vzorů glob, pro kterou je poznámkový blok určený",
-			"contributes.notebook.selector.provider.excludeFileNamePattern": "Vzor glob, pro který je poznámkový blok zakázaný",
-			"contributes.priority": "Určuje, jestli je vlastní editor povolen automaticky, když uživatel otevře soubor. Může být přepsáno uživatelem pomocí nastavení workbench.editorAssociations.",
-			"contributes.priority.default": "Editor se použije automaticky, když uživatel otevře prostředek, za předpokladu, že pro tento prostředek nejsou zaregistrovány žádné jiné výchozí vlastní editory.",
-			"contributes.priority.option": "Editor se nepoužije automaticky, když uživatel otevře daný prostředek, uživatel ale může přepnout do editoru pomocí příkazu Znovu otevřít pomocí."
-		},
 		"vs/workbench/contrib/notebook/browser/notebook.contribution": {
 			"insertToolbarLocation.betweenCells": "Panel nástrojů, který se zobrazuje při přechodu myší mezi buňkami.",
 			"insertToolbarLocation.both": "Oba panely nástrojů.",
@@ -6869,13 +6940,32 @@
 			"notebookTreeAriaLabel": "Poznámkový blok",
 			"selectedCellBackground": "Barva pozadí buňky, když se buňka vybere"
 		},
-		"vs/workbench/contrib/notebook/browser/notebookExecutionServiceImpl": {
-			"notebookRunTrust": "Při provádění buňky poznámkového bloku se spustí kód z tohoto pracovního prostoru."
+		"vs/workbench/contrib/notebook/browser/notebookExtensionPoint": {
+			"contributes.notebook.provider": "Contributes notebook document provider.",
+			"contributes.notebook.provider.displayName": "Human readable name of the notebook.",
+			"contributes.notebook.provider.selector": "Set of globs that the notebook is for.",
+			"contributes.notebook.provider.selector.filenamePattern": "Glob that the notebook is enabled for.",
+			"contributes.notebook.provider.viewType": "Type of the notebook.",
+			"contributes.notebook.renderer": "Contributes notebook output renderer provider.",
+			"contributes.notebook.renderer.displayName": "Human readable name of the notebook output renderer.",
+			"contributes.notebook.renderer.entrypoint": "File to load in the webview to render the extension.",
+			"contributes.notebook.renderer.entrypoint.extends": "Existing renderer that this one extends.",
+			"contributes.notebook.renderer.hardDependencies": "List of kernel dependencies the renderer requires. If any of the dependencies are present in the `NotebookKernel.preloads`, the renderer can be used.",
+			"contributes.notebook.renderer.optionalDependencies": "List of soft kernel dependencies the renderer can make use of. If any of the dependencies are present in the `NotebookKernel.preloads`, the renderer will be preferred over renderers that don't interact with the kernel.",
+			"contributes.notebook.renderer.requiresMessaging": "Defines how and if the renderer needs to communicate with an extension host, via `createRendererMessaging`. Renderers with stronger messaging requirements may not work in all environments.",
+			"contributes.notebook.renderer.requiresMessaging.always": "Messaging is required. The renderer will only be used when it's part of an extension that can be run in an extension host.",
+			"contributes.notebook.renderer.requiresMessaging.never": "The renderer does not require messaging.",
+			"contributes.notebook.renderer.requiresMessaging.optional": "The renderer is better with messaging available, but it's not requried.",
+			"contributes.notebook.renderer.viewType": "Unique identifier of the notebook output renderer.",
+			"contributes.notebook.selector": "Set of globs that the notebook is for.",
+			"contributes.notebook.selector.provider.excludeFileNamePattern": "Glob that the notebook is disabled for.",
+			"contributes.priority": "Controls if the custom editor is enabled automatically when the user opens a file. This may be overridden by users using the `workbench.editorAssociations` setting.",
+			"contributes.priority.default": "The editor is automatically used when the user opens a resource, provided that no other default custom editors are registered for that resource.",
+			"contributes.priority.option": "The editor is not automatically used when the user opens a resource, but a user can switch to the editor using the `Reopen With` command."
 		},
 		"vs/workbench/contrib/notebook/browser/notebookIcons": {
 			"clearIcon": "Ikona pro vymazání výstupu buněk v editorech poznámkových bloků",
 			"collapsedIcon": "Ikona pro poznámku sbaleného oddílu v editorech poznámkových bloků",
-			"configureKernel": "Nakonfigurovat ikonu ve widgetu konfigurace jádra v editorech poznámkových bloků",
 			"deleteCellIcon": "Ikona pro odstranění buňky v editorech poznámkových bloků",
 			"editIcon": "Ikona pro úpravu buňky v editorech poznámkových bloků",
 			"errorStateIcon": "Ikona, která označuje chybový stav v editorech poznámkových bloků",
@@ -6896,8 +6986,10 @@
 			"splitCellIcon": "Ikona pro rozdělení buňky v editorech poznámkových bloků",
 			"stopEditIcon": "Ikona pro zastavení úprav buňky v editorech poznámkových bloků",
 			"stopIcon": "Ikona pro zastavení spouštění v editorech poznámkových bloků",
-			"successStateIcon": "Ikona, která označuje úspěšný stav v editorech poznámkových bloků",
-			"unfoldIcon": "Ikona pro rozbalení buňky v editorech poznámkových bloků"
+			"successStateIcon": "Ikona, která označuje úspěšný stav v editorech poznámkových bloků"
+		},
+		"vs/workbench/contrib/notebook/browser/services/notebookExecutionServiceImpl": {
+			"notebookRunTrust": "Executing a notebook cell will run code from this workspace."
 		},
 		"vs/workbench/contrib/notebook/browser/services/notebookKeymapServiceImpl": {
 			"disableOtherKeymapsConfirmation": "Chcete zakázat jiná mapování kláves ({0}), aby se předešlo konfliktům mezi klávesovými zkratkami?",
@@ -6942,9 +7034,9 @@
 			"hiddenCellsLabel": "Jedna skrytá buňka",
 			"hiddenCellsLabelPlural": "Počet skrytých buněk: {0}…"
 		},
-		"vs/workbench/contrib/notebook/browser/view/cellParts/markdownCell": {
-			"cellExpandInputButtonLabel": "Rozbalit vstup buňky ({0})",
-			"cellExpandInputButtonLabelWithDoubleClick": "Poklikáním rozbalíte vstup buňky ({0})."
+		"vs/workbench/contrib/notebook/browser/view/cellParts/markupCell": {
+			"cellExpandInputButtonLabel": "Expand Cell Input ({0})",
+			"cellExpandInputButtonLabelWithDoubleClick": "Double click to expand cell input ({0})"
 		},
 		"vs/workbench/contrib/notebook/browser/view/renderers/backLayerWebView": {
 			"notebook.emptyMarkdownPlaceholder": "Prázdná buňka Markdownu. Po poklikání nebo stisknutí klávesy Enter můžete provést úpravy.",
@@ -6960,6 +7052,12 @@
 			"notebook.staleSaveError": "Obsah souboru se na disku změnil. Chcete otevřít aktualizovanou verzi nebo přepsat soubor vašimi změnami?",
 			"notebook.staleSaveError.overwrite.": "Přepsat",
 			"notebook.staleSaveError.revert": "Obnovit"
+		},
+		"vs/workbench/contrib/offline/browser/offline.contribution": {
+			"offline": "Network appears to be offline, certain features might be unavailable.",
+			"statusBarOfflineBackground": "Status bar background color when the workbench is offline. The status bar is shown in the bottom of the window",
+			"statusBarOfflineBorder": "Status bar border color separating to the sidebar and editor when the workbench is offline. The status bar is shown in the bottom of the window",
+			"statusBarOfflineForeground": "Status bar foreground color when the workbench is offline. The status bar is shown in the bottom of the window"
 		},
 		"vs/workbench/contrib/outline/browser/outline.contribution": {
 			"filteredTypes.array": "Pokud je povoleno, zobrazují se v osnově symboly array.",
@@ -7096,6 +7194,19 @@
 			"defineKeybinding.kbLayoutLocalAndUSMessage": "**{0}** pro aktuální rozložení klávesnice (**{1}** pro standardní rozložení klávesnice jazyka angličtina, USA)",
 			"defineKeybinding.kbLayoutLocalMessage": "**{0}** pro aktuální rozložení klávesnice",
 			"defineKeybinding.start": "Definovat klávesovou zkratku"
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"preferences": "Preferences",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"Keyboard Shortcuts": "Klávesové zkratky",
@@ -8170,7 +8281,6 @@
 			"task.allowAutomaticTasks.auto": "Vyzvat k oprávnění pro každou složku",
 			"task.allowAutomaticTasks.off": "Nikdy",
 			"task.autoDetect": "Ovládá povolení nastavení provideTasks pro všechna rozšíření zprostředkovatele úloh. Pokud je příkaz Úlohy: Spustit úlohu pomalý, může pomoct zakázání automatického zjišťování pro zprostředkovatele úloh. Nastavení zakazující automatické zjišťování mohou poskytovat také jednotlivá rozšíření.",
-			"task.experimental.reconnection": "Při opětovném načtení okna se znovu připojte ke spuštění úloh sledování nebo pozadí. Poznámka: Toto je experimentální, takže můžete narazit na problémy.",
 			"task.problemMatchers.neverPrompt": "Konfiguruje, jestli se má při spuštění úlohy zobrazit výzva matcheru problémů. Pokud se nemá výzva zobrazit nikdy, nastavte hodnotu true. Pomocí slovníku typů úloh můžete také zobrazování výzvy vypnout jen pro určité typy úloh.",
 			"task.problemMatchers.neverPrompt.array": "Objekt, který obsahuje páry logických hodnot pro daný typ úlohy, aby se nikdy nezobrazila výzva k použití matcherů problémů",
 			"task.problemMatchers.neverPrompt.boolean": "Umožňuje nastavit chování při zobrazování výzev matcheru problémů pro všechny úlohy.",
@@ -8178,10 +8288,11 @@
 			"task.quickOpen.history": "Řídí počet posledních položek sledovaných v dialogovém okně pro rychlé otevření úlohy.",
 			"task.quickOpen.showAll": "Způsobí, že příkaz Úlohy: Spustit úlohu použije pomalejší chování pro operaci show all (zobrazit vše) místo rychlejšího dvojúrovňového ovládacího prvku pro výběr, kde jsou úlohy seskupeny podle zprostředkovatele.",
 			"task.quickOpen.skip": "Určuje, jestli se má přeskočit rychlý výběr úlohy, pokud je k výběru pouze jedna úloha.",
+			"task.reconnection": "On window reload, reconnect to tasks that have problem matchers.",
 			"task.saveBeforeRun": "Před spuštěním úlohy uložte všechny editory s neuloženými změnami.",
 			"task.saveBeforeRun.always": "Před spuštěním vždy uloží všechny editory.",
 			"task.saveBeforeRun.never": "Před spuštěním nikdy neuloží editory.",
-			"task.showDecorations": "Zobrazuje dekorace v bodech zájmu ve vyrovnávací paměti terminálu, například první problém zjištěný prostřednictvím úlohy kukátka. Mějte na paměti,, že to se projeví jenom u budoucích úkolů.",
+			"task.showDecorations": "Shows decorations at points of interest in the terminal buffer such as the first problem found via a watch task. Note that this will only take effect for future tasks. {0} will take precedence over this setting",
 			"task.slowProviderWarning": "Konfiguruje, jestli se zobrazí oznámení, když zprostředkovatel běží pomalu.",
 			"task.slowProviderWarning.array": "Pole hodnot typů úloh, pro které by se nikdy nemělo nezobrazovat upozornění na pomalého zprostředkovatele",
 			"task.slowProviderWarning.boolean": "Umožňuje nastavit upozornění na pomalé zprostředkovatele pro všechny úlohy.",
@@ -8193,7 +8304,7 @@
 			"workbench.action.tasks.openWorkspaceFileTasks": "Otevřít úlohy pracovního prostoru"
 		},
 		"vs/workbench/contrib/tasks/browser/taskQuickPick": {
-			"TaskQuickPick.changeSettingDetails": "Detekce úloh pro úlohy {0} způsobí, že soubory ve všech pracovních prostorech, které otevřete, budou spuštěny jako kód. Povolení detekce úloh {0} je uživatelské nastavení a použije se pro všechny pracovní prostory, které otevřete. Chcete povolit detekci úloh {0} pro všechny pracovní prostory?",
+			"TaskQuickPick.changeSettingDetails": "Task detection for {0} tasks causes files in any workspace you open to be run as code. Enabling {0} task detection is a user setting and will apply to any workspace you open. \r\n\r\n Do you want to enable {0} task detection for all workspaces?",
 			"TaskQuickPick.changeSettingNo": "Ne",
 			"TaskQuickPick.changeSettingYes": "Ano",
 			"TaskQuickPick.changeSettingsOptions": "$(gear) – detekce úloh {0} je vypnutá. Povolit detekci úloh {1}...",
@@ -8210,6 +8321,9 @@
 			"removeTaskIcon": "Ikona pro odebrání v seznamu pro výběr úloh",
 			"taskQuickPick.showAll": "Zobrazit všechny úlohy...",
 			"taskType": "Všechny úlohy ({0})"
+		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "Process task system is not support in the web."
 		},
 		"vs/workbench/contrib/tasks/browser/taskTerminalStatus": {
 			"task.watchFirstError": "Začátek zjištěných chyb pro toto spuštění",
@@ -8237,6 +8351,8 @@
 			"dependencyFailed": "Nepovedlo se vyhodnotit závislou úlohu {0} ve složce pracovního prostoru {1}.",
 			"reuseTerminal": "Terminál bude znovu použit úlohami. Stisknutím libovolné klávesy ho zavřete.",
 			"task.executing": "Provádění úkolu: {0}",
+			"task.executing.shell-integration": "Executing task: {0}",
+			"task.executing.shellIntegration": "Executing task: {0}",
 			"task.executingInFolder": "Provádění úkolu ve složce {0}: {1}",
 			"unknownProblemMatcher": "Matcher problémů {0} nelze vyhodnotit. Bude se ignorovat."
 		},
@@ -8758,9 +8874,6 @@
 			"terminals": "Otevřít terminály"
 		},
 		"vs/workbench/contrib/terminal/browser/xterm/decorationAddon": {
-			"changeDefaultIcon": "Změnit výchozí ikonu",
-			"changeErrorIcon": "Změnit ikonu chyby",
-			"changeSuccessIcon": "Úspěšná změna ikony",
 			"gutter": "Dekorace příkazů mezery",
 			"overviewRuler": "Dekorace příkazů přehledových pravítka",
 			"terminal.configureCommandDecorations": "Konfigurovat dekorace příkazů",
@@ -8804,6 +8917,7 @@
 			"terminal.findMatchHighlightBackground": "Barva dalších shod hledání v terminálu. Barva nesmí být neprůhledná, aby se neskryl podkladový obsah terminálu.",
 			"terminal.findMatchHighlightBorder": "Barva ohraničení ostatních shod při vyhledávání v terminálu.",
 			"terminal.foreground": "Barva popředí terminálu",
+			"terminal.inactiveSelectionBackground": "The selection background color of the terminal when it does not have focus.",
 			"terminal.selectionBackground": "Barva pozadí výběru terminálu",
 			"terminal.selectionForeground": "Barva popředí výběru terminálu. Pokud je tato hodnota null, popředí výběru se zachová a použije se funkce minimálního kontrastu.",
 			"terminal.tab.activeBorder": "Ohraničení na boční straně karty terminálu v panelu. Toto je výchozí nastavení pro tab.activeBorder.",
@@ -8903,9 +9017,6 @@
 			"terminal.integrated.rightClickBehavior.selectWord": "Vybrat slovo pod kurzorem a zobrazit místní nabídku",
 			"terminal.integrated.scrollback": "Určuje maximální počet řádků, které terminál udržuje ve vyrovnávací paměti.",
 			"terminal.integrated.sendKeybindingsToShell": "Odešle většinu klávesových zkratek do terminálu namísto do služby Workbench, čímž se přepíše {0}, které se dá alternativně použít k přesné optimalizaci.",
-			"terminal.integrated.shellIntegration.decorationIcon": "Určuje ikonu, která se použije u přeskočených nebo prázdných příkazů. Nastavte hodnotu na {0}, pokud chcete ikonu skrýt nebo zakázat dekorace s {1}.",
-			"terminal.integrated.shellIntegration.decorationIconError": "Určuje ikonu, která se použije u jednotlivých příkazů v terminálech s povolenou integrací prostředí, které mají přidružený ukončovací kód. Pokud chcete skrýt ikonu, nastavte hodnotu na {0} nebo zakázat dekorace s {1}.",
-			"terminal.integrated.shellIntegration.decorationIconSuccess": "Určuje ikonu, která se použije u jednotlivých příkazů v terminálech s povolenou integrací prostředí, které nemají přidružený ukončovací kód. Pokud chcete skrýt ikonu, nastavte hodnotu na {0} nebo zakázat dekorace s {1}.",
 			"terminal.integrated.shellIntegration.decorationsEnabled": "Když je povolená integrace prostředí, přidá dekorace pro každý příkaz.",
 			"terminal.integrated.shellIntegration.decorationsEnabled.both": "Zobrazovat dekorace u mezery (vlevo) a přehledového pravítka (vpravo)",
 			"terminal.integrated.shellIntegration.decorationsEnabled.gutter": "Zobrazit dekorace mezery nalevo od terminálu",
@@ -8914,6 +9025,7 @@
 			"terminal.integrated.shellIntegration.enabled": "Určuje, jestli se integrace prostředí automaticky vloží, aby podporovala funkce, jako je rozšířené sledování příkazů a detekce aktuálního pracovního adresáře. \r\n\r\nIntegrace prostředí funguje vložením prostředí do spouštěcího skriptu. Skript poskytuje nástroji VS Code přehled o tom, co se děje v terminálu.\r\n\r\nPodporovaná prostředí:\r\n\r\n– Linux/macOS: bash, pwsh, zsh\r\n – Windows: pwsh\r\n\r\nToto nastavení se používá pouze při vytváření terminálů, takže budete muset restartovat terminály, aby se projevilo.\r\n\r\nUpozorňujeme, že vkládání skriptu nemusí fungovat, pokud máte v profilu terminálu definované vlastní argumenty, [příkaz pro komplexní bash PROMPT_COMMAND](https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand) nebo jiné nepodporované nastavení. Pokud chcete dekorace zakázat, přečtěte si článek {0}.",
 			"terminal.integrated.shellIntegration.history": "Určuje počet naposledy použitých příkazů, které se mají zachovat v historii příkazů terminálu. Pokud chcete zakázat historii příkazů terminálu, nastavte hodnotu na 0.",
 			"terminal.integrated.showExitAlert": "Určuje, jestli se má v případě nenulového ukončovacího kódu zobrazit upozornění, že proces terminálu byl ukončen s ukončovacím kódem.",
+			"terminal.integrated.smoothScrolling": "Controls whether the terminal will scroll using an animation.",
 			"terminal.integrated.splitCwd": "Určuje pracovní adresář, se kterým začíná rozdělený terminál.",
 			"terminal.integrated.splitCwd.inherited": "V systémech macOS a Linux bude nový rozdělený terminál používat pracovní adresář nadřazeného terminálu. V systému Windows bude chování stejné jako původní chování.",
 			"terminal.integrated.splitCwd.initial": "Nový rozdělený terminál bude používat pracovní adresář, se kterým byl spuštěn nadřazený terminál.",
@@ -9095,6 +9207,7 @@
 			"selectDefaultConfigs": "Vybrat výchozí profil",
 			"testExplorer": "Průzkumník testů",
 			"testing.treeElementLabelDuration": "{0}, v {1}",
+			"testing.treeElementLabelOutdated": "{0}, outdated result",
 			"testingFindExtension": "Zobrazit testy pracovní prostoru",
 			"testingNoTest": "V tomto souboru nebyly nalezeny žádné testy."
 		},
@@ -9242,7 +9355,6 @@
 		"vs/workbench/contrib/timeline/browser/timeline.contribution": {
 			"files.openTimeline": "Otevřít časovou osu",
 			"filterTimeline": "Filtrovat časovou osu",
-			"timeline.excludeSources": "Pole hodnot zdrojů časové osy, které by se mělo vyloučit ze zobrazení časové osy",
 			"timeline.pageOnScroll": "Experimentální: Určuje, jestli se při zobrazení časové osy při posunutí na konec seznamu načte další stránka položek.",
 			"timeline.pageSize": "Počet položek zobrazených ve výchozím nastavení v zobrazení časové osy a při načítání více položek. Když je nastaveno na null (výchozí), velikost stránky se automaticky zvolí na základě viditelné oblasti zobrazení časové osy.",
 			"timelineConfigurationTitle": "Časová osa",
@@ -9367,33 +9479,36 @@
 			"statusBarItemSettingsProfileForeground": "Barva popředí položky profilu nastavení na stavovém řádku.",
 			"workbench.experimental.settingsProfiles.enabled": "Určuje, jestli se má povolit funkce Preview Profilů nastavení."
 		},
-		"vs/workbench/contrib/userDataProfile/common/userDataProfileActions": {
-			"cleanup profile": "Vymazat profily nastavení",
-			"confiirmation message": "Toto nahradí vaše aktuální nastavení. Opravdu chcete pokračovat?",
-			"create and enter empty profile": "Vytvořit prázdný Profil",
-			"create empty profile": "Vytvořit prázdný profil nastavení…",
-			"create profile": "Vytvořit...",
-			"create settings profile": "{0}: Vytvořit...",
-			"current": "Aktuální",
-			"delete profile": "Odstranit...",
-			"edit settings profile": "Přejmenovat profil nastavení...",
-			"export profile": "Exportovat...",
-			"export profile dialog": "Uložit Profil",
-			"export success": "{0}: Exportování proběhlo úspěšně.",
-			"import profile": "Importovat...",
-			"import profile dialog": "Importovat Profil",
-			"import profile placeholder": "Zadejte URL profilu nebo vyberte soubor profilu, který chcete importovat.",
-			"import profile quick pick title": "Importování nastavení z profilu",
-			"import profile title": "Importování nastavení z profilu",
-			"name": "Název Profilu",
-			"pick profile": "Vybrat Profil Nastavení",
-			"pick profile to delete": "Vyberte profily nastavení, které chcete odstranit",
-			"pick profile to rename": "Vyberte profil nastavení, který chcete přejmenovat",
-			"rename profile": "Přejmenovat...",
-			"save profile as": "Vytvořit z aktuálního profilu nastavení…",
-			"select from file": "Importovat ze souboru profilu",
-			"select from url": "Importovat z adresy URL",
-			"switch profile": "Přepnout..."
+		"vs/workbench/contrib/userDataProfile/browser/userDataProfileActions": {
+			"cleanup profile": "Cleanup Settings Profiles",
+			"confiirmation message": "This will replace your current settings. Are you sure you want to continue?",
+			"create and enter empty profile": "Create an Empty Profile...",
+			"create empty profile": "Create an Empty Settings Profile...",
+			"create profile": "Create...",
+			"create settings profile": "{0}: Create...",
+			"current": "Current",
+			"delete profile": "Delete...",
+			"edit settings profile": "Rename Settings Profile...",
+			"export profile": "Export...",
+			"export profile dialog": "Save Profile",
+			"export success": "{0}: Exported successfully.",
+			"import profile": "Import...",
+			"import profile dialog": "Import Profile",
+			"import profile placeholder": "Provide profile URL or select profile file to import",
+			"import profile quick pick title": "Import Settings from a Profile",
+			"import profile title": "Import Settings from a Profile",
+			"mange": "Manage...",
+			"name": "Profile name",
+			"pick profile": "Select Settings Profile",
+			"pick profile to delete": "Select Settings Profiles to Delete",
+			"pick profile to rename": "Select Settings Profile to Rename",
+			"profileExists": "Settings Profile with name {0} already exists.",
+			"rename profile": "Rename...",
+			"reset workspaces": "Reset Workspace Settings Profiles Associations",
+			"save profile as": "Create from Current Settings Profile...",
+			"select from file": "Import from profile file",
+			"select from url": "Import from URL",
+			"switch profile": "Switch..."
 		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSync": {
 			"Theirs": "Jejich",
@@ -9579,6 +9694,9 @@
 			"editor.action.webvieweditor.hideFind": "Zastavit hledání",
 			"editor.action.webvieweditor.showFind": "Zobrazit hledání",
 			"refreshWebviewLabel": "Znovu načíst webová zobrazení"
+		},
+		"vs/workbench/contrib/webviewPanel/browser/webviewEditor": {
+			"context.activeWebviewId": "The viewType of the currently active webview panel."
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewPanel.contribution": {
 			"webview.editor.label": "editor webových zobrazení"
@@ -9991,9 +10109,11 @@
 		},
 		"vs/workbench/services/actions/common/menusExtensionPoint": {
 			"comment.actions": "Přidaná místní nabídka komentářů zobrazující se v podobě tlačítek pod editorem komentářů",
+			"comment.commentContext": "The contributed comment context menu, rendered as a right click menu on the an individual comment in the comment thread's peek view.",
 			"comment.title": "Přidaná nabídka názvů komentářů",
 			"commentThread.actions": "Přidaná místní nabídka vláken komentářů zobrazující se v podobě tlačítek pod editorem komentářů",
 			"commentThread.title": "Přidaná nabídka názvů vláken komentářů",
+			"commentThread.titleContext": "The contributed comment thread title's peek context menu, rendered as a right click menu on the comment thread's peek title.",
 			"dup": "Příkaz {0} se v oddílu commands objevuje několikrát.",
 			"dupe.command": "Položka nabídky odkazuje na stejný příkaz jako výchozí a alternativní příkaz.",
 			"file.newFile": "Rychlý výběr Nový soubor… zobrazený na úvodní stránce a v nabídce Soubor",
@@ -10098,6 +10218,11 @@
 			"sign in": "Požadováno přihlášení",
 			"signInRequest": "Přihlaste se pomocí {0}, abyste mohli používat {1} (1).",
 			"useOtherAccount": "Přihlásit se s jiným účtem"
+		},
+		"vs/workbench/services/clipboard/browser/clipboardService": {
+			"clipboardError": "Unable to read from the browser's clipboard. Please make sure you have granted access for this website to read from the clipboard.",
+			"learnMore": "Learn More",
+			"retry": "Retry"
 		},
 		"vs/workbench/services/configuration/browser/configurationService": {
 			"configurationDefaults.description": "Přidání výchozích nastavení pro konfigurace",
@@ -10212,6 +10337,15 @@
 			"saveChangesMessages": "Chcete uložit změny do následujících {0} souborů?",
 			"saveFileAs.title": "Uložit jako"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "Learn More",
+			"openFiles": "Open Files...",
+			"openRemote": "Open Remote...",
+			"pickFolderAndOpen": "Can't open folders, try adding a folder to the workspace instead.",
+			"pickWorkspaceAndOpen": "Can't open workspaces, try adding a folder to the workspace instead.",
+			"unsupportedBrowserDetail": "Your browser doesn't support opening local folders.\r\nYou can either open single files or open a remote repository.",
+			"unsupportedBrowserMessage": "Opening Local Folders is Unsupported"
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "Otevřít místní soubor...",
 			"openLocalFileFolder": "Otevřít místní...",
@@ -10222,6 +10356,7 @@
 			"remoteFileDialog.local": "Zobrazit místní",
 			"remoteFileDialog.notConnectedToRemote": "Zprostředkovatel systému souborů pro {0} není k dispozici.",
 			"remoteFileDialog.validateBadFilename": "Zadejte prosím platný název souboru.",
+			"remoteFileDialog.validateCreateDirectory": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "Soubor {0} již existuje. Opravdu jej chcete přepsat?",
 			"remoteFileDialog.validateFileOnly": "Vyberte soubor.",
 			"remoteFileDialog.validateFolder": "Složka již existuje. Použijte prosím nový název souboru.",
@@ -10280,6 +10415,14 @@
 			"extensionsDisabled": "Všechna nainstalovaná rozšíření jsou dočasně zakázaná.",
 			"noWorkspace": "Žádný pracovní prostor"
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "{0} nejde přidat, protože toto rozšíření není webové rozšíření.",
+			"openInstalledWebExtensionsResource": "Otevřít nainstalovaný prostředek webových rozšíření"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "Browser",
+			"remote": "Remote"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "Instalace rozšíření {0} selhala: Manifest nebyl nalezen.",
 			"VS Code for Web": "{0} pro Web",
@@ -10318,6 +10461,9 @@
 			"select for remove": "Odebrat doporučení rozšíření z",
 			"workspace": "Pracovní prostor",
 			"workspace folder": "Složka pracovního prostoru"
+		},
+		"vs/workbench/services/extensions/browser/extensionService": {
+			"looping": "The following extensions contain dependency loops and have been disabled: {0}"
 		},
 		"vs/workbench/services/extensions/browser/extensionUrlHandler": {
 			"Installing": "Instaluje se rozšíření {0}...",
@@ -10469,6 +10615,11 @@
 			"canNavigateToLastNavigationLocation": "Jestli je možné přejít do posledního navigačního místa v editoru",
 			"canReopenClosedEditor": "Určuje, jestli je možné znovu otevřít naposledy zavřený editor."
 		},
+		"vs/workbench/services/host/browser/browserHostService": {
+			"cancel": "Cancel",
+			"open": "Open",
+			"unableToOpenExternal": "The browser interrupted the opening of a new tab or window. Press 'Open' to open it anyway."
+		},
 		"vs/workbench/services/integrity/electron-sandbox/integrityService": {
 			"integrity.dontShowAgain": "Znovu nezobrazovat",
 			"integrity.moreInformation": "Další informace",
@@ -10495,6 +10646,10 @@
 			"vscode.extension.contributes.keybindings.mac": "Klávesa nebo posloupnost kláves specifická pro Mac",
 			"vscode.extension.contributes.keybindings.when": "Podmínka, když je klávesa aktivní",
 			"vscode.extension.contributes.keybindings.win": "Klávesa nebo posloupnost kláves specifická pro Windows"
+		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Control the keyboard layout used in web.",
+			"keyboardConfigurationTitle": "Keyboard"
 		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "Pokud chcete přepsat výchozí hodnoty, umístěte do tohoto souboru své klávesové zkratky.",
@@ -10540,6 +10695,9 @@
 			"vscode.extension.contributes.languages.icon.light": "Cesta k ikoně při použití světlého motivu",
 			"vscode.extension.contributes.languages.id": "ID daného jazyka",
 			"vscode.extension.contributes.languages.mimetypes": "Typy Mime přidružené k danému jazyku"
+		},
+		"vs/workbench/services/lifecycle/browser/lifecycleService": {
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again."
 		},
 		"vs/workbench/services/notification/common/notificationService": {
 			"neverShowAgain": "Znovu nezobrazovat"
@@ -10606,6 +10764,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "Zpráva o průběhu"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "An unexpected error occurred that requires a reload of this page.",
+			"connectionErrorDetail": "The workbench failed to connect to the server (Error: {0})",
+			"reload": "Reload"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"remote.localPortMismatch.single": "Místní port {0} se nedá použít pro přesměrování na vzdálený port {1}.\r\n\r\nK tomu obvykle dochází, pokud už existuje jiný proces, který používá místní port {0}.\r\n\r\nPoužilo se místo toho číslo portu {2}.",
 			"tunnel.source.auto": "Automaticky přesměrováno",
@@ -10617,8 +10780,12 @@
 			"devTools": "Otevřít vývojářské nástroje",
 			"directUrl": "Otevřít v prohlížeči"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "Složka pracovního prostoru neexistuje: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/textfile/browser/textFileService": {
 			"confirmOverwrite": "{0} už existuje. Chcete provést nahrazení?",
