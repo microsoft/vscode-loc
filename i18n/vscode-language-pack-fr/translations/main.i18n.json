@@ -765,9 +765,11 @@
 			"source.label": "Action de la source"
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionMenu": {
-			"codeAction.widget.id.convert": "Convertir...",
+			"codeAction.widget.id.convert": "Rewrite...",
 			"codeAction.widget.id.extract": "Extraire...",
+			"codeAction.widget.id.inline": "Inline...",
 			"codeAction.widget.id.more": "Plus d’actions...",
+			"codeAction.widget.id.move": "Move...",
 			"codeAction.widget.id.quickfix": "Correction rapide...",
 			"codeAction.widget.id.source": "Action de la source...",
 			"codeAction.widget.id.surround": "Entourer de...",
@@ -779,8 +781,7 @@
 			"showMoreCodeActions": "Afficher les éléments désactivés"
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionWidgetContribution": {
-			"codeActionWidget": "L’activation de cette option ajuste le mode de rendu du menu d’action du code.",
-			"showCodeActionHeaders": "L’activation de cette option affiche le menu d’action de code avec les en-têtes de groupe, si le menu d’action de code personnalisé est activé."
+			"showCodeActionHeaders": "Enable/disable showing group headers in the code action menu."
 		},
 		"vs/editor/contrib/codeAction/browser/lightBulbWidget": {
 			"codeAction": "Afficher les actions de code",
@@ -815,6 +816,9 @@
 		},
 		"vs/editor/contrib/copyPaste/browser/copyPasteContribution": {
 			"pasteActions": "Activez/désactivez l’exécution des modifications à partir des extensions lors du collage."
+		},
+		"vs/editor/contrib/copyPaste/browser/copyPasteController": {
+			"pasteProgressTitle": "Running paste handlers..."
 		},
 		"vs/editor/contrib/cursorUndo/browser/cursorUndo": {
 			"cursor.redo": "Restauration du curseur",
@@ -1426,6 +1430,9 @@
 			"titleAndKb": "{0} ({1})",
 			"titleAndKbAndAlt": "{0}\r\n[{1}] {2}"
 		},
+		"vs/platform/actions/browser/toolbar": {
+			"hide": "Hide"
+		},
 		"vs/platform/actions/common/menuResetAction": {
 			"cat": "Afficher",
 			"title": "Réinitialiser les menus masqués"
@@ -1452,6 +1459,7 @@
 			"isLinux": "Indique si le système d'exploitation est Linux",
 			"isMac": "Indique si le système d'exploitation est macOS",
 			"isMacNative": "Indique si le système d'exploitation est macOS sur une plateforme qui n'est pas un navigateur",
+			"isMobile": "Whether the platform is a mobile web browser",
 			"isWeb": "Indique si la plateforme est un navigateur web",
 			"isWindows": "Indique si le système d'exploitation est Windows",
 			"productQualityType": "Type de qualité de VS Code"
@@ -1541,32 +1549,32 @@
 			"extensions": "Extensions",
 			"preferences": "Préférences"
 		},
-		"vs/platform/extensionManagement/common/extensionManagementCLIService": {
-			"alreadyInstalled": "L'extension '{0}' est déjà installée.",
-			"alreadyInstalled-checkAndUpdate": "L'extension '{0}' v{1} est déjà installée. Utilisez l'option '--force' pour effectuer une mise à jour vers la dernière version, ou indiquez '@<version>' pour installer une version spécifique, par exemple '{2}@1.2.3'.",
-			"builtin": "L'extension '{0}' est une extension intégrée qui ne peut pas être désinstallée",
-			"cancelInstall": "Installation annulée de l'Extension '{0}'.",
-			"cancelVsixInstall": "Installation annulée de l'Extension '{0}'.",
-			"forceDowngrade": "Une version plus récente de l'extension '{0}' v{1} est déjà installée. Utilisez l'option '--force' pour passer à une version antérieure.",
-			"forceUninstall": "L'extension '{0}' est marquée en tant qu'extension intégrée par l'utilisateur. Utilisez l'option '--force' pour la désinstaller.",
-			"installation failed": "Échec d'installation des extensions : {0}",
-			"installing": "Installation de l'extension '{0}'...",
-			"installing builtin ": "Installation de l'extension intégrée '{0}'...",
-			"installing builtin with version": "Installation de l'extension intégrée '{0}' v{1}...",
-			"installing with version": "Installation de l'extension '{0}' v{1}...",
-			"installingExtensions": "Installation des extensions...",
-			"installingExtensionsOnLocation": "Installation des extensions sur {0}...",
-			"listFromLocation": "Extensions installées sur {0} :",
-			"notFound": "Extension '{0}' introuvable.",
-			"notInstalled": "L'extension '{0}' n'est pas installée.",
-			"notInstalleddOnLocation": "L'extension '{0}' n'est pas installée sur {1}.",
-			"successInstall": "L'extension '{0}' v{1} a été installée.",
-			"successUninstall": "L'extension '{0}' a été correctement désinstallée !",
-			"successUninstallFromLocation": "L'extension '{0}' a été correctement désinstallée de {1} !",
-			"successVsixInstall": "L'extension '{0}' a été installée.",
-			"uninstalling": "Désinstallation de {0}...",
-			"updateMessage": "Mise à jour de l'extension '{0}' vers la version {1}",
-			"useId": "Vérifiez que vous utilisez l'ID d'extension complet, y compris l'éditeur, par ex. : {0}"
+		"vs/platform/extensionManagement/common/extensionManagementCLI": {
+			"alreadyInstalled": "Extension '{0}' is already installed.",
+			"alreadyInstalled-checkAndUpdate": "Extension '{0}' v{1} is already installed. Use '--force' option to update to latest version or provide '@<version>' to install a specific version, for example: '{2}@1.2.3'.",
+			"builtin": "Extension '{0}' is a Built-in extension and cannot be uninstalled",
+			"cancelInstall": "Cancelled installing extension '{0}'.",
+			"cancelVsixInstall": "Cancelled installing extension '{0}'.",
+			"forceDowngrade": "A newer version of extension '{0}' v{1} is already installed. Use '--force' option to downgrade to older version.",
+			"forceUninstall": "Extension '{0}' is marked as a Built-in extension by user. Please use '--force' option to uninstall it.",
+			"installation failed": "Failed Installing Extensions: {0}",
+			"installing": "Installing extension '{0}'...",
+			"installing builtin ": "Installing builtin extension '{0}'...",
+			"installing builtin with version": "Installing builtin extension '{0}' v{1}...",
+			"installing with version": "Installing extension '{0}' v{1}...",
+			"installingExtensions": "Installing extensions...",
+			"installingExtensionsOnLocation": "Installing extensions on {0}...",
+			"listFromLocation": "Extensions installed on {0}:",
+			"notFound": "Extension '{0}' not found.",
+			"notInstalled": "Extension '{0}' is not installed.",
+			"notInstalleddOnLocation": "Extension '{0}' is not installed on {1}.",
+			"successInstall": "Extension '{0}' v{1} was successfully installed.",
+			"successUninstall": "Extension '{0}' was successfully uninstalled!",
+			"successUninstallFromLocation": "Extension '{0}' was successfully uninstalled from {1}!",
+			"successVsixInstall": "Extension '{0}' was successfully installed.",
+			"uninstalling": "Uninstalling {0}...",
+			"updateMessage": "Updating the extension '{0}' to the version {1}",
+			"useId": "Make sure you use the full extension ID, including the publisher, e.g.: {0}"
 		},
 		"vs/platform/extensionManagement/common/extensionNls": {
 			"missingNLSKey": "Le message est introuvable pour la clé {0}."
@@ -1694,6 +1702,9 @@
 			"local": "LOCAL",
 			"ok": "&&OK",
 			"processExplorer": "Explorateur de processus",
+			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
+			"trace.message": "Successfully created the trace file",
+			"trace.ok": "&&OK",
 			"yes": "&&Oui"
 		},
 		"vs/platform/keybinding/common/abstractKeybindingService": {
@@ -2220,9 +2231,9 @@
 			"error incompatible": "Impossible de lire les données des machines, car la version actuelle est incompatible. Mettez à jour {0}, puis réessayez."
 		},
 		"vs/platform/windows/electron-main/windowImpl": {
-			"appCrashed": "La fenêtre s'est bloquée",
-			"appCrashedDetail": "Nous vous prions de nous excuser pour ce désagrément. Vous pouvez rouvrir la fenêtre pour reprendre l'action au moment où elle a été interrompue.",
-			"appCrashedDetails": "La fenêtre s’est bloquée (raison : « {0} », code : « {1} »)",
+			"appGone": "The window terminated unexpectedly",
+			"appGoneDetail": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
+			"appGoneDetails": "The window terminated unexpectedly (reason: '{0}', code: '{1}')",
 			"appStalled": "La fenêtre ne répond pas",
 			"appStalledDetail": "Vous pouvez rouvrir ou fermer la fenêtre, ou continuer à patienter.",
 			"close": "&&Fermer",
@@ -2291,10 +2302,7 @@
 			"cancel": "&&Non",
 			"confirmOpenDetail": "Si vous n'avez pas lancé cette requête, cela signifie peut-être que votre système a fait l'objet d'une tentative d'attaque. Si vous n'avez pas effectué d'action explicite pour lancer cette requête, appuyez sur Non",
 			"confirmOpenMessage": "Une application externe souhaite ouvrir '{0}' dans {1}. Voulez-vous ouvrir ce fichier ou dossier ?",
-			"open": "&&Oui",
-			"trace.detail": "Signalez le problème, et attachez manuellement le fichier suivant :\r\n{0}",
-			"trace.message": "Trace créée avec succès.",
-			"trace.ok": "&&OK"
+			"open": "&&Oui"
 		},
 		"vs/code/electron-main/main": {
 			"close": "&&Fermer",
@@ -2806,8 +2814,9 @@
 			"addFolderToWorkspaceTitle": "Ajouter un dossier à l'espace de travail",
 			"workspaceFolderPickerPlaceholder": "Sélectionner le dossier de l’espace de travail"
 		},
-		"vs/workbench/browser/codeeditor": {
-			"openWorkspace": "Ouvrir un espace de travail"
+		"vs/workbench/browser/checkbox": {
+			"checked": "Checked",
+			"unchecked": "Unchecked"
 		},
 		"vs/workbench/browser/editor": {
 			"pinned": "{0}, épinglé",
@@ -3745,9 +3754,10 @@
 			"sideBySideEditorActive": "Indique si un éditeur côte à côte est actif",
 			"splitEditorsVertically": "Indique si les éditeurs sont divisés verticalement",
 			"statusBarFocused": "Indique si la barre d'état a le focus clavier",
+			"temporaryWorkspace": "The scheme of the current workspace is from a temporary file system.",
 			"textCompareEditorActive": "Indique si un éditeur de comparaison de texte est actif",
 			"textCompareEditorVisible": "Indique si un éditeur de comparaison de texte est visible",
-			"virtualWorkspace": "Schéma de l’espace de travail actif s’il provient d’un système de fichiers virtuel, sinon une chaîne vide.",
+			"virtualWorkspace": "The scheme of the current workspace is from a virtual file system or an empty string.",
 			"workbenchState": "Genre d'espace de travail ouvert dans la fenêtre : 'vide' (aucun espace de travail), 'dossier' (dossier unique) ou 'espace de travail' (espace de travail multiracine)",
 			"workspaceFolderCount": "Nombre de dossiers racine dans l'espace de travail"
 		},
@@ -4006,7 +4016,8 @@
 			"shutdownTitleReload": "Le rechargement de la fenêtre prend un peu plus de temps...",
 			"troubleshooting": "Guide de résolution des problèmes",
 			"username": "Nom d'utilisateur",
-			"willShutdownDetail": "Les opérations suivantes sont toujours en cours d’exécution : \r\n{0}"
+			"willShutdownDetail": "Les opérations suivantes sont toujours en cours d’exécution : \r\n{0}",
+			"windows 7 eol": "{0} on Windows 7 will no longer receive any further updates."
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCueService": {
 			"audioCues.lineHasBreakpoint.name": "Point d’arrêt sur ligne",
@@ -4015,7 +4026,9 @@
 			"audioCues.lineHasInlineSuggestion.name": "Suggestion inline sur la ligne",
 			"audioCues.lineHasWarning.name": "Avertissement sur la ligne",
 			"audioCues.noInlayHints": "Aucun indicateur d’inlay sur la ligne",
-			"audioCues.onDebugBreak.name": "Débogueur arrêté sur le point d’arrêt"
+			"audioCues.onDebugBreak.name": "Débogueur arrêté sur le point d’arrêt",
+			"audioCues.taskEnded": "Task Ended",
+			"audioCues.terminalBell": "Terminal Bell"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.enabled.auto": "Activez le signal audio lorsqu’un lecteur d’écran est attaché.",
@@ -4028,6 +4041,7 @@
 			"audioCues.lineHasWarning": "Émet un signal sonore lorsque la ligne active comporte un avertissement.",
 			"audioCues.noInlayHints": "Émet un son lors de la tentative de lecture d’une ligne avec des indicateurs d’inlay qui n’ont pas d’indicateurs inlay.",
 			"audioCues.onDebugBreak": "Joue un son lorsque le débogueur s'est arrêté sur un point d'arrêt.",
+			"audioCues.taskEnded": "Plays a sound when a task ends.",
 			"audioCues.volume": "Volume des signaux audio en pourcentage (0-100)."
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
@@ -4395,6 +4409,8 @@
 		},
 		"vs/workbench/contrib/comments/browser/commentsEditorContribution": {
 			"comments.addCommand": "Ajouter un commentaire sur la sélection actuelle",
+			"comments.collapseAll": "Collapse All Comments",
+			"comments.expandAll": "Expand All Comments",
 			"comments.toggleCommenting": "Activer/désactiver les commentaires de l’éditeur",
 			"hasCommentingProvider": "Indique si l’espace de travail ouvert a des commentaires ou des plages de commentaires.",
 			"hasCommentingRange": "Indique si la position au curseur actif a une plage de commentaires",
@@ -5167,8 +5183,8 @@
 			"autoStore.onShutdown": "Stocker automatiquement la session de modification actuelle à la fermeture de la fenêtre.",
 			"autoStoreEditSession": "Stockage de la session de modification actuelle...",
 			"client too old": "Effectuez une mise à niveau vers une version plus récente de {0} pour reprendre cette session de modification.",
-			"continue edit session": "Continuer la modification de la session...",
 			"continue edit session in local folder": "Ouvrir dans le dossier local",
+			"continue working on": "Continue Working On...",
 			"continueEditSession.openLocalFolder.title": "Sélectionnez un dossier local dans lequel poursuivre votre session de modification.",
 			"continueEditSessionExtPoint": "Contribue aux options permettant de poursuivre la session d’édition actuelle dans un autre environnement.",
 			"continueEditSessionExtPoint.command": "Identificateur de la commande à exécuter. La commande doit être déclarée dans la section 'commands' et retourner un URI représentant un autre environnement où la session d’édition actuelle peut être poursuivie.",
@@ -5178,6 +5194,9 @@
 			"continueEditSessionItem.openInLocalFolder.v2": "Ouvrir dans le dossier local",
 			"continueEditSessionPick.placeholder": "Choisissez la façon dont vous souhaitez continuer à travailler.",
 			"continueEditSessionPick.title": "Continuer {0} le",
+			"continueOn": "Controls whether to prompt the user to store edit sessions when using Continue Working On.",
+			"continueOn.off": "Do not use edit sessions with Continue Working On unless the user has already turned on edit sessions.",
+			"continueOn.promptForAuth": "Prompt the user to sign in to store edit sessions with Continue Working On.",
 			"editSessionsEnabled": "Contrôle s'il faut afficher les actions compatibles avec le cloud pour stocker et reprendre les modifications non validées lors du basculement entre le Web, le bureau ou les appareils.",
 			"no edit session": "Il n’y a aucune session de modification à reprendre.",
 			"no edit session content for ref": "Impossible de reprendre la modification du contenu de la session pour l’ID {0}.",
@@ -5195,15 +5214,17 @@
 			"storing edit session": "Stockage de la session de modification..."
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsStorageService": {
-			"account preference": "Se connecter pour utiliser les sessions d’édition",
+			"account preference": "Turn on Edit Sessions to bring your working changes with you",
 			"choose account placeholder": "Sélectionner un compte pour se connecter",
 			"clear data confirm": "Oui",
-			"delete all edit sessions": "Supprimez toutes les sessions de modification stockées du cloud.",
+			"configure continue on": "Configure this preference in settings",
+			"continue without": "Continue without my working changes",
+			"delete all edit sessions.v2": "Delete all stored data from the cloud.",
 			"others": "Autres",
-			"reset auth.v2": "Se déconnecter des sessions d’édition",
-			"sign in": "Se connecter",
+			"reset auth.v3": "Turn off Edit Sessions...",
+			"sign in": "Turn on Edit Sessions...",
 			"sign in using account": "Vous connecter à {0}",
-			"sign out of edit sessions clear data prompt": "Voulez-vous vous déconnecter des sessions de modification ?",
+			"sign out of edit sessions clear data prompt.v2": "Do you want to turn off Edit Sessions?",
 			"signed in": "Connecté"
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsViews": {
@@ -5319,6 +5340,7 @@
 			"language id": "ID",
 			"language name": "Nom",
 			"languages": "Langages ({0})",
+			"last released": "Last released",
 			"last updated": "Dernière mise à jour",
 			"license": "Licence",
 			"localizations": "Localisations ({0})",
@@ -5337,10 +5359,10 @@
 			"preRelease": "Version préliminaire",
 			"preview": "Aperçu",
 			"productThemes": "Thèmes d'icône de produit ({0})",
+			"published": "Published",
 			"publisher": "Éditeur",
 			"publisher verified tooltip": "Cet éditeur a vérifié la propriété de {0}.",
 			"rating": "Évaluation",
-			"release date": "Publié le",
 			"repository": "Dépôt",
 			"resources": "Ressources d’extension",
 			"runtimeStatus": "État du runtime",
@@ -5395,12 +5417,14 @@
 			"enabled": "Uniquement les extensions activées",
 			"enabled filter": "Activée",
 			"extension": "Extension",
+			"extension updates filter": "Updates",
 			"extensionInfoDescription": "Description : {0}",
 			"extensionInfoId": "ID : {0}",
 			"extensionInfoName": "Nom : {0}",
 			"extensionInfoPublisher": "Serveur de publication : {0}",
 			"extensionInfoVSMarketplaceLink": "Lien de la Place de marché pour VS : {0}",
 			"extensionInfoVersion": "Version : {0}",
+			"extensionUpdates": "Show Extension Updates",
 			"extensions": "Extensions",
 			"extensions.affinity": "Configurez une extension à exécuter dans un autre processus hôte d’extension.",
 			"extensions.autoUpdate": "Contrôle le comportement de mise à jour automatique des extensions. Les mises à jour sont récupérées à partir d'un service en ligne Microsoft.",
@@ -5441,7 +5465,6 @@
 			"installVSIX": "Installer le VSIX de l'extension",
 			"installWebExtensionFromLocation": "Installer l’extension web...",
 			"installWorkspaceRecommendedExtensions": "Installer les extensions recommandées pour l'espace de travail",
-			"installed filter": "Installée",
 			"manageExtensionsHelp": "Gérer les extensions",
 			"manageExtensionsQuickAccessPlaceholder": "Appuyez sur Entrée pour gérer les extensions.",
 			"miPreferencesExtensions": "&&Extensions",
@@ -5453,7 +5476,6 @@
 			"none": "Aucun",
 			"notFound": "Extension '{0}' introuvable.",
 			"notInstalled": "L'extension '{0}' n'est pas installée. Vérifiez que vous utilisez l'ID d'extension complet, y compris l'éditeur, par ex. : ms-vscode.csharp.",
-			"outdated filter": "Obsolète",
 			"recently published filter": "Publiée récemment",
 			"recentlyPublishedExtensions": "Afficher les extensions récemment publiées",
 			"refreshExtension": "Actualiser",
@@ -5464,17 +5486,16 @@
 			"showEnabledExtensions": "Afficher les extensions activées",
 			"showExtensions": "Extensions",
 			"showFeaturedExtensions": "Afficher les extensions recommandées",
-			"showInstalledExtensions": "Afficher les extensions installées",
 			"showLanguageExtensionsShort": "Extensions de langage",
-			"showOutdatedExtensions": "Afficher les extensions obsolètes",
 			"showPopularExtensions": "Afficher les extensions les plus demandées",
 			"showRecommendedExtensions": "Afficher les extensions recommandées",
 			"showRecommendedKeymapExtensionsShort": "Mappages de touches",
 			"showWorkspaceUnsupportedExtensions": "Afficher les extensions non prises en charge par l’espace de travail",
-			"sort by date": "Date de publication",
 			"sort by installs": "Nombre d'installations",
 			"sort by name": "Nom",
+			"sort by published date": "Published Date",
 			"sort by rating": "Évaluation",
+			"sort by update date": "Updated Date",
 			"sorty by": "Tri par",
 			"updateAll": "Mettre à jour toutes les extensions",
 			"workbench.extensions.action.addExtensionToWorkspaceRecommendations": "Ajouter aux recommandations relatives à l'espace de travail",
@@ -5728,9 +5749,9 @@
 			"marketPlace": "Place de marché",
 			"open user settings": "Ouvrir les paramètres utilisateur",
 			"otherRecommendedExtensions": "Autres recommandations",
-			"outdated": "Obsolète",
 			"outdatedExtensions": "{0} extensions obsolètes",
 			"popularExtensions": "Populaire",
+			"recently updated": "Recently Updated",
 			"recommendedExtensions": "Recommandées",
 			"reloadNow": "Recharger maintenant",
 			"remote": "À distance",
@@ -5739,6 +5760,7 @@
 			"suggestProxyError": "Marketplace a retourné 'ECONNREFUSED'. Vérifiez le paramètre 'http.proxy'.",
 			"untrustedPartiallySupportedExtensions": "Limitée en mode restreint",
 			"untrustedUnsupportedExtensions": "Désactivé en mode restreint",
+			"updates": "Updates",
 			"virtualPartiallySupportedExtensions": "Limitée dans les espaces de travail virtuels",
 			"virtualUnsupportedExtensions": "Désactivée dans les espaces de travail virtuels",
 			"workspaceRecommendedExtensions": "Recommandations d'espace de travail",
@@ -5816,6 +5838,9 @@
 			"no": "Non",
 			"yes": "Oui"
 		},
+		"vs/workbench/contrib/extensions/common/reportExtensionIssueAction": {
+			"reportExtensionIssue": "Report Issue"
+		},
 		"vs/workbench/contrib/extensions/common/runtimeExtensionsInput": {
 			"extensionsInputName": "Exécution des extensions"
 		},
@@ -5854,9 +5879,6 @@
 			"cmd.report": "Signaler un problème",
 			"cmd.reportOrShow": "Problème de performance",
 			"cmd.show": "Afficher les problèmes"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/reportExtensionIssueAction": {
-			"reportExtensionIssue": "Signaler un problème"
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/runtimeExtensionsEditor": {
 			"extensionHostProfileStart": "Démarrer le profilage d'hôte d'extension",
@@ -5965,6 +5987,7 @@
 		},
 		"vs/workbench/contrib/files/browser/fileActions": {
 			"binFailed": "Impossible de supprimer en utilisant la corbeille. Voulez-vous supprimer définitivement à la place ?",
+			"cancel": "Cancel",
 			"clipboardComparisonLabel": "Presse-papier ↔ {0}",
 			"closeGroup": "Fermer le groupe",
 			"compareWithClipboard": "Compare le fichier actif avec le presse-papiers",
@@ -5978,6 +6001,7 @@
 			"confirmMoveTrashMessageFolder": "Voulez-vous vraiment supprimer '{0}' et son contenu ?",
 			"confirmMoveTrashMessageMultiple": "Êtes-vous sûr de vouloir supprimer les fichiers {0} suivants ?",
 			"confirmMoveTrashMessageMultipleDirectories": "Voulez-vous vraiment supprimer les {0} répertoires suivants et leur contenu ?",
+			"confirmOverwrite": "A file or folder with the name '{0}' already exists in the destination folder. Do you want to replace it?",
 			"copyBulkEdit": "Coller {0} fichiers",
 			"copyFile": "Copier",
 			"copyFileBulkEdit": "Coller {0}",
@@ -6023,6 +6047,7 @@
 			"rename": "Renommer...",
 			"renameBulkEdit": "Renommer {0} en {1}",
 			"renamingBulkEdit": "Changement du nom de {0} en {1}",
+			"replaceButtonLabel": "Replace",
 			"restore": "Vous pouvez restaurer ce fichier à l'aide de la commande Annuler",
 			"restorePlural": "Vous pouvez restaurer ces fichiers à l'aide de la commande Annuler",
 			"retry": "Réessayer",
@@ -6144,6 +6169,7 @@
 			"copyRelativePathSeparator.backslash": "Utilisez la barre oblique inverse comme caractère de séparation du chemin d’accès.",
 			"copyRelativePathSeparator.slash": "Utilisez la barre oblique comme caractère de séparation du chemin d’accès.",
 			"defaultLanguage": "Identificateur de langue par défaut attribué aux nouveaux fichiers. S'il est configuré sur '${activeEditorLanguage}', utilise l’identificateur de langue de l'éditeur de texte actif le cas échéant.",
+			"disabled": "Disables incremental naming. If two files with the same name exist you will be prompted to overwrite the existing file",
 			"enableDragAndDrop": "Détermine si l'Explorateur autorise le déplacement des fichiers et des dossiers par glisser-déposer. Ce paramètre affecte uniquement le glisser-déposer dans l'Explorateur.",
 			"enableUndo": "Contrôle si l'explorateur doit prendre en charge l'annulation des opérations sur les fichiers et les dossiers.",
 			"enableUndo.default": "L'explorateur vous demandera avant les opérations d'annulation destructrices.",
@@ -6166,7 +6192,7 @@
 			"fileNesting.description": "Chaque modèle de clé peut contenir un seul caractère '*' qui correspond à n’importe quelle chaîne.",
 			"fileNestingEnabled": "Contrôle si l’imbrication de fichiers est activée dans l’Explorateur. L’imbrication de fichiers permet de regrouper visuellement les fichiers associés dans un répertoire sous un seul fichier parent.",
 			"fileNestingExpand": "Contrôle si les imbrications de fichiers sont automatiquement développées. {0} doit être défini pour que cela prenne effet.",
-			"fileNestingPatterns": "Contrôle l’imbrication des fichiers dans l’Explorateur. Chaque __Item__ représente un modèle parent et peut contenir un caractère « * » unique qui correspond à n’importe quelle chaîne. Chaque __Value__ représente une liste séparée par des virgules des modèles enfants qui doivent être affichés imbriqués sous un parent donné. Les modèles enfants peuvent contenir plusieurs jetons spéciaux :\r\n- '${capture}' : correspond à la valeur résolue du '*' du modèle parent\r\n- '${basename}' : correspond au nom de base du fichier parent, 'file' dans 'file.ts'\r\n- '${extname}' : correspond à l’extension du fichier parent, 'ts' dans 'file.ts'\r\n- '${dirname}' : correspond au nom de répertoire du fichier parent,  'src' dans 'src/file.ts'\r\n- '*' : correspond à n’importe quelle chaîne, ne peut être utilisé qu’une seule fois par modèle enfant",
+			"fileNestingPatterns": "Controls nesting of files in the explorer. {0} must be set for this to take effect. Each __Item__ represents a parent pattern and may contain a single `*` character that matches any string. Each __Value__ represents a comma separated list of the child patterns that should be shown nested under a given parent. Child patterns may contain several special tokens:\r\n- `${capture}`: Matches the resolved value of the `*` from the parent pattern\r\n- `${basename}`: Matches the parent file's basename, the `file` in `file.ts`\r\n- `${extname}`: Matches the parent file's extension, the `ts` in `file.ts`\r\n- `${dirname}`: Matches the parent file's directory name, the `src` in `src/file.ts`\r\n- `*`:  Matches any string, may only be used once per child pattern",
 			"files.autoSave.afterDelay": "Un éditeur avec des modifications est automatiquement enregistré après le `#files.autoSaveDelay#` configuré.",
 			"files.autoSave.off": "Un éditeur avec des modifications n’est jamais enregistré automatiquement.",
 			"files.autoSave.onFocusChange": "Un éditeur avec des modifications est automatiquement sauvegardé lorsque l'éditeur perd le focus.",
@@ -6363,8 +6389,14 @@
 			"reportIssueInEnglish": "Signaler un problème..."
 		},
 		"vs/workbench/contrib/issue/electron-sandbox/issueActions": {
+			"cancel": "Cancel",
 			"openProcessExplorer": "Ouvrir l'Explorateur de processus",
-			"reportPerformanceIssue": "Signaler un problème de performance..."
+			"reportPerformanceIssue": "Signaler un problème de performance...",
+			"stopTracing": "Stop Tracing",
+			"stopTracing.button": "&&Relaunch and Enable Tracing",
+			"stopTracing.detail": "This can take up to one minute to complete.",
+			"stopTracing.message": "Tracing requires to launch with a '--trace' argument",
+			"stopTracing.title": "Creating trace file..."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "Activer/désactiver la résolution des problèmes liés aux raccourcis clavier"
@@ -6614,6 +6646,7 @@
 		"vs/workbench/contrib/mergeEditor/browser/commands/commands": {
 			"layout.column": "Disposition des colonnes",
 			"layout.mixed": "Disposition mixte",
+			"layout.showBase": "Show Base",
 			"merge.acceptAllInput1": "Accepter toutes les modifications à partir de la gauche",
 			"merge.acceptAllInput2": "Accepter toutes les modifications à partir de la droite",
 			"merge.goToNextUnhandledConflict": "Accéder au conflit non géré suivant",
@@ -6625,8 +6658,22 @@
 			"mergeEditor.compareInput1WithBase": "Comparer l’entrée 1 à la base",
 			"mergeEditor.compareInput2WithBase": "Comparer l’entrée 2 à la base",
 			"mergeEditor.compareWithBase": "Comparer avec la base",
+			"mergeEditor.resetDirtyConflictsToBase": "Reset Dirty Conflicts In Result To Base",
+			"mergeEditor.resetDirtyConflictsToBase.short": "Reset Dirty Conflicts To Base",
+			"mergeEditor.resetResultToBaseAndAutoMerge": "Reset Result",
+			"mergeEditor.resetResultToBaseAndAutoMerge.short": "Reset",
 			"openfile": "Ouvrir un fichier",
 			"title": "Ouvrir l'Éditeur de fusion"
+		},
+		"vs/workbench/contrib/mergeEditor/browser/commands/devCommands": {
+			"merge.dev.copyState": "Copy Merge Editor State as JSON",
+			"merge.dev.loadContentsFromFolder": "Load Merge Editor State from Folder",
+			"merge.dev.saveContentsToFolder": "Save Merge Editor State to Folder",
+			"mergeEditor.name": "Merge Editor",
+			"mergeEditor.noActiveMergeEditor": "No active merge editor",
+			"mergeEditor.selectFolderToSaveTo": "Select folder to save to",
+			"mergeEditor.successfullyCopiedMergeEditorContents": "Successfully copied merge editor state",
+			"mergeEditor.successfullySavedMergeEditorContentsToFolder": "Successfully saved merge editor state to folder"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/mergeEditor.contribution": {
 			"diffAlgorithm.experimental": "Utilise un algorithme de comparaison expérimental.",
@@ -6663,11 +6710,16 @@
 			"mergeEditor.conflict.unhandledUnfocused.border": "Couleur de bordure des conflits individuels non focalisés non pris en charge",
 			"mergeEditor.conflictingLines.background": "Arrière-plan du texte « Lignes en conflit »."
 		},
+		"vs/workbench/contrib/mergeEditor/browser/view/editors/baseCodeEditorView": {
+			"base": "Base"
+		},
 		"vs/workbench/contrib/mergeEditor/browser/view/editors/inputCodeEditorView": {
 			"accept.conflicting": "Accepter (le résultat est incorrect)",
 			"accept.excluded": "Accepter",
 			"accept.first": "Annuler l’acceptation",
 			"accept.second": "Annuler l’acceptation (actuellement deuxième)",
+			"input1": "Input 1",
+			"input2": "Input 2",
 			"mergeEditor.accept": "Accepter {0}",
 			"mergeEditor.acceptBoth": "Accepter les deux",
 			"mergeEditor.markAsHandled": "Marquer comme géré",
@@ -6675,32 +6727,24 @@
 		},
 		"vs/workbench/contrib/mergeEditor/browser/view/editors/resultCodeEditorView": {
 			"mergeEditor.remainingConflict": "{0} conflits restants ",
-			"mergeEditor.remainingConflicts": "{0} conflit restant"
+			"mergeEditor.remainingConflicts": "{0} conflit restant",
+			"result": "Result"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/view/mergeEditor": {
-			"input1": "Entrée 1",
-			"input2": "Entrée 2",
-			"mergeEditor": "Éditeur de fusion de texte",
-			"result": "Résultat"
+			"mergeEditor": "Éditeur de fusion de texte"
 		},
 		"vs/workbench/contrib/mergeEditor/common/mergeEditor": {
 			"baseUri": "URI du baser d’un éditeur de fusion",
 			"editorLayout": "Mode de disposition d’un éditeur de fusion",
 			"is": "L’éditeur est un éditeur de fusion",
 			"isr": "L’éditeur est l’éditeur de résultats d’un éditeur de fusion.",
-			"resultUri": "URI du résultat d’un éditeur de fusion"
+			"resultUri": "URI du résultat d’un éditeur de fusion",
+			"showBase": "If the merge editor shows the base version"
 		},
 		"vs/workbench/contrib/mergeEditor/electron-sandbox/devCommands": {
-			"merge.dev.copyState": "Copier l’état de l’éditeur de fusion au format JSON",
-			"merge.dev.loadContentsFromFolder": "Charger l’état de l’éditeur de fusion à partir d’un dossier",
+			"merge.dev.openSelectionInTemporaryMergeEditor": "Open Selection In Temporary Merge Editor",
 			"merge.dev.openState": "Ouvrir l’état de l’éditeur de fusion à partir de JSON",
-			"merge.dev.saveContentsToFolder": "Enregistrer l’état de l’éditeur de fusion dans le dossier",
-			"mergeEditor.enterJSON": "Entrer JSON",
-			"mergeEditor.name": "Éditeur de fusion",
-			"mergeEditor.noActiveMergeEditor": "Aucun éditeur de fusion actif",
-			"mergeEditor.selectFolderToSaveTo": "Sélectionnez le dossier à sauvegarder.",
-			"mergeEditor.successfullyCopiedMergeEditorContents": "État de l’éditeur de fusion copié avec succès",
-			"mergeEditor.successfullySavedMergeEditorContentsToFolder": "Enregistrement réussi de l’état de l’éditeur de fusion dans le dossier"
+			"mergeEditor.enterJSON": "Entrer JSON"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/cellCommands/cellCommands": {
 			"notebookActions.changeCellToCode": "Changer la cellule en code",
@@ -6854,6 +6898,7 @@
 			"notebookActions.executeAndSelectBelow": "Exécuter la cellule du Notebook et sélectionner en dessous",
 			"notebookActions.executeBelow": "Exécuter les cellules au-dessous",
 			"notebookActions.executeNotebook": "Exécuter tout",
+			"notebookActions.interruptNotebook": "Interrupt",
 			"notebookActions.renderMarkdown": "Afficher toutes les cellules Markdown",
 			"revealLastFailedCell": "Atteindre la cellule ayant échoué le plus récemment",
 			"revealLastFailedCellShort": "Aller à",
@@ -7180,6 +7225,9 @@
 			"outputViewWithInputAriaLabel": "{0}, Panneau de sortie"
 		},
 		"vs/workbench/contrib/performance/browser/performance.contribution": {
+			"cycles": "Print Service Cycles",
+			"emitter": "Print Emitter Profiles",
+			"insta.trace": "Print Service Traces",
 			"show.label": "Niveau de performance du démarrage"
 		},
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
@@ -7736,7 +7784,8 @@
 		},
 		"vs/workbench/contrib/remote/electron-sandbox/remote.contribution": {
 			"remote": "À distance",
-			"remote.downloadExtensionsLocally": "Quand les extensions activées sont téléchargées localement et installées sur la machine distante."
+			"remote.downloadExtensionsLocally": "Quand les extensions activées sont téléchargées localement et installées sur la machine distante.",
+			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/sash/browser/sash.contribution": {
 			"sashHoverDelay": "Contrôle le délai de rétroaction du pointage (en millisecondes) de la zone de glissement entre les vues/éditeurs.",
@@ -7906,6 +7955,8 @@
 			"search.actionsPositionRight": "Positionnez toujours la barre d'action à droite.",
 			"search.collapseAllResults": "Contrôle si les résultats de recherche seront réduits ou développés.",
 			"search.collapseResults.auto": "Les fichiers avec moins de 10 résultats sont développés. Les autres sont réduits.",
+			"search.decorations.badges": "Controls whether search file decorations should use badges.",
+			"search.decorations.colors": "Controls whether search file decorations should use colors.",
 			"search.followSymlinks": "Contrôle s'il faut suivre les symlinks pendant la recherche.",
 			"search.globalFindClipboard": "Contrôle si la vue de recherche doit lire ou modifier le presse-papiers partagé sur macOS.",
 			"search.location": "Contrôle si la recherche s’affiche comme une vue dans la barre latérale ou comme un panneau dans la zone de panneaux pour plus d'espace horizontal.",
@@ -8621,6 +8672,7 @@
 		"vs/workbench/contrib/tasks/common/taskService": {
 			"tasks.customExecutionSupported": "Indique si les tâches CustomExecution sont prises en charge. À utiliser dans la clause when d'une contribution 'taskDefinition'.",
 			"tasks.processExecutionSupported": "Indique si les tâches ProcessExecution sont prises en charge. À utiliser dans la clause when d'une contribution 'taskDefinition'.",
+			"tasks.serverlessWebContext": "True when in the web with no remote authority.",
 			"tasks.shellExecutionSupported": "Indique si les tâches ShellExecution sont prises en charge. À utiliser dans la clause when d'une contribution 'taskDefinition'.",
 			"tasks.taskCommandsRegistered": "Indique si les commandes de tâche ont encore été inscrites"
 		},
@@ -8737,6 +8789,7 @@
 			"workbench.action.terminal.paste": "Coller dans le terminal actif",
 			"workbench.action.terminal.pasteSelection": "Coller la sélection dans le terminal actif",
 			"workbench.action.terminal.relaunch": "Relancer le terminal actif",
+			"workbench.action.terminal.rename.prompt": "Enter terminal name",
 			"workbench.action.terminal.renameWithArg": "Renommer le terminal actuellement actif",
 			"workbench.action.terminal.renameWithArg.name": "Nouveau nom du terminal",
 			"workbench.action.terminal.renameWithArg.noName": "Aucun argument de nom fourni",
@@ -8796,6 +8849,9 @@
 			"killTerminalIcon": "Icône permettant de tuer une instance de terminal.",
 			"newTerminalIcon": "Icône de création d'une instance de terminal.",
 			"renameTerminalIcon": "Icône de renommage dans le menu rapide du terminal.",
+			"terminalCommandHistoryFuzzySearch": "Icon for toggling fuzzy search of command history.",
+			"terminalCommandHistoryOutput": "Icon for viewing output of a terminal command.",
+			"terminalCommandHistoryRemove": "Icon for removing a terminal command from command history.",
 			"terminalDecorationError": "Icône d’une décoration de terminal d’une commande qui a rencontré une erreur.",
 			"terminalDecorationIncomplete": "Icône représentant une décoration de terminal d’une commande incomplète.",
 			"terminalDecorationMark": "Icône représentant une marque de décoration de terminal.",
@@ -8815,14 +8871,8 @@
 			"launchFailed.exitCodeOnlyShellIntegration": "La désactivation de l’intégration de l’interpréteur de commandes dans les paramètres utilisateur peut être utile.",
 			"multiLinePasteButton": "&&Coller",
 			"preview": "Aperçu :",
-			"removeCommand": "Supprimer de l’historique des commandes",
-			"selectRecentCommand": "Sélectionner une commande à exécuter (maintenez la touche Alt enfoncée pour modifier la commande)",
-			"selectRecentCommandMac": "Sélectionner une commande à exécuter (maintenez la touche Alt enfoncée pour modifier la commande)",
-			"selectRecentDirectory": "Sélectionner un répertoire à atteindre (maintenez la touche Alt enfoncée pour modifier la commande)",
-			"selectRecentDirectoryMac": "Sélectionner un répertoire à atteindre (maintenez la touche Option enfoncée pour modifier la commande)",
 			"setTerminalDimensionsColumn": "Définir les dimensions fixes : colonne",
 			"setTerminalDimensionsRow": "Définir les dimensions fixes : ligne",
-			"shellFileHistoryCategory": "Historique {0}",
 			"shellIntegration.learnMore": "En savoir plus sur l’intégration de l’interpréteur de commandes",
 			"shellIntegration.openSettings": "Ouvrir les paramètres utilisateur",
 			"terminal.integrated.a11yPromptLabel": "Entrée du terminal",
@@ -8837,8 +8887,6 @@
 			"terminalTypeTask": "Tâche",
 			"terminated.exitCodeAndCommandLine": "Arrêt du processus de terminal \"{0}\". Code de sortie : {1}.",
 			"terminated.exitCodeOnly": "Arrêt du processus de terminal. Code de sortie : {0}.",
-			"viewCommandOutput": "Afficher la sortie de la commande",
-			"workbench.action.terminal.rename.prompt": "Entrer le nom du terminal",
 			"workspaceNotTrustedCreateTerminal": "Impossible de lancer un processus terminal dans un espace de travail non approuvé",
 			"workspaceNotTrustedCreateTerminalCwd": "Impossible de lancer un processus terminal dans un espace de travail non approuvé avec cwd {0} et userHome {1}"
 		},
@@ -8852,14 +8900,12 @@
 			"miRunSelectedText": "Exécuter le texte &&sélectionné",
 			"miSplitTerminal": "Terminal divi&&sé",
 			"splitTerminal": "Terminal divisé",
-			"terminal.new": "Nouveau terminal",
 			"workbench.action.terminal.changeColor": "Modifier la couleur...",
 			"workbench.action.terminal.changeIcon": "Changer l’icône...",
 			"workbench.action.terminal.clear": "Effacer",
 			"workbench.action.terminal.copySelection.short": "Copier",
 			"workbench.action.terminal.copySelectionAsHtml": "Copier au format HTML",
 			"workbench.action.terminal.joinInstance": "Joindre des terminaux",
-			"workbench.action.terminal.new.short": "Nouveau terminal",
 			"workbench.action.terminal.newWithProfile.short": "Nouveau terminal avec profil",
 			"workbench.action.terminal.openSettings": "Configurer les paramètres du terminal",
 			"workbench.action.terminal.paste.short": "Coller",
@@ -8891,6 +8937,15 @@
 			"renameTerminal": "Renommer le terminal",
 			"workbench.action.terminal.newWithProfilePlus": "Créer un nouveau terminal avec profil",
 			"workbench.action.terminal.newplus": "Créer un nouveau terminal"
+		},
+		"vs/workbench/contrib/terminal/browser/terminalRunRecentQuickPick": {
+			"removeCommand": "Remove from Command History",
+			"selectRecentCommand": "Select a command to run (hold Alt-key to edit the command)",
+			"selectRecentCommandMac": "Select a command to run (hold Option-key to edit the command)",
+			"selectRecentDirectory": "Select a directory to go to (hold Alt-key to edit the command)",
+			"selectRecentDirectoryMac": "Select a directory to go to (hold Option-key to edit the command)",
+			"shellFileHistoryCategory": "{0} history",
+			"viewCommandOutput": "View Command Output"
 		},
 		"vs/workbench/contrib/terminal/browser/terminalService": {
 			"localTerminalRemote": "Cet interpréteur de commandes est en cours d’exécution sur votre machine {0}locale{1}, et non sur la machine distante connectée",
@@ -8948,12 +9003,9 @@
 			"vscode.extension.contributes.terminal.profiles": "Définit les profils de terminal supplémentaires que l’utilisateur peut créer.",
 			"vscode.extension.contributes.terminal.profiles.id": "ID du fournisseur de profils de terminaux.",
 			"vscode.extension.contributes.terminal.profiles.title": "Titre de ce profil de terminal.",
-			"vscode.extension.contributes.terminal.types": "Définit les types de terminal supplémentaires que l'utilisateur peut créer.",
-			"vscode.extension.contributes.terminal.types.command": "Commande à exécuter quand l'utilisateur crée ce type de terminal.",
 			"vscode.extension.contributes.terminal.types.icon": "Codicon, URI ou URI Light et Dark à associer à ce type de terminal",
 			"vscode.extension.contributes.terminal.types.icon.dark": "Chemin de l'icône quand un thème foncé est utilisé",
-			"vscode.extension.contributes.terminal.types.icon.light": "Chemin de l'icône quand un thème clair est utilisé",
-			"vscode.extension.contributes.terminal.types.title": "Titre de ce type de terminal."
+			"vscode.extension.contributes.terminal.types.icon.light": "Chemin de l'icône quand un thème clair est utilisé"
 		},
 		"vs/workbench/contrib/terminal/common/terminalColorRegistry": {
 			"terminal.ansiColor": "Couleur ANSI '{0}' dans le terminal.",
@@ -9138,6 +9190,7 @@
 			"splitTerminal": "Diviser le terminal",
 			"splitTerminal.short": "Fractionner",
 			"terminal": "Terminal",
+			"terminal.new": "New Terminal",
 			"unsplitTerminal": "Déscinder le terminal",
 			"workbench.action.terminal.changeColor": "Modifier la couleur...",
 			"workbench.action.terminal.changeIcon": "Changer l’icône...",
@@ -9592,10 +9645,7 @@
 			"replace local": "Remplacer la version locale",
 			"replace remote": "Remplacer la version distante",
 			"reset": "Effacer les données dans le cloud...",
-			"resolveConflicts_global": "{0} : afficher les conflits de paramètres (1)",
-			"resolveKeybindingsConflicts_global": "{0} : afficher les conflits de combinaisons de touches (1)",
-			"resolveSnippetsConflicts_global": "{0} : afficher les conflits d'extraits d'utilisateurs ({1})",
-			"resolveTasksConflicts_global": "{0} : afficher les conflits de tâches utilisateur (1)",
+			"resolveConflicts_global": "{0}: Show Conflicts ({1})",
 			"service changed and turned off": "La synchronisation des paramètres a été désactivée, car {0} utilise désormais un service distinct. Réactivez la synchronisation.",
 			"service switched to insiders": "La synchronisation des paramètres est passée au service Insiders",
 			"service switched to stable": "La synchronisation des paramètres est passée au service Stable",
@@ -9606,10 +9656,7 @@
 			"show sync log toolrip": "Afficher le journal",
 			"show synced data": "{0} : afficher les données synchronisées",
 			"show synced data action": "Afficher les données synchronisées",
-			"showConflicts": "{0} : afficher les conflits de paramètres",
-			"showKeybindingsConflicts": "{0} : afficher les conflits de combinaisons de touches",
-			"showSnippetsConflicts": "{0} : afficher les conflits d'extraits d'utilisateurs",
-			"showTasksConflicts": "{0} : afficher les conflits de tâches utilisateur",
+			"showConflicts": "{0}: Show Conflicts",
 			"sign in accounts": "Se connecter pour synchroniser les paramètres (1)",
 			"sign in and turn on": "Se connecter et activer",
 			"sign in global": "Se connecter pour synchroniser les paramètres",
@@ -9653,6 +9700,16 @@
 			"settings sync": "Synchronisation des paramètres. ID d'opération : {0}",
 			"show sync logs": "Afficher le journal"
 		},
+		"vs/workbench/contrib/userDataSync/browser/userDataSyncConflictsView": {
+			"Theirs": "Theirs",
+			"Yours": "Yours",
+			"explanation": "Please go through each entry and merge to resolve conflicts.",
+			"localResourceName": "{0} (Local)",
+			"remoteResourceName": "{0} (Remote)",
+			"workbench.actions.sync.acceptLocal": "Accept Local",
+			"workbench.actions.sync.acceptRemote": "Accept Remote",
+			"workbench.actions.sync.openConflicts": "Show Conflicts"
+		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSyncMergesView": {
 			"accept local": "Accepter la version locale",
 			"accept merges": "Accepter les fusions",
@@ -9680,6 +9737,7 @@
 		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSyncViews": {
 			"confirm replace": "Voulez-vous remplacer vos {0} en cours par la sélection ?",
+			"conflicts": "Conflicts",
 			"current": "Actuelle",
 			"last sync states": "Dernière synchronisation distante",
 			"leftResourceName": "{0} (distant)",
@@ -9986,9 +10044,10 @@
 			"change keybinding": "Configurer la combinaison de touches",
 			"file": "Fichier",
 			"miNewFile2": "Fichier texte",
-			"miNewFileWithName": "Nouveau fichier ({0})",
+			"miNewFileWithName": "Create New File ({0})",
+			"newFilePlaceholder": "Select File Type or Enter File Name...",
+			"newFileTitle": "New File...",
 			"notebook": "Notebook",
-			"selectFileType": "Sélectionnez le type de fichier...",
 			"welcome.newFile": "Nouveau fichier..."
 		},
 		"vs/workbench/contrib/welcomeViews/common/viewsWelcomeContribution": {
@@ -10150,6 +10209,7 @@
 			"workspaceTrustedCtx": "Indique si l’espace de travail actif a été approuvé par l’utilisateur."
 		},
 		"vs/workbench/contrib/workspaces/browser/workspaces.contribution": {
+			"alreadyOpen": "This workspace is already open.",
 			"openWorkspace": "Ouvrir un espace de travail",
 			"selectToOpen": "Sélectionner un espace de travail à ouvrir",
 			"selectWorkspace": "Sélectionner un espace de travail",
@@ -10183,6 +10243,7 @@
 			"menus.explorerContext": "Menu contextuel de l'Explorateur de fichiers",
 			"menus.extensionContext": "Menu contextuel de l'extension",
 			"menus.home": "Menu contextuel de l'indicateur d'accueil (web uniquement)",
+			"menus.mergeEditorResult": "The result toolbar of the merge editor",
 			"menus.opy": "Sous-menu 'Copier en tant que' dans le menu Edition de niveau supérieur",
 			"menus.resourceFolderContext": "Menu contextuel du dossier de ressources de contrôle de code source",
 			"menus.resourceGroupContext": "Menu contextuel du groupe de ressources du contrôle de code source",
@@ -10277,44 +10338,44 @@
 			"configurationDefaults.description": "Contribuer aux valeurs par défaut des configurations",
 			"experimental": "Expériences"
 		},
-		"vs/workbench/services/configuration/common/configurationEditingService": {
-			"errorConfigurationFileDirty": "Impossible d'écrire dans les paramètres utilisateur car le fichier contient des modifications non sauvegardées. Veuillez d'abord enregistrer le fichier des paramètres utilisateur, puis réessayer.",
-			"errorConfigurationFileDirtyFolder": "Impossible d'écrire dans les paramètres du dossier car le fichier contient des modifications non enregistrées. Veuillez d'abord enregistrer le fichier '{0}' des paramètres du dossier, puis réessayer.",
-			"errorConfigurationFileDirtyWorkspace": "Impossible d'écrire dans les paramètres de l'espace de travail car le fichier contient des modifications non sauvegardées. Veuillez d'abord enregistrer le fichier des paramètres de l'espace de travail, puis réessayer.",
-			"errorConfigurationFileModifiedSince": "Impossible d'écrire dans les paramètres utilisateur parce que le contenu du fichier est plus récent.",
-			"errorConfigurationFileModifiedSinceFolder": "Impossible d'écrire dans les paramètres de dossier parce que le contenu du fichier est plus récent.",
-			"errorConfigurationFileModifiedSinceWorkspace": "Impossible d'écrire dans les paramètres d'espace de travail parce que le contenu du fichier est plus récent.",
-			"errorInvalidConfiguration": "Impossible d’écrire dans les paramètres de l’utilisateur. Veuillez s’il vous plaît ouvrir le fichier des paramètres de l’utilisateur pour y corriger les erreurs/avertissements et essayez à nouveau.",
-			"errorInvalidConfigurationFolder": "Impossible d’écrire dans les paramètres de dossier. Veuillez s’il vous plaît ouvrir le fichier des paramètres du dossier '{0}' pour y corriger les erreurs/avertissements et essayez à nouveau.",
-			"errorInvalidConfigurationWorkspace": "Impossible d’écrire dans les paramètres de l’espace de travail. Veuillez s’il vous plaît ouvrir le fichier des paramètres de l’espace de travail pour corriger les erreurs/avertissements dans le fichier et réessayez.",
-			"errorInvalidFolderConfiguration": "Impossible d'écrire dans les paramètres de dossier, car {0} ne prend pas en charge la portée des ressources de dossier.",
-			"errorInvalidFolderTarget": "Impossible d’écrire dans les paramètres de dossier car aucune ressource n’est fournie.",
-			"errorInvalidLaunchConfiguration": "Impossible d’écrire dans le fichier de configuration de lancement. Veuillez ouvrir le fichier pour y corriger les erreurs/avertissements et essayez à nouveau.",
-			"errorInvalidRemoteConfiguration": "Impossible d'écrire dans les paramètres de l'utilisateur distant. Ouvrez les paramètres de l'utilisateur distant pour corriger les erreurs/avertissements, et réessayez.",
-			"errorInvalidResourceLanguageConfiguration": "Impossible d'écrire dans les paramètres de langage parce que {0} n'est pas un paramètre de langage de ressource.",
-			"errorInvalidTaskConfiguration": "Impossible d’écrire dans le fichier de configuration des tâches. Veuillez ouvrir le fichier pour y corriger les erreurs/avertissements et essayez à nouveau.",
-			"errorInvalidUserTarget": "Impossible d'écrire dans les paramètres utilisateur, car {0} ne prend pas en charge la portée globale.",
-			"errorInvalidWorkspaceConfigurationApplication": "Impossible d’écrire {0} dans les paramètres de l’espace de travail. Ce paramètre peut être écrit uniquement dans les paramètres de l’utilisateur.",
-			"errorInvalidWorkspaceConfigurationMachine": "Impossible d’écrire {0} dans les paramètres de l’espace de travail. Ce paramètre peut être écrit uniquement dans les paramètres de l’utilisateur.",
-			"errorInvalidWorkspaceTarget": "Impossible d’écrire dans les paramètres de l’espace de travail car {0} ne supporte pas de portée d’espace de travail dans un espace de travail multi dossiers.",
-			"errorLaunchConfigurationFileDirty": "Impossible d'écrire dans le fichier de configuration de lancement car le fichier contient des modifications non sauvegardées. Veuillez le sauvegarder d'abord et réessayer ensuite.",
-			"errorLaunchConfigurationFileModifiedSince": "Impossible d'écrire dans le fichier de configuration de lancement parce que le contenu du fichier est plus récent.",
-			"errorNoWorkspaceOpened": "Impossible d’écrire dans {0} car aucun espace de travail n’est ouvert. Veuillez ouvrir un espace de travail et essayer à nouveau.",
-			"errorPolicyConfiguration": "Impossible d’écrire {0} car elle est configurée dans la stratégie système.",
-			"errorRemoteConfigurationFileDirty": "Impossible d'écrire dans les paramètres de l'utilisateur distant car le fichier contient des modifications non sauvegardées. Veuillez d'abord enregistrer le fichier des paramètres de l'utilisateur distant, puis réessayer.",
-			"errorRemoteConfigurationFileModifiedSince": "Impossible d'écrire dans les paramètres utilisateur distants parce que le contenu du fichier est plus récent.",
-			"errorTasksConfigurationFileDirty": "Impossible d'écrire dans le fichier de configuration des tâches car le fichier contient des modifications non sauvegardées. Veuillez le sauvegarder d'abord et réessayer ensuite.",
-			"errorTasksConfigurationFileModifiedSince": "Impossible d'écrire dans le fichier de configuration des tâches parce que le contenu du fichier est plus récent.",
-			"errorUnknown": "Impossible d’écrire dans {0} en raison d’une erreur interne.",
-			"errorUnknownKey": "Impossible d'écrire dans {0}, car {1} n'est pas une configuration inscrite.",
-			"folderTarget": "Paramètres de dossier",
-			"open": "Ouvrir les paramètres",
-			"openLaunchConfiguration": "Ouvrir la configuration du lancement",
-			"openTasksConfiguration": "Ouvrir la configuration des tâches",
-			"remoteUserTarget": "Paramètres de l'utilisateur distant",
-			"saveAndRetry": "Enregistrer et Réessayer",
-			"userTarget": "Paramètres utilisateur",
-			"workspaceTarget": "Paramètres de l'espace de travail"
+		"vs/workbench/services/configuration/common/configurationEditing": {
+			"errorConfigurationFileDirty": "Unable to write into user settings because the file has unsaved changes. Please save the user settings file first and then try again.",
+			"errorConfigurationFileDirtyFolder": "Unable to write into folder settings because the file has unsaved changes. Please save the '{0}' folder settings file first and then try again.",
+			"errorConfigurationFileDirtyWorkspace": "Unable to write into workspace settings because the file has unsaved changes. Please save the workspace settings file first and then try again.",
+			"errorConfigurationFileModifiedSince": "Unable to write into user settings because the content of the file is newer.",
+			"errorConfigurationFileModifiedSinceFolder": "Unable to write into folder settings because the content of the file is newer.",
+			"errorConfigurationFileModifiedSinceWorkspace": "Unable to write into workspace settings because the content of the file is newer.",
+			"errorInvalidConfiguration": "Unable to write into user settings. Please open the user settings to correct errors/warnings in it and try again.",
+			"errorInvalidConfigurationFolder": "Unable to write into folder settings. Please open the '{0}' folder settings to correct errors/warnings in it and try again.",
+			"errorInvalidConfigurationWorkspace": "Unable to write into workspace settings. Please open the workspace settings to correct errors/warnings in the file and try again.",
+			"errorInvalidFolderConfiguration": "Unable to write to Folder Settings because {0} does not support the folder resource scope.",
+			"errorInvalidFolderTarget": "Unable to write to Folder Settings because no resource is provided.",
+			"errorInvalidLaunchConfiguration": "Unable to write into the launch configuration file. Please open it to correct errors/warnings in it and try again.",
+			"errorInvalidRemoteConfiguration": "Unable to write into remote user settings. Please open the remote user settings to correct errors/warnings in it and try again.",
+			"errorInvalidResourceLanguageConfiguration": "Unable to write to Language Settings because {0} is not a resource language setting.",
+			"errorInvalidTaskConfiguration": "Unable to write into the tasks configuration file. Please open it to correct errors/warnings in it and try again.",
+			"errorInvalidUserTarget": "Unable to write to User Settings because {0} does not support for global scope.",
+			"errorInvalidWorkspaceConfigurationApplication": "Unable to write {0} to Workspace Settings. This setting can be written only into User settings.",
+			"errorInvalidWorkspaceConfigurationMachine": "Unable to write {0} to Workspace Settings. This setting can be written only into User settings.",
+			"errorInvalidWorkspaceTarget": "Unable to write to Workspace Settings because {0} does not support for workspace scope in a multi folder workspace.",
+			"errorLaunchConfigurationFileDirty": "Unable to write into launch configuration file because the file has unsaved changes. Please save it first and then try again.",
+			"errorLaunchConfigurationFileModifiedSince": "Unable to write into launch configuration file because the content of the file is newer.",
+			"errorNoWorkspaceOpened": "Unable to write to {0} because no workspace is opened. Please open a workspace first and try again.",
+			"errorPolicyConfiguration": "Unable to write {0} because it is configured in system policy.",
+			"errorRemoteConfigurationFileDirty": "Unable to write into remote user settings because the file has unsaved changes. Please save the remote user settings file first and then try again.",
+			"errorRemoteConfigurationFileModifiedSince": "Unable to write into remote user settings because the content of the file is newer.",
+			"errorTasksConfigurationFileDirty": "Unable to write into tasks configuration file because the file has unsaved changes. Please save it first and then try again.",
+			"errorTasksConfigurationFileModifiedSince": "Unable to write into tasks configuration file because the content of the file is newer.",
+			"errorUnknown": "Unable to write to {0} because of an internal error.",
+			"errorUnknownKey": "Unable to write to {0} because {1} is not a registered configuration.",
+			"folderTarget": "Folder Settings",
+			"open": "Open Settings",
+			"openLaunchConfiguration": "Open Launch Configuration",
+			"openTasksConfiguration": "Open Tasks Configuration",
+			"remoteUserTarget": "Remote User Settings",
+			"saveAndRetry": "Save and Retry",
+			"userTarget": "User Settings",
+			"workspaceTarget": "Workspace Settings"
 		},
 		"vs/workbench/services/configuration/common/jsonEditingService": {
 			"errorFileDirty": "Impossible d'écrire dans le fichier car celui-ci contient des modifications non sauvegardées. Veuillez enregistrer le fichier et réessayer.",
@@ -10375,7 +10436,7 @@
 			"filterName.workspace": "Espace de travail",
 			"noExt": "Aucune extension",
 			"openFile.title": "Ouvrir un fichier",
-			"openFileOrFolder.title": "Ouvrir un fichier ou un dossier",
+			"openFileOrFolder.title": "Open File or Folder",
 			"openFolder.title": "Ouvrir le dossier",
 			"openWorkspace.title": "Ouvrir l’espace de travail à partir du fichier",
 			"save": "Enregi&&strer",
@@ -11141,6 +11202,7 @@
 			"extensions": "Extensions",
 			"keybindings": "Raccourcis clavier",
 			"settings": "Paramètres",
+			"settings profiles": "Settings Profiles",
 			"snippets": "Extraits utilisateur",
 			"sync category": "Synchronisation des paramètres",
 			"syncViewIcon": "Icône de vue de la synchronisation des paramètres.",
@@ -11148,10 +11210,9 @@
 			"ui state label": "État de l'IU"
 		},
 		"vs/workbench/services/views/browser/viewDescriptorService": {
-			"cachedViewContainerPositions": "Afficher les personnalisations des emplacements de conteneur",
-			"cachedViewPositions": "Afficher les personnalisations des emplacements",
 			"hideView": "Masquer '{0}'",
-			"resetViewLocation": "Réinitialiser l'emplacement"
+			"resetViewLocation": "Réinitialiser l'emplacement",
+			"views customizations": "Views Customizations"
 		},
 		"vs/workbench/services/views/common/viewContainerModel": {
 			"globalViewsStateStorageId": "Affiche les personnalisations de visibilité dans {0} conteneur d’affichage"

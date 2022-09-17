@@ -765,9 +765,11 @@
 			"source.label": "源代码操作..."
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionMenu": {
-			"codeAction.widget.id.convert": "转换...",
+			"codeAction.widget.id.convert": "Rewrite...",
 			"codeAction.widget.id.extract": "提取...",
+			"codeAction.widget.id.inline": "Inline...",
 			"codeAction.widget.id.more": "更多操作...",
+			"codeAction.widget.id.move": "Move...",
 			"codeAction.widget.id.quickfix": "快速修复...",
 			"codeAction.widget.id.source": "源代码操作...",
 			"codeAction.widget.id.surround": "环绕方式...",
@@ -779,8 +781,7 @@
 			"showMoreCodeActions": "显示已禁用项"
 		},
 		"vs/editor/contrib/codeAction/browser/codeActionWidgetContribution": {
-			"codeActionWidget": "启用此选项可调整代码操作菜单的呈现方式。",
-			"showCodeActionHeaders": "如果启用了自定义代码操作菜单，则启用此项将显示包含组标头的代码操作菜单。"
+			"showCodeActionHeaders": "Enable/disable showing group headers in the code action menu."
 		},
 		"vs/editor/contrib/codeAction/browser/lightBulbWidget": {
 			"codeAction": "显示代码操作",
@@ -815,6 +816,9 @@
 		},
 		"vs/editor/contrib/copyPaste/browser/copyPasteContribution": {
 			"pasteActions": "启用/禁用粘贴时从扩展运行编辑。"
+		},
+		"vs/editor/contrib/copyPaste/browser/copyPasteController": {
+			"pasteProgressTitle": "Running paste handlers..."
 		},
 		"vs/editor/contrib/cursorUndo/browser/cursorUndo": {
 			"cursor.redo": "光标重做",
@@ -1426,6 +1430,9 @@
 			"titleAndKb": "{0} ({1})",
 			"titleAndKbAndAlt": "{0}\r\n[{1}] {2}"
 		},
+		"vs/platform/actions/browser/toolbar": {
+			"hide": "Hide"
+		},
 		"vs/platform/actions/common/menuResetAction": {
 			"cat": "查看",
 			"title": "重置隐藏的菜单"
@@ -1452,6 +1459,7 @@
 			"isLinux": "操作系统是否为 Linux",
 			"isMac": "操作系统是否 macOS",
 			"isMacNative": "操作系统是否是非浏览器平台上的 macOS",
+			"isMobile": "Whether the platform is a mobile web browser",
 			"isWeb": "平台是否为 Web 浏览器",
 			"isWindows": "操作系统是否为 Windows",
 			"productQualityType": "VS Code 的质量类型"
@@ -1541,32 +1549,32 @@
 			"extensions": "扩展",
 			"preferences": "首选项"
 		},
-		"vs/platform/extensionManagement/common/extensionManagementCLIService": {
-			"alreadyInstalled": "已安装扩展“{0}”。",
-			"alreadyInstalled-checkAndUpdate": "已安装扩展 \"{0}\" v{1}。使用 \"--force\" 选项更新到最新版本，或提供 \"@<version>\" 以安装特定版本，例如: \"{2}@1.2.3\"。",
-			"builtin": "扩展“{0}”是内置扩展，无法卸载",
-			"cancelInstall": "已取消安装扩展“{0}”。",
-			"cancelVsixInstall": "已取消安装扩展“{0}”。",
-			"forceDowngrade": "已安装扩展“{0}”v{1} 的较新版本。请使用 \"--force\" 选项降级到旧版本。",
-			"forceUninstall": "用户已将扩展“{0}”标记为内置扩展。请使用 \"--force\" 选项将其卸载。",
-			"installation failed": "未能安装扩展: {0}",
-			"installing": "正在安装扩展“{0}”...",
-			"installing builtin ": "正在安装内置扩展“{0}”...",
-			"installing builtin with version": "正在安装内置扩展“{0}”v{1}…",
-			"installing with version": "正在安装扩展“{0}”v{1}...",
-			"installingExtensions": "正在安装扩展…",
-			"installingExtensionsOnLocation": "正在 {0} 上安装扩展…",
-			"listFromLocation": "{0} 上安装的扩展:",
-			"notFound": "找不到扩展“{0}”。",
-			"notInstalled": "未安装扩展“{0}”。",
-			"notInstalleddOnLocation": "{1} 上未安装扩展“{0}”。",
-			"successInstall": "已成功安装扩展“{0}”v{1}。",
-			"successUninstall": "已成功卸载扩展“{0}”!",
-			"successUninstallFromLocation": "已成功从 {1} 卸载扩展“{0}”!",
-			"successVsixInstall": "已成功安装扩展“{0}”。",
-			"uninstalling": "正在卸载 {0}…",
-			"updateMessage": "将扩展 \"{0}\" 更新到版本 {1}",
-			"useId": "确认使用了包括发布者在内的完整扩展 ID，例如: {0}"
+		"vs/platform/extensionManagement/common/extensionManagementCLI": {
+			"alreadyInstalled": "Extension '{0}' is already installed.",
+			"alreadyInstalled-checkAndUpdate": "Extension '{0}' v{1} is already installed. Use '--force' option to update to latest version or provide '@<version>' to install a specific version, for example: '{2}@1.2.3'.",
+			"builtin": "Extension '{0}' is a Built-in extension and cannot be uninstalled",
+			"cancelInstall": "Cancelled installing extension '{0}'.",
+			"cancelVsixInstall": "Cancelled installing extension '{0}'.",
+			"forceDowngrade": "A newer version of extension '{0}' v{1} is already installed. Use '--force' option to downgrade to older version.",
+			"forceUninstall": "Extension '{0}' is marked as a Built-in extension by user. Please use '--force' option to uninstall it.",
+			"installation failed": "Failed Installing Extensions: {0}",
+			"installing": "Installing extension '{0}'...",
+			"installing builtin ": "Installing builtin extension '{0}'...",
+			"installing builtin with version": "Installing builtin extension '{0}' v{1}...",
+			"installing with version": "Installing extension '{0}' v{1}...",
+			"installingExtensions": "Installing extensions...",
+			"installingExtensionsOnLocation": "Installing extensions on {0}...",
+			"listFromLocation": "Extensions installed on {0}:",
+			"notFound": "Extension '{0}' not found.",
+			"notInstalled": "Extension '{0}' is not installed.",
+			"notInstalleddOnLocation": "Extension '{0}' is not installed on {1}.",
+			"successInstall": "Extension '{0}' v{1} was successfully installed.",
+			"successUninstall": "Extension '{0}' was successfully uninstalled!",
+			"successUninstallFromLocation": "Extension '{0}' was successfully uninstalled from {1}!",
+			"successVsixInstall": "Extension '{0}' was successfully installed.",
+			"uninstalling": "Uninstalling {0}...",
+			"updateMessage": "Updating the extension '{0}' to the version {1}",
+			"useId": "Make sure you use the full extension ID, including the publisher, e.g.: {0}"
 		},
 		"vs/platform/extensionManagement/common/extensionNls": {
 			"missingNLSKey": "无法找到键 {0} 的消息。"
@@ -1694,6 +1702,9 @@
 			"local": "本地",
 			"ok": "确定(&&O)",
 			"processExplorer": "进程管理器",
+			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
+			"trace.message": "Successfully created the trace file",
+			"trace.ok": "&&OK",
 			"yes": "是(&&Y)"
 		},
 		"vs/platform/keybinding/common/abstractKeybindingService": {
@@ -2220,9 +2231,9 @@
 			"error incompatible": "无法读取计算机数据，因为当前版本不兼容。请更新 {0}，然后重试。"
 		},
 		"vs/platform/windows/electron-main/windowImpl": {
-			"appCrashed": "窗口出现故障",
-			"appCrashedDetail": "我们对此不便表示抱歉! 请重启该窗口以从上次停止的位置继续。",
-			"appCrashedDetails": "窗口已崩溃(原因:“{0}”，代码:“{1}”)",
+			"appGone": "The window terminated unexpectedly",
+			"appGoneDetail": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
+			"appGoneDetails": "The window terminated unexpectedly (reason: '{0}', code: '{1}')",
 			"appStalled": "窗口未响应",
 			"appStalledDetail": "你可以重新打开或关闭窗口，或者保持等待。",
 			"close": "关闭(&C)",
@@ -2291,10 +2302,7 @@
 			"cancel": "否(&&N)",
 			"confirmOpenDetail": "如果你未发起此请求，则可能表示有人试图攻击你的系统。除非你采取了明确操作来发起此请求，否则应按“否”",
 			"confirmOpenMessage": "外部应用程序想要在 {1} 中打开“{0}”。是否要打开此文件或文件夹?",
-			"open": "是(&Y)",
-			"trace.detail": "请创建问题并手动附加以下文件:\r\n{0}",
-			"trace.message": "已成功创建跟踪信息。",
-			"trace.ok": "确定(&&O)"
+			"open": "是(&Y)"
 		},
 		"vs/code/electron-main/main": {
 			"close": "关闭(&C)",
@@ -2806,8 +2814,9 @@
 			"addFolderToWorkspaceTitle": "将文件夹添加到工作区",
 			"workspaceFolderPickerPlaceholder": "选择工作区文件夹"
 		},
-		"vs/workbench/browser/codeeditor": {
-			"openWorkspace": "打开工作区"
+		"vs/workbench/browser/checkbox": {
+			"checked": "Checked",
+			"unchecked": "Unchecked"
 		},
 		"vs/workbench/browser/editor": {
 			"pinned": "{0}，已固定",
@@ -3745,9 +3754,10 @@
 			"sideBySideEditorActive": "并行编辑器是否处于活动状态",
 			"splitEditorsVertically": "编辑器是否垂直拆分",
 			"statusBarFocused": "键盘焦点是否在状态栏上",
+			"temporaryWorkspace": "The scheme of the current workspace is from a temporary file system.",
 			"textCompareEditorActive": "文本比较编辑器是否处于活动状态",
 			"textCompareEditorVisible": "文本比较编辑器是否可见",
-			"virtualWorkspace": "当前工作区的方案(如果来自虚拟文件系统或空字符串)。",
+			"virtualWorkspace": "The scheme of the current workspace is from a virtual file system or an empty string.",
 			"workbenchState": "窗口中打开的工作区类型:“空”(无工作区)、“文件夹”(单个文件夹)或“工作区”(多根工作区)",
 			"workspaceFolderCount": "工作区中根文件夹的数量"
 		},
@@ -4006,7 +4016,8 @@
 			"shutdownTitleReload": "重新加载窗口需要的时间较长...",
 			"troubleshooting": "故障排除指南",
 			"username": "用户名",
-			"willShutdownDetail": "以下操作仍在运行: \r\n{0}"
+			"willShutdownDetail": "以下操作仍在运行: \r\n{0}",
+			"windows 7 eol": "{0} on Windows 7 will no longer receive any further updates."
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCueService": {
 			"audioCues.lineHasBreakpoint.name": "行上的断点",
@@ -4015,7 +4026,9 @@
 			"audioCues.lineHasInlineSuggestion.name": "行上的内联建议",
 			"audioCues.lineHasWarning.name": "行上的警告",
 			"audioCues.noInlayHints": "行上无嵌入提示",
-			"audioCues.onDebugBreak.name": "调试程序已在断点处停止"
+			"audioCues.onDebugBreak.name": "调试程序已在断点处停止",
+			"audioCues.taskEnded": "Task Ended",
+			"audioCues.terminalBell": "Terminal Bell"
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
 			"audioCues.enabled.auto": "附加屏幕阅读器时，启用音频提示。",
@@ -4028,6 +4041,7 @@
 			"audioCues.lineHasWarning": "当有效行出现警告时播放声音。",
 			"audioCues.noInlayHints": "尝试读取包含无内嵌提示的内嵌提示的行时播放声音。",
 			"audioCues.onDebugBreak": "当调试程序在断点上停止时播放声音。",
+			"audioCues.taskEnded": "Plays a sound when a task ends.",
 			"audioCues.volume": "音频提示音量百分比(0-100)。"
 		},
 		"vs/workbench/contrib/audioCues/browser/commands": {
@@ -4395,6 +4409,8 @@
 		},
 		"vs/workbench/contrib/comments/browser/commentsEditorContribution": {
 			"comments.addCommand": "添加对当前所选内容的注释",
+			"comments.collapseAll": "Collapse All Comments",
+			"comments.expandAll": "Expand All Comments",
 			"comments.toggleCommenting": "切换编辑器注释",
 			"hasCommentingProvider": "打开的工作区是否具有注释或注释范围。",
 			"hasCommentingRange": "活动光标处的位置是否具有评论范围",
@@ -5167,8 +5183,8 @@
 			"autoStore.onShutdown": "在窗口关闭时自动存储当前编辑会话。",
 			"autoStoreEditSession": "正在存储当前编辑会话...",
 			"client too old": "请升级到较新版本的 {0} 以恢复此编辑会话。",
-			"continue edit session": "继续编辑会话...",
 			"continue edit session in local folder": "在本地文件夹中打开",
+			"continue working on": "Continue Working On...",
 			"continueEditSession.openLocalFolder.title": "选择本地文件夹以在此项中继续编辑会话:",
 			"continueEditSessionExtPoint": "提供用于在其他环境中继续当前编辑会话的选项",
 			"continueEditSessionExtPoint.command": "要执行的命令的标识符。必须在 'commands'-section 中声明该命令，并返回一个 URI，表示可以继续执行当前编辑会话的其他环境。",
@@ -5178,6 +5194,9 @@
 			"continueEditSessionItem.openInLocalFolder.v2": "在本地文件夹中打开",
 			"continueEditSessionPick.placeholder": "选择继续工作的方式",
 			"continueEditSessionPick.title": "继续 {0}",
+			"continueOn": "Controls whether to prompt the user to store edit sessions when using Continue Working On.",
+			"continueOn.off": "Do not use edit sessions with Continue Working On unless the user has already turned on edit sessions.",
+			"continueOn.promptForAuth": "Prompt the user to sign in to store edit sessions with Continue Working On.",
 			"editSessionsEnabled": "控制在 Web、桌面或设备之间切换时是否显示启用云的操作来存储和继续未提交的更改。",
 			"no edit session": "没有要恢复的编辑会话。",
 			"no edit session content for ref": "无法恢复 ID {0} 的编辑会话内容。",
@@ -5195,15 +5214,17 @@
 			"storing edit session": "正在存储编辑会话..."
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsStorageService": {
-			"account preference": "登录以使用编辑会话",
+			"account preference": "Turn on Edit Sessions to bring your working changes with you",
 			"choose account placeholder": "选择要登录的帐户",
 			"clear data confirm": "是",
-			"delete all edit sessions": "从云中删除所有存储的编辑会话。",
+			"configure continue on": "Configure this preference in settings",
+			"continue without": "Continue without my working changes",
+			"delete all edit sessions.v2": "Delete all stored data from the cloud.",
 			"others": "其他",
-			"reset auth.v2": "注销编辑会话",
-			"sign in": "登录",
+			"reset auth.v3": "Turn off Edit Sessions...",
+			"sign in": "Turn on Edit Sessions...",
 			"sign in using account": "使用 {0} 登录",
-			"sign out of edit sessions clear data prompt": "是否要注销编辑会话?",
+			"sign out of edit sessions clear data prompt.v2": "Do you want to turn off Edit Sessions?",
 			"signed in": "已登录"
 		},
 		"vs/workbench/contrib/editSessions/browser/editSessionsViews": {
@@ -5319,6 +5340,7 @@
 			"language id": "ID",
 			"language name": "名称",
 			"languages": "语言({0})",
+			"last released": "Last released",
 			"last updated": "上次更新时间",
 			"license": "许可证",
 			"localizations": "本地化 ({0})",
@@ -5337,10 +5359,10 @@
 			"preRelease": "预发布",
 			"preview": "预览版",
 			"productThemes": "产品图标主题({0})",
+			"published": "Published",
 			"publisher": "发布服务器",
 			"publisher verified tooltip": "此发布者已验证 {0} 的所有权",
 			"rating": "评分",
-			"release date": "发布时间",
 			"repository": "仓库",
 			"resources": "扩展资源",
 			"runtimeStatus": "运行时状态",
@@ -5395,12 +5417,14 @@
 			"enabled": "仅限已启用的扩展",
 			"enabled filter": "已启用",
 			"extension": "扩展",
+			"extension updates filter": "Updates",
 			"extensionInfoDescription": "说明: {0}",
 			"extensionInfoId": "ID: {0}",
 			"extensionInfoName": "名称: {0}",
 			"extensionInfoPublisher": "发布者: {0}",
 			"extensionInfoVSMarketplaceLink": "VS Marketplace 链接: {0}",
 			"extensionInfoVersion": "版本: {0}",
+			"extensionUpdates": "Show Extension Updates",
 			"extensions": "扩展",
 			"extensions.affinity": "配置要在其他扩展主机进程中执行的扩展。",
 			"extensions.autoUpdate": "控制扩展的自动更新行为。更新是从 Microsoft 联机服务中获取的。",
@@ -5441,7 +5465,6 @@
 			"installVSIX": "安装扩展 VSIX",
 			"installWebExtensionFromLocation": "安装 Web 扩展...",
 			"installWorkspaceRecommendedExtensions": "安装工作区建议的扩展",
-			"installed filter": "已安装",
 			"manageExtensionsHelp": "管理扩展",
 			"manageExtensionsQuickAccessPlaceholder": "按 Enter 以管理扩展。",
 			"miPreferencesExtensions": "扩展(&&E)",
@@ -5453,7 +5476,6 @@
 			"none": "无",
 			"notFound": "找不到扩展“{0}”。",
 			"notInstalled": "未安装扩展“{0}”。请确保你使用包括发布者的完整的扩展 ID，例如 ms-vscode.csharp。",
-			"outdated filter": "已过期",
 			"recently published filter": "最近发布",
 			"recentlyPublishedExtensions": "显示最近发布的扩展",
 			"refreshExtension": "刷新",
@@ -5464,17 +5486,16 @@
 			"showEnabledExtensions": "显示启用的扩展",
 			"showExtensions": "扩展",
 			"showFeaturedExtensions": "显示特别推荐的扩展",
-			"showInstalledExtensions": "显示已安装扩展",
 			"showLanguageExtensionsShort": "语言扩展",
-			"showOutdatedExtensions": "显示过时的扩展",
 			"showPopularExtensions": "显示常用的扩展",
 			"showRecommendedExtensions": "显示推荐的扩展",
 			"showRecommendedKeymapExtensionsShort": "键映射",
 			"showWorkspaceUnsupportedExtensions": "显示工作区不支持的扩展",
-			"sort by date": "发布日期",
 			"sort by installs": "安装计数",
 			"sort by name": "名称",
+			"sort by published date": "Published Date",
 			"sort by rating": "评分",
+			"sort by update date": "Updated Date",
 			"sorty by": "排序依据",
 			"updateAll": "更新所有扩展",
 			"workbench.extensions.action.addExtensionToWorkspaceRecommendations": "添加到工作区建议",
@@ -5728,9 +5749,9 @@
 			"marketPlace": "商店",
 			"open user settings": "打开用户设置",
 			"otherRecommendedExtensions": "其他推荐",
-			"outdated": "已过期",
 			"outdatedExtensions": "{0} 个过时的扩展",
 			"popularExtensions": "热门",
+			"recently updated": "Recently Updated",
 			"recommendedExtensions": "推荐",
 			"reloadNow": "立即重新加载",
 			"remote": "远程",
@@ -5739,6 +5760,7 @@
 			"suggestProxyError": "市场返回了 \"ECONNREFUSED\"。请检查 \"http.proxy\" 设置。",
 			"untrustedPartiallySupportedExtensions": "限制在受限模式下",
 			"untrustedUnsupportedExtensions": "在受限模式下禁用",
+			"updates": "Updates",
 			"virtualPartiallySupportedExtensions": "限制在虚拟工作区中",
 			"virtualUnsupportedExtensions": "在虚拟工作区中禁用",
 			"workspaceRecommendedExtensions": "工作区推荐",
@@ -5816,6 +5838,9 @@
 			"no": "否",
 			"yes": "是"
 		},
+		"vs/workbench/contrib/extensions/common/reportExtensionIssueAction": {
+			"reportExtensionIssue": "Report Issue"
+		},
 		"vs/workbench/contrib/extensions/common/runtimeExtensionsInput": {
 			"extensionsInputName": "正在运行的扩展"
 		},
@@ -5854,9 +5879,6 @@
 			"cmd.report": "报告问题",
 			"cmd.reportOrShow": "性能问题",
 			"cmd.show": "显示问题"
-		},
-		"vs/workbench/contrib/extensions/electron-sandbox/reportExtensionIssueAction": {
-			"reportExtensionIssue": "报告问题"
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/runtimeExtensionsEditor": {
 			"extensionHostProfileStart": "开始分析扩展宿主",
@@ -5965,6 +5987,7 @@
 		},
 		"vs/workbench/contrib/files/browser/fileActions": {
 			"binFailed": "无法删除到回收站。是否永久删除？",
+			"cancel": "Cancel",
 			"clipboardComparisonLabel": "剪贴板 ↔ {0}",
 			"closeGroup": "关闭组",
 			"compareWithClipboard": "比较活动文件与剪贴板",
@@ -5978,6 +6001,7 @@
 			"confirmMoveTrashMessageFolder": "是否确实要删除“{0}”及其内容?",
 			"confirmMoveTrashMessageMultiple": "是否确定要删除以下 {0} 个文件?",
 			"confirmMoveTrashMessageMultipleDirectories": "是否确定要删除以下 {0} 个文件夹及其内容?",
+			"confirmOverwrite": "A file or folder with the name '{0}' already exists in the destination folder. Do you want to replace it?",
 			"copyBulkEdit": "粘贴 {0} 个文件",
 			"copyFile": "复制",
 			"copyFileBulkEdit": "粘贴{0}",
@@ -6023,6 +6047,7 @@
 			"rename": "重命名...",
 			"renameBulkEdit": "将 {0} 重命名为 {1}",
 			"renamingBulkEdit": "将 {0} 重命名为 {1}",
+			"replaceButtonLabel": "Replace",
 			"restore": "可以使用“撤消”命令还原此文件",
 			"restorePlural": "可以使用“撤消”命令还原这些文件",
 			"retry": "重试",
@@ -6144,6 +6169,7 @@
 			"copyRelativePathSeparator.backslash": "使用反斜杠作为路径分隔字符。",
 			"copyRelativePathSeparator.slash": "使用斜杠作为路径分隔字符。",
 			"defaultLanguage": "分配给新文件的默认语言标识符。如果配置为 \"${activeEditorLanguage}\"，将使用当前活动文本编辑器(如果有)的语言标识符。",
+			"disabled": "Disables incremental naming. If two files with the same name exist you will be prompted to overwrite the existing file",
 			"enableDragAndDrop": "控制浏览器是否允许通过拖放移动文件和文件夹。此设置仅影响从浏览器内部拖放。",
 			"enableUndo": "控制资源管理器是否应支持撤消文件和文件夹操作。",
 			"enableUndo.default": "资源管理器将在破坏性撤消操作之前进行提示。",
@@ -6166,7 +6192,7 @@
 			"fileNesting.description": "每个键模式可能包含将与任何字符串匹配的单个 `*` 字符。",
 			"fileNestingEnabled": "控制是否已在资源管理器中启用文件嵌套。文件嵌套允许目录中的相关文件在单个父文件下以可视方式组合在一起。",
 			"fileNestingExpand": "控制是否自动扩展文件嵌套。要使此操作生效，必须设置 {0}。",
-			"fileNestingPatterns": "控制资源管理器中的文件嵌套。每个 __Item__ 都表示父模式，且可能包含匹配任意字符串的单个 `*` 字符。每个 __Value__ 都表示子模式的逗号分隔列表，这些子模式应显示嵌套在给定父级下。子模式可能包含多个特殊标记:\r\n- `${capture}`: 匹配父模式的 `*` 的解析值\r\n- `${basename}`: 匹配父文件的基名，即 `file.ts` 中的 `file`\r\n- `${extname}`: 匹配父文件的扩展名，即 `file.ts` 中的 `ts`\r\n- `${dirname}`: 匹配父文件的目录名，即 `src/file.ts` 中的 `src`\r\n- `*`: 匹配任意字符串，每个子模式只能使用一次",
+			"fileNestingPatterns": "Controls nesting of files in the explorer. {0} must be set for this to take effect. Each __Item__ represents a parent pattern and may contain a single `*` character that matches any string. Each __Value__ represents a comma separated list of the child patterns that should be shown nested under a given parent. Child patterns may contain several special tokens:\r\n- `${capture}`: Matches the resolved value of the `*` from the parent pattern\r\n- `${basename}`: Matches the parent file's basename, the `file` in `file.ts`\r\n- `${extname}`: Matches the parent file's extension, the `ts` in `file.ts`\r\n- `${dirname}`: Matches the parent file's directory name, the `src` in `src/file.ts`\r\n- `*`:  Matches any string, may only be used once per child pattern",
 			"files.autoSave.afterDelay": "在配置的 `#files.autoSaveDelay#` 之后，会自动保存具有更改的编辑器。",
 			"files.autoSave.off": "具有更改的编辑器永远不会自动保存。",
 			"files.autoSave.onFocusChange": "当编辑器失去焦点时，会自动保存具有更改的编辑器。",
@@ -6363,8 +6389,14 @@
 			"reportIssueInEnglish": "报告问题…"
 		},
 		"vs/workbench/contrib/issue/electron-sandbox/issueActions": {
+			"cancel": "Cancel",
 			"openProcessExplorer": "打开进程资源管理器",
-			"reportPerformanceIssue": "报告性能问题..."
+			"reportPerformanceIssue": "报告性能问题...",
+			"stopTracing": "Stop Tracing",
+			"stopTracing.button": "&&Relaunch and Enable Tracing",
+			"stopTracing.detail": "This can take up to one minute to complete.",
+			"stopTracing.message": "Tracing requires to launch with a '--trace' argument",
+			"stopTracing.title": "Creating trace file..."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "切换键盘快捷方式疑难解答"
@@ -6614,6 +6646,7 @@
 		"vs/workbench/contrib/mergeEditor/browser/commands/commands": {
 			"layout.column": "列布局",
 			"layout.mixed": "混合布局",
+			"layout.showBase": "Show Base",
 			"merge.acceptAllInput1": "接受来自左侧的所有更改",
 			"merge.acceptAllInput2": "接受来自右侧的所有更改",
 			"merge.goToNextUnhandledConflict": "转到下一个未处理的冲突",
@@ -6625,8 +6658,22 @@
 			"mergeEditor.compareInput1WithBase": "将输入 1 与基本值进行比较",
 			"mergeEditor.compareInput2WithBase": "将输入 2 与基本值进行比较",
 			"mergeEditor.compareWithBase": "与基线进行比较",
+			"mergeEditor.resetDirtyConflictsToBase": "Reset Dirty Conflicts In Result To Base",
+			"mergeEditor.resetDirtyConflictsToBase.short": "Reset Dirty Conflicts To Base",
+			"mergeEditor.resetResultToBaseAndAutoMerge": "Reset Result",
+			"mergeEditor.resetResultToBaseAndAutoMerge.short": "Reset",
 			"openfile": "打开文件",
 			"title": "打开合并编辑器"
+		},
+		"vs/workbench/contrib/mergeEditor/browser/commands/devCommands": {
+			"merge.dev.copyState": "Copy Merge Editor State as JSON",
+			"merge.dev.loadContentsFromFolder": "Load Merge Editor State from Folder",
+			"merge.dev.saveContentsToFolder": "Save Merge Editor State to Folder",
+			"mergeEditor.name": "Merge Editor",
+			"mergeEditor.noActiveMergeEditor": "No active merge editor",
+			"mergeEditor.selectFolderToSaveTo": "Select folder to save to",
+			"mergeEditor.successfullyCopiedMergeEditorContents": "Successfully copied merge editor state",
+			"mergeEditor.successfullySavedMergeEditorContentsToFolder": "Successfully saved merge editor state to folder"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/mergeEditor.contribution": {
 			"diffAlgorithm.experimental": "使用实验性差异算法。",
@@ -6663,11 +6710,16 @@
 			"mergeEditor.conflict.unhandledUnfocused.border": "未处理的非重点冲突的边框颜色。",
 			"mergeEditor.conflictingLines.background": "“冲突行”文本的背景。"
 		},
+		"vs/workbench/contrib/mergeEditor/browser/view/editors/baseCodeEditorView": {
+			"base": "Base"
+		},
 		"vs/workbench/contrib/mergeEditor/browser/view/editors/inputCodeEditorView": {
 			"accept.conflicting": "接受(结果为脏)",
 			"accept.excluded": "接受",
 			"accept.first": "撤消接受",
 			"accept.second": "撤消接受(当前为第二个)",
+			"input1": "Input 1",
+			"input2": "Input 2",
 			"mergeEditor.accept": "接受 {0}",
 			"mergeEditor.acceptBoth": "接受两者",
 			"mergeEditor.markAsHandled": "标记为已处理",
@@ -6675,32 +6727,24 @@
 		},
 		"vs/workbench/contrib/mergeEditor/browser/view/editors/resultCodeEditorView": {
 			"mergeEditor.remainingConflict": "剩余 {0} 个冲突",
-			"mergeEditor.remainingConflicts": "剩余 {0} 个冲突"
+			"mergeEditor.remainingConflicts": "剩余 {0} 个冲突",
+			"result": "Result"
 		},
 		"vs/workbench/contrib/mergeEditor/browser/view/mergeEditor": {
-			"input1": "输入 1",
-			"input2": "输入 2",
-			"mergeEditor": "文本合并编辑器",
-			"result": "结果"
+			"mergeEditor": "文本合并编辑器"
 		},
 		"vs/workbench/contrib/mergeEditor/common/mergeEditor": {
 			"baseUri": "合并编辑器的基数的 URI",
 			"editorLayout": "合并编辑器的布局模式",
 			"is": "编辑器是合并编辑器",
 			"isr": "编辑器是合并编辑器的结果编辑器。",
-			"resultUri": "合并编辑器结果的 URI"
+			"resultUri": "合并编辑器结果的 URI",
+			"showBase": "If the merge editor shows the base version"
 		},
 		"vs/workbench/contrib/mergeEditor/electron-sandbox/devCommands": {
-			"merge.dev.copyState": "将合并编辑器状态复制为 JSON",
-			"merge.dev.loadContentsFromFolder": "从文件夹加载合并编辑器状态",
+			"merge.dev.openSelectionInTemporaryMergeEditor": "Open Selection In Temporary Merge Editor",
 			"merge.dev.openState": "从 JSON 打开合并编辑器状态",
-			"merge.dev.saveContentsToFolder": "将合并编辑器状态保存到文件夹",
-			"mergeEditor.enterJSON": "输入 JSON",
-			"mergeEditor.name": "合并编辑器",
-			"mergeEditor.noActiveMergeEditor": "无活动合并编辑器",
-			"mergeEditor.selectFolderToSaveTo": "选择要保存到的文件夹",
-			"mergeEditor.successfullyCopiedMergeEditorContents": "已成功复制合并编辑器状态",
-			"mergeEditor.successfullySavedMergeEditorContentsToFolder": "已成功将合并编辑器状态保存到文件夹"
+			"mergeEditor.enterJSON": "输入 JSON"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/cellCommands/cellCommands": {
 			"notebookActions.changeCellToCode": "将单元格更改为代码",
@@ -6854,6 +6898,7 @@
 			"notebookActions.executeAndSelectBelow": "执行笔记本单元格并在下方选择",
 			"notebookActions.executeBelow": "执行单元格及以下",
 			"notebookActions.executeNotebook": "全部运行",
+			"notebookActions.interruptNotebook": "Interrupt",
 			"notebookActions.renderMarkdown": "呈现所有 Markdown 单元格",
 			"revealLastFailedCell": "转到最近失败的单元格",
 			"revealLastFailedCellShort": "转到",
@@ -7180,6 +7225,9 @@
 			"outputViewWithInputAriaLabel": "{0}，输出面板"
 		},
 		"vs/workbench/contrib/performance/browser/performance.contribution": {
+			"cycles": "Print Service Cycles",
+			"emitter": "Print Emitter Profiles",
+			"insta.trace": "Print Service Traces",
 			"show.label": "启动性能"
 		},
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
@@ -7736,7 +7784,8 @@
 		},
 		"vs/workbench/contrib/remote/electron-sandbox/remote.contribution": {
 			"remote": "远程",
-			"remote.downloadExtensionsLocally": "启用后，扩展将本地下载并安装在远程上。"
+			"remote.downloadExtensionsLocally": "启用后，扩展将本地下载并安装在远程上。",
+			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/sash/browser/sash.contribution": {
 			"sashHoverDelay": "控制视图/编辑器之间拖动区域的悬停反馈延迟(以毫秒为单位)。",
@@ -7906,6 +7955,8 @@
 			"search.actionsPositionRight": "始终将操作栏放置在右侧。",
 			"search.collapseAllResults": "控制是折叠还是展开搜索结果。",
 			"search.collapseResults.auto": "结果少于10个的文件将被展开。其他的则被折叠。",
+			"search.decorations.badges": "Controls whether search file decorations should use badges.",
+			"search.decorations.colors": "Controls whether search file decorations should use colors.",
 			"search.followSymlinks": "控制是否在搜索中跟踪符号链接。",
 			"search.globalFindClipboard": "控制“搜索”视图是否读取或修改 macOS 的共享查找剪贴板。",
 			"search.location": "控制搜索功能是显示在侧边栏，还是显示在水平空间更大的面板区域。",
@@ -8621,6 +8672,7 @@
 		"vs/workbench/contrib/tasks/common/taskService": {
 			"tasks.customExecutionSupported": "是否支持 CustomExecution 任务。请考虑在 \"taskDefinition\" 贡献的 when 子句中使用。",
 			"tasks.processExecutionSupported": "是否支持 ProcessExecution 任务。请考虑在 \"taskDefinition\" 贡献的 when 子句中使用。",
+			"tasks.serverlessWebContext": "True when in the web with no remote authority.",
 			"tasks.shellExecutionSupported": "是否支持 ShellExecution 任务。请考虑在 \"taskDefinition\" 贡献的 when 子句中使用。",
 			"tasks.taskCommandsRegistered": "是否已注册任务命令"
 		},
@@ -8737,6 +8789,7 @@
 			"workbench.action.terminal.paste": "粘贴到活动终端中",
 			"workbench.action.terminal.pasteSelection": "将所选内容粘贴到活动终端",
 			"workbench.action.terminal.relaunch": "重新启动活动终端",
+			"workbench.action.terminal.rename.prompt": "Enter terminal name",
 			"workbench.action.terminal.renameWithArg": "重命名当前活动终端",
 			"workbench.action.terminal.renameWithArg.name": "终端的新名称",
 			"workbench.action.terminal.renameWithArg.noName": "未提供名称参数",
@@ -8796,6 +8849,9 @@
 			"killTerminalIcon": "用于终止终端实例的图标。",
 			"newTerminalIcon": "用于创建新的终端实例的图标。",
 			"renameTerminalIcon": "用于在终端快速菜单中进行重命名的图标。",
+			"terminalCommandHistoryFuzzySearch": "Icon for toggling fuzzy search of command history.",
+			"terminalCommandHistoryOutput": "Icon for viewing output of a terminal command.",
+			"terminalCommandHistoryRemove": "Icon for removing a terminal command from command history.",
 			"terminalDecorationError": "错误命令的终端修饰图标。",
 			"terminalDecorationIncomplete": "命令未完成的终端修饰图标。",
 			"terminalDecorationMark": "终端装饰标记的图标。",
@@ -8815,14 +8871,8 @@
 			"launchFailed.exitCodeOnlyShellIntegration": "在用户设置中禁用 shell 集成可能会有所帮助。",
 			"multiLinePasteButton": "粘贴(&&P)",
 			"preview": "预览:",
-			"removeCommand": "从命令历史记录中删除",
-			"selectRecentCommand": "选择要运行的命令(按 Alt-key 编辑命令)",
-			"selectRecentCommandMac": "选择要运行的命令(按 Option-key 编辑命令)",
-			"selectRecentDirectory": "选择要转到的目录(按 Alt-key 编辑命令)",
-			"selectRecentDirectoryMac": "选择要转到的目录(按 Option-key 编辑命令)",
 			"setTerminalDimensionsColumn": "设置固定维度: 列",
 			"setTerminalDimensionsRow": "设置固定维度: 行",
-			"shellFileHistoryCategory": "{0} 历史记录",
 			"shellIntegration.learnMore": "了解有关 shell 集成的详细信息",
 			"shellIntegration.openSettings": "打开用户设置",
 			"terminal.integrated.a11yPromptLabel": "终端输入",
@@ -8837,8 +8887,6 @@
 			"terminalTypeTask": "任务",
 			"terminated.exitCodeAndCommandLine": "终端进程“{0}”已终止，退出代码: {1}。",
 			"terminated.exitCodeOnly": "终端进程已终止，退出代码: {0}。",
-			"viewCommandOutput": "查看命令输出",
-			"workbench.action.terminal.rename.prompt": "输入终端名称",
 			"workspaceNotTrustedCreateTerminal": "无法在不受信任的工作区中启动终端流程",
 			"workspaceNotTrustedCreateTerminalCwd": "无法使用 cwd {0} 和 userHome {1} 在不受信任的工作区中启动终端进程"
 		},
@@ -8852,14 +8900,12 @@
 			"miRunSelectedText": "运行所选文本(&&S)",
 			"miSplitTerminal": "拆分终端(&&S)",
 			"splitTerminal": "拆分终端",
-			"terminal.new": "新建终端",
 			"workbench.action.terminal.changeColor": "更改颜色...",
 			"workbench.action.terminal.changeIcon": "更改图标...",
 			"workbench.action.terminal.clear": "清除",
 			"workbench.action.terminal.copySelection.short": "复制",
 			"workbench.action.terminal.copySelectionAsHtml": "以 HTML 格式复制",
 			"workbench.action.terminal.joinInstance": "联接终端",
-			"workbench.action.terminal.new.short": "新建终端",
 			"workbench.action.terminal.newWithProfile.short": "具有配置文件的新终端",
 			"workbench.action.terminal.openSettings": "配置终端设置",
 			"workbench.action.terminal.paste.short": "粘贴",
@@ -8891,6 +8937,15 @@
 			"renameTerminal": "重命名终端",
 			"workbench.action.terminal.newWithProfilePlus": "新建具有配置文件的终端",
 			"workbench.action.terminal.newplus": "创建新的终端"
+		},
+		"vs/workbench/contrib/terminal/browser/terminalRunRecentQuickPick": {
+			"removeCommand": "Remove from Command History",
+			"selectRecentCommand": "Select a command to run (hold Alt-key to edit the command)",
+			"selectRecentCommandMac": "Select a command to run (hold Option-key to edit the command)",
+			"selectRecentDirectory": "Select a directory to go to (hold Alt-key to edit the command)",
+			"selectRecentDirectoryMac": "Select a directory to go to (hold Option-key to edit the command)",
+			"shellFileHistoryCategory": "{0} history",
+			"viewCommandOutput": "View Command Output"
 		},
 		"vs/workbench/contrib/terminal/browser/terminalService": {
 			"localTerminalRemote": "此 shell 正在{0}本地{1}计算机上运行，而不是在连接的远程计算机上运行",
@@ -8948,12 +9003,9 @@
 			"vscode.extension.contributes.terminal.profiles": "定义用户可创建的其他终端配置文件。",
 			"vscode.extension.contributes.terminal.profiles.id": "终端配置文件提供程序的 ID。",
 			"vscode.extension.contributes.terminal.profiles.title": "此终端配置文件的标题。",
-			"vscode.extension.contributes.terminal.types": "定义用户可创建的其他终端类型。",
-			"vscode.extension.contributes.terminal.types.command": "在用户创建此类型的终端时执行的命令。",
 			"vscode.extension.contributes.terminal.types.icon": "要与此终端类型关联的 codicon、URI 或浅色和深色 URI。",
 			"vscode.extension.contributes.terminal.types.icon.dark": "使用深色主题时的图标路径",
-			"vscode.extension.contributes.terminal.types.icon.light": "使用浅色主题时的图标路径",
-			"vscode.extension.contributes.terminal.types.title": "此类型终端的标题。"
+			"vscode.extension.contributes.terminal.types.icon.light": "使用浅色主题时的图标路径"
 		},
 		"vs/workbench/contrib/terminal/common/terminalColorRegistry": {
 			"terminal.ansiColor": "终端中的 ANSI 颜色“{0}”。",
@@ -9138,6 +9190,7 @@
 			"splitTerminal": "拆分终端",
 			"splitTerminal.short": "拆分",
 			"terminal": "终端",
+			"terminal.new": "New Terminal",
 			"unsplitTerminal": "取消拆分终端",
 			"workbench.action.terminal.changeColor": "更改颜色...",
 			"workbench.action.terminal.changeIcon": "更改图标...",
@@ -9592,10 +9645,7 @@
 			"replace local": "替换本地",
 			"replace remote": "替换远程",
 			"reset": "清除云中的数据…",
-			"resolveConflicts_global": "{0}: 显示设置冲突(1)",
-			"resolveKeybindingsConflicts_global": "{0}: 显示按键绑定冲突(1)",
-			"resolveSnippetsConflicts_global": "{0}: 显示用户代码片段冲突({1})",
-			"resolveTasksConflicts_global": "{0}: 显示用户任务冲突 (1)",
+			"resolveConflicts_global": "{0}: Show Conflicts ({1})",
 			"service changed and turned off": "设置同步已禁用，因为 {0} 现使用一个单独的服务。请再次启用同步。",
 			"service switched to insiders": "设置同步已切换为预览体验成员服务",
 			"service switched to stable": "设置同步已切换为稳定的服务",
@@ -9606,10 +9656,7 @@
 			"show sync log toolrip": "显示日志",
 			"show synced data": "{0}: 显示已同步的数据",
 			"show synced data action": "显示已同步的数据",
-			"showConflicts": "{0}: 显示设置冲突",
-			"showKeybindingsConflicts": "{0}: 显示键绑定冲突",
-			"showSnippetsConflicts": "{0}: 显示用户代码片段冲突",
-			"showTasksConflicts": "{0}: 显示用户任务冲突",
+			"showConflicts": "{0}: Show Conflicts",
 			"sign in accounts": "登录以同步设置(1)",
 			"sign in and turn on": "登录并打开",
 			"sign in global": "登录以同步设置",
@@ -9653,6 +9700,16 @@
 			"settings sync": "设置同步。操作 ID: {0}",
 			"show sync logs": "显示日志"
 		},
+		"vs/workbench/contrib/userDataSync/browser/userDataSyncConflictsView": {
+			"Theirs": "Theirs",
+			"Yours": "Yours",
+			"explanation": "Please go through each entry and merge to resolve conflicts.",
+			"localResourceName": "{0} (Local)",
+			"remoteResourceName": "{0} (Remote)",
+			"workbench.actions.sync.acceptLocal": "Accept Local",
+			"workbench.actions.sync.acceptRemote": "Accept Remote",
+			"workbench.actions.sync.openConflicts": "Show Conflicts"
+		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSyncMergesView": {
 			"accept local": "接受本地",
 			"accept merges": "接受合并",
@@ -9680,6 +9737,7 @@
 		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSyncViews": {
 			"confirm replace": "是否要用选定的内容替换当前的 {0}?",
+			"conflicts": "Conflicts",
 			"current": "当前",
 			"last sync states": "上次同步的远程",
 			"leftResourceName": "{0} (远程)",
@@ -9986,9 +10044,10 @@
 			"change keybinding": "配置键绑定",
 			"file": "文件",
 			"miNewFile2": "文本文件",
-			"miNewFileWithName": "新文件({0})",
+			"miNewFileWithName": "Create New File ({0})",
+			"newFilePlaceholder": "Select File Type or Enter File Name...",
+			"newFileTitle": "New File...",
 			"notebook": "笔记本",
-			"selectFileType": "选择文件类型...",
 			"welcome.newFile": "新建文件..."
 		},
 		"vs/workbench/contrib/welcomeViews/common/viewsWelcomeContribution": {
@@ -10150,6 +10209,7 @@
 			"workspaceTrustedCtx": "用户是否已信任当前工作区。"
 		},
 		"vs/workbench/contrib/workspaces/browser/workspaces.contribution": {
+			"alreadyOpen": "This workspace is already open.",
 			"openWorkspace": "打开工作区",
 			"selectToOpen": "选择要打开的工作区",
 			"selectWorkspace": "选择工作区",
@@ -10183,6 +10243,7 @@
 			"menus.explorerContext": "文件资源管理器上下文菜单",
 			"menus.extensionContext": "扩展上下文菜单",
 			"menus.home": "主指示器上下文菜单(仅限 Web)",
+			"menus.mergeEditorResult": "The result toolbar of the merge editor",
 			"menus.opy": "顶层“编辑”菜单中的“复制为”子菜单",
 			"menus.resourceFolderContext": "源代码管理资源文件夹上下文菜单",
 			"menus.resourceGroupContext": "源代码管理资源组上下文菜单",
@@ -10277,44 +10338,44 @@
 			"configurationDefaults.description": "为配置提供默认值",
 			"experimental": "试验"
 		},
-		"vs/workbench/services/configuration/common/configurationEditingService": {
-			"errorConfigurationFileDirty": "由于该文件具有未保存的更改，因此无法写入到用户设置。请先保存该用户设置文件，然后重试。",
-			"errorConfigurationFileDirtyFolder": "由于该文件具有未保存的更改，因此无法写入到文件夹设置。请先保存该 '{0}' 文件夹设置文件，然后重试。",
-			"errorConfigurationFileDirtyWorkspace": "由于该文件具有未保存的更改，因此无法写入到工作区设置。请先保存该工作区设置文件，然后重试。",
-			"errorConfigurationFileModifiedSince": "无法写入用户设置，因为文件的内容较新。",
-			"errorConfigurationFileModifiedSinceFolder": "无法写入文件夹设置，因为文件的内容较新。",
-			"errorConfigurationFileModifiedSinceWorkspace": "无法写入工作区设置，因为文件的内容较新。",
-			"errorInvalidConfiguration": "无法写入用户设置。请打开用户设置并清除错误或警告，然后重试。",
-			"errorInvalidConfigurationFolder": "无法写入文件夹设置。请打开“{0}”文件夹设置并清除错误或警告，然后重试。",
-			"errorInvalidConfigurationWorkspace": "无法写入工作区设置。请打开工作区设置并清除错误或警告，然后重试。",
-			"errorInvalidFolderConfiguration": "{0} 不支持文件夹资源域，因此无法写入\"文件夹设置\"。",
-			"errorInvalidFolderTarget": "未提供资源，因此无法写入\"文件夹设置\"。",
-			"errorInvalidLaunchConfiguration": "无法写入启动配置文件。请打开文件并更正错误或警告，然后重试。",
-			"errorInvalidRemoteConfiguration": "无法写入远程用户设置。请打开远程用户设置以更正其中的错误警告, 然后重试。",
-			"errorInvalidResourceLanguageConfiguration": "无法写入语言设置，因为{0}不是资源语言设置。",
-			"errorInvalidTaskConfiguration": "无法写入任务配置文件。请打开文件并更正错误或警告，然后重试。",
-			"errorInvalidUserTarget": "{0} 不支持全局域，因此无法写入\"用户设置\"。",
-			"errorInvalidWorkspaceConfigurationApplication": "无法将 {0} 写入“工作区设置”。此设置只能写于“用户设置”。",
-			"errorInvalidWorkspaceConfigurationMachine": "无法将 {0} 写入“工作区设置”。此设置只能写于“用户设置”。",
-			"errorInvalidWorkspaceTarget": "{0} 不在多文件夹工作区环境下支持工作区作用域，因此无法写入“工作区设置”。",
-			"errorLaunchConfigurationFileDirty": "由于该文件具有未保存的更改，因此无法写入到启动配置文件。请先将其保存，然后重试。",
-			"errorLaunchConfigurationFileModifiedSince": "无法写入启动配置文件，因为文件的内容较新。",
-			"errorNoWorkspaceOpened": "没有打开任何工作区，因此无法写入 {0}。请先打开一个工作区，然后重试。",
-			"errorPolicyConfiguration": "无法写入 {0}，因为它是在系统策略中配置的。",
-			"errorRemoteConfigurationFileDirty": "由于该文件具有未保存的更改，因此无法写入到远程用户设置。请先保存该远程用户设置文件，然后重试。",
-			"errorRemoteConfigurationFileModifiedSince": "无法写入远程用户设置，因为文件的内容较新。",
-			"errorTasksConfigurationFileDirty": "由于该文件具有未保存的更改，因此无法写入到任务配置文件。请先将其保存，然后重试。",
-			"errorTasksConfigurationFileModifiedSince": "无法写入任务配置文件，因为文件的内容较新。",
-			"errorUnknown": "由于内部错误，无法写入 {0}。",
-			"errorUnknownKey": "没有注册配置 {1}，因此无法写入 {0}。",
-			"folderTarget": "文件夹设置",
-			"open": "打开设置",
-			"openLaunchConfiguration": "打开启动配置",
-			"openTasksConfiguration": "打开任务配置",
-			"remoteUserTarget": "远程用户设置",
-			"saveAndRetry": "保存并重试",
-			"userTarget": "用户设置",
-			"workspaceTarget": "工作区设置"
+		"vs/workbench/services/configuration/common/configurationEditing": {
+			"errorConfigurationFileDirty": "Unable to write into user settings because the file has unsaved changes. Please save the user settings file first and then try again.",
+			"errorConfigurationFileDirtyFolder": "Unable to write into folder settings because the file has unsaved changes. Please save the '{0}' folder settings file first and then try again.",
+			"errorConfigurationFileDirtyWorkspace": "Unable to write into workspace settings because the file has unsaved changes. Please save the workspace settings file first and then try again.",
+			"errorConfigurationFileModifiedSince": "Unable to write into user settings because the content of the file is newer.",
+			"errorConfigurationFileModifiedSinceFolder": "Unable to write into folder settings because the content of the file is newer.",
+			"errorConfigurationFileModifiedSinceWorkspace": "Unable to write into workspace settings because the content of the file is newer.",
+			"errorInvalidConfiguration": "Unable to write into user settings. Please open the user settings to correct errors/warnings in it and try again.",
+			"errorInvalidConfigurationFolder": "Unable to write into folder settings. Please open the '{0}' folder settings to correct errors/warnings in it and try again.",
+			"errorInvalidConfigurationWorkspace": "Unable to write into workspace settings. Please open the workspace settings to correct errors/warnings in the file and try again.",
+			"errorInvalidFolderConfiguration": "Unable to write to Folder Settings because {0} does not support the folder resource scope.",
+			"errorInvalidFolderTarget": "Unable to write to Folder Settings because no resource is provided.",
+			"errorInvalidLaunchConfiguration": "Unable to write into the launch configuration file. Please open it to correct errors/warnings in it and try again.",
+			"errorInvalidRemoteConfiguration": "Unable to write into remote user settings. Please open the remote user settings to correct errors/warnings in it and try again.",
+			"errorInvalidResourceLanguageConfiguration": "Unable to write to Language Settings because {0} is not a resource language setting.",
+			"errorInvalidTaskConfiguration": "Unable to write into the tasks configuration file. Please open it to correct errors/warnings in it and try again.",
+			"errorInvalidUserTarget": "Unable to write to User Settings because {0} does not support for global scope.",
+			"errorInvalidWorkspaceConfigurationApplication": "Unable to write {0} to Workspace Settings. This setting can be written only into User settings.",
+			"errorInvalidWorkspaceConfigurationMachine": "Unable to write {0} to Workspace Settings. This setting can be written only into User settings.",
+			"errorInvalidWorkspaceTarget": "Unable to write to Workspace Settings because {0} does not support for workspace scope in a multi folder workspace.",
+			"errorLaunchConfigurationFileDirty": "Unable to write into launch configuration file because the file has unsaved changes. Please save it first and then try again.",
+			"errorLaunchConfigurationFileModifiedSince": "Unable to write into launch configuration file because the content of the file is newer.",
+			"errorNoWorkspaceOpened": "Unable to write to {0} because no workspace is opened. Please open a workspace first and try again.",
+			"errorPolicyConfiguration": "Unable to write {0} because it is configured in system policy.",
+			"errorRemoteConfigurationFileDirty": "Unable to write into remote user settings because the file has unsaved changes. Please save the remote user settings file first and then try again.",
+			"errorRemoteConfigurationFileModifiedSince": "Unable to write into remote user settings because the content of the file is newer.",
+			"errorTasksConfigurationFileDirty": "Unable to write into tasks configuration file because the file has unsaved changes. Please save it first and then try again.",
+			"errorTasksConfigurationFileModifiedSince": "Unable to write into tasks configuration file because the content of the file is newer.",
+			"errorUnknown": "Unable to write to {0} because of an internal error.",
+			"errorUnknownKey": "Unable to write to {0} because {1} is not a registered configuration.",
+			"folderTarget": "Folder Settings",
+			"open": "Open Settings",
+			"openLaunchConfiguration": "Open Launch Configuration",
+			"openTasksConfiguration": "Open Tasks Configuration",
+			"remoteUserTarget": "Remote User Settings",
+			"saveAndRetry": "Save and Retry",
+			"userTarget": "User Settings",
+			"workspaceTarget": "Workspace Settings"
 		},
 		"vs/workbench/services/configuration/common/jsonEditingService": {
 			"errorFileDirty": "由于该文件具有未保存的更改，因此无法写入到文件。请保存该文件并重试。",
@@ -10375,7 +10436,7 @@
 			"filterName.workspace": "工作区",
 			"noExt": "无扩展",
 			"openFile.title": "打开文件",
-			"openFileOrFolder.title": "打开文件或文件夹",
+			"openFileOrFolder.title": "Open File or Folder",
 			"openFolder.title": "打开文件夹",
 			"openWorkspace.title": "从文件打开工作区",
 			"save": "保存(&&S)",
@@ -11141,6 +11202,7 @@
 			"extensions": "扩展",
 			"keybindings": "键盘快捷方式",
 			"settings": "设置",
+			"settings profiles": "Settings Profiles",
 			"snippets": "用户代码片段",
 			"sync category": "设置同步",
 			"syncViewIcon": "查看“设置同步”视图的图标。",
@@ -11148,10 +11210,9 @@
 			"ui state label": "UI 状态"
 		},
 		"vs/workbench/services/views/browser/viewDescriptorService": {
-			"cachedViewContainerPositions": "查看容器位置自定义",
-			"cachedViewPositions": "查看位置自定义",
 			"hideView": "隐藏“{0}”",
-			"resetViewLocation": "重置位置"
+			"resetViewLocation": "重置位置",
+			"views customizations": "Views Customizations"
 		},
 		"vs/workbench/services/views/common/viewContainerModel": {
 			"globalViewsStateStorageId": "查看 {0} 视图容器中的可见性自定义"
