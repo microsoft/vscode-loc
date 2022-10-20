@@ -11,10 +11,9 @@ Per maggiori informazioni, consultare la [documentazione](https://go.microsoft.c
 
 ## Come contribuire
 
-Per un feedback sul miglioramento della traduzione, creare un problema nel repository [vscode-loc](https://github.com/microsoft/vscode-loc).
+Per un feedback sul miglioramento della traduzione, creare una issue nel repository [vscode-loc](https://github.com/microsoft/vscode-loc).
 
-Le stringhe di traduzione vengono gestite in Microsoft Localization Platform. È possibile apportare modifiche solo in Microsoft Localization Platform e quindi esportarle nel repository vscode-loc. Di conseguenza, la richiesta pull non verrà accettata nel repository vscode-loc.
-
+Le stringhe di traduzione vengono gestite in Microsoft Localization Platform. È possibile apportare modifiche solo in Microsoft Localization Platform ed esportarle nel repository vscode-loc. Di conseguenza, le richieste pull non verranno accettate nel repository vscode-loc.
 ## Licenza
 
 Il codice sorgente e le stringhe sono sotto licenza [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
