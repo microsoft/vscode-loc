@@ -21,9 +21,9 @@
 
 **Հաճելի աշխատանք:**
 
-# Russian Language Pack for VS Code
+# Armenian Language Pack for VS Code
 
-Russian Language Pack provides localized UI experience for VS Code.
+Armenian Language Pack provides localized UI experience for VS Code.
 
 ## Usage
 
