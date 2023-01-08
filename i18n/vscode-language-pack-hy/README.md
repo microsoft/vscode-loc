@@ -1,55 +1,25 @@
-# Языковой пакет для русского языка для VS Code
+# Հայերեն լեզվի փաթեթ VS Code-ի համար
 
-Языковой пакет для русского языка содержит локализацию интерфейса VS Code.
+Հայերեն լեզվի փաթեթը պարունակում է VS Code ինտերֆեյսի տեղայնացում։
 
-## Использование
+## Օգտագործում
 
-Вы можете переопределить язык пользовательского интерфейса по умолчанию, явно задав язык отображения VS Code с помощью команды «Настроить язык отображения».
+Դուք կարող եք անտեսել UI-ի լռելյայն լեզուն ՝ հստակորեն սահմանելով VS Code ցուցադրման լեզուն ՝ օգտագործելով "Անհատականացնել ցուցադրման լեզուն"հրամանը:
 
-Нажмите <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (<kbd>Command ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>P</kbd> на Mac), чтобы открыть палитру команд, а затем начните вводить «отображен…» (“display”), чтобы отфильтровать команду «Настроить язык отображения» (“Configure Display Language”). Нажмите клавишу <kbd>Ввод</kbd> (<kbd>Enter</kbd>), и откроется список установленных языков по языковым стандартам, в котором будет выбран текущий языковой стандарт. Чтобы изменить язык пользовательского интерфейса, выберите другой языковой стандарт.
+Սեղմեք <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (<kbd>Command <</kbd> + <kbd>Shift <</kbd> + < kbd>P < /kbd> Mac-ում) ՝ հրամանների ներկապնակը բացելու համար, Այնուհետև Սկսեք մուտքագրել "ցուցադրված..." ("display") ՝ "կարգավորել ցուցադրման լեզուն" ("Configure Display") հրամանը զտելու համար language"): Սեղմեք <kbd>Enter</kbd> ստեղնը (<kbd>Enter</kbd>) և կբացվի տեղադրված լեզուների ցանկը ըստ Լեզվի ստանդարտների, որտեղ կընտրվի ընթացիկ լեզվի ստանդարտը: Օգտագործողի ինտերֆեյսի լեզուն փոխելու համար Ընտրեք այլ լեզվի ստանդարտ:
 
-Дополнительные сведения: [Документация](https://go.microsoft.com/fwlink/?LinkId=761051).
+Լրացուցիչ տեղեկություններ ՝[փաստաթղթեր](https://go.microsoft.com/fwlink/?LinkId=761051):
 
-## Участие
+## Մասնակցություն
 
-Чтобы отправить отзыв об улучшении перевода, создайте вопрос в репозитории [vscode-loc](https://github.com/microsoft/vscode-loc).
-Строки перевода находятся на платформе локализации Майкрософт. Изменения можно внести только на ней, а затем экспортировать в репозиторий vscode-loc. Поэтому запросы на вытягивание в репозитории vscode-loc приниматься не будут.
+Թարգմանության բարելավման վերաբերյալ հետադարձ կապ ուղարկելու համար հարց Ստեղծեք [vscode-loc] պահոցում(https://github.com/microsoft/vscode-loc):
+Թարգմանության տողերը գտնվում են Microsoft-ի տեղայնացման հարթակում: Փոփոխությունները կարող են կատարվել միայն դրա վրա, Այնուհետև արտահանվել vscode-loc պահոց: Հետևաբար, vscode-loc պահոցում քաշելու հարցումները չեն ընդունվի:
 
-## Лицензия
+## Լիցենզիա
 
-На исходный код и строки распространяется лицензия [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+Աղբյուրի կոդը և տողերը ենթակա են [MIT] լիցենզիայի(https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md):
 
-## Благодарность
-
-Языковой пакет для русского языка доступен вам благодаря усилиям сообщества.
-
-Выражаем особую признательность тем, кто принимал участие в создании пакета.
-
-**Участники:**
-
-* Mikhail Zabaluev
-* Ivan
-* Svitlana Galianova
-* Aleksey Nemiro
-* sberbanker
-* Nikita Gryzlov
-* Veronika Kolesnikova
-* Valeriy Schepak
-* Kirill Moskvichev
-* Alexander Filimonov
-* Anton Afonin
-* Serge Rodionov
-* Артем Мельниченко
-* Orrchy
-* Roman
-* Acupofspirt
-* Артём Давыдов
-* Andrei Makarov
-* Romanenko Alexey
-* Roman Sokolov
-* Andrei Pryymak
-
-**Приятной работы!**
+**Հաճելի աշխատանք:**
 
 # Russian Language Pack for VS Code
 
@@ -74,35 +44,5 @@ The translation strings are maintained in Microsoft Localization Platform. Chang
 ## License
 
 The source code and strings are licensed under the [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) license.
-
-## Credits
-
-Russian Language Pack had received contribution through "By the community, for the community" community localization effort.
-
-Special thanks to community contributors for making it available.
-
-**Contributors:**
-
-* Mikhail Zabaluev
-* Ivan
-* Svitlana Galianova
-* Aleksey Nemiro
-* sberbanker
-* Nikita Gryzlov
-* Veronika Kolesnikova
-* Valeriy Schepak
-* Kirill Moskvichev
-* Alexander Filimonov
-* Anton Afonin
-* Serge Rodionov
-* Артем Мельниченко
-* Orrchy
-* Roman
-* Acupofspirt
-* Артём Давыдов
-* Andrei Makarov
-* Romanenko Alexey
-* Roman Sokolov
-* Andrei Pryymak
 
 **Enjoy!**
