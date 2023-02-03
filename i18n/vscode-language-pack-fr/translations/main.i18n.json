@@ -65,6 +65,7 @@
 		"vs/base/browser/ui/tree/abstractTree": {
 			"close": "Fermer",
 			"filter": "Filtrer",
+			"fuzzySearch": "Correspondance approximative",
 			"not found": "Aucun élément trouvé.",
 			"type to filter": "Type à filtrer",
 			"type to search": "Entrer le texte à rechercher"
@@ -275,7 +276,7 @@
 			"wordWrap.on": "Le retour automatique à la ligne s'effectue en fonction de la largeur de la fenêtre d'affichage."
 		},
 		"vs/editor/common/config/editorOptions": {
-			"acceptSuggestionOnCommitCharacter": "Contrôle si les suggestions doivent être acceptées sur les caractères de validation, et entre ce caractère. Par exemple, en JavaScript, le point-virgule ('; ') peut être un caractère de validation qui accepte une suggestion.",
+			"acceptSuggestionOnCommitCharacter": "Contrôle si les suggestions doivent être acceptées sur les caractères de validation. Par exemple, en JavaScript, le point-virgule (`;`) peut être un caractère de validation qui accepte une suggestion et tape ce caractère.",
 			"acceptSuggestionOnEnter": "Contrôle si les suggestions sont acceptées après appui sur 'Entrée', en plus de 'Tab'. Permet d’éviter toute ambiguïté entre l’insertion de nouvelles lignes et l'acceptation de suggestions.",
 			"acceptSuggestionOnEnterSmart": "Accepter uniquement une suggestion avec 'Entrée' quand elle effectue une modification textuelle.",
 			"accessibilityPageSize": "Contrôle le nombre de lignes de l’éditeur qu’un lecteur d’écran peut lire en une seule fois. Quand nous détectons un lecteur d’écran, nous définissons automatiquement la valeur par défaut à 500. Attention : Les valeurs supérieures à la valeur par défaut peuvent avoir un impact important sur les performances.",
@@ -444,6 +445,9 @@
 			"inlayHints.padding": "Active le remplissage autour des indicateurs d’inlay dans l’éditeur.",
 			"inline": "Les suggestions rapides s’affichent sous forme de texte fantôme",
 			"inlineSuggest.enabled": "Contrôle si les suggestions en ligne doivent être affichées automatiquement dans l’éditeur.",
+			"inlineSuggest.showToolbar": "Contrôle quand afficher la barre d’outils de suggestion incluse.",
+			"inlineSuggest.showToolbar.always": "Afficher la barre d’outils de suggestion en ligne chaque fois qu’une suggestion inline est affichée.",
+			"inlineSuggest.showToolbar.onHover": "Afficher la barre d’outils de suggestion en ligne lorsque vous pointez sur une suggestion incluse.",
 			"letterSpacing": "Contrôle l'espacement des lettres en pixels.",
 			"lineHeight": "Contrôle la hauteur de ligne. \r\n - Utilisez 0 pour calculer automatiquement la hauteur de ligne à partir de la taille de police.\r\n : les valeurs comprises entre 0 et 8 sont utilisées comme multiplicateur avec la taille de police.\r\n : les valeurs supérieures ou égales à 8 seront utilisées comme valeurs effectives.",
 			"lineNumbers": "Contrôle l'affichage des numéros de ligne.",
@@ -538,16 +542,16 @@
 			"stickyTabStops": "Émule le comportement des tabulations pour la sélection quand des espaces sont utilisés à des fins de mise en retrait. La sélection respecte les taquets de tabulation.",
 			"suggest.filterGraceful": "Détermine si le filtre et le tri des suggestions doivent prendre en compte les fautes de frappes mineures.",
 			"suggest.insertMode": "Contrôle si les mots sont remplacés en cas d'acceptation de la saisie semi-automatique. Notez que cela dépend des extensions adhérant à cette fonctionnalité.",
-			"suggest.insertMode.always": "Activez toujours le widget de suggestion lors du déclenchement automatique d’IntelliSense.",
+			"suggest.insertMode.always": "Toujours sélectionner une suggestion lors du déclenchement automatique d’IntelliSense.",
 			"suggest.insertMode.insert": "Insérez une suggestion sans remplacer le texte à droite du curseur.",
-			"suggest.insertMode.never": "N’activez jamais la suggestion lors du déclenchement automatique d’IntelliSense.",
+			"suggest.insertMode.never": "Ne jamais sélectionner une suggestion lors du déclenchement automatique d’IntelliSense.",
 			"suggest.insertMode.replace": "Insérez une suggestion et remplacez le texte à droite du curseur.",
-			"suggest.insertMode.whenQuickSuggestion": "Activez le widget de suggestion uniquement lors du déclenchement d’IntelliSense lors de la frappe.",
-			"suggest.insertMode.whenTriggerCharacter": "Activez le widget de suggestion uniquement lors du déclenchement d’IntelliSense à partir d’un caractère déclencheur.",
+			"suggest.insertMode.whenQuickSuggestion": "Sélectionnez une suggestion uniquement lors du déclenchement d’IntelliSense au cours de la frappe.",
+			"suggest.insertMode.whenTriggerCharacter": "Sélectionnez une suggestion uniquement lors du déclenchement d’IntelliSense à partir d’un caractère déclencheur.",
 			"suggest.localityBonus": "Contrôle si le tri favorise les mots qui apparaissent à proximité du curseur.",
 			"suggest.maxVisibleSuggestions.dep": "Ce paramètre est déprécié. Le widget de suggestion peut désormais être redimensionné.",
 			"suggest.preview": "Contrôle si la sortie de la suggestion doit être affichée en aperçu dans l’éditeur.",
-			"suggest.selectionMode": "Contrôle si le widget de suggestion devient actif lorsqu’il est déclenché via une suggestion rapide ou des caractères déclencheurs. Notez que le widget est toujours actif lorsqu’il est appelé explicitement, par exemple via `Ctrl+Space`.",
+			"suggest.selectionMode": "Contrôle si une suggestion est sélectionnée lorsque le widget s’affiche. Notez que cela s’applique uniquement aux suggestions déclenchées automatiquement ('#editor.quickSuggestions#' et '#editor.suggestOnTriggerCharacters#') et qu’une suggestion est toujours sélectionnée lorsqu’elle est appelée explicitement, par exemple via 'Ctrl+Espace'.",
 			"suggest.shareSuggestSelections": "Contrôle si les sélections de suggestion mémorisées sont partagées entre plusieurs espaces de travail et fenêtres (nécessite '#editor.suggestSelection#').",
 			"suggest.showIcons": "Contrôle s'il faut montrer ou masquer les icônes dans les suggestions.",
 			"suggest.showInlineDetails": "Détermine si les détails du widget de suggestion sont inclus dans l’étiquette ou uniquement dans le widget de détails.",
@@ -1084,19 +1088,31 @@
 			"links.navigate.kb.meta.mac": "cmd + clic"
 		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextController": {
+			"accept": "Accepter",
+			"acceptWord": "Accepter le mot",
+			"action.inlineSuggest.accept": "Accepter la suggestion inline",
 			"action.inlineSuggest.acceptNextWord": "Accepter le mot suivant de la suggestion inline",
+			"action.inlineSuggest.alwaysShowToolbar": "Toujours afficher la barre d’outils",
 			"action.inlineSuggest.showNext": "Afficher la suggestion en ligne suivante",
 			"action.inlineSuggest.showPrevious": "Afficher la suggestion en ligne précédente",
 			"action.inlineSuggest.trigger": "Déclencher la suggestion en ligne",
+			"action.inlineSuggest.undo": "Annuler l’acceptation du mot",
+			"alwaysShowInlineSuggestionToolbar": "Indique si la barre d’outils de suggestion en ligne doit toujours être visible",
+			"canUndoInlineSuggestion": "Indique si l’annulation annulerait une suggestion inline",
 			"inlineSuggestionHasIndentation": "Indique si la suggestion en ligne commence par un espace blanc",
 			"inlineSuggestionHasIndentationLessThanTabSize": "Indique si la suggestion incluse commence par un espace blanc inférieur à ce qui serait inséré par l’onglet.",
-			"inlineSuggestionVisible": "Indique si une suggestion en ligne est visible"
+			"inlineSuggestionVisible": "Indique si une suggestion en ligne est visible",
+			"undoAcceptWord": "Annuler l’acceptation du mot"
 		},
 		"vs/editor/contrib/inlineCompletions/browser/ghostTextHoverParticipant": {
-			"acceptInlineSuggestion": "Accepter",
-			"inlineSuggestionFollows": "Suggestion :",
-			"showNextInlineSuggestion": "Suivant",
-			"showPreviousInlineSuggestion": "Précédent"
+			"inlineSuggestionFollows": "Suggestion :"
+		},
+		"vs/editor/contrib/inlineCompletions/browser/inlineSuggestionHintsWidget": {
+			"content": "{0} ({1})",
+			"next": "Suivant",
+			"parameterHintsNextIcon": "Icône d'affichage du prochain conseil de paramètre.",
+			"parameterHintsPreviousIcon": "Icône d'affichage du précédent conseil de paramètre.",
+			"previous": "Précédent"
 		},
 		"vs/editor/contrib/inPlaceReplace/browser/inPlaceReplace": {
 			"InPlaceReplaceAction.next.label": "Remplacer par la valeur suivante",
@@ -1107,6 +1123,7 @@
 		},
 		"vs/editor/contrib/linesOperations/browser/linesOperations": {
 			"duplicateSelection": "Dupliquer la sélection",
+			"editor.transformToCamelcase": "Transformer en casse mixte",
 			"editor.transformToKebabcase": "Transformer en kebab case",
 			"editor.transformToLowercase": "Transformer en minuscule",
 			"editor.transformToSnakecase": "Transformer en snake case",
@@ -1372,7 +1389,7 @@
 			"suggestMoreInfoIcon": "Icône d'affichage d'informations supplémentaires dans le widget de suggestion."
 		},
 		"vs/editor/contrib/suggest/browser/suggestWidgetStatus": {
-			"ddd": "{0} ({1})"
+			"content": "{0} ({1})"
 		},
 		"vs/editor/contrib/symbolIcons/browser/symbolIcons": {
 			"symbolIcon.arrayForeground": "Couleur de premier plan des symboles de tableau. Ces symboles apparaissent dans le plan, la barre de navigation et le widget de suggestion.",
@@ -1506,6 +1523,7 @@
 		"vs/platform/audioCues/browser/audioCueService": {
 			"audioCues.diffLineDeleted": "Ligne de diffusion supprimée",
 			"audioCues.diffLineInserted": "Ligne de diffusion insérée",
+			"audioCues.diffLineModified": "Ligne diff modifiée",
 			"audioCues.lineHasBreakpoint.name": "Point d’arrêt sur ligne",
 			"audioCues.lineHasError.name": "Erreur sur la ligne",
 			"audioCues.lineHasFoldedArea.name": "Zone pliée sur la ligne",
@@ -1564,8 +1582,8 @@
 			"cliDataDir": "Répertoire dans lequel les métadonnées CLI doivent être stockées.",
 			"deprecated.useInstead": "Utilisez {0} à la place.",
 			"diff": "Comparez deux fichiers entre eux.",
-			"disableExtension": "Désactivez une extension.",
-			"disableExtensions": "Désactivez toutes les extensions installées.",
+			"disableExtension": "Désactivez l’extension fournie. Cette option n’est pas persistante et ne s’applique que lorsque la commande ouvre une nouvelle fenêtre.",
+			"disableExtensions": "Désactivez toutes les extensions installées. Cette option n’est pas persistante et n’est effective que lorsque la commande ouvre une nouvelle fenêtre.",
 			"disableGPU": "Désactivez l'accélération matérielle du GPU.",
 			"experimentalApis": "Active les fonctionnalités de l'API proposées pour les extensions. Peut recevoir un ou plusieurs ID d'extension pour les activer individuellement.",
 			"extensionHomePath": "Définissez le chemin racine des extensions.",
@@ -1751,7 +1769,7 @@
 			"fileTooLargeError": "Impossible de lire le fichier '{0}', car il est trop volumineux pour être ouvert",
 			"invalidPath": "Impossible de résoudre le fournisseur de système de fichiers avec le chemin de fichier relatif '{0}'",
 			"mkdirExistsError": "Impossible de créer le dossier '{0}', car il existe mais n'est pas un répertoire",
-			"noProviderFound": "ENOPRO: No file system provider found for resource '{0}'",
+			"noProviderFound": "ENOPRO : aucun fournisseur de système de fichiers pour la ressource « {0} »",
 			"unableToMoveCopyError1": "Copie impossible quand la source '{0}' est identique à la cible '{1}' avec une casse de chemin différente sur un système de fichiers qui ne respecte pas la casse",
 			"unableToMoveCopyError2": "Déplacement/copie impossible quand la source '{0}' est le parent de la cible '{1}'.",
 			"unableToMoveCopyError3": "Impossible de déplacer/copier '{0}' parce que la cible '{1}' existe déjà dans la destination.",
@@ -1810,6 +1828,9 @@
 		"vs/platform/list/browser/listService": {
 			"Fast Scroll Sensitivity": "Multiplicateur de vitesse de défilement quand vous appuyez sur 'Alt'.",
 			"Mouse Wheel Scroll Sensitivity": "Un multiplicateur à utiliser sur les `deltaX` et `deltaY` des événements de défilement de roulette de souris.",
+			"defaultFindMatchTypeSettingKey": "Contrôle le type de correspondance utilisé lors de la recherche de listes et d’arborescences dans le banc d’essai.",
+			"defaultFindMatchTypeSettingKey.contiguous": "Utilisez des correspondances contiguës lors de la recherche.",
+			"defaultFindMatchTypeSettingKey.fuzzy": "Utilisez la correspondance approximative lors de la recherche.",
 			"defaultFindModeSettingKey": "Contrôle le mode de recherche par défaut pour les listes et les arborescences dans Workbench.",
 			"defaultFindModeSettingKey.filter": "Filtrez des éléments lors de la recherche.",
 			"defaultFindModeSettingKey.highlight": "Mettez en surbrillance les éléments lors de la recherche. La navigation vers le haut et le bas traverse uniquement les éléments en surbrillance.",
@@ -1821,6 +1842,7 @@
 			"keyboardNavigationSettingKey.simple": "La navigation au clavier Simple place le focus sur les éléments qui correspondent à l'entrée de clavier. La mise en correspondance est effectuée sur les préfixes uniquement.",
 			"keyboardNavigationSettingKeyDeprecated": "Utilisez 'workbench.list.defaultFindMode' et 'workbench.list.typeNavigationMode' à la place.",
 			"list smoothScrolling setting": "Détermine si les listes et les arborescences ont un défilement fluide.",
+			"list.scrollByPage": "Contrôle si les clics dans la barre de défilement page par page.",
 			"multiSelectModifier": "Le modificateur à utiliser pour ajouter un élément dans les arbres et listes pour une sélection multiple avec la souris (par exemple dans l’Explorateur, les éditeurs ouverts et la vue scm). Les mouvements de la souris 'Ouvrir à côté' (si pris en charge) s'adapteront tels qu’ils n'entrent pas en conflit avec le modificateur multiselect.",
 			"multiSelectModifier.alt": "Mappe vers 'Alt' dans Windows et Linux, et vers 'Option' dans macOS.",
 			"multiSelectModifier.ctrlCmd": "Mappe vers 'Contrôle' dans Windows et Linux, et vers 'Commande' dans macOS.",
@@ -1885,6 +1907,7 @@
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "La commande '{0}' a entraîné une erreur ({1})",
 			"commandPickAriaLabelWithKeybinding": "{0}, {1}",
+			"commonlyUsed": "utilisés le plus souvent",
 			"morecCommands": "autres commandes",
 			"recentlyUsed": "récemment utilisées"
 		},
@@ -1895,6 +1918,9 @@
 			"pinCommand": "Épingler la commande",
 			"pinnedCommand": "Commande épinglée",
 			"terminal.commands.pinned": "épinglé"
+		},
+		"vs/platform/remoteTunnel/common/remoteTunnel": {
+			"remoteTunnelLog": "Service de tunnel distant"
 		},
 		"vs/platform/remoteTunnel/electron-browser/remoteTunnelService": {
 			"remoteTunnelService.authorizing": "Connexion en tant que {0} ({1})",
@@ -1918,6 +1944,9 @@
 			"resolveShellEnvError": "Impossible de résoudre votre environnement d’interpréteur de commandes : {0}",
 			"resolveShellEnvExitError": "Code de sortie inattendu de l’interpréteur de commandes généré (code {0}, signal {1})",
 			"resolveShellEnvTimeout": "Impossible de résoudre votre environnement d'interpréteur de commandes dans un délai raisonnable. Veuillez vérifier la configuration de votre interpréteur de commandes et redémarrer."
+		},
+		"vs/platform/telemetry/common/telemetryLogAppender": {
+			"telemetryLog": "Télémétrie{0}"
 		},
 		"vs/platform/telemetry/common/telemetryService": {
 			"enableTelemetryDeprecated": "Si ce paramètre est faux, aucune télémétrie ne sera envoyée quelle que soit la valeur du nouveau paramètre. Déconseillé au profit du {0} cadre.",
@@ -1990,6 +2019,9 @@
 		},
 		"vs/platform/terminal/common/terminalProfiles": {
 			"terminalAutomaticProfile": "Détecter automatiquement la valeur par défaut"
+		},
+		"vs/platform/terminal/node/ptyHostMain": {
+			"ptyHost": "Hôte Pty"
 		},
 		"vs/platform/terminal/node/ptyService": {
 			"terminal-history-restored": "Historique restauré"
@@ -2209,6 +2241,7 @@
 			"toolbarActiveBackground": "Arrière-plan de la barre d’outils quand la souris est maintenue sur des actions",
 			"toolbarHoverBackground": "Arrière-plan de la barre d’outils lors du survol des actions à l’aide de la souris",
 			"toolbarHoverOutline": "Contour de la barre d’outils lors du survol des actions à l’aide de la souris",
+			"treeInactiveIndentGuidesStroke": "Couleur de trait d’arborescence pour les repères de mise en retrait qui ne sont pas actifs.",
 			"treeIndentGuidesStroke": "Couleur de trait de l'arborescence pour les repères de mise en retrait.",
 			"warningBorder": "Couleur de bordure des zones d'avertissement dans l'éditeur.",
 			"widgetBorder": "Couleur de bordure des widgets, comme rechercher/remplacer au sein de l'éditeur.",
@@ -2325,6 +2358,9 @@
 			"settingsSync.ignoredSettings": "Configurez les paramètres à ignorer pendant la synchronisation.",
 			"settingsSync.keybindingsPerPlatform": "Synchronisez les combinaisons de touches pour chaque plateforme."
 		},
+		"vs/platform/userDataSync/common/userDataSyncLog": {
+			"userDataSyncLog": "Synchronisation des paramètres"
+		},
 		"vs/platform/userDataSync/common/userDataSyncMachines": {
 			"error incompatible": "Impossible de lire les données des machines, car la version actuelle est incompatible. Mettez à jour {0}, puis réessayez."
 		},
@@ -2389,6 +2425,10 @@
 			"telemetry-level": "Définit le niveau de télémétrie initial. Les niveaux valides sont : 'off', 'crash', 'error' et 'all'. Si rien n’est spécifié, le serveur envoie des données de télémétrie jusqu’à ce qu’un client se connecte, il utilise alors le paramètre de télémétrie des clients. Si la valeur est 'off', cela revient à --disable-telemetry.",
 			"without-connection-token": "Exécutez sans jeton de connexion. Utilisez cette option uniquement si la connexion est sécurisée par d’autres moyens."
 		},
+		"vs/server/node/serverServices": {
+			"ptyHost": "Hôte Pty distant",
+			"remoteExtensionLog": "Serveur distant"
+		},
 		"win32/i18n/messages": {
 			"AddContextMenuFiles": "Ajouter l'action \"Ouvrir avec %1\" au menu contextuel de fichier de l'Explorateur Windows",
 			"AddContextMenuFolders": "Ajouter l'action \"Ouvrir avec %1\" au menu contextuel de répertoire de l'Explorateur Windows",
@@ -2404,6 +2444,10 @@
 			"RunAfter": "Exécuter %1 après l'installation",
 			"SourceFile": "Fichier source %1"
 		},
+		"vs/code/electron-browser/sharedProcess/sharedProcessMain": {
+			"ptyHost": "Hôte Pty",
+			"sharedLog": "Partagé"
+		},
 		"vs/code/electron-main/app": {
 			"cancel": "&&Non",
 			"confirmOpenDetail": "Si vous n'avez pas lancé cette requête, cela signifie peut-être que votre système a fait l'objet d'une tentative d'attaque. Si vous n'avez pas effectué d'action explicite pour lancer cette requête, appuyez sur Non",
@@ -2412,6 +2456,7 @@
 		},
 		"vs/code/electron-main/main": {
 			"close": "&&Fermer",
+			"mainLog": "Principal",
 			"secondInstanceAdmin": "Une autre instance de {0} est déjà en cours d’exécution en tant qu’administrateur.",
 			"secondInstanceAdminDetail": "Veuillez s'il vous plaît fermer l'autre instance et réessayer à nouveau.",
 			"secondInstanceNoResponse": "Une autre instance de {0} est déjà en cours d'exécution mais ne répond pas",
@@ -2506,6 +2551,9 @@
 		},
 		"vs/workbench/api/browser/mainThreadCustomEditors": {
 			"defaultEditLabel": "Modifier"
+		},
+		"vs/workbench/api/browser/mainThreadEditSessionIdentityParticipant": {
+			"timeout.onWillCreateEditSessionIdentity": "Événement onNumCreateEditSessionIdentity abandonné après 10 000 ms"
 		},
 		"vs/workbench/api/browser/mainThreadExtensionService": {
 			"disabledDep": "Impossible d’activer l’extension « {0} », car elle dépend de l’extension « {1} » qui est désactivée. Voulez-vous activer l’extension et recharger la fenêtre ?",
@@ -2673,12 +2721,14 @@
 			"extensionLabel": "{0} (Extension)",
 			"status.extensionMessage": "État de l'extension"
 		},
+		"vs/workbench/api/common/extHostTelemetry": {
+			"extensionTelemetryLog": "Télémétrie de l’extension{0}"
+		},
 		"vs/workbench/api/common/extHostTerminalService": {
 			"launchFail.idMissingOnExtHost": "Le terminal ayant l'ID {0} sur l'hôte d'extension est introuvable"
 		},
 		"vs/workbench/api/common/extHostTreeViews": {
-			"treeView.duplicateElement": "L'élément avec l'id {0} est déjà inscrit",
-			"treeView.notRegistered": "Aucune arborescence avec l'ID \"{0}\" n'est inscrite."
+			"treeView.duplicateElement": "L'élément avec l'id {0} est déjà inscrit"
 		},
 		"vs/workbench/api/common/extHostWorkspace": {
 			"updateerror": "L'extension '{0}' n’a pas pu mettre à jour les dossiers de l’espace de travail : {1}"
@@ -2759,7 +2809,6 @@
 			"decreaseViewSize": "Diminuer la taille de l'affichage actuel",
 			"fullScreenIcon": "Représente le plein écran.",
 			"fullscreen": "Plein écran",
-			"hidden": "Masqué",
 			"increaseEditorHeight": "Augmenter la hauteur de l'éditeur",
 			"increaseEditorWidth": "Augmenter la largeur de l'éditeur",
 			"increaseViewSize": "Augmenter la taille de l'affichage actuel",
@@ -2813,10 +2862,13 @@
 			"resetFocusedView.error.noFocusedView": "Aucune vue n'a actuellement le focus.",
 			"resetFocusedViewLocation": "Réinitialiser l'emplacement de vue qui a le focus",
 			"resetViewLocations": "Réinitialiser les emplacements des vues",
+			"restore defaults": "Paramètres par défaut",
 			"rightPanel": "Droite",
 			"rightSideBar": "Droite",
 			"secondarySideBar": "Afficher la barre latérale secondaire",
 			"secondarySideBarContainer": "Afficher la barre latérale secondaire / {0}",
+			"selectToHide": "Sélectionner pour masquer",
+			"selectToShow": "Sélectionner pour afficher",
 			"sideBar": "Barre latérale primaire",
 			"sideBarPosition": "Position de la barre latérale primaire",
 			"sidebar": "Barre latérale",
@@ -2834,7 +2886,6 @@
 			"toggleTabs": "Activer/désactiver la visibilité de l'onglet",
 			"toggleVisibility": "Visibilité",
 			"toggleZenMode": "Activer/désactiver le mode zen",
-			"visible": "Visible",
 			"zenMode": "Mode Zen",
 			"zenModeIcon": "Représente le mode zen."
 		},
@@ -2850,7 +2901,7 @@
 			"quickNavigateNext": "Naviguer vers l'élément suivant dans Quick Open",
 			"quickNavigatePrevious": "Naviguer vers l'élément précédent dans Quick Open",
 			"quickOpen": "Atteindre le fichier...",
-			"quickOpenWithModes": "Centre de commandes",
+			"quickOpenWithModes": "Quick Open",
 			"quickSelectNext": "Sélectionner l'élément suivant dans Quick Open",
 			"quickSelectPrevious": "Sélectionner l'élément précédent dans Quick Open"
 		},
@@ -2930,12 +2981,11 @@
 			"authProviderUnavailable": "{0} est non disponible",
 			"focusActivityBar": "Focus sur la barre d'activités",
 			"hideAccounts": "Masquer les comptes",
-			"hideprofiles": "Masquer {0}",
+			"manage": "Gérer {0} (Profil)",
 			"manageTrustedExtensions": "Gérer les extensions approuvées",
 			"nextSideBarView": "Affichage de la barre latérale primaire suivante",
 			"noAccounts": "Vous n'êtes connecté à aucun compte",
 			"previousSideBarView": "Vue de la barre latérale primaire précédente",
-			"profiles": "{0} (Profil)",
 			"signOut": "Se déconnecter"
 		},
 		"vs/workbench/browser/parts/activitybar/activitybarPart": {
@@ -3008,7 +3058,7 @@
 		},
 		"vs/workbench/browser/parts/editor/binaryEditor": {
 			"binaryEditor": "Visionneuse binaire",
-			"binaryError": "The file is not displayed in the text editor because it is either binary or uses an unsupported text encoding.",
+			"binaryError": "Le fichier n’est pas affiché dans l’éditeur de texte parce que c’est un fichier binaire ou qu’il utilise un encodage de texte non pris en charge.",
 			"openAnyway": "Ouvrir quand même"
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbs": {
@@ -3312,8 +3362,8 @@
 			"unlockEditorGroup": "Déverrouiller le Groupe de Rédacteurs"
 		},
 		"vs/workbench/browser/parts/editor/editorConfiguration": {
-			"editor.editorAssociations": "Configurez des modèles glob pour les éditeurs (par exemple, `\"*.hex\": \"hexEditor.hexEdit\"`). Ces modèles ont priorité sur le comportement par défaut.",
-			"editorLargeFileSizeConfirmation": "Controls the minimum size of a file in MB before asking for confirmation when opening in the editor.",
+			"editor.editorAssociations": "Configurez des modèles Glob dans les éditeurs (par exemple `\"*.hex\": \"hexEditor.hexedit\"`). Ceux-ci ont priorité sur le comportement par défaut.",
+			"editorLargeFileSizeConfirmation": "Contrôle la taille minimale d’un fichier en Mo avant de demander une confirmation lors de l’ouverture dans l’éditeur. Notez que ce paramètre ne peut pas s’appliquer à tous les types d’éditeurs et environnements.",
 			"interactiveWindow": "Fenêtre interactive",
 			"markdownPreview": "Aperçu Markdown",
 			"workbench.editor.autoLockGroups": "Si un éditeur correspondant à l’un des types répertoriés est ouvert en tant que premier dans un groupe d’éditeurs et que plusieurs groupes sont ouverts, le groupe est automatiquement verrouillé. Les groupes verrouillés sont utilisés uniquement pour ouvrir les éditeurs lorsqu’ils sont explicitement choisis par le mouvement de l’utilisateur (par exemple, glisser-déplacer), mais pas par défaut. Par conséquent, l’éditeur actif dans un groupe verrouillé est moins susceptible d’être remplacé accidentellement par un autre éditeur.",
@@ -3328,10 +3378,24 @@
 			"groupAriaLabel": "Groupe d'éditeurs {0}",
 			"groupLabel": "Groupe {0}"
 		},
+		"vs/workbench/browser/parts/editor/editorGroupWatermark": {
+			"watermark.findInFiles": "Chercher dans les fichiers",
+			"watermark.newUntitledFile": "Nouveau fichier texte sans titre",
+			"watermark.openFile": "Ouvrir un fichier",
+			"watermark.openFileFolder": "Ouvrir un fichier ou un dossier",
+			"watermark.openFolder": "Ouvrir le dossier",
+			"watermark.openRecent": "Ouvrir les éléments récents",
+			"watermark.quickAccess": "Accéder au fichier",
+			"watermark.showCommands": "Afficher toutes les commandes",
+			"watermark.showSettings": "Afficher les paramètres",
+			"watermark.startDebugging": "Démarrer le débogage",
+			"watermark.toggleFullscreen": "Plein écran",
+			"watermark.toggleTerminal": "Activer/désactiver le terminal"
+		},
 		"vs/workbench/browser/parts/editor/editorPanes": {
 			"cancel": "Annuler",
 			"editorOpenErrorDialog": "Impossible d'ouvrir '{0}'",
-			"ok": "OK"
+			"ok": "&&OK"
 		},
 		"vs/workbench/browser/parts/editor/editorPlaceholder": {
 			"errorEditor": "Éditeur d’erreurs",
@@ -3416,8 +3480,8 @@
 			"textEditor": "Éditeur de texte"
 		},
 		"vs/workbench/browser/parts/editor/textDiffEditor": {
-			"fileTooLargeForHeapErrorWithSize": "At least one file is not displayed in the text compare editor because it is very large ({0}).",
-			"fileTooLargeForHeapErrorWithoutSize": "At least one file is not displayed in the text compare editor because it is very large.",
+			"fileTooLargeForHeapErrorWithSize": "Au moins un fichier n’est pas affiché dans l’éditeur de comparaison de texte, parce qu’il est très volumineux ({0}).",
+			"fileTooLargeForHeapErrorWithoutSize": "Au moins un fichier n’est pas affiché dans l’éditeur de comparaison de texte, parce qu’il est très volumineux.",
 			"textDiffEditor": "Éditeur de différences de texte"
 		},
 		"vs/workbench/browser/parts/editor/textEditor": {
@@ -3531,8 +3595,10 @@
 			"togglePanelVisibility": "Activer/désactiver la visibilité du panneau"
 		},
 		"vs/workbench/browser/parts/panel/panelPart": {
+			"align panel": "Aligner le volet",
 			"hidePanel": "Masquer le panneau",
 			"moreActions": "Plus d'actions...",
+			"panel position": "Position du volet",
 			"panel.emptyMessage": "Faites glisser une vue ici pour l'afficher.",
 			"resetLocation": "Réinitialiser l'emplacement"
 		},
@@ -3630,6 +3696,7 @@
 			"inQuickOpen": "Indique si le focus clavier se trouve dans le contrôle Quick Open"
 		},
 		"vs/workbench/browser/web.main": {
+			"rendererLog": "Fenêtre",
 			"reset": "Réinitialiser les données d’utilisateur",
 			"reset user data message": "Voulez-vous réinitialiser vos données (paramètres, combinaisons de touches, extensions, extraits de code et état de l’interface utilisateur) et recharger?"
 		},
@@ -3712,6 +3779,7 @@
 			"perEditorGroup": "Contrôle si le nombre maximal d'éditeurs ouverts s'applique par groupe d'éditeurs ou pour tous les groupes d'éditeurs.",
 			"pinnedTabSizing": "Contrôle le dimensionnement des onglets d'éditeur épinglés. Les onglets épinglés sont triés et placés au début de tous les onglets ouverts. En règle générale, ils ne se ferment pas tant qu'ils ne sont pas détachés. Cette valeur est ignorée quand '#workbench.editor.showTabs#' est désactivé.",
 			"preserveInput": "Contrôle si la dernière saisie tapée dans la palette de commande devrait être restaurée lors de l’ouverture la prochaine fois.",
+			"profileName": "'${profileName}' : nom du profil dans lequel l’espace de travail est ouvert (par exemple, science des données (profil)). Ignoré si le profil par défaut est utilisé.",
 			"remoteName": "'${remoteName}' : par ex., SSH",
 			"restoreViewState": "Restaure le dernier état d’affichage de l’éditeur (par exemple, la position de défilement) lors de la réouverture des éditeurs après leur fermeture. L’état d’affichage de l’éditeur est stocké par groupe d’éditeurs et ignoré lorsqu’un groupe se ferme. Utilisez le paramètre {0} pour utiliser le dernier état d’affichage connu dans tous les groupes d’éditeurs si aucun état d’affichage précédent n’a été trouvé pour un groupe d’éditeurs.",
 			"revealIfOpen": "Contrôle si un éditeur est affiché dans un des groupes visibles si ouvert. Si désactivé, un éditeur préférera s’ouvrir dans le groupe éditeur actuellement actif. Si activé, un éditeur déjà ouvert s’affichera au lieu de s’ouvrir à nouveau dans le groupe éditeur actuellement actif. Notez qu’il y a des cas où ce paramètre est ignoré, par exemple lorsque vous forcez un éditeur à s’ouvrir dans un groupe spécifique ou sur le côté du groupe actuellement actif.",
@@ -3732,9 +3800,11 @@
 			"splitOnDragAndDrop": "Détermine si vous pouvez séparer les groupes d'éditeurs à partir d'opérations de glisser-déposer, notamment en déposant un éditeur ou un fichier sur les bords de la zone d'éditeur.",
 			"splitSizing": "Contrôle la taille des groupes d'éditeurs pendant leur fractionnement.",
 			"statusBarVisibility": "Contrôle la visibilité de la barre d'état au bas du banc d'essai.",
+			"suggestCommands": "Contrôle si la palette de commandes doit avoir une liste de commandes couramment utilisées.",
 			"tabDescription": "Contrôle le format de l’étiquette pour un éditeur.",
 			"tabScrollbarHeight": "Contrôle la hauteur des barres de défilement utilisées pour les onglets et des barres de navigation dans la zone de titre de l'éditeur.",
 			"tabSizing": "Contrôle le dimensionnement des onglets d'éditeur. Cette valeur est ignorée quand '#workbench.editor.showTabs#' est désactivé.",
+			"tips.enabled": "Si cette option est activée, les conseils en filigrane s'affichent quand aucun éditeur n'est ouvert.",
 			"untitledHint": "Contrôle si l’indicateur de texte sans titre doit être visible dans l’éditeur.",
 			"untitledLabelFormat": "Contrôle le format de l'étiquette pour un éditeur sans titre.",
 			"useSplitJSON": "Contrôle s'il faut utiliser l'éditeur JSON de fractionnement pour modifier les paramètres au format JSON.",
@@ -3882,8 +3952,8 @@
 		},
 		"vs/workbench/common/editor": {
 			"builtinProviderDisplayName": "Intégré",
-			"configureEditorLargeFileConfirmation": "Configure Limit",
-			"openLargeFile": "Open Anyway",
+			"configureEditorLargeFileConfirmation": "Configurer la limite",
+			"openLargeFile": "Ouvrir quand même",
 			"promptOpenWith.defaultEditor.displayName": "Éditeur de texte"
 		},
 		"vs/workbench/common/editor/diffEditorInput": {
@@ -3906,9 +3976,6 @@
 			"activityBarDragAndDropBorder": "Couleur des commentaires dans une opération de glisser-déposer pour les éléments de la barre d'activités. La barre d'activités s'affiche complètement à gauche ou à droite, et permet de naviguer entre les vues de la barre latérale.",
 			"activityBarForeground": "Couleur de premier plan de la barre d'activités lorsqu'elle est active. La barre d'activités s'affiche complètement à gauche ou à droite, et permet de naviguer entre les affichages de la barre latérale.",
 			"activityBarInActiveForeground": "Couleur de premier plan de la barre d'activités lorsqu'elle est inactive. La barre d'activités s'affiche complètement à gauche ou à droite, et permet de naviguer entre les affichages de la barre latérale.",
-			"activityBarItem.profilesBackground": "Couleur d’arrière-plan pour l’entrée du profil dans la barre d’activité.",
-			"activityBarItem.profilesForeground": "Couleur de premier plan pour l’entrée du profil dans la barre d’activité.",
-			"activityBarItem.profilesHoverForeground": "Couleur de premier plan de l’entrée de profil dans la barre d’activités au pointage.",
 			"banner.background": "Couleur d’arrière-plan de la bannière. La bannière s’affiche sous la barre de titre de la fenêtre.",
 			"banner.foreground": "Couleur de premier plan de la bannière. La bannière s’affiche sous la barre de titre de la fenêtre.",
 			"banner.iconForeground": "Couleur d’icône de la bannière. La bannière s’affiche sous la barre de titre de la fenêtre.",
@@ -4016,10 +4083,12 @@
 		},
 		"vs/workbench/common/views": {
 			"defaultViewIcon": "Icône de vue par défaut.",
-			"duplicateId": "Une vue avec l'ID '{0}' est déjà inscrite"
+			"duplicateId": "Une vue avec l'ID '{0}' est déjà inscrite",
+			"treeView.notRegistered": "Aucune arborescence avec l'ID \"{0}\" n'est inscrite."
 		},
 		"vs/workbench/electron-sandbox/actions/developerActions": {
 			"configureRuntimeArguments": "Configurer les arguments de runtime",
+			"openUserDataFolder": "Ouvrir le dossier des données utilisateur",
 			"reloadWindowWithExtensionsDisabled": "Recharger avec les extensions désactivées",
 			"toggleDevTools": "Activer/désactiver les outils de développement",
 			"toggleSharedProcess": "Activer/désactiver le processus partagé"
@@ -4110,7 +4179,7 @@
 		},
 		"vs/workbench/electron-sandbox/window": {
 			"appRootWarning.banner": "Les fichiers que vous stockez dans le dossier d’installation ('{0}') peuvent être ÉCRASÉS ou EFFACÉS de manière IRRÉVERSIBLE sans avertissement au moment de la mise à jour.",
-			"cancelButton": "&&Annuler",
+			"cancelButton": "Annuler",
 			"closeWindowButtonLabel": "&&Fermer la fenêtre",
 			"closeWindowMessage": "Voulez-vous vraiment fermer la fenêtre ?",
 			"configure": "Configurer",
@@ -4120,6 +4189,9 @@
 			"learnMore": "En savoir plus",
 			"loaderCycle": "Il existe un cycle de dépendance dans les modules AMD qui doit être résolu !",
 			"loginButton": "&&Se connecter",
+			"macoseolBannerLearnMore": "En savoir plus",
+			"macoseolarialabel": "{0}. Utilisez les touches de navigation pour accéder aux actions de bannière.",
+			"macoseolmessage": "{0} sur {1} ne recevront bientôt plus de mises à jour. Envisagez de mettre à niveau votre version macOS.",
 			"password": "Mot de passe",
 			"proxyAuthRequired": "Authentification du proxy obligatoire",
 			"proxyDetail": "Le proxy '{0}' nécessite un nom d'utilisateur et un mot de passe.",
@@ -4149,8 +4221,9 @@
 			"windows 7 eol": "{0} sur Windows 7 ne recevront plus de mises à jour supplémentaires."
 		},
 		"vs/workbench/contrib/audioCues/browser/audioCues.contribution": {
-			"audioCues.diffLineDeleted": "Émet un son lorsque le focus passe sur une ligne supprimée en mode de révision différée",
-			"audioCues.diffLineInserted": "Émet un son lorsque le focus passe sur une ligne insérée en mode de révision différée",
+			"audioCues.diffLineDeleted": "Lit un son lorsque le focus se déplace vers une ligne supprimée en mode révision différentiel ou vers la modification suivante/précédente",
+			"audioCues.diffLineInserted": "Lit un son lorsque le focus se déplace vers une ligne insérée en mode révision différentiel ou vers la modification suivante/précédente",
+			"audioCues.diffLineModified": "Lit un son lorsque le focus passe à une ligne modifiée en mode révision différentiel ou à la modification suivante/précédente",
 			"audioCues.enabled.auto": "Activez le signal audio lorsqu’un lecteur d’écran est attaché.",
 			"audioCues.enabled.off": "Désactivez le signal audio.",
 			"audioCues.enabled.on": "Désactivez les signaux audio.",
@@ -4194,7 +4267,7 @@
 			"apply": "Appliquer la refactorisation",
 			"cancel": "Annuler",
 			"cat": "Aperçu de la refactorisation",
-			"continue": "Continuer",
+			"continue": "&&Continuer",
 			"detail": "Appuyez sur 'Continuer' pour ignorer la refactorisation précédente et continuer avec la refactorisation actuelle.",
 			"groupByFile": "Changements de groupe par fichier",
 			"groupByType": "Changements de groupe par type",
@@ -4498,7 +4571,7 @@
 			"unresolvedCommentBorder": "Couleur des bordures et de la flèche pour les commentaires non résolus."
 		},
 		"vs/workbench/contrib/comments/browser/commentGlyphWidget": {
-			"editorGutterCommentGlyphForeground": "Editor gutter decoration color for commenting glyphs.",
+			"editorGutterCommentGlyphForeground": "Couleur de décoration de gouttière d’éditeur pour commenter des glyphes.",
 			"editorGutterCommentRangeForeground": "Couleur de décoration de gouttière d'éditeur pour commenter des plages."
 		},
 		"vs/workbench/contrib/comments/browser/commentNode": {
@@ -4578,10 +4651,10 @@
 			"startThread": "Démarrer la discussion"
 		},
 		"vs/workbench/contrib/comments/browser/reactionsAction": {
-			"comment.reactionLabelMany": "{0}{1} reactions with {2}",
-			"comment.reactionLabelNone": "{0}{1} reaction",
-			"comment.reactionLabelOne": "{0}1 reaction with {1}",
-			"comment.toggleableReaction": "Toggle reaction, ",
+			"comment.reactionLabelMany": "Réactions {0}{1} avec {2}",
+			"comment.reactionLabelNone": "Réaction {0}{1}",
+			"comment.reactionLabelOne": "{0}1 réaction avec {1}",
+			"comment.toggleableReaction": "Activez/désactivez la réaction, ",
 			"pickReactions": "Choisir des réactions..."
 		},
 		"vs/workbench/contrib/comments/common/commentModel": {
@@ -4892,6 +4965,7 @@
 			"workbench.action.debug.startDebug": "Démarrer une nouvelle session de débogage"
 		},
 		"vs/workbench/contrib/debug/browser/debugEditorActions": {
+			"EditBreakpointEditorAction": "Débogage : modifier le point d’arrêt",
 			"addToWatch": "Ajouter à la fenêtre Espion",
 			"closeExceptionWidget": "Fermer le widget d'exception",
 			"conditionalBreakpointEditorAction": "Déboguer : ajouter un point d'arrêt conditionnel...",
@@ -4902,6 +4976,7 @@
 			"logPointEditorAction": "Débogage : Ajouter un point de journalisation...",
 			"miConditionalBreakpoint": "Point d'arrêt &&conditionnel...",
 			"miDisassemblyView": "&&DisassemblyView",
+			"miEditBreakpoint": "&&Modifier le point d’arrêt",
 			"miLogPoint": "&&Logpoint...",
 			"miToggleBreakpoint": "Activer/désactiver le &&point d'arrêt",
 			"mitogglesource": "&&ToggleSource",
@@ -5330,10 +5405,12 @@
 			"continueEditSessionExtPoint.description": "URL, ou commande qui retourne l’URL, à la page de documentation de l’option.",
 			"continueEditSessionExtPoint.group": "Groupe auquel cet élément appartient",
 			"continueEditSessionExtPoint.qualifiedName": "Nom complet de cet élément qui est utilisé pour l’affichage dans les menus.",
+			"continueEditSessionExtPoint.remoteGroup": "Groupe auquel cet élément appartient dans l’indicateur distant.",
 			"continueEditSessionExtPoint.when": "Condition qui doit être true pour afficher cet élément",
 			"continueEditSessionItem.builtin": "Intégré",
 			"continueEditSessionItem.openInLocalFolder.v2": "Ouvrir dans le dossier local",
 			"continueEditSessionPick.title.v2": "Sélectionner un environnement de développement pour continuer à travailler sur {0} dans",
+			"continueOn.installAdditional": "Installer des options d’environnement de développement supplémentaires",
 			"continueOnCloudChanges": "Contrôle s’il faut inviter l’utilisateur à stocker les modifications de travail dans le cloud lors de l’utilisation de Continuer à travailler sur.",
 			"continueOnCloudChanges.off": "Ne stockez pas les modifications de travail dans le cloud avec l’option Continuer à travailler, sauf si l’utilisateur a déjà activé l’option Modifications dans le cloud.",
 			"continueOnCloudChanges.promptForAuth": "Invitez l’utilisateur à se connecter pour stocker les modifications de travail dans le cloud avec Continuer à travailler sur.",
@@ -5392,6 +5469,9 @@
 			"cloud changes": "Modifications du cloud",
 			"editSessionViewIcon": "Afficher l’icône de l’affichage des modifications dans le cloud."
 		},
+		"vs/workbench/contrib/editSessions/common/editSessionsLogService": {
+			"cloudChangesLog": "Modifications du cloud"
+		},
 		"vs/workbench/contrib/emmet/browser/actions/expandAbbreviation": {
 			"expandAbbreviationAction": "Emmet : Expand Abbreviation",
 			"miEmmetExpandAbbreviation": "Emmet : Dé&&velopper l'abréviation"
@@ -5422,6 +5502,7 @@
 			"exeBasedRecommendation": "Cette extension est recommandée, car vous avez installé {0}."
 		},
 		"vs/workbench/contrib/extensions/browser/extensionEditor": {
+			"Changelog title": "Journal des modifications",
 			"JSON Validation": "Validation JSON ({0})",
 			"Marketplace": "Place de marché",
 			"Marketplace Info": "Plus d’informations",
@@ -5431,6 +5512,7 @@
 			"Notebook renderer name": "Nom",
 			"NotebookRenderers": "Convertisseurs de notebook ({0})",
 			"Notebooks": "Notebooks ({0})",
+			"Readme title": "Fichier Lisez-moi",
 			"activatedBy": "Activé par :",
 			"activation events": "Événements d'activation ({0})",
 			"activation reason": "Événement d’activation :",
@@ -5576,9 +5658,9 @@
 			"extensions": "Extensions",
 			"extensions.affinity": "Configurez une extension à exécuter dans un autre processus hôte d’extension.",
 			"extensions.autoUpdate": "Contrôle le comportement de mise à jour automatique des extensions. Les mises à jour sont récupérées à partir d'un service en ligne Microsoft.",
-			"extensions.autoUpdate.enabled": "Télécharge et installe automatiquement les mises à jour uniquement pour les extensions activées. Les extensions désactivées ne sont pas mises à jour automatiquement.",
+			"extensions.autoUpdate.enabled": "Télécharger et installer automatiquement les mises à jour uniquement pour les extensions activées sauf pour ces mises à jour sont ignorées. Les extensions désactivées ne sont pas mises à jour automatiquement.",
 			"extensions.autoUpdate.false": "Les extensions ne sont pas mises à jour automatiquement.",
-			"extensions.autoUpdate.true": "Télécharge et installe automatiquement les mises à jour pour toutes les extensions.",
+			"extensions.autoUpdate.true": "Les mises à jour sont automatiquement téléchargées et installées pour toutes les extensions, à l’exception de ces mises à jour.",
 			"extensions.supportUntrustedWorkspaces": "Remplacez la prise en charge d’une extension par un espace de travail non approuvé. Les extensions utilisant la valeur `true` sont toujours activées. Les extensions utilisant la valeur `limited` sont toujours activées et l’extension masquera les fonctionnalités nécessitant une approbation. Les extensions utilisant la valeur `false` ne sont activées que dans un espace de travail approuvé.",
 			"extensions.supportUntrustedWorkspaces.false": "L’extension est uniquement activée quand l’espace de travail est approuvé.",
 			"extensions.supportUntrustedWorkspaces.limited": "L’extension est toujours activée et l’extension masque les fonctionnalités nécessitant une approbation.",
@@ -5617,7 +5699,6 @@
 			"manageExtensionsQuickAccessPlaceholder": "Appuyez sur Entrée pour gérer les extensions.",
 			"miPreferencesExtensions": "&&Extensions",
 			"miViewExtensions": "E&&xtensions",
-			"miimportKeyboardShortcutsFrom": "&&Migrer les raccourcis clavier à partir de...",
 			"most popular filter": "La plus populaire",
 			"most popular recommended": "Recommandée",
 			"noUpdatesAvailable": "Toutes les extensions sont à jour.",
@@ -5652,7 +5733,7 @@
 			"workbench.extensions.action.addToWorkspaceIgnoredRecommendations": "Ajouter l'extension aux recommandations ignorées de l'espace de travail",
 			"workbench.extensions.action.addToWorkspaceRecommendations": "Ajouter l'extension aux recommandations de l'espace de travail",
 			"workbench.extensions.action.configure": "Paramètres d'extension",
-			"workbench.extensions.action.configureKeybindings": "Extension Keyboard Shortcuts",
+			"workbench.extensions.action.configureKeybindings": "Raccourcis clavier d’extension",
 			"workbench.extensions.action.copyExtension": "Copier",
 			"workbench.extensions.action.copyExtensionId": "Copier l'ID d'extension",
 			"workbench.extensions.action.ignoreRecommendation": "Ignorer la recommandation",
@@ -5954,7 +6035,7 @@
 			"disable all": "Tout désactiver",
 			"enable locally": "Rechargez Visual Studio Code pour activer cette extension localement.",
 			"enable remote": "Rechargez Visual Studio Code pour activer cette extension dans {0}.",
-			"incompatible": "Can't install '{0}' extension because it is not compatible.",
+			"incompatible": "Impossible d’installer l’extension «{0}», car elle n’est pas compatible.",
 			"installing extension": "Installation de l'extension...",
 			"installing named extension": "Installation de l'extension '{0}'...",
 			"malicious": "Cette extension est signalée comme étant problématique.",
@@ -6099,13 +6180,13 @@
 		},
 		"vs/workbench/contrib/files/browser/editors/textFileEditor": {
 			"createFile": "Créer un fichier",
-			"fileIsDirectory": "The file is not displayed in the text editor because it is a directory.",
-			"fileTooLargeForHeapErrorWithSize": "The file is not displayed in the text editor because it is very large ({0}).",
-			"fileTooLargeForHeapErrorWithoutSize": "The file is not displayed in the text editor because it is very large.",
-			"openFolder": "Open Folder",
-			"reveal": "Reveal Folder",
+			"fileIsDirectory": "Le fichier n’est pas affiché dans l’éditeur de texte, parce qu’il s’agit d’un répertoire.",
+			"fileTooLargeForHeapErrorWithSize": "Le fichier n’est pas affiché dans l’éditeur de texte, parce qu’il est très volumineux ({0}).",
+			"fileTooLargeForHeapErrorWithoutSize": "Le fichier n’est pas affiché dans l’éditeur de texte, parce qu’il est très volumineux.",
+			"openFolder": "Ouvrir un dossier",
+			"reveal": "Révéler un dossier",
 			"textFileEditor": "Éditeur de fichiers texte",
-			"unavailableResourceErrorEditorText": "The editor could not be opened because the file was not found."
+			"unavailableResourceErrorEditorText": "Impossible d’ouvrir l’éditeur, car le fichier est introuvable."
 		},
 		"vs/workbench/contrib/files/browser/editors/textFileSaveErrorHandler": {
 			"compareChanges": "Comparer",
@@ -6404,7 +6485,7 @@
 			"trimTrailingWhitespace": "Si l'option est activée, l'espace blanc de fin est supprimé au moment de l'enregistrement d'un fichier.",
 			"trueDescription": "Activez le modèle.",
 			"useTrash": "Déplace les fichiers/dossiers dans la corbeille du système d'exploitation (corbeille sous Windows) lors de la suppression. Désactiver ceci supprimera définitivement les fichiers/dossiers.",
-			"watcherExclude": "Configurer les chemins ou les motifs globaux à exclure de la surveillance des fichiers. Les chemins ou les motifs glob de base qui sont relatifs (par exemple `build/output` ou `*.js`) seront résolus en un chemin absolu en utilisant l'espace de travail actuellement ouvert. Les modèles globaux complexes doivent correspondre à des chemins absolus (c'est-à-dire préfixer avec `**/` ou le chemin complet et suffixer avec `/**` pour correspondre aux fichiers dans un chemin) pour correspondre correctement (par exemple `**/build/output/**` ou `/Users/name/workspaces/project/build/output/**`). Si vous constatez que le processus de surveillance des fichiers consomme beaucoup de CPU, assurez-vous d'exclure les grands dossiers qui présentent moins d'intérêt (comme les dossiers de sortie de compilation).",
+			"watcherExclude": "Configurez des chemins d’accès ou des modèles Glob à exclure de l’observation des fichiers. Les chemins d’accès peuvent être relatifs au dossier surveillé ou absolus. Les modèles Glob sont mis en correspondance par rapport au dossier surveillé. Lorsque vous rencontrez un processus d’observateur de fichiers qui consomme beaucoup de processeur, veillez à exclure les dossiers volumineux qui présentent moins d’intérêt (tels que les dossiers de sortie de build).",
 			"watcherInclude": "Configurez des chemins supplémentaires pour surveiller les modifications dans l’espace de travail. Par défaut, tous les dossiers d’espace de travail sont observés de manière récursive, à l’exception des dossiers qui sont des liens symboliques. Vous pouvez ajouter explicitement des chemins absolus ou relatifs pour prendre en charge la surveillance des dossiers qui sont des liens symboliques. Les chemins relatifs seront résolus en un chemin absolu en utilisant l'espace de travail actuellement ouvert."
 		},
 		"vs/workbench/contrib/files/browser/files.web.contribution": {
@@ -6486,8 +6567,8 @@
 			"textFileEditor": "Éditeur de fichiers texte"
 		},
 		"vs/workbench/contrib/files/electron-sandbox/textFileEditor": {
-			"configureMemoryLimit": "Configure Limit",
-			"fileTooLargeForHeapError": "To open a file of this size, you need to restart and allow {0} to use more memory.",
+			"configureMemoryLimit": "Configurer la limite",
+			"fileTooLargeForHeapError": "Pour ouvrir un fichier de cette taille, vous devez redémarrer et autoriser {0} à utiliser plus de mémoire.",
 			"relaunchWithIncreasedMemoryLimit": "Redémarrer avec {0} Mo"
 		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
@@ -6651,24 +6732,21 @@
 			"chooseLocale": "Sélectionner la langue d'affichage",
 			"clearDisplayLanguage": "Effacer les préférences de langue d’affichage",
 			"configureLocale": "Configurer la langue d'affichage",
-			"installed": "Installé"
+			"installed": "Installé",
+			"moreInfo": "Plus d’informations"
 		},
 		"vs/workbench/contrib/localization/electron-sandbox/localeService": {
 			"argvInvalid": "Impossible d’écrire la langue d’affichage. Ouvrez les paramètres d’exécution, corrigez les erreurs/avertissements qu’il contient, puis réessayez.",
 			"installing": "Installation de la prise en charge linguistique {0} ...",
 			"openArgv": "Ouvrir les paramètres du runtime",
 			"restart": "&&Redémarrer",
-			"restartDisplayLanguageDetail": "Appuyez sur le bouton redémarrer pour redémarrer {0} et définir la langue d’affichage sur {1}.",
-			"restartDisplayLanguageMessage": "Pour modifier la langue d’affichage, {0} doit redémarrer"
+			"restartDisplayLanguageDetail1": "Pour modifier la langue d’affichage à {0}, {1} doit redémarrer.",
+			"restartDisplayLanguageMessage1": "Voulez-vous redémarrer {0} pour basculer vers {1} ?"
 		},
 		"vs/workbench/contrib/localization/electron-sandbox/localization.contribution": {
-			"activateLanguagePack": "Pour être utilisé dans {0}, VS Code doit être redémarré.",
 			"changeAndRestart": "Changer de langue et redémarrer",
-			"doNotChangeAndRestart": "Ne changez pas de langue.",
-			"doNotRestart": "Ne pas redémarrer",
 			"neverAgain": "Ne plus afficher",
-			"restart": "Redémarrer",
-			"updateLocale": "Souhaitez-vous changer la langue de l’interface de VS Code en {0} et redémarrer ?",
+			"updateLocale": "Voulez-vous changer la langue d’affichage de {0} à {1} et redémarrer ?",
 			"vscode.extension.contributes.localizations": "Contribuer aux localisations de l’éditeur",
 			"vscode.extension.contributes.localizations.languageId": "Id de la langue dans laquelle les chaînes d’affichage sont traduites.",
 			"vscode.extension.contributes.localizations.languageName": "Nom de la langue en anglais.",
@@ -6685,12 +6763,7 @@
 			"showLanguagePackExtensions": "Recherchez dans les modules linguistiques du Marketplace pour remplacer la langue d'affichage par {0}."
 		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
-			"cloudChangesLog": "Modifications du cloud",
-			"extensionTelemetryLog": "Télémétrie de l’extension{0}",
-			"rendererLog": "Fenêtre",
-			"show window log": "Afficher le journal de la fenêtre",
-			"telemetryLog": "Télémétrie{0}",
-			"userDataSyncLog": "Synchronisation des paramètres"
+			"show window log": "Afficher le journal de la fenêtre"
 		},
 		"vs/workbench/contrib/logs/common/logsActions": {
 			"all": "Tous",
@@ -6711,10 +6784,6 @@
 			"setLogLevel": "Définir le niveau de journalisation (log) ...",
 			"trace": "Trace",
 			"warn": "Avertissement"
-		},
-		"vs/workbench/contrib/logs/electron-sandbox/logs.contribution": {
-			"mainLog": "Principal",
-			"sharedLog": "Partagé"
 		},
 		"vs/workbench/contrib/logs/electron-sandbox/logsActions": {
 			"openExtensionLogsFolder": "Ouvrir le dossier des journaux d'extension",
@@ -7194,8 +7263,8 @@
 			"promptChooseMimeTypeInSecure.placeHolder": "Sélectionnez le type MIME à afficher pour la sortie actuelle. Les types MIME enrichis sont disponibles uniquement quand le notebook est digne de confiance"
 		},
 		"vs/workbench/contrib/notebook/browser/diff/notebookDiffActions": {
-			"notebook.diff.action.next.title": "Show Next Change",
-			"notebook.diff.action.previous.title": "Show Previous Change",
+			"notebook.diff.action.next.title": "Voir la modification suivante",
+			"notebook.diff.action.previous.title": "Afficher le changement précédent",
 			"notebook.diff.cell.revertInput": "Restaurer l'entrée",
 			"notebook.diff.cell.revertMetadata": "Restaurer les métadonnées",
 			"notebook.diff.cell.revertOutputs": "Restaurer les sorties",
@@ -7232,10 +7301,12 @@
 			"notebook.kernelPickerType": "Contrôle le type de sélecteur de noyau à utiliser.",
 			"notebook.kernelPickerType.all": "Afficher tous les noyaux.",
 			"notebook.kernelPickerType.mru": "Expérience : afficher les noyaux récemment utilisés.",
+			"notebook.logging": "Activez la journalisation pour la prise en charge des blocs-notes.",
 			"notebook.markup.fontSize": "Contrôle la taille de police en pixels du balisage rendu dans les notebooks. Lorsqu’il est défini sur {0}, 120 % des {1} sont utilisés.",
 			"notebook.outputFontFamily": "Famille de polices pour le texte de sortie des cellules du bloc-notes. Lorsqu’il est défini sur vide, le {0} est utilisé.",
 			"notebook.outputFontSize": "Taille de police du texte de sortie pour les cellules du bloc-notes. Lorsqu’il est défini sur 0, {0} est utilisé.",
 			"notebook.outputLineHeight": "Hauteur de ligne du texte de sortie pour les cellules du bloc-notes.\r\n : les valeurs comprises entre 0 et 8 sont utilisées comme multiplicateur avec la taille de police.\r\n : les valeurs supérieures ou égales à 8 seront utilisées comme valeurs effectives.",
+			"notebook.outputScrolling": "Utiliser une région déroulante pour la sortie du notebook lorsque la longueur est supérieure à la limite",
 			"notebook.showCellStatusbar.description": "Indique si la barre d'état de la cellule doit être affichée.",
 			"notebook.showCellStatusbar.hidden.description": "La barre d’état de la cellule est toujours masquée.",
 			"notebook.showCellStatusbar.visible.description": "La barre d’état de la cellule est toujours visible.",
@@ -7269,6 +7340,7 @@
 			"notebook.outputContainerBorderColor": "Couleur de bordure du conteneur de sortie de notebook.",
 			"notebook.selectedCellBorder": "Couleur de la bordure supérieure et inférieure de la cellule quand celle-ci est sélectionnée mais qu'elle n'a pas le focus.",
 			"notebook.symbolHighlightBackground": "Couleur d'arrière-plan de la cellule en surbrillance",
+			"notebookEditorOverviewRuler.runningCellForeground": "Couleur de l’ornement de cellule en cours d’exécution dans la règle de vue d’ensemble de l’éditeur de bloc-notes.",
 			"notebookScrollbarSliderActiveBackground": "Couleur d'arrière-plan du curseur de barre de défilement de Notebook quand un utilisateur clique sur le curseur.",
 			"notebookScrollbarSliderBackground": "Couleur d'arrière-plan du curseur de barre de défilement de Notebook.",
 			"notebookScrollbarSliderHoverBackground": "Couleur d'arrière-plan du curseur de barre de défilement de Notebook quand un utilisateur pointe sur le curseur.",
@@ -7319,10 +7391,10 @@
 			"mimetypeIcon": "Icône d'un type MIME dans les éditeurs de notebook.",
 			"moveDownIcon": "Icône permettant de se déplacer d'une cellule vers le bas dans les éditeurs de notebooks.",
 			"moveUpIcon": "Icône permettant de se déplacer d'une cellule vers le haut dans les éditeurs de notebooks.",
-			"nextChangeIcon": "Icon for the next change action in the diff editor.",
+			"nextChangeIcon": "Icône de l'action du changement suivant dans l'éditeur de différences.",
 			"openAsTextIcon": "Icône permettant d'ouvrir le notebook dans un éditeur de texte.",
 			"pendingStateIcon": "Icône indiquant un état d’attente dans les éditeurs de blocs-notes.",
-			"previousChangeIcon": "Icon for the previous change action in the diff editor.",
+			"previousChangeIcon": "Icône de l'action du changement précédent dans l'éditeur de différences.",
 			"renderOutputIcon": "Icône permettant d'afficher la sortie dans l'éditeur de différences.",
 			"revertIcon": "Icône de restauration dans les éditeurs de notebook.",
 			"selectKernelIcon": "Icône de configuration permettant de sélectionner un noyau dans les éditeurs de notebook.",
@@ -7341,6 +7413,9 @@
 			"disableOtherKeymapsConfirmation": "Désactiver les autres mappages de touches ({0}) pour éviter les conflits de combinaisons de touches ?",
 			"no": "Non",
 			"yes": "Oui"
+		},
+		"vs/workbench/contrib/notebook/browser/services/notebookLoggingServiceImpl": {
+			"notebook.log": "Notebooks"
 		},
 		"vs/workbench/contrib/notebook/browser/view/cellParts/cellEditorOptions": {
 			"notebook.cell.toggleLineNumbers.title": "Afficher les numéros de ligne de cellule",
@@ -7386,8 +7461,10 @@
 		},
 		"vs/workbench/contrib/notebook/browser/view/renderers/backLayerWebView": {
 			"notebook.emptyMarkdownPlaceholder": "Cellule de Markdown vide. Double-cliquez sur celle-ci, ou appuyez sur Entrée pour la modifier.",
-			"notebook.error.rendererNotFound": "Renderer introuvable pour « $0 » a",
-			"renderChannelName": "Rendu du bloc-notes"
+			"notebook.error.rendererFallbacksExhausted": "Nous n’avons pas pu afficher le contenu pour '$0'",
+			"notebook.error.rendererNotFound": "Aucun renderer trouvé pour '$0'",
+			"renderChannelName": "Rendu du bloc-notes",
+			"webview title": "Contenu de l’affichage web du bloc-notes"
 		},
 		"vs/workbench/contrib/notebook/browser/view/renderers/cellRenderer": {
 			"cellExecutionOrderCountLabel": "Ordre d’exécution"
@@ -7398,6 +7475,7 @@
 			"installSuggestedKernel": "Installer les extensions suggérées",
 			"kernels.detecting": "Détection des noyaux",
 			"kernels.selectedKernelAndKernelDetectionRunning": "Noyau sélectionné : {0} (tâches de détection du noyau en cours d’exécution)",
+			"learnMoreTooltip": "En savoir plus",
 			"otherKernelKinds": "Autre",
 			"prompt.placeholder.change": "Modifier le noyau pour « {0} »",
 			"prompt.placeholder.select": "Sélectionnez le noyau pour « {0} »",
@@ -7407,18 +7485,12 @@
 			"selectAnotherKernel.more": "Sélectionner un autre noyau...",
 			"selectKernel.placeholder": "Taper pour choisir une source de noyau",
 			"selectKernelFromExtension": "Sélectionner le noyau dans {0}",
-			"selectKernelFromExtensionDetail": "Noyaux : {0}",
 			"selectedKernels": "Sélectionné",
 			"suggestedKernels": "Suggestions"
 		},
 		"vs/workbench/contrib/notebook/browser/viewParts/notebookKernelView": {
 			"notebookActions.selectKernel": "Sélectionner un noyau de Notebook",
 			"notebookActions.selectKernel.args": "Arguments du noyau de Notebook"
-		},
-		"vs/workbench/contrib/notebook/common/notebookEditorModel": {
-			"notebook.staleSaveError": "Le contenu du fichier a changé sur le disque. Voulez-vous ouvrir la version mise à jour ou remplacer le fichier par les changements que vous avez apportés ?",
-			"notebook.staleSaveError.overwrite.": "Remplacer",
-			"notebook.staleSaveError.revert": "Restaurer"
 		},
 		"vs/workbench/contrib/offline/browser/offline.contribution": {
 			"offline": "Le réseau semble être hors connexion, certaines fonctionnalités risquent d’être indisponibles.",
@@ -7561,8 +7633,7 @@
 			"sortByPrecedeneLabel": "Trier par priorité (la plus haute d’abord)",
 			"source": "source",
 			"title": "{0} ({1})",
-			"when": "Quand",
-			"whenContextInputAriaLabel": "Tapez en cas de contexte. Appuyez sur Entrée pour confirmer ou Échap pour annuler."
+			"when": "Quand"
 		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditorContribution": {
 			"defineKeybinding.kbLayoutErrorMessage": "Vous ne pouvez pas produire cette combinaison de touches avec la disposition actuelle du clavier.",
@@ -7624,7 +7695,7 @@
 			"settings.focusSettingsTOC": "Définir le focus sur la table des matières des paramètres",
 			"settings.showContextMenu": "Afficher le menu contextuel des paramètres",
 			"settingsEditor2": "Éditeur de paramètres 2",
-			"showDefaultKeybindings": "Show System Keybindings",
+			"showDefaultKeybindings": "Afficher les combinaisons de touches système",
 			"showExtensionKeybindings": "Afficher les combinaisons de touches de l'extension",
 			"showTelemtrySettings": "Paramètres de télémétrie",
 			"showUserKeybindings": "Afficher les combinaisons de touches de l'utilisateur"
@@ -7848,6 +7919,7 @@
 			"settingsDropdownForeground": "Premier plan de la liste déroulante de l'éditeur de paramètres.",
 			"settingsDropdownListBorder": "Bordure de liste déroulante de l'éditeur de paramètres. Elle entoure les options et les sépare de la description.",
 			"settingsHeaderBorder": "Couleur de la bordure du conteneur d’en-tête.",
+			"settingsHeaderHoverForeground": "La couleur d’avant-plan pour un en-tête de section ou un titre survolé.",
 			"settingsSashBorder": "La couleur de la bordure de l'éditeur de paramètres splitview sash.",
 			"textInputBoxBackground": "Arrière-plan de la zone d'entrée de texte de l'éditeur de paramètres.",
 			"textInputBoxBorder": "Bordure de la zone d'entrée de texte de l'éditeur de paramètres.",
@@ -7855,11 +7927,11 @@
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "&&Effacer",
-			"clearPreviousSessionCommandHistory": "Effacer l’historique des commandes de session précédente",
+			"clearCommandHistory": "Effacer l'historique de commandes",
 			"commandWithCategory": "{0}: {1}",
 			"configure keybinding": "Configurer la combinaison de touches",
 			"confirmClearDetail": "Cette action est irréversible !",
-			"confirmClearMessage": "Voulez-vous effacer l’historique des commandes de session précédente ?",
+			"confirmClearMessage": "Voulez-vous effacer l’historique des commandes récemment utilisées ?",
 			"noCommandResults": "Aucune commande correspondante",
 			"showTriggerActions": "Afficher toutes les commandes"
 		},
@@ -8070,8 +8142,6 @@
 			"remote.portsAttributes.requireLocalPort": "Quand la valeur est définie sur « true », une boîte de dialogue modale s’affiche si le port local choisi n’est pas utilisé pour le réacheminement.",
 			"remote.portsAttributes.silent": "N'affiche aucune notification et n'effectue aucune action quand ce port est automatiquement réacheminé.",
 			"remote.restoreForwardedPorts": "Restaure les ports que vous avez réacheminés dans un espace de travail.",
-			"remoteExtensionLog": "Serveur distant",
-			"remotePtyHostLog": "Hôte Pty distant",
 			"triggerReconnect": "Connexion : déclencher la reconnexion",
 			"ui": "Extension de type interface utilisateur. Dans une fenêtre distante, ce type d'extension est activé seulement s'il est disponible sur la machine locale.",
 			"workspace": "Extension de type espace de travail. Dans une fenêtre distante, ce type d'extension est activé seulement s'il est disponible sur la machine distante."
@@ -8110,7 +8180,7 @@
 			"remoteTunnel.turnOff.yesButton": "Oui",
 			"remoteTunnelAccess.machineName": "Nom sous lequel l’accès au tunnel distant est inscrit. S’il n’est pas défini, le nom d’hôte est utilisé.",
 			"remoteTunnelAccess.machineNameRegex": "Le nom ne doit être composé que de lettres, de chiffres, de traits de soulignement et de tirets. Il ne doit pas commencer par un tiret.",
-			"remoteTunnelLog": "Service de tunnel distant",
+			"remoteTunnelAccess.preventSleep": "Empêchez l’ordinateur de se connecter lorsque l’accès au tunnel distant est activé.",
 			"sign in using account": "Vous connecter à {0}",
 			"signed in": "Connecté",
 			"tunnel.preview": "Les tunnels distants sont actuellement en préversion. Signalez les problèmes éventuels à l’aide de la commande « Aide : signaler un problème »."
@@ -8124,8 +8194,8 @@
 			"status.scm": "Contrôle de code source"
 		},
 		"vs/workbench/contrib/scm/browser/dirtydiffDecorator": {
-			"change": "{0} sur {1} modification",
-			"changes": "{0} sur {1} modifications",
+			"change": "{0} - {1} de {2} modification",
+			"changes": "{0} - {1} de {2} modifications",
 			"editorGutterAddedBackground": "Couleur d'arrière-plan de la reliure de l'éditeur pour les lignes ajoutées.",
 			"editorGutterDeletedBackground": "Couleur d'arrière-plan de la reliure de l'éditeur pour les lignes supprimées.",
 			"editorGutterModifiedBackground": "Couleur d'arrière-plan de la reliure de l'éditeur pour les lignes modifiées.",
@@ -8748,7 +8818,6 @@
 			"task.saveBeforeRun": "Enregistrez tous les éditeurs comportant des modifications avant d'exécuter une tâche.",
 			"task.saveBeforeRun.always": "Enregistre toujours tous les éditeurs avant l'exécution d'une tâche.",
 			"task.saveBeforeRun.never": "N'enregistre jamais les éditeurs avant l'exécution d'une tâche.",
-			"task.showDecorations": "Affiche les décorations aux points d’intérêt dans la mémoire tampon du terminal, comme le premier problème détecté via une tâche espion. Notez que cette opération ne prendra effet que pour les tâches futures. {0} aura la priorité sur ce paramètre.",
 			"task.slowProviderWarning": "Configure si un avertissement est affiché quand un fournisseur est lent",
 			"task.slowProviderWarning.array": "Tableau de types de tâche pour lesquelles ne jamais afficher l'avertissement de fournisseur lent.",
 			"task.slowProviderWarning.boolean": "Définit l'avertissement de fournisseur lent pour toutes les tâches.",
@@ -9096,17 +9165,19 @@
 			"quickAccessTerminal": "Changer de terminal actif",
 			"showTerminalTabs": "Afficher les onglets",
 			"terminalLaunchHelp": "Ouvrir l'aide",
+			"workbench.action.terminal.acceptSelectedSuggestion": "Accepter la suggestion sélectionnée",
 			"workbench.action.terminal.attachToSession": "Attacher à la session",
 			"workbench.action.terminal.clear": "Effacer",
 			"workbench.action.terminal.clearCommandHistory": "Effacer l’historique des commandes",
 			"workbench.action.terminal.clearSelection": "Effacer la sélection",
 			"workbench.action.terminal.copyAndClearSelection": "Copier et effacer la sélection",
-			"workbench.action.terminal.copyLastCommand": "Copier la dernière commande",
+			"workbench.action.terminal.copyLastCommand": "Copier la sortie de la dernière commande",
 			"workbench.action.terminal.copySelection": "Copier la sélection",
 			"workbench.action.terminal.copySelectionAsHtml": "Copier la sélection en HTML",
 			"workbench.action.terminal.createTerminalEditor": "Créer un nouveau terminal dans la zone de l’éditeur",
 			"workbench.action.terminal.createTerminalEditorSide": "Créer un nouveau terminal dans la zone de l’éditeur sur le côté",
 			"workbench.action.terminal.detachSession": "Détacher la session",
+			"workbench.action.terminal.enterAccessibilityMode": "Entrer le mode d’accessibilité",
 			"workbench.action.terminal.findNext": "Rechercher le suivant",
 			"workbench.action.terminal.findPrevious": "Rechercher le précédent",
 			"workbench.action.terminal.focus.tabsView": "Affichage des onglets du terminal ayant le focus",
@@ -9117,6 +9188,7 @@
 			"workbench.action.terminal.focusPreviousPane": "Focus sur le terminal précédent dans le groupe de terminaux",
 			"workbench.action.terminal.goToRecentDirectory": "Accéder au répertoire récent...",
 			"workbench.action.terminal.hideFind": "Masquer la recherche",
+			"workbench.action.terminal.hideSuggestWidget": "Masquer le widget de suggestion",
 			"workbench.action.terminal.join": "Joindre des terminaux",
 			"workbench.action.terminal.join.insufficientTerminals": "Terminaux insuffisants pour l’action de jointure",
 			"workbench.action.terminal.join.onlySplits": "Tous les terminaux sont déjà joints",
@@ -9167,12 +9239,17 @@
 			"workbench.action.terminal.searchWorkspace": "Rechercher dans l'espace de travail",
 			"workbench.action.terminal.selectAll": "Tout sélectionner",
 			"workbench.action.terminal.selectDefaultShell": "Sélectionner le profil par défaut",
+			"workbench.action.terminal.selectNextPageSuggestion": "Sélectionner la suggestion de page suivante",
+			"workbench.action.terminal.selectNextSuggestion": "Sélectionner la suggestion suivante",
+			"workbench.action.terminal.selectPrevPageSuggestion": "Sélectionner la suggestion de la page précédente",
+			"workbench.action.terminal.selectPrevSuggestion": "Sélectionner la suggestion précédente",
 			"workbench.action.terminal.selectToNextCommand": "Sélectionnez pour la commande suivante",
 			"workbench.action.terminal.selectToNextLine": "Sélectionner pour la ligne suivante",
 			"workbench.action.terminal.selectToPreviousCommand": "Sélectionnez pour la commande précédente",
 			"workbench.action.terminal.selectToPreviousLine": "Sélectionner pour la ligne précédente",
 			"workbench.action.terminal.sendSequence": "Envoyer une séquence personnalisée au terminal",
 			"workbench.action.terminal.setFixedDimensions": "Définir les dimensions fixes",
+			"workbench.action.terminal.showAccessibilityHelp": "Afficher l’aide à l’accessibilité du terminal",
 			"workbench.action.terminal.showEnvironmentInformation": "Afficher les informations sur l'environnement",
 			"workbench.action.terminal.showQuickFixes": "Afficher les correctifs rapides du terminal",
 			"workbench.action.terminal.showTabs": "Afficher les onglets",
@@ -9219,8 +9296,13 @@
 			"bellStatus": "Appel",
 			"configureTerminalSettings": "Configurer les paramètres du terminal",
 			"confirmMoveTrashMessageFilesAndDirectories": "Voulez-vous vraiment coller {0} lignes de texte dans le terminal ?",
+			"detectedLink": "La commande Ouvrir le lien détecté ({0}) permet aux lecteurs d’écran d’ouvrir facilement les liens trouvés dans le terminal.",
 			"disconnectStatus": "La connexion au processus a été perdue",
+			"dismiss": "Vous pouvez ignorer cette boîte de dialogue en appuyant sur Échap ou en vous mettant au point ailleurs.",
 			"doNotAskAgain": "Ne plus me poser la question",
+			"enterAccessibilityMode": "La commande Entrée en mode d’accessibilité ({0}) permet aux lecteurs d’écran de lire le contenu du terminal.",
+			"goToRecentDirectory": "Accéder au répertoire récent ({0})",
+			"introMsg": "Bienvenue à l’aide à l’accessibilité du terminal",
 			"keybindingHandling": "Certaines combinaisons de touches ne vont pas au terminal par défaut. À la place, elles sont gérées par {0}.",
 			"launchFailed.errorMessage": "Échec du lancement du processus de terminal : {0}.",
 			"launchFailed.exitCodeAndCommandLine": "Échec du lancement du processus de terminal \"{0}\" (code de sortie : {1}).",
@@ -9228,15 +9310,20 @@
 			"launchFailed.exitCodeOnlyShellIntegration": "La désactivation de l’intégration de l’interpréteur de commandes dans les paramètres utilisateur peut être utile.",
 			"multiLinePasteButton": "&&Coller",
 			"preview": "Aperçu :",
+			"readMore": "En savoir plus sur l’accessibilité du terminal sur https://code.visualstudio.com/docs/terminal/shell-integration.",
+			"runRecentCommand": "Exécuter la commande récente ({0})",
 			"setTerminalDimensionsColumn": "Définir les dimensions fixes : colonne",
 			"setTerminalDimensionsRow": "Définir les dimensions fixes : ligne",
+			"shellIntegration": "Le terminal dispose d’une fonctionnalité appelée intégration de l’interpréteur de commandes qui offre une expérience améliorée et fournit des commandes utiles pour les lecteurs d’écran telles que :",
 			"shellIntegration.learnMore": "En savoir plus sur l’intégration de l’interpréteur de commandes",
 			"shellIntegration.openSettings": "Ouvrir les paramètres utilisateur",
 			"terminal.integrated.a11yPromptLabel": "Entrée du terminal",
 			"terminal.integrated.a11yTooMuchOutput": "Trop de sorties à annoncer, naviguer dans les lignes manuellement pour lire",
 			"terminal.integrated.copySelection.noSelection": "Le terminal n'a aucune sélection à copier",
 			"terminal.requestTrust": "La création d’un processus terminal nécessite l’exécution du code",
+			"terminalHelpAriaLabel": "Utiliser {0} pour l’aide sur l’accessibilité des terminaux",
 			"terminalNavigationMode": "Utiliser {0} et {1} pour parcourir la mémoire tampon du terminal",
+			"terminalScreenReaderMode": "Exécuter la commande : activer/désactiver le mode d’accessibilité du lecteur d’écran pour une expérience optimisée de lecteur d’écran",
 			"terminalStaleTextBoxAriaLabel": "L'environnement {0} du terminal est obsolète. Pour plus d'informations, exécutez la commande Afficher les informations sur l'environnement",
 			"terminalTextBoxAriaLabel": "Terminal {0}",
 			"terminalTextBoxAriaLabelNumberAndTitle": "Terminal {0}, {1}",
@@ -9246,9 +9333,6 @@
 			"terminated.exitCodeOnly": "Arrêt du processus de terminal. Code de sortie : {0}.",
 			"workspaceNotTrustedCreateTerminal": "Impossible de lancer un processus terminal dans un espace de travail non approuvé",
 			"workspaceNotTrustedCreateTerminalCwd": "Impossible de lancer un processus terminal dans un espace de travail non approuvé avec cwd {0} et userHome {1}"
-		},
-		"vs/workbench/contrib/terminal/browser/terminalMainContribution": {
-			"ptyHost": "Hôte Pty"
 		},
 		"vs/workbench/contrib/terminal/browser/terminalMenus": {
 			"defaultTerminalProfile": "{0} (Par défaut)",
@@ -9262,6 +9346,7 @@
 			"workbench.action.terminal.changeColor": "Modifier la couleur...",
 			"workbench.action.terminal.changeIcon": "Changer l’icône...",
 			"workbench.action.terminal.clear": "Effacer",
+			"workbench.action.terminal.clearLong": "Effacer le terminal",
 			"workbench.action.terminal.copySelection.short": "Copier",
 			"workbench.action.terminal.copySelectionAsHtml": "Copier au format HTML",
 			"workbench.action.terminal.joinInstance": "Joindre des terminaux",
@@ -9269,6 +9354,8 @@
 			"workbench.action.terminal.openSettings": "Configurer les paramètres du terminal",
 			"workbench.action.terminal.paste.short": "Coller",
 			"workbench.action.terminal.renameInstance": "Renommer...",
+			"workbench.action.terminal.runActiveFile": "Exécuter le fichier actif",
+			"workbench.action.terminal.runSelectedText": "Exécuter le texte sélectionné",
 			"workbench.action.terminal.selectAll": "Tout sélectionner",
 			"workbench.action.terminal.selectDefaultProfile": "Sélectionner le profil par défaut",
 			"workbench.action.terminal.showsTabs": "Afficher les onglets",
@@ -9281,13 +9368,16 @@
 		},
 		"vs/workbench/contrib/terminal/browser/terminalProfileQuickpick": {
 			"ICreateContributedTerminalProfileOptions": "collaboratif",
+			"cancel": "Annuler",
 			"createQuickLaunchProfile": "Configurer le profil du terminal",
 			"enterTerminalProfileName": "Entrez le nom du profil du terminal",
 			"terminal.integrated.chooseDefaultProfile": "Sélectionnez votre profil de terminal par défaut",
 			"terminal.integrated.selectProfileToCreate": "Sélectionner le profil de terminal à créer",
 			"terminalProfileAlreadyExists": "Il existe déjà un profil de terminal portant ce nom",
 			"terminalProfiles": "profils",
-			"terminalProfiles.detected": "détecté(s)"
+			"terminalProfiles.detected": "détecté(s)",
+			"unsafePathWarning": "Ce profil de terminal utilise un chemin potentiellement dangereux qui peut être modifié par un autre utilisateur : {0}. Voulez-vous vraiment l’utiliser ?",
+			"yes": "Oui"
 		},
 		"vs/workbench/contrib/terminal/browser/terminalProfileResolverService": {
 			"migrateToProfile": "Migrer",
@@ -9352,7 +9442,9 @@
 			"terminal.copyOutputAsHtml": "Copier la sortie au format HTML",
 			"terminal.learnShellIntegration": "En savoir plus sur l’intégration de l’interpréteur de commandes",
 			"terminal.rerunCommand": "Commande de réexécution",
-			"toggleVisibility": "Activer/désactiver la visibilité"
+			"toggleVisibility": "Activer/désactiver la visibilité",
+			"workbench.action.terminal.goToRecentDirectory": "Accéder au répertoire récent",
+			"workbench.action.terminal.runRecentCommand": "Exécuter la commande récente"
 		},
 		"vs/workbench/contrib/terminal/browser/xterm/decorationStyles": {
 			"terminalPromptCommandFailed": "La commande s’est exécutée {0} et a échoué.",
@@ -9417,7 +9509,7 @@
 			"openDefaultSettingsJson": "ouvrir le JSON des paramètres par défaut",
 			"openDefaultSettingsJson.capitalized": "Ouvrir les paramètres par défaut (JSON)",
 			"process": "nom du processus terminal",
-			"separator": "un séparateur conditionnel (\"-\") qui apparaît uniquement quand il est entouré de variables avec des valeurs ou du texte statique.",
+			"separator": "séparateur conditionnel {0} qui apparaît uniquement quand il est entouré de variables avec des valeurs ou du texte statique.",
 			"sequence": "nom fourni au terminal par le processus",
 			"task": "indique que ce terminal est associé à une tâche",
 			"terminal.integrated.allowChords": "Indique s’il faut autoriser ou non les combinaisons de touches d’une combinaison de touches dans le terminal. Notez que lorsque cela est vrai et que la frappe entraîne une pression, elle contourne {0}, la définition de la valeur false est particulièrement utile lorsque vous souhaitez que ctrl+k accède à votre interpréteur de commandes (pas VS Code).",
@@ -9505,12 +9597,14 @@
 			"terminal.integrated.shellIntegration.decorationsEnabled.overviewRuler": "Afficher les décorations de règle de vue d’ensemble à droite du terminal",
 			"terminal.integrated.shellIntegration.enabled": "Détermine si l’intégration de l’interpréteur de commandes est injectée automatiquement pour prendre en charge des fonctionnalités telles que le suivi de commandes amélioré et la détection du répertoire de travail actuel. \r\n\r\nL'intégration de l’interpréteur de commandes fonctionne en injectant l’interpréteur de commandes avec un script de démarrage. Le script fournit des insights VS Code sur ce qui se passe dans le terminal.\r\n\r\nInterpréteurs de commandes pris en charge :\r\n\r\n- Linux/macOS : bash, fish, pwsh, zsh\r\n- Windows : pwsh\r\n\r\nCe paramètre s’applique uniquement lorsque des terminaux sont créés. Vous devez donc redémarrer vos terminaux pour qu’ils prennent effet.\r\n\r\n Notez que l’injection de script peut ne pas fonctionner si vous avez des arguments personnalisés définis dans le profil de terminal, que vous avez activé {1} et que vous avez un [complex bash 'PROMPT_COMMAND'](https://code.visualstudio.com/docs/editor/integrated-terminal#_complex-bash-promptcommand) ou une autre configuration non prise en charge. Pour désactiver les décorations, consultez {0}",
 			"terminal.integrated.shellIntegration.history": "Contrôle le nombre de commandes récemment utilisées à conserver dans l’historique des commandes du terminal. Réglez sur 0 pour désactiver l’historique des commandes du terminal.",
+			"terminal.integrated.shellIntegration.suggestEnabled": "Active les suggestions expérimentales intelliSense de terminal pour les interpréteurs de commandes pris en charge lorsque {0} est défini sur {1}. Si l’intégration de l’interpréteur de commandes est installée manuellement, {2} doit être définie sur {3} avant d’appeler le script.",
 			"terminal.integrated.showExitAlert": "Détermine s'il est nécessaire d'afficher l'alerte \"Le processus du terminal s'est achevé avec le code de sortie\" quand le code de sortie est différent de zéro.",
 			"terminal.integrated.smoothScrolling": "Contrôle si le terminal défile en utilisant une animation.",
 			"terminal.integrated.splitCwd": "Contrôle le répertoire de travail dans lequel un terminal divisé démarre.",
 			"terminal.integrated.splitCwd.inherited": "Sur macOS et Linux, un nouveau terminal divisé utilise le répertoire de travail du terminal parent. Sur Windows, le comportement est le même qu'avec le paramètre initial.",
 			"terminal.integrated.splitCwd.initial": "Un nouveau terminal divisé utilise le répertoire de travail dans lequel le terminal parent a démarré.",
 			"terminal.integrated.splitCwd.workspaceRoot": "Un nouveau terminal divisé utilise la racine de l'espace de travail en tant que répertoire de travail. Dans un espace de travail multiracine, vous pouvez choisir le dossier racine à utiliser.",
+			"terminal.integrated.tabStopWidth": "Nombre de cellules dans un taquet de tabulation.",
 			"terminal.integrated.tabs.defaultColor": "ID de couleur de thème à associer aux icônes de terminal par défaut.",
 			"terminal.integrated.tabs.defaultIcon": "ID de codicon à associer aux icônes de terminal par défaut.",
 			"terminal.integrated.tabs.enableAnimation": "Contrôle si les états de l’onglet terminal prennent en charge l’animation (tâches en cours d’exécution).",
@@ -9556,6 +9650,7 @@
 			"terminalProcessSupportedContextKey": "Indique si les processus terminaux peuvent être lancés dans l’espace de travail actuel.",
 			"terminalShellIntegrationEnabled": "Indique si l’intégration de l’interpréteur de commandes est activée dans le terminal actif",
 			"terminalShellTypeContextKey": "Type d'interpréteur de commandes du terminal actif, il est défini à la dernière valeur connue lorsqu'aucun terminal n'existe.",
+			"terminalSuggestWidgetVisible": "Indique si le widget de suggestion du terminal est visible.",
 			"terminalTabsFocusContextKey": "Indique si le widget d’onglets du terminal a le focus.",
 			"terminalTabsSingularSelectedContextKey": "Indique si un terminal est sélectionné dans la liste des onglets de terminaux.",
 			"terminalTextSelectedContextKey": "Indique si le texte est sélectionné dans le terminal actif.",
@@ -9601,6 +9696,8 @@
 			"testingShowAsList": "Icône affichée quand l'Explorateur de tests est désactivé sous forme d'arborescence.",
 			"testingShowAsTree": "Icône affichée quand l'Explorateur de tests est désactivé sous forme de liste.",
 			"testingSkippedIcon": "Icône affichée pour les tests ignorés.",
+			"testingTurnContinuousRunOff": "Icône permettant de désactiver les séries de tests continus.",
+			"testingTurnContinuousRunOn": "Icône permettant d’activer les séries de tests continus.",
 			"testingUnsetIcon": "Icône affichée pour les tests qui sont dans un état annulé.",
 			"testingUpdateProfiles": "Icône affichée pour mettre à jour les profils de test."
 		},
@@ -9628,6 +9725,7 @@
 			"testing.debugFailTests": "Déboguer les tests non réussis",
 			"testing.debugLastRun": "Déboguer la dernière série",
 			"testing.editFocusedTest": "Accéder au test",
+			"testing.noProfiles": "Aucun profil d’exécution continue de test n’a été trouvé",
 			"testing.openOutputPeek": "Aperçu de la sortie",
 			"testing.reRunFailTests": "Réexécuter les tests non réussis",
 			"testing.reRunLastRun": "Réexécuter la dernière série",
@@ -9636,11 +9734,14 @@
 			"testing.runCurrentFile": "Exécuter les tests dans le fichier actuel",
 			"testing.runUsing": "Exécuter à l’aide du profil...",
 			"testing.searchForTestExtension": "Rechercher une extension de test",
+			"testing.selectContinuousProfiles": "Sélectionnez les profils à exécuter lorsque les fichiers changent :",
 			"testing.selectDefaultTestProfiles": "Sélectionner le profil par défaut",
 			"testing.showMostRecentOutput": "Afficher la sortie",
 			"testing.sortByDuration": "Trier par durée",
 			"testing.sortByLocation": "Trier par emplacement",
 			"testing.sortByStatus": "Trier par état",
+			"testing.startContinuous": "Démarrer l’exécution continue",
+			"testing.stopContinuous": "Arrêter l’exécution continue",
 			"testing.toggleInlineTestOutput": "Activer/désactiver la sortie de test Inline",
 			"testing.viewAsList": "Voir sous forme de liste",
 			"testing.viewAsTree": "Voir sous forme d'arborescence",
@@ -9750,14 +9851,11 @@
 			"testConfigurationTitle": "Test",
 			"testing.alwaysRevealTestOnStateChange": "Affichez toujours le test exécuté lorsque '#testing.followRunningTest#' est activé. Si ce paramètre est désactivé, seuls les tests ayant échoué sont affichés.",
 			"testing.autoRun.delay": "Délai d'attente, en millisecondes, après le marquage d'un test comme étant obsolète et le démarrage d'une nouvelle exécution.",
-			"testing.autoRun.mode": "Contrôle les tests exécutés automatiquement.",
-			"testing.autoRun.mode.allInWorkspace": "Exécute automatiquement tous les tests découverts quand l'exécution automatique est activée. Réexécute les tests individuels quand ils changent.",
-			"testing.autoRun.mode.onlyPreviouslyRun": "Réexécute les tests individuels quand ils changent. N'exécute pas automatiquement les tests qui n'ont pas déjà été exécutés.",
 			"testing.automaticallyOpenPeekView": "Configure le déclenchement de l’ouverture automatique de la vue d’aperçu d’erreur.",
 			"testing.automaticallyOpenPeekView.failureAnywhere": "L'ouverture automatique s'effectue, quel que soit l'emplacement de l'échec.",
 			"testing.automaticallyOpenPeekView.failureInVisibleDocument": "L'ouverture automatique s'effectue en cas d'échec d'un test dans un document visible.",
 			"testing.automaticallyOpenPeekView.never": "Ne jamais ouvrir automatiquement",
-			"testing.automaticallyOpenPeekViewDuringAutoRun": "Contrôle si la vue d’aperçu doit s’ouvrir automatiquement en mode d’exécution automatique.",
+			"testing.automaticallyOpenPeekViewDuringContinuousRun": "Contrôle si la vue d’aperçu doit s’ouvrir automatiquement en mode d’exécution continue.",
 			"testing.defaultGutterClickAction": "Contrôle l’action à prendre lorsque vous cliquez avec le bouton gauche sur une décoration de test dans la reliure.",
 			"testing.defaultGutterClickAction.contextMenu": "Ouvrez le menu contextuel pour obtenir plus d’options.",
 			"testing.defaultGutterClickAction.debug": "Déboguer le test.",
@@ -9792,8 +9890,10 @@
 			"testing.hasDebuggableTests": "Indique si un contrôleur de test a inscrit une configuration de débogage",
 			"testing.hasNonDefaultConfig": "Indique si un contrôleur de test a inscrit une configuration autre que la configuration par défaut",
 			"testing.hasRunnableTests": "Indique si un contrôleur de test a inscrit une configuration d’exécution",
+			"testing.isContinuousModeOn": "Indique si le mode de test continu est activé.",
 			"testing.isRefreshing": "Indique si un contrôleur de test actualise actuellement les tests.",
 			"testing.peekItemType": "Type de l’élément dans l’affichage Aperçu de la sortie. La valeur peut être « test », « message », « tâche » ou « résultat ».",
+			"testing.supportsContinuousRun": "Indique si l’exécution continue des tests est prise en charge",
 			"testing.testId": "ID de l'élément de test actuel, défini au moment de la création ou de l'ouverture de menus sur les éléments de test",
 			"testing.testItemHasUri": "Valeur booléenne indiquant si un URI a été défini pour l’élément de test",
 			"testing.testItemIsHidden": "Valeur booléenne qui indique si l’élément de test est masqué"
@@ -9817,9 +9917,7 @@
 			"installing extensions": "Installation de l'extension '{0}'...",
 			"manage extension": "Gérer l'extension",
 			"manageExtensionIcon": "Icône de l’action « Gérer » dans la sélection rapide de thème",
-			"miSelectColorTheme": "Thème de &&couleur",
-			"miSelectIconTheme": "Thème d'&&icône de fichier",
-			"miSelectProductIconTheme": "Thème d'icône de &&produit",
+			"miSelectTheme": "&&Thème",
 			"noIconThemeDesc": "Désactiver les icônes de fichier",
 			"noIconThemeLabel": "Aucun(e)",
 			"productIconThemeCategory": "Thèmes d'icône de produit",
@@ -9827,6 +9925,7 @@
 			"selectIconTheme.label": "Thème d'icône de fichier",
 			"selectProductIconTheme.label": "Thème d'icône de produit",
 			"selectTheme.label": "Thème de couleur",
+			"themes": "Thèmes",
 			"themes.category.dark": "thèmes sombres",
 			"themes.category.hc": "thèmes à contraste élevé",
 			"themes.category.light": "thèmes clairs",
@@ -9961,46 +10060,41 @@
 			"workbench.trustedDomains.promptInTrustedWorkspace": "Lorsque cette option est activée, des invites de domaine approuvé s’affichent lors de l’ouverture de liens dans les espaces de travail approuvés."
 		},
 		"vs/workbench/contrib/userDataProfile/browser/userDataProfile": {
-			"change short name": "Modifier le nom court...",
-			"change short name profile": "Change Profile Short Name ({0})...",
-			"confiirmation message": "Cela remplacera vos paramètres actuels. Voulez-vous vraiment continuer ?",
-			"export profile": "Export Profile ({0})...",
+			"create empty profile": "Créer un profil vide...",
+			"create from current profle": "Créer à partir du profil actuel...",
+			"create profile": "Créer un profil...",
+			"create profile title": "{0}: Créer...",
+			"current": "Actuel",
+			"delete profile": "Supprimer le profil...",
+			"delete specific profile": "Supprimer un profil...",
+			"export profile": "Exporter le profil...",
 			"export profile in share": "Exporter le profil ({0})...",
 			"import from file": "Importer à partir d’un fichier de profil",
 			"import from url": "Importer à partir d’une URL",
-			"import profile": "Import Profile...",
+			"import profile": "Importer le profil...",
 			"import profile dialog": "Importer le profil",
 			"import profile placeholder": "Fournir l’URL du profil ou sélectionner le fichier de profil à importer",
 			"import profile quick pick title": "Importer le profil",
 			"import profile share": "Importer le profil...",
-			"import profile title": "Importer des paramètres à partir d’un profil",
-			"invalid codicon": "Codicon non valide. Veuillez utiliser un ID de codicon valide.",
-			"invalid short name": "Le nom court doit comporter au maximum 2 caractères.",
-			"profile": "Profil ({0})",
+			"name": "Nom du profil",
+			"pick profile to delete": "Sélectionner les profils à supprimer",
 			"profile import error": "Erreur lors de l’importation du profil : {0}",
-			"rename profile": "Rename Profile ({0})...",
-			"show profile contents": "Afficher le contenu du profil ({0})...",
-			"workbench.experimental.profiles.enabled": "Contrôle si la fonctionnalité d’évaluation de l’aperçu des profils doit être activée."
+			"profileExists": "Il existe déjà un profil intitulé {0}.",
+			"profiles": "Profils ({0})",
+			"rename profile": "Renommer...",
+			"save profile as": "Créer à partir du profil actuel...",
+			"show profile contents": "Afficher le contenu"
 		},
 		"vs/workbench/contrib/userDataProfile/browser/userDataProfileActions": {
 			"cleanup profile": "Nettoyer les profils",
-			"create and enter empty profile": "Créer un profil vide...",
-			"create empty profile": "Créer un profil vide...",
-			"create profile": "Create Profile...",
-			"create profile title": "{0}: Créer...",
 			"create temporary profile": "Créer un profil temporaire",
 			"current": "Actuel",
-			"delete profile": "Delete Profile...",
-			"delete specific profile": "Supprimer le profil...",
 			"mange": "Gérer...",
-			"name": "Nom du profil",
-			"pick profile to delete": "Sélectionner les profils à supprimer",
 			"pick profile to rename": "Sélectionner le profil à renommer",
 			"profileExists": "Il existe déjà un profil intitulé {0}.",
 			"rename profile": "Renommer...",
 			"rename specific profile": "Renommer le profil...",
 			"reset workspaces": "Réinitialiser les associations de profils d’espace de travail",
-			"save profile as": "Créer à partir du profil actuel...",
 			"select profile to rename": "Renommer {0}"
 		},
 		"vs/workbench/contrib/userDataSync/browser/userDataSync": {
@@ -10173,7 +10267,6 @@
 			"close": "Masquer",
 			"closeAriaLabel": "Masquer",
 			"footer": "{0} collecte les données d’utilisation. Lisez notre {1} et apprenez à {2}.",
-			"getStarted": "Démarrage",
 			"gettingStarted.allStepsComplete": "Toutes les {0} étapes ont été complétées.",
 			"gettingStarted.editingEvolved": "Édition évoluée",
 			"gettingStarted.keyboardTip": "Conseil : utiliser le raccourci clavier ",
@@ -10193,15 +10286,16 @@
 			"start": "Démarrer",
 			"toStart": "pour démarrer",
 			"walkthroughs": "Procédures pas à pas",
+			"welcome": "Bienvenue",
 			"welcomeAriaLabel": "Vue d'ensemble permettant de se familiariser avec l'éditeur.",
 			"welcomePage.openFolderWithPath": "Ouvrir le dossier {0} avec le chemin {1}",
 			"welcomePage.showOnStartup": "Afficher la page d’accueil au démarrage"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution": {
 			"deprecationMessage": "Déconseillé, utilisez le 'workbench.reduceMotion' global.",
-			"getStarted": "Démarrage",
-			"miGetStarted": "Démarrage",
+			"miWelcome": "Bienvenue",
 			"pickWalkthroughs": "Sélectionner une procédure pas à pas à ouvrir",
+			"welcome": "Bienvenue",
 			"welcome.goBack": "Précédent",
 			"welcome.markStepComplete": "Marquer l’étape comme complète",
 			"welcome.markStepInomplete": "Marquer l’étape comme incomplète",
@@ -10222,9 +10316,9 @@
 			"welcomePage.background": "Couleur d'arrière-plan de la page d'accueil.",
 			"welcomePage.progress.background": "Couleur de premier plan des barres de progression de la page d'accueil.",
 			"welcomePage.progress.foreground": "Couleur d'arrière-plan des barres de progression de la page d'accueil.",
-			"welcomePage.tileBackground": "Couleur d'arrière-plan des vignettes de la page Prise en main.",
-			"welcomePage.tileBorder": "Couleur de bordure pour les vignettes de la page Démarrer.",
-			"welcomePage.tileHoverBackground": "Couleur d'arrière-plan en cas de pointage sur les vignettes de la page Prise en main."
+			"welcomePage.tileBackground": "Couleur d’arrière-plan des vignettes de la page d’accueil.",
+			"welcomePage.tileBorder": "Couleur de bordure pour les vignettes de la page d’accueil.",
+			"welcomePage.tileHoverBackground": "Couleur d’arrière-plan du pointage pour les vignettes de l’accueil."
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedExtensionPoint": {
 			"pathDeprecated": "Déprécié. Utilisez plutôt `image` ou un `markdown`",
@@ -10268,7 +10362,7 @@
 			"gettingStartedUnchecked": "Utilisé pour représenter les étapes de procédure pas à pas qui n’ont été pas effectuées"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedInput": {
-			"getStarted": "Démarrage"
+			"getStarted": "Bienvenue"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedService": {
 			"builtin": "Intégré",
@@ -10458,11 +10552,12 @@
 			"newWindow": "Ouvrir en mode restreint",
 			"no": "Non",
 			"open": "Ouvrir",
-			"openLooseFileLearnMore": "If you don't trust the authors of these files, we recommend to open them in Restricted Mode in a new window as the files may be malicious. See [our docs](https://aka.ms/vscode-workspace-trust) to learn more.",
-			"openLooseFileMesssage": "Faites-vous confiance aux auteurs de ces fichiers ?",
+			"openLooseFileLearnMore": "Si vous ne souhaitez pas ouvrir les fichiers non fiables, nous vous recommandons de les ouvrir en Mode restreint dans une nouvelle fenêtre car les fichiers peuvent être malveillants. Consultez [notre documentation](https://aka.ms/vscode-workspace-trust) pour en savoir plus.",
 			"openLooseFileWindowDetails": "Vous essayez d’ouvrir des fichiers non approuvés dans une fenêtre qui est approuvée.",
+			"openLooseFileWindowMesssage": "Voulez-vous autoriser les fichiers non fiables dans cette fenêtre ?",
 			"openLooseFileWorkspaceCheckbox": "Se souvenir de ma décision pour tous les espaces de travail",
 			"openLooseFileWorkspaceDetails": "Vous essayez d’ouvrir des fichiers non approuvés dans un espace de travail qui est approuvé.",
+			"openLooseFileWorkspaceMesssage": "Voulez-vous autoriser les fichiers non fiables dans cet espace de travail ?",
 			"restrictedModeBannerAriaLabelFolder": "Le mode restreint est destiné à la navigation de code sécurisé. Approuvez ce dossier pour activer toutes les fonctionnalités. Utilisez les touches de navigation pour accéder aux actions de bannière.",
 			"restrictedModeBannerAriaLabelWindow": "Le mode restreint est destiné à la navigation de code sécurisé. Approuvez cette fenêtre pour activer toutes les fonctionnalités. Utilisez les touches de navigation pour accéder aux actions de bannière.",
 			"restrictedModeBannerAriaLabelWorkspace": "Le mode restreint est destiné à la navigation de code sécurisé. Approuvez cet espace de travail pour activer toutes les fonctionnalités. Utilisez les touches de navigation pour accéder aux actions de bannière.",
@@ -10516,6 +10611,7 @@
 			"folderPickerIcon": "Icône pour l'icône de sélection de dossier dans l'éditeur de confiance de l'espace de travail.",
 			"hostColumnLabel": "Hôte",
 			"invalidTrust": "Vous ne pouvez pas approuver des dossiers individuels dans un référentiel.",
+			"keyboardShortcut": "Raccourcis clavier : {0}",
 			"localAuthority": "Local",
 			"no untrustedSettings": "Les paramètres d’espace de travail nécessitant une approbation ne sont pas appliqués",
 			"noTrustedFoldersDescriptions": "Vous n’avez pas encore approuvé de dossiers ou de fichiers d’espace de travail.",
@@ -10533,7 +10629,7 @@
 			"trustUri": "Approuver le dossier",
 			"trustedDebugging": "Le débogage est activé",
 			"trustedDescription": "Toutes les fonctionnalités sont activées car une approbation a été accordée à l’espace de travail.",
-			"trustedExtensions": "Toutes les extensions sont activées",
+			"trustedExtensions": "Toutes les extensions activées sont activées",
 			"trustedFolder": "Dans un dossier approuvé",
 			"trustedFolderAriaLabel": "{0}, de confiance",
 			"trustedFolderSubtitle": "Vous faites confiance aux auteurs des fichiers du dossier actif. Toutes les fonctionnalités sont activées :",
@@ -10848,7 +10944,7 @@
 			"promptOpenWith.updateDefaultPlaceHolder": "Sélectionner un nouvel éditeur par défaut pour « {0} »"
 		},
 		"vs/workbench/services/editor/common/editorResolverService": {
-			"editor.editorAssociations": "Configurez des modèles glob pour les éditeurs (par exemple, `\"*.hex\": \"hexEditor.hexEdit\"`). Ces modèles ont priorité sur le comportement par défaut."
+			"editor.editorAssociations": "Configurez des modèles Glob dans les éditeurs (par exemple `\"*.hex\": \"hexEditor.hexedit\"`). Ceux-ci ont priorité sur le comportement par défaut."
 		},
 		"vs/workbench/services/extensionManagement/browser/extensionBisect": {
 			"bisect": "L'extension Bisect est active et a désactivé {0} extensions. Vérifiez si vous pouvez encore reproduire le problème, puis continuez en effectuant votre sélection parmi les options disponibles.",
@@ -11054,7 +11150,15 @@
 			"extensionCache.invalid": "Des extensions ont été modifiées sur le disque. Veuillez recharger la fenêtre.",
 			"reloadWindow": "Recharger la fenêtre"
 		},
-		"vs/workbench/services/extensions/electron-sandbox/electronExtensionService": {
+		"vs/workbench/services/extensions/electron-sandbox/localProcessExtensionHost": {
+			"extension host Log": "Hôte d'extension",
+			"extensionHost.error": "Erreur de l'hôte d'extension : {0}",
+			"extensionHost.startupFail": "L'hôte d'extension n'a pas démarré en moins de 10 secondes. Il existe peut-être un problème.",
+			"extensionHost.startupFailDebug": "L'hôte d'extension n'a pas démarré en moins de 10 secondes. Il est peut-être arrêté à la première ligne et a besoin d'un débogueur pour continuer.",
+			"join.extensionDevelopment": "Fin de la session de débogage d’extension",
+			"reloadWindow": "Recharger la fenêtre"
+		},
+		"vs/workbench/services/extensions/electron-sandbox/nativeExtensionService": {
 			"devTools": "Ouvrir les outils de développement",
 			"enable": "Activer et recharger",
 			"enableResolver": "L'extension '{0}' est nécessaire pour ouvrir la fenêtre distante.\r\nOK pour l'activer ?",
@@ -11070,14 +11174,6 @@
 			"restart": "Redémarrer l’hôte d'extension",
 			"restartExtensionHost": "Redémarrer l’hôte d'extension"
 		},
-		"vs/workbench/services/extensions/electron-sandbox/localProcessExtensionHost": {
-			"extension host Log": "Hôte d'extension",
-			"extensionHost.error": "Erreur de l'hôte d'extension : {0}",
-			"extensionHost.startupFail": "L'hôte d'extension n'a pas démarré en moins de 10 secondes. Il existe peut-être un problème.",
-			"extensionHost.startupFailDebug": "L'hôte d'extension n'a pas démarré en moins de 10 secondes. Il est peut-être arrêté à la première ligne et a besoin d'un débogueur pour continuer.",
-			"join.extensionDevelopment": "Fin de la session de débogage d’extension",
-			"reloadWindow": "Recharger la fenêtre"
-		},
 		"vs/workbench/services/history/browser/historyService": {
 			"canNavigateBack": "Indique s'il est possible de naviguer vers l'arrière dans l'historique de l'éditeur",
 			"canNavigateBackInEditLocations": "Indique s’il est possible de revenir à l’historique des emplacements de modification de l’éditeur",
@@ -11091,7 +11187,7 @@
 		},
 		"vs/workbench/services/host/browser/browserHostService": {
 			"cancel": "Annuler",
-			"open": "Ouvrir",
+			"open": "&&Ouvrir",
 			"unableToOpenExternal": "Le navigateur a interrompu l’ouverture d’un nouvel onglet ou d’une nouvelle fenêtre. Appuyez sur 'Ouvrir' pour l’ouvrir quand même."
 		},
 		"vs/workbench/services/integrity/electron-sandbox/integrityService": {
@@ -11171,6 +11267,9 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "Les modifications que vous avez apportées risquent de ne pas être enregistrées. Veuillez cocher « Annuler » et réessayer."
 		},
+		"vs/workbench/services/log/electron-sandbox/logService": {
+			"rendererLog": "Fenêtre"
+		},
 		"vs/workbench/services/notification/common/notificationService": {
 			"neverShowAgain": "Ne plus afficher"
 		},
@@ -11179,7 +11278,7 @@
 		},
 		"vs/workbench/services/preferences/browser/keybindingsEditorModel": {
 			"cat.title": "{0}: {1}",
-			"default": "System",
+			"default": "Système",
 			"extension": "Extension",
 			"meta": "méta",
 			"option": "Option",
@@ -11258,6 +11357,13 @@
 		},
 		"vs/workbench/services/search/common/queryBuilder": {
 			"search.noWorkspaceWithName": "Le dossier d'espace de travail n'existe pas : {0}"
+		},
+		"vs/workbench/services/suggest/browser/simpleSuggestWidget": {
+			"ariaCurrenttSuggestionReadDetails": "{0}, documents : {1}",
+			"label.desc": "{0}, {1}",
+			"label.detail": "{0}{1}",
+			"label.full": "{0}{1}, {2}",
+			"suggest": "Suggérer"
 		},
 		"vs/workbench/services/textfile/browser/textFileService": {
 			"confirmOverwrite": "'{0}' existe déjà. Voulez-vous le remplacer ?",
@@ -11530,38 +11636,48 @@
 			"tasks": "Tâches utilisateur"
 		},
 		"vs/workbench/services/userDataProfile/browser/userDataProfileImportExportService": {
+			"Importing profile": "{0} ({1})...",
 			"applied profile": "{0} : appliqué avec succès.",
 			"cancel": "Annuler",
 			"close": "Fermer",
 			"copy": "Copier le lien",
 			"create new": "Créer le nouveau profil",
 			"export": "Exporter",
-			"export description": "Choisir les éléments à exporter",
 			"export profile dialog": "Enregistrer le profil",
 			"export profile name": "Nommer le profil",
-			"export profile preview": "Exporter",
 			"export profile title": "Exporter le profil",
-			"export success": "Le profil « {0} » a été exporté.",
-			"export title": "{0}: {1} ({2})",
+			"export success": "Le profil «{0}» a été exporté avec succès.",
 			"file": "fichier",
-			"import description": "Choisir les éléments à importer",
-			"import profile preview": "Importer",
-			"import title": "{0}: {1} ({2})",
+			"import": "Importer le profil",
+			"import in desktop": "Importer un profil dans {1}",
+			"import profile": "Importer le profil",
 			"imported profile": "Le profil «{0}» a été importé.",
+			"install extensions title": "Installer les extensions",
+			"learn more": "En savoir plus",
 			"local": "Local",
 			"name": "Nom du profil",
-			"open": "Ouvrir dans {0}",
+			"open": "Ouvrir le lien",
+			"open in": "Ouvrir dans {0}",
 			"overwrite": "Remplacer",
+			"preview profile": "Profil d’aperçu",
+			"preview profile message": "Par défaut, les extensions ne sont pas installées lors de l’aperçu d’un profil sur le web. Vous pouvez toujours les installer manuellement avant d’importer le profil. ",
 			"profile already exists": "Le profil portant le nom « {0} » existe déjà. Voulez-vous le remplacer ?",
 			"profile import error": "Erreur lors de l’importation du profil : {0}",
+			"profile name required": "Le nom du profil doit être fourni.",
 			"profileExists": "Il existe déjà un profil intitulé {0}.",
 			"profiles.applying": "{0} : Application en cours...",
 			"profiles.exporting": "{0}: exportation...",
-			"profiles.importing": "{0}: importation...",
+			"progress extensions": "{0} ({1}) : application des extensions...",
+			"progress global state": "{0} ({1}) : Application de l’état...",
+			"progress keybindings": "{0} ({1}) : application des raccourcis clavier...",
+			"progress settings": "{0} ({1}) : application des paramètres...",
+			"progress snippets": "{0} ({1}) : application d’extraits de code...",
+			"progress tasks": "{0} ({1}) : application des tâches...",
+			"resolving uri": "{0}: résolution du contenu du profil...",
 			"select profile": "Sélectionner un profil",
 			"select profile content handler": "Exporter le profil «{0}» en tant que...",
-			"show contents": "Afficher le contenu",
-			"show profile contents": "Afficher le contenu du profil"
+			"show profile contents": "Afficher le contenu du profil",
+			"switching profile": "{0} ({1}) : Application en cours..."
 		},
 		"vs/workbench/services/userDataProfile/browser/userDataProfileManagement": {
 			"cannotDeleteDefaultProfile": "Impossible de supprimer le profil par défaut",
@@ -11690,8 +11806,8 @@
 		},
 		"vs/workbench/services/workspaces/electron-sandbox/workspaceEditingService": {
 			"cancel": "Annuler",
-			"doNotSave": "Ne pas enregistrer",
-			"save": "Enregistrer",
+			"doNotSave": "&&Ne pas enregistrer",
+			"save": "Enregi&&strer",
 			"saveWorkspaceDetail": "Enregistrez votre espace de travail si vous avez l’intention de le rouvrir.",
 			"saveWorkspaceMessage": "Voulez-vous enregistrer la configuration de votre espace de travail dans un fichier ?",
 			"workspaceOpenedDetail": "L’espace de travail est déjà ouvert dans une autre fenêtre. Veuillez s’il vous plaît d’abord fermer cette fenêtre et puis essayez à nouveau.",
