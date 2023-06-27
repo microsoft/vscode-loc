@@ -245,6 +245,9 @@
 			"diff.clipboard.copyDeletedLinesContent.single.label": "削除された行のコピー",
 			"diff.inline.revertChange.label": "この変更を元に戻す"
 		},
+		"vs/editor/browser/widget/diffEditorWidget2/unchangedRanges": {
+			"foldUnchanged": "Fold Unchanged Region"
+		},
 		"vs/editor/browser/widget/diffReview": {
 			"blankLine": "空白",
 			"deleteLine": "- {0} 元の行 {1}",
@@ -296,6 +299,7 @@
 			"semanticHighlighting.enabled": "semanticHighlighting をサポートされる言語で表示するかどうかを制御します。",
 			"semanticHighlighting.false": "セマンティックの強調表示がすべての配色テーマについて無効になりました。",
 			"semanticHighlighting.true": "セマンティックの強調表示がすべての配色テーマについて有効になりました。",
+			"showEmptyDecorations": "Controls whether the diff editor shows empty decorations to see where characters got inserted or deleted.",
 			"showMoves": "差分エディターで検出されたコードの移動を表示するかどうかを制御します。'diffEditor.experimental.useVersion2' が設定されている場合にのみ機能します。",
 			"sideBySide": "差分エディターが差分を横に並べて表示するか、行内に表示するかを制御します。",
 			"stablePeek": "エディターのコンテンツをダブルクリックするか、`Escape` キーを押しても、ピーク エディターを開いたままにします。",
@@ -2084,14 +2088,6 @@
 			"request": "ネットワーク要求",
 			"strictSSL": "提供された CA の一覧と照らしてプロキシ サーバーの証明書を確認するかどうか制御します。",
 			"systemCertificates": "CA 証明書を OS から読み込む必要があるかどうかを制御します (Windows および macOS では、オフにした場合にウィンドウの再読み込みが必要です)。"
-		},
-		"vs/platform/secrets/electron-sandbox/secretStorageService": {
-			"encryptionNotAvailableJustTroubleshootingGuide": "Secrets are not being stored on disk because encryption is not available in this environment.",
-			"isGnome": "You're running in a GNOME environment but encryption is not available. Ensure you have gnome-keyring or another libsecret compatible implementation installed and running.",
-			"isKwallet": "You're running in a KDE environment but encryption is not available. Ensure you have kwallet running.",
-			"troubleshootingButton": "Open troubleshooting guide",
-			"usePlainText": "Use plain text (restart required)",
-			"usePlainTextExtraSentence": "Open the troubleshooting guide or you can use plain text obfuscation instead."
 		},
 		"vs/platform/shell/node/shellEnv": {
 			"resolveShellEnvError": "シェル環境を解決できません: {0}",
@@ -3920,6 +3916,7 @@
 			"decorations.badges": "エディター ファイルの装飾にバッジを使用するかどうかを制御します。",
 			"decorations.colors": "エディター ファイルの装飾に配色を使用するかどうかを制御します。",
 			"dirty": "`${dirty}`: アクティブなエディターの変更が保存されていない場合を示すインジケーター。",
+			"doubleClickTabToToggleEditorGroupSizes": "Controls whether to maximize/restore the editor group when double clicking on a tab. This value is ignored when `#workbench.editor.showTabs#` is disabled.",
 			"editorOpenPositioning": "エディターを開く場所を制御します。`left` または `right` を選択すると現在アクティブになっているエディターの左または右にエディターを開きます。`first` または `last` を選択すると現在アクティブになっているエディターとは別個にエディターを開きます。",
 			"editorTabCloseButton": "エディターのタブの [閉じる] ボタンの位置を制御するか、'off' に設定された場合に無効にします。`#workbench.editor.showTabs#` が無効な場合、この値は無視されます。",
 			"enableMenuBarMnemonics": "Alt キー ショートカットを使用してメイン メニューを開くことができるかどうかを制御します。ニーモニックを無効にすると、これらの Alt キー ショートカットを代わりにエディター コマンドにバインドできます。",
@@ -4045,6 +4042,7 @@
 			"workbench.editor.tabSizing.fixed": "すべてのタブを同じサイズにし、使用可能な領域が一度にすべてのタブを表示するのに十分でない場合に小さくできるようにします。",
 			"workbench.editor.tabSizing.shrink": "すべてのタブを一度に表示するには利用可能なスペースが足りない場合に、タブを縮小するようにします。",
 			"workbench.editor.tabSizingFixedMaxWidth": "'#workbench.editor.tabSizing#' サイズが 'fixed' に設定されている場合のタブの最大幅を制御します。",
+			"workbench.editor.tabSizingFixedMinWidth": "Controls the minimum width of tabs when `#workbench.editor.tabSizing#` size is set to `fixed`.",
 			"workbench.editor.titleScrollbarSizing.default": "既定のサイズ。",
 			"workbench.editor.titleScrollbarSizing.large": "マウスでつかみやすいサイズに拡大する。",
 			"workbench.editor.untitled.labelFormat.content": "無題ファイルの名前は、ファイル パスが関連付けられていない限り、最初の行の内容から導き出されます。行が空であるか、単語文字が含まれていない場合に、名前にフォールバックします。",
@@ -4310,6 +4308,7 @@
 		"vs/workbench/electron-sandbox/desktop.contribution": {
 			"application.shellEnvironmentResolutionTimeout": "アプリケーションがまだターミナルから起動されていない場合にシェル環境の解決を中止するまでのタイムアウトを秒単位で制御します。詳細については、[ドキュメント](https://go.microsoft.com/fwlink/?linkid=2149667) を参照してください。",
 			"argv.crashReporterId": "このアプリ インスタンスから送信されるクラッシュ レポートを関連付けるために使用される一意の ID。",
+			"argv.disableChromiumSandbox": "Disables the Chromium sandbox. This is useful when running VS Code as elevated on Linux and running under Applocker on Windows.",
 			"argv.disableHardwareAcceleration": "ハードウェア アクセラレータを無効にします。グラフィックの問題が発生した場合にのみ、このオプションを変更してください。",
 			"argv.enableCrashReporter": "クラッシュ レポートを無効にすることを許可します。値が変更された場合は、アプリを再起動する必要があります。",
 			"argv.enebleProposedApi": "拡張機能 ID のリストに対して提案された API を有効にします ('vscode.git' など)。提案された API は不安定で、警告なしに中断することがあります。これは拡張機能の開発とテストを目的とする場合にのみ設定してください。",
@@ -4417,6 +4416,8 @@
 		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityContribution": {
 			"accessibilityConfigurationTitle": "アクセシビリティ",
+			"editor.action.accessibilityHelp": "Open Accessibility Help",
+			"editor.action.accessibilityView": "Open Accessibility View",
 			"verbosity.chat.description": "チャット入力がフォーカスされているときにチャット ヘルプ メニューにアクセスする方法に関する情報を提供します。",
 			"verbosity.diffEditor.description": "差分エディターにフォーカスがあるときに変更を移動する方法に関する情報を提供する",
 			"verbosity.interactiveEditor.description": "入力にフォーカスがある場合にインライン エディターのチャット アクセシビリティ ヘルプ メニューにアクセスする方法に関する情報を提供する",
@@ -4555,7 +4556,7 @@
 		"vs/workbench/contrib/chat/browser/actions/chatAccessibilityHelp": {
 			"chat-help-label": "チャットのアクセシビリティのヘルプ",
 			"chat.announcement": "チャットの応答は、届いた時に通知されます。応答は、コード ブロックの数 (存在する場合)、応答の残りの部分を示します。",
-			"chat.audioCues": "Audio cues can be changed via settings with a prefix of audioCues.chat. By default, if a request takes more than 5 seconds, you will hear an audio cue indicating that progress is still occurring.",
+			"chat.audioCues": "オーディオ キューは、audioCues.chat のプレフィックスを持つ設定を使用して変更できます。既定では、要求に 5 秒以上かかる場合は、進行状況がまだ発生していることを示すオーディオ キューが聞こえます。",
 			"chat.overview": "チャット ビューは、入力ボックスと要求/応答リストで構成されています。入力ボックスは要求を行うために使用され、リストは応答を表示するために使用されます。",
 			"chat.requestHistory": "入力ボックスで、上矢印/下矢印を使用して要求履歴を移動します。入力を編集し、Enter キーまたは [送信] ボタンを使用して新しい要求を実行します。",
 			"inline-chat-label": "インライン チャットのアクセシビリティのヘルプ",
@@ -6819,6 +6820,7 @@
 			"explorer.incrementalNaming": "貼り付けで重複するエクスプローラー項目に新しい名前を付けるときに使用する名前付け規則を制御します。",
 			"explorerConfigurationTitle": "エクスプローラー",
 			"falseDescription": "パターンを無効にします。",
+			"fileDialogDefaultPath": "Default path for file dialogs, overriding user's home path. Only used in the absence of a context-specific path, such as most recently opened file or folder.",
 			"fileNesting.description": "各キー パターンには、任意の文字列と一致する 1 つの '*' 文字を含む場合があります。",
 			"fileNestingEnabled": "エクスプローラーでファイルの入れ子を有効にするかどうかを制御します。ファイルの入れ子を使用すると、ディレクトリ内の関連ファイルを 1 つの親ファイルの下に視覚的にグループ化できます。",
 			"fileNestingExpand": "ファイルの入れ子を自動的に展開するかどうかを制御します。これを有効にするためには、{0} を設定する必要があります。",
@@ -7072,7 +7074,7 @@
 			"inlineChatOuterCursorPosition": "外部エディターのカーソルが対話型エディター入力より上か下かのいずれか",
 			"inlineChatResponseType": "現在の対話型エディター セッションの最後の応答の種類",
 			"inlineChatResponseTypes": "受信した応答の種類",
-			"inlineChatUserDidEdit": "Whether the user did changes ontop of the inline chat",
+			"inlineChatUserDidEdit": "ユーザーがインライン チャットの上部で変更を行ったかどうか",
 			"inlineChatVisible": "対話型エディター入力が表示されているかどうか",
 			"mode": "対話型エディターで作成された変更をドキュメントに直接適用するか、最初にプレビューするかを構成します。",
 			"mode.live": "変更はドキュメントに直接適用されますが、インライン差分を介して強調表示することもできます。セッションを終了しても変更は保持されます。",
@@ -7092,8 +7094,7 @@
 			"interactiveScrollToBottom": "一番下にスクロール",
 			"interactiveScrollToTop": "一番上にスクロール",
 			"interactiveWindow": "対話型ウィンドウ",
-			"interactiveWindow.alwaysScrollOnNewCell": "対話型ウィンドウを自動的にスクロールして、最後に実行されたステートメントの出力を表示します。この値が false の場合、最後のセルが既にスクロール先の場合にのみウィンドウがスクロールされます。",
-			"interactiveWindow.restore": "ウィンドウの再読み込み時にインタラクティブ ウィンドウ セッション/履歴を復元する必要があるかどうかを制御します。インタラクティブ ウィンドウで使用されるコントローラーの状態がウィンドウの再読み込み時に保持されるかどうかは、コントローラーに貢献する拡張機能によって制御されます。"
+			"interactiveWindow.alwaysScrollOnNewCell": "対話型ウィンドウを自動的にスクロールして、最後に実行されたステートメントの出力を表示します。この値が false の場合、最後のセルが既にスクロール先の場合にのみウィンドウがスクロールされます。"
 		},
 		"vs/workbench/contrib/interactive/browser/interactiveEditor": {
 			"interactiveInputPlaceHolder": "こちらに '{0}' コードを入力し、{1} を押して実行してください"
@@ -7959,6 +7960,20 @@
 			"showFoldingControls.always": "折りたたみコントロールは常に表示されています。",
 			"showFoldingControls.mouseover": "折りたたみコントロールは、カーソルを合わせたときにのみ表示されます。",
 			"showFoldingControls.never": "折りたたみコントロールを表示せず、余白のサイズを小さくします。"
+		},
+		"vs/workbench/contrib/notebook/browser/notebookAccessibilityHelp": {
+			"notebook.cell.edit": "The Edit Cell command ({0}) will focus on the cell input.",
+			"notebook.cell.editNoKb": "The Edit Cell command will focus on the cell input and is currently not triggerable by a keybinding.",
+			"notebook.cell.executeAndFocusContainer": "The Execute Cell command ({0}) executes the cell that currently has focus.",
+			"notebook.cell.executeAndFocusContainerNoKb": "The Execute Cell command executes the cell that currently has focus and is currently not triggerable by a keybinding.",
+			"notebook.cell.focusInOutput": "The Focus Output command ({0}) will set focus in the cell's output.",
+			"notebook.cell.focusInOutputNoKb": "The Quit Edit command will set focus in the cell's output and is currently not triggerable by a keybinding.",
+			"notebook.cell.insertCodeCellBelowAndFocusContainer": "The Insert Cell Above/Below commands will create new empty code cells",
+			"notebook.cell.quitEdit": "The Quit Edit command ({0}) will set focus on the cell container. The default (Escape) key may need to be pressed twice first exit the virtual cursor if active.",
+			"notebook.cell.quitEditNoKb": "The Quit Edit command will set focus on the cell container and is currently not triggerable by a keybinding.",
+			"notebook.cellNavigation": "The up and down arrows will move focus between cells while focused on the outer cell container",
+			"notebook.changeCellType": "The Change Cell to Code/Markdown commands are used to switch between cell types.",
+			"notebook.overview": "The notebook view is a collection of code and markdown cells. Code cells can be executed and will produce output directly below the cell."
 		},
 		"vs/workbench/contrib/notebook/browser/notebookEditor": {
 			"fail.noEditor": "ノートブック エディターで、タイプ '{0}' のリソースを開くことができません。正しい拡張子がインストールされ、有効になっているかどうかを確認してください。",
@@ -12190,6 +12205,14 @@
 		},
 		"vs/workbench/services/search/common/queryBuilder": {
 			"search.noWorkspaceWithName": "ワークスペース フォルダーが存在しません: {0}"
+		},
+		"vs/workbench/services/secrets/electron-sandbox/secretStorageService": {
+			"encryptionNotAvailableJustTroubleshootingGuide": "An OS keyring couldn't be identified for storing the encryption related data in your current desktop environment.",
+			"isGnome": "You're running in a GNOME environment but the OS keyring is not available for encryption. Ensure you have gnome-keyring or another libsecret compatible implementation installed and running.",
+			"isKwallet": "You're running in a KDE environment but the OS keyring is not available for encryption. Ensure you have kwallet running.",
+			"troubleshootingButton": "Open troubleshooting guide",
+			"usePlainText": "Use weaker encryption",
+			"usePlainTextExtraSentence": "Open the troubleshooting guide to address this or you can use weaker encryption that doesn't use the OS keyring."
 		},
 		"vs/workbench/services/suggest/browser/simpleSuggestWidget": {
 			"ariaCurrenttSuggestionReadDetails": "{0}、ドキュメント: {1}",
