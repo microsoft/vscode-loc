@@ -2,9 +2,9 @@
 
 [![CI](https://github.com/microsoft/vscode-loc/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/vscode-loc/actions/workflows/ci.yml)
 
-This repository contains files to build localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
+This repository contains files to build localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language.
 
-Localized resource files are managed and edited in Microsoft Localization Community. Files will be exported to this repository when prepare the publishing of language pack.
+Localized resource files are managed and edited in Microsoft Localization Community. Files will be exported to this repository when preparing the publishing of language pack.
 
 Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs)
 
@@ -34,13 +34,13 @@ Translation strings are managed on the Microsoft Localization Platform, and chan
 
 ## Legal
 
-Before we can accept your pull request you will need to sign a **Contribution License Agreement**. All you need to do is to submit a pull request, then the PR will get appropriately labelled (e.g. `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). If you already signed the agreement we will continue with reviewing the PR, otherwise system will tell you how you can sign the CLA. Once you sign the CLA all future PR's will be labeled as `cla-signed`.
+Before we can accept your pull request, you will need to sign a **Contribution License Agreement**. All you need to do is to submit a pull request, then the PR will get appropriately labeled (e.g. `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). If you already signed the agreement, we will continue with reviewing the PR; otherwise, our system will tell you how you can sign the CLA. Once you sign the CLA, all future PRs will be labeled as `cla-signed`.
 
 # Microsoft Open Source Code of Conduct
 
 This project has adopted the [**Microsoft Open Source Code of Conduct**](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [**Code of Conduct FAQ**](https://opensource.microsoft.com/codeofconduct/faq/) or
+For more information, see the [**Code of Conduct FAQ**](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [**opencode@microsoft.com**](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## License 
+## License
 [MIT](LICENSE.md)
