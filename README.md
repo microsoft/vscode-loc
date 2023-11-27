@@ -1,14 +1,12 @@
 # Visual Studio Code Language Packs
 
-[![CI](https://github.com/microsoft/vscode-loc/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/vscode-loc/actions/workflows/ci.yml)
+Visual Studio Code is localized into many different languages using the concept of Language Packs. Language Packs can be installed by running the `>Configure Display Language` command in Visual Studio Code's Command Palette or installed via the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs).
 
-This repository contains files to build localized Language Pack extensions for Visual Studio Code. A Language Pack contains the localized string resources for a particular language. 
+The original English strings can be found in the source code of the [open source repository](https://github.com/microsoft/vscode) and the localized strings for supported languages can be found in this repository.
 
-Localized resource files are managed and edited in Microsoft Localization Community. Files will be exported to this repository when prepare the publishing of language pack.
+Localized resource files are managed and edited by Microsoft. Files will be exported to this repository when strings are updated to prepare for the publishing of language pack.
 
-Language pack extensions are published to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs)
-
-There are currently 14 "Core" languages for Visual Studio Code.
+There are currently 14 supported languages for Visual Studio Code.
 
 |Language|Visual Studio Code Language ID|MLCP Language Code|
 |--------|--------|--------|
