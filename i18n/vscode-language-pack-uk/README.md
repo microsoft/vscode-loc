@@ -26,7 +26,7 @@
 Висловлюємо особливу вдячність тим, хто брав участь у створенні пакета.
 
 **Учасники:**
-
+Yevhen Peliukhnia
 
 **Приємної роботи!**
 
@@ -61,6 +61,7 @@ Ukrainian Language Pack had received contribution through "By the community, for
 Special thanks to community contributors for making it available.
 
 **Contributors:**
+Yevhen Peliukhnia
 
 
 **Enjoy!**
