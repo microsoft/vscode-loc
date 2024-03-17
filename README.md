@@ -6,7 +6,7 @@ The original English strings can be found in the source code of the [open source
 
 Localized resource files are managed and edited by Microsoft. Files will be exported to this repository when strings are updated to prepare for the publishing of language pack.
 
-There are currently 14 supported languages for Visual Studio Code.
+There are currently 15 supported languages for Visual Studio Code.
 
 |Language|Visual Studio Code Language ID|MLCP Language Code|
 |--------|--------|--------|
@@ -24,6 +24,7 @@ There are currently 14 supported languages for Visual Studio Code.
 |**Turkish**|tr|Turkish (tr-tr)
 |**Polish**|pl| Polish (pl-pl)
 |**Pseudo Language**|qps-ploc|Pseudo (qps-ploc)
+|**Ukrainian**|uk|Ukrainian (uk-uk)
 
 ## Contributing
 
