@@ -2,5 +2,5 @@
 All notable changes to the "vscode-language-pack-uk" language pack will be documented in this file.
 
 ## [Released]
-* 
+* March 17, 2024 - first release
 
