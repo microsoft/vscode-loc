@@ -15,7 +15,7 @@
 
 ## 许可证
 
-源代码和字符串使用[MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md)许可进行授权。
+源代码和字符串使用 [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) 许可进行授权。
 
 ## 感谢
 
