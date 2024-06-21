@@ -1053,7 +1053,8 @@
 			"pasteAsProgress": "Запуск обработчиков вставки",
 			"pasteIntoEditorProgress": "Running paste handlers. Click to cancel and do basic paste",
 			"pasteWidgetVisible": "Отображается ли мини-приложение вставки",
-			"postPasteWidgetTitle": "Показать параметры вставки..."
+			"postPasteWidgetTitle": "Показать параметры вставки...",
+			"resolveProcess": "Resolving paste edit. Click to cancel"
 		},
 		"vs/editor/contrib/dropOrPasteInto/browser/defaultProviders": {
 			"defaultDropProvider.uriList.path": "Вставить путь",
@@ -1377,6 +1378,18 @@
 			"parameterHintsNextIcon": "Значок для отображения подсказки следующего параметра.",
 			"parameterHintsPreviousIcon": "Значок для отображения подсказки предыдущего параметра.",
 			"previous": "Назад"
+		},
+		"vs/editor/contrib/inlineEdits/browser/commands": {
+			"action.inlineEdits.accept": "Accept Inline Edit",
+			"action.inlineEdits.hide": "Hide Inline Edit",
+			"action.inlineEdits.showNext": "Show Next Inline Edit",
+			"action.inlineEdits.showPrevious": "Show Previous Inline Edit",
+			"action.inlineEdits.trigger": "Trigger Inline Edit",
+			"inlineEditsActions": "Accept Inline Edit"
+		},
+		"vs/editor/contrib/inlineEdits/browser/consts": {
+			"inlineEditsVisible": "Whether an inline edit is visible",
+			"isPinned": "Whether an inline edit is visible"
 		},
 		"vs/editor/contrib/inPlaceReplace/browser/inPlaceReplace": {
 			"InPlaceReplaceAction.next.label": "Заменить следующим значением",
@@ -1981,6 +1994,7 @@
 		"vs/platform/extensionManagement/common/abstractExtensionManagementService": {
 			"MarketPlaceDisabled": "Marketplace не включен",
 			"incompatible platform": "Расширение \"{0}\" недоступно в {1} для {2}.",
+			"incompatibleAPI": "Can't install '{0}' extension. {1}",
 			"malicious extension": "Не удается установить расширение «{0}», так как оно помечено как проблемное.",
 			"multipleDependentsError": "Не удается удалить расширение \"{0}\". От него зависят расширения \"{1}\", \"{2}\" и другие расширения.",
 			"multipleIndirectDependentsError": "Не удается удалить расширение \"{0}\". Для его удаления необходимо удалить расширения \"{1}\", \"{2}\", \"{3}\" и другие расширения, которые зависят от него.",
@@ -2052,6 +2066,8 @@
 			"invalidManifest": "Недопустимый VSIX: файл package.json не является файлом JSON."
 		},
 		"vs/platform/extensions/common/extensionValidator": {
+			"apiProposalMismatch": "Extension is not compatible with API proposal {0}. Extension requires version {1} but product has version {2}.",
+			"apiProposalMismatchNoVersion": "Extension is not compatible with API proposal {0}. Extension requires version {1} but product has no version defined.",
 			"extensionDescription.activationEvents1": "свойство `{0}` может быть опущено или должно быть типа `string []`",
 			"extensionDescription.activationEvents2": "свойство \"{0}\" должно быть опущено, если у расширения нет свойства \"{1}\" или \"{2}\".",
 			"extensionDescription.browser1": "свойство `{0}` может быть опущено или должно иметь тип `string`",
@@ -4411,9 +4427,10 @@
 			"workbench.editor.label.enabled": "Определяет, следует ли применять пользовательские метки редактора в рабочем интерфейсе.",
 			"workbench.editor.label.extname": "\"${extname}\": расширение файла (например, \"WORKSPACE_FOLDER/folder/file.txt -> txt\").",
 			"workbench.editor.label.filename": "\"${filename}\": имя файла без расширения (например, \"WORKSPACE_FOLDER/folder/file.txt -> file\").",
-			"workbench.editor.label.nthdirname": "\"${dirname(N)}\": имя n-й родительской папки, в которой находится файл (например, \"N=2: WORKSPACE_FOLDER/static/folder/file.txt -> WORKSPACE_FOLDER\"). Папки можно выбирать с начала пути, используя отрицательные числа (например, \"N=-1: WORKSPACE_FOLDER/folder/file.txt -> WORKSPACE_FOLDER\"). Если __элемент__ является абсолютным путем к шаблону, первая папка (\"N=-1\") относится к первой папке в абсолютном пути, в противном случае она соответствует папке рабочей области.",
+			"workbench.editor.label.nthdirname": "`${dirname(N)}`: name of the nth parent folder in which the file is located (e.g. `N=2: WORKSPACE_FOLDER/static/folder/file.txt -> WORKSPACE_FOLDER`). Folders can be picked from the start of the path by using negative numbers (e.g. `N=-1: WORKSPACE_FOLDER/folder/file.txt -> WORKSPACE_FOLDER`). If the __Item__ is an absolute pattern path, the first folder (`N=-1`) refers to the first folder in the absolute path, otherwise it corresponds to the workspace folder.",
+			"workbench.editor.label.nthextname": "`${extname(N)}`: the nth extension of the file separated by '.' (e.g. `N=2: WORKSPACE_FOLDER/folder/file.ext1.ext2.ext3 -> ext1`). Extension can be picked from the start of the extension by using negative numbers (e.g. `N=-1: WORKSPACE_FOLDER/folder/file.ext1.ext2.ext3 -> ext2`).",
 			"workbench.editor.label.patterns": "Управляет отрисовкой метки редактора. Каждый __элемент__ является шаблоном, который соответствует пути к файлу. Поддерживаются как относительные, так и абсолютные пути к файлам. Относительный путь должен включать папку WORKSPACE_FOLDER (например, \"WORKSPACE_FOLDER/src/**.tsx\" или \"*/src/**.tsx\"). Абсолютные шаблоны должны начинаться с \"/\". При совпадении нескольких шаблонов будет выбран путь с самым длинным совпадением. Каждое __значение__ является шаблоном для отрисованного редактора, если __элемент__ совпадает. Переменные заменяются на основе контекста:",
-			"workbench.editor.label.template": "Шаблон, который должен отображаться при совпадении закономерностей. Может включать переменные ${dirname}, ${filename} и ${extname}.",
+			"workbench.editor.label.template": "The template which should be rendered when the pattern matches. May include the variables ${dirname}, ${filename} and ${extname}.",
 			"workbench.editor.labelFormat.default": "Отображать имя файла. Если вкладки включены и в одной группе есть два файла с одинаковыми именами, будут добавлены различающиеся части пути к каждому из этих файлов. Если вкладки отключены, то для активного редактора отображается путь по отношению к корневому каталогу рабочей области.",
 			"workbench.editor.labelFormat.long": "Отображать имя файла и абсолютный путь.",
 			"workbench.editor.labelFormat.medium": "Отображать имя файла и путь к файлу относительно папки рабочей области.",
@@ -4861,6 +4878,8 @@
 			"runningAsRoot": "Не рекомендуется запускать {0} с правами привилегированного пользователя.",
 			"runningTranslated": "Вы используете эмулированную версию {0}. Для повышения производительности скачайте собственную версию arm64 сборки {0} для вашего компьютера.",
 			"sharedProcessCrash": "Общий фоновый процесс неожиданно завершился. Перезапустите приложение, чтобы восстановить его.",
+			"showArgvParseWarning": "The runtime arguments file 'argv.json' contains errors. Please correct them and restart.",
+			"showArgvParseWarningAction": "Open File",
 			"shutdownErrorClose": "Не удалось закрыть окно из-за непредвиденной ошибки",
 			"shutdownErrorDetail": "Ошибка: {0}",
 			"shutdownErrorLoad": "Не удалось изменить рабочую область из-за непредвиденной ошибки",
@@ -5006,6 +5025,7 @@
 			"verbosity.keybindingsEditor.description": "Предоставить сведения о способах изменения привязки клавиш в редакторе привязок клавиш при находящейся в фокусе строке.",
 			"verbosity.notebook": "Укажите сведения о том, как перевести фокус на контейнер ячейки или внутренний редактор, если в фокусе находится ячейка записной книжки.",
 			"verbosity.notification": "Укажите сведения о том, как открыть уведомление в представлении с поддержкой специальных возможностей.",
+			"verbosity.replInputHint": "Provide information about relevant actions For the Repl input.",
 			"verbosity.terminal.description": "Укажите сведения о том, как получить доступ к меню справки по специальным возможностям терминала, когда он находится в фокусе.",
 			"voice.speechLanguage": "Язык, который должен использоваться при преобразовании текста в речь и преобразовании речи в текст. Если возможно, выберите \"автоматически\", чтобы использовать настроенный язык отображения. Обратите внимание, что не все языки отображения могут поддерживаться функцией распознавания речи и синтезаторами.",
 			"voice.speechTimeout": "Длительность в миллисекундах, в течение которой распознавание речи остается активным после того, как вы перестаете говорить. Например, в сеансе чата расшифрованный текст отправляется автоматически по истечении времени ожидания. Установите значение \"0\", чтобы отключить эту функцию."
@@ -5343,6 +5363,9 @@
 		"vs/workbench/contrib/chat/browser/chat.contribution": {
 			"chat": "Чат",
 			"chat.experimental.implicitContext": "Управляет тем, отображается ли флажок, позволяющий пользователю определить, какой неявный контекст включен в запрос участника чата.",
+			"chat.experimental.variables.editor": "Enables variables for editor chat.",
+			"chat.experimental.variables.notebook": "Enables variables for notebook chat.",
+			"chat.experimental.variables.terminal": "Enables variables for terminal chat.",
 			"clear": "Начать новый чат",
 			"file": "Выберите файл в рабочей области",
 			"interactiveSession.editor.fontFamily": "Определяет семейство шрифтов в блоках кода чата.",
@@ -5421,6 +5444,7 @@
 			"chatParticipantFullName": "Полное имя участника чата, отображаемое в качестве метки для ответов, поступающих от этого участника. Если не предоставлено, используется {0}.",
 			"chatParticipantId": "Уникальный идентификатор этого участника чата.",
 			"chatParticipantName": "Имя этого участника чата, демонстрируемое пользователю. Пользователь будет использовать \"@\" с этим именем для вызова участника. Имя не должно содержать пробелы.",
+			"chatParticipantWhen": "A condition which must be true to enable this participant.",
 			"chatSampleRequest": "Когда пользователь щелкает этого участника в \"/help\", этот текст отправляется участнику.",
 			"vscode.extension.contributes.chatParticipant": "Добавляет участника чата"
 		},
@@ -5489,7 +5513,7 @@
 			"Language Models": "Языковые модели",
 			"languageModels": "Статистика использования языковых моделей этого расширения."
 		},
-		"vs/workbench/contrib/chat/common/tools/toolsContributions": {
+		"vs/workbench/contrib/chat/common/tools/languageModelToolsContribution": {
 			"parametersSchema": "A JSON schema for the parameters this tool accepts.",
 			"toolDescription": "A description of this tool that may be passed to a language model.",
 			"toolDisplayName": "A human-readable name for this tool that may be used to describe it in the UI.",
@@ -6968,6 +6992,7 @@
 			"id required": "Требуется идентификатор расширения.",
 			"importKeyboardShortcutsFroms": "Перенести сочетания клавиш из...",
 			"install button": "Установить",
+			"install installAndDonotSync": "Install (Do not Sync)",
 			"installButton": "&&Установить",
 			"installExtensionFromLocation": "Установить расширение из расположения...",
 			"installExtensionQuickAccessHelp": "Установить или искать расширения",
@@ -7981,7 +8006,7 @@
 			"change.1": "1 изменение",
 			"change.N": "Изменений: {0}",
 			"review": "Прежде чем продолжить, проверьте (и примите или отклоните) все изменения",
-			"review.1": "$(info) Accept or discard change",
+			"review.1": "Accept or Discard change",
 			"review.N": "$(info) Принять или отклонить изменения: {0}"
 		},
 		"vs/workbench/contrib/inlineChat/browser/inlineChatWidget": {
@@ -8039,6 +8064,7 @@
 		},
 		"vs/workbench/contrib/interactive/browser/interactive.contribution": {
 			"interactive.activeCodeBorder": "Цвет границы для текущей интерактивной ячейки кода, когда редактор находится в фокусе.",
+			"interactive.configExecute": "Configure input box behavior",
 			"interactive.execute": "Выполнить код",
 			"interactive.history.focus": "Журнал фокусировки",
 			"interactive.history.next": "Следующее значение в журнале",
@@ -8051,11 +8077,13 @@
 			"interactiveScrollToTop": "Прокрутить до верхней границы",
 			"interactiveWindow": "Интерактивное окно",
 			"interactiveWindow.alwaysScrollOnNewCell": "Автоматически прокрутите интерактивное окно, чтобы показать выходные данные последнего выполненного оператора. Если это значение равно false, окно будет прокручиваться только в том случае, если оно уже прокручивалось до последней ячейки.",
-			"interactiveWindow.executeWithShiftEnter": "Выполните поле ввода интерактивного окна (REPL) с помощью SHIFT+ВВОД, чтобы можно было использовать ВВОД для создания новой строки.",
-			"interactiveWindow.promptToSaveOnClose": "Предлагать сохранить интерактивное окно при его закрытии. Изменение этого параметра повлияет только на новые интерактивные окна."
+			"interactiveWindow.executeWithShiftEnter": "Execute the Interactive Window (REPL) input box with shift+enter, so that enter can be used to create a newline.",
+			"interactiveWindow.promptToSaveOnClose": "Предлагать сохранить интерактивное окно при его закрытии. Изменение этого параметра повлияет только на новые интерактивные окна.",
+			"interactiveWindow.showExecutionHint": "Display a hint in the Interactive Window (REPL) input box to indicate how to execute code."
 		},
-		"vs/workbench/contrib/interactive/browser/interactiveEditor": {
-			"interactiveInputPlaceHolder": "Введите код \"{0}\" и здесь нажмите \"{1}\" для выполнения"
+		"vs/workbench/contrib/interactive/browser/replInputHintContentWidget": {
+			"disableHint": " Toggle {0} in settings to disable this hint.",
+			"emptyHintText": "Press {0} to execute. "
 		},
 		"vs/workbench/contrib/interactiveEditor/browser/interactiveEditorActions": {
 			"accept": "Выполнить запрос",
@@ -9260,6 +9288,7 @@
 		"vs/workbench/contrib/notebook/browser/notebookIcons": {
 			"clearIcon": "Значок очистки выходных данных ячейки в редакторах записных книжек.",
 			"collapsedIcon": "Значок аннотирования свернутого раздела в редакторах записных книжек.",
+			"configIcon": "Icon to configure in notebook editors.",
 			"copyIcon": "Значок для копирования содержимого в буфер обмена",
 			"deleteCellIcon": "Значок удаления ячейки в редакторах записных книжек.",
 			"editIcon": "Значок изменения ячейки в редакторах записных книжек.",
@@ -10214,6 +10243,7 @@
 			"scm.diffDecorationsIgnoreTrimWhitespace.false": "Не игнорировать начальные и конечные пробелы.",
 			"scm.diffDecorationsIgnoreTrimWhitespace.inherit": "Наследовать от diffEditor.ignoreTrimWhitespace.",
 			"scm.diffDecorationsIgnoreTrimWhitespace.true": "Игнорировать начальные и конечные пробелы.",
+			"scm.experimental.showHistoryGraph": "Controls whether to show the history graph instead of incoming/outgoing changes in the Source Control view.",
 			"scm.providerCountBadge": "Управляет индикаторами событий счетчика в заголовках поставщика системы управления версиями. Эти заголовки отображаются в представлении при наличии нескольких поставщиков, или если включен параметр {0}, и в представлении \"Репозитории системы управления версиями\".",
 			"scm.providerCountBadge.auto": "Отображение счетчика для поставщика системы управления версиями только при ненулевом значении.",
 			"scm.providerCountBadge.hidden": "Скрытие счетчиков для поставщиков систем управления версиями.",
@@ -11905,6 +11935,7 @@
 		},
 		"vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollColorRegistry": {
 			"terminalStickyScroll.background": "Цвет фона наложения залипания прокрутки в терминале.",
+			"terminalStickyScroll.border": "The border of the sticky scroll overlay in the terminal.",
 			"terminalStickyScrollHover.background": "Цвет фона наложения залипания прокрутки в терминале при наведении курсора."
 		},
 		"vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollOverlay": {
@@ -13568,6 +13599,7 @@
 			"remote": "Удаленный"
 		},
 		"vs/workbench/services/extensionManagement/electron-sandbox/remoteExtensionManagementService": {
+			"incompatibleAPI": "Can't install '{0}' extension. {1}",
 			"notFoundCompatibleDependency": "Невозможно установить расширение \"{0}\" из-за несовместимости с текущей версией {1} (версия {2}).",
 			"notFoundReleaseExtension": "Не удается установить версию выпуска расширения \"{0}\", так как отсутствует версия выпуска."
 		},
@@ -13604,6 +13636,9 @@
 		"vs/workbench/services/extensions/common/extensionHostManager": {
 			"measureExtHostLatency": "Измерить задержку хост-процесса для расширений"
 		},
+		"vs/workbench/services/extensions/common/extensionsProposedApi": {
+			"enabledProposedAPIs": "API Proposals"
+		},
 		"vs/workbench/services/extensions/common/extensionsRegistry": {
 			"extensionKind": "Определите тип расширения. Расширения \"ui\" устанавливаются и запускаются на локальном компьютере, а расширения \"workspace\" — на удаленном компьютере.",
 			"extensionKind.empty": "Определите расширение, которое не может выполняться в удаленном контексте ни на локальном, ни на удаленном компьютере.",
@@ -13615,6 +13650,7 @@
 			"ui": "Тип расширения пользовательского интерфейса. В удаленном окне такие расширения включены, только если они доступны на локальном компьютере.",
 			"vscode.extension.activationEvents": "События активации для расширения кода VS Code.",
 			"vscode.extension.activationEvents.onAuthenticationRequest": "Событие активации, выдаваемое каждый раз при запросе сеансов от указанного поставщика проверки подлинности.",
+			"vscode.extension.activationEvents.onChatParticipant": "An activation event emitted when the specified chat participant is invoked.",
 			"vscode.extension.activationEvents.onCommand": "Событие активации выдается каждый раз при вызове указанной команды.",
 			"vscode.extension.activationEvents.onCustomEditor": "Событие активации, возникающее каждый раз, когда указанный специализированный редактор становится видимым.",
 			"vscode.extension.activationEvents.onDebug": "Событие активации выдается каждый раз, когда пользователь запускает отладку или собирается установить конфигурацию отладки.",
@@ -13626,6 +13662,7 @@
 			"vscode.extension.activationEvents.onFileSystem": "Событие активации выдается каждый раз при доступе к файлу или папке по заданной схеме.",
 			"vscode.extension.activationEvents.onIssueReporterOpened": "Событие активации, создаваемое при открытии средства сообщения о проблемах.",
 			"vscode.extension.activationEvents.onLanguage": "Событие активации выдается каждый раз, когда открывается файл, который разрешается к указанному языку.",
+			"vscode.extension.activationEvents.onLanguageModelTool": "An activation event emitted when the specified language model tool is invoked.",
 			"vscode.extension.activationEvents.onNotebook": "Событие активации выдается каждый раз при открытии указанного документа записной книжки.",
 			"vscode.extension.activationEvents.onOpenExternalUri": "Событие активации, выдаваемое при открытии внешнего URI (например, ссылки HTTP или HTTPS).",
 			"vscode.extension.activationEvents.onRenderer": "Событие активации, создаваемое при каждом использовании отрисовщика выходных данных записной книжки.",
