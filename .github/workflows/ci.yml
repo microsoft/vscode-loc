@@ -19,14 +19,14 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - id: set-matrix
         run: |
           $obj = @{
             languagePack = Get-ChildItem i18n | ForEach-Object Name
           }
-          Write-Host "::set-output name=matrix::$($obj | ConvertTo-Json -Depth 100 -Compress)"
+          "matrix=$($obj | ConvertTo-Json -Depth 100 -Compress)" >> $env:GITHUB_OUTPUT
         shell: pwsh
   build:
     name: Build
@@ -36,7 +36,7 @@ jobs:
       matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Generate Name
         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
@@ -48,7 +48,7 @@ jobs:
         run: cd ./i18n/${{ matrix.languagePack }} && npx vsce package -o ${{ env.PACKAGE_NAME }}.vsix
 
       - name: Publish Test Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PACKAGE_NAME }}.vsix
           path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix
