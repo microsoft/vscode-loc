@@ -188,11 +188,13 @@
 			"invalid file": "Errore durante l'estrazione di {0}. File non valido.",
 			"notFound": "{0} non è stato trovato all'interno del file ZIP."
 		},
-		"vs/editor/browser/controller/textAreaHandler": {
-			"accessibilityModeOff": "L'editor non è accessibile in questo momento.",
-			"accessibilityOffAriaLabel": "{0} Per abilitare la modalità ottimizzata per l'utilità per la lettura dello schermo usare {1}",
-			"accessibilityOffAriaLabelNoKb": "{0} Per abilitare la modalità ottimizzata per l'utilità per la lettura dello schermo, aprire la selezione rapida con {1} ed eseguire il comando Attiva/Disattiva modalità di accessibilità dell'utilità per la lettura dello schermo, attualmente non attivabile tramite tastiera.",
-			"accessibilityOffAriaLabelNoKbs": "{0} Assegnare un tasto di scelta rapida per il comando Attiva/Disattiva modalità di accessibilità dell'utilità per la lettura dello schermo accedendo all'editor dei tasti di scelta rapida con {1} ed eseguirlo.",
+		"vs/editor/browser/controller/editContext/screenReaderUtils": {
+			"accessibilityModeOff": "The editor is not accessible at this time.",
+			"accessibilityOffAriaLabel": "{0} To enable screen reader optimized mode, use {1}",
+			"accessibilityOffAriaLabelNoKb": "{0} To enable screen reader optimized mode, open the quick pick with {1} and run the command Toggle Screen Reader Accessibility Mode, which is currently not triggerable via keyboard.",
+			"accessibilityOffAriaLabelNoKbs": "{0} Please assign a keybinding for the command Toggle Screen Reader Accessibility Mode by accessing the keybindings editor with {1} and run it."
+		},
+		"vs/editor/browser/controller/editContext/textArea/textAreaEditContext": {
 			"editor": "editor"
 		},
 		"vs/editor/browser/coreCommands": {
@@ -206,6 +208,9 @@
 			"redo": "Ripeti",
 			"selectAll": "Seleziona tutto",
 			"undo": "Annulla azione"
+		},
+		"vs/editor/browser/gpu/viewGpuContext": {
+			"editor.dom.render": "Use DOM-based rendering"
 		},
 		"vs/editor/browser/services/hoverService/hoverWidget": {
 			"hoverhint": "Tieni premuto il tasto {0} per passare il mouse"
@@ -297,6 +302,7 @@
 			"multiDiffEditor.headerBackground": "Colore di sfondo dell'intestazione dell'editor diff"
 		},
 		"vs/editor/browser/widget/multiDiffEditor/multiDiffEditorWidgetImpl": {
+			"loading": "Loading...",
 			"noChangedFiles": "Nessun file modificato"
 		},
 		"vs/editor/common/config/editorConfigurationSchema": {
@@ -493,6 +499,7 @@
 			"editorViewAccessibleLabel": "Contenuto editor",
 			"emptySelectionClipboard": "Controlla se, quando si copia senza aver effettuato una selezione, viene copiata la riga corrente.",
 			"enabled": "Abilita la lampadina delle azioni codice nell'editor.",
+			"experimentalEditContextEnabled": "Sets whether the new experimental edit context should be used instead of the text area.",
 			"experimentalWhitespaceRendering": "Controlla se viene eseguito il rendering degli spazi vuoti con un nuovo metodo sperimentale.",
 			"experimentalWhitespaceRendering.font": "Usare un nuovo metodo di rendering con tipi di caratteri.",
 			"experimentalWhitespaceRendering.off": "Usare il metodo di rendering stabile.",
@@ -533,6 +540,7 @@
 			"inlayHints.enable": "Abilita i suggerimenti incorporati nell'Editor.",
 			"inlayHints.fontFamily": "Controlla la famiglia di caratteri dei suggerimenti inlay nell'editor. Se impostato su vuoto, viene usato {0}.",
 			"inlayHints.fontSize": "Controlla le dimensioni del carattere dei suggerimenti di inlay nell'editor. Per impostazione predefinita, {0} viene usato quando il valore configurato è minore di {1} o maggiore delle dimensioni del carattere dell'editor.",
+			"inlayHints.maximumLength": "Maximum overall length of inlay hints, for a single line, before they get truncated by the editor. Set to `0` to never truncate",
 			"inlayHints.padding": "Abilita il riempimento attorno ai suggerimenti incorporati nell'editor.",
 			"inline": "I suggerimenti rapidi vengono visualizzati come testo fantasma",
 			"inlineCompletionsAccessibilityVerbose": "Controlla se l'hint di accessibilità deve essere fornito agli utenti dell'utilità per la lettura dello schermo quando viene visualizzato un completamento inline.",
@@ -549,6 +557,7 @@
 			"inlineSuggest.showToolbar.never": "Non mostrare mai la barra dei suggerimenti in linea.",
 			"inlineSuggest.showToolbar.onHover": "Mostra la barra degli strumenti dei suggerimenti in linea quando al passaggio del mouse su un suggerimento in linea.",
 			"inlineSuggest.suppressSuggestions": "Controlla la modalità di interazione dei suggerimenti inline con il widget dei suggerimenti. Se questa opzione è abilitata, il widget dei suggerimenti non viene visualizzato automaticamente quando sono disponibili suggerimenti inline.",
+			"inlineSuggest.syntaxHighlightingEnabled": "Controls whether to show syntax highlighting for inline suggestions in the editor.",
 			"letterSpacing": "Controlla la spaziatura tra le lettere in pixel.",
 			"lineHeight": "Controlla l'altezza della riga. \r\n - Usare 0 per calcolare automaticamente l'altezza della riga dalle dimensioni del carattere.\r\n - I valori compresi tra 0 e 8 verranno usati come moltiplicatore con le dimensioni del carattere.\r\n - I valori maggiori o uguali a 8 verranno usati come valori effettivi.",
 			"lineNumbers": "Controlla la visualizzazione dei numeri di riga.",
@@ -830,7 +839,6 @@
 			"editorTextFocus": "Indica se il testo dell'editor ha lo stato attivo (il cursore lampeggia)",
 			"inCompositeEditor": "Indica se l'editor fa parte di un editor più esteso (ad esempio notebook)",
 			"inDiffEditor": "Indica se il contesto è un editor diff",
-			"inMultiDiffEditor": "Indica se il contesto è un editor con più differenze",
 			"isEmbeddedDiffEditor": "Indica se il contesto è un editor diff incorporato",
 			"multiDiffEditorAllCollapsed": "Indica se tutti i file nell'editor con più differenze sono compressi",
 			"standaloneColorPickerFocused": "Indicare se la selezione colori autonoma è evidenziata",
@@ -1020,21 +1028,23 @@
 			"placeHolder": "Selezionare un comando",
 			"showLensOnLine": "Mostra comandi di CodeLens per la riga corrente"
 		},
-		"vs/editor/contrib/colorPicker/browser/colorHoverParticipant": {
-			"hoverAccessibilityColorParticipant": "Qui è disponibile una selezione colori."
+		"vs/editor/contrib/colorPicker/browser/colorPickerParts/colorPickerCloseButton": {
+			"closeIcon": "Icon to close the color picker"
 		},
-		"vs/editor/contrib/colorPicker/browser/colorPickerWidget": {
-			"clickToToggleColorOptions": "Fare clic per attivare/disattivare le opzioni di colore (rgb/hsl/hex)",
-			"closeIcon": "Icona per chiudere la selezione colori"
+		"vs/editor/contrib/colorPicker/browser/colorPickerParts/colorPickerHeader": {
+			"clickToToggleColorOptions": "Click to toggle color options (rgb/hsl/hex)"
 		},
-		"vs/editor/contrib/colorPicker/browser/standaloneColorPickerActions": {
-			"hideColorPicker": "Nascondere la Selezione colori",
-			"hideColorPickerDescription": "Nascondi la selezione colori standalone.",
-			"insertColorWithStandaloneColorPicker": "Inserire colore con Selezione colori autonomo",
-			"insertColorWithStandaloneColorPickerDescription": "Inserisci colori hex/rgb/hs con il selettore colori standalone con lo stato attivo.",
-			"mishowOrFocusStandaloneColorPicker": "&&Mostra o sposta lo stato attivo su Selezione colori autonomo",
-			"showOrFocusStandaloneColorPicker": "Mostra o sposta lo stato attivo su Selezione colori autonomo",
-			"showOrFocusStandaloneColorPickerDescription": "Mostra o sposta lo stato attivo su un selettore colori standalone che usa il provider di colori predefinito. Visualizza i colori hex/rgb/hsl."
+		"vs/editor/contrib/colorPicker/browser/hoverColorPicker/hoverColorPickerParticipant": {
+			"hoverAccessibilityColorParticipant": "There is a color picker here."
+		},
+		"vs/editor/contrib/colorPicker/browser/standaloneColorPicker/standaloneColorPickerActions": {
+			"hideColorPicker": "Hide the Color Picker",
+			"hideColorPickerDescription": "Hide the standalone color picker.",
+			"insertColorWithStandaloneColorPicker": "Insert Color with Standalone Color Picker",
+			"insertColorWithStandaloneColorPickerDescription": "Insert hex/rgb/hsl colors with the focused standalone color picker.",
+			"mishowOrFocusStandaloneColorPicker": "&&Show or Focus Standalone Color Picker",
+			"showOrFocusStandaloneColorPicker": "Show or Focus Standalone Color Picker",
+			"showOrFocusStandaloneColorPickerDescription": "Show or focus a standalone color picker which uses the default color provider. It displays hex/rgb/hsl colors."
 		},
 		"vs/editor/contrib/comment/browser/comment": {
 			"comment.block": "Attiva/Disattiva commento per il blocco",
@@ -1160,6 +1170,7 @@
 			"removeManualFoldingRanges.label": "Rimuovi intervalli di riduzione manuale",
 			"toggleFoldAction.label": "Attiva/Disattiva riduzione",
 			"toggleFoldRecursivelyAction.label": "Attiva/disattiva riduzione in modo ricorsivo",
+			"toggleImportFold.label": "Toggle Import Fold",
 			"unFoldRecursivelyAction.label": "Espandi in modo ricorsivo",
 			"unfoldAction.label": "Espandi",
 			"unfoldAllAction.label": "Espandi tutto",
@@ -1281,6 +1292,12 @@
 			"hasSymbols": "Indica se sono presenti posizioni dei simboli a cui è possibile passare solo tramite la tastiera.",
 			"location": "Simbolo {0} di {1}",
 			"location.kb": "Simbolo {0} di {1}, {2} per il successivo"
+		},
+		"vs/editor/contrib/gpu/browser/gpuActions": {
+			"drawGlyph.label": "Draw Glyph",
+			"gpuDebug.label": "Developer: Debug Editor GPU Renderer",
+			"logTextureAtlasStats.label": "Log Texture Atlas Stats",
+			"saveTextureAtlas.label": "Save Texture Atlas"
 		},
 		"vs/editor/contrib/hover/browser/contentHoverRendered": {
 			"hoverAccessibilityStatusBar": "Questa è una barra di stato al passaggio del mouse.",
@@ -1404,18 +1421,6 @@
 		},
 		"vs/editor/contrib/inlineEdit/browser/hoverParticipant": {
 			"hoverAccessibilityInlineEdits": "Qui sono disponibili modifiche inline."
-		},
-		"vs/editor/contrib/inlineEdits/browser/commands": {
-			"action.inlineEdits.accept": "Accetta modifica inline",
-			"action.inlineEdits.hide": "Nascondi modifica inline",
-			"action.inlineEdits.showNext": "Mostra modifica inline successiva",
-			"action.inlineEdits.showPrevious": "Mostra modifica inline precedente",
-			"action.inlineEdits.trigger": "Attiva modifica inline",
-			"inlineEditsActions": "Accetta modifica inline"
-		},
-		"vs/editor/contrib/inlineEdits/browser/consts": {
-			"inlineEditsVisible": "Indica se una modifica inline è visibile",
-			"isPinned": "Indica se una modifica inline è visibile"
 		},
 		"vs/editor/contrib/inPlaceReplace/browser/inPlaceReplace": {
 			"InPlaceReplaceAction.next.label": "Sostituisci con il valore successivo",
@@ -2086,14 +2091,17 @@
 			"errorDeleting": "Non è possibile eliminare la cartella esistente '{0}' durante l'installazione dell'estensione '{1}'. Eliminare la cartella manualmente e riprovare",
 			"incompatible": "Non è possibile installare l'estensione '{0}' perché non è compatibile con VS Code '{1}'.",
 			"invalidManifest": "Non è possibile installare l'estensione '{0}' a causa della mancata corrispondenza del manifesto con il Marketplace",
+			"not signed": "Extension is not signed.",
 			"removeError": "Errore durante la rimozione dell'estensione: {0}. Chiudere e riavviare VS Code prima di riprovare.",
-			"restartCode": "Riavviare VS Code prima di reinstallare {0}."
+			"restartCode": "Riavviare VS Code prima di reinstallare {0}.",
+			"signature verification failed": "Signature verification failed with '{0}' error.",
+			"signature verification not executed": "Signature verification was not executed."
 		},
 		"vs/platform/extensionManagement/node/extensionManagementUtil": {
 			"invalidManifest": "VSIX non valido: package.json non è un file JSON."
 		},
 		"vs/platform/extensions/common/extensionValidator": {
-			"apiProposalMismatch": "L'estensione usa una proposta API '{0}' non compatibile con la versione corrente di VS Code.",
+			"apiProposalMismatch": "This extension is using the API proposal '{0}' that is not compatible with the current version of VS Code.",
 			"extensionDescription.activationEvents1": "la proprietà `{0}` può essere omessa o deve essere di tipo `string[]`",
 			"extensionDescription.activationEvents2": "la proprietà '{0}' deve essere omessa se l'estensione non contiene una proprietà '{1}' o '{2}'.",
 			"extensionDescription.browser1": "la proprietà `{0}` può essere omessa o deve essere di tipo `string`",
@@ -2377,7 +2385,6 @@
 			"proxySupportOff": "Disabilita il supporto proxy per le estensioni.",
 			"proxySupportOn": "Abilita il supporto proxy per le estensioni.",
 			"proxySupportOverride": "Abilita il supporto proxy per le estensioni ed esegue l'override delle opzioni di richiesta.",
-			"request": "Richieste di rete",
 			"strictSSL": "Controlla se il certificato del server proxy deve essere verificato in base all'elenco di CA specificate.",
 			"systemCertificates": "Controlla se i certificati della CA devono essere caricati dal sistema operativo. Dopo la disattivazione in Windows e macOS è richiesto un riavvio della finestra.",
 			"systemCertificatesV2": "Controlla se è necessario abilitare il caricamento sperimentale dei certificati CA dal sistema operativo. Usa un approccio più generale rispetto all'implementazione predefinita."
@@ -2954,11 +2961,11 @@
 			"name": "Nome del processo",
 			"pid": "PID"
 		},
+		"vs/code/electron-utility/sharedProcess/sharedProcessMain": {
+			"sharedLog": "Shared"
+		},
 		"vs/code/node/cliProcessMain": {
 			"cli": "Interfaccia della riga di comando"
-		},
-		"vs/code/node/sharedProcess/sharedProcessMain": {
-			"sharedLog": "Condiviso"
 		},
 		"vs/workbench/api/browser/mainThreadAuthentication": {
 			"allow": "&&Consenti",
@@ -3270,6 +3277,7 @@
 			"workspace": "Area di lavoro"
 		},
 		"vs/workbench/browser/actions/helpActions": {
+			"getStartedWithAccessibilityFeatures": "Get Started with Accessibility Features",
 			"keybindingsReference": "Riferimento per tasti di scelta rapida",
 			"miDocumentation": "&&Documentazione",
 			"miKeyboardShortcuts": "&&Riferimento per tasti di scelta rapida",
@@ -4408,6 +4416,7 @@
 			"openFoldersInNewWindow": "Controlla se le cartelle devono essere aperte in una nuova finestra o sostituire l'ultima finestra attiva.\r\nTenere presente che in alcuni casi questa impostazione viene ignorata, ad esempio quando si usa l'opzione della riga di comando `--new-window` o `--reuse-window`.",
 			"panelDefaultLocation": "Controlla la posizione predefinita del pannello (terminale, console di debug, output, problemi) in una nuova area di lavoro. Può essere visualizzato in basso, in alto, a destra o a sinistra dell'area dell'editor.",
 			"panelOpensMaximized": "Controlla se il pannello viene aperto a schermo intero. Può essere sempre aperto a schermo intero, mai aperto a schermo intero oppure aperto nell'ultimo stato in cui si trovava prima di essere chiuso.",
+			"panelShowLabel": "Controls whether activity items in the panel title are shown as label or icon.",
 			"perEditorGroup": "Controlla se applicare il limite massimo di editor aperti al singolo gruppo di editor o a tutti i gruppi di editor.",
 			"pinnedTabSizing": "Controlla le dimensioni delle schede bloccate. Le schede bloccate sono visualizzate all'inizio di tutte le schede aperte e in genere non vengono chiuse finché non vengono rimosse. Questo valore viene ignorato quando {0} non è impostato su {1}.",
 			"preserveInput": "Controlla se l'ultimo input digitato nel riquadro comandi deve essere ripristinato alla successiva riapertura del riquadro.",
@@ -5071,7 +5080,7 @@
 			"accessibilityConfigurationTitle": "Accessibilità",
 			"announcement.enabled.auto": "Abilita l'annuncio, che verrà riprodotto solo in modalità ottimizzata per la lettura dello schermo.",
 			"announcement.enabled.off": "Disabilitare annuncio.",
-			"autoSynthesize": "Indica se una risposta testuale deve essere letta automaticamente ad alta voce quando il parlato è stato usato come input. Ad esempio, in una sessione di chat una risposta viene sintetizzata automaticamente quando la voce è stata usata come richiesta di chat.",
+			"autoSynthesize": "Whether a textual response should automatically be read out aloud. For non screen reader users, this will happen when speech was used as input. For screen reader users, this will happen with any input type. For example, in a chat session, a response is automatically synthesized when voice is used as chat request.",
 			"dimUnfocusedEnabled": "Indica se attenuare gli editor e i terminali con stato non attivo, in modo che sia più chiaro dove verrà inviato l'input digitato. Funziona con la maggior parte degli editor con le eccezioni rilevanti di quelli che usano iframe come notebook ed editor di webview di estensione.",
 			"dimUnfocusedOpacity": "Frazione di opacità (da 0,2 a 1,0) da usare per editor e terminali non attivati. Questa operazione avrà effetto solo quando {0} è abilitato.",
 			"sound.enabled.auto": "Abilitare l'audio quando è collegata un'utilità per la lettura dello schermo.",
@@ -5093,6 +5102,7 @@
 			"verbosity.notification": "Fornire informazioni su come aprire la notifica in una visualizzazione accessibile.",
 			"verbosity.replInputHint": "Fornire informazioni sulle azioni pertinenti per l'input Repl.",
 			"verbosity.terminal.description": "Fornire informazioni su come accedere al menu della Guida sull'accessibilità del terminale quando il terminale è attivo.",
+			"verbosity.walkthrough": "Provide information about how to open the walkthrough in an Accessible View.",
 			"voice.speechLanguage": "Lingua che deve essere usata per la sintesi vocale e la conversione della voce in testo scritto. Selezionare 'auto' per usare la lingua di visualizzazione configurata, se possibile. Non tutte le lingue di visualizzazione potrebbero essere supportate dal riconoscimento vocale e dai sintetizzatori.",
 			"voice.speechTimeout": "Durata in millisecondi in cui il riconoscimento vocale rimane attivo dopo aver smesso di parlare. Ad esempio, in una sessione di chat il testo trascritto viene inviato automaticamente dopo il timeout. Impostare su '0' per disabilitare questa funzionalità."
 		},
@@ -5209,8 +5219,19 @@
 			"audioCues.help.settings": "Abilita/disabilita il segnale audio",
 			"disabled": "Disabilitato"
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForExtensionAction": {
+			"accounts": "Accounts",
+			"currentAccount": "Current account",
+			"manageAccountPreferenceForExtension": "Manage Extension Account Preferences",
+			"noAccounts": "No accounts are currently used by this extension.",
+			"pickAProviderTitle": "Manage Extension Account Preferences",
+			"placeholder": "Manage '{0}' account preferences...",
+			"selectProvider": "Select an authentication provider to manage account preferences for",
+			"title": "'{0}' Account Preferences For This Workspace"
+		},
 		"vs/workbench/contrib/authentication/browser/actions/manageTrustedExtensionsForAccountAction": {
 			"accountLastUsedDate": "Ultimo utilizzo di questo account: {0}",
+			"accountPreferences": "Manage account preferences for this extension",
 			"accounts": "Account",
 			"manageExtensions": "Scegliere le estensioni che possono accedere a questo account",
 			"manageTrustedExtensions": "Gestisci estensioni attendibili",
@@ -5368,8 +5389,11 @@
 			"chat.newChat.label": "Nuova chat"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatCodeblockActions": {
-			"applyCodeBlock.error": "Non è possibile applicare il blocco di codice: {0}",
-			"applyCodeBlock.progress": "Applicazione del blocco di codice in corso usando {0}...",
+			"chat.applyAll.label": "Apply All Edits",
+			"chatCodeBlock.applyAll.editingSessionActive": "An editing session is already active, please accept or reject the current proposed edits before continuing.",
+			"chatCodeBlock.applyAllEdits": "Applying edits to workspace...",
+			"chatCodeBlock.generating": "Generating edits...",
+			"chatCodeBlock.generatingEdits": "Applying all edits",
 			"interactive.applyInEditor.label": "Applica nell'editor",
 			"interactive.compare.apply": "Applica modifiche",
 			"interactive.compare.discard": "Rimuovi modifiche",
@@ -5397,6 +5421,7 @@
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
 			"actions.chat.submitSecondaryAgent": "Invia all'agente secondario",
 			"chat.newChat.label": "Invia a nuova chat",
+			"chat.pickModel.label": "Pick Model",
 			"interactive.cancel.label": "Annulla",
 			"interactive.submit.label": "Invia"
 		},
@@ -5430,6 +5455,17 @@
 			"interactive.insertIntoNotebook.label": "Inserisci nel blocco appunti",
 			"interactive.reportIssueForBug.label": "Segnala problema",
 			"interactive.unhelpful.label": "Poco utile"
+		},
+		"vs/workbench/contrib/chat/browser/actions/codeBlockOperations": {
+			"applyCodeBlock.error": "Failed to apply code block: {0}",
+			"applyCodeBlock.noActiveEditor": "To apply this code block, open a code or notebook editor.",
+			"applyCodeBlock.progress": "Applying code block using {0}...",
+			"applyCodeBlock.readonly": "Cannot apply code block to read-only file.",
+			"applyCodeBlock.readonlyNotebook": "Cannot apply code block to read-only notebook editor.",
+			"insertCodeBlock.noActiveEditor": "To insert the code block, open a code editor or notebook editor and set the cursor at the location where to insert the code block.",
+			"insertCodeBlock.readonly": "Cannot insert the code block to read-only code editor.",
+			"insertCodeBlock.readonlyNotebook": "Cannot insert the code block to read-only notebook editor.",
+			"overlap": "Another code change is being previewed. Please apply or discard the pending changes first."
 		},
 		"vs/workbench/contrib/chat/browser/chat": {
 			"generating": "Generazione in corso"
@@ -5486,6 +5522,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatReferencesContentPart": {
 			"chatCollapsibleList": "Elenco chat comprimibile",
+			"copyReference": "Copy",
 			"setting.hover": "Apri impostazione \"{0}\"",
 			"usedReferencesCollapsed": "{0}, compresso",
 			"usedReferencesExpanded": "{0}, espansa",
@@ -5499,12 +5536,32 @@
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTreeContentPart": {
 			"treeAriaLabel": "Albero dei file"
 		},
+		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
+			"attach": "Attach",
+			"file": "File"
+		},
+		"vs/workbench/contrib/chat/browser/chatEditingService": {
+			"accept.allFiles": "Accept All",
+			"accept.file": "Accept File",
+			"multiDiffEditorInput.name": "Suggested Edits"
+		},
 		"vs/workbench/contrib/chat/browser/chatEditorInput": {
 			"chatEditorLabelIcon": "Icona dell'etichetta dell'editor di chat.",
 			"chatEditorName": "Chat"
 		},
 		"vs/workbench/contrib/chat/browser/chatFollowups": {
 			"followUpAriaLabel": "Domanda di completamento: {0}"
+		},
+		"vs/workbench/contrib/chat/browser/chatGettingStarted": {
+			"chat.openPanel": "Open Chat Panel",
+			"workbench.panel.chat.view.showGettingStarted": "When enabled, shows a getting started experiments in the chat panel."
+		},
+		"vs/workbench/contrib/chat/browser/chatInlineAnchorWidget": {
+			"actions.attach.label": "Attach File as Context",
+			"actions.goToDecl.label": "Go to Definition",
+			"goToReferences.label": "Go to References",
+			"miGotoDefinition": "Go to &&Definition",
+			"miGotoReference": "Go to &&References"
 		},
 		"vs/workbench/contrib/chat/browser/chatInputPart": {
 			"actions.chat.accessibiltyHelp": "Input chat, Digitare per porre domande o digitare/per gli argomenti, premere invio per inviare la richiesta. Usare {0} per la Guida sull'accessibilità della chat.",
@@ -5534,7 +5591,7 @@
 			"chat.viewContainer.label": "Chat",
 			"chatCommand": "Un nome breve a cui fa riferimento questo comando nell'interfaccia utente, ad es. 'fix' o * 'explain' per i comandi che consentono di risolvere un problema o di spiegare il codice. Il nome deve essere univoco tra i comandi forniti da questo partecipante.",
 			"chatCommandDescription": "Una descrizione di questo comando.",
-			"chatCommandDisambiguation": "Metadati che consentono di instradare automaticamente le domande dell’utente al comando della chat. Per usare questa API. è necessario aggiungere contribChatParticipantDetection` a `enabledApiProposals.",
+			"chatCommandDisambiguation": "Metadata to help with automatically routing user questions to this chat command.",
 			"chatCommandDisambiguationCategory": "Un nome dettagliato per questa categoria, ad esempio 'workspace_questions' o 'web_questions'.",
 			"chatCommandDisambiguationDescription": "Una descrizione dettagliata dei tipi di domande adatti per questo comando della chat.",
 			"chatCommandDisambiguationExamples": "Un elenco di domande di esempio rappresentative appropriate per questo comando della chat.",
@@ -5544,7 +5601,7 @@
 			"chatCommandsDescription": "Comandi disponibili per questo partecipante alla chat, che l'utente può richiamare con '/'.",
 			"chatFailErrorMessage": "Non è stato possibile caricare la chat perché la versione installata dell'estensione {0} non è compatibile con questa versione di {1}. Assicurarsi che l'estensione Chat di GitHub Copilot sia aggiornata.",
 			"chatParticipantDescription": "Una descrizione di questo partecipante alla chat, visualizzata nell'interfaccia utente.",
-			"chatParticipantDisambiguation": "Metadati che consentono di instradare automaticamente le domande dell’utente al partecipante della chat. Per usare questa API. è necessario aggiungere contribChatParticipantDetection` a `enabledApiProposals.",
+			"chatParticipantDisambiguation": "Metadata to help with automatically routing user questions to this chat participant.",
 			"chatParticipantDisambiguationCategory": "Un nome dettagliato per questa categoria, ad esempio 'workspace_questions' o 'web_questions'.",
 			"chatParticipantDisambiguationDescription": "Una descrizione dettagliata dei tipi di domande adatti per questo partecipante della chat.",
 			"chatParticipantDisambiguationExamples": "Un elenco di domande di esempio rappresentative appropriate per questo partecipante della chat.",
@@ -5595,7 +5652,9 @@
 			"chatEditApplied": "True quando le modifiche sono state applicate al testo della chat.",
 			"chatExtensionInvalid": "True quando l’estensione della chat installata non è valida e deve essere aggiornata.",
 			"chatIsEnabled": "True quando la chat è abilitata perché un partecipante della chat predefinito viene attivato con un’implementazione.",
+			"chatModelsAreUserSelectable": "True when the chat model can be selected manually by the user.",
 			"chatParticipantRegistered": "True quando un partecipante della chat predefinito viene registrato per il gruppo.",
+			"chatParticipantSupportsModelPicker": "True when the current chat participant supports picking the model manually.",
 			"chatRequest": "L'elemento della chat è una richiesta",
 			"chatResponse": "L'elemento della chat è una risposta.",
 			"chatResponseErrored": "True quando la risposta della chat ha restituito un errore.",
@@ -6001,10 +6060,10 @@
 			"comments.filter.ariaLabel": "Filtrare commenti",
 			"comments.filter.placeholder": "Filtro (ad esempio testo, autore)",
 			"replyCount": " {0} risposte,",
-			"resourceWithCommentLabel": "${0} alla riga {1} colonna {2} in {3}, {4} commento: {5}",
-			"resourceWithCommentLabelFile": "{0} in {1}, {2}commento: {3}",
-			"resourceWithCommentLabelFileOutdated": "Non aggiornato da {0} in {1}, {2} commento: {3}",
-			"resourceWithCommentLabelOutdated": "Non aggiornato da {0} alla riga {1} colonna {2} in {3}, commento {4}: {5}",
+			"resourceWithCommentLabel": "{0} at line {1} column {2} in {3} {4}\r\nComment: {5}{6}",
+			"resourceWithCommentLabelFile": "{0} in {1} {2}\r\nComment: {3}{4}",
+			"resourceWithCommentLabelFileOutdated": "Outdated from {0} in {1} {2}\r\nComment: {3}{4}{5}",
+			"resourceWithCommentLabelOutdated": "Outdated from {0} at line {1} column {2} in {3}{4}\r\nComment: {5}{6}",
 			"resourceWithCommentThreadsLabel": "Commenti in {0}, percorso completo {1}",
 			"resourceWithRepliesLabel": "{0} {1}",
 			"rootCommentsLabel": "Commenti per l'area di lavoro corrente",
@@ -6565,7 +6624,7 @@
 		},
 		"vs/workbench/contrib/debug/browser/debugStatus": {
 			"debugTarget": "Debug: {0}",
-			"selectAndStartDebug": "Selezionare e avviare la configurazione di debug",
+			"selectAndStartDebug": "Select and Start Debug Configuration",
 			"status.debug": "Debug"
 		},
 		"vs/workbench/contrib/debug/browser/debugTaskRunner": {
@@ -7151,6 +7210,7 @@
 			"extensions.supportUntrustedWorkspaces.true": "L'estensione verrà sempre abilitata.",
 			"extensions.supportUntrustedWorkspaces.version": "Definisce la versione dell'estensione a cui applicare l'override. Se non viene specificata, l'override verrà applicato indipendentemente dalla versione dell'estensione.",
 			"extensions.supportVirtualWorkspaces": "Eseguire l'override del supporto delle aree di lavoro virtuali di un'estensione.",
+			"extensions.verifySignature": "When enabled, extensions are verified to be signed before getting installed.",
 			"extensionsCheckUpdates": "Se è abilitata, controlla automaticamente la disponibilità di aggiornamenti per le estensioni. Se per un'estensione è disponibile un aggiornamento, l'estensione viene contrassegnata come obsoleta nella visualizzazione Estensioni. Gli aggiornamenti vengono recuperati da un servizio Microsoft online.",
 			"extensionsCloseExtensionDetailsOnViewChange": "Se è abilitata, gli editor con dettagli di estensione verranno chiusi automaticamente quando si esce dalla visualizzazione delle estensioni.",
 			"extensionsDeferredStartupFinishedActivation": "Se l’opzione è abilitata, le estensioni che dichiarano l'evento di attivazione `onStartupFinished` verranno attivate dopo un timeout.",
@@ -7168,6 +7228,7 @@
 			"handleUriConfirmedExtensions": "Quando un'estensione è presente in questo elenco, non verrà visualizzata alcuna richiesta di conferma quando l'estensione gestisce un URI.",
 			"id required": "ID estensione obbligatorio.",
 			"importKeyboardShortcutsFroms": "Esegui migrazione dei tasti di scelta rapida da...",
+			"install": "Install",
 			"install button": "Installa",
 			"install installAndDonotSync": "Installa (Non sincronizzare)",
 			"installButton": "&&Installa",
@@ -7267,6 +7328,7 @@
 			"configureWorkspaceFolderRecommendedExtensions": "Configura estensioni consigliate (cartella dell'area di lavoro)",
 			"configureWorkspaceRecommendedExtensions": "Configura estensioni consigliate (area di lavoro)",
 			"current": "corrente",
+			"dependencies": "Show Dependencies",
 			"deprecated message": "Questa estensione è deprecata perché non viene più supportata.",
 			"deprecated tooltip": "Questa estensione è deprecata perché non viene più supportata.",
 			"deprecated with alternate extension message": "Questa estensione è deprecata. Usare l'estensione {0}.",
@@ -7294,7 +7356,7 @@
 			"enabled in web worker": "Questa estensione è abilitata nell'host dell'estensione ruolo di lavoro perché preferisce essere eseguita in tale posizione.",
 			"enabled locally": "Questa estensione è abilitata nell'host dell'estensione locale perché preferisce essere eseguita in tale posizione.",
 			"enabled remotely": "Questa estensione è abilitata nell'host dell'estensione remoto perché preferisce essere eseguita in tale posizione.",
-			"extension disabled because of dependency": "Questa estensione è stata disabilitata perché dipende da un'estensione disabilitata.",
+			"extension disabled because of dependency": "This extension depends on an extension that is disabled.",
 			"extension disabled because of trust requirement": "Questa estensione è stata disabilitata perché l'area di lavoro corrente non è attendibile.",
 			"extension enabled on remote": "L'estensione è abilitata in '{0}'",
 			"extension limited because of trust requirement": "Questa estensione ha funzionalità limitate perché l'area di lavoro corrente non è attendibile.",
@@ -7317,6 +7379,7 @@
 			"install anyway": "Installa comunque",
 			"install browser": "Installa nel browser",
 			"install confirmation": "Disinstallare '{0}'?",
+			"install donot verify": "Install Anyway (Don't Verify Signature)",
 			"install in remote": "Installa in {0}",
 			"install local extensions title": "Installa estensioni locali in '{0}'",
 			"install locally": "Installazione locale",
@@ -7347,6 +7410,9 @@
 			"more information": "&&Altre informazioni",
 			"no local extensions": "Non ci sono estensioni da installare.",
 			"no versions": "Questa estensione non ha altre versioni.",
+			"not signed": "'{0}' is an extension from an unknown source. Are you sure you want to install?",
+			"not signed detail": "Extension is not signed.",
+			"not signed tooltip": "This extension is not signed by the Extension Marketplace.",
 			"not web tooltip": "L'estensione '{0}' non è disponibile in {1}.",
 			"pre-release": "versione non definitiva",
 			"reinstall": "Reinstalla estensione...",
@@ -7354,7 +7420,6 @@
 			"restart extensions": "Riavvia estensioni",
 			"restart product": "Riavvia per aggiornare",
 			"review": "Rivedi",
-			"search recommendations": "Cerca nelle estensioni",
 			"select and install local extensions": "Installa estensioni locali in '{0}'...",
 			"select and install remote extensions": "Installa estensioni remote in locale...",
 			"select color theme": "Seleziona tema colori",
@@ -7366,7 +7431,6 @@
 			"selectVersion": "Seleziona versione da installare",
 			"settings": "impostazioni",
 			"showRecommendedExtension": "Mostra estensioni consigliate",
-			"signature verification failed": "{0} non può verificare l'estensione '{1}'. Installarla comunque?",
 			"switchToPreReleaseLabel": "Passare alla versione non definitiva",
 			"switchToPreReleaseTooltip": "Questa operazione passerà alla versione non definitiva e abiliterà sempre gli aggiornamenti alla versione più recente",
 			"sync": "Sincronizza questa estensione",
@@ -7389,6 +7453,7 @@
 			"updateExtensionConsentTitle": "Aggiorna estensione {0}",
 			"updateExtensionStart": "L'aggiornamento dell'estensione {0} alla versione {1} è stata avviata.",
 			"updated": "Aggiornata",
+			"verification failed": "Cannot install '{0}' extension because {1} cannot verify the extension signature",
 			"workbench.extensions.action.clearLanguage": "Cancella lingua visualizzata",
 			"workbench.extensions.action.setColorTheme": "Imposta tema colori",
 			"workbench.extensions.action.setDisplayLanguage": "Imposta lingua visualizzata",
@@ -7453,6 +7518,7 @@
 			"builtin": "Predefinite",
 			"builtinFeatureExtensions": "Funzionalità",
 			"builtinProgrammingLanguageExtensions": "Linguaggi di programmazione",
+			"click show": "Click to Show",
 			"deprecated": "Deprecato",
 			"disabled": "Disabilitate",
 			"disabledExtensions": "Disabilitato",
@@ -7479,6 +7545,7 @@
 			"remote": "Repository remoto",
 			"searchExtensions": "Cerca le estensioni nel Marketplace",
 			"select and install local extensions": "Installa estensioni locali in '{0}'...",
+			"show": "Show",
 			"suggestProxyError": "Marketplace ha restituito 'ECONNREFUSED'. Controllare l'impostazione 'http.proxy'.",
 			"untrustedPartiallySupportedExtensions": "Limitata in modalità con restrizioni",
 			"untrustedUnsupportedExtensions": "Disabilitata in modalità con restrizioni",
@@ -7503,7 +7570,6 @@
 		"vs/workbench/contrib/extensions/browser/extensionsWidgets": {
 			"Show prerelease version": "Versione non definitiva",
 			"activation": "Ora di attivazione",
-			"dependencies": "Mostra dipendenze",
 			"extensionIcon.sponsorForeground": "Colore dell'icona per lo sponsor dell'estensione.",
 			"extensionIconStarForeground": "Colore dell'icona per le valutazioni delle estensioni.",
 			"extensionIconVerifiedForeground": "Colore dell'icona per l'autore verificato dell'estensione.",
@@ -7532,6 +7598,7 @@
 			"confirmEnableDisableAutoUpdate": "Aggiorna le estensioni automaticamente",
 			"confirmEnableDisableAutoUpdateDetail": "Le impostazioni di aggiornamento automatico impostate per le singole estensioni verranno reimpostate.",
 			"consentRequiredToUpdate": "L'aggiornamento per l'estensione {0} introduce il codice eseguibile, che non è presente nella versione attualmente installata.",
+			"deprecated extensions": "Deprecated extensions detected. Review them and migrate to alternatives.",
 			"disable all": "Disabilita tutto",
 			"disableDependents": "Disinstalla estensione con dipendenti",
 			"enable locally": "Please {0} per abilitare questa estensione a livello locale.",
@@ -7542,6 +7609,7 @@
 			"enableExtensionTitle": "Abilita estensione",
 			"extensionsAutoRestart": "Le estensioni sono state riavviate automaticamente per abilitare gli aggiornamenti.",
 			"incompatible": "Non è possibile installare l’estensione '{0}' perché non è compatibile.",
+			"incompatibleExtensions": "Some extensions are disabled due to version incompatibility. Review and update them.",
 			"installButtonLabel": "&&Installa estensione",
 			"installButtonLabelWithAction": "&&Installa estensione e {0}",
 			"installExtensionMessage": "Installare l'estensione \"{0}\" da \"{1}\"?",
@@ -7549,6 +7617,7 @@
 			"installVSIXMessage": "Installare l'estensione?",
 			"installing extension": "Installazione dell'estensione...",
 			"installing named extension": "Installazione dell'estensione '{0}'...",
+			"invalidExtensions": "Invalid extensions detected. Review them.",
 			"malicious": "Questa estensione è segnalata come problematica.",
 			"multipleDependentsError": "Non è possibile disabilitare solo l'estensione '{0}' perché da essa dipendono '{1}', '{2}' e altre estensioni. Disabilitare tutte queste estensioni?",
 			"multipleDependentsUninstallError": "Non è possibile disinstallare solo l'estensione '{0}' perché da essa dipendono le estensioni '{1}', '{2}' e altre. Disinstallare tutte queste estensioni?",
@@ -7626,8 +7695,6 @@
 			"status.profiler": "Profiler estensione"
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/extensions.contribution": {
-			"debugExtensionHost": "Eseguire il debug delle estensioni in una nuova finestra",
-			"developer": "Sviluppatore",
 			"runtimeExtension": "Estensioni in esecuzione"
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/extensionsActions": {
@@ -7648,6 +7715,7 @@
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/runtimeExtensionsEditor": {
 			"extensionHostProfileStart": "Avvia profilo host dell'estensione",
+			"openExtensionHostProfile": "Open Extension Host Profile",
 			"saveExtensionHostProfile": "Salva profilo host dell'estensione",
 			"saveprofile.dialogTitle": "Salva profilo host dell'estensione",
 			"stopExtensionHostProfileStart": "Arresta profilo host dell'estensione"
@@ -7978,6 +8046,7 @@
 			"exclude": "Configurare i [modelli glob](https://aka.ms/vscode-glob-patterns) per escludere file e cartelle. Ad esempio, la funzionalità Esplora file stabilisce quali file e cartelle mostrare o nascondere in base a questa impostazione. Fare riferimento all'impostazione '#search.exclude#' per definire esclusioni specifiche della ricerca. Fare riferimento all'impostazione '#explorer.excludeGitIgnore#' per ignorare i file in base a '.gitignore'.",
 			"excludeGitignore": "Controlla se le voci in .gitignore devono essere analizzate ed escluse da Esplora risorse. Simile a {0}.",
 			"expandSingleFolderWorkspaces": "Controlla se Esplora risorse deve espandere aree di lavoro multi-radice contenenti solo una sola cartella durante l'inizializzazione",
+			"experimentalWatcherNext": "Enables a newer, experimental version of the file watcher.",
 			"explorer.autoRevealExclude.boolean": "Criterio GLOB da usare per trovare percorsi file. Impostare su True o False per abilitare o disabilitare il criterio.",
 			"explorer.autoRevealExclude.when": "Controllo aggiuntivo sugli elementi di pari livello di un file corrispondente. Usare $(basename) come variabile del nome file corrispondente.",
 			"explorer.decorations.badges": "Controlli se le decorazioni file devono usare le notifiche.",
@@ -8162,8 +8231,8 @@
 			"stop.title": "Interrompi lettura suggerimenti inlay"
 		},
 		"vs/workbench/contrib/inlineChat/browser/inlineChat.contribution": {
-			"cancel": "Interrompi richiesta",
-			"cancelShort": "Arresta",
+			"cancel": "Cancel Request",
+			"cancelShort": "Cancel",
 			"send.edit": "Modifica codice",
 			"send.generate": "Genera"
 		},
@@ -8214,7 +8283,7 @@
 		"vs/workbench/contrib/inlineChat/common/inlineChat": {
 			"acceptedOrDiscardBeforeSave": "Indica se le sessioni di chat in linea in sospeso impediscono il salvataggio.",
 			"accessibleDiffView": "Indica se la chat inline esegue anche il rendering di un visualizzatore differenze accessibile per le modifiche.",
-			"accessibleDiffView.auto": "Il visualizzatore differenze accessibile è basato sulla modalità di lettura dello schermo abilitata.",
+			"accessibleDiffView.auto": "The accessible diff viewer is based on screen reader mode being enabled.",
 			"accessibleDiffView.off": "Il visualizzatore differenze accessibile non è mai abilitato.",
 			"accessibleDiffView.on": "Il visualizzatore differenze accessibile è sempre abilitato.",
 			"editorOverviewRuler.inlineChatInserted": "Colore del marcatore del righello della panoramica per il contenuto inserito nella chat inline.",
@@ -8252,7 +8321,6 @@
 			"mode": "Configura se le modifiche create con la chat inline vengono applicate direttamente al documento o vengono prima visualizzate per prima cosa in anteprima.",
 			"mode.live": "Le modifiche vengono applicate direttamente al documento, ma possono essere evidenziate tramite differenze inline e accettate/rimosse via hunk. Se si termina una sessione, le modifiche verranno conservate.",
 			"mode.preview": "Le modifiche sono disponibili solo in anteprima e devono essere accettate tramite il pulsante Applica. Se si termina una sessione, le modifiche verranno rimosse.",
-			"onlyZone": "Indica se la chat inline si apre direttamente come widget di zona, tra le righe, o come widget di sovrapposizione che si trasforma in una zona.",
 			"zoneToolbar": "Indica se visualizzare una barra degli strumenti per accettare o rifiutare le modifiche nella visualizzazione delle modifiche della chat inline."
 		},
 		"vs/workbench/contrib/inlineChat/electron-sandbox/inlineChatActions": {
@@ -9152,6 +9220,7 @@
 		"vs/workbench/contrib/notebook/browser/contrib/multicursor/notebookMulticursor": {
 			"addFindMatchToSelection": "Aggiungere trova corrispondenza alla selezione",
 			"deleteLeftMultiSelection": "Elimina a sinistra",
+			"deleteRightMultiSelection": "Delete Right",
 			"exitMultiSelection": "Uscire dalla modalità multi-cursore"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/navigation/arrow": {
@@ -9184,6 +9253,7 @@
 			"notebookVariableAriaLabel": "Variabile {0}, valore {1}"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/notebookVariables/notebookVariablesView": {
+			"notebook.ReplVariables": "REPL Variables",
 			"notebook.notebookVariables": "Variabili notebook"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/outline/notebookOutline": {
@@ -9238,6 +9308,9 @@
 			"focusNextChatWidget": "Sposta lo stato attivo sul widget Chat cella successiva",
 			"focusNotebookChat": "Chat con stato attivo",
 			"focusPreviousCell": "Sposta lo stato attivo sulla cella precedente",
+			"notebook.apply1": "Accept and Run",
+			"notebook.apply2": "Accept & Run",
+			"notebook.apply3": "Accept the changes and run the cell",
 			"notebook.cell.chat.accept": "Effettua richiesta",
 			"notebook.cell.chat.close": "Chiudi chat",
 			"notebook.cell.chat.nextFromHistory": "Successivo dalla cronologia",
@@ -9248,6 +9321,9 @@
 			"notebookActions.menu.insertCodeCellWithChat": "Genera",
 			"notebookActions.menu.insertCodeCellWithChat.tooltip": "Avvia chat per generare codice",
 			"notebookActions.restoreCellprompt": "Genera"
+		},
+		"vs/workbench/contrib/notebook/browser/controller/chat/notebook.chat.contribution": {
+			"pickKernelVariableLabel": "Pick a variable from the kernel"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebookChatContext": {
 			"notebookCellChatFocused": "Indica se l'editor della chat cellulare è attivo",
@@ -9391,8 +9467,11 @@
 			"notebook.diff.cell.revertMetadata": "Ripristina metadati",
 			"notebook.diff.cell.revertOutputs": "Ripristina output",
 			"notebook.diff.cell.switchOutputRenderingStyleToText": "Cambia rendering dell'output",
+			"notebook.diff.cell.toggleCollapseUnchangedRegions": "Toggle Collapse Unchanged Regions",
 			"notebook.diff.ignoreMetadata": "Nascondi differenze metadati",
 			"notebook.diff.ignoreOutputs": "Nascondi differenze output",
+			"notebook.diff.openFile": "Open File",
+			"notebook.diff.revertMetadata": "Revert Notebook Metadata",
 			"notebook.diff.showMetadata": "Mostra differenze metadati",
 			"notebook.diff.showOutputs": "Mostra differenze output",
 			"notebook.diff.switchToText": "Apri editor diff di testo",
@@ -9450,6 +9529,7 @@
 			"notebook.markdown.lineHeight": "Controlla l'altezza della riga in pixel delle celle Markdown nei blocchi appunti. Se questa opzione è impostata su {0}, verrà usato {1}",
 			"notebook.markup.fontSize": "Controlla le dimensioni del carattere del markup di cui è stato eseguito il rendering nei blocchi appunti. Se impostato su {0}, viene usato il 120% di {1}.",
 			"notebook.minimalErrorRendering": "Controllare se eseguire il rendering dell'output degli errori con uno stile minimo.",
+			"notebook.multiCursor.enabled": "Experimental. Enables a limited set of multi cursor controls across multiple cells in the notebook editor. Currently supported are core editor actions (typing/cut/copy/paste/composition) and a limited subset of editor commands.",
 			"notebook.outputFontFamily": "Famiglia di caratteri del testo di output all'interno delle celle del blocco appunti. Se impostato su vuoto, viene usato {0}.",
 			"notebook.outputFontSize": "Dimensioni del carattere per il testo di output all'interno delle celle del blocco appunti. Se impostato su 0, viene usato {0}.",
 			"notebook.outputLineHeight": "Altezza della riga del testo di output all'interno delle celle del blocco appunti.\r\n - Se impostato su 0, viene usata l'altezza della riga dell'editor.\r\n - I valori compresi tra 0 e 8 verranno usati come moltiplicatore con le dimensioni del carattere.\r\n - I valori maggiori o uguali a 8 verranno usati come valori effettivi.",
@@ -10355,8 +10435,8 @@
 			"pauseSocketWriting": "Connessione: sospendi scrittura socket",
 			"remote": "Remoto",
 			"remote.autoForwardPortFallback": "Numero delle porte inoltrate automaticamente che attiverà il passaggio da 'process' a 'hybrid' quando l'inoltro automatico delle porte e di 'remote.autoForwardPortsSource' è impostato su 'process' per impostazione predefinita. Impostare su '0' per disabilitare il fallback. Quando 'remote.autoForwardPortsFallback' non è stato configurato, ma è presente 'remote.autoForwardPortsSource', 'remote.autoForwardPortsFallback' verrà considerato come se fosse impostato su '0'.",
-			"remote.autoForwardPorts": "Con questa opzione abilitata, verranno identificati i nuovi processi in esecuzione e le porte in ascolto verranno inoltrate automaticamente. La disabilitazione di questa impostazione non eviterà l'inoltro di tutte le porte. Anche se disabilitate, le estensioni comporteranno l'inoltro delle porte, come anche l'apertura di alcuni URL.",
-			"remote.autoForwardPortsSource": "Consente di impostare l'origine da cui vengono inoltrate automaticamente le porte quando {0} è impostato su Vero. In repository remoti Windows e  macOS le opzioni `process` e `hybrid` non hanno effetto e verrà usata l'opzione `output`.",
+			"remote.autoForwardPorts": "When enabled, new running processes are detected and ports that they listen on are automatically forwarded. Disabling this setting will not prevent all ports from being forwarded. Even when disabled, extensions will still be able to cause ports to be forwarded, and opening some URLs will still cause ports to forwarded. Also see {0}.",
+			"remote.autoForwardPortsSource": "Sets the source from which ports are automatically forwarded when {0} is true. When {0} is false, {1} will be used to find information about ports that have already been forwarded. On Windows and macOS remotes, the `process` and `hybrid` options have no effect and `output` will be used.",
 			"remote.autoForwardPortsSource.hybrid": "Le porte verranno inoltrate automaticamente quando vengono individuate leggendo l'output del terminale e del debug. Non tutti i processi che usano le porte verranno stampati sul terminale integrato o sulla console di debug, pertanto alcune porte non saranno disponibili. L'inoltro delle porte verrà annullato controllando che i processi in ascolto su tali porte vengano terminati.",
 			"remote.autoForwardPortsSource.output": "Le porte verranno inoltrate automaticamente quando vengono individuate leggendo l'output del terminale e del debug. Non tutti i processi che usano le porte verranno stampati sul terminale integrato o sulla console di debug, pertanto alcune porte non saranno disponibili. L'inoltro delle porte inoltrate in base all'output non verrà annullato finché non si esegue il ricaricamento oppure finché la porta non viene chiusa dall'utente nella visualizzazione Porte.",
 			"remote.autoForwardPortsSource.process": "Le porte verranno inoltrate automaticamente quando vengono individuate controllando i processi avviati e che includono una porta.",
@@ -10432,7 +10512,10 @@
 			"tunnel.preview": "Tunnel remoti è attualmente in anteprima. Per segnalare eventuali problemi, usare il comando \"Guida: Segnala problema\"."
 		},
 		"vs/workbench/contrib/replNotebook/browser/repl.contribution": {
-			"repl.execute": "Esegui input REPL"
+			"repl.execute": "Execute REPL input"
+		},
+		"vs/workbench/contrib/replNotebook/browser/replEditorInput": {
+			"replEditorLabelIcon": "Icon of the REPL editor label."
 		},
 		"vs/workbench/contrib/sash/browser/sash.contribution": {
 			"sashHoverDelay": "Controlla il ritardo del feedback al passaggio del mouse in millisecondi dell'area di trascinamento tra visualizzazioni/editor.",
@@ -10527,6 +10610,11 @@
 			"scm.diffDecorationsIgnoreTrimWhitespace.false": "Non ignora gli spazi vuoti iniziali e finali.",
 			"scm.diffDecorationsIgnoreTrimWhitespace.inherit": "Eredita da 'diffEditor.ignoreTrimWhitespace'.",
 			"scm.diffDecorationsIgnoreTrimWhitespace.true": "Ignora gli spazi vuoti iniziali e finali.",
+			"scm.graph.badges": "Controls which badges are shown in the Source Control Graph view. The badges are shown on the right side of the graph indicating the names of history item groups.",
+			"scm.graph.badges.all": "Show badges of all history item groups in the Source Control Graph view.",
+			"scm.graph.badges.filter": "Show only the badges of history item groups used as a filter in the Source Control Graph view.",
+			"scm.graph.pageOnScroll": "Controls whether the Source Control Graph view will load the next page of items when you scroll to the end of the list.",
+			"scm.graph.pageSize": "The number of items to show in the Source Control Graph view by default and when loading more items.",
 			"scm.providerCountBadge": "Controlla le notifiche di conteggio nelle intestazioni del provider del controllo del codice sorgente. Queste intestazioni vengono visualizzate nella visualizzazione Controllo del codice sorgente quando è presente più di un provider o quando l'impostazione {0} è abilitata e nella visualizzazione Repository del controllo del codice sorgente.",
 			"scm.providerCountBadge.auto": "Mostra la notifica di conteggio per Provider di controllo del codice sorgente solo quando è diversa da zero.",
 			"scm.providerCountBadge.hidden": "Nasconde le notifiche di conteggio di Provider di controllo del codice sorgente.",
@@ -10547,52 +10635,60 @@
 			"sourceControlViewIcon": "Icona della visualizzazione Controllo del codice sorgente."
 		},
 		"vs/workbench/contrib/scm/browser/scmHistory": {
+			"scmGraph.HistoryItemHoverAdditionsForeground": "History item hover additions foreground color.",
+			"scmGraph.HistoryItemHoverDeletionsForeground": "History item hover deletions foreground color.",
 			"scmGraphForeground1": "Colore primo piano del grafico del controllo del codice sorgente (1).",
 			"scmGraphForeground2": "Colore primo piano del grafico del controllo del codice sorgente (2).",
 			"scmGraphForeground3": "Colore primo piano del grafico del controllo del codice sorgente (3).",
-			"scmGraphHistoryItemGroupBase": "Colore del gruppo di elementi della cronologia di base.",
-			"scmGraphHistoryItemGroupLocal": "Colore del gruppo di elementi della cronologia locale.",
-			"scmGraphHistoryItemGroupRemote": "Colore del gruppo di elementi della cronologia remota.",
-			"scmGraphHistoryItemHoverLabelForeground": "Colore in primo piano dell'etichetta del gruppo di elementi della cronologia al passaggio del mouse a passaggio del puntatore."
+			"scmGraphForeground4": "Source control graph foreground color (4).",
+			"scmGraphForeground5": "Source control graph foreground color (5).",
+			"scmGraphHistoryItemBaseRefColor": "History item base reference color.",
+			"scmGraphHistoryItemHoverDefaultLabelBackground": "History item hover default label background color.",
+			"scmGraphHistoryItemHoverDefaultLabelForeground": "History item hover default label foreground color.",
+			"scmGraphHistoryItemHoverLabelForeground": "Colore in primo piano dell'etichetta del gruppo di elementi della cronologia al passaggio del mouse a passaggio del puntatore.",
+			"scmGraphHistoryItemRefColor": "History item reference color.",
+			"scmGraphHistoryItemRemoteRefColor": "History item remote reference color."
 		},
 		"vs/workbench/contrib/scm/browser/scmHistoryViewPane": {
+			"activeRepository": "Show the source control graph for the active repository",
+			"all": "All",
+			"allHistoryItemRefs": "All history item references",
+			"auto": "Auto",
+			"currentHistoryItemRef": "Current history item reference(s)",
 			"deletion": "{0} eliminazione{1}",
 			"deletions": "{0} eliminazioni{1}",
 			"fileChanged": "{0} file modificato",
 			"filesChanged": "{0} file modificati",
+			"goToCurrentHistoryItem": "Go to Current History Item",
+			"historyItemChangesEditorTitle": "All Changes ({0} ↔ {1})",
+			"historyItemMessage": "Message",
 			"insertion": "{0} inserimento{1}",
 			"insertions": "{0} inserimenti{1}",
+			"items": "{0} Items",
 			"loadMore": "{0} Caricare altro...",
-			"outdated": "NON AGGIORNATO",
+			"referencePicker": "History Item Reference Picker",
 			"refreshGraph": "Aggiorna",
+			"repositoryPicker": "Repository Picker",
 			"scm history": "Cronologia nel controllo del codice sorgente",
-			"scmGraph.HistoryItemHoverAdditionsForeground": "Colore primo piano per le aggiunte degli elementi della cronologia a passaggio del puntatore.",
-			"scmGraph.HistoryItemHoverDeletionsForeground": "Colore primo piano per le eliminazioni degli elementi della cronologia a passaggio del puntatore."
+			"scmGraphHistoryItemRef": "Select one/more history item references to view, type to filter",
+			"scmGraphRepository": "Select the repository to view, type to filter all repositories",
+			"scmGraphViewOutdated": "Please refresh the graph using the refresh action ($(refresh)).",
+			"scmGraphViewRevealCurrentHistoryItem": "The current history item is not present in the source control graph. Please use the history item references picker to expand the set of history items in the graph.",
+			"viewChanges": "View Changes"
 		},
 		"vs/workbench/contrib/scm/browser/scmRepositoriesViewPane": {
 			"scm": "Repository del controllo del codice sorgente"
 		},
 		"vs/workbench/contrib/scm/browser/scmViewPane": {
 			"collapse all": "Comprimi tutti i repository",
-			"deletion": "{0} eliminazione{1}",
-			"deletions": "{0} eliminazioni{1}",
 			"expand all": "Espandi tutti i repository",
-			"fileChanged": "{0} file modificato",
-			"filesChanged": "{0} file modificati",
-			"historyItemChangesEditorTitle": "Tutte le modifiche ({0} ↔ {1})",
 			"input": "Input controllo del codice sorgente",
-			"insertion": "{0} inserimento{1}",
-			"insertions": "{0} inserimenti{1}",
 			"label.close": "Chiudi",
 			"repositories": "Repository",
 			"repositorySortByDiscoveryTime": "Ordina per ora di individuazione",
 			"repositorySortByName": "Ordina per nome",
 			"repositorySortByPath": "Ordina per percorso",
 			"scm": "Gestione controllo del codice sorgente",
-			"scm.historyItemAdditionsForeground": "Colore primo piano per le aggiunte degli elementi della cronologia.",
-			"scm.historyItemDeletionsForeground": "Colore primo piano per le eliminazioni degli elementi della cronologia.",
-			"scm.historyItemSelectedStatisticsBorder": "Colore del bordo delle statistiche degli elementi della cronologia selezionato.",
-			"scm.historyItemStatisticsBorder": "Colore del bordo delle statistiche degli elementi della cronologia.",
 			"scmInputCancelAction": "Annulla",
 			"scmInputMoreActions": "Altre azioni...",
 			"setListViewMode": "Visualizza come elenco",
@@ -10600,8 +10696,7 @@
 			"sortAction": "Visualizza e ordina",
 			"sortChangesByName": "Filtra modifiche per nome",
 			"sortChangesByPath": "Filtra modifiche per percorso",
-			"sortChangesByStatus": "Filtra modifiche per stato",
-			"viewChanges": "Visualizza modifiche"
+			"sortChangesByStatus": "Filtra modifiche per stato"
 		},
 		"vs/workbench/contrib/scm/browser/scmViewPaneContainer": {
 			"source control": "Controllo del codice sorgente"
@@ -10820,7 +10915,9 @@
 			"search": "Cerca",
 			"searchFileMatch": "{0} file trovato",
 			"searchFileMatches": "{0} file trovati",
+			"searchFolderMatch.aiText.label": "Load AI Results",
 			"searchFolderMatch.other.label": "Altri file",
+			"searchFolderMatch.plainText.label": "Text Results",
 			"searchMatch": "{0} corrispondenza trovata",
 			"searchMatches": "{0} corrispondenze trovate",
 			"searchResultAria": "'{0}' alla colonna {1} trovato {2}"
@@ -13116,6 +13213,8 @@
 			"dialogClose": "Chiudi finestra di dialogo"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted": {
+			"acessibleViewHint": "Inspect this in the accessible view ({0}).\r\n",
+			"acessibleViewHintNoKbOpen": "Inspect this in the accessible view via the command Open Accessible View which is currently not triggerable via keybinding.\r\n",
 			"allDone": "Contrassegna come completato",
 			"checkboxTitle": "Se selezionata, questa pagina verrà visualizzata all'avvio.",
 			"close": "Nascondi",
@@ -13125,6 +13224,7 @@
 			"gettingStarted.editingEvolved": "Evoluzione dell'editor",
 			"gettingStarted.keyboardTip": "Suggerimento: usare tasti di scelta rapida ",
 			"gettingStarted.someStepsComplete": "{0} di {1} passaggi completati",
+			"goBack": "Go Back",
 			"imageShowing": "Immagine che mostra {0}",
 			"new": "Nuovo",
 			"newItems": "Aggiornato",
@@ -13140,7 +13240,6 @@
 			"start": "Avvia",
 			"toStart": "all'inizio.",
 			"walkthroughs": "Procedure dettagliate",
-			"welcome": "Introduzione",
 			"welcomeAriaLabel": "Panoramica su come iniziare subito a usare l'editor.",
 			"welcomePage.openFolderWithPath": "Apri la cartella {0} con percorso {1}",
 			"welcomePage.showOnStartup": "Mostra la pagina iniziale all'avvio"
@@ -13165,6 +13264,11 @@
 			"workbench.welcomePage.preferReducedMotion": "Se questa opzione è abilitata, riduce il movimento nella pagina iniziale.",
 			"workbench.welcomePage.walkthroughs.openOnInstall": "Se abilitata, la procedura dettagliata di un'estensione verrà aperta al momento dell'installazione dell'estensione.",
 			"workspacePlatform": "Piattaforma dell'area di lavoro corrente, che nei contesti remoti o serverless può essere diversa dalla piattaforma dell'interfaccia utente"
+		},
+		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedAccessibleView": {
+			"gettingStarted.description": "Description: {0}",
+			"gettingStarted.step": "Step {0}: {1}\r\nDescription: {2}",
+			"gettingStarted.title": "Title: {0}"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedColors": {
 			"walkthrough.stepTitle.foreground": "Colore primo piano dell'intestazione di ogni passaggio della procedura dettagliata",
@@ -13241,10 +13345,12 @@
 			"getting-started-setup-icon": "Icona usata per la categoria di configurazione della home page",
 			"gettingStarted.accessibilityHelp.description.interpolated": "La finestra di dialogo della Guida sull'accessibilità fornisce informazioni su cosa aspettarsi da una funzionalità e sui comandi/tasti di scelta rapida per utilizzarli.\r\n Con lo stato attivo in un editor, un terminale, un blocco appunti, una risposta alla chat, un commento o una console di debug, la finestra di dialogo pertinente può essere aperta con il comando Apri Guida sull'accessibilità.\r\n{0}",
 			"gettingStarted.accessibilityHelp.title": "Usare la finestra di dialogo della Guida sull'accessibilità per informazioni sulle funzionalità",
+			"gettingStarted.accessibilitySettings.description.interpolated": "Accessibility settings can be configured by running the Open Accessibility Settings command.\r\n{0}",
+			"gettingStarted.accessibilitySettings.title": "Configure accessibility settings",
 			"gettingStarted.accessibilitySignals.description.interpolated": "I suoni e gli annunci di accessibilità vengono riprodotti in tutto il workbench per eventi diversi.\r\n È possibile individuare e configurare tali elementi usando i comandi Elenca suoni segnale e Elenca annunci segnale.\r\n{0}\r\n{1}",
 			"gettingStarted.accessibilitySignals.title": "Ottimizzare i segnali di accessibilità da ricevere tramite audio o un dispositivo Braille",
 			"gettingStarted.accessibleView.description.interpolated": "La visualizzazione accessibile è disponibile per il terminale, il passaggio del mouse, le notifiche, i commenti, l'output del notebook, le risposte della chat, i completamenti inline e l'output della console di debug.\r\n Con lo stato attivo in una di queste funzionalità, si può aprire con il comando Apri visualizzazione accessibile.\r\n{0}",
-			"gettingStarted.accessibleView.title": "Usare la visualizzazione accessibile per controllare il contenuto riga per riga, carattere per carattere",
+			"gettingStarted.accessibleView.title": "Screen reader users can inspect content line by line, character by character in the accessible view.",
 			"gettingStarted.beginner.description": "Ottieni una panoramica delle funzionalità più essenziali",
 			"gettingStarted.beginner.title": "Informazioni sulle nozioni fondamentali",
 			"gettingStarted.codeFolding.description.interpolated": "Ridurre o espandere una sezione di codice con il comando Attiva/Disattiva riduzione.\r\n{0}\r\n Ridurre o espandere ricorsivamente con il comando Attiva/Disattiva riduzione in modo ricorsivo\r\n{1}\r\n",
@@ -13296,8 +13402,8 @@
 			"gettingStarted.setup.OpenFolderWeb.description.interpolated": "La configurazione è stata completata ed è possibile iniziare a scrivere codice. È possibile aprire un progetto locale o un repository remoto per aggiungere i file in VS Code.\r\n{0}\r\n{1}",
 			"gettingStarted.setup.description": "Personalizza l'editor, scopri le nozioni di base e inizia a scrivere codice",
 			"gettingStarted.setup.title": "Introduzione a VS Code",
-			"gettingStarted.setupScreenReader.description": "Informazioni sugli strumenti e i collegamenti che rendono accessibile VS Code. Si noti che alcune azioni non sono utilizzabili nel contesto della procedura dettagliata.",
-			"gettingStarted.setupScreenReader.title": "Introduzione all'uso di VS Code con un'utilità per la lettura dello schermo",
+			"gettingStarted.setupAccessibility.description": "Learn the tools and shortcuts that make VS Code accessible. Note that some actions are not actionable from within the context of the walkthrough.",
+			"gettingStarted.setupAccessibility.title": "Get Started with Accessibility Features",
 			"gettingStarted.setupWeb.description": "Personalizza l'editor, scopri le nozioni di base e inizia a scrivere codice",
 			"gettingStarted.setupWeb.title": "Introduzione a VS Code per il Web",
 			"gettingStarted.shortcuts.description.interpolated": "Una volta individuati i comandi preferiti, è possibile creare scelte rapide da tastiera personalizzate per l'accesso immediato.\r\n{0}",
@@ -13316,7 +13422,7 @@
 			"gettingStarted.topLevelRemoteOpen.title": "Connetti a...",
 			"gettingStarted.topLevelShowWalkthroughs.description": "Visualizza una procedura dettagliata nell'editor o in un'estensione",
 			"gettingStarted.topLevelShowWalkthroughs.title": "Apri una procedura dettagliata...",
-			"gettingStarted.verbositySettings.description.interpolated": "Le impostazioni del livello di dettaglio sono disponibili per le funzionalità del workbench in modo che, una volta acquisita familiarità con una funzionalità, si possa evitare di ascoltare suggerimenti su come utilizzarla. Ad esempio, le funzionalità per cui esiste una finestra di dialogo della Guida all'accessibilità indicheranno come aprire la finestra di dialogo finché non verrà disabilitata l'impostazione del livello di dettaglio per tale funzionalità.\r\n Queste e altre impostazioni di accessibilità possono essere configurate eseguendo il comando Apri impostazioni accessibilità.\r\n{0}",
+			"gettingStarted.verbositySettings.description.interpolated": "Screen reader verbosity settings exist for features around the workbench so that once a user is familiar with a feature, they can avoid hearing hints about how to operate it. For example, features for which an accessibility help dialog exists will indicate how to open the dialog until the verbosity setting for that feature has been disabled.\r\n These and other accessibility settings can be configured by running the Open Accessibility Settings command.\r\n{0}",
 			"gettingStarted.verbositySettings.title": "Controllare il livello di dettaglio delle etichette aria",
 			"gettingStarted.videoTutorial.description.interpolated": "Prima di una serie di brevi e pratiche esercitazioni video sulle funzionalità principali di VS Code.\r\n{0}",
 			"gettingStarted.videoTutorial.title": "Guarda le esercitazioni video",
@@ -13328,6 +13434,7 @@
 			"listSignalAnnouncements": "Elenca annunci segnale",
 			"listSignalSounds": "Elenca suoni segnale",
 			"openAccessibilityHelp": "Aprire guida all’accessibilità",
+			"openAccessibilitySettings": "Open Accessibility Settings",
 			"openAccessibleView": "Apri visualizzazione accessibile",
 			"openFolder": "Apri cartella",
 			"openGoToSymbol": "Vai al simbolo",
@@ -13595,22 +13702,13 @@
 			"menus.explorerContext": "Menu di scelta rapida Esplora file",
 			"menus.explorerContextShare": "Sottomenu 'Condividi' nel menu di scelta rapida di Esplora file",
 			"menus.extensionContext": "Menu di scelta rapida dell'estensione",
-			"menus.historyItemChanges": "Menu del titolo delle modifiche in ingresso/uscita per il controllo del codice sorgente",
 			"menus.historyItemContext": "Menu di scelta rapida della voce della cronologia del controllo del codice sorgente",
 			"menus.home": "Menu di scelta rapida dell'indicatore della home page (solo Web)",
-			"menus.incomingChanges": "Menu modifiche in ingresso del controllo del codice sorgente",
-			"menus.incomingChangesAllChangesContext": "Menu di scelta rapida Tutte le modifiche in ingresso del controllo del codice sorgente",
-			"menus.incomingChangesContext": "Menu di scelta rapida delle modifiche in ingresso per il controllo del codice sorgente",
-			"menus.incomingChangesHistoryItemContext": "Menu di scelta rapida dell'elemento della cronologia delle modifiche in ingresso del controllo del codice sorgente",
 			"menus.input": "Menu della casella di input del controllo del codice sorgente",
 			"menus.mergeEditorResult": "Barra degli strumenti dei risultati dell'editor di merge",
 			"menus.multiDiffEditorResource": "Barra degli strumenti delle risorse nell'editor diff multiplo",
 			"menus.notebookVariablesContext": "Menu di scelta rapida per la visualizzazione delle variabili di debug",
 			"menus.opy": "Sottomenu 'Copia come' nel menu Modifica di primo livello",
-			"menus.outgoingChanges": "Menu modifiche in uscita del controllo del codice sorgente",
-			"menus.outgoingChangesAllChangesContext": "Menu di scelta rapida Tutte le modifiche in uscita del controllo del codice sorgente",
-			"menus.outgoingChangesContext": "Menu di scelta rapida delle modifiche in uscita del controllo del codice sorgente",
-			"menus.outgoingChangesHistoryItemContext": "Menu di scelta rapida della voce della cronologia delle modifiche in uscita del controllo del codice sorgente",
 			"menus.resourceFolderContext": "Menu di scelta rapida della cartella delle risorse del controllo del codice sorgente",
 			"menus.resourceGroupContext": "Menu di scelta rapida del gruppo di risorse del controllo del codice sorgente",
 			"menus.resourceStateContext": "Menu di scelta rapida dello stato delle risorse del controllo del codice sorgente",
@@ -13683,6 +13781,12 @@
 			"vscode.extension.contributes.submenu.label": "Etichetta della voce di menu che porta a questo sottomenu.",
 			"vscode.extension.contributes.submenus": "Aggiunge come contributo le voci di sottomenu all'editor",
 			"webview.context": "Menu di scelta rapida di webview"
+		},
+		"vs/workbench/services/activity/common/activity": {
+			"activityErrorBadge.background": "Background color of the error activity badge",
+			"activityErrorBadge.foreground": "Foreground color of the error activity badge",
+			"activityWarningBadge.background": "Background color of the warning activity badge",
+			"activityWarningBadge.foreground": "Foreground color of the warning activity badge"
 		},
 		"vs/workbench/services/assignment/common/assignmentService": {
 			"workbench.enableExperiments": "Recupera gli esperimenti da eseguire da un servizio online Microsoft."
@@ -13904,6 +14008,7 @@
 			"cannot change enablement environment": "Non è possibile modificare l’abilitazione dell’estensione {0} perché è abilitata nell’ambiente",
 			"cannot change enablement extension kind": "Non è possibile modificare l'abilitazione dell'estensione {0} a causa del relativo tipo di estensione",
 			"cannot change enablement virtual workspace": "Non è possibile modificare l'abilitazione dell'estensione {0} perché non supporta le aree di lavoro virtuali",
+			"cannot change invalid extension enablement": "Cannot change enablement of {0} extension because of it is invalid",
 			"cannot disable auth extension": "Non è possibile modificare l'abilitazione dell'estensione {0} perché da essa dipende Sincronizzazione impostazioni.",
 			"cannot disable auth extension in workspace": "Non è possibile modificare l'abilitazione dell'estensione {0} nell'area di lavoro perché aggiunge come contributo i provider di autenticazione",
 			"cannot disable language pack extension": "Non è possibile modificare l'abilitazione dell'estensione {0} perché aggiunge come contributo i Language Pack.",
@@ -13943,7 +14048,7 @@
 			"install multiple extensions": "Installare e sincronizzare le estensioni tra i dispositivi?",
 			"install single extension": "Installare e sincronizzare l'estensione '{0}' tra i dispositivi?",
 			"limited support": "'{0}' presenta funzionalità limitate in {1}.",
-			"main.notFound": "Non è possibile eseguire l'attivazione perché non è stato possibile trovare {0}",
+			"main.notFound": "Cannot activate because {0} not found",
 			"multipleDependentsError": "Non è possibile disinstallare l'estensione '{0}'. Alcune estensioni, tra cui '{1}' e '{2}' dipendono da tale estensione.",
 			"non web extensions": "'{0}' contiene estensioni non supportate in {1}.",
 			"non web extensions detail": "Contiene estensioni non supportate.",

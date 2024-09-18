@@ -188,12 +188,14 @@
 			"invalid file": "擷取 {0} 時發生錯誤。檔案無效。",
 			"notFound": "在 ZIP 中找不到 {0}。"
 		},
-		"vs/editor/browser/controller/textAreaHandler": {
-			"accessibilityModeOff": "目前無法存取此編輯器。",
-			"accessibilityOffAriaLabel": "{0} 若要啟用螢幕助讀程式最佳化模式，請使用 {1}",
-			"accessibilityOffAriaLabelNoKb": "{0} 若要啟用螢幕助讀程式最佳化模式，，請使用 {1} 開啟快速挑選，然後執行 [切換螢幕助讀程式協助工具模式] 命令，該模式目前無法透過鍵盤觸發。",
-			"accessibilityOffAriaLabelNoKbs": "{0} 請使用 {1} 存取按鍵繫結關係編輯器並加以執行，以為 [切換螢幕助讀程式協助工具模式] 命令指派按鍵繫結關係。",
-			"editor": "編輯器"
+		"vs/editor/browser/controller/editContext/screenReaderUtils": {
+			"accessibilityModeOff": "The editor is not accessible at this time.",
+			"accessibilityOffAriaLabel": "{0} To enable screen reader optimized mode, use {1}",
+			"accessibilityOffAriaLabelNoKb": "{0} To enable screen reader optimized mode, open the quick pick with {1} and run the command Toggle Screen Reader Accessibility Mode, which is currently not triggerable via keyboard.",
+			"accessibilityOffAriaLabelNoKbs": "{0} Please assign a keybinding for the command Toggle Screen Reader Accessibility Mode by accessing the keybindings editor with {1} and run it."
+		},
+		"vs/editor/browser/controller/editContext/textArea/textAreaEditContext": {
+			"editor": "editor"
 		},
 		"vs/editor/browser/coreCommands": {
 			"removedCursor": "已移除次要資料指標",
@@ -206,6 +208,9 @@
 			"redo": "重做",
 			"selectAll": "全選",
 			"undo": "復原"
+		},
+		"vs/editor/browser/gpu/viewGpuContext": {
+			"editor.dom.render": "Use DOM-based rendering"
 		},
 		"vs/editor/browser/services/hoverService/hoverWidget": {
 			"hoverhint": "按住 {0} 鍵將滑鼠懸停在上面"
@@ -297,6 +302,7 @@
 			"multiDiffEditor.headerBackground": "Diff 編輯器標頭的背景色彩"
 		},
 		"vs/editor/browser/widget/multiDiffEditor/multiDiffEditorWidgetImpl": {
+			"loading": "Loading...",
 			"noChangedFiles": "沒有變更的檔案"
 		},
 		"vs/editor/common/config/editorConfigurationSchema": {
@@ -493,6 +499,7 @@
 			"editorViewAccessibleLabel": "編輯器內容",
 			"emptySelectionClipboard": "控制複製時不選取任何項目是否會複製目前程式行。",
 			"enabled": "在編輯器中啟用程式碼動作燈泡。",
+			"experimentalEditContextEnabled": "Sets whether the new experimental edit context should be used instead of the text area.",
 			"experimentalWhitespaceRendering": "控制是否使用新的實驗性方法來呈現空白字元。",
 			"experimentalWhitespaceRendering.font": "使用具有字型字元的新轉譯方法。",
 			"experimentalWhitespaceRendering.off": "使用穩定轉譯方法。",
@@ -533,6 +540,7 @@
 			"inlayHints.enable": "啟用編輯器中的內嵌提示。",
 			"inlayHints.fontFamily": "控制編輯器中，內嵌提示的字型家族。設定為空白時，則會使用 {0}。",
 			"inlayHints.fontSize": "控制編輯器中內嵌提示的字型大小。當設定的值小於 {1} 或大於編輯器字型大小時，則會使用{0} 預設值。",
+			"inlayHints.maximumLength": "Maximum overall length of inlay hints, for a single line, before they get truncated by the editor. Set to `0` to never truncate",
 			"inlayHints.padding": "在編輯器中啟用的內嵌提示周圍的填補。",
 			"inline": "快速建議會顯示為浮水印文字",
 			"inlineCompletionsAccessibilityVerbose": "控制當顯示內嵌完成時，是否應提供協助工具提示給螢幕助讀程式使用者。",
@@ -549,6 +557,7 @@
 			"inlineSuggest.showToolbar.never": "永不顯示內嵌建議工具列。",
 			"inlineSuggest.showToolbar.onHover": "每當游標停留在內嵌建議上方時，顯示內嵌建議工具列。",
 			"inlineSuggest.suppressSuggestions": "控制內嵌建議如何與建議小工具互動。如果啟用，有可用的內嵌建議時，不會自動顯示建議小工具。",
+			"inlineSuggest.syntaxHighlightingEnabled": "Controls whether to show syntax highlighting for inline suggestions in the editor.",
 			"letterSpacing": "控制字母間距 (像素)。",
 			"lineHeight": "控制行高。\r\n - 使用 0 從字型大小自動計算行高。\r\n - 使用介於 0 和 8 之間的值作為字型大小的乘數。\r\n - 大於或等於 8 的值將用來作為有效值。",
 			"lineNumbers": "控制行號的顯示。",
@@ -830,7 +839,6 @@
 			"editorTextFocus": "編輯器文字是否有焦點 (游標閃爍)",
 			"inCompositeEditor": "編輯器是否為較大編輯器的一部分 (例如筆記本)",
 			"inDiffEditor": "內容是否為 Diff 編輯器",
-			"inMultiDiffEditor": "內容是否為 Diff 編輯器",
 			"isEmbeddedDiffEditor": "內容是否為內嵌 Diff 編輯器",
 			"multiDiffEditorAllCollapsed": "是否摺疊多重 Diff 編輯器中的所有檔案",
 			"standaloneColorPickerFocused": "獨立的顏色選擇器是否聚焦",
@@ -1020,21 +1028,23 @@
 			"placeHolder": "選取命令",
 			"showLensOnLine": "顯示目前行的 Code Lens 命令"
 		},
-		"vs/editor/contrib/colorPicker/browser/colorHoverParticipant": {
-			"hoverAccessibilityColorParticipant": "這裡有色彩選擇器。"
+		"vs/editor/contrib/colorPicker/browser/colorPickerParts/colorPickerCloseButton": {
+			"closeIcon": "Icon to close the color picker"
 		},
-		"vs/editor/contrib/colorPicker/browser/colorPickerWidget": {
-			"clickToToggleColorOptions": "按一下以切換色彩選項 (rgb/hsl/hex)",
-			"closeIcon": "要關閉顏色選擇器的圖示"
+		"vs/editor/contrib/colorPicker/browser/colorPickerParts/colorPickerHeader": {
+			"clickToToggleColorOptions": "Click to toggle color options (rgb/hsl/hex)"
 		},
-		"vs/editor/contrib/colorPicker/browser/standaloneColorPickerActions": {
-			"hideColorPicker": "隱藏顏色選擇器",
-			"hideColorPickerDescription": "隱藏獨立色彩選擇器。",
-			"insertColorWithStandaloneColorPicker": "使用獨立的顏色選擇器插入顏色",
-			"insertColorWithStandaloneColorPickerDescription": "使用焦點獨立色彩選擇器插入十六進位/RGB/HSL 色彩。",
-			"mishowOrFocusStandaloneColorPicker": "&&顯示或聚焦獨立的顏色選擇器",
-			"showOrFocusStandaloneColorPicker": "顯示或聚焦獨立的顏色選擇器",
-			"showOrFocusStandaloneColorPickerDescription": "顯示或聚焦使用預設色彩提供者的獨立色彩選擇器。它會顯示十六進位/RGB/HSL 色彩。"
+		"vs/editor/contrib/colorPicker/browser/hoverColorPicker/hoverColorPickerParticipant": {
+			"hoverAccessibilityColorParticipant": "There is a color picker here."
+		},
+		"vs/editor/contrib/colorPicker/browser/standaloneColorPicker/standaloneColorPickerActions": {
+			"hideColorPicker": "Hide the Color Picker",
+			"hideColorPickerDescription": "Hide the standalone color picker.",
+			"insertColorWithStandaloneColorPicker": "Insert Color with Standalone Color Picker",
+			"insertColorWithStandaloneColorPickerDescription": "Insert hex/rgb/hsl colors with the focused standalone color picker.",
+			"mishowOrFocusStandaloneColorPicker": "&&Show or Focus Standalone Color Picker",
+			"showOrFocusStandaloneColorPicker": "Show or Focus Standalone Color Picker",
+			"showOrFocusStandaloneColorPickerDescription": "Show or focus a standalone color picker which uses the default color provider. It displays hex/rgb/hsl colors."
 		},
 		"vs/editor/contrib/comment/browser/comment": {
 			"comment.block": "切換區塊註解",
@@ -1160,6 +1170,7 @@
 			"removeManualFoldingRanges.label": "移除手動折疊範圍",
 			"toggleFoldAction.label": "切換摺疊",
 			"toggleFoldRecursivelyAction.label": "切換以遞迴方式摺疊",
+			"toggleImportFold.label": "Toggle Import Fold",
 			"unFoldRecursivelyAction.label": "以遞迴方式展開",
 			"unfoldAction.label": "展開",
 			"unfoldAllAction.label": "全部展開",
@@ -1281,6 +1292,12 @@
 			"hasSymbols": "是否有只能透過鍵盤瀏覽的符號位置。",
 			"location": "{1} 的符號 {0}",
 			"location.kb": "{1} 的符號 {0}，{2} 為下一個"
+		},
+		"vs/editor/contrib/gpu/browser/gpuActions": {
+			"drawGlyph.label": "Draw Glyph",
+			"gpuDebug.label": "Developer: Debug Editor GPU Renderer",
+			"logTextureAtlasStats.label": "Log Texture Atlas Stats",
+			"saveTextureAtlas.label": "Save Texture Atlas"
 		},
 		"vs/editor/contrib/hover/browser/contentHoverRendered": {
 			"hoverAccessibilityStatusBar": "這是暫留狀態列。",
@@ -1404,18 +1421,6 @@
 		},
 		"vs/editor/contrib/inlineEdit/browser/hoverParticipant": {
 			"hoverAccessibilityInlineEdits": "這裡有內嵌編輯。"
-		},
-		"vs/editor/contrib/inlineEdits/browser/commands": {
-			"action.inlineEdits.accept": "接受內嵌編輯",
-			"action.inlineEdits.hide": "隱藏內嵌編輯",
-			"action.inlineEdits.showNext": "顯示下一個內嵌編輯",
-			"action.inlineEdits.showPrevious": "顯示上一個內嵌編輯",
-			"action.inlineEdits.trigger": "觸發內嵌編輯",
-			"inlineEditsActions": "接受內嵌編輯"
-		},
-		"vs/editor/contrib/inlineEdits/browser/consts": {
-			"inlineEditsVisible": "是否顯示內嵌編輯",
-			"isPinned": "是否顯示內嵌編輯"
 		},
 		"vs/editor/contrib/inPlaceReplace/browser/inPlaceReplace": {
 			"InPlaceReplaceAction.next.label": "以下一個值取代",
@@ -2086,14 +2091,17 @@
 			"errorDeleting": "安裝延伸模組 '{1}' 時無法刪除現有的資料夾 '{0}'。請手動刪除該資料夾後，再試一次",
 			"incompatible": "因為延伸模組 '{0}' 與 VS Code '{1}' 不相容，所以無法安裝該延伸模組。",
 			"invalidManifest": "無法安裝 '{0}' 延伸模組，因為資訊清單與 Marketplace 不符",
+			"not signed": "Extension is not signed.",
 			"removeError": "移除延伸模組: {0} 時發生錯誤。重新嘗試前請離開並再次啟動 VS Code。",
-			"restartCode": "請在重新安裝 {0} 前重新啟動 VS Code。"
+			"restartCode": "請在重新安裝 {0} 前重新啟動 VS Code。",
+			"signature verification failed": "Signature verification failed with '{0}' error.",
+			"signature verification not executed": "Signature verification was not executed."
 		},
 		"vs/platform/extensionManagement/node/extensionManagementUtil": {
 			"invalidManifest": "VSIX 無效: package.json 不是 JSON 檔案。"
 		},
 		"vs/platform/extensions/common/extensionValidator": {
-			"apiProposalMismatch": "延伸模組正在使用的 API 提案 '{0}' 與目前的 VS Code 版本不相容。",
+			"apiProposalMismatch": "This extension is using the API proposal '{0}' that is not compatible with the current version of VS Code.",
 			"extensionDescription.activationEvents1": "屬性 `{0}` 可以省略或必須屬於 `string[]` 類型",
 			"extensionDescription.activationEvents2": "如果延伸模組沒有 `{1}` 或 `{2}` 屬性，則應該省略屬性 `{0}`。",
 			"extensionDescription.browser1": "屬性 `{0}` 可以省略或必須屬於 `string` 類型",
@@ -2377,7 +2385,6 @@
 			"proxySupportOff": "停用延伸模組的 Proxy 支援。",
 			"proxySupportOn": "啟用延伸模組的 Proxy 支援。",
 			"proxySupportOverride": "啟用延伸模組的 Proxy 支援，覆寫要求選項。",
-			"request": "網路要求",
 			"strictSSL": "控制是否應根據提供的 CA 清單驗證 Proxy 伺服器憑證。",
 			"systemCertificates": "控制是否應從 OS 載入 CA 憑證。(關閉此設定後，Windows 和 macOS 都需要重新載入視窗。)",
 			"systemCertificatesV2": "控制是否應啟用來自 OS 的 CA 憑證實驗性載入。這使用的方法比預設的模擬方法更為普遍。"
@@ -2954,11 +2961,11 @@
 			"name": "流程名稱",
 			"pid": "PID"
 		},
+		"vs/code/electron-utility/sharedProcess/sharedProcessMain": {
+			"sharedLog": "Shared"
+		},
 		"vs/code/node/cliProcessMain": {
 			"cli": "CLI"
-		},
-		"vs/code/node/sharedProcess/sharedProcessMain": {
-			"sharedLog": "共享"
 		},
 		"vs/workbench/api/browser/mainThreadAuthentication": {
 			"allow": "允許(&&A)",
@@ -3270,6 +3277,7 @@
 			"workspace": "工作區"
 		},
 		"vs/workbench/browser/actions/helpActions": {
+			"getStartedWithAccessibilityFeatures": "Get Started with Accessibility Features",
 			"keybindingsReference": "鍵盤快速鍵參考",
 			"miDocumentation": "文件(&&D)",
 			"miKeyboardShortcuts": "鍵盤快速鍵參考(&&K)",
@@ -4408,6 +4416,7 @@
 			"openFoldersInNewWindow": "控制資料夾應在新視窗中開啟或取代上次使用中的視窗。\r\n請注意，仍可能發生忽略此設定的情況 (例如當使用 `--new-window` 或 `--reuse-window` 命令列選項時)。",
 			"panelDefaultLocation": "在新工作區控制面板的預設位置 (終端機、偵錯主控台、輸出、問題)。可顯示在編輯器區域的底部、頂部、右側或左側。",
 			"panelOpensMaximized": "控制是否以最大化方式開啟面板。面板可以總是以最大化方式開啟、永不以最大化方式開啟，或以關閉前的最後狀態開啟。",
+			"panelShowLabel": "Controls whether activity items in the panel title are shown as label or icon.",
 			"perEditorGroup": "控制要將已開啟編輯器的上限逐一套用到編輯器群組，或是套用到所有編輯器群組。",
 			"pinnedTabSizing": "控制釘選的編輯器索引標籤大小。釘選的索引標籤會排序在所有開啟的索引標籤前面，且通常在取消釘選前不會關閉。當未設為 {1} 時，會忽略 {0}。",
 			"preserveInput": "控制上次鍵入命令選擇區的輸入是否應在下次將其開啟時還原。",
@@ -5071,7 +5080,7 @@
 			"accessibilityConfigurationTitle": "協助工具",
 			"announcement.enabled.auto": "啟用宣告，只有在螢幕助讀程式最佳化模式中才能播放。",
 			"announcement.enabled.off": "停用宣告。",
-			"autoSynthesize": "使用語音做為輸入時，是否應該自動大聲朗讀文字回應。例如，在聊天工作階段中，當語音做為聊天要求時，會自動合成回應。",
+			"autoSynthesize": "Whether a textual response should automatically be read out aloud. For non screen reader users, this will happen when speech was used as input. For screen reader users, this will happen with any input type. For example, in a chat session, a response is automatically synthesized when voice is used as chat request.",
 			"dimUnfocusedEnabled": "是否要將未專注的編輯器和終端機變暗，這可讓您更清楚輸入輸入的來源。這適用於大部分的編輯器，以及使用如筆記本和擴充網頁檢視編輯器等 iframe 的值得注意的例外狀況。",
 			"dimUnfocusedOpacity": "不透明度分數 (0.2 到 1.0) 用於未專注的編輯器和終端機。只有在啟用 {0} 時才會生效。",
 			"sound.enabled.auto": "已連結螢幕助讀程式時啟用音效。",
@@ -5093,6 +5102,7 @@
 			"verbosity.notification": "提供如何在可存取檢視中開啟通知的資訊。",
 			"verbosity.replInputHint": "提供 Repl 輸入的相關動作資訊。",
 			"verbosity.terminal.description": "提供聚焦於終端時，如何存取終端協助工具說明功能表的相關資訊。",
+			"verbosity.walkthrough": "Provide information about how to open the walkthrough in an Accessible View.",
 			"voice.speechLanguage": "文字轉換語音和語音轉換文字應該使用的語言。如果可能的話，選取 [自動] 以使用設定的顯示語言。請注意，並非所有顯示語言都可能受語音辨識和合成器的支援。",
 			"voice.speechTimeout": "在您停止說話之後，語音辨識保持作用中的持續時間 (以毫秒為單位)。例如，在聊天工作階段中，達到逾時之後，即會自動提交轉錄的文字。設為 `0` 以停用此功能。"
 		},
@@ -5209,8 +5219,19 @@
 			"audioCues.help.settings": "啟用/停用音訊提示",
 			"disabled": "停用"
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForExtensionAction": {
+			"accounts": "Accounts",
+			"currentAccount": "Current account",
+			"manageAccountPreferenceForExtension": "Manage Extension Account Preferences",
+			"noAccounts": "No accounts are currently used by this extension.",
+			"pickAProviderTitle": "Manage Extension Account Preferences",
+			"placeholder": "Manage '{0}' account preferences...",
+			"selectProvider": "Select an authentication provider to manage account preferences for",
+			"title": "'{0}' Account Preferences For This Workspace"
+		},
 		"vs/workbench/contrib/authentication/browser/actions/manageTrustedExtensionsForAccountAction": {
 			"accountLastUsedDate": "上次使用此帳戶是 {0}",
+			"accountPreferences": "Manage account preferences for this extension",
 			"accounts": "帳戶",
 			"manageExtensions": "選擇可存取此帳戶的延伸模組",
 			"manageTrustedExtensions": "管理受信任的延伸模組",
@@ -5368,8 +5389,11 @@
 			"chat.newChat.label": "新增聊天"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatCodeblockActions": {
-			"applyCodeBlock.error": "無法套用程式碼區塊：{0}",
-			"applyCodeBlock.progress": "正在使用 {0} 套用程式碼區塊...",
+			"chat.applyAll.label": "Apply All Edits",
+			"chatCodeBlock.applyAll.editingSessionActive": "An editing session is already active, please accept or reject the current proposed edits before continuing.",
+			"chatCodeBlock.applyAllEdits": "Applying edits to workspace...",
+			"chatCodeBlock.generating": "Generating edits...",
+			"chatCodeBlock.generatingEdits": "Applying all edits",
 			"interactive.applyInEditor.label": "在編輯器中套用",
 			"interactive.compare.apply": "套用編輯",
 			"interactive.compare.discard": "捨棄編輯",
@@ -5397,6 +5421,7 @@
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
 			"actions.chat.submitSecondaryAgent": "提交給次要代理程式",
 			"chat.newChat.label": "傳送至新聊天",
+			"chat.pickModel.label": "Pick Model",
 			"interactive.cancel.label": "取消",
 			"interactive.submit.label": "傳送"
 		},
@@ -5430,6 +5455,17 @@
 			"interactive.insertIntoNotebook.label": "插入至筆記本",
 			"interactive.reportIssueForBug.label": "回報問題",
 			"interactive.unhelpful.label": "無益"
+		},
+		"vs/workbench/contrib/chat/browser/actions/codeBlockOperations": {
+			"applyCodeBlock.error": "Failed to apply code block: {0}",
+			"applyCodeBlock.noActiveEditor": "To apply this code block, open a code or notebook editor.",
+			"applyCodeBlock.progress": "Applying code block using {0}...",
+			"applyCodeBlock.readonly": "Cannot apply code block to read-only file.",
+			"applyCodeBlock.readonlyNotebook": "Cannot apply code block to read-only notebook editor.",
+			"insertCodeBlock.noActiveEditor": "To insert the code block, open a code editor or notebook editor and set the cursor at the location where to insert the code block.",
+			"insertCodeBlock.readonly": "Cannot insert the code block to read-only code editor.",
+			"insertCodeBlock.readonlyNotebook": "Cannot insert the code block to read-only notebook editor.",
+			"overlap": "Another code change is being previewed. Please apply or discard the pending changes first."
 		},
 		"vs/workbench/contrib/chat/browser/chat": {
 			"generating": "正在產生"
@@ -5486,6 +5522,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatReferencesContentPart": {
 			"chatCollapsibleList": "可摺疊的聊天清單",
+			"copyReference": "Copy",
 			"setting.hover": "開啟設定 '{0}'",
 			"usedReferencesCollapsed": "{0}，已摺疊",
 			"usedReferencesExpanded": "{0}，已展開",
@@ -5499,12 +5536,32 @@
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTreeContentPart": {
 			"treeAriaLabel": "檔案樹狀結構"
 		},
+		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
+			"attach": "Attach",
+			"file": "File"
+		},
+		"vs/workbench/contrib/chat/browser/chatEditingService": {
+			"accept.allFiles": "Accept All",
+			"accept.file": "Accept File",
+			"multiDiffEditorInput.name": "Suggested Edits"
+		},
 		"vs/workbench/contrib/chat/browser/chatEditorInput": {
 			"chatEditorLabelIcon": "聊天編輯器標籤的圖示。",
 			"chatEditorName": "聊天"
 		},
 		"vs/workbench/contrib/chat/browser/chatFollowups": {
 			"followUpAriaLabel": "後續追蹤問題: {0}"
+		},
+		"vs/workbench/contrib/chat/browser/chatGettingStarted": {
+			"chat.openPanel": "Open Chat Panel",
+			"workbench.panel.chat.view.showGettingStarted": "When enabled, shows a getting started experiments in the chat panel."
+		},
+		"vs/workbench/contrib/chat/browser/chatInlineAnchorWidget": {
+			"actions.attach.label": "Attach File as Context",
+			"actions.goToDecl.label": "Go to Definition",
+			"goToReferences.label": "Go to References",
+			"miGotoDefinition": "Go to &&Definition",
+			"miGotoReference": "Go to &&References"
 		},
 		"vs/workbench/contrib/chat/browser/chatInputPart": {
 			"actions.chat.accessibiltyHelp": "聊天輸入，輸入以提出問題或輸入以取得主題，按 Enter 以送出要求。使用 {0} 以取得聊天協助工具說明。",
@@ -5534,7 +5591,7 @@
 			"chat.viewContainer.label": "聊天",
 			"chatCommand": "在 UI 中參考此命令的簡短名稱，例如，針對可修正問題或說明程式碼的命令使用 `fix` 或 * `explain`。名稱在此參與者提供的命令中應該是唯一的。",
 			"chatCommandDescription": "此命令的描述。",
-			"chatCommandDisambiguation": "中繼資料，可協助將使用者問題自動路由至此聊天命令。您必須將 `contribChatParticipantDetection` 新增至 `enabledApiProposals` 以使用此 API。",
+			"chatCommandDisambiguation": "Metadata to help with automatically routing user questions to this chat command.",
 			"chatCommandDisambiguationCategory": "此類別的詳細名稱，例如 `workspace_questions` 或 `web_questions`。",
 			"chatCommandDisambiguationDescription": "適合此聊天命令的問題類型的詳細描述。",
 			"chatCommandDisambiguationExamples": "適合此聊天命令的代表性範例問題的清單。",
@@ -5544,7 +5601,7 @@
 			"chatCommandsDescription": "可供此聊天參與者使用的命令，使用者可以使用 `/` 來叫用。",
 			"chatFailErrorMessage": "無法載入聊天，因為安裝的 {0} 延伸模組版本與此版本的 {1} 不相容。請確保 GitHub Copilot 聊天延伸模組是最新的。",
 			"chatParticipantDescription": "此聊天參與者的描述，顯示在 UI 中。",
-			"chatParticipantDisambiguation": "中繼資料，可協助將使用者問題自動路由至此聊天參與者。您必須將 `contribChatParticipantDetection` 新增至 `enabledApiProposals` 以使用此 API。",
+			"chatParticipantDisambiguation": "Metadata to help with automatically routing user questions to this chat participant.",
 			"chatParticipantDisambiguationCategory": "此類別的詳細名稱，例如 `workspace_questions` 或 `web_questions`。",
 			"chatParticipantDisambiguationDescription": "適合此聊天參與者的問題類型的詳細描述。",
 			"chatParticipantDisambiguationExamples": "適合此聊天參與者的代表性範例問題的清單。",
@@ -5595,7 +5652,9 @@
 			"chatEditApplied": "已套用聊天文字編輯時為 True。",
 			"chatExtensionInvalid": "當安裝的聊天擴充功能無效且需要更新時為 True。",
 			"chatIsEnabled": "啟用聊天時為 True，因為預設聊天參與者已使用實作來啟用。",
+			"chatModelsAreUserSelectable": "True when the chat model can be selected manually by the user.",
 			"chatParticipantRegistered": "當預設聊天參與者註冊面板時為 True。",
+			"chatParticipantSupportsModelPicker": "True when the current chat participant supports picking the model manually.",
 			"chatRequest": "聊天項目是要求",
 			"chatResponse": "聊天項目是回應。",
 			"chatResponseErrored": "當聊天回應導致錯誤時為 True。",
@@ -6001,10 +6060,10 @@
 			"comments.filter.ariaLabel": "篩選註解",
 			"comments.filter.placeholder": "篩選 (例如文字、作者)",
 			"replyCount": " {0} 個回覆，",
-			"resourceWithCommentLabel": "{0} 在 {3} 的行 {1} 欄位 {2} 中，{4} 註解: {5}",
-			"resourceWithCommentLabelFile": "{1} 中的 {0}，{2} 註解: {3}",
-			"resourceWithCommentLabelFileOutdated": "{0} 中的 {1} 已過期，{2} 註解: {3}",
-			"resourceWithCommentLabelOutdated": "{3} 中位於行 {1} 資料行 {2} 的 {0} 已過期，{4} 註解: {5}",
+			"resourceWithCommentLabel": "{0} at line {1} column {2} in {3} {4}\r\nComment: {5}{6}",
+			"resourceWithCommentLabelFile": "{0} in {1} {2}\r\nComment: {3}{4}",
+			"resourceWithCommentLabelFileOutdated": "Outdated from {0} in {1} {2}\r\nComment: {3}{4}{5}",
+			"resourceWithCommentLabelOutdated": "Outdated from {0} at line {1} column {2} in {3}{4}\r\nComment: {5}{6}",
 			"resourceWithCommentThreadsLabel": "{0} 中的註解，完整路徑 {1}",
 			"resourceWithRepliesLabel": "{0} {1}",
 			"rootCommentsLabel": "目前工作區的註解",
@@ -6565,7 +6624,7 @@
 		},
 		"vs/workbench/contrib/debug/browser/debugStatus": {
 			"debugTarget": "偵錯: {0}",
-			"selectAndStartDebug": "選取並啟動偵錯組態",
+			"selectAndStartDebug": "Select and Start Debug Configuration",
 			"status.debug": "偵錯"
 		},
 		"vs/workbench/contrib/debug/browser/debugTaskRunner": {
@@ -7151,6 +7210,7 @@
 			"extensions.supportUntrustedWorkspaces.true": "一律會啟用延伸模組。",
 			"extensions.supportUntrustedWorkspaces.version": "定義應套用覆寫的延伸模組版本。若未指定，將會獨立於延伸模組版本套用覆寫。",
 			"extensions.supportVirtualWorkspaces": "覆蓋延伸模組的虛擬工作區支援。",
+			"extensions.verifySignature": "When enabled, extensions are verified to be signed before getting installed.",
 			"extensionsCheckUpdates": "啟用時，會自動檢查延伸模組更新。若延伸模組有更新，就會在 [延伸模組] 檢視中標記為過時。更新會從 Microsoft 線上服務擷取。",
 			"extensionsCloseExtensionDetailsOnViewChange": "啟用時，包含延伸模組詳細資料的編輯器會自動在從 [延伸模組] 檢視導覽到他處時，自動關閉。",
 			"extensionsDeferredStartupFinishedActivation": "啟用時，會在逾時之後啟用宣告 'onStartupFinished' 啟用事件的延伸模組。",
@@ -7168,6 +7228,7 @@
 			"handleUriConfirmedExtensions": "當此處列出延伸模組時，將不會在延伸模組處理 URI 時顯示確認提示。",
 			"id required": "延伸模組識別碼為必要項。",
 			"importKeyboardShortcutsFroms": "從下列來源移轉鍵盤快速鍵...",
+			"install": "Install",
 			"install button": "安裝",
 			"install installAndDonotSync": "安裝 (不同步)",
 			"installButton": "安裝(&&I)",
@@ -7267,6 +7328,7 @@
 			"configureWorkspaceFolderRecommendedExtensions": "設定建議的延伸模組 (工作區資料夾) ",
 			"configureWorkspaceRecommendedExtensions": "設定建議的延伸模組 (工作區)",
 			"current": "目前",
+			"dependencies": "Show Dependencies",
 			"deprecated message": "此延伸模組已被取代且不再維護。",
 			"deprecated tooltip": "此延伸模組已被取代且不再維護。",
 			"deprecated with alternate extension message": "此延伸模組已被取代。請改用 {0} 延伸模組。",
@@ -7294,7 +7356,7 @@
 			"enabled in web worker": "因為此延伸模組偏好在背景工作角色延伸主機中執行，所以已在其中啟用。",
 			"enabled locally": "因為此延伸模組偏好在本機延伸主機中執行，所以已在其中啟用。",
 			"enabled remotely": "因為此延伸模組偏好在遠端延伸主機中執行，所以已在其中啟用。",
-			"extension disabled because of dependency": "此延伸模組已停用，因為它依賴已停用的延伸模組。",
+			"extension disabled because of dependency": "This extension depends on an extension that is disabled.",
 			"extension disabled because of trust requirement": "因為目前的工作區不受信任，所以已停用此延伸模組。",
 			"extension enabled on remote": "已在 ‘{0}’ 上啟用延伸模組",
 			"extension limited because of trust requirement": "此延伸模組的功能有限，因為目前的工作區不信任。",
@@ -7317,6 +7379,7 @@
 			"install anyway": "仍要安裝",
 			"install browser": "安裝在瀏覽器中",
 			"install confirmation": "確定要安裝 {0} 嗎?",
+			"install donot verify": "Install Anyway (Don't Verify Signature)",
 			"install in remote": "安裝至 {0}",
 			"install local extensions title": "在 '{0}' 中安裝本機延伸模組",
 			"install locally": "在本機安裝",
@@ -7347,6 +7410,9 @@
 			"more information": "詳細資訊(&&M)",
 			"no local extensions": "沒有任何要安裝的延伸模組。",
 			"no versions": "此延伸模組沒有其他版本。",
+			"not signed": "'{0}' is an extension from an unknown source. Are you sure you want to install?",
+			"not signed detail": "Extension is not signed.",
+			"not signed tooltip": "This extension is not signed by the Extension Marketplace.",
 			"not web tooltip": "{1} 中無法使用 '{0}' 延伸模組。",
 			"pre-release": "發行前版本",
 			"reinstall": "重新安裝延伸模組...",
@@ -7354,7 +7420,6 @@
 			"restart extensions": "重新啟動延伸模組",
 			"restart product": "重新啟動以更新",
 			"review": "檢閱",
-			"search recommendations": "搜尋延伸模組",
 			"select and install local extensions": "在 '{0}' 中安裝本機延伸模組...",
 			"select and install remote extensions": "在本機安裝遠端延伸模組...",
 			"select color theme": "選取色彩佈景主題",
@@ -7366,7 +7431,6 @@
 			"selectVersion": "選擇安裝的版本",
 			"settings": "設定",
 			"showRecommendedExtension": "顯示建議的延伸模組",
-			"signature verification failed": "{0} 無法驗證 '{1}' 延伸模組。確定要安裝?",
 			"switchToPreReleaseLabel": "切換到發行前版本",
 			"switchToPreReleaseTooltip": "這會切換到發行前版本，並一律啟用更新至最新版本",
 			"sync": "同步此延伸模組",
@@ -7389,6 +7453,7 @@
 			"updateExtensionConsentTitle": "更新 {0} 延伸模組",
 			"updateExtensionStart": "已開始將延伸模組 {0} 更新至 {1} 版。",
 			"updated": "已更新",
+			"verification failed": "Cannot install '{0}' extension because {1} cannot verify the extension signature",
 			"workbench.extensions.action.clearLanguage": "清除顯示語言",
 			"workbench.extensions.action.setColorTheme": "設定色彩主題",
 			"workbench.extensions.action.setDisplayLanguage": "設定顯示語言",
@@ -7453,6 +7518,7 @@
 			"builtin": "內建",
 			"builtinFeatureExtensions": "功能",
 			"builtinProgrammingLanguageExtensions": "程式語言",
+			"click show": "Click to Show",
 			"deprecated": "已取代",
 			"disabled": "停用",
 			"disabledExtensions": "停用",
@@ -7479,6 +7545,7 @@
 			"remote": "遠端",
 			"searchExtensions": "在 Marketplace 中搜尋延伸模組",
 			"select and install local extensions": "在 '{0}' 中安裝本機延伸模組...",
+			"show": "Show",
 			"suggestProxyError": "Marketplace 傳回了 'ECONNREFUSED'。請檢查 'http.proxy' 設定。",
 			"untrustedPartiallySupportedExtensions": "限制模式中有限制",
 			"untrustedUnsupportedExtensions": "在限制模式中停用",
@@ -7503,7 +7570,6 @@
 		"vs/workbench/contrib/extensions/browser/extensionsWidgets": {
 			"Show prerelease version": "發行前版本",
 			"activation": "啟用時間",
-			"dependencies": "顯示相依性",
 			"extensionIcon.sponsorForeground": "延伸模組贊助者的圖示色彩。",
 			"extensionIconStarForeground": "延伸模組分級的圖示色彩。",
 			"extensionIconVerifiedForeground": "用於延伸模組已驗證發行者的圖示色彩。",
@@ -7532,6 +7598,7 @@
 			"confirmEnableDisableAutoUpdate": "自動更新延伸模組",
 			"confirmEnableDisableAutoUpdateDetail": "這會重設您為個別延伸模組設定的任何自動更新設定。",
 			"consentRequiredToUpdate": "{0} 延伸模組的更新引進了可執行程式碼，其在目前安裝的版本中並不存在。",
+			"deprecated extensions": "Deprecated extensions detected. Review them and migrate to alternatives.",
 			"disable all": "全部停用",
 			"disableDependents": "停用具有相依項目的延伸模組",
 			"enable locally": "請 {0} 以本機啟用此延伸模組。",
@@ -7542,6 +7609,7 @@
 			"enableExtensionTitle": "啟用延伸模組",
 			"extensionsAutoRestart": "已自動重新啟動延伸模組來啟用更新。",
 			"incompatible": "無法安裝 '{0}' 延伸模組，因為它不相容。",
+			"incompatibleExtensions": "Some extensions are disabled due to version incompatibility. Review and update them.",
 			"installButtonLabel": "安裝延伸模組(&&I)",
 			"installButtonLabelWithAction": "安裝延伸模組和 {0}(&&I)",
 			"installExtensionMessage": "您要從 '{1}' 安裝 '{0}' 延伸模組嗎?",
@@ -7549,6 +7617,7 @@
 			"installVSIXMessage": "您要安裝延伸模組嗎?",
 			"installing extension": "正在安裝延伸模組....",
 			"installing named extension": "正在安裝 '{0}' 延伸模組....",
+			"invalidExtensions": "Invalid extensions detected. Review them.",
 			"malicious": "有人回報此延伸模組有問題。",
 			"multipleDependentsError": "無法單獨停用 '{0}' 延伸模組。'{1}'、'{2}' 及其他延伸模組相依於此項。要停用這全部的延伸模組嗎?",
 			"multipleDependentsUninstallError": "無法單獨解除安裝 '{0}' 延伸模組。其為 '{1}'、'{2}' 及其他延伸模組的相依對象。確定要將這些延伸模組解除安裝嗎?",
@@ -7626,8 +7695,6 @@
 			"status.profiler": "延伸模組分析工具"
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/extensions.contribution": {
-			"debugExtensionHost": "在新視窗中偵錯延伸模組",
-			"developer": "開發人員",
 			"runtimeExtension": "正在執行延伸模組"
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/extensionsActions": {
@@ -7648,6 +7715,7 @@
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/runtimeExtensionsEditor": {
 			"extensionHostProfileStart": "啟動延伸主機設定檔",
+			"openExtensionHostProfile": "Open Extension Host Profile",
 			"saveExtensionHostProfile": "儲存延伸主機設定檔",
 			"saveprofile.dialogTitle": "儲存延伸主機設定檔",
 			"stopExtensionHostProfileStart": "停止延伸主機設定檔"
@@ -7978,6 +8046,7 @@
 			"exclude": "設定排除檔案與資料夾的 [全域模式](https://aka.ms/vscode-glob-patterns)。例如，檔案總管會根據此設定，決定要顯示或隱藏的檔案與資料夾。請參閱 `#search.exclude#` 設定，定義搜尋特定的排除項目。請參閱 `#explorer.excludeGitIgnore#` 設定，以根據 `.gitignore` 忽略檔案。",
 			"excludeGitignore": "控制是否應從總管剖析及排除 .gitignore 中的項目。類似於 {0}。",
 			"expandSingleFolderWorkspaces": "控制總管是否應在初始化期間展開只包含一個資料夾的多根工作區",
+			"experimentalWatcherNext": "Enables a newer, experimental version of the file watcher.",
 			"explorer.autoRevealExclude.boolean": "要符合檔案路徑的 Glob 模式。設為 True 或 False 可啟用或停用模式。",
 			"explorer.autoRevealExclude.when": "在相符檔案同層級上額外的檢查。請使用 $(basename) 作為相符檔案名稱的變數。",
 			"explorer.decorations.badges": "控制檔案裝飾是否須使用徽章。",
@@ -8162,8 +8231,8 @@
 			"stop.title": "停止內嵌提示讀取"
 		},
 		"vs/workbench/contrib/inlineChat/browser/inlineChat.contribution": {
-			"cancel": "停止要求",
-			"cancelShort": "停止",
+			"cancel": "Cancel Request",
+			"cancelShort": "Cancel",
 			"send.edit": "編輯程式碼",
 			"send.generate": "產生"
 		},
@@ -8214,7 +8283,7 @@
 		"vs/workbench/contrib/inlineChat/common/inlineChat": {
 			"acceptedOrDiscardBeforeSave": "擱置中的內嵌聊天會話是否防止儲存。",
 			"accessibleDiffView": "內嵌聊天是否也會為其變更轉譯具有協助工具功能的 Diff 檢視器。",
-			"accessibleDiffView.auto": "具有協助工具功能的 Diff 檢視器是以正在啟用的螢幕助讀程式模式為基礎。",
+			"accessibleDiffView.auto": "The accessible diff viewer is based on screen reader mode being enabled.",
 			"accessibleDiffView.off": "永遠部會啟用具有協助工具功能的 Diff 檢視器。",
 			"accessibleDiffView.on": "一律會啟用具有協助工具功能的 Diff 檢視器。",
 			"editorOverviewRuler.inlineChatInserted": "內嵌聊天所插入內容的概觀尺規標記色彩。",
@@ -8252,7 +8321,6 @@
 			"mode": "設定使用內嵌聊天製作的變更是要直接套用至文件還是先預覽。",
 			"mode.live": "變更會直接套用至文件、可以透過內嵌差異來強調顯示，且由 hunks 接受/捨棄。結束工作階段將會保留變更。",
 			"mode.preview": "變更僅限預覽，且必須透過套用按鈕接受。結束工作階段將捨棄變更。",
-			"onlyZone": "內嵌聊天是否直接作為區域 widget 在行之間開啟，或變成區域的重疊 widget。",
 			"zoneToolbar": "是否要在內嵌聊天變更檢視中顯示工具列以接受或拒絕變更。"
 		},
 		"vs/workbench/contrib/inlineChat/electron-sandbox/inlineChatActions": {
@@ -9152,6 +9220,7 @@
 		"vs/workbench/contrib/notebook/browser/contrib/multicursor/notebookMulticursor": {
 			"addFindMatchToSelection": "將尋找相符項目新增至選取範圍",
 			"deleteLeftMultiSelection": "向左刪除",
+			"deleteRightMultiSelection": "Delete Right",
 			"exitMultiSelection": "結束多指標模式"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/navigation/arrow": {
@@ -9184,6 +9253,7 @@
 			"notebookVariableAriaLabel": "變數 {0}，值 {1}"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/notebookVariables/notebookVariablesView": {
+			"notebook.ReplVariables": "REPL Variables",
 			"notebook.notebookVariables": "筆記本變數"
 		},
 		"vs/workbench/contrib/notebook/browser/contrib/outline/notebookOutline": {
@@ -9238,6 +9308,9 @@
 			"focusNextChatWidget": "聚焦下一個儲存格聊天小工具",
 			"focusNotebookChat": "聚焦聊天",
 			"focusPreviousCell": "聚焦於上一個儲存格",
+			"notebook.apply1": "Accept and Run",
+			"notebook.apply2": "Accept & Run",
+			"notebook.apply3": "Accept the changes and run the cell",
 			"notebook.cell.chat.accept": "提出要求",
 			"notebook.cell.chat.close": "關閉聊天",
 			"notebook.cell.chat.nextFromHistory": "下一個來自歷程記錄",
@@ -9248,6 +9321,9 @@
 			"notebookActions.menu.insertCodeCellWithChat": "產生",
 			"notebookActions.menu.insertCodeCellWithChat.tooltip": "開始聊天以產生程式碼",
 			"notebookActions.restoreCellprompt": "產生"
+		},
+		"vs/workbench/contrib/notebook/browser/controller/chat/notebook.chat.contribution": {
+			"pickKernelVariableLabel": "Pick a variable from the kernel"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebookChatContext": {
 			"notebookCellChatFocused": "儲存格聊天編輯器是否聚焦",
@@ -9391,8 +9467,11 @@
 			"notebook.diff.cell.revertMetadata": "還原中繼資料",
 			"notebook.diff.cell.revertOutputs": "還原輸出",
 			"notebook.diff.cell.switchOutputRenderingStyleToText": "切換輸出轉譯",
+			"notebook.diff.cell.toggleCollapseUnchangedRegions": "Toggle Collapse Unchanged Regions",
 			"notebook.diff.ignoreMetadata": "隱藏中繼資料差異",
 			"notebook.diff.ignoreOutputs": "隱藏輸出差異",
+			"notebook.diff.openFile": "Open File",
+			"notebook.diff.revertMetadata": "Revert Notebook Metadata",
 			"notebook.diff.showMetadata": "顯示中繼資料差異",
 			"notebook.diff.showOutputs": "顯示輸出差異",
 			"notebook.diff.switchToText": "開啟文字 Diff 編輯器",
@@ -9450,6 +9529,7 @@
 			"notebook.markdown.lineHeight": "控制筆記本中 Markdown 儲存格的行高 (以像素為單位)。設定為 {0} 時，將使用 {1}",
 			"notebook.markup.fontSize": "控制筆記本中轉譯標記的字型大小 (像素)。設定為 {0} 時，則會使用 120% 的 {1}。",
 			"notebook.minimalErrorRendering": "控制是否要以最基本樣式呈現錯誤輸出。",
+			"notebook.multiCursor.enabled": "Experimental. Enables a limited set of multi cursor controls across multiple cells in the notebook editor. Currently supported are core editor actions (typing/cut/copy/paste/composition) and a limited subset of editor commands.",
 			"notebook.outputFontFamily": "筆記本儲存格內輸出文字的字型家族。設定為空白時，則會使用 {0}。",
 			"notebook.outputFontSize": "筆記本儲存格內輸出文字的字型大小。當設定為 0 時，則會使用 {0}。",
 			"notebook.outputLineHeight": "筆記本儲存格內輸出文字的行高。\r\n - 當設定為 0 時，會使用編輯器行高。\r\n - 介於 0 到 8 之間的值會用來做為字型大小的乘數。\r\n - 大於或等於 8 的值將做為有效值。",
@@ -10355,8 +10435,8 @@
 			"pauseSocketWriting": "連線: 暫停通訊端寫入",
 			"remote": "遠端",
 			"remote.autoForwardPortFallback": "當自動轉送連接埠和 'remote.autoForwardPortsSource' 預設設為 'process' 時，會觸發從 'process' 到 'hybrid' 之交換器的自動轉送連接埠數目。設定為 '0' 以停用後援。未設定 `remote.autoForwardPortsFallback` 但已設定 `remote.autoForwardPortsSource` 時，會將 `remote.autoForwardPortsFallback` 視為已設定為 '0'。",
-			"remote.autoForwardPorts": "啟用時，系統會偵測到新的執行流程，並自動轉寄其接聽的連接埠。停用此設定不會阻止轉寄所有的連接埠。即使停用，延伸模組仍可引起連接埠轉寄，開啟某些 URL 也仍會造成連接埠轉寄。",
-			"remote.autoForwardPortsSource": "當 {0} 為 true，設定自動轉送連接埠的來源。在 Windows 與 macOS 遠端上，`process` 和 `hybrid` 選項沒有作用，將使用 `output`。",
+			"remote.autoForwardPorts": "When enabled, new running processes are detected and ports that they listen on are automatically forwarded. Disabling this setting will not prevent all ports from being forwarded. Even when disabled, extensions will still be able to cause ports to be forwarded, and opening some URLs will still cause ports to forwarded. Also see {0}.",
+			"remote.autoForwardPortsSource": "Sets the source from which ports are automatically forwarded when {0} is true. When {0} is false, {1} will be used to find information about ports that have already been forwarded. On Windows and macOS remotes, the `process` and `hybrid` options have no effect and `output` will be used.",
 			"remote.autoForwardPortsSource.hybrid": "當透過讀取終端和偵錯輸出而探索到連接埠時，會自動轉送連接埠。並非所有使用連接埠的處理序都將列印到整合式終端或偵錯主控台，因此將缺少部分連接埠。將透過監看在即將終止的連接埠上的處理序來取消轉送連接埠。",
 			"remote.autoForwardPortsSource.output": "當透過讀取終端和偵錯輸出而探索到連接埠時，會自動轉送連接埠。並非所有使用連接埠的處理序都將列印到整合式終端或偵錯主控台，因此將缺少部分連接埠。根據輸出而轉送的連接埠，在重新載入或使用者在 [連接埠] 檢視中關閉連接埠之前，不會是「未轉送」。",
 			"remote.autoForwardPortsSource.process": "當透過監看已啟動且包含連接埠的處理序而探索到連接埠時，會自動轉送連接埠。",
@@ -10432,7 +10512,10 @@
 			"tunnel.preview": "遠端通道現為預覽階段。請使用 [協助: 回報問題] 命令回報任何問題。"
 		},
 		"vs/workbench/contrib/replNotebook/browser/repl.contribution": {
-			"repl.execute": "執行 REPL 輸入"
+			"repl.execute": "Execute REPL input"
+		},
+		"vs/workbench/contrib/replNotebook/browser/replEditorInput": {
+			"replEditorLabelIcon": "Icon of the REPL editor label."
 		},
 		"vs/workbench/contrib/sash/browser/sash.contribution": {
 			"sashHoverDelay": "控制檢視/編輯器之間拖曳區域的暫留回饋延遲 (毫秒)。",
@@ -10527,6 +10610,11 @@
 			"scm.diffDecorationsIgnoreTrimWhitespace.false": "請勿忽略開頭和尾端空白字元。",
 			"scm.diffDecorationsIgnoreTrimWhitespace.inherit": "繼承自 `diffEditor.ignoreTrimWhitespace`。",
 			"scm.diffDecorationsIgnoreTrimWhitespace.true": "忽略開頭和尾端空白字元。",
+			"scm.graph.badges": "Controls which badges are shown in the Source Control Graph view. The badges are shown on the right side of the graph indicating the names of history item groups.",
+			"scm.graph.badges.all": "Show badges of all history item groups in the Source Control Graph view.",
+			"scm.graph.badges.filter": "Show only the badges of history item groups used as a filter in the Source Control Graph view.",
+			"scm.graph.pageOnScroll": "Controls whether the Source Control Graph view will load the next page of items when you scroll to the end of the list.",
+			"scm.graph.pageSize": "The number of items to show in the Source Control Graph view by default and when loading more items.",
 			"scm.providerCountBadge": "控制原始檔控制提供者標頭上的計數徽章。當存在多個提供者或啟用了 {0} 設定時，這些標頭將顯示在 [原始檔控制] 檢視中，以及 [原始檔控制存放庫] 檢視中。",
 			"scm.providerCountBadge.auto": "當不為零時，僅顯示原始檔控制提供者的計數徽章。",
 			"scm.providerCountBadge.hidden": "隱藏原始檔控制提供者計數徽章。",
@@ -10547,52 +10635,60 @@
 			"sourceControlViewIcon": "[原始檔控制] 檢視的檢視圖示。"
 		},
 		"vs/workbench/contrib/scm/browser/scmHistory": {
+			"scmGraph.HistoryItemHoverAdditionsForeground": "History item hover additions foreground color.",
+			"scmGraph.HistoryItemHoverDeletionsForeground": "History item hover deletions foreground color.",
 			"scmGraphForeground1": "原始檔控制圖形前景色彩 (1)。",
 			"scmGraphForeground2": "原始檔控制圖形前景色彩 (2)。",
 			"scmGraphForeground3": "原始檔控制圖形前景色彩 (3)。",
-			"scmGraphHistoryItemGroupBase": "基礎歷程記錄項目群組色彩。",
-			"scmGraphHistoryItemGroupLocal": "本機歷程記錄項目群組色彩。",
-			"scmGraphHistoryItemGroupRemote": "遠端歷程記錄項目群組色彩。",
-			"scmGraphHistoryItemHoverLabelForeground": "歷程記錄項目暫留標籤前景色彩。"
+			"scmGraphForeground4": "Source control graph foreground color (4).",
+			"scmGraphForeground5": "Source control graph foreground color (5).",
+			"scmGraphHistoryItemBaseRefColor": "History item base reference color.",
+			"scmGraphHistoryItemHoverDefaultLabelBackground": "History item hover default label background color.",
+			"scmGraphHistoryItemHoverDefaultLabelForeground": "History item hover default label foreground color.",
+			"scmGraphHistoryItemHoverLabelForeground": "歷程記錄項目暫留標籤前景色彩。",
+			"scmGraphHistoryItemRefColor": "History item reference color.",
+			"scmGraphHistoryItemRemoteRefColor": "History item remote reference color."
 		},
 		"vs/workbench/contrib/scm/browser/scmHistoryViewPane": {
+			"activeRepository": "Show the source control graph for the active repository",
+			"all": "All",
+			"allHistoryItemRefs": "All history item references",
+			"auto": "Auto",
+			"currentHistoryItemRef": "Current history item reference(s)",
 			"deletion": "{0} 個刪除{1}",
 			"deletions": "{0} 個刪除{1}",
 			"fileChanged": "{0} 個檔案已變更",
 			"filesChanged": "{0} 個檔案已變更",
+			"goToCurrentHistoryItem": "Go to Current History Item",
+			"historyItemChangesEditorTitle": "All Changes ({0} ↔ {1})",
+			"historyItemMessage": "Message",
 			"insertion": "{0} 個插入{1}",
 			"insertions": "{0} 個插入{1}",
+			"items": "{0} Items",
 			"loadMore": "{0}載入更多...",
-			"outdated": "已過期",
+			"referencePicker": "History Item Reference Picker",
 			"refreshGraph": "重新整理",
+			"repositoryPicker": "Repository Picker",
 			"scm history": "原始檔控制歷程記錄",
-			"scmGraph.HistoryItemHoverAdditionsForeground": "歷程記錄項目暫留新增前景色彩。",
-			"scmGraph.HistoryItemHoverDeletionsForeground": "歷程記錄項目暫留刪除前景色彩。"
+			"scmGraphHistoryItemRef": "Select one/more history item references to view, type to filter",
+			"scmGraphRepository": "Select the repository to view, type to filter all repositories",
+			"scmGraphViewOutdated": "Please refresh the graph using the refresh action ($(refresh)).",
+			"scmGraphViewRevealCurrentHistoryItem": "The current history item is not present in the source control graph. Please use the history item references picker to expand the set of history items in the graph.",
+			"viewChanges": "View Changes"
 		},
 		"vs/workbench/contrib/scm/browser/scmRepositoriesViewPane": {
 			"scm": "原始檔控制存放庫"
 		},
 		"vs/workbench/contrib/scm/browser/scmViewPane": {
 			"collapse all": "摺疊所有存放庫",
-			"deletion": "{0} 歌刪除{1}",
-			"deletions": "{0} 個刪除{1}",
 			"expand all": "展開所有存放庫",
-			"fileChanged": "{0} 個檔案已變更",
-			"filesChanged": "{0} 個檔案已變更",
-			"historyItemChangesEditorTitle": "所有變更 ({0} ↔ {1})",
 			"input": "原始檔控制輸入",
-			"insertion": "{0} 個插入{1}",
-			"insertions": "{0} 個插入{1}",
 			"label.close": "關閉",
 			"repositories": "存放庫",
 			"repositorySortByDiscoveryTime": "依探索時間排序",
 			"repositorySortByName": "依名稱排序",
 			"repositorySortByPath": "依路徑排序",
 			"scm": "原始檔控制管理",
-			"scm.historyItemAdditionsForeground": "歷程記錄項目新增前景色彩。",
-			"scm.historyItemDeletionsForeground": "歷程記錄項目刪除前景色彩。",
-			"scm.historyItemSelectedStatisticsBorder": "歷程記錄項目選取的統計資料框線色彩。",
-			"scm.historyItemStatisticsBorder": "歷程記錄項目統計資料框線色彩。",
 			"scmInputCancelAction": "取消",
 			"scmInputMoreActions": "其他動作...",
 			"setListViewMode": "清單檢視",
@@ -10600,8 +10696,7 @@
 			"sortAction": "檢視及排序",
 			"sortChangesByName": "依名稱排序變更",
 			"sortChangesByPath": "依路徑排序變更",
-			"sortChangesByStatus": "依狀態排序變更",
-			"viewChanges": "檢視變更"
+			"sortChangesByStatus": "依狀態排序變更"
 		},
 		"vs/workbench/contrib/scm/browser/scmViewPaneContainer": {
 			"source control": "原始檔控制"
@@ -10820,7 +10915,9 @@
 			"search": "搜尋",
 			"searchFileMatch": "找到 {0} 個檔案",
 			"searchFileMatches": "找到 {0} 個檔案",
+			"searchFolderMatch.aiText.label": "Load AI Results",
 			"searchFolderMatch.other.label": "其他檔案",
+			"searchFolderMatch.plainText.label": "Text Results",
 			"searchMatch": "找到 {0} 個相符",
 			"searchMatches": "找到 {0} 個相符",
 			"searchResultAria": "在資料行 {1} 的 '{0}' 找到 {2}"
@@ -13116,6 +13213,8 @@
 			"dialogClose": "關閉對話方塊"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted": {
+			"acessibleViewHint": "Inspect this in the accessible view ({0}).\r\n",
+			"acessibleViewHintNoKbOpen": "Inspect this in the accessible view via the command Open Accessible View which is currently not triggerable via keybinding.\r\n",
 			"allDone": "標記完成",
 			"checkboxTitle": "核取時，啟動時會顯示此頁面。",
 			"close": "隱藏",
@@ -13125,6 +13224,7 @@
 			"gettingStarted.editingEvolved": "編輯已進化",
 			"gettingStarted.keyboardTip": "提示: 使用鍵盤快速鍵 ",
 			"gettingStarted.someStepsComplete": "{1} 個步驟中已完成 {0} 個",
+			"goBack": "Go Back",
 			"imageShowing": "顯示 {0} 的影像",
 			"new": "新增",
 			"newItems": "已更新",
@@ -13140,7 +13240,6 @@
 			"start": "開始",
 			"toStart": "以開始。",
 			"walkthroughs": "逐步解說",
-			"welcome": "歡迎",
 			"welcomeAriaLabel": "概述如何利用編輯器加速。",
 			"welcomePage.openFolderWithPath": "透過路徑 {1} 開啟資料夾 {0}",
 			"welcomePage.showOnStartup": "啟動時顯示歡迎頁面"
@@ -13165,6 +13264,11 @@
 			"workbench.welcomePage.preferReducedMotion": "啟用時，減少歡迎頁面中的動作。",
 			"workbench.welcomePage.walkthroughs.openOnInstall": "啟用後，延伸模組的逐步解說將在安裝延伸模組時開啟。",
 			"workspacePlatform": "目前工作區的平台，在遠端或無伺服器內容中可能會與 UI 平台不同"
+		},
+		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedAccessibleView": {
+			"gettingStarted.description": "Description: {0}",
+			"gettingStarted.step": "Step {0}: {1}\r\nDescription: {2}",
+			"gettingStarted.title": "Title: {0}"
 		},
 		"vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedColors": {
 			"walkthrough.stepTitle.foreground": "每個逐步說明步驟標題的前景色彩",
@@ -13241,10 +13345,12 @@
 			"getting-started-setup-icon": "用於歡迎頁面設定類別的圖示",
 			"gettingStarted.accessibilityHelp.description.interpolated": "協助工具說明對話方塊提供功能預期的相關資訊，以及操作功能的命令/按鍵繫結關係。\r\n 在編輯器、終端機、筆記本、聊天回應、註解或偵錯主控台中聚焦時，可以使用 [開啟協助工具說明] 命令來開啟相關的對話方塊。\r\n{0}",
 			"gettingStarted.accessibilityHelp.title": "使用協助工具說明對話方塊來了解功能",
+			"gettingStarted.accessibilitySettings.description.interpolated": "Accessibility settings can be configured by running the Open Accessibility Settings command.\r\n{0}",
+			"gettingStarted.accessibilitySettings.title": "Configure accessibility settings",
 			"gettingStarted.accessibilitySignals.description.interpolated": "協助工具音效和公告會針對不同事件在工作台播放。\r\n 您可以使用 [列出訊號音效] 和 [列出訊號公告] 命令來探索並設定這些項目。\r\n{0}\r\n{1}",
 			"gettingStarted.accessibilitySignals.title": "微調您要透過音訊或點字裝置接收的協助工具訊號",
 			"gettingStarted.accessibleView.description.interpolated": "可存取的檢視可供終端機、暫留、通知、註解、筆記本輸出、聊天回應、內嵌完成和偵錯主控台輸出使用。\r\n 焦點位於這些功能之一時，可以使用 [開啟可存取的檢視] 命令來開啟它。\r\n{0}",
-			"gettingStarted.accessibleView.title": "使用可存取的檢視來逐行、逐字元檢查內容",
+			"gettingStarted.accessibleView.title": "Screen reader users can inspect content line by line, character by character in the accessible view.",
 			"gettingStarted.beginner.description": "取得最重要功能的概觀",
 			"gettingStarted.beginner.title": "了解基礎",
 			"gettingStarted.codeFolding.description.interpolated": "使用 [切換摺疊] 命令來摺疊或展開程式碼區段。\r\n{0}\r\n 使用 [以遞迴方式切換摺疊] 命令，以遞迴方式摺疊或展開\r\n{1}\r\n",
@@ -13296,8 +13402,8 @@
 			"gettingStarted.setup.OpenFolderWeb.description.interpolated": "您已準備開始撰寫程式碼。您可以開啟本機專案或遠端存放庫，將您的檔案放入 VS Code。\r\n{0}\r\n{1}",
 			"gettingStarted.setup.description": "自訂您的編輯器、了解基本知識，並開始編寫程式碼",
 			"gettingStarted.setup.title": "開始使用 VS Code",
-			"gettingStarted.setupScreenReader.description": "了解讓 VS Code 可存取的工具和快速鍵。請注意，有些動作無法從逐步解說內容中執行。",
-			"gettingStarted.setupScreenReader.title": "使用螢幕助讀程式開始使用 VS Code",
+			"gettingStarted.setupAccessibility.description": "Learn the tools and shortcuts that make VS Code accessible. Note that some actions are not actionable from within the context of the walkthrough.",
+			"gettingStarted.setupAccessibility.title": "Get Started with Accessibility Features",
 			"gettingStarted.setupWeb.description": "自訂您的編輯器、了解基本知識，並開始編寫程式碼",
 			"gettingStarted.setupWeb.title": "開始使用 VS Code 網頁版",
 			"gettingStarted.shortcuts.description.interpolated": "一旦找到您最愛的命令，請建立自訂鍵盤快速鍵以立即存取。\r\n{0}",
@@ -13316,7 +13422,7 @@
 			"gettingStarted.topLevelRemoteOpen.title": "連接至...",
 			"gettingStarted.topLevelShowWalkthroughs.description": "檢視編輯器或延伸模組的逐步解說",
 			"gettingStarted.topLevelShowWalkthroughs.title": "開啟逐步解說...",
-			"gettingStarted.verbositySettings.description.interpolated": "工作台功能有詳細程度設定，因此一旦使用者熟悉某項功能，他們便可避免聽到有關操作方式的提示。例如，有協助工具說明對話方塊的功能會指出如何開啟對話方塊，直到該功能的詳細程度設定停用為止。\r\n 執行 [開啟協助工具設定] 命令，即可設定這些和其他協助工具設定。\r\n{0}",
+			"gettingStarted.verbositySettings.description.interpolated": "Screen reader verbosity settings exist for features around the workbench so that once a user is familiar with a feature, they can avoid hearing hints about how to operate it. For example, features for which an accessibility help dialog exists will indicate how to open the dialog until the verbosity setting for that feature has been disabled.\r\n These and other accessibility settings can be configured by running the Open Accessibility Settings command.\r\n{0}",
 			"gettingStarted.verbositySettings.title": "控制 Aria 標籤的詳細程度",
 			"gettingStarted.videoTutorial.description.interpolated": "觀看一系列簡短練習影片教學課程中的第一集，以了解 VS Code 的主要功能。\r\n{0}",
 			"gettingStarted.videoTutorial.title": "觀看影片教學課程",
@@ -13328,6 +13434,7 @@
 			"listSignalAnnouncements": "列出訊號公告",
 			"listSignalSounds": "列出訊號音效",
 			"openAccessibilityHelp": "開啟協助工具說明",
+			"openAccessibilitySettings": "Open Accessibility Settings",
 			"openAccessibleView": "開啟可存取的檢視",
 			"openFolder": "開啟資料夾",
 			"openGoToSymbol": "移至符號",
@@ -13595,22 +13702,13 @@
 			"menus.explorerContext": "檔案總管操作功能表",
 			"menus.explorerContextShare": "檔案總管操作功能表中的 [共用] 子功能表",
 			"menus.extensionContext": "延伸模組操作功能表",
-			"menus.historyItemChanges": "原始檔控制傳入/傳出變更標題功能表",
 			"menus.historyItemContext": "原始檔控制歷程記錄項目操作功能表",
 			"menus.home": "主指示器操作功能表 (僅限網頁版)",
-			"menus.incomingChanges": "[原始檔控制傳入變更] 功能表",
-			"menus.incomingChangesAllChangesContext": "[原始檔控制] 所有傳入變更操作功能表",
-			"menus.incomingChangesContext": "[原始檔控制] 傳入變更操作功能表",
-			"menus.incomingChangesHistoryItemContext": "原始檔控制傳入變更歷程記錄項目操作功能表",
 			"menus.input": "原始檔控制輸入方塊選單",
 			"menus.mergeEditorResult": "合併編輯器的結果工具列",
 			"menus.multiDiffEditorResource": "多重 Diff 編輯器中的資源工具列",
 			"menus.notebookVariablesContext": "筆記本變數的檢視操作功能表",
 			"menus.opy": "最上層 [編輯] 功能表中的 [複製為] 子功能表",
-			"menus.outgoingChanges": "原始檔控制輸出變更功能表",
-			"menus.outgoingChangesAllChangesContext": "原始檔控制所有傳出變更操作功能表",
-			"menus.outgoingChangesContext": "[原始檔控制] 傳出變更操作功能表",
-			"menus.outgoingChangesHistoryItemContext": "原始檔控制傳出變更歷程記錄項目操作功能表",
 			"menus.resourceFolderContext": "原始檔控制資源資料夾內容功能表",
 			"menus.resourceGroupContext": "原始檔控制資源群組操作功能表",
 			"menus.resourceStateContext": "原始檔控制資源群組狀態操作功能表",
@@ -13683,6 +13781,12 @@
 			"vscode.extension.contributes.submenu.label": "引導至此子功能表的功能表項目標籤。",
 			"vscode.extension.contributes.submenus": "將子功能表項目提供給編輯器",
 			"webview.context": "Web 檢視操作功能表"
+		},
+		"vs/workbench/services/activity/common/activity": {
+			"activityErrorBadge.background": "Background color of the error activity badge",
+			"activityErrorBadge.foreground": "Foreground color of the error activity badge",
+			"activityWarningBadge.background": "Background color of the warning activity badge",
+			"activityWarningBadge.foreground": "Foreground color of the warning activity badge"
 		},
 		"vs/workbench/services/assignment/common/assignmentService": {
 			"workbench.enableExperiments": "擷取要從 Microsoft 線上服務執行的實驗。"
@@ -13904,6 +14008,7 @@
 			"cannot change enablement environment": "無法變更 {0} 延伸模組的啟用，因為它在環境中已啟用",
 			"cannot change enablement extension kind": "因為延伸模組種類的影響，所以無法變更 {0} 延伸模組的啟用",
 			"cannot change enablement virtual workspace": "無法變更 {0} 延伸模組的啟用，因為它不支援虛擬工作區",
+			"cannot change invalid extension enablement": "Cannot change enablement of {0} extension because of it is invalid",
 			"cannot disable auth extension": "因為 [設定同步] 相依於 {0} 延伸模組，所以無法變更啟用狀態。",
 			"cannot disable auth extension in workspace": "因為工作區中的 {0} 延伸模組提供驗證提供者，所以無法變更啟用狀態",
 			"cannot disable language pack extension": "因為 {0} 延伸模組提供語言套件，所以無法變更啟用狀態。",
@@ -13943,7 +14048,7 @@
 			"install multiple extensions": "您要在所有裝置上安裝及同步延伸模組嗎?",
 			"install single extension": "您要在所有裝置上安裝及同步 '{0}' 延伸模組嗎?",
 			"limited support": "'{0}' 在 {1} 中的功能受限。",
-			"main.notFound": "因為找不到 {0}，無法啟用",
+			"main.notFound": "Cannot activate because {0} not found",
 			"multipleDependentsError": "無法將延伸模組 '{0}' 解除安裝。其為 '{1}'、'{2}' 及其他延伸模組的相依對象。",
 			"non web extensions": "'{0}' 包含 {1} 不支援的延伸模組。",
 			"non web extensions detail": "包含不支援的延伸模組。",
