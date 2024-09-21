@@ -72,10 +72,10 @@
 		"vs/base/browser/ui/tree/abstractTree": {
 			"close": "Fermer",
 			"filter": "Filtrer",
+			"foundResults": "{0} results",
 			"fuzzySearch": "Correspondance approximative",
 			"not found": "Aucun élément trouvé.",
 			"replFindNoResults": "Aucun résultat",
-			"replFindResults": "{0} résultats",
 			"type to filter": "Type à filtrer",
 			"type to search": "Entrer le texte à rechercher"
 		},
@@ -2381,6 +2381,7 @@
 			"remoteTunnelService.serviceInstallFailed": "Échec de l’installation du tunnel en tant que service, démarrage de la session..."
 		},
 		"vs/platform/request/common/request": {
+			"electronFetch": "Controls whether use of Electron's fetch implementation instead of Node.js' should be enabled. All local extensions will get Electron's fetch implementation for the global fetch API.",
 			"httpConfigurationTitle": "HTTP",
 			"noProxy": "Spécifie les noms de domaine pour lesquels les paramètres de proxy doivent être ignorés pour les requêtes HTTP/HTTPS.",
 			"proxy": "Paramètre proxy à utiliser. S'il n'est pas défini, il est hérité des variables d'environnement 'http_proxy' et 'https_proxy'.",
@@ -5086,7 +5087,7 @@
 			"accessibilityConfigurationTitle": "Accessibilité",
 			"announcement.enabled.auto": "Activer l’annonce, ne sera lu qu’en mode optimisé pour le lecteur d’écran.",
 			"announcement.enabled.off": "Désactiver l’annonce.",
-			"autoSynthesize": "Whether a textual response should automatically be read out aloud. For non screen reader users, this will happen when speech was used as input. For screen reader users, this will happen with any input type. For example, in a chat session, a response is automatically synthesized when voice is used as chat request.",
+			"autoSynthesize": "Indique si une réponse textuelle doit être automatiquement lue à haute voix lorsque la voix a été utilisée comme entrée. Par exemple, dans une session de chat, une réponse est automatiquement synthétisée lorsque la voix a été utilisée comme demande de chat.",
 			"dimUnfocusedEnabled": "Indique s'il faut estomper les éditeurs et les terminaux qui n'ont pas le focus pour rendre plus clair l'emplacement de l'entrée tapée. Cela fonctionne avec la majorité des éditeurs avec les exceptions notables de ceux qui utilisent des iframes tels que des notebooks et les éditeurs à extension webview.",
 			"dimUnfocusedOpacity": "Fraction d'opacité (0.2 à 1.0) à utiliser pour les éditeurs et terminaux qui n'ont pas le focus. Cette opération prend effet uniquement quand {0} est activé.",
 			"sound.enabled.auto": "Activez un son lorsqu’un lecteur d’écran est attaché.",
@@ -5397,7 +5398,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatCodeblockActions": {
 			"chat.applyAll.label": "Apply All Edits",
-			"chatCodeBlock.applyAll.editingSessionActive": "An editing session is already active, please accept or reject the current proposed edits before continuing.",
 			"interactive.applyInEditor.label": "Appliquer dans Éditeur",
 			"interactive.compare.apply": "Appliquer les modifications",
 			"interactive.compare.discard": "Ignorer les modifications",
@@ -5413,6 +5413,8 @@
 			"chatContext.notebook.kernelVariable": "Kernel Variable...",
 			"chatContext.notebook.selectkernelVariable": "Select and Insert Kernel Variable",
 			"chatContext.symbol": "Symbole...",
+			"imageFromClipboard": "Image from Clipboard",
+			"pastedImage": "Pasted Image",
 			"workbench.action.chat.attachContext.label": "Joindre le contexte",
 			"workbench.action.chat.attachFile.label": "Add File to Chat",
 			"workbench.action.chat.attachSelection.label": "Ajouter la sélection à la conversation"
@@ -5513,6 +5515,7 @@
 			"chat.attachment3": "Contexte attaché : {0}.",
 			"chat.fileAttachment3": "Joint : {0}.",
 			"chat.fileAttachmentWithRange3": "Attaché : {0}, ligne {1} à ligne {2}.",
+			"chat.imageAttachment": "Attached image, {0}",
 			"chat.omittedFileAttachment": "Omis : {0}.",
 			"chat.omittedFileAttachmentWithRange": "Omis : {0}, ligne {1} à ligne {2}.",
 			"chat.partialFileAttachment": "Partiellement attaché : {0}.",
@@ -5546,11 +5549,13 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
 			"attach": "Attach",
-			"file": "File"
+			"file": "File",
+			"image": "Image"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditingService": {
 			"accept.allFiles": "Accept All",
 			"accept.file": "Accept",
+			"discard.allFiles": "Discard All",
 			"discard.file": "Discard",
 			"multiDiffEditorInput.name": "Suggested Edits"
 		},
@@ -5565,6 +5570,9 @@
 			"chat.openPanel": "Open Chat Panel",
 			"workbench.panel.chat.view.showGettingStarted": "When enabled, shows a getting started experiments in the chat panel."
 		},
+		"vs/workbench/contrib/chat/browser/chatImagePaste": {
+			"pastedImage": "Pasted Image"
+		},
 		"vs/workbench/contrib/chat/browser/chatInlineAnchorWidget": {
 			"actions.attach.label": "Attach File as Context",
 			"actions.goToDecl.label": "Go to Definition",
@@ -5577,7 +5585,10 @@
 			"chat.attachment": "Contexte attaché, {0}",
 			"chat.fileAttachment": "Fichier joint, {0}",
 			"chat.fileAttachmentWithRange": "Fichier joint, {0}, ligne {1} à la ligne {2}",
+			"chat.imageAttachment": "Attached image, {0}",
 			"chat.submitToSecondaryAgent": "Envoyer à @{0}",
+			"chatEditingSessionOverview": "{0} files changed",
+			"chatEditingSessionOverview.oneFileChanged": "1 file changed",
 			"chatInput": "Entrée de conversation",
 			"chatInput.accessibilityHelpNoKb": "Entrée de conversation, tapez le code ici et appuyez sur Entrée pour l’exécuter. Pour plus d’informations, utilisez la commande d’aide sur l’accessibilité de la conversation.",
 			"notebook.moreExecuteActionsLabel": "Plus..."
@@ -5705,6 +5716,7 @@
 		"vs/workbench/contrib/chat/common/tools/languageModelToolsContribution": {
 			"canBeInvokedManually": "Indique si cet outil peut être appelé manuellement par l’utilisateur via l’expérience utilisateur de conversation.",
 			"condition": "Condition qui doit être vraie pour que cet outil soit activé. Notez qu'un outil peut toujours être invoqué par une autre extension même lorsque sa condition « quand » est fausse.",
+			"contentTypes": "The list of content types that this tool can return. It's required that tools support `text/plain`, and that is assumed even if not specified here. Another example could be the contentType exported by the `@vscode/prompt-tsx` library.",
 			"icon": "Icône qui représente cet outil. Soit un chemin de fichier, un objet avec des chemins de fichiers pour les thèmes sombres et clairs, ou une référence d'icône de thème, comme `\\$(zap)`",
 			"icon.dark": "Chemin de l'icône quand un thème foncé est utilisé",
 			"icon.light": "Chemin de l'icône quand un thème clair est utilisé",
@@ -7107,14 +7119,19 @@
 			"exeBasedRecommendation": "Cette extension est recommandée, car vous avez installé {0}."
 		},
 		"vs/workbench/contrib/extensions/browser/extensionEditor": {
+			"Browse Extension Contents": "Browse Extension Contents",
 			"Changelog title": "Journal des modifications",
 			"Marketplace": "Place de marché",
 			"Marketplace Info": "Plus d’informations",
 			"Readme title": "Fichier Lisez-moi",
+			"View license": "View License",
+			"browse contents": "Browse Contents",
+			"browseExtensionContents": "Are you sure you want to browse the contents of the extension '{0}'?\r\nMake sure the extension license allows this.",
 			"builtin": "Intégrée",
 			"categories": "Catégories",
 			"changelog": "Journal des modifications",
 			"changelogtooltip": "Historique de mise à jour de l'extension, affiché depuis le fichier 'CHANGELOG.md' de l’extension",
+			"contents": "Contents",
 			"dependencies": "Dépendances",
 			"dependenciestooltip": "Répertorie les extensions dont dépend cette extension",
 			"details": "Détails",
@@ -7145,7 +7162,6 @@
 			"rating": "Évaluation",
 			"repository": "Dépôt",
 			"resources": "Ressources",
-			"sources": "Sources",
 			"workspace extension": "Extension de l’espace de travail"
 		},
 		"vs/workbench/contrib/extensions/browser/extensionEnablementWorkspaceTrustTransitionParticipant": {
@@ -8154,7 +8170,8 @@
 			"createNewFolder": "Nouveau dossier...",
 			"explorerSection": "Section de l'Explorateur : {0}",
 			"refreshExplorer": "Actualiser l'explorateur",
-			"refreshExplorerMetadata": "Force l’actualisation d’Explorer."
+			"refreshExplorerMetadata": "Force l’actualisation d’Explorer.",
+			"type to search files": "Type to search files"
 		},
 		"vs/workbench/contrib/files/browser/views/explorerViewer": {
 			"confirmMove": "Voulez-vous vraiment déplacer '{0}' dans '{1}' ?",
@@ -8274,7 +8291,7 @@
 			"moveToNextHunk": "Aller à la modification suivante",
 			"moveToPreviousHunk": "Aller à la modification précédente",
 			"rerun": "Réexécuter",
-			"run": "Commencer dans l’éditeur",
+			"run": "Editor Chat",
 			"showChanges": "Basculer les modifications",
 			"startInlineChat": "Icône qui génère le chat en ligne à partir de la barre d'outils de l'éditeur.",
 			"unstash": "Reprendre le dernière conversation instantanée en ligne rejeté",
@@ -10538,6 +10555,14 @@
 		"vs/workbench/contrib/replNotebook/browser/repl.contribution": {
 			"repl.execute": "Execute REPL input"
 		},
+		"vs/workbench/contrib/replNotebook/browser/replEditorAccessibilityHelp": {
+			"replEditor.cellNavigation": "The up and down arrows will also move focus between previously executed items.",
+			"replEditor.execute": "The Execute command{0} will evaluate the expression in the input box.",
+			"replEditor.focusHistory": "The Focus History command{0} will move focus to the list of previously executed items.",
+			"replEditor.focusInOutput": "The Focus Output command{0} will set focus on the output when focused on a previously executed item.",
+			"replEditor.focusReplInput": "The Focus Input Editor command{0} will move focus to the REPL input box.",
+			"replEditor.overview": "You are in a REPL Editor which contains in input box to evaluate expressions and a list of previously executed expressions and their output."
+		},
 		"vs/workbench/contrib/replNotebook/browser/replEditorInput": {
 			"replEditorLabelIcon": "Icon of the REPL editor label."
 		},
@@ -10901,7 +10926,6 @@
 			"clearSearchHistoryLabel": "Effacer l'historique de recherche"
 		},
 		"vs/workbench/contrib/search/browser/searchFindInput": {
-			"aiDescription": "Utiliser l’IA",
 			"searchFindInputNotebookFilter.label": "Filtres de recherche de bloc-notes"
 		},
 		"vs/workbench/contrib/search/browser/searchIcons": {
@@ -10940,7 +10964,7 @@
 			"search": "Rechercher",
 			"searchFileMatch": "{0} fichier trouvé",
 			"searchFileMatches": "{0} fichiers",
-			"searchFolderMatch.aiText.label": "AI Results",
+			"searchFolderMatch.aiText.label": "{0} Results",
 			"searchFolderMatch.other.label": "Autres fichiers",
 			"searchFolderMatch.plainText.label": "Text Results",
 			"searchMatch": "{0} correspondance trouvée",

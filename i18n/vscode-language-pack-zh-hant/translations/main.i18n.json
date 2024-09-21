@@ -72,10 +72,10 @@
 		"vs/base/browser/ui/tree/abstractTree": {
 			"close": "關閉",
 			"filter": "篩選",
+			"foundResults": "{0} results",
 			"fuzzySearch": "模糊比對",
 			"not found": "找不到任何元素。",
 			"replFindNoResults": "沒有結果",
-			"replFindResults": "{0} 個結果",
 			"type to filter": "要篩選的類型",
 			"type to search": "要搜尋的類型"
 		},
@@ -2381,6 +2381,7 @@
 			"remoteTunnelService.serviceInstallFailed": "無法將通道安裝為服務，從工作階段開始..."
 		},
 		"vs/platform/request/common/request": {
+			"electronFetch": "Controls whether use of Electron's fetch implementation instead of Node.js' should be enabled. All local extensions will get Electron's fetch implementation for the global fetch API.",
 			"httpConfigurationTitle": "HTTP",
 			"noProxy": "指定應忽略 HTTP/HTTPS 要求之 Proxy 設定的功能變數名稱。",
 			"proxy": "要使用的 Proxy 設定。若未設定，將從 `http_proxy` 和 `https_proxy` 環境變數繼承。",
@@ -5086,7 +5087,7 @@
 			"accessibilityConfigurationTitle": "協助工具",
 			"announcement.enabled.auto": "啟用宣告，只有在螢幕助讀程式最佳化模式中才能播放。",
 			"announcement.enabled.off": "停用宣告。",
-			"autoSynthesize": "Whether a textual response should automatically be read out aloud. For non screen reader users, this will happen when speech was used as input. For screen reader users, this will happen with any input type. For example, in a chat session, a response is automatically synthesized when voice is used as chat request.",
+			"autoSynthesize": "使用語音做為輸入時，是否應該自動大聲朗讀文字回應。例如，在聊天工作階段中，當語音做為聊天要求時，會自動合成回應。",
 			"dimUnfocusedEnabled": "是否要將未專注的編輯器和終端機變暗，這可讓您更清楚輸入輸入的來源。這適用於大部分的編輯器，以及使用如筆記本和擴充網頁檢視編輯器等 iframe 的值得注意的例外狀況。",
 			"dimUnfocusedOpacity": "不透明度分數 (0.2 到 1.0) 用於未專注的編輯器和終端機。只有在啟用 {0} 時才會生效。",
 			"sound.enabled.auto": "已連結螢幕助讀程式時啟用音效。",
@@ -5397,7 +5398,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatCodeblockActions": {
 			"chat.applyAll.label": "Apply All Edits",
-			"chatCodeBlock.applyAll.editingSessionActive": "An editing session is already active, please accept or reject the current proposed edits before continuing.",
 			"interactive.applyInEditor.label": "在編輯器中套用",
 			"interactive.compare.apply": "套用編輯",
 			"interactive.compare.discard": "捨棄編輯",
@@ -5413,6 +5413,8 @@
 			"chatContext.notebook.kernelVariable": "Kernel Variable...",
 			"chatContext.notebook.selectkernelVariable": "Select and Insert Kernel Variable",
 			"chatContext.symbol": "符號...",
+			"imageFromClipboard": "Image from Clipboard",
+			"pastedImage": "Pasted Image",
 			"workbench.action.chat.attachContext.label": "連結內容",
 			"workbench.action.chat.attachFile.label": "Add File to Chat",
 			"workbench.action.chat.attachSelection.label": "將選取專案新增至聊天"
@@ -5513,6 +5515,7 @@
 			"chat.attachment3": "已連結的內容: {0}。",
 			"chat.fileAttachment3": "已連結: {0}。",
 			"chat.fileAttachmentWithRange3": "已連結: {0}，行 {1} 至行 {2}。",
+			"chat.imageAttachment": "Attached image, {0}",
 			"chat.omittedFileAttachment": "已省略: {0}。",
 			"chat.omittedFileAttachmentWithRange": "已省略: {0}，行 {1} 到行 {2}。",
 			"chat.partialFileAttachment": "部分已連結: {0}。",
@@ -5546,11 +5549,13 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
 			"attach": "Attach",
-			"file": "File"
+			"file": "File",
+			"image": "Image"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditingService": {
 			"accept.allFiles": "Accept All",
 			"accept.file": "Accept",
+			"discard.allFiles": "Discard All",
 			"discard.file": "Discard",
 			"multiDiffEditorInput.name": "Suggested Edits"
 		},
@@ -5565,6 +5570,9 @@
 			"chat.openPanel": "Open Chat Panel",
 			"workbench.panel.chat.view.showGettingStarted": "When enabled, shows a getting started experiments in the chat panel."
 		},
+		"vs/workbench/contrib/chat/browser/chatImagePaste": {
+			"pastedImage": "Pasted Image"
+		},
 		"vs/workbench/contrib/chat/browser/chatInlineAnchorWidget": {
 			"actions.attach.label": "Attach File as Context",
 			"actions.goToDecl.label": "Go to Definition",
@@ -5577,7 +5585,10 @@
 			"chat.attachment": "附加的內容，{0}",
 			"chat.fileAttachment": "附加的檔案，{0}",
 			"chat.fileAttachmentWithRange": "附加的檔案，{0}，行 {1} 至行 {2}",
+			"chat.imageAttachment": "Attached image, {0}",
 			"chat.submitToSecondaryAgent": "傳送至 @{0}",
+			"chatEditingSessionOverview": "{0} files changed",
+			"chatEditingSessionOverview.oneFileChanged": "1 file changed",
 			"chatInput": "聊天輸入",
 			"chatInput.accessibilityHelpNoKb": "聊天輸入，在這裡輸入代碼，然後按 Enter 以執行。如需詳細資訊，請使用聊天協助工具說明命令。",
 			"notebook.moreExecuteActionsLabel": "其他..."
@@ -5705,6 +5716,7 @@
 		"vs/workbench/contrib/chat/common/tools/languageModelToolsContribution": {
 			"canBeInvokedManually": "使用者是否可以透過聊天 UX 手動叫用此工具。",
 			"condition": "必須為 True 才能啟用此工具的條件。請注意，即使工具的 'when' 條件為 false，工具仍可能由另一個延伸模組叫用。",
+			"contentTypes": "The list of content types that this tool can return. It's required that tools support `text/plain`, and that is assumed even if not specified here. Another example could be the contentType exported by the `@vscode/prompt-tsx` library.",
 			"icon": "代表此工具的圖示。檔案路徑、具有深色和淺色主題檔案路徑的物件，或主題圖示參照，例如 '\\$(zap)'",
 			"icon.dark": "使用暗色主題時的圖像路徑",
 			"icon.light": "使用亮色主題時的圖示路徑",
@@ -7107,14 +7119,19 @@
 			"exeBasedRecommendation": "因為您已安裝 {0}，所以建議使用此延伸模組。"
 		},
 		"vs/workbench/contrib/extensions/browser/extensionEditor": {
+			"Browse Extension Contents": "Browse Extension Contents",
 			"Changelog title": "變更記錄",
 			"Marketplace": "市集",
 			"Marketplace Info": "其他資訊",
 			"Readme title": "讀我檔案",
+			"View license": "View License",
+			"browse contents": "Browse Contents",
+			"browseExtensionContents": "Are you sure you want to browse the contents of the extension '{0}'?\r\nMake sure the extension license allows this.",
 			"builtin": "內建",
 			"categories": "類別",
 			"changelog": "變更記錄",
 			"changelogtooltip": "延伸模組更新紀錄，從延伸模組 'CHANGELOG.md' 檔案中呈現",
+			"contents": "Contents",
 			"dependencies": "相依性",
 			"dependenciestooltip": "列出此延伸模組的相依項目",
 			"details": "詳細資料",
@@ -7145,7 +7162,6 @@
 			"rating": "評等",
 			"repository": "儲存庫",
 			"resources": "資源",
-			"sources": "Sources",
 			"workspace extension": "工作區延伸模組"
 		},
 		"vs/workbench/contrib/extensions/browser/extensionEnablementWorkspaceTrustTransitionParticipant": {
@@ -8154,7 +8170,8 @@
 			"createNewFolder": "新增資料夾...",
 			"explorerSection": "總管區段: {0}",
 			"refreshExplorer": "重新整理 Explorer",
-			"refreshExplorerMetadata": "強制重新整理總管。"
+			"refreshExplorerMetadata": "強制重新整理總管。",
+			"type to search files": "Type to search files"
 		},
 		"vs/workbench/contrib/files/browser/views/explorerViewer": {
 			"confirmMove": "確定要將 \"{0}\" 移至 \"{1}\" 嗎?",
@@ -8274,7 +8291,7 @@
 			"moveToNextHunk": "移至下一個變更",
 			"moveToPreviousHunk": "移至上一個變更",
 			"rerun": "重新執行",
-			"run": "在編輯器中啟動",
+			"run": "Editor Chat",
 			"showChanges": "切換變更",
 			"startInlineChat": "從編輯器工具列繁衍內嵌聊天的圖示。",
 			"unstash": "繼續上次關閉的內嵌聊天",
@@ -10538,6 +10555,14 @@
 		"vs/workbench/contrib/replNotebook/browser/repl.contribution": {
 			"repl.execute": "Execute REPL input"
 		},
+		"vs/workbench/contrib/replNotebook/browser/replEditorAccessibilityHelp": {
+			"replEditor.cellNavigation": "The up and down arrows will also move focus between previously executed items.",
+			"replEditor.execute": "The Execute command{0} will evaluate the expression in the input box.",
+			"replEditor.focusHistory": "The Focus History command{0} will move focus to the list of previously executed items.",
+			"replEditor.focusInOutput": "The Focus Output command{0} will set focus on the output when focused on a previously executed item.",
+			"replEditor.focusReplInput": "The Focus Input Editor command{0} will move focus to the REPL input box.",
+			"replEditor.overview": "You are in a REPL Editor which contains in input box to evaluate expressions and a list of previously executed expressions and their output."
+		},
 		"vs/workbench/contrib/replNotebook/browser/replEditorInput": {
 			"replEditorLabelIcon": "Icon of the REPL editor label."
 		},
@@ -10901,7 +10926,6 @@
 			"clearSearchHistoryLabel": "清除搜尋歷程記錄"
 		},
 		"vs/workbench/contrib/search/browser/searchFindInput": {
-			"aiDescription": "使用 AI",
 			"searchFindInputNotebookFilter.label": "筆記本尋找篩選"
 		},
 		"vs/workbench/contrib/search/browser/searchIcons": {
@@ -10940,7 +10964,7 @@
 			"search": "搜尋",
 			"searchFileMatch": "找到 {0} 個檔案",
 			"searchFileMatches": "找到 {0} 個檔案",
-			"searchFolderMatch.aiText.label": "AI Results",
+			"searchFolderMatch.aiText.label": "{0} Results",
 			"searchFolderMatch.other.label": "其他檔案",
 			"searchFolderMatch.plainText.label": "Text Results",
 			"searchMatch": "找到 {0} 個相符",
