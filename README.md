@@ -15,6 +15,7 @@ There are currently 14 supported languages for Visual Studio Code.
 |**German**|de|German (de-de)
 |**Spanish**|es|Spanish (es-es)
 |**Russian**|ru|Russian (ru-ru)
+|**Armenian**|hy|Armenian (hy-hy)
 |**Chinese (Simplified)**|zh-cn|Chinese Simplified (zh-cn)
 |**Chinese (Traditional)**|zh-tw|Chinese Traditional (zh-tw)
 |**Japanese**|ja|Japanese (ja-jp)
