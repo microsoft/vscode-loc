@@ -1,44 +1,44 @@
-# Visual Studio Code Language Packs
+# Gói ngôn ngữ Visual Studio Code
 
-Visual Studio Code is localized into many different languages using the concept of Language Packs. Language Packs can be installed by running the `>Configure Display Language` command in Visual Studio Code's Command Palette or installed via the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs).
+Visual Studio Code được bản địa hóa thành nhiều ngôn ngữ khác nhau bằng khái niệm Gói ngôn ngữ. Gói ngôn ngữ có thể được cài đặt bằng cách chạy lệnh `>Configure Display Language` trong Bảng lệnh của Visual Studio Code hoặc cài đặt thông qua [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Installs).
 
-The original English strings can be found in the source code of the [open source repository](https://github.com/microsoft/vscode) and the localized strings for supported languages can be found in this repository.
+Có thể tìm thấy các chuỗi tiếng Anh gốc trong mã nguồn của [kho lưu trữ nguồn mở](https://github.com/microsoft/vscode) và các chuỗi được bản địa hóa cho các ngôn ngữ được hỗ trợ trong kho lưu trữ này.
 
-Localized resource files are managed and edited by Microsoft. Files will be exported to this repository when strings are updated to prepare for the publishing of language pack.
+Các tệp tài nguyên được bản địa hóa được quản lý và chỉnh sửa bởi Microsoft. Các tệp sẽ được xuất sang kho lưu trữ này khi các chuỗi được cập nhật để chuẩn bị cho việc xuất bản gói ngôn ngữ.
 
-There are currently 14 supported languages for Visual Studio Code.
+Hiện tại có 14 ngôn ngữ được hỗ trợ cho Visual Studio Code.
 
-|Language|Visual Studio Code Language ID|MLCP Language Code|
+|Ngôn ngữ|ID ngôn ngữ Visual Studio Code|Mã ngôn ngữ MLCP|
 |--------|--------|--------|
-|**French**|fr|French (fr-fr)
-|**Italian**|it|Italian (it-it)
-|**German**|de|German (de-de)
-|**Spanish**|es|Spanish (es-es)
-|**Russian**|ru|Russian (ru-ru)
-|**Chinese (Simplified)**|zh-cn|Chinese Simplified (zh-cn)
-|**Chinese (Traditional)**|zh-tw|Chinese Traditional (zh-tw)
-|**Japanese**|ja|Japanese (ja-jp)
-|**Korean**|ko|Korean (ko-kr)
-|**Czech**|cs|Czech (cs-CZ)
-|**Portuguese (Brazil)**|pt-br|Portuguese (Brazil) (pt-br)
-|**Turkish**|tr|Turkish (tr-tr)
-|**Polish**|pl| Polish (pl-pl)
-|**Pseudo Language**|qps-ploc|Pseudo (qps-ploc)
+|**Tiếng Pháp**|fr|Tiếng Pháp (fr-fr)
+|**Tiếng Ý**|it|Tiếng Ý (it-it)
+|**Tiếng Đức**|de|Tiếng Đức (de-de)
+|**Tiếng Tây Ban Nha**|es|Tiếng Tây Ban Nha (es-es)
+|**Tiếng Nga**|ru|Tiếng Nga (ru-ru)
+|**Tiếng Trung (giản thể)**|zh-cn|Tiếng Trung giản thể (zh-cn)
+|**Tiếng Trung (phồn thể)**|zh-tw|Tiếng Trung phồn thể (zh-tw)
+|**Tiếng Nhật**|ja|Tiếng Nhật (ja-jp)
+|**Tiếng Hàn**|ko|Tiếng Hàn (ko-kr)
+|**Tiếng Séc**|cs|Tiếng Séc (cs-CZ)
+|**Tiếng Bồ Đào Nha (Brazil)**|pt-br|Tiếng Bồ Đào Nha (Brazil) (pt-br)
+|**Tiếng Thổ Nhĩ Kỳ**|tr|Tiếng Thổ Nhĩ Kỳ (tr-tr)
+|**Tiếng Ba Lan**|pl| Tiếng Ba Lan (pl-pl)
+|**Ngôn ngữ giả**|qps-ploc|Ngôn ngữ giả (qps-ploc)
 
-## Contributing
+## Đóng góp
 
-If you want to give feedback or report an issue with a translation, please create a [new GitHub issue](https://github.com/microsoft/vscode-loc/issues/new). Please check if a topic about your issue already exists!
-Translation strings are managed on the Microsoft Localization Platform, and changes to strings can only be made there. Consequently, pull requests fixing translations won't be accepted. All other PRs to things like `README.md`, `package.json`, etc. will be accepted at the discretion of the maintainers.
+Nếu bạn muốn phản hồi hoặc báo cáo sự cố về bản dịch, vui lòng tạo [sự cố GitHub mới](https://github.com/microsoft/vscode-loc/issues/new). Vui lòng kiểm tra xem chủ đề về sự cố của bạn đã tồn tại chưa!
+Chuỗi bản dịch được quản lý trên Nền tảng bản địa hóa của Microsoft và chỉ có thể thực hiện thay đổi đối với chuỗi tại đó. Do đó, các yêu cầu kéo sửa bản dịch sẽ không được chấp nhận. Tất cả các PR khác đối với những thứ như `README.md`, `package.json`, v.v. sẽ được chấp nhận theo quyết định của người bảo trì.
 
-## Legal
+## Pháp lý
 
-Before we can accept your pull request you will need to sign a **Contribution License Agreement**. All you need to do is to submit a pull request, then the PR will get appropriately labelled (e.g. `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). If you already signed the agreement we will continue with reviewing the PR, otherwise system will tell you how you can sign the CLA. Once you sign the CLA all future PR's will be labeled as `cla-signed`.
+Trước khi chúng tôi có thể chấp nhận yêu cầu kéo của bạn, bạn sẽ cần phải ký **Thỏa thuận cấp phép đóng góp**. Tất cả những gì bạn cần làm là gửi yêu cầu kéo, sau đó PR sẽ được gắn nhãn phù hợp (ví dụ: `cla-required`, `cla-norequired`, `cla-signed`, `cla-already-signed`). Nếu bạn đã ký thỏa thuận, chúng tôi sẽ tiếp tục xem xét PR, nếu không, hệ thống sẽ cho bạn biết cách bạn có thể ký CLA. Sau khi bạn ký CLA, tất cả các PR trong tương lai sẽ được gắn nhãn là `cla-signed`.
 
-# Microsoft Open Source Code of Conduct
+# Bộ quy tắc ứng xử nguồn mở của Microsoft
 
-This project has adopted the [**Microsoft Open Source Code of Conduct**](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [**Code of Conduct FAQ**](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [**opencode@microsoft.com**](mailto:opencode@microsoft.com) with any additional questions or comments.
+Dự án này đã áp dụng [**Bộ quy tắc ứng xử nguồn mở của Microsoft**](https://opensource.microsoft.com/codeofconduct/).
+Để biết thêm thông tin, hãy xem [**Câu hỏi thường gặp về Bộ quy tắc ứng xử**](https://opensource.microsoft.com/codeofconduct/faq/) hoặc
+liên hệ [**opencode@microsoft.com**](mailto:opencode@microsoft.com) nếu có bất kỳ câu hỏi hoặc bình luận bổ sung nào.
 
-## License 
+## Giấy phép
 [MIT](LICENSE.md)

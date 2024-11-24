@@ -1,41 +1,41 @@
-<!-- BEGIN MICROSOFT SECURITY.MD V0.0.8 BLOCK -->
+<!-- BẮT ĐẦU KHỐI BẢO MẬT MICROSOFT.MD V0.0.8 -->
 
-## Security
+## Bảo mật
 
-Microsoft takes the security of our software products and services seriously, which includes all source code repositories managed through our GitHub organizations, which include [Microsoft](https://github.com/microsoft), [Azure](https://github.com/Azure), [DotNet](https://github.com/dotnet), [AspNet](https://github.com/aspnet), [Xamarin](https://github.com/xamarin), and [our GitHub organizations](https://opensource.microsoft.com/).
+Microsoft rất coi trọng vấn đề bảo mật của các sản phẩm và dịch vụ phần mềm của chúng tôi, bao gồm tất cả các kho lưu trữ mã nguồn được quản lý thông qua các tổ chức GitHub của chúng tôi, bao gồm [Microsoft](https://github.com/microsoft), [Azure](https://github.com/Azure), [DotNet](https://github.com/dotnet), [AspNet](https://github.com/aspnet), [Xamarin](https://github.com/xamarin) và [các tổ chức GitHub của chúng tôi](https://opensource.microsoft.com/).
 
-If you believe you have found a security vulnerability in any Microsoft-owned repository that meets [Microsoft's definition of a security vulnerability](https://aka.ms/opensource/security/definition), please report it to us as described below.
+Nếu bạn tin rằng mình đã tìm thấy lỗ hổng bảo mật trong bất kỳ kho lưu trữ nào do Microsoft sở hữu đáp ứng [định nghĩa về lỗ hổng bảo mật của Microsoft](https://aka.ms/opensource/security/definition), vui lòng báo cáo cho chúng tôi theo cách mô tả bên dưới.
 
-## Reporting Security Issues
+## Báo cáo sự cố bảo mật
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+**Vui lòng không báo cáo lỗ hổng bảo mật thông qua các sự cố GitHub công khai.**
 
-Instead, please report them to the Microsoft Security Response Center (MSRC) at [https://msrc.microsoft.com/create-report](https://aka.ms/opensource/security/create-report).
+Thay vào đó, vui lòng báo cáo chúng cho Trung tâm phản hồi bảo mật của Microsoft (MSRC) tại [https://msrc.microsoft.com/create-report](https://aka.ms/opensource/security/create-report).
 
-If you prefer to submit without logging in, send email to [secure@microsoft.com](mailto:secure@microsoft.com).  If possible, encrypt your message with our PGP key; please download it from the [Microsoft Security Response Center PGP Key page](https://aka.ms/opensource/security/pgpkey).
+Nếu bạn muốn gửi mà không cần đăng nhập, hãy gửi email đến [secure@microsoft.com](mailto:secure@microsoft.com). Nếu có thể, hãy mã hóa tin nhắn của bạn bằng khóa PGP của chúng tôi; vui lòng tải xuống từ [trang Khóa PGP của Trung tâm phản hồi bảo mật của Microsoft](https://aka.ms/opensource/security/pgpkey).
 
-You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Additional information can be found at [microsoft.com/msrc](https://aka.ms/opensource/security/msrc). 
+Bạn sẽ nhận được phản hồi trong vòng 24 giờ. Nếu vì lý do nào đó mà bạn không nhận được, vui lòng theo dõi qua email để đảm bảo chúng tôi đã nhận được tin nhắn gốc của bạn. Bạn có thể tìm thêm thông tin tại [microsoft.com/msrc](https://aka.ms/opensource/security/msrc).
 
-Please include the requested information listed below (as much as you can provide) to help us better understand the nature and scope of the possible issue:
+Vui lòng cung cấp thông tin được yêu cầu bên dưới (cung cấp càng nhiều càng tốt) để giúp chúng tôi hiểu rõ hơn về bản chất và phạm vi của sự cố có thể xảy ra:
 
-  * Type of issue (e.g. buffer overflow, SQL injection, cross-site scripting, etc.)
-  * Full paths of source file(s) related to the manifestation of the issue
-  * The location of the affected source code (tag/branch/commit or direct URL)
-  * Any special configuration required to reproduce the issue
-  * Step-by-step instructions to reproduce the issue
-  * Proof-of-concept or exploit code (if possible)
-  * Impact of the issue, including how an attacker might exploit the issue
+* Loại sự cố (ví dụ: tràn bộ đệm, tiêm SQL, mã lệnh chéo trang, v.v.)
+* Đường dẫn đầy đủ của tệp nguồn liên quan đến biểu hiện của sự cố
+* Vị trí của mã nguồn bị ảnh hưởng (thẻ/nhánh/cam kết hoặc URL trực tiếp)
+* Bất kỳ cấu hình đặc biệt nào được yêu cầu để tái tạo sự cố
+* Hướng dẫn từng bước để tái tạo sự cố
+* Bằng chứng khái niệm hoặc mã khai thác (nếu có thể)
+* Tác động của sự cố, bao gồm cách kẻ tấn công có thể khai thác sự cố
 
-This information will help us triage your report more quickly.
+Thông tin này sẽ giúp chúng tôi phân loại báo cáo của bạn nhanh hơn.
 
-If you are reporting for a bug bounty, more complete reports can contribute to a higher bounty award. Please visit our [Microsoft Bug Bounty Program](https://aka.ms/opensource/security/bounty) page for more details about our active programs.
+Nếu bạn đang báo cáo để nhận tiền thưởng lỗi, các báo cáo đầy đủ hơn có thể góp phần tăng tiền thưởng. Vui lòng truy cập trang [Chương trình tiền thưởng lỗi của Microsoft](https://aka.ms/opensource/security/bounty) của chúng tôi để biết thêm chi tiết về các chương trình đang hoạt động của chúng tôi.
 
-## Preferred Languages
+## Ngôn ngữ được ưu tiên
 
-We prefer all communications to be in English.
+Chúng tôi muốn tất cả các thông tin liên lạc đều bằng tiếng Anh.
 
-## Policy
+## Chính sách
 
-Microsoft follows the principle of [Coordinated Vulnerability Disclosure](https://aka.ms/opensource/security/cvd).
+Microsoft tuân theo nguyên tắc [Tiết lộ lỗ hổng được phối hợp](https://aka.ms/opensource/security/cvd).
 
-<!-- END MICROSOFT SECURITY.MD BLOCK -->
+<!-- KẾT THÚC KHỐI BẢO MẬT MICROSOFT.MD -->
