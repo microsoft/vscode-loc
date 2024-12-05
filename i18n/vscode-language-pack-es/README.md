@@ -1,129 +1,129 @@
-#  Paquete de idioma español para VS Code
+# Gói ngôn ngữ tiếng Việt cho VS Code
 
-El paquete de idioma español proporciona una experiencia de UI localizada para VS Code.
+ Gói ngôn ngữ tiếng Việt cung cấp trải nghiệm giao diện người dùng được bản địa hóa cho VS Code.
 
-## Uso
+ ## Sử dụng
 
-Puede invalidar el idioma predeterminado de la interfaz de usuario si establece explícitamente el idioma de VS Code con el comando "Configure Display Language". 
-Presione "Ctrl+Mayús+P" para que aparezca la instancia de "Paleta de comandos" y empiece a escribir "display" para filtrar y mostrar el comando "Configure Display Language".
-Presione "Entrar" y se mostrará una lista de los idiomas instalados por configuración regional, con la actual resaltada. Seleccione otra "configuración regional" para cambiar el idioma de la interfaz de usuario.
-Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para más información.
+ Bạn có thể ghi đè ngôn ngữ giao diện người dùng mặc định bằng cách đặt rõ ràng ngôn ngữ Mã VS bằng lệnh "Định cấu hình ngôn ngữ hiển thị". 
+ Nhấn "Ctrl+Shift+P" để hiển thị phiên bản "Bảng lệnh" và bắt đầu nhập "hiển thị" để lọc và hiển thị lệnh "Định cấu hình ngôn ngữ hiển thị".
+ Nhấn "Enter" và danh sách các ngôn ngữ đã cài đặt theo ngôn ngữ sẽ được hiển thị, trong đó ngôn ngữ hiện tại được đánh dấu.  Chọn một "ngôn ngữ" khác để thay đổi ngôn ngữ giao diện người dùng.
+ Xem [Tài liệu](https://go.microsoft.com/fwlink/?LinkId=761051) để biết thêm thông tin.
 
-## Cómo contribuir
+ ## Cách đóng góp
 
-Para obtener información sobre la mejora de traducción, cree una incidencia en el repositorio [vscode-loc](https://github.com/microsoft/vscode-loc).
-Las cadenas de traducción se mantienen en la plataforma de localización de Microsoft. Solo pueden realizarse cambios en dicha plataforma y, después, exportarlos al repositorio vscode-loc, por lo que no se aceptarán solicitudes de incorporación de cambios "pull request" en ese repositorio.
+ Để tìm hiểu về cải tiến dịch thuật, hãy tạo một vấn đề trong kho lưu trữ [vscode-loc](https://github.com/microsoft/vscode-loc).
+ Chuỗi dịch thuật được duy trì trên nền tảng bản địa hóa của Microsoft.  Các thay đổi chỉ có thể được thực hiện trên nền tảng đó và sau đó được xuất sang kho lưu trữ vscode-loc, vì vậy các yêu cầu kéo sẽ không được chấp nhận trong kho lưu trữ đó.
 
-## Licencia
+ ## Giấy phép
 
-El código fuente y las cadenas se someten a la licencia [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+ Mã nguồn và chuỗi được cấp phép theo giấy phép [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
-## Reconocimientos
+ ## Công nhận
 
-El paquete de idioma español llega hasta usted gracias al esfuerzo de localización de la comunidad, "By the community, for the community" ("De la comunidad, para la comunidad").
+ Gói ngôn ngữ tiếng Việt đến với bạn nhờ nỗ lực bản địa hóa của cộng đồng, "Bởi cộng đồng, vì cộng đồng".
 
-Especial agradecimiento a quienes contribuyen a la comunidad por hacerlo disponible.
+ Đặc biệt cảm ơn những người đóng góp cho cộng đồng để làm cho nó có sẵn.
 
-**Principales contribuyentes:**
+ **Những người đóng góp chính:**
 
-* Andy Gonzalez
-* Alberto Poblacion
-* Raul Rama
-* Alejandro M
-* Jorge Serrano Pérez
-
-
-**Contribuyentes:**
-
-* José M. Aguilar
-* Roberto Fonseca
-* Carlos Mendible
-* Eickhel Mendoza
-* David Triana
-* David Silva
-* AlanThinks
-* Julián Martínez
-* Lukáš Chaloupka
-* German Sak
-* Santiago Porras Rodríguez
-* Marcos de Lafuente
-* Carlos Longarela
-* Thierry DEMAN-BARCELO
-* Jago
-* Christian Eduardo Palomares Peralta
-* Sergio Uziel Tovar Lemus
-* Juan Ramón Rodríguez
-* Pedro Sanchez
-* Pablo Jiménez Pascual
-* Juan Carlos Gonzalez Martin
-* Alfonso Jesus Flores Alvarado
-* Javier Moreno
-* Matias Menich
-
-**Disfrútelo!**
+ *Andy Gonzalez
+ * Alberto Poblacion
+ *Raul Rama
+ * Alexander M
+ * Jorge Serrano Pérez
 
 
-#  Spanish Language Pack for VS Code
+ **Người nộp thuế:**
 
-Spanish Language Pack provides localized UI experience for VS Code.
+ * José M. Aguilar
+ * Roberto Fonseca
+ * Carlos Mendible
+ * Eickhel Mendoza
+ *David Triana
+ *David Silva
+ *AlanSuy nghĩ
+ *Julián Martínez
+ * Lukaš Chaloupka
+ * Sak Đức
+ * Santiago Porras Rodríguez
+ * Marcos de Lafuente
+ * Carlos Longarela
+ * Thierry DEMAN-BARCELO
+ *Jago
+ * Christian Eduardo Palomares Peralta
+ * Sergio Uziel Tovar Lemus
+ * Juan Ramón Rodríguez
+ * Pedro Sánchez
+ * Pablo Jiménez Pascual
+ * Juan Carlos Gonzalez Martin
+ * Alfonso Jesus Flores Alvarado
+ * Javier Moreno
+ * Matias Menich
 
-## Usage
+ **Hãy tận hưởng nó!**
 
-You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
 
-Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
+ # Gói ngôn ngữ tiếng Việt cho mã VS
 
-Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
+ Gói ngôn ngữ tiếng Việt cung cấp trải nghiệm giao diện người dùng được bản địa hóa cho Mã VS.
 
-See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+ ## Cách sử dụng
 
-## Contributing
+ Bạn có thể ghi đè ngôn ngữ giao diện người dùng mặc định bằng cách đặt rõ ràng ngôn ngữ hiển thị Mã VS bằng lệnh **Định cấu hình ngôn ngữ hiển thị**.
 
-For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
+ Nhấn `Ctrl+Shift+P` để hiển thị **Bảng lệnh** sau đó bắt đầu nhập `display` để lọc và hiển thị lệnh **Định cấu hình ngôn ngữ hiển thị**.
 
-The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
+ Nhấn `Enter` và danh sách các ngôn ngữ đã cài đặt theo ngôn ngữ được hiển thị, trong đó ngôn ngữ hiện tại được đánh dấu.  Chọn một `ngôn ngữ` khác để chuyển đổi ngôn ngữ giao diện người dùng.
 
-## License
+ Xem [Tài liệu](https://go.microsoft.com/fwlink/?LinkId=761051) để biết thêm thông tin.
 
-The source code and strings are licensed under the [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) license.
+ ##Đóng góp
 
-## Credits
+ Để có phản hồi về việc cải thiện bản dịch, vui lòng tạo Sự cố trong kho lưu trữ [vscode-loc](https://github.com/microsoft/vscode-loc).
 
-Spanish Language Pack had received contribution through "By the community, for the community" community localization effort. Special thanks to community contributors for making it available.
+ Các chuỗi dịch được duy trì trong Nền tảng bản địa hóa của Microsoft.  Thay đổi chỉ có thể được thực hiện trong Nền tảng bản địa hóa của Microsoft sau đó xuất sang repo vscode-loc.  Vì vậy, yêu cầu kéo sẽ không được chấp nhận trong repo vscode-loc.
 
-**Top Contributors:**
+ ##Giấy phép
 
-* Andy Gonzalez
-* Alberto Poblacion
-* Raul Rama
-* Alejandro M
-* Jorge Serrano Pérez
+ Mã nguồn và chuỗi được cấp phép theo giấy phép [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
 
-**Contributors:**
+ ## Tín dụng
 
-* José M. Aguilar
-* Roberto Fonseca
-* Carlos Mendible
-* Eickhel Mendoza
-* David Triana
-* David Silva
-* AlanThinks
-* Julián Martínez
-* Lukáš Chaloupka
-* German Sak
-* Santiago Porras Rodríguez
-* Marcos de Lafuente
-* Carlos Longarela
-* Thierry DEMAN-BARCELO
-* Jago
-* Christian Eduardo Palomares Peralta
-* Sergio Uziel Tovar Lemus
-* Juan Ramón Rodríguez
-* Pedro Sanchez
-* Pablo Jiménez Pascual
-* Juan Carlos Gonzalez Martin
-* Alfonso Jesus Flores Alvarado
-* Javier Moreno
-* Matias Menich
+ Gói ngôn ngữ tiếng Việt đã nhận được sự đóng góp thông qua nỗ lực bản địa hóa cộng đồng "Bởi cộng đồng, vì cộng đồng".  Đặc biệt cảm ơn những người đóng góp cho cộng đồng đã cung cấp nó.
 
-**Enjoy!**
+ **Cộng tác viên hàng đầu:**
+
+ *Andy Gonzalez
+ * Alberto Poblacion
+ *Raul Rama
+ * Alexander M
+ * Jorge Serrano Pérez
+
+ **Người đóng góp:**
+
+ * José M. Aguilar
+ * Roberto Fonseca
+ * Carlos Mendible
+ * Eickhel Mendoza
+ *David Triana
+ *David Silva
+ *AlanSuy nghĩ
+ *Julián Martínez
+ * Lukaš Chaloupka
+ * Sak Đức
+ * Santiago Porras Rodríguez
+ * Marcos de Lafuente
+ * Carlos Longarela
+ * Thierry DEMAN-BARCELO
+ *Jago
+ * Christian Eduardo Palomares Peralta
+ * Sergio Uziel Tovar Lemus
+ * Juan Ramón Rodríguez
+ * Pedro Sánchez
+ * Pablo Jiménez Pascual
+ * Juan Carlos Gonzalez Martin
+ * Alfonso Jesus Flores Alvarado
+ * Javier Moreno
+ * Matias Menich
+
+ **Thưởng thức!**

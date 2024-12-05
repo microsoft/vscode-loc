@@ -1,9 +1,9 @@
-# Change Log
+# Nhật ký thay đổi
 
-All notable changes to the "vscode-language-pack-qps-ploc" language pack will be documented in this file.
+Tất cả các thay đổi đáng chú ý đối với gói ngôn ngữ "vscode-language-pack-vi" sẽ được ghi lại trong tệp này.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+Kiểm tra [Giữ nhật ký thay đổi](http://keepachangelog.com/) để biết các khuyến nghị về cách cấu trúc tệp này.
 
-## [Unreleased]
+## [Chưa phát hành]
 
-- Initial release
+- Bản phát hành đầu tiên
