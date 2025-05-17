@@ -2427,6 +2427,9 @@
 			"filtered": "I problemi sono sospesi perché: \"{0}\"",
 			"filtered.network": "I problemi sono sospesi perché: \"{0}\" e altri {1}"
 		},
+		"vs/platform/mcp/common/mcpGalleryService": {
+			"noReadme": "No README available"
+		},
 		"vs/platform/menubar/electron-main/menubar": {
 			"cancel": "Annulla",
 			"mAbout": "Informazioni su {0}",
@@ -2471,15 +2474,14 @@
 			"cantUninstall": "Non è possibile disinstallare il comando '{0}' della shell.",
 			"ok": "&&OK",
 			"sourceMissing": "Non è possibile trovare lo script della shell in '{0}'",
+			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
+			"trace.message": "Successfully created the trace file",
+			"trace.ok": "&&OK",
 			"warnEscalation": "{0} eseguirà 'osascript' per richiedere i privilegi di amministratore per installare il comando della shell.",
 			"warnEscalationUninstall": "{0} eseguirà 'osascript' per richiedere i privilegi di amministratore per disinstallare il comando della shell."
 		},
 		"vs/platform/process/electron-main/processMainService": {
-			"local": "Locale",
-			"processExplorer": "Esplora processo",
-			"trace.detail": "Creare un problema e allegare manualmente il file seguente:\r\n{0}",
-			"trace.message": "Creazione del file di traccia completata",
-			"trace.ok": "&&OK"
+			"local": "Locale"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "Il comando '{0}' ha restituito un errore",
@@ -3134,17 +3136,6 @@
 			"startupUserDataAndExtensionsDirErrorDetail": "{0}\r\n\r\nAssicurarsi che le directory seguenti siano scrivibili:\r\n\r\n{1}",
 			"statusWarning": "Avviso: l'argomento --status può essere usato solo se {0} è già in esecuzione. Rieseguire l'operazione dopo l'avvio di {0}."
 		},
-		"vs/code/electron-sandbox/processExplorer/processExplorerMain": {
-			"copy": "Copia",
-			"copyAll": "Copia tutto",
-			"cpu": "CPU (%)",
-			"debug": "Esegui debug",
-			"forceKillProcess": "Forza terminazione del processo",
-			"killProcess": "Termina processo",
-			"memory": "Memoria (MB)",
-			"name": "Nome del processo",
-			"pid": "PID"
-		},
 		"vs/code/electron-utility/sharedProcess/sharedProcessMain": {
 			"networkk": "Rete",
 			"sharedLog": "Condiviso"
@@ -3212,6 +3203,15 @@
 		},
 		"vs/workbench/api/browser/mainThreadLanguageModels": {
 			"languageModelsAccountId": "Modelli linguistici"
+		},
+		"vs/workbench/api/browser/mainThreadMcp": {
+			"allow": "&&Allow",
+			"confirmLogin": "The MCP Server '{0}' wants to sign in using {1}.",
+			"confirmRelogin": "The MCP Server '{0}' wants you to sign in again using {1}.",
+			"incorrectAccount": "Incorrect account detected",
+			"incorrectAccountDetail": "The chosen account, {0}, does not match the requested account, {1}.",
+			"keep": "Keep {0}",
+			"loginWith": "Login with {0}"
 		},
 		"vs/workbench/api/browser/mainThreadMessageService": {
 			"cancel": "Annulla",
@@ -3787,8 +3787,8 @@
 			"ok": "OK"
 		},
 		"vs/workbench/browser/parts/editor/auxiliaryEditorPart": {
-			"disableCompactAuxiliaryWindow": "Annulla impostazione modalità compatta",
-			"enableCompactAuxiliaryWindow": "Imposta modalità compatta",
+			"disableCompactAuxiliaryWindow": "Turn Off Compact Mode",
+			"enableCompactAuxiliaryWindow": "Turn On Compact Mode",
 			"toggleCompactAuxiliaryWindow": "Attiva/Disattiva modalità compatta finestra"
 		},
 		"vs/workbench/browser/parts/editor/binaryDiffEditor": {
@@ -4294,6 +4294,7 @@
 			"manage": "Gestisci",
 			"manage profile": "Gestisci {0} (profilo)",
 			"manageTrustedExtensions": "Gestisci estensioni attendibili",
+			"manageTrustedMCPServers": "Manage Trusted MCP Servers",
 			"signOut": "Disconnetti"
 		},
 		"vs/workbench/browser/parts/notifications/notificationAccessibleView": {
@@ -4837,8 +4838,7 @@
 			"focusedView": "Identificatore della visualizzazione che ha lo stato attivo della tastiera",
 			"groupEditorsCount": "Numero di gruppi di editor aperti",
 			"inZenMode": "Indica se la modalità Zen è abilitata",
-			"isAuxiliaryEditorPart": "Editor part si trova in una finestra ausiliaria",
-			"isAuxiliaryTitleBar": "La barra del titolo si trova in una finestra ausiliaria",
+			"isAuxiliaryWindow": "Window is an auxiliary window",
 			"isAuxiliaryWindowFocusedContext": "Indica se una finestra ausiliaria è evidenziata",
 			"isCompactTitleBar": "La barra del titolo è in modalità compatta",
 			"isFileSystemResource": "Indica se la risorsa è supportata da un provider di file system",
@@ -5068,6 +5068,11 @@
 			"reloadWindowWithExtensionsDisabled": "Ricarica con le estensioni disabilitate",
 			"revealUserDataFolder": "Visualizza cartella dati utente",
 			"showGPUInfo": "Mostra info GPU",
+			"stopTracing": "Stop Tracing",
+			"stopTracing.button": "&&Relaunch and Enable Tracing",
+			"stopTracing.detail": "This can take up to one minute to complete.",
+			"stopTracing.message": "Tracing requires to launch with a '--trace' argument",
+			"stopTracing.title": "Creating trace file...",
 			"toggleDevTools": "Attiva/Disattiva strumenti di sviluppo"
 		},
 		"vs/workbench/electron-sandbox/actions/installActions": {
@@ -5081,8 +5086,8 @@
 			"close": "Chiudi finestra",
 			"closeWindow": "Chiudi finestra",
 			"current": "Finestra corrente",
-			"disableWindowAlwaysOnTop": "Annulla impostazione Sempre in primo piano",
-			"enableWindowAlwaysOnTop": "Imposta su Sempre in primo piano",
+			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
+			"enableWindowAlwaysOnTop": "Turn On Always on Top",
 			"miCloseWindow": "Chiudi &&finestra",
 			"miZoomIn": "&&Zoom avanti",
 			"miZoomOut": "&&Zoom indietro",
@@ -5104,6 +5109,7 @@
 			"argv.disableHardwareAcceleration": "Disabilita l'accelerazione hardware. Modificare questa opzione SOLO in caso di problemi di grafica.",
 			"argv.disableLcdText": "Disabilita l'anti-aliasing dei tipi di carattere LCD.",
 			"argv.enableCrashReporter": "Consente di disabilitare la segnalazione degli arresti anomali del sistema. Se si modifica il valore, è necessario riavviare l'app.",
+			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
 			"argv.enebleProposedApi": "Abilita le API proposte per un elenco di ID estensione, ad esempio `vscode.git`. Le API proposte sono instabili e soggette a interruzione senza preavviso in qualsiasi momento. Questa impostazione deve essere impostata solo per lo sviluppo e il test di estensioni.",
 			"argv.force-renderer-accessibility": "Forza il renderer ad essere accessibile. Modificarlo SOLO se si usa un'utilità per la lettura dello schermo in Linux. Su altre piattaforme il renderer sarà accessibile automaticamente. Questo flag viene impostato automaticamente se editor.accessibilitySupport è impostato su on.",
 			"argv.forceColorProfile": "Consente di eseguire l'override del profilo colori da usare. Se i colori non vengono visualizzati correttamente, provare a impostare questo valore su `srgb` e riavviare.",
@@ -5115,7 +5121,7 @@
 			"closeWhenEmpty": "Controlla se con la chiusura dell'ultimo editor deve essere chiusa anche la finestra. Questa impostazione viene applicata solo alle finestre che non contengono cartelle.",
 			"confirmSaveUntitledWorkspace": "Controlla se viene visualizzata una finestra di dialogo di conferma che chiede di salvare o rimuovere un'area di lavoro senza titolo aperta nella finestra quando si passa a un'altra area di lavoro. Disattivando la finestra di dialogo di conferma, l'area di lavoro senza titolo verrà sempre rimossa.",
 			"controlsStyle": "Modificare l'aspetto dei controlli finestra in modo che siano nativi del sistema operativo, personalizzati o nascosti. Per applicare le modifiche, è necessario un riavvio completo.",
-			"dialogStyle": "Consente di modificare l'aspetto delle finestre di dialogo.",
+			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
 			"enableCrashReporterDeprecated": "Se questa impostazione è false, non verranno inviati dati di telemetria indipendentemente dal valore della nuova impostazione. Deprecata perché combinata nell'impostazione {0}.",
 			"keyboardConfigurationTitle": "Tastiera",
 			"mergeAllWindowTabs": "Unisci tutte le finestre",
@@ -5488,6 +5494,18 @@
 			"title": "'{0}' preferenze degli account per questa area di lavoro",
 			"use new account": "Usa un nuovo account..."
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForMcpServerAction": {
+			"accounts": "Accounts",
+			"currentAccount": "Current account",
+			"manageAccountPreferenceForMcpServer": "Manage MCP Server Account Preferences",
+			"noAccountUsage": "This MCP server has not used any accounts yet.",
+			"noAccounts": "No accounts are currently used by this MCP server.",
+			"pickAProviderTitle": "Manage MCP Server Account Preferences",
+			"placeholder v2": "Manage '{0}' account preferences for {1}...",
+			"selectProvider": "Select an authentication provider to manage account preferences for",
+			"title": "'{0}' Account Preferences For This Workspace",
+			"use new account": "Use a new account..."
+		},
 		"vs/workbench/contrib/authentication/browser/actions/manageTrustedExtensionsForAccountAction": {
 			"accountLastUsedDate": "Ultimo utilizzo di questo account: {0}",
 			"accountPreferences": "Gestisci le preferenze degli account per questa estensione",
@@ -5502,6 +5520,20 @@
 			"trustedExtensionTooltip": "Questa estensione è considerata attendibile da Microsoft e\r\nha sempre accesso a questo account",
 			"trustedExtensions": "Considerato attendibile da Microsoft"
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageTrustedMcpServersForAccountAction": {
+			"accountLastUsedDate": "Last used this account {0}",
+			"accountPreferences": "Manage account preferences for this MCP server",
+			"accounts": "Accounts",
+			"manageMcpServers": "Choose which MCP servers can access this account",
+			"manageTrustedMcpServers": "Manage Trusted MCP Servers",
+			"manageTrustedMcpServers.cancel": "Cancel",
+			"manageTrustedMcpServersForAccount": "Manage Trusted MCP Servers For Account",
+			"noTrustedMcpServers": "This account has not been used by any MCP servers.",
+			"notUsed": "Has not used this account",
+			"pickAccount": "Pick an account to manage trusted MCP servers for",
+			"trustedMcpServerTooltip": "This MCP server is trusted by Microsoft and\r\nalways has access to this account",
+			"trustedMcpServers": "Trusted by Microsoft"
+		},
 		"vs/workbench/contrib/authentication/browser/actions/signOutOfAccountAction": {
 			"signOut": "&&Disconnetti",
 			"signOutMessage": "L'account '{0}' è stato usato da: \r\n\r\n{1}\r\n\r\n Disconnettersi da queste estensioni?",
@@ -5511,6 +5543,7 @@
 		"vs/workbench/contrib/authentication/browser/authentication.contribution": {
 			"authentication": "Autenticazione",
 			"authentication.Placeholder": "Non sono ancora stati richiesti account...",
+			"authenticationMcpAuthorizationServers": "MCP Authorization Servers",
 			"authenticationid": "ID",
 			"authenticationlabel": "Etichetta",
 			"loading": "Caricamento..."
@@ -5645,6 +5678,9 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatActions": {
 			"actions.interactiveSession.focus": "Elenco chat con stato attivo",
+			"agent.newSession": "Start new session?",
+			"agent.newSession.confirm": "Yes",
+			"agent.newSessionMessage": "Changing the chat mode will end your current edit session. Would you like to change the chat mode?",
 			"chat.category": "Chat",
 			"chat.clear.label": "Cancella tutte le chat dell'area di lavoro",
 			"chat.history.label": "Mostra chat...",
@@ -5665,9 +5701,11 @@
 			"dismiss": "Ignora",
 			"interactiveSession.clearHistory.label": "Cancella cronologia input",
 			"interactiveSession.focusInput.label": "Input chat con stato attivo",
+			"interactiveSession.history.clear": "Clear All Workspace Chats",
 			"interactiveSession.history.delete": "Elimina",
 			"interactiveSession.history.editor": "Aprire nell’editor",
 			"interactiveSession.history.pick": "Passa alla chat",
+			"interactiveSession.history.title": "Workspace Chat History",
 			"interactiveSession.open": "Nuovo editor chat",
 			"manageCopilot": "Gestisci Copilot",
 			"more": "Altro...",
@@ -5680,6 +5718,7 @@
 			"showCopilotUsageExtensions": "Mostra estensioni usando Copilot",
 			"signInToChatSetup": "Accedi per usare Copilot...",
 			"switchChat.confirmPhrase": "Se cambi chat, la sessione di modifica corrente verrà terminata.",
+			"switchMode.confirmPhrase": "Switching chat modes will end your current edit session.",
 			"title4": "Copilot",
 			"toggle.chatControl": "Controlli di Copilot",
 			"toggle.chatControlsDescription": "Attivare/Disattivare la visibilità dei controlli Copilot nella barra del titolo",
@@ -5707,31 +5746,24 @@
 			"interactive.previousCodeBlock.label": "Blocco di codice precedente",
 			"interactive.runInTerminal.label": "Inserisci nel terminale"
 		},
+		"vs/workbench/contrib/chat/browser/actions/chatContext": {
+			"chatContext.attachScreenshot.labelElectron.Window": "Screenshot Window",
+			"chatContext.attachScreenshot.labelWeb": "Screenshot",
+			"chatContext.editors": "Open Editors",
+			"chatContext.relatedFiles": "Related Files",
+			"chatContext.tools": "Tools...",
+			"chatContext.tools.extension": "Extensions",
+			"chatContext.tools.internal": "Built-In",
+			"chatContext.tools.mcp": "MCP Servers",
+			"chatContext.tools.placeholder": "Select a tool",
+			"imageFromClipboard": "Image from Clipboard",
+			"pastedImage": "Pasted Image",
+			"relatedFiles": "Add related files to your working set"
+		},
 		"vs/workbench/contrib/chat/browser/actions/chatContextActions": {
 			"chat.insertSearchResults": "Aggiungi i risultati della ricerca alla chat",
-			"chatContext.attach.instructions.label": "Istruzioni...",
 			"chatContext.attach.placeholder": "Cerca allegati",
-			"chatContext.attachScreenshot.labelElectron.Window": "Finestra screenshot",
-			"chatContext.attachScreenshot.labelWeb": "Screenshot",
-			"chatContext.diagnstic": "Problemi...",
-			"chatContext.editors": "Editor aperti",
-			"chatContext.folder": "Files e cartelle...",
-			"chatContext.notebook.kernelVariable": "Variabile kernel...",
-			"chatContext.notebook.selectkernelVariable": "Seleziona e inserisci variabile kernel",
-			"chatContext.relatedFiles": "File correlati",
-			"chatContext.searchResults": "Risultati della ricerca",
-			"chatContext.symbol": "Simboli...",
-			"chatContext.tools": "Strumenti...",
-			"chatContext.tools.extension": "Estensioni",
-			"chatContext.tools.internal": "Predefinito",
-			"chatContext.tools.mcp": "Server MCP",
-			"chatContext.tools.placeholder": "Selezionare uno strumento",
-			"imageFromClipboard": "Immagine dagli Appunti",
-			"markers.panel.allErrors": "Tutti i problemi",
-			"markers.panel.at.ln.col.number": "[Riga {0}, colonna {1}]",
-			"pastedImage": "Immagine incollata",
-			"pickAProblem": "Select a problem to attach",
-			"relatedFiles": "Aggiungi file correlati al set di lavoro",
+			"goBack": "Go back ↩",
 			"workbench.action.chat.attachContext.label.2": "Aggiungi contesto...",
 			"workbench.action.chat.attachFile.label": "Aggiungi File alla chat",
 			"workbench.action.chat.attachFolder.label": "Aggiungi cartella alla chat",
@@ -5747,9 +5779,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
 			"actions.chat.submitWithCodebase": "Invia con {0}",
-			"agent.newSession": "Avviare una nuova sessione?",
-			"agent.newSession.confirm": "Sì",
-			"agent.newSessionMessage": "La modifica della modalità chat terminerà la sessione di modifica corrente. Modificare la modalità chat?",
 			"chat.newChat.label": "Invia a nuova chat",
 			"edits.submit.label": "Invia",
 			"interactive.cancel.label": "Annulla",
@@ -5762,8 +5791,7 @@
 			"interactive.toggleRequestPausd.label": "Attiva/Disattiva richiesta sospesa",
 			"requestIsPaused": "Riprendi richiesta",
 			"requestNotPaused": "Sospendi richiesta",
-			"setChatMode": "Imposta modalità",
-			"switchMode.confirmPhrase": "Se cambi le modalità chat, la sessione di modifica corrente verrà terminata."
+			"setChatMode": "Imposta modalità"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatFileTreeActions": {
 			"interactive.nextFileTree.label": "Albero file successivo",
@@ -5833,7 +5861,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/promptActions/chatAttachInstructionsAction": {
 			"attach-instructions.capitalized.ellipses": "Allega istruzioni...",
-			"commands.instructions.select-dialog.placeholder": "Selezionare i file di istruzioni da allegare"
+			"chatContext.attach.instructions.label": "Instructions...",
+			"commands.instructions.select-dialog.placeholder": "Selezionare i file di istruzioni da allegare",
+			"placeholder": "Select instructions files to attach",
+			"user-data-dir.capitalized": "User data folder"
 		},
 		"vs/workbench/contrib/chat/browser/actions/promptActions/chatRunPromptAction": {
 			"commands.prompt.select-dialog.placeholder": "Selezionare il file di richieste da eseguire (tenere premuto il tasto {0} per usarlo nella nuova chat)",
@@ -5854,6 +5885,7 @@
 			"user-data-dir.capitalized": "Cartella dati utente"
 		},
 		"vs/workbench/contrib/chat/browser/attachments/implicitContextAttachment": {
+			"cell.lowercase": "cell",
 			"chat.fileAttachment": "Collegato {0}, {1}",
 			"chat.fileAttachmentWithRange": "Collegato {0}, {1}, da riga {2} a riga {3}",
 			"disable": "Disabilita contesto {0} corrente",
@@ -5905,6 +5937,7 @@
 			"chat.sendElementsToChat.attachCSS": "Controls whether CSS of the selected element will be added to the chat. {0} must be enabled.",
 			"chat.sendElementsToChat.attachImages": "Controls whether a screenshot of the selected element will be added to the chat. {0} must be enabled.",
 			"chat.sendElementsToChat.enabled": "Controlla se gli elementi possono essere inviati alla chat dal browser semplice.",
+			"chat.signInWithAlternateProvider": "Enable alternative sign-in provider.",
 			"chat.tools.autoApprove": "Controlla se l'uso dello strumento deve essere approvato automaticamente.",
 			"chat.useFileStorage": "Abilita l'archiviazione delle sessioni di chat su disco anziché nel servizio di archiviazione. L'abilitazione di questa opzione esegue una migrazione una tantum per area di lavoro delle sessioni esistenti al nuovo formato.",
 			"clear": "Avvia una nuova chat",
@@ -5916,6 +5949,7 @@
 			"interactiveSession.editor.wordWrap": "Controlla se le righe devono andare a capo nei blocchi di codice della chat.",
 			"interactiveSessionConfigurationTitle": "Chat",
 			"mcp.discovery.source": "Abilita l'individuazione dei server {0}",
+			"mcp.gallery.serviceUrl": "Configure the MCP Gallery service URL to connect to",
 			"mpc.discovery.enabled": "Configura l'individuazione dei server Model Context Protocol nel computer. Può essere impostato su 'true' o 'false' per disabilitare o abilitare tutte le origini e le origini di mapping che desideri abilitare.",
 			"save-chat-to-prompt-file": "Salvare la chat in un file di richieste",
 			"workspaceConfig.mcp.description": "Configurazioni server Model Context Protocol"
@@ -5965,28 +5999,6 @@
 			"rerun": "Eseguire di nuovo senza {0}{1}"
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatAttachmentsContentPart": {
-			"chat.attachment": "Contesto allegato, {0}",
-			"chat.attachment3": "Contesto allegato: {0}.",
-			"chat.clickToViewContents": "Fai clic per visualizzare il contenuto di: {0}",
-			"chat.elementAttachment": "Elemento associato, {0}",
-			"chat.fileAttachment3": "Collegato: {0}.",
-			"chat.fileAttachmentHover": "Il modello selezionato non supporta questo tipo di {0}.",
-			"chat.fileAttachmentWithRange3": "Allegato: {0}, da riga {1} a riga {2}.",
-			"chat.imageAttachment": "Immagine collegata, {0}",
-			"chat.imageAttachmentHover": "{0}",
-			"chat.imageAttachmentWarning": "Questa GIF è stata parzialmente omessa. È stato inviato il frame corrente.",
-			"chat.notebookOutputFileAttachment3": "Collegato: {0}.",
-			"chat.notebookOutputImageAttachment": "Collegato: {0}",
-			"chat.notebookOutputOmittedFileAttachment": "Omesso: {0}.",
-			"chat.notebookOutputOmittedImageAttachment": "Omesso: {0}",
-			"chat.notebookOutputPartialFileAttachment": "Parzialmente collegato: {0}.",
-			"chat.notebookOutputPartiallyOmittedImageAttachment": "Parzialmente omesso: {0}",
-			"chat.omittedFileAttachment": "Omesso: {0}.",
-			"chat.omittedFileAttachmentWithRange": "Omesso: {0}, da riga {1} a riga {2}.",
-			"chat.omittedImageAttachment": "Immagine omessa: {0}",
-			"chat.partialFileAttachment": "Parzialmente collegato: {0}.",
-			"chat.partialFileAttachmentWithRange": "Parzialmente collegato: {0}, da riga {1} a riga {2}.",
-			"chat.partiallyOmittedImageAttachment": "Immagine parzialmente omessa: {0}",
 			"resource": "Valore completo della risorsa di allegato alla chat, inclusi schema e percorso"
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatCodeCitationContentPart": {
@@ -6042,20 +6054,26 @@
 			"chat.input": "Input",
 			"chat.output": "Output"
 		},
-		"vs/workbench/contrib/chat/browser/chatContentParts/chatToolInvocationPart": {
-			"allowGloballTooltip": "Consenti sempre l'esecuzione senza conferma di questo strumento.",
-			"allowGlobally": "Consenti sempre",
-			"allowSession": "Consenti in questa sessione",
-			"allowSesssionTooltip": "Consenti l'esecuzione senza conferma di questo strumento in questa sessione.",
-			"allowWorkspace": "Consenti in questa area di lavoro",
-			"allowWorkspaceTooltip": "Consenti l'esecuzione senza conferma di questo strumento in questa area di lavoro.",
-			"cancel": "Annulla",
-			"continue": "Continua",
-			"seeMore": "Mostra altro",
-			"toolResultData": "Data of type {0} ({1} bytes)"
-		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTreeContentPart": {
 			"treeAriaLabel": "Albero dei file"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatInputOutputMarkdownProgressPart": {
+			"toolResultData": "Data of type {0} ({1} bytes)"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatTerminalToolSubPart": {
+			"cancel": "Cancel",
+			"continue": "Continue"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatToolConfirmationSubPart": {
+			"allowGloballTooltip": "Always allow this tool to run without confirmation.",
+			"allowGlobally": "Always Allow",
+			"allowSession": "Allow in this Session",
+			"allowSesssionTooltip": "Allow this tool to run in this session without confirmation.",
+			"allowWorkspace": "Allow in this Workspace",
+			"allowWorkspaceTooltip": "Allow this tool to run in this workspace without confirmation.",
+			"cancel": "Cancel",
+			"continue": "Continue",
+			"seeMore": "See more"
 		},
 		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
 			"attacAsContext": "Collega {0} come contesto",
@@ -6168,17 +6186,20 @@
 			"diff.generic": "{0} (modifiche dalla chat)"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditing/simpleBrowserEditorOverlay": {
-			"cancel": "Annulla",
 			"cancelSelection": "Fai clic per annullare la selezione.",
+			"cancelSelectionLabel": "Cancel",
 			"chat.configureElements": "Configure Attachments Sent",
 			"chat.expandOverlay": "Expand Overlay",
 			"chat.hideOverlay": "Collapse Overlay",
 			"chat.nextSelection": "Select Again",
+			"continuousSelectionDropdown": "Continuous Selection",
 			"elementCancelMessage": "Selezione annullata",
 			"elementSelectionComplete": "Element added to chat",
 			"elementSelectionInProgress": "Selecting element...",
 			"elementSelectionMessage": "Add element to chat",
+			"finishSelectionLabel": "Done",
 			"selectAnElement": "Fai clic per selezionare un elemento.",
+			"selectElementDropdown": "Select an Element",
 			"startSelection": "Start"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditorInput": {
@@ -6226,6 +6247,7 @@
 			"paused": "In pausa",
 			"poorlyWrittenOrFormatted": "Scritta o formattata male",
 			"refusedAValidRequest": "Richiesta valida rifiutata",
+			"renderFailMsg": "Failed to render content",
 			"reportIssue": "Segnala un problema",
 			"usedAgent": "[[(riesegui senza)]]",
 			"usedAgentSlashCommand": "è stato usato {0} [[(riesegui senza)]]",
@@ -6270,14 +6292,11 @@
 			"pastedImageAttachment": "Allegato immagine incollata",
 			"pastedImageName": "Immagine incollata"
 		},
-		"vs/workbench/contrib/chat/browser/chatSelectedTools": {
-			"tool.0": "{0} {1}",
-			"tool.1": "{0} {1} di {2}"
-		},
 		"vs/workbench/contrib/chat/browser/chatSetup": {
 			"agentDescription": "Modificare i file nell'area di lavoro in modalità agente",
 			"chat.category": "Chat",
 			"chatDescription": "Chiedi a Copilot",
+			"continueWithProvider": "Continue with {0}",
 			"copilotFailedWarning": "Copilot non è riuscito a prepararsi. Esaminare le indicazioni nella visualizzazione Chat.",
 			"copilotFreeTitle": "Inizia subito a usare Copilot gratuitamente",
 			"copilotProTitle": "Inizia a usare Copilot Pro",
@@ -6291,7 +6310,6 @@
 			"enterpriseInstance": "Qual è la tua istanza di {0}?",
 			"enterpriseInstancePlaceholder": "Ad esempio \"octocat\" o \"https://octocat.ghe.com\"...",
 			"enterpriseSetupError": "L'istanza di {0} specificata non è valida. Immetterlo di nuovo?",
-			"headerDialog": "[Copilot]({0}) è il programmatore di coppie IA. Scrivi codice più velocemente con i completamenti, correggi i bug e crea nuove funzionalità in più file, e scopri la tua codebase tramite chat.",
 			"hideChatSetup": "Nascondi Copilot",
 			"hideChatSetupButton": "Nascondi Copilot",
 			"hideChatSetupConfirm": "Nascondere Copilot?",
@@ -6300,28 +6318,24 @@
 			"invalidEnterpriseInstance": "È necessario immettere un'istanza {0} valida, ad esempio \"octocat\" o \"https://octocat.ghe.com\"",
 			"manageOverages": "Manage Copilot Overages",
 			"managePlan": "Aggiorna a Copilot Pro",
-			"maybeLater": "Forse in seguito",
 			"retry": "Riprova",
 			"settingUpCopilotNeeded": "È necessario configurare Copilot per usare la Chat.",
-			"settings": "Copilot Free e Pro possono visualizzare [suggerimenti di]({0}) di codice pubblico e i dati potrebbero essere usati per migliorare il prodotto. Puoi modificare queste impostazioni []({1}) in qualsiasi momento.",
+			"settings": "GitHub Copilot Free, Pro and Pro+ may show [public code]({0}) suggestions and we may use your data for product improvement. You can change these [settings]({1}) at any time.",
 			"setupChatProgress": "Preparazione di Copilot...",
 			"setupChatSignIn2": "Accesso a {0}.",
 			"setupCopilot": "Configura Copilot.",
+			"setupCopilotButton": "Set up Copilot",
 			"setupErrorDialog": "La configurazione di Copilot non è riuscita. Riprovare?",
 			"setupToolDisplayName": "Nuova area di lavoro",
 			"setupToolsDescription": "Eseguire lo scaffolding di una nuova area di lavoro in Visual Studio Code",
-			"setupWithEnterpriseProvider": "Accedi con un account {0}",
-			"setupWithProvider": "Accedi con un account {0}",
-			"signInButton": "Accesso",
+			"signInWithProvider": "Sign in with a {0} account",
 			"signUp": "Accedi per usare Copilot",
 			"signUpFree": "Accedi per usare Copilot gratuitamente",
-			"terms": "Continuando, accetti le [Condizioni]({0}) e [Informativa sulla privacy]({1}).",
 			"triggerChatSetup": "Usare gratuitamente le funzionalità di intelligenza artificiale con Copilot...",
 			"triggerChatSetupFromAccounts": "Accedi per usare Copilot...",
 			"unknownSetupError": "Si è verificato un errore durante la configurazione di Copilot. Riprovare?",
 			"unknownSignInError": "Non è stato possibile accedere a {0}. Riprovare?",
 			"unknownSignInErrorDetail": "Per usare Copilot, è necessario aver eseguito l'accesso.",
-			"useCopilotButton": "Usa Copilot",
 			"vscodeAgentDescription": "Poni domande su VS Code",
 			"waitingCopilot": "Preparazione di Copilot.",
 			"waitingCopilot2": "Copilot è quasi pronto.",
@@ -6339,7 +6353,10 @@
 			"completionsDisabledStatus": "Completamenti codice disabilitati",
 			"completionsLabel": "Completamenti del codice",
 			"completionsQuotaExceededStatus": "È stata raggiunta la quota di completamenti",
+			"copilotDisabledStatus": "Copilot Disabled",
 			"enableAdditionalUsage": "Manage paid premium requests",
+			"enableCopilotButton": "Enable Copilot",
+			"enableDescription": "Enable Copilot to use AI features.",
 			"gaugeBackground": "Colore di sfondo misuratore.",
 			"gaugeBorder": "Colore bordo misuratore.",
 			"gaugeErrorBackground": "Colore di sfondo errore misuratore.",
@@ -6375,6 +6392,8 @@
 			"chatWidget.tips.withoutParticipants": "{0} o digitare {1} per collegare il contesto",
 			"editsMessage": "Avviare la sessione di modifica definendo un set di file con cui si vuole lavorare. Chiedere quindi a Copilot di specificare le modifiche da apportare.",
 			"editsTitle": "Modifica con Copilot",
+			"input.1": "Follow instructions from ${0}.",
+			"input.N": "Follow instructions from the prompt files.",
 			"scrollDownButtonLabel": "Scorri verso il basso"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6398,6 +6417,11 @@
 			"desc": "Server MCP: {0}",
 			"fileEntryDescription": "{0} ({1})",
 			"installLabel": "Installa estensioni chat...",
+			"loading": "Loading...",
+			"mcp.prompt.error": "Error resolving prompt: {0}",
+			"mcp.prompt.image": "Prompt Image",
+			"mcp.prompt.resource": "Prompt Resource",
+			"optional": "Optional",
 			"promptFileDescription": "File di richieste utente",
 			"promptFileDescriptionWorkspace": "File di richieste dell'area di lavoro"
 		},
@@ -6414,9 +6438,6 @@
 			"chat.modelPicker.label": "Seleziona modello",
 			"chat.moreModels": "Aggiungi modelli Premium",
 			"chat.moreModels.tooltip": "Aggiungere modelli Premium"
-		},
-		"vs/workbench/contrib/chat/browser/promptSyntax/contributions/attachInstructionsCommand": {
-			"attach-instructions.capitalized.ellipses": "Collega istruzioni..."
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/contributions/createPromptCommand/createPromptCommand": {
 			"commands.new.instructions.local.title": "Nuovo file di istruzioni...",
@@ -6642,7 +6663,6 @@
 			"workbench.action.speech.stopReadAloud": "Interrompi lettura ad alta voce"
 		},
 		"vs/workbench/contrib/chat/electron-sandbox/tools/fetchPageTool": {
-			"fetchWebPage.confirmationMessageManageTrustedDomains": "È possibile [gestire i domini attendibili]({0}) per ignorare questa conferma in futuro.",
 			"fetchWebPage.confirmationTitle.plural": "Recuperare le pagine Web non attendibili?",
 			"fetchWebPage.confirmationTitle.singular": "Recuperare la pagina Web non attendibile?",
 			"fetchWebPage.invalidUrl": "URL non valido",
@@ -7247,6 +7267,7 @@
 			"debug.console.fontSize": "Controllare le dimensioni del carattere in pixel nella console di debug.",
 			"debug.console.historySuggestions": "Controlla se la console di debug deve suggerire input digitato in precedenza.",
 			"debug.console.lineHeight": "Controlla l'altezza della riga in pixel nella console di debug. Usare 0 per calcolare l'altezza della riga dalle dimensioni del carattere.",
+			"debug.console.maximumLines": "Controls the maximum number of lines in the Debug Console.",
 			"debug.console.wordWrap": "Controlla se le righe devono andare a capo nella console di debug.",
 			"debug.disassemblyView.showSourceCode": "Mostra il codice sorgente nella visualizzazione disassembly.",
 			"debug.enableStatusBarColor": "Barra di stato del colore quando il debugger è attivo.",
@@ -8151,7 +8172,6 @@
 			"extensions.autoUpdate.false": "Le estensioni non vengono aggiornate automaticamente.",
 			"extensions.autoUpdate.true": "Scarica e installa automaticamente gli aggiornamenti per tutte le estensioni.",
 			"extensions.gallery.serviceUrl": "Configurare l'URL del servizio Marketplace a cui connettersi",
-			"extensions.gallery.useUnpkgResourceApi": "Se questa opzione è abilitata, le estensioni da aggiornare vengono recuperate dal servizio Unpkg.",
 			"extensions.supportUntrustedWorkspaces": "Consente di eseguire l'override del supporto dell'area di lavoro non attendibile di un'estensione. Le estensioni che usano `true` saranno sempre abilitate. Le estensioni che usano `limited` saranno sempre abilitate e l'estensione nasconderà le funzionalità che richiedono attendibilità. Le estensioni che usano `false` verranno abilitate solo quando l'area di lavoro è attendibile.",
 			"extensions.supportUntrustedWorkspaces.false": "L'estensione verrà abilitata solo quando l'area di lavoro è attendibile.",
 			"extensions.supportUntrustedWorkspaces.limited": "L'estensione verrà sempre abilitata e nasconderà le funzionalità che richiedono attendibilità.",
@@ -8192,6 +8212,8 @@
 			"installPrereleaseAndDonotSync": "Installare la versione non definitiva (non sincronizzare)",
 			"installVSIX": "Installa VSIX dell'estensione",
 			"installWorkspaceRecommendedExtensions": "Installa le estensioni consigliate per l'area di lavoro",
+			"installed filter": "Installed",
+			"installedExtensions": "Show Installed Extensions",
 			"manageExtensionsHelp": "Gestisci estensioni",
 			"manageExtensionsQuickAccessPlaceholder": "Premere INVIO per gestire le estensioni.",
 			"miPreferencesExtensions": "&&Estensioni",
@@ -8431,6 +8453,7 @@
 			"clearSearchResultsIcon": "Icona per l'azione 'Cancella risultati della ricerca' nella visualizzazione Estensioni.",
 			"configureRecommendedIcon": "Icona per l'azione 'Configura estensioni consigliate' nella visualizzazione Estensioni.",
 			"errorIcon": "Icona visualizzata con un messaggio di errore nell'editor delle estensioni.",
+			"extension.border": "The border color of an extension.",
 			"extensionsViewIcon": "Icona della visualizzazione Estensioni.",
 			"filterIcon": "Icona per l'azione 'Filtro' nella visualizzazione Estensioni.",
 			"infoIcon": "Icona visualizzata con un messaggio informativo nell'editor delle estensioni.",
@@ -8656,7 +8679,8 @@
 		"vs/workbench/contrib/extensions/common/searchExtensionsTool": {
 			"searchExtensionsTool.displayName": "Cerca estensioni",
 			"searchExtensionsTool.modelDescription": "Con questo strumento è possibile esplorare il Marketplace delle estensioni di Visual Studio Code. Consente al modello di cercare estensioni e recuperare informazioni dettagliate su di esse. Il modello deve usare questo strumento ogni volta che è necessario individuare estensioni o chiarire informazioni su estensioni note. Per usare lo strumento, il modello deve fornire la categoria delle estensioni, parole chiave di ricerca pertinenti o ID di estensioni note. Tenere presente che i risultati della ricerca possono includere falsi positivi ed è quindi consigliabile esaminarli e filtrarli.",
-			"searchExtensionsTool.noInput": "Specificare una categoria o le parole chiave o gli ID da cercare."
+			"searchExtensionsTool.noInput": "Specificare una categoria o le parole chiave o gli ID da cercare.",
+			"searchExtensionsTool.userDescription": "Search for extensions in the Visual Studio Code Extensions Marketplace."
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/debugExtensionHostAction": {
 			"debugExtensionHost": "Avvia il debug dell'host dell'estensione in una nuova finestra",
@@ -9532,14 +9556,12 @@
 			"loadingData": "Caricamento dei dati...",
 			"marketplace": "Marketplace estensioni",
 			"marketplacePlaceholder": "Ad esempio, non è possibile disabilitare l'estensione installata",
-			"noSimilarIssues": "Nessun problema simile trovato",
 			"open": "Apri",
 			"openIssueReporter": "Aprire Reporter",
 			"pasteData": "I dati necessari sono stati scritti negli appunti perché erano eccessivi per l'invio. Incollarli.",
 			"performanceIssue": "Problema di prestazioni (blocco, rallentamento, arresto anomalo)",
 			"performanceIssueDesciption": "Quando si è verificato questo problema di prestazioni? All'avvio o dopo una serie specifiche di azioni? È supportato il linguaggio Markdown per GitHub. Sarà possibile modificare il problema e aggiungere screenshot quando verrà visualizzato in anteprima in GitHub.",
 			"previewOnGitHub": "Anteprima in GitHub",
-			"rateLimited": "No duplicate issues found: GitHub query limit exceeded.",
 			"saveExtensionData": "Salva dati estensione",
 			"selectExtension": "Selezionare l'estensione",
 			"selectSource": "Selezionare l'origine",
@@ -9635,15 +9657,6 @@
 			"saveExtensionData": "Salva dati estensione",
 			"undefinedPlaceholder": "Immettere un titolo",
 			"updateAvailable": "È disponibile una nuova versione di {0}."
-		},
-		"vs/workbench/contrib/issue/electron-sandbox/process.contribution": {
-			"miOpenProcessExplorerer": "Aprire &&Esplora processi",
-			"openProcessExplorer": "Apri Esplora processi",
-			"stopTracing": "Interrompi traccia",
-			"stopTracing.button": "&&Riavvia e abilita traccia",
-			"stopTracing.detail": "Il completamento può richiedere fino a un minuto.",
-			"stopTracing.message": "La traccia deve essere avviata con un argomento '--trace'",
-			"stopTracing.title": "Creazione del file di traccia in corso..."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "Attiva/Disattiva risoluzione dei problemi per tasti di scelta rapida"
@@ -9842,6 +9855,12 @@
 			"viewAsTree": "Visualizza come albero",
 			"viewAsTreeDescription": "Mostrare la visualizzazione dei problemi come struttura ad albero."
 		},
+		"vs/workbench/contrib/markers/browser/markersChatContext": {
+			"chatContext.diagnstic": "Problems...",
+			"chatContext.diagnstic.placeholder": "Select a problem to attach",
+			"markers.panel.allErrors": "All Problems",
+			"markers.panel.at.ln.col.number": "[Ln {0}, Col {1}]"
+		},
 		"vs/workbench/contrib/markers/browser/markersFileDecorations": {
 			"label": "Problemi",
 			"markers.showOnFile": "Mostrare errori e avvisi per file e cartella. Sovrascritto da {0} quando è disattivato.",
@@ -9916,11 +9935,17 @@
 			"problems.view.focus.label": "Sposta lo stato attivo su problemi (Errori, Avvisi, Informazioni)",
 			"problems.view.toggle.label": "Attiva/Disattiva Problemi (Errori, Avvisi, Informazioni)"
 		},
+		"vs/workbench/contrib/mcp/browser/mcp.contribution": {
+			"mcp": "MCP Servers",
+			"mcp-installed": "MCP Servers - Installed",
+			"mcpServer": "MCP Server"
+		},
 		"vs/workbench/contrib/mcp/browser/mcpCommands": {
 			"mcp.addConfiguration": "Aggiungi server...",
 			"mcp.addConfiguration.description": "Installa un nuovo MCP (Model Context Protocol) nelle impostazioni mcp.json",
 			"mcp.addServer": "Aggiungi server",
 			"mcp.addServer.description": "Aggiungere una nuova configurazione del server",
+			"mcp.command.browse": "MCP Servers",
 			"mcp.command.installFromActivation": "Installa...",
 			"mcp.command.restartServer": "Riavvia server",
 			"mcp.command.showConfiguration": "Mostra configurazione",
@@ -9979,6 +10004,7 @@
 			"mcp.serverType.pip": "Pacchetto PIP",
 			"mcp.serverType.pip.description": "Installa da un nome pacchetto PIP",
 			"mcp.serverType.placeholder": "Scegli il tipo di server MCP da aggiungere",
+			"mcp.servers.browse": "Browse MCP Servers...",
 			"mcp.target..remote.description": "Disponibile in questo computer remoto",
 			"mcp.target.remote": "Impostazioni remote",
 			"mcp.target.title": "Scegli dove salvare la configurazione",
@@ -10004,6 +10030,43 @@
 			"server.toolCount": "Strumenti {0}",
 			"server.toolCountCached": "{0} strumenti memorizzati nella cache"
 		},
+		"vs/workbench/contrib/mcp/browser/mcpServerActions": {
+			"config": "Show Configuration",
+			"install": "Install",
+			"manage": "Manage",
+			"output": "Show Output",
+			"restart": "Restart Server",
+			"start": "Start Server",
+			"stop": "Stop Server",
+			"uninstall": "Uninstall"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerEditor": {
+			"Install Info": "Installation",
+			"Marketplace Info": "Marketplace",
+			"Readme title": "Readme",
+			"Version": "Version",
+			"details": "Details",
+			"detailstooltip": "Extension details, rendered from the extension's 'README.md' file",
+			"id": "Identifier",
+			"last released": "Last Released",
+			"name": "Extension name",
+			"noReadme": "No README available.",
+			"repository": "Repository",
+			"resources": "Resources"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerEditorInput": {
+			"extensionsEditorLabelIcon": "Icon of the extensions editor label.",
+			"extensionsInputName": "Extension: {0}"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServersView": {
+			"mcp servers": "MCP Servers"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerWidgets": {
+			"install count": "Install count",
+			"publisher": "Publisher ({0})",
+			"ratedLabel": "Average rating: {0} out of 5",
+			"verified publisher": "This publisher has verified ownership of {0}"
+		},
 		"vs/workbench/contrib/mcp/common/discovery/extensionMcpDiscovery": {
 			"invalidData": "È prevista una matrice di raccolte MCP",
 			"invalidId": "È previsto che 'id' non sia una stringa vuota.",
@@ -10024,6 +10087,7 @@
 			"app.mcp.json.title": "Server MCP (Model Context Protocol)",
 			"app.mcp.json.type": "Il tipo del server.",
 			"app.mcp.json.url": "L'URL dell'endpoint HTTP o SSE trasmissibile in streaming.",
+			"app.mcp.json.url.pattern": "The URL must start with 'http://' or 'https://'.",
 			"mcp.discovery.source.claude-desktop": "Desktop Claude",
 			"mcp.discovery.source.cursor-global": "Cursore (Globale)",
 			"mcp.discovery.source.cursor-workspace": "Cursore (Area di lavoro)",
@@ -10069,6 +10133,7 @@
 			"msg.title": "Esegui {0}"
 		},
 		"vs/workbench/contrib/mcp/common/mcpTypes": {
+			"mcpServer": "Icon used for the MCP server.",
 			"mcpstate.error": "Errore {0}",
 			"mcpstate.running": "In esecuzione",
 			"mcpstate.starting": "Avvio",
@@ -10490,8 +10555,11 @@
 			"notebookActions.restoreCellprompt": "Genera"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebook.chat.contribution": {
+			"chatContext.notebook.kernelVariable": "Kernel Variable...",
+			"chatContext.notebook.kernelVariable.placeholder": "Select a kernel variable",
 			"notebookActions.addOutputToChat": "Aggiungi output cella alla chat",
-			"pickKernelVariableLabel": "Selezionare una variabile dal kernel"
+			"pickKernelVariableLabel": "Selezionare una variabile dal kernel",
+			"selectKernelVariablePlaceholder": "Select a kernel variable"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebookChatContext": {
 			"notebookCellChatFocused": "Indica se l'editor della chat cellulare è attivo",
@@ -11174,6 +11242,7 @@
 			"openWorkspaceSettings": "Apri impostazioni area di lavoro",
 			"openWorkspaceSettingsFile": "Apri impostazioni area di lavoro (JSON)",
 			"preferences": "Preferenze",
+			"preferencesEditor": "Preferences Editor",
 			"settings": "Impostazioni",
 			"settings.clearResults": "Cancella risultati della ricerca impostazioni",
 			"settings.focusFile": "Sposta lo stato attivo sul file di impostazioni",
@@ -11194,6 +11263,10 @@
 			"languageDescriptionConfigured": "({0})",
 			"pickLanguage": "Seleziona linguaggio"
 		},
+		"vs/workbench/contrib/preferences/browser/preferencesEditor": {
+			"FullTextSearchPlaceholder": "Search {0}",
+			"preferencesTabSwitcherBarAriaLabel": "Preferences Tab Switcher"
+		},
 		"vs/workbench/contrib/preferences/browser/preferencesIcons": {
 			"keybindingsAddIcon": "Icona per l'azione di aggiunta nell'interfaccia utente del tasto di scelta rapida.",
 			"keybindingsEditIcon": "Icona per l'azione di modifica nell'interfaccia utente del tasto di scelta rapida.",
@@ -11202,6 +11275,7 @@
 			"preferencesClearInput": "Icona per cancellare l'input nell'interfaccia utente di Impostazioni e tasti di scelta rapida.",
 			"preferencesDiscardIcon": "Icona per l'azione di rimozione nell'interfaccia utente di Impostazioni.",
 			"preferencesOpenSettings": "Icona per aprire i comandi delle impostazioni.",
+			"preferencesSashBorder": "The color of the Preferences editor splitview sash border.",
 			"settingsEditIcon": "Icona per l'azione di modifica nell'interfaccia utente di Impostazioni.",
 			"settingsFilter": "Icona per il pulsante che suggerisce i filtri per l'interfaccia utente impostazioni.",
 			"settingsMoreActionIcon": "Icona per l'azione 'Altre azioni' nell'interfaccia utente di Impostazioni.",
@@ -11439,6 +11513,33 @@
 			"textInputBoxBackground": "Sfondo della casella di input di testo dell'editor impostazioni.",
 			"textInputBoxBorder": "Bordo della casella di input di testo dell'editor impostazioni.",
 			"textInputBoxForeground": "Primo piano della casella di input di testo dell'editor impostazioni."
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.contribution": {
+			"miOpenProcessExplorerer": "Open &&Process Explorer",
+			"openProcessExplorer": "Open Process Explorer",
+			"promptOpenWith.processExplorer.displayName": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
+			"copy": "Copy",
+			"copyAll": "Copy All",
+			"debug": "Debug",
+			"forceKillProcess": "Force Kill Process",
+			"killProcess": "Kill Process",
+			"processCpu": "CPU (%)",
+			"processExplorer": "Process Explorer",
+			"processMemory": "Memory (MB)",
+			"processName": "Process Name",
+			"processPid": "PID"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
+			"processExplorerEditorLabelIcon": "Icon of the process explorer editor label.",
+			"processExplorerInputName": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/electron-sandbox/processExplorer.contribution": {
+			"processExplorer": "Process Explorer"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"askXInChat": "Chiedere a {0}: {1}",
@@ -11688,6 +11789,8 @@
 		},
 		"vs/workbench/contrib/remote/electron-sandbox/remote.contribution": {
 			"remote": "Remoto",
+			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
+			"remote.category": "Remote",
 			"remote.downloadExtensionsLocally": "Se è abilitato, le estensioni vengono scaricate in locale e installate nel computer remoto.",
 			"wslFeatureInstalled": "Indica se la piattaforma ha la funzionalità WSL installata"
 		},
@@ -11917,6 +12020,11 @@
 			"scmGraphHistoryItemRefColor": "Colore dei riferimenti agli elementi della cronologia.",
 			"scmGraphHistoryItemRemoteRefColor": "Colore dei riferimenti remoti agli elementi della cronologia."
 		},
+		"vs/workbench/contrib/scm/browser/scmHistoryChatContext": {
+			"chatContext.scmHistoryItems": "Source Control History Items...",
+			"chatContext.scmHistoryItems.placeholder": "Select a source control history item",
+			"files": "file(s)"
+		},
 		"vs/workbench/contrib/scm/browser/scmHistoryViewPane": {
 			"activeRepository": "Mostra il grafico del controllo del codice sorgente per il repository attivo",
 			"all": "Tutto",
@@ -11935,6 +12043,7 @@
 			"items": "{0} elementi",
 			"loadMore": "{0} Caricare altro...",
 			"openChanges": "Apri modifiche",
+			"openFile": "Open File",
 			"referencePicker": "Selezione dei riferimenti agli elementi della cronologia",
 			"refreshGraph": "Aggiorna",
 			"repositoryPicker": "Selezione repository",
@@ -11959,6 +12068,7 @@
 			"scmInput.accessibilityHelp": "{0}, utilizzare {1} per aprire la Guida all'accessibilità del controllo del codice sorgente.",
 			"scmInput.accessibilityHelpNoKb": "{0}, eseguire il comando per aprire la Guida all'accessibilità per altre informazioni.",
 			"scmInputCancelAction": "Annulla",
+			"scmInputGenerateCommitMessage": "Generate Commit Message with Copilot",
 			"scmInputMoreActions": "Altre azioni...",
 			"scmInputRow.accessibilityHelp": "Input del controllo del codice sorgente. Utilizzare {0} per aprire la Guida all'accessibilità del controllo del codice sorgente.",
 			"scmInputRow.accessibilityHelpNoKb": "Input controllo del codice sorgente, eseguire il comando per aprire la guida per l'accessibilità per altre informazioni.",
@@ -12008,6 +12118,13 @@
 			"openToBottom": "Apri in basso",
 			"openToSide": "Apri lateralmente",
 			"recentlyOpenedSeparator": "aperti di recente"
+		},
+		"vs/workbench/contrib/search/browser/chatContributions": {
+			"chatContext.attach.files.placeholder": "Search file or folder by name",
+			"chatContext.folder": "Files & Folders...",
+			"chatContext.searchResults": "Search Results",
+			"select.symb": "Select a symbol",
+			"symbols": "Symbols..."
 		},
 		"vs/workbench/contrib/search/browser/patternInputWidget": {
 			"defaultLabel": "Input",
@@ -12076,6 +12193,11 @@
 			"search.searchEditor.singleClickBehaviour.peekDefinition": "Se si fa clic con un solo clic, viene aperta una finestra Visualizza in anteprima la definizione.",
 			"search.searchOnType": "Cerca in tutti i file durante la digitazione.",
 			"search.searchOnTypeDebouncePeriod": "Se {0} è abilitato, controlla il timeout in millisecondi tra la digitazione di un carattere e l'avvio della ricerca. Non ha effetto quando {0} è disabilitato.",
+			"search.searchView.keywordSuggestions": "Enable keyword suggestions in the search view.",
+			"search.searchView.semanticSearchBehavior": "Controls the behavior of the semantic search results displayed in the search view.",
+			"search.searchView.semanticSearchBehavior.auto": "Request semantic results automatically with every search.",
+			"search.searchView.semanticSearchBehavior.manual": "Only request semantic search results manually.",
+			"search.searchView.semanticSearchBehavior.runOnEmpty": "Request semantic results automatically only when text search results are empty.",
 			"search.seedOnFocus": "Aggiorna la query di ricerca in base al testo selezionato dell'editor quando lo stato attivo si trova nella visualizzazione di ricerca. Si verifica in caso di clic o quando si attiva il comando `workbench.views.search.focus`.",
 			"search.seedWithNearestWord": "Abilita il seeding della ricerca a partire dalla parola più vicina al cursore quando non ci sono selezioni nell'editor attivo.",
 			"search.showLineNumbers": "Controlla se visualizzare i numeri di riga per i risultati della ricerca.",
@@ -12488,11 +12610,13 @@
 			"TaskService.fetchingBuildTasks": "Recupero delle attività di compilazione...",
 			"TaskService.fetchingTestTasks": "Recupero delle attività di test...",
 			"TaskService.ignoredFolder": "Le cartelle dell'area di lavoro seguenti verranno ignorate perché usano la versione 0.1.0 delle attività: {0}",
+			"TaskService.instanceToTerminate": "Select an instance to terminate",
 			"TaskService.noBuildTask": "Nessuna attività di compilazione da eseguire trovato. Configurare l'attività di compilazione...",
 			"TaskService.noBuildTask1": "Non è stata definita alcuna attività di compilazione. Contrassegnare un'attività con 'isBuildCommand' nel file tasks.json.",
 			"TaskService.noBuildTask2": "Non è stata definita alcuna attività di compilazione. Contrassegnare un'attività come gruppo 'build' nel file tasks.json.",
 			"TaskService.noConfiguration": "Errore: il rilevamento attività {0} non ha aggiunto come contributo un'attività per la configurazione seguente:\r\n{1}\r\nL'attività verrà ignorata.",
 			"TaskService.noEntryToRun": "Configurare un'attività",
+			"TaskService.noInstanceRunning": "No instance is currently running",
 			"TaskService.noTaskIsRunning": "Non ci sono attività in esecuzione",
 			"TaskService.noTaskRunning": "Non ci sono attività attualmente in esecuzione",
 			"TaskService.noTaskToRestart": "Non ci sono attività da riavviare",
@@ -12521,8 +12645,8 @@
 			"TaskService.taskToTerminate": "Selezionare un'attività da terminare",
 			"TaskService.template": "Seleziona un modello di attività",
 			"TaskService.terminateAllRunningTasks": "Tutte le attività in esecuzione",
+			"TaskSystem.InstancePolicy.warn": "The instance limit for this task has been reached.",
 			"TaskSystem.active": "Esiste già un'attività in esecuzione. Terminarla prima di eseguirne un'altra.",
-			"TaskSystem.activeSame.noBackground": "L'attività '{0}' è già attiva.",
 			"TaskSystem.configurationErrors": "Errore: la configurazione delle attività specificata contiene errori di convalida e non è utilizzabile. Correggere prima gli errori.",
 			"TaskSystem.invalidTaskJson": "Errore: nel contenuto del file tasks.json sono presenti errori di sintassi. Correggerli prima di eseguire un'attività.",
 			"TaskSystem.invalidTaskJsonOther": "Errore: nel contenuto del file tasks.json in {0}sono presenti errori di sintassi. Correggerli prima di eseguire un'attività.",
@@ -12543,7 +12667,6 @@
 			"detected": "attività rilevate",
 			"moreThanOneBuildTask": "Nel file tasks.json sono definite molte attività di compilazione. Verrà eseguita la prima.",
 			"recentlyUsed": "attività usate di recente",
-			"restartTask": "Riavvia attività",
 			"runTask.arg": "Filtrare le attività visualizzate nella selezione rapida",
 			"runTask.label": "Etichetta dell'attività o del termine in base a cui filtrare",
 			"runTask.task": "Etichetta dell'attività o del termine in base a cui filtrare",
@@ -12552,7 +12675,7 @@
 			"saveBeforeRun.save": "&&Salva",
 			"savePersistentTask": "Salvataggio delle attività persistenti: {0}",
 			"selectProblemMatcher": "Selezionare il tipo di errori e di avvisi per cui analizzare l'output dell'attività",
-			"showOutput": "Mostra output",
+			"showOutput": "Show Output",
 			"taskEvent": "Tipo di evento attività: {0}",
 			"taskQuickPick.userSettings": "Utente",
 			"taskService.getSavedTasks": "Recupero delle attività dall'archiviazione delle attività.",
@@ -12569,9 +12692,10 @@
 			"taskService.upgradeVersion": "La versione 0.1.0 delle attività deprecate è stata rimossa. Le attività sono state aggiornate alla versione 2.0.0. Aprire il diff per verificare l'aggiornamento.",
 			"taskService.upgradeVersionPlural": "La versione 0.1.0 delle attività deprecate è stata rimossa. Le attività sono state aggiornate alla versione 2.0.0. Aprire i diff per verificare l'aggiornamento.",
 			"taskServiceOutputPrompt": "Sono presenti errori nell'attività. Per maggiori dettagli, vedere l'output.",
+			"taskServiceOutputPromptChat": "There are task errors. Use chat to fix them or view the output for details.",
 			"tasks": "Attività",
 			"tasksJsonComment": "\t// Vedere https://go.microsoft.com/fwlink/?LinkId=733558 \r\n\t// per la documentazione relativa al formato tasks.json",
-			"terminateTask": "Termina attività",
+			"troubleshootWithChat": "Fix with Chat",
 			"unexpectedTaskType": "Il provider di attività per le attività \"{0}\" ha fornito in modo imprevisto un'attività di tipo \"{1}\".\r\n"
 		},
 		"vs/workbench/contrib/tasks/browser/runAutomaticTasks": {
@@ -12731,6 +12855,12 @@
 			"JsonSchema.tasks.identifier": "Identificatore definito dall'utente per fare riferimento all'attività in launch.json o in una clausola dependsOn.",
 			"JsonSchema.tasks.identifier.deprecated": "Gli identificatori definiti dall'utente sono deprecati. Per attività personalizzate utilizzare il nome come riferimento e per le attività fornite dalle estensioni utilizzare il relativo identificatore di attività definito.",
 			"JsonSchema.tasks.instanceLimit": "Numero di istanze dell'attività che possono essere eseguite contemporaneamente.",
+			"JsonSchema.tasks.instancePolicy": "Policy to apply when instance limit is reached.",
+			"JsonSchema.tasks.instancePolicy.prompt": "Asks which instance to terminate.",
+			"JsonSchema.tasks.instancePolicy.silent": "Does nothing.",
+			"JsonSchema.tasks.instancePolicy.terminateNewest": "Terminates the newest instance.",
+			"JsonSchema.tasks.instancePolicy.terminateOldest": "Terminates the oldest instance.",
+			"JsonSchema.tasks.instancePolicy.warn": "Does nothing but warns that the instance limit has been reached.",
 			"JsonSchema.tasks.isBuildCommand.deprecated": "La proprietà isBuildCommand è deprecata. In alternativa, usare la proprietà group. Vedere anche le note sulla versione 1.14.",
 			"JsonSchema.tasks.isShellCommand.deprecated": "La proprietà isShellCommand è deprecata. Usare la proprietà type dell'attività e la proprietà shell nelle opzioni. Vedere anche le note sulla versione 1.14.",
 			"JsonSchema.tasks.isTestCommand.deprecated": "La proprietà isTestCommand è deprecata. In alternativa, usare la proprietà group. Vedere anche le note sulla versione 1.14.",
@@ -13284,6 +13414,7 @@
 			"terminal.integrated.hideOnLastClosed": "Indica se nascondere la visualizzazione del terminale alla chiusura dell'ultimo terminale. Questo problema si verifica solo quando il terminale è l'unica visualizzazione visibile nel contenitore di visualizzazioni.",
 			"terminal.integrated.hideOnStartup": "Indica se nascondere la visualizzazione del terminale all'avvio, evitando la creazione di un terminale quando non sono presenti sessioni permanenti.",
 			"terminal.integrated.ignoreBracketedPasteMode": "Controlla se il terminale ignorerà la modalità incolla tra parentesi quadre anche se il terminale è stato inserito nella modalità, omettendo le sequenze di {0} e {1} durante l'operazione Incolla. È utile quando la shell non rispetta la modalità che può verificarsi nelle shell secondarie, ad esempio.",
+			"terminal.integrated.killGracefully": "Controls how terminal processes are terminated. When enabled, attempts a graceful shutdown of the process tree. On POSIX, this will send `SIGTERM`. On Windows, it uses `taskkill.exe` without the `/F` (force) flag. Note that this may allow misbehaving processes to remain running. When disabled (default), processes are terminated with: `SIGHUP`.",
 			"terminal.integrated.letterSpacing": "Controlla la spaziatura delle lettere del terminale. Questo è un valore intero che rappresenta il numero di pixel aggiuntivi da aggiungere tra i caratteri.",
 			"terminal.integrated.lineHeight": "Controlla l'altezza della linea del terminale. Questo numero viene moltiplicato per le dimensioni del carattere del terminale per ottenere l'altezza effettiva della riga in pixel.",
 			"terminal.integrated.macOptionClickForcesSelection": "Controlla se forzare la selezione quando si usa Opzione+clic in macOS. In questo modo viene forzata la selezione normale (riga) impedendo l'uso della modalità di selezione colonna ed è possibile copiare e incollare usando la selezione normale del terminale quando, ad esempio, è abilitata la modalità mouse in tmux.",
@@ -13913,6 +14044,7 @@
 			"run test": "Esegui test",
 			"selectTestToRun": "Seleziona un test da eseguire",
 			"testOverflowItems": "{0} altri test...",
+			"testing.cancelRun": "Cancel Test Run",
 			"testing.gutterMsg.contextMenu": "Fare clic per le opzioni test",
 			"testing.gutterMsg.coverage": "Fai clic per eseguire i test con code coverage oppure fai clic con il pulsante destro del mouse per altre opzioni",
 			"testing.gutterMsg.debug": "Fare clic per eseguire il debug del test oppure fare clic con il pulsante destro del mouse per altre opzioni",
@@ -14096,6 +14228,7 @@
 			"testing.cursorInsideTestRange": "Indica se il cursore si trova attualmente all'interno di un intervallo di test",
 			"testing.hasConfigurableConfig": "Indica se è possibile configurare una configurazione di test",
 			"testing.hasCoverableTests": "Indica se un test controller ha registrato una configurazione di copertura",
+			"testing.hasCoverageInFile": "Indicates coverage has been reported in the curent editor.",
 			"testing.hasDebuggableTests": "Indica se un test controller ha registrato una configurazione di debug",
 			"testing.hasNonDefaultConfig": "Indica se un test controller ha registrato una configurazione non predefinita",
 			"testing.hasPerTestCoverage": "Indica se la copertura per test è disponibile",
@@ -14869,6 +15002,7 @@
 			"quickOpen": "Apri un file con Quick Open",
 			"runProject": "Esegui il progetto",
 			"runTasks": "Esegui attività rilevate automaticamente",
+			"settings": "GitHub Copilot Free, Pro and Pro+ may show [public code]({0}) suggestions and we may use your data for product improvement. You can change these [settings]({1}) at any time.",
 			"setupCopilotButton.chatWithCopilot": "Chatta con Copilot",
 			"setupCopilotButton.setup": "Configura Copilot",
 			"setupCopilotButton.signIn": "Configura Copilot",
@@ -15241,6 +15375,17 @@
 			"sign in": "È richiesto l'accesso",
 			"signInRequest": "Accedere con {0} per usare {1} (1)",
 			"useOtherAccount": "Accedi a un altro account"
+		},
+		"vs/workbench/services/authentication/browser/authenticationMcpService": {
+			"accessRequest": "Grant access to {0} for {1}... (1)",
+			"allow": "&&Allow",
+			"confirmAuthenticationAccess": "The MCP server '{0}' wants to access the {1} account '{2}'.",
+			"deny": "&&Deny",
+			"getSessionPlateholder": "Select an account for '{0}' to use or Esc to cancel",
+			"selectAccount": "The MCP server '{0}' wants to access a {1} account",
+			"sign in": "Sign in requested",
+			"signInRequest": "Sign in with {0} to use {1} (1)",
+			"useOtherAccount": "Sign in to another account"
 		},
 		"vs/workbench/services/authentication/browser/authenticationService": {
 			"authentication.id": "ID del provider di autenticazione.",
@@ -15878,6 +16023,8 @@
 			"openFolderFirst": "Aprire prima una cartella o un'area di lavoro per creare le impostazioni dell'area di lavoro o della cartella."
 		},
 		"vs/workbench/services/preferences/common/preferencesEditorInput": {
+			"preferencesEditorInputName": "Preferences",
+			"preferencesEditorLabelIcon": "Icon of the preferences editor label.",
 			"settingsEditor2InputName": "Impostazioni",
 			"settingsEditorLabelIcon": "Icona dell’etichetta dell'editor delle impostazioni."
 		},
