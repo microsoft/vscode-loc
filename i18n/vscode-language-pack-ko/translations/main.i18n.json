@@ -2427,6 +2427,9 @@
 			"filtered": "\"{0}\" 때문에 문제가 일시 중지되었습니다.",
 			"filtered.network": "\"{0}\" 및 기타 {1} 때문에 문제가 일시 중지되었습니다."
 		},
+		"vs/platform/mcp/common/mcpGalleryService": {
+			"noReadme": "No README available"
+		},
 		"vs/platform/menubar/electron-main/menubar": {
 			"cancel": "취소",
 			"mAbout": "{0} 정보",
@@ -2471,15 +2474,14 @@
 			"cantUninstall": "셸 명령 '{0}'을(를) 제거할 수 없습니다.",
 			"ok": "확인(&&O)",
 			"sourceMissing": "'{0}'에서 셸 스크립트를 찾을 수 없습니다.",
+			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
+			"trace.message": "Successfully created the trace file",
+			"trace.ok": "&&OK",
 			"warnEscalation": "이제 {0}에서 'osascript'를 사용하여 관리자에게 셸 명령을 설치할 권한이 있는지를 묻습니다.",
 			"warnEscalationUninstall": "이제 {0}에서 'osascript'를 사용하여 셸 명령을 제거할 관리자 권한이 있는지를 묻습니다."
 		},
 		"vs/platform/process/electron-main/processMainService": {
-			"local": "로컬",
-			"processExplorer": "프로세스 탐색기",
-			"trace.detail": "문제를 만들고 다음 파일을 수동으로 연결하세요.\r\n{0}",
-			"trace.message": "추적 파일을 만들었습니다.",
-			"trace.ok": "확인(&&O)"
+			"local": "로컬"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "'{0}' 명령에서 오류가 발생했습니다.",
@@ -3134,17 +3136,6 @@
 			"startupUserDataAndExtensionsDirErrorDetail": "{0}\r\n\r\n다음 디렉터리가 쓰기 가능한지 확인하세요.\r\n\r\n{1}",
 			"statusWarning": "경고: --status 인수는 {0}이(가) 이미 실행 중인 경우에만 사용할 수 있습니다. {0}이(가) 시작된 후 다시 실행하세요."
 		},
-		"vs/code/electron-sandbox/processExplorer/processExplorerMain": {
-			"copy": "복사",
-			"copyAll": "모두 복사",
-			"cpu": "CPU(%)",
-			"debug": "디버그",
-			"forceKillProcess": "프로세스 강제 종료",
-			"killProcess": "프로세스 종료",
-			"memory": "메모리(MB)",
-			"name": "프로세스 이름",
-			"pid": "PID"
-		},
 		"vs/code/electron-utility/sharedProcess/sharedProcessMain": {
 			"networkk": "네트워크",
 			"sharedLog": "공유됨"
@@ -3212,6 +3203,15 @@
 		},
 		"vs/workbench/api/browser/mainThreadLanguageModels": {
 			"languageModelsAccountId": "언어 모델"
+		},
+		"vs/workbench/api/browser/mainThreadMcp": {
+			"allow": "&&Allow",
+			"confirmLogin": "The MCP Server '{0}' wants to sign in using {1}.",
+			"confirmRelogin": "The MCP Server '{0}' wants you to sign in again using {1}.",
+			"incorrectAccount": "Incorrect account detected",
+			"incorrectAccountDetail": "The chosen account, {0}, does not match the requested account, {1}.",
+			"keep": "Keep {0}",
+			"loginWith": "Login with {0}"
 		},
 		"vs/workbench/api/browser/mainThreadMessageService": {
 			"cancel": "취소",
@@ -3787,8 +3787,8 @@
 			"ok": "확인"
 		},
 		"vs/workbench/browser/parts/editor/auxiliaryEditorPart": {
-			"disableCompactAuxiliaryWindow": "컴팩트 모드 설정 해제",
-			"enableCompactAuxiliaryWindow": "컴팩트 모드 설정",
+			"disableCompactAuxiliaryWindow": "Turn Off Compact Mode",
+			"enableCompactAuxiliaryWindow": "Turn On Compact Mode",
 			"toggleCompactAuxiliaryWindow": "창 컴팩트 모드 토글"
 		},
 		"vs/workbench/browser/parts/editor/binaryDiffEditor": {
@@ -4294,6 +4294,7 @@
 			"manage": "관리",
 			"manage profile": "{0} 관리(프로필)",
 			"manageTrustedExtensions": "신뢰할 수 있는 확장 관리",
+			"manageTrustedMCPServers": "Manage Trusted MCP Servers",
 			"signOut": "로그아웃"
 		},
 		"vs/workbench/browser/parts/notifications/notificationAccessibleView": {
@@ -4837,8 +4838,7 @@
 			"focusedView": "키보드 포커스가 있는 뷰의 식별자",
 			"groupEditorsCount": "열려 있는 편집기 그룹 수",
 			"inZenMode": "Zen 모드를 사용하도록 설정되어 있는지 여부",
-			"isAuxiliaryEditorPart": "편집기 파트가 보조 창에 있습니다.",
-			"isAuxiliaryTitleBar": "제목 표시줄이 보조 창에 있습니다",
+			"isAuxiliaryWindow": "Window is an auxiliary window",
 			"isAuxiliaryWindowFocusedContext": "보조 창에 포커스가 있는지 여부",
 			"isCompactTitleBar": "제목 표시줄이 컴팩트 모드입니다",
 			"isFileSystemResource": "파일 시스템 공급자에서 리소스를 지원하는지 여부",
@@ -5068,6 +5068,11 @@
 			"reloadWindowWithExtensionsDisabled": "확장을 사용하지 않도록 설정하고 다시 로드",
 			"revealUserDataFolder": "사용자 데이터 폴더 표시",
 			"showGPUInfo": "GPU 정보 표시",
+			"stopTracing": "Stop Tracing",
+			"stopTracing.button": "&&Relaunch and Enable Tracing",
+			"stopTracing.detail": "This can take up to one minute to complete.",
+			"stopTracing.message": "Tracing requires to launch with a '--trace' argument",
+			"stopTracing.title": "Creating trace file...",
 			"toggleDevTools": "개발자 도구 설정/해제"
 		},
 		"vs/workbench/electron-sandbox/actions/installActions": {
@@ -5081,8 +5086,8 @@
 			"close": "창 닫기",
 			"closeWindow": "창 닫기",
 			"current": "현재 창",
-			"disableWindowAlwaysOnTop": "항상 위 설정 해제",
-			"enableWindowAlwaysOnTop": "항상 위 설정",
+			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
+			"enableWindowAlwaysOnTop": "Turn On Always on Top",
 			"miCloseWindow": "창 닫기(&&E)",
 			"miZoomIn": "확대(&&Z)",
 			"miZoomOut": "축소(&&Z)",
@@ -5104,6 +5109,7 @@
 			"argv.disableHardwareAcceleration": "하드웨어 가속을 사용하지 않도록 설정합니다. 그래픽 문제가 발생한 경우에만 이 옵션을 변경하세요.",
 			"argv.disableLcdText": "LCD 글꼴 앤티앨리어싱을 비활성화합니다.",
 			"argv.enableCrashReporter": "크래시 보고를 사용하지 않도록 설정하고, 값이 변경되는 경우 앱을 다시 시작해야 합니다.",
+			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
 			"argv.enebleProposedApi": "확장 ID 목록에 대해 제안된 API를 사용합니다(예: `vscode.git`). 제안된 API는 불안정하며 언제든지 경고 없이 중단될 수 있습니다. 확장 개발 및 테스트 용도로만 설정해야 합니다.",
 			"argv.force-renderer-accessibility": "강제로 렌더러에 액세스할 수 있도록 합니다. Linux에서 화면 읽기 프로그램을 사용하는 경우에만 변경할 수 있습니다. 다른 플랫폼에서는 렌더러에 자동으로 액세스할 수 있습니다. 이 플래그는 editor.accessibilitySupport: on인 경우 자동으로 설정됩니다.",
 			"argv.forceColorProfile": "사용할 색 프로필을 재정의할 수 있습니다. 색이 잘못 표시되면 색 프로필을 'srgb'로 설정하고 다시 시작해 보세요.",
@@ -5115,7 +5121,7 @@
 			"closeWhenEmpty": "마지막 편집기를 닫을 때 창도 닫을지 여부를 제어합니다. 이 설정은 폴더를 표시하지 않는 창에만 적용됩니다.",
 			"confirmSaveUntitledWorkspace": "다른 작업 영역으로 전환할 때 창에 열려 있는 제목 없는 작업 영역을 저장할지 삭제할지 묻는 확인 대화 상자를 표시할지 여부를 제어합니다. 확인 대화 상자를 사용하지 않도록 설정하면 제목 없는 작업 영역이 항상 삭제됩니다.",
 			"controlsStyle": "OS에 맞게 창 컨트롤의 모양을 네이티브로 조정합니다(사용자 지정 그림 또는 숨김). 변경 내용을 적용하려면 완전히 다시 시작해야 합니다.",
-			"dialogStyle": "대화 상자 창의 모양을 조정합니다.",
+			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
 			"enableCrashReporterDeprecated": "이 설정이 false이면 새 설정 값에 관계없이 원격 분석이 전송되지 않습니다. {0} 설정에 결합되어 더 이상 사용되지 않습니다.",
 			"keyboardConfigurationTitle": "키보드",
 			"mergeAllWindowTabs": "모든 창 병합",
@@ -5488,6 +5494,18 @@
 			"title": "이 작업 영역에 대한 '{0}' 계정 기본 설정",
 			"use new account": "새 계정 사용..."
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForMcpServerAction": {
+			"accounts": "Accounts",
+			"currentAccount": "Current account",
+			"manageAccountPreferenceForMcpServer": "Manage MCP Server Account Preferences",
+			"noAccountUsage": "This MCP server has not used any accounts yet.",
+			"noAccounts": "No accounts are currently used by this MCP server.",
+			"pickAProviderTitle": "Manage MCP Server Account Preferences",
+			"placeholder v2": "Manage '{0}' account preferences for {1}...",
+			"selectProvider": "Select an authentication provider to manage account preferences for",
+			"title": "'{0}' Account Preferences For This Workspace",
+			"use new account": "Use a new account..."
+		},
 		"vs/workbench/contrib/authentication/browser/actions/manageTrustedExtensionsForAccountAction": {
 			"accountLastUsedDate": "이 계정을 마지막으로 사용한 날짜: {0}",
 			"accountPreferences": "이 확장에 대한 계정 기본 설정 관리",
@@ -5502,6 +5520,20 @@
 			"trustedExtensionTooltip": "이 확장은 Microsoft에서 신뢰하며\r\n항상 이 계정에 액세스할 수 있습니다.",
 			"trustedExtensions": "Microsoft에서 신뢰함"
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageTrustedMcpServersForAccountAction": {
+			"accountLastUsedDate": "Last used this account {0}",
+			"accountPreferences": "Manage account preferences for this MCP server",
+			"accounts": "Accounts",
+			"manageMcpServers": "Choose which MCP servers can access this account",
+			"manageTrustedMcpServers": "Manage Trusted MCP Servers",
+			"manageTrustedMcpServers.cancel": "Cancel",
+			"manageTrustedMcpServersForAccount": "Manage Trusted MCP Servers For Account",
+			"noTrustedMcpServers": "This account has not been used by any MCP servers.",
+			"notUsed": "Has not used this account",
+			"pickAccount": "Pick an account to manage trusted MCP servers for",
+			"trustedMcpServerTooltip": "This MCP server is trusted by Microsoft and\r\nalways has access to this account",
+			"trustedMcpServers": "Trusted by Microsoft"
+		},
 		"vs/workbench/contrib/authentication/browser/actions/signOutOfAccountAction": {
 			"signOut": "로그아웃(&&S)",
 			"signOutMessage": "'{0}' 계정은 다음에서 사용되었습니다.\r\n\r\n{1}\r\n\r\n 해당 확장에서 로그아웃하시겠습니까?",
@@ -5511,6 +5543,7 @@
 		"vs/workbench/contrib/authentication/browser/authentication.contribution": {
 			"authentication": "인증",
 			"authentication.Placeholder": "아직 요청된 계정이 없습니다...",
+			"authenticationMcpAuthorizationServers": "MCP Authorization Servers",
 			"authenticationid": "ID",
 			"authenticationlabel": "레이블",
 			"loading": "로드 중..."
@@ -5645,6 +5678,9 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatActions": {
 			"actions.interactiveSession.focus": "포커스 채팅 목록",
+			"agent.newSession": "Start new session?",
+			"agent.newSession.confirm": "Yes",
+			"agent.newSessionMessage": "Changing the chat mode will end your current edit session. Would you like to change the chat mode?",
 			"chat.category": "채팅",
 			"chat.clear.label": "모든 작업 영역 채팅 지우기",
 			"chat.history.label": "채팅 표시...",
@@ -5665,9 +5701,11 @@
 			"dismiss": "해제",
 			"interactiveSession.clearHistory.label": "입력 기록 지우기",
 			"interactiveSession.focusInput.label": "포커스 채팅 입력",
+			"interactiveSession.history.clear": "Clear All Workspace Chats",
 			"interactiveSession.history.delete": "삭제",
 			"interactiveSession.history.editor": "편집기에서 열기",
 			"interactiveSession.history.pick": "채팅으로 전환",
+			"interactiveSession.history.title": "Workspace Chat History",
 			"interactiveSession.open": "새 채팅 편집기",
 			"manageCopilot": "Copilot 관리",
 			"more": "자세히...",
@@ -5680,6 +5718,7 @@
 			"showCopilotUsageExtensions": "Copilot을 사용하여 확장 표시",
 			"signInToChatSetup": "로그인하여 Copilot 사용...",
 			"switchChat.confirmPhrase": "채팅을 전환하면 현재 편집 세션이 종료됩니다.",
+			"switchMode.confirmPhrase": "Switching chat modes will end your current edit session.",
 			"title4": "Copilot",
 			"toggle.chatControl": "Copilot 컨트롤",
 			"toggle.chatControlsDescription": "제목 표시줄에서 Copilot 컨트롤의 표시 여부 설정/해제",
@@ -5707,31 +5746,24 @@
 			"interactive.previousCodeBlock.label": "이전 코드 블록",
 			"interactive.runInTerminal.label": "터미널에 삽입"
 		},
+		"vs/workbench/contrib/chat/browser/actions/chatContext": {
+			"chatContext.attachScreenshot.labelElectron.Window": "Screenshot Window",
+			"chatContext.attachScreenshot.labelWeb": "Screenshot",
+			"chatContext.editors": "Open Editors",
+			"chatContext.relatedFiles": "Related Files",
+			"chatContext.tools": "Tools...",
+			"chatContext.tools.extension": "Extensions",
+			"chatContext.tools.internal": "Built-In",
+			"chatContext.tools.mcp": "MCP Servers",
+			"chatContext.tools.placeholder": "Select a tool",
+			"imageFromClipboard": "Image from Clipboard",
+			"pastedImage": "Pasted Image",
+			"relatedFiles": "Add related files to your working set"
+		},
 		"vs/workbench/contrib/chat/browser/actions/chatContextActions": {
 			"chat.insertSearchResults": "채팅에 검색 결과 추가",
-			"chatContext.attach.instructions.label": "지침...",
 			"chatContext.attach.placeholder": "첨부 파일 검색",
-			"chatContext.attachScreenshot.labelElectron.Window": "스크린샷 창",
-			"chatContext.attachScreenshot.labelWeb": "스크린 샷",
-			"chatContext.diagnstic": "문제...",
-			"chatContext.editors": "편집기 열기",
-			"chatContext.folder": "파일 및 폴더...",
-			"chatContext.notebook.kernelVariable": "커널 변수...",
-			"chatContext.notebook.selectkernelVariable": "커널 변수 선택 및 삽입",
-			"chatContext.relatedFiles": "관련 파일",
-			"chatContext.searchResults": "검색 결과",
-			"chatContext.symbol": "기호...",
-			"chatContext.tools": "도구...",
-			"chatContext.tools.extension": "확장",
-			"chatContext.tools.internal": "기본 제공",
-			"chatContext.tools.mcp": "MCP 서버",
-			"chatContext.tools.placeholder": "도구 선택",
-			"imageFromClipboard": "클립보드의 이미지",
-			"markers.panel.allErrors": "모든 문제",
-			"markers.panel.at.ln.col.number": "[Ln {0}, 열 {1}]",
-			"pastedImage": "붙여 넣은 이미지",
-			"pickAProblem": "Select a problem to attach",
-			"relatedFiles": "작업 집합에 관련 파일 추가",
+			"goBack": "Go back ↩",
 			"workbench.action.chat.attachContext.label.2": "컨텍스트 추가...",
 			"workbench.action.chat.attachFile.label": "채팅에 파일 추가",
 			"workbench.action.chat.attachFolder.label": "채팅에 폴더 추가",
@@ -5747,9 +5779,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
 			"actions.chat.submitWithCodebase": "{0}과(와) 함께 보내기",
-			"agent.newSession": "새 세션을 시작하시겠습니까?",
-			"agent.newSession.confirm": "예",
-			"agent.newSessionMessage": "채팅 모드를 변경하면 현재 편집 세션이 종료됩니다. 채팅 모드를 변경하시겠습니까?",
 			"chat.newChat.label": "새 채팅으로 보내기",
 			"edits.submit.label": "보내기",
 			"interactive.cancel.label": "취소",
@@ -5762,8 +5791,7 @@
 			"interactive.toggleRequestPausd.label": "요청 토글 일시 중지됨",
 			"requestIsPaused": "요청 다시 시작",
 			"requestNotPaused": "요청 일시 중지",
-			"setChatMode": "모드 설정",
-			"switchMode.confirmPhrase": "채팅 모드를 전환하면 현재 편집 세션이 종료됩니다."
+			"setChatMode": "모드 설정"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatFileTreeActions": {
 			"interactive.nextFileTree.label": "다음 파일 트리",
@@ -5833,7 +5861,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/promptActions/chatAttachInstructionsAction": {
 			"attach-instructions.capitalized.ellipses": "지침 첨부...",
-			"commands.instructions.select-dialog.placeholder": "첨부할 지침 파일을 선택하세요."
+			"chatContext.attach.instructions.label": "Instructions...",
+			"commands.instructions.select-dialog.placeholder": "첨부할 지침 파일을 선택하세요.",
+			"placeholder": "Select instructions files to attach",
+			"user-data-dir.capitalized": "User data folder"
 		},
 		"vs/workbench/contrib/chat/browser/actions/promptActions/chatRunPromptAction": {
 			"commands.prompt.select-dialog.placeholder": "실행할 프롬프트 파일 선택(새 채팅에서 사용하려면 {0} 키를 길게 누르세요)",
@@ -5854,6 +5885,7 @@
 			"user-data-dir.capitalized": "사용자 데이터 폴더"
 		},
 		"vs/workbench/contrib/chat/browser/attachments/implicitContextAttachment": {
+			"cell.lowercase": "cell",
 			"chat.fileAttachment": "첨부됨 {0}, {1}",
 			"chat.fileAttachmentWithRange": "첨부됨 {0}, {1}, 줄 {2}에서 줄 {3}까지",
 			"disable": "현재 {0} 컨텍스트 사용 안 함",
@@ -5905,6 +5937,7 @@
 			"chat.sendElementsToChat.attachCSS": "Controls whether CSS of the selected element will be added to the chat. {0} must be enabled.",
 			"chat.sendElementsToChat.attachImages": "Controls whether a screenshot of the selected element will be added to the chat. {0} must be enabled.",
 			"chat.sendElementsToChat.enabled": "단순 브라우저에서 요소를 채팅으로 보낼 수 있는지 여부를 제어합니다.",
+			"chat.signInWithAlternateProvider": "Enable alternative sign-in provider.",
 			"chat.tools.autoApprove": "도구 사용을 자동으로 승인할지 여부를 제어합니다.",
 			"chat.useFileStorage": "저장소 서비스 대신 디스크에 채팅 세션을 저장할 수 있습니다. 이 기능을 사용하면 기존 세션이 작업 영역당 한 번 새 형식으로 마이그레이션됩니다.",
 			"clear": "새 채팅 시작",
@@ -5916,6 +5949,7 @@
 			"interactiveSession.editor.wordWrap": "라인이 채팅 코드 블록에서 래핑되어야 하는지 여부를 제어합니다.",
 			"interactiveSessionConfigurationTitle": "채팅",
 			"mcp.discovery.source": "서버 {0}개의 검색 활성화",
+			"mcp.gallery.serviceUrl": "Configure the MCP Gallery service URL to connect to",
 			"mpc.discovery.enabled": "컴퓨터에서 모델 컨텍스트 프로토콜 서버의 검색을 구성합니다. 모든 원본과 사용하려는 매핑 원본을 사용하지 않도록 설정하거나 사용하도록 설정하려면 'true' 또는 'false'로 설정할 수 있습니다.",
 			"save-chat-to-prompt-file": "프롬프트 파일에 채팅 저장",
 			"workspaceConfig.mcp.description": "모델 컨텍스트 프로토콜 서버 구성"
@@ -5965,28 +5999,6 @@
 			"rerun": "{0}{1} 없이 다시 실행"
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatAttachmentsContentPart": {
-			"chat.attachment": "연결된 컨텍스트, {0}",
-			"chat.attachment3": "연결된 컨텍스트: {0}.",
-			"chat.clickToViewContents": "내용을 보려면 클릭하세요: {0}",
-			"chat.elementAttachment": "연결된 요소, {0}",
-			"chat.fileAttachment3": "연결됨: {0}.",
-			"chat.fileAttachmentHover": "선택한 모델은 이 {0} 유형을 지원하지 않습니다.",
-			"chat.fileAttachmentWithRange3": "연결됨: {0}, {1} 줄부터 {2} 줄까지.",
-			"chat.imageAttachment": "첨부된 이미지, {0}",
-			"chat.imageAttachmentHover": "{0}",
-			"chat.imageAttachmentWarning": "이 GIF는 부분적으로 생략되었습니다. 현재 프레임이 전송됩니다.",
-			"chat.notebookOutputFileAttachment3": "첨부됨: {0}.",
-			"chat.notebookOutputImageAttachment": "첨부됨: {0}",
-			"chat.notebookOutputOmittedFileAttachment": "생략됨: {0}.",
-			"chat.notebookOutputOmittedImageAttachment": "생략됨: {0}",
-			"chat.notebookOutputPartialFileAttachment": "부분적으로 첨부됨: {0}.",
-			"chat.notebookOutputPartiallyOmittedImageAttachment": "부분적으로 생략됨: {0}",
-			"chat.omittedFileAttachment": "생략됨: {0}.",
-			"chat.omittedFileAttachmentWithRange": "생략됨: {0}, {1} 줄부터 {2} 줄까지.",
-			"chat.omittedImageAttachment": "이 이미지가 생략됨: {0}",
-			"chat.partialFileAttachment": "부분적으로 연결됨: {0}.",
-			"chat.partialFileAttachmentWithRange": "부분적으로 연결됨: {0}, {1} 줄부터 {2} 줄까지.",
-			"chat.partiallyOmittedImageAttachment": "이 이미지가 부분적으로 생략됨: {0}",
 			"resource": "스키마 및 경로를 포함한 채팅 첨부 파일 리소스의 전체 값"
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatCodeCitationContentPart": {
@@ -6042,20 +6054,26 @@
 			"chat.input": "입력",
 			"chat.output": "출력"
 		},
-		"vs/workbench/contrib/chat/browser/chatContentParts/chatToolInvocationPart": {
-			"allowGloballTooltip": "이 도구가 확인 없이 항상 실행되도록 허용합니다.",
-			"allowGlobally": "항상 허용",
-			"allowSession": "이 세션에서 허용",
-			"allowSesssionTooltip": "이 도구가 이 세션에서 확인 없이 실행되도록 허용합니다.",
-			"allowWorkspace": "이 작업 영역에서 허용",
-			"allowWorkspaceTooltip": "이 도구가 이 작업 영역에서 확인 없이 실행되도록 허용합니다.",
-			"cancel": "취소",
-			"continue": "계속",
-			"seeMore": "더 보기",
-			"toolResultData": "Data of type {0} ({1} bytes)"
-		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTreeContentPart": {
 			"treeAriaLabel": "파일 트리"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatInputOutputMarkdownProgressPart": {
+			"toolResultData": "Data of type {0} ({1} bytes)"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatTerminalToolSubPart": {
+			"cancel": "Cancel",
+			"continue": "Continue"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatToolConfirmationSubPart": {
+			"allowGloballTooltip": "Always allow this tool to run without confirmation.",
+			"allowGlobally": "Always Allow",
+			"allowSession": "Allow in this Session",
+			"allowSesssionTooltip": "Allow this tool to run in this session without confirmation.",
+			"allowWorkspace": "Allow in this Workspace",
+			"allowWorkspaceTooltip": "Allow this tool to run in this workspace without confirmation.",
+			"cancel": "Cancel",
+			"continue": "Continue",
+			"seeMore": "See more"
 		},
 		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
 			"attacAsContext": "{0}을(를) 컨텍스트로 연결",
@@ -6168,17 +6186,20 @@
 			"diff.generic": "{0} (채팅에서 변경)"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditing/simpleBrowserEditorOverlay": {
-			"cancel": "취소",
 			"cancelSelection": "선택을 취소하려면 클릭하세요.",
+			"cancelSelectionLabel": "Cancel",
 			"chat.configureElements": "Configure Attachments Sent",
 			"chat.expandOverlay": "Expand Overlay",
 			"chat.hideOverlay": "Collapse Overlay",
 			"chat.nextSelection": "Select Again",
+			"continuousSelectionDropdown": "Continuous Selection",
 			"elementCancelMessage": "선택 취소됨",
 			"elementSelectionComplete": "Element added to chat",
 			"elementSelectionInProgress": "Selecting element...",
 			"elementSelectionMessage": "Add element to chat",
+			"finishSelectionLabel": "Done",
 			"selectAnElement": "요소를 선택하려면 클릭합니다.",
+			"selectElementDropdown": "Select an Element",
 			"startSelection": "Start"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditorInput": {
@@ -6226,6 +6247,7 @@
 			"paused": "일시 중지됨",
 			"poorlyWrittenOrFormatted": "잘못 작성되거나 형식이 잘못 지정됨",
 			"refusedAValidRequest": "유효한 요청을 거부했습니다.",
+			"renderFailMsg": "Failed to render content",
 			"reportIssue": "문제 신고",
 			"usedAgent": "[[(rerun without)]]",
 			"usedAgentSlashCommand": "{0} 사용됨 [[(없이 다시 실행)]]",
@@ -6270,14 +6292,11 @@
 			"pastedImageAttachment": "붙여넣은 이미지 첨부 파일",
 			"pastedImageName": "붙여넣은 이미지"
 		},
-		"vs/workbench/contrib/chat/browser/chatSelectedTools": {
-			"tool.0": "{0} {1}",
-			"tool.1": "{0} {1}/{2}"
-		},
 		"vs/workbench/contrib/chat/browser/chatSetup": {
 			"agentDescription": "에이전트 모드에서 작업 영역의 파일 편집",
 			"chat.category": "채팅",
 			"chatDescription": "Copilot에게 물어보기",
+			"continueWithProvider": "Continue with {0}",
 			"copilotFailedWarning": "Copilot이 준비되지 않았습니다. 채팅 보기에서 지침을 검토하세요.",
 			"copilotFreeTitle": "무료로 Copilot 사용 시작",
 			"copilotProTitle": "Copilot Pro 사용 시작",
@@ -6291,7 +6310,6 @@
 			"enterpriseInstance": "{0} 인스턴스는 무엇입니까?",
 			"enterpriseInstancePlaceholder": "i.e. \"octocat\" 또는 \"https://octocat.ghe.com\"...",
 			"enterpriseSetupError": "제공된 {0} instance 잘못되었습니다. 다시 입력하시겠습니까?",
-			"headerDialog": "[Copilot]({0})은(는) AI 연결 프로그래머입니다. 완성을 통해 더 빠르게 코드를 작성하고, 버그를 수정하고, 여러 파일에서 새 기능을 구축하고, 채팅을 통해 코드베이스에 대해 알아보세요.",
 			"hideChatSetup": "Copilot 숨기기",
 			"hideChatSetupButton": "Copilot 숨기기",
 			"hideChatSetupConfirm": "Copilot을 숨기시겠습니까?",
@@ -6300,28 +6318,24 @@
 			"invalidEnterpriseInstance": "유효한 {0} 인스턴스(예: \"octocat\" 또는 \"https://octocat.ghe.com\")를 입력해야 합니다.",
 			"manageOverages": "Manage Copilot Overages",
 			"managePlan": "Copilot Pro로 업그레이드",
-			"maybeLater": "나중에",
 			"retry": "다시 시도",
 			"settingUpCopilotNeeded": "채팅을 사용하려면 Copilot을 설정해야 합니다.",
-			"settings": "Copilot Free 및 Pro는 [공개 코드]({0}) 제안을 표시할 수 있으며 제품 개선을 위해 데이터를 사용할 수 있습니다. 언제든지]({1}) 이러한 [설정을 변경할 수 있습니다.",
+			"settings": "GitHub Copilot Free, Pro and Pro+ may show [public code]({0}) suggestions and we may use your data for product improvement. You can change these [settings]({1}) at any time.",
 			"setupChatProgress": "Copilot 준비 중...",
 			"setupChatSignIn2": "{0}에 로그인하는 중입니다.",
 			"setupCopilot": "Copilot을 설정하세요.",
+			"setupCopilotButton": "Set up Copilot",
 			"setupErrorDialog": "Copilot을 설정하지 못했습니다. 다시 시도하시겠습니까?",
 			"setupToolDisplayName": "새 작업 영역",
 			"setupToolsDescription": "VS Code 새 작업 영역 스캐폴드",
-			"setupWithEnterpriseProvider": "{0} 계정으로 로그인",
-			"setupWithProvider": "{0} 계정으로 로그인",
-			"signInButton": "로그인",
+			"signInWithProvider": "Sign in with a {0} account",
 			"signUp": "Copilot를 사용하려면 로그인하세요.",
 			"signUpFree": "로그인 하여 무료로 Copilot 사용",
-			"terms": "계속하면 [사용 약관]({0}) 및 [개인정보처리방침]({1})에 동의하는 것입니다.",
 			"triggerChatSetup": "Copilot에서 AI 기능을 무료로 사용...",
 			"triggerChatSetupFromAccounts": "로그인하여 Copilot 사용...",
 			"unknownSetupError": "Copilot를 설정하는 동안 오류가 발생했습니다. 다시 시도하시겠습니까?",
 			"unknownSignInError": "{0} 로그인하지 못했습니다. 다시 시도하시겠습니까?",
 			"unknownSignInErrorDetail": "Copilot를 사용하려면 로그인해야 합니다.",
-			"useCopilotButton": "Copilot 사용",
 			"vscodeAgentDescription": "VS Code에 대한 질문하기",
 			"waitingCopilot": "Copilot을 준비하는 중입니다.",
 			"waitingCopilot2": "Copilot이 거의 준비되었습니다.",
@@ -6339,7 +6353,10 @@
 			"completionsDisabledStatus": "코드 완성 사용 안 함",
 			"completionsLabel": "코드 완성",
 			"completionsQuotaExceededStatus": "완료 할당량에 도달했습니다.",
+			"copilotDisabledStatus": "Copilot Disabled",
 			"enableAdditionalUsage": "Manage paid premium requests",
+			"enableCopilotButton": "Enable Copilot",
+			"enableDescription": "Enable Copilot to use AI features.",
 			"gaugeBackground": "계기 배경색입니다.",
 			"gaugeBorder": "계기 테두리 색입니다.",
 			"gaugeErrorBackground": "계기 오류 배경색입니다.",
@@ -6375,6 +6392,8 @@
 			"chatWidget.tips.withoutParticipants": "{0} 또는 컨텍스트를 연결하려면 {1} 입력",
 			"editsMessage": "작업하려는 파일 집합을 정의하여 편집 세션을 시작합니다. 그런 다음, Copilot에게 변경하려는 내용을 요청합니다.",
 			"editsTitle": "Copilot으로 편집",
+			"input.1": "Follow instructions from ${0}.",
+			"input.N": "Follow instructions from the prompt files.",
 			"scrollDownButtonLabel": "아래로 스크롤"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6398,6 +6417,11 @@
 			"desc": "MCP 서버: {0}",
 			"fileEntryDescription": "{0}({1})",
 			"installLabel": "채팅 확장 설치...",
+			"loading": "Loading...",
+			"mcp.prompt.error": "Error resolving prompt: {0}",
+			"mcp.prompt.image": "Prompt Image",
+			"mcp.prompt.resource": "Prompt Resource",
+			"optional": "Optional",
 			"promptFileDescription": "사용자 프롬프트 파일",
 			"promptFileDescriptionWorkspace": "작업 영역 프롬프트 파일"
 		},
@@ -6414,9 +6438,6 @@
 			"chat.modelPicker.label": "모델 선택",
 			"chat.moreModels": "프리미엄 모델 추가",
 			"chat.moreModels.tooltip": "프리미엄 모델 추가"
-		},
-		"vs/workbench/contrib/chat/browser/promptSyntax/contributions/attachInstructionsCommand": {
-			"attach-instructions.capitalized.ellipses": "지침 첨부..."
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/contributions/createPromptCommand/createPromptCommand": {
 			"commands.new.instructions.local.title": "새 지침 파일...",
@@ -6642,7 +6663,6 @@
 			"workbench.action.speech.stopReadAloud": "소리 내어 읽기 중지"
 		},
 		"vs/workbench/contrib/chat/electron-sandbox/tools/fetchPageTool": {
-			"fetchWebPage.confirmationMessageManageTrustedDomains": "나중에 이 확인을 건너뛰려면 [신뢰할 수 있는 도메인을 관리]({0}) 할 수 있습니다.",
 			"fetchWebPage.confirmationTitle.plural": "신뢰할 수 없는 웹 페이지를 가져오시겠습니까?",
 			"fetchWebPage.confirmationTitle.singular": "신뢰할 수 없는 웹 페이지를 가져오시겠습니까?",
 			"fetchWebPage.invalidUrl": "잘못된 URL",
@@ -7247,6 +7267,7 @@
 			"debug.console.fontSize": "디버그 콘솔에서 글꼴 크기(픽셀)를 제어합니다.",
 			"debug.console.historySuggestions": "디버그 콘솔에서 이전에 입력한 항목을 제안할지 여부를 제어합니다.",
 			"debug.console.lineHeight": "디버그 콘솔에서 줄 높이(픽셀)를 제어합니다. 글꼴 크기에서 줄 높이를 계산하려면 0을 사용합니다.",
+			"debug.console.maximumLines": "Controls the maximum number of lines in the Debug Console.",
 			"debug.console.wordWrap": "디버그 콘솔에서 줄을 자동으로 바꿀지를 제어합니다.",
 			"debug.disassemblyView.showSourceCode": "디스어셈블리 뷰에서 소스 코드를 표시합니다.",
 			"debug.enableStatusBarColor": "디버거가 활성화된 경우 상태 표시줄의 색입니다.",
@@ -8151,7 +8172,6 @@
 			"extensions.autoUpdate.false": "확장이 자동으로 업데이트되지 않습니다.",
 			"extensions.autoUpdate.true": "모든 확장의 업데이트를 자동으로 다운로드하고 설치합니다.",
 			"extensions.gallery.serviceUrl": "연결할 Marketplace 서비스 URL 구성",
-			"extensions.gallery.useUnpkgResourceApi": "사용하도록 설정하면 업데이트할 확장을 Unpkg 서비스에서 가져옵니다.",
 			"extensions.supportUntrustedWorkspaces": "확장의 신뢰할 수 없는 작업 영역 지원을 재정의합니다. 'true'를 사용하는 확장은 항상 사용할 수 있습니다. '제한됨'을 사용하는 확장은 항상 사용할 수 있으며, 확장은 신뢰를 필요로 하는 기능을 숨깁니다. 'false'를 사용한 확장은 작업 영역을 신뢰할 수 있는 경우에만 사용할 수 있습니다.",
 			"extensions.supportUntrustedWorkspaces.false": "확장은 작업 영역을 신뢰할 수 있는 경우에만 사용할 수 있습니다.",
 			"extensions.supportUntrustedWorkspaces.limited": "확장은 항상 사용할 수 있으며 확장에서 신뢰가 필요한 기능을 숨깁니다.",
@@ -8192,6 +8212,8 @@
 			"installPrereleaseAndDonotSync": "시험판 설치(동기화 안 함)",
 			"installVSIX": "확장 VSIX 설치",
 			"installWorkspaceRecommendedExtensions": "작업 영역 권장 확장 설치",
+			"installed filter": "Installed",
+			"installedExtensions": "Show Installed Extensions",
 			"manageExtensionsHelp": "확장 관리",
 			"manageExtensionsQuickAccessPlaceholder": "확장을 관리하려면 <Enter> 키를 누릅니다.",
 			"miPreferencesExtensions": "확장(&&E)",
@@ -8431,6 +8453,7 @@
 			"clearSearchResultsIcon": "확장 보기의 '검색 결과 지우기' 작업 아이콘입니다.",
 			"configureRecommendedIcon": "확장 보기의 '권장 확장 구성' 작업 아이콘입니다.",
 			"errorIcon": "확장 편집기에 오류 메시지가 표시된 아이콘입니다.",
+			"extension.border": "The border color of an extension.",
 			"extensionsViewIcon": "확장 보기의 뷰 아이콘입니다.",
 			"filterIcon": "확장 보기의 '필터' 작업 아이콘입니다.",
 			"infoIcon": "확장 편집기에 정보 메시지와 함께 표시되는 아이콘입니다.",
@@ -8656,7 +8679,8 @@
 		"vs/workbench/contrib/extensions/common/searchExtensionsTool": {
 			"searchExtensionsTool.displayName": "확장 검색",
 			"searchExtensionsTool.modelDescription": "이 도구는 Visual Studio Code 확장 마켓플레이스를 탐색하는 데 사용됩니다. 이 도구를 사용하면 모델이 확장을 검색하여 그에 대한 상세 정보를 가져올 수 있습니다. 모델이 확장을 찾아야 하거나 알려진 확장에 대한 정보를 확인해야 할 때마다 이 도구를 사용해야 합니다. 도구를 사용하려면 모델은 확장의 범주, 관련 검색 키워드 또는 알려진 확장 ID를 제공해야 합니다. 검색 결과에는 가양성도 포함될 수 있으므로 검토하고 필터링하는 것이 좋습니다.",
-			"searchExtensionsTool.noInput": "검색할 범주, 키워드 또는 ID를 제공하세요."
+			"searchExtensionsTool.noInput": "검색할 범주, 키워드 또는 ID를 제공하세요.",
+			"searchExtensionsTool.userDescription": "Search for extensions in the Visual Studio Code Extensions Marketplace."
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/debugExtensionHostAction": {
 			"debugExtensionHost": "새 창에서 확장 호스트 디버깅 시작",
@@ -9532,14 +9556,12 @@
 			"loadingData": "데이터를 로드하는 중...",
 			"marketplace": "확장 마켓플레이스",
 			"marketplacePlaceholder": "예: 설치된 확장을 비활성화할 수 없습니다.",
-			"noSimilarIssues": "검색된 유사한 문제 없음",
 			"open": "열기",
 			"openIssueReporter": "외부 문제 보고자 열기",
 			"pasteData": "너무 커서 보낼 수 없었기 때문에 필요한 데이터를 클립보드에 썼습니다. 붙여 넣으세요.",
 			"performanceIssue": "성능 문제(중지, 느림, 충돌)",
 			"performanceIssueDesciption": "이 성능 문제가 언제 발생합니까? 시작할 때 발생합니까? 특정 작업을 진행한 이후에 발생합니까? GitHub 버전의 Markdown을 지원합니다. GitHub에서 미리 볼 때 문제를 편집하고 스크린샷을 추가할 수 있습니다.",
 			"previewOnGitHub": "GitHub에서 미리 보기",
-			"rateLimited": "No duplicate issues found: GitHub query limit exceeded.",
 			"saveExtensionData": "확장 데이터 저장",
 			"selectExtension": "확장 선택",
 			"selectSource": "소스 선택",
@@ -9635,15 +9657,6 @@
 			"saveExtensionData": "확장 데이터 저장",
 			"undefinedPlaceholder": "제목을 입력하세요.",
 			"updateAvailable": "{0}의 새 버전을 사용할 수 있습니다."
-		},
-		"vs/workbench/contrib/issue/electron-sandbox/process.contribution": {
-			"miOpenProcessExplorerer": "프로세스 탐색기 열기(&&P)",
-			"openProcessExplorer": "프로세스 탐색기 열기",
-			"stopTracing": "추적 중지",
-			"stopTracing.button": "추적 다시 시작 및 사용(&&R)",
-			"stopTracing.detail": "완료하는 데 최대 1분이 걸릴 수 있습니다.",
-			"stopTracing.message": "추적을 실행하려면 '--trace' 인수를 사용해야 합니다.",
-			"stopTracing.title": "추적 파일을 만드는 중..."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "바로 가기 키 문제 해결 토글"
@@ -9842,6 +9855,12 @@
 			"viewAsTree": "트리로 보기",
 			"viewAsTreeDescription": "문제 보기를 트리로 표시합니다."
 		},
+		"vs/workbench/contrib/markers/browser/markersChatContext": {
+			"chatContext.diagnstic": "Problems...",
+			"chatContext.diagnstic.placeholder": "Select a problem to attach",
+			"markers.panel.allErrors": "All Problems",
+			"markers.panel.at.ln.col.number": "[Ln {0}, Col {1}]"
+		},
 		"vs/workbench/contrib/markers/browser/markersFileDecorations": {
 			"label": "문제",
 			"markers.showOnFile": "파일 및 폴더에 오류와 경고를 표시합니다. 꺼져 있을 때 {0}이(가) 덮어씁니다.",
@@ -9916,11 +9935,17 @@
 			"problems.view.focus.label": "포커스 문제(오류, 경고, 정보)",
 			"problems.view.toggle.label": "문제 토글(오류, 경고, 정보)"
 		},
+		"vs/workbench/contrib/mcp/browser/mcp.contribution": {
+			"mcp": "MCP Servers",
+			"mcp-installed": "MCP Servers - Installed",
+			"mcpServer": "MCP Server"
+		},
 		"vs/workbench/contrib/mcp/browser/mcpCommands": {
 			"mcp.addConfiguration": "서버 추가...",
 			"mcp.addConfiguration.description": "mcp.json 설정에 새 모델 컨텍스트 프로토콜을 설치합니다.",
 			"mcp.addServer": "서버 추가",
 			"mcp.addServer.description": "새 서버 구성 추가",
+			"mcp.command.browse": "MCP Servers",
 			"mcp.command.installFromActivation": "설치...",
 			"mcp.command.restartServer": "서버 다시 시작",
 			"mcp.command.showConfiguration": "구성 표시",
@@ -9979,6 +10004,7 @@
 			"mcp.serverType.pip": "PIP 패키지",
 			"mcp.serverType.pip.description": "PIP 패키지 이름에서 설치",
 			"mcp.serverType.placeholder": "추가할 MCP 서버 유형 선택",
+			"mcp.servers.browse": "Browse MCP Servers...",
 			"mcp.target..remote.description": "이 원격 컴퓨터에서 사용 가능",
 			"mcp.target.remote": "원격 설정",
 			"mcp.target.title": "구성을 저장할 위치 선택",
@@ -10004,6 +10030,43 @@
 			"server.toolCount": "{0} 도구",
 			"server.toolCountCached": "{0}개 캐시된 도구"
 		},
+		"vs/workbench/contrib/mcp/browser/mcpServerActions": {
+			"config": "Show Configuration",
+			"install": "Install",
+			"manage": "Manage",
+			"output": "Show Output",
+			"restart": "Restart Server",
+			"start": "Start Server",
+			"stop": "Stop Server",
+			"uninstall": "Uninstall"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerEditor": {
+			"Install Info": "Installation",
+			"Marketplace Info": "Marketplace",
+			"Readme title": "Readme",
+			"Version": "Version",
+			"details": "Details",
+			"detailstooltip": "Extension details, rendered from the extension's 'README.md' file",
+			"id": "Identifier",
+			"last released": "Last Released",
+			"name": "Extension name",
+			"noReadme": "No README available.",
+			"repository": "Repository",
+			"resources": "Resources"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerEditorInput": {
+			"extensionsEditorLabelIcon": "Icon of the extensions editor label.",
+			"extensionsInputName": "Extension: {0}"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServersView": {
+			"mcp servers": "MCP Servers"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerWidgets": {
+			"install count": "Install count",
+			"publisher": "Publisher ({0})",
+			"ratedLabel": "Average rating: {0} out of 5",
+			"verified publisher": "This publisher has verified ownership of {0}"
+		},
 		"vs/workbench/contrib/mcp/common/discovery/extensionMcpDiscovery": {
 			"invalidData": "MCP 컬렉션 배열이 필요합니다.",
 			"invalidId": "'id'는 비어 있지 않은 문자열이어야 합니다.",
@@ -10024,6 +10087,7 @@
 			"app.mcp.json.title": "모델 컨텍스트 프로토콜 서버",
 			"app.mcp.json.type": "서버의 유형.",
 			"app.mcp.json.url": "스트리밍 가능한 HTTP 또는 SSE 엔드포인트의 URL입니다.",
+			"app.mcp.json.url.pattern": "The URL must start with 'http://' or 'https://'.",
 			"mcp.discovery.source.claude-desktop": "Claude 데스크톱",
 			"mcp.discovery.source.cursor-global": "Cursor(글로벌)",
 			"mcp.discovery.source.cursor-workspace": "Cursor(작업 영역)",
@@ -10069,6 +10133,7 @@
 			"msg.title": "{0} 실행"
 		},
 		"vs/workbench/contrib/mcp/common/mcpTypes": {
+			"mcpServer": "Icon used for the MCP server.",
 			"mcpstate.error": "오류: {0}",
 			"mcpstate.running": "실행 중",
 			"mcpstate.starting": "시작",
@@ -10490,8 +10555,11 @@
 			"notebookActions.restoreCellprompt": "생성"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebook.chat.contribution": {
+			"chatContext.notebook.kernelVariable": "Kernel Variable...",
+			"chatContext.notebook.kernelVariable.placeholder": "Select a kernel variable",
 			"notebookActions.addOutputToChat": "채팅에 셀 출력 추가",
-			"pickKernelVariableLabel": "커널에서 변수 선택"
+			"pickKernelVariableLabel": "커널에서 변수 선택",
+			"selectKernelVariablePlaceholder": "Select a kernel variable"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebookChatContext": {
 			"notebookCellChatFocused": "셀 채팅 편집기의 포커스 여부",
@@ -11174,6 +11242,7 @@
 			"openWorkspaceSettings": "작업 영역 설정 열기",
 			"openWorkspaceSettingsFile": "작업 영역 설정 열기(JSON)",
 			"preferences": "기본 설정",
+			"preferencesEditor": "Preferences Editor",
 			"settings": "설정",
 			"settings.clearResults": "설정 검색 결과 지우기",
 			"settings.focusFile": "포커스 설정 파일",
@@ -11194,6 +11263,10 @@
 			"languageDescriptionConfigured": "({0})",
 			"pickLanguage": "언어 선택"
 		},
+		"vs/workbench/contrib/preferences/browser/preferencesEditor": {
+			"FullTextSearchPlaceholder": "Search {0}",
+			"preferencesTabSwitcherBarAriaLabel": "Preferences Tab Switcher"
+		},
 		"vs/workbench/contrib/preferences/browser/preferencesIcons": {
 			"keybindingsAddIcon": "키 바인딩 UI의 추가 작업 아이콘입니다.",
 			"keybindingsEditIcon": "키 바인딩 UI의 편집 작업 아이콘입니다.",
@@ -11202,6 +11275,7 @@
 			"preferencesClearInput": "설정 및 키 바인딩 UI의 입력 지우기 아이콘입니다.",
 			"preferencesDiscardIcon": "설정 UI의 취소 작업 아이콘입니다.",
 			"preferencesOpenSettings": "설정 열기 명령의 아이콘입니다.",
+			"preferencesSashBorder": "The color of the Preferences editor splitview sash border.",
 			"settingsEditIcon": "설정 UI의 편집 작업 아이콘입니다.",
 			"settingsFilter": "설정 UI에 대한 필터를 제안하는 단추 아이콘입니다.",
 			"settingsMoreActionIcon": "설정 UI의 '기타 작업' 작업 아이콘입니다.",
@@ -11439,6 +11513,33 @@
 			"textInputBoxBackground": "설정 편집기 텍스트 입력 상자 배경입니다.",
 			"textInputBoxBorder": "설정 편집기 텍스트 입력 상자 테두리입니다.",
 			"textInputBoxForeground": "설정 편집기 텍스트 입력 상자 전경."
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.contribution": {
+			"miOpenProcessExplorerer": "Open &&Process Explorer",
+			"openProcessExplorer": "Open Process Explorer",
+			"promptOpenWith.processExplorer.displayName": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
+			"copy": "Copy",
+			"copyAll": "Copy All",
+			"debug": "Debug",
+			"forceKillProcess": "Force Kill Process",
+			"killProcess": "Kill Process",
+			"processCpu": "CPU (%)",
+			"processExplorer": "Process Explorer",
+			"processMemory": "Memory (MB)",
+			"processName": "Process Name",
+			"processPid": "PID"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
+			"processExplorerEditorLabelIcon": "Icon of the process explorer editor label.",
+			"processExplorerInputName": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/electron-sandbox/processExplorer.contribution": {
+			"processExplorer": "Process Explorer"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"askXInChat": "{0}에 질문: {1}",
@@ -11688,6 +11789,8 @@
 		},
 		"vs/workbench/contrib/remote/electron-sandbox/remote.contribution": {
 			"remote": "원격",
+			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
+			"remote.category": "Remote",
 			"remote.downloadExtensionsLocally": "활성화된 확장이 로컬로 다운로드되고 원격으로 설치됩니다.",
 			"wslFeatureInstalled": "플랫폼에 WSL 기능이 설치되어 있는지 여부"
 		},
@@ -11917,6 +12020,11 @@
 			"scmGraphHistoryItemRefColor": "기록 항목 참조 색입니다.",
 			"scmGraphHistoryItemRemoteRefColor": "기록 항목 원격 참조 색입니다."
 		},
+		"vs/workbench/contrib/scm/browser/scmHistoryChatContext": {
+			"chatContext.scmHistoryItems": "Source Control History Items...",
+			"chatContext.scmHistoryItems.placeholder": "Select a source control history item",
+			"files": "file(s)"
+		},
 		"vs/workbench/contrib/scm/browser/scmHistoryViewPane": {
 			"activeRepository": "활성 리포지토리에 대한 소스 제어 그래프 표시",
 			"all": "모두",
@@ -11935,6 +12043,7 @@
 			"items": "{0}개 항목",
 			"loadMore": "{0} 추가 로드...",
 			"openChanges": "변경 내용 열기",
+			"openFile": "Open File",
 			"referencePicker": "기록 항목 참조 선택기",
 			"refreshGraph": "새로 고침",
 			"repositoryPicker": "리포지토리 선택기",
@@ -11959,6 +12068,7 @@
 			"scmInput.accessibilityHelp": "{0} {1} 사용하여 소스 제어 접근성 도움말을 엽니다.",
 			"scmInput.accessibilityHelpNoKb": "{0}, 자세한 내용은 Open Accessibility Help 명령을 실행합니다.",
 			"scmInputCancelAction": "취소",
+			"scmInputGenerateCommitMessage": "Generate Commit Message with Copilot",
 			"scmInputMoreActions": "추가 작업...",
 			"scmInputRow.accessibilityHelp": "소스 제어 입력, {0} 사용하여 소스 제어 접근성 도움말을 엽니다.",
 			"scmInputRow.accessibilityHelpNoKb": "소스 제어 입력, 자세한 내용은 Open Accessibility Help 명령을 실행합니다.",
@@ -12008,6 +12118,13 @@
 			"openToBottom": "아래쪽으로 열기",
 			"openToSide": "옆으로 열기",
 			"recentlyOpenedSeparator": "최근에 사용한 항목"
+		},
+		"vs/workbench/contrib/search/browser/chatContributions": {
+			"chatContext.attach.files.placeholder": "Search file or folder by name",
+			"chatContext.folder": "Files & Folders...",
+			"chatContext.searchResults": "Search Results",
+			"select.symb": "Select a symbol",
+			"symbols": "Symbols..."
 		},
 		"vs/workbench/contrib/search/browser/patternInputWidget": {
 			"defaultLabel": "입력",
@@ -12076,6 +12193,11 @@
 			"search.searchEditor.singleClickBehaviour.peekDefinition": "한 번 클릭하면 정의 피킹 창이 열립니다.",
 			"search.searchOnType": "입력할 때 모든 파일을 검색합니다.",
 			"search.searchOnTypeDebouncePeriod": "{0}을(를) 사용하도록 설정하면 입력되는 문자와 검색 시작 사이의 시간 제한(밀리초)을 제어합니다. {0}을(를) 사용하지 않도록 설정된 경우에는 아무런 효과가 없습니다.",
+			"search.searchView.keywordSuggestions": "Enable keyword suggestions in the search view.",
+			"search.searchView.semanticSearchBehavior": "Controls the behavior of the semantic search results displayed in the search view.",
+			"search.searchView.semanticSearchBehavior.auto": "Request semantic results automatically with every search.",
+			"search.searchView.semanticSearchBehavior.manual": "Only request semantic search results manually.",
+			"search.searchView.semanticSearchBehavior.runOnEmpty": "Request semantic results automatically only when text search results are empty.",
 			"search.seedOnFocus": "검색 보기에 포커스가 있을 때 검색 쿼리를 편집기의 선택한 텍스트로 업데이트합니다. 이 동작은 클릭 시 또는 `workbench.views.search.focus` 명령을 트리거할 때 발생합니다.",
 			"search.seedWithNearestWord": "활성 편집기에 선택 항목이 없을 경우 커서에 가장 가까운 단어에서 시드 검색을 사용합니다.",
 			"search.showLineNumbers": "검색 결과의 줄 번호를 표시할지 여부를 제어합니다.",
@@ -12488,11 +12610,13 @@
 			"TaskService.fetchingBuildTasks": "빌드 작업을 페치하는 중...",
 			"TaskService.fetchingTestTasks": "테스트 작업을 페치하는 중...",
 			"TaskService.ignoredFolder": "작업 버전 0.1.0을 사용하기 때문에 다음 작업 영역 폴더는 무시됩니다. {0}",
+			"TaskService.instanceToTerminate": "Select an instance to terminate",
 			"TaskService.noBuildTask": "실행할 빌드 작업을 찾을 수 없습니다. 빌드 작업 구성...",
 			"TaskService.noBuildTask1": "정의된 빌드 작업이 없습니다. tasks.json 파일에서 작업을 'isBuildCommand'로 표시하세요.",
 			"TaskService.noBuildTask2": "정의된 빌드 작업이 없습니다. tasks.json 파일에서 작업을 'build'로 표시하세요.",
 			"TaskService.noConfiguration": "오류: {0} 작업 검색에서 다음 구성에 대해 작업을 실행하지 않았습니다.\r\n{1}\r\n작업이 무시됩니다.",
 			"TaskService.noEntryToRun": "작업 구성",
+			"TaskService.noInstanceRunning": "No instance is currently running",
 			"TaskService.noTaskIsRunning": "실행 중인 작업이 없습니다.",
 			"TaskService.noTaskRunning": "현재 실행 중인 작업이 없습니다.",
 			"TaskService.noTaskToRestart": "다시 시작할 작업이 없습니다.",
@@ -12521,8 +12645,8 @@
 			"TaskService.taskToTerminate": "종료할 작업 선택",
 			"TaskService.template": "작업 템플릿 선택",
 			"TaskService.terminateAllRunningTasks": "실행 중인 모든 작업",
+			"TaskSystem.InstancePolicy.warn": "The instance limit for this task has been reached.",
 			"TaskSystem.active": "이미 실행 중인 작업이 있습니다. 다른 작업을 실행하려면 먼저 이 작업을 종료하세요.",
-			"TaskSystem.activeSame.noBackground": "'{0}' 작업은 이미 활성 상태입니다.",
 			"TaskSystem.configurationErrors": "오류: 제공한 작업 구성에 유효성 검사 오류가 있으며 사용할 수 없습니다. 먼저 오류를 수정하세요.",
 			"TaskSystem.invalidTaskJson": "오류: tasks.json 파일 내용에 구문 오류가 있습니다. 작업을 실행하기 전에 수정하세요.",
 			"TaskSystem.invalidTaskJsonOther": "오류: {0}의 tasks.json 내용에 구문 오류가 있습니다. 작업을 실행하기 전에 수정하세요.",
@@ -12543,7 +12667,6 @@
 			"detected": "감지된 작업",
 			"moreThanOneBuildTask": "tasks.json에 많은 빌드 작업이 정의되어 있습니다. 첫 번째 작업을 실행합니다.",
 			"recentlyUsed": "최근에 사용한 작업",
-			"restartTask": "작업 다시 시작",
 			"runTask.arg": "quickpick에 표시된 작업을 필터링합니다.",
 			"runTask.label": "필터링할 작업의 레이블 또는 용어",
 			"runTask.task": "필터링할 작업의 레이블 또는 용어",
@@ -12552,7 +12675,7 @@
 			"saveBeforeRun.save": "저장(&&S)",
 			"savePersistentTask": "영구 작업 저장 중: {0}",
 			"selectProblemMatcher": "작업 출력에서 스캔할 오류 및 경고 유형을 선택",
-			"showOutput": "출력 표시",
+			"showOutput": "Show Output",
 			"taskEvent": "작업 이벤트 종류: {0}",
 			"taskQuickPick.userSettings": "사용자",
 			"taskService.getSavedTasks": "작업 저장소에서 작업을 가져오는 중입니다.",
@@ -12569,9 +12692,10 @@
 			"taskService.upgradeVersion": "사용되지 않는 작업 버전 0.1.0이 제거되었습니다. 작업이 버전 2.0.0으로 업그레이드되었습니다. Diff를 열어 업그레이드를 검토하세요.",
 			"taskService.upgradeVersionPlural": "사용되지 않는 작업 버전 0.1.0이 제거되었습니다. 작업이 버전 2.0.0으로 업그레이드되었습니다. Diff를 열어 업그레이드를 검토하세요.",
 			"taskServiceOutputPrompt": "작업 오류가 있습니다. 자세한 내용은 출력을 참조하세요.",
+			"taskServiceOutputPromptChat": "There are task errors. Use chat to fix them or view the output for details.",
 			"tasks": "작업",
 			"tasksJsonComment": "\t// tasks.json 형식에 대한 설명서는 \r\n\t// https://go.microsoft.com/fwlink/?LinkId=733558을 참조하세요.",
-			"terminateTask": "작업 종료",
+			"troubleshootWithChat": "Fix with Chat",
 			"unexpectedTaskType": "\"{0}\" 작업의 작업 공급자가 예기치 않게 \"{1}\" 유형의 작업을 제공했습니다.\r\n"
 		},
 		"vs/workbench/contrib/tasks/browser/runAutomaticTasks": {
@@ -12731,6 +12855,12 @@
 			"JsonSchema.tasks.identifier": "작업을 launch.json 또는 dependsOn 구문에서 참조할 사용자 정의 식별자입니다.",
 			"JsonSchema.tasks.identifier.deprecated": "사용자 정의 식별자는 사용되지 않습니다. 이름을 참조로 사용한 사용자 지정 작업 및 확장에서 제공한 작업의 경우 작업에서 정의한 작업 식별자를 사용하세요.",
 			"JsonSchema.tasks.instanceLimit": "동시에 실행할 수 있는 작업의 인스턴스 수입니다.",
+			"JsonSchema.tasks.instancePolicy": "Policy to apply when instance limit is reached.",
+			"JsonSchema.tasks.instancePolicy.prompt": "Asks which instance to terminate.",
+			"JsonSchema.tasks.instancePolicy.silent": "Does nothing.",
+			"JsonSchema.tasks.instancePolicy.terminateNewest": "Terminates the newest instance.",
+			"JsonSchema.tasks.instancePolicy.terminateOldest": "Terminates the oldest instance.",
+			"JsonSchema.tasks.instancePolicy.warn": "Does nothing but warns that the instance limit has been reached.",
 			"JsonSchema.tasks.isBuildCommand.deprecated": "isBuildCommand 속성은 사용되지 않습니다. 대신 group 속성을 사용하세요. 1.14 릴리스 노트도 참고하세요.",
 			"JsonSchema.tasks.isShellCommand.deprecated": "isShellCommand 속성은 사용 중단되었습니다. 작업의 유형 속성과 셸 속성을 대신 사용하세요. 1.14 릴리스 노트를 참고하세요.",
 			"JsonSchema.tasks.isTestCommand.deprecated": "isTestCommand 속성은 사용되지 않습니다. 대신 group 속성을 사용하세요. 1.14 릴리스 노트를 참고하세요.",
@@ -13284,6 +13414,7 @@
 			"terminal.integrated.hideOnLastClosed": "마지막 터미널이 닫혀 있을 때 터미널 보기를 숨길지 여부를 지정합니다. 이 문제는 터미널이 보기 컨테이너에 표시되는 유일한 보기인 경우에만 발생합니다.",
 			"terminal.integrated.hideOnStartup": "시작 시 터미널 보기를 숨길지 여부를 지정하고 영구 세션이 없을 때 터미널을 만들지 않도록 합니다.",
 			"terminal.integrated.ignoreBracketedPasteMode": "터미널이 모드로 전환된 경우에도 터미널이 대괄호로 묶인 붙여넣기 모드를 무시할지 여부를 제어하고 붙여넣을 때 {0} 및 {1} 시퀀스를 생략합니다. 이는 쉘이 예를 들어 하위 쉘에서 발생할 수 있는 모드를 준수하지 않을 때 유용합니다.",
+			"terminal.integrated.killGracefully": "Controls how terminal processes are terminated. When enabled, attempts a graceful shutdown of the process tree. On POSIX, this will send `SIGTERM`. On Windows, it uses `taskkill.exe` without the `/F` (force) flag. Note that this may allow misbehaving processes to remain running. When disabled (default), processes are terminated with: `SIGHUP`.",
 			"terminal.integrated.letterSpacing": "터미널의 문자 간격을 제어합니다. 문자 사이에 추가할 추가 픽셀 수를 나타내는 정수 값입니다.",
 			"terminal.integrated.lineHeight": "터미널의 줄 높이를 제어합니다. 이 숫자와 터미널 글꼴 크기를 곱하여 실제 줄 높이(픽셀)를 구합니다.",
 			"terminal.integrated.macOptionClickForcesSelection": "macOS에서 <Option+클릭>을 사용할 때 특정 항목을 강제로 선택할지 여부를 제어합니다. 사용하도록 설정하면 일반(줄) 항목이 강제로 선택되며 열 선택 모드를 사용할 수 없습니다. 예를 들어 tmux에서 마우스 모드를 사용하는 경우, 일반 터미널 항목을 선택하여 복사 및 붙여넣기를 수행할 수 있습니다.",
@@ -13913,6 +14044,7 @@
 			"run test": "테스트 실행",
 			"selectTestToRun": "실행할 테스트 선택",
 			"testOverflowItems": "더 많은 테스트 {0}...",
+			"testing.cancelRun": "Cancel Test Run",
 			"testing.gutterMsg.contextMenu": "테스트 옵션을 보려면 클릭하세요.",
 			"testing.gutterMsg.coverage": "적용 범위로 테스트를 실행하려면 클릭, 추가 옵션을 사용하려면 마우스 오른쪽 단추 클릭",
 			"testing.gutterMsg.debug": "클릭하여 테스트 디버그, 마우스 오른쪽 단추를 클릭하여 추가 옵션 사용",
@@ -14096,6 +14228,7 @@
 			"testing.cursorInsideTestRange": "커서가 현재 테스트 범위 내에 있는지 여부",
 			"testing.hasConfigurableConfig": "테스트 구성을 구성할 수 있는지 여부를 나타냅니다.",
 			"testing.hasCoverableTests": "테스트 컨트롤러가 검사 구성을 등록했는지 여부를 나타냅니다.",
+			"testing.hasCoverageInFile": "Indicates coverage has been reported in the curent editor.",
 			"testing.hasDebuggableTests": "테스트 컨트롤러가 디버그 구성을 등록했는지 여부를 나타냅니다.",
 			"testing.hasNonDefaultConfig": "테스트 컨트롤러가 기본이 아닌 구성을 등록했는지 여부를 나타냅니다.",
 			"testing.hasPerTestCoverage": "테스트별 적용 범위를 사용할 수 있는지를 나타냅니다.",
@@ -14869,6 +15002,7 @@
 			"quickOpen": "빠른 파일 열기",
 			"runProject": "프로젝트 실행",
 			"runTasks": "자동 검색된 작업 실행",
+			"settings": "GitHub Copilot Free, Pro and Pro+ may show [public code]({0}) suggestions and we may use your data for product improvement. You can change these [settings]({1}) at any time.",
 			"setupCopilotButton.chatWithCopilot": "Copilot와 채팅",
 			"setupCopilotButton.setup": "Copilot 설정",
 			"setupCopilotButton.signIn": "Copilot 설정",
@@ -15241,6 +15375,17 @@
 			"sign in": "로그인이 요청됨",
 			"signInRequest": "{0}(으)로 로그인하여 {1} 사용(1)",
 			"useOtherAccount": "다른 계정에 로그인"
+		},
+		"vs/workbench/services/authentication/browser/authenticationMcpService": {
+			"accessRequest": "Grant access to {0} for {1}... (1)",
+			"allow": "&&Allow",
+			"confirmAuthenticationAccess": "The MCP server '{0}' wants to access the {1} account '{2}'.",
+			"deny": "&&Deny",
+			"getSessionPlateholder": "Select an account for '{0}' to use or Esc to cancel",
+			"selectAccount": "The MCP server '{0}' wants to access a {1} account",
+			"sign in": "Sign in requested",
+			"signInRequest": "Sign in with {0} to use {1} (1)",
+			"useOtherAccount": "Sign in to another account"
 		},
 		"vs/workbench/services/authentication/browser/authenticationService": {
 			"authentication.id": "인증 공급자의 ID입니다.",
@@ -15878,6 +16023,8 @@
 			"openFolderFirst": "작업 영역 또는 폴더 설정을 만들려면 먼저 폴더 또는 작업 영역을 엽니다."
 		},
 		"vs/workbench/services/preferences/common/preferencesEditorInput": {
+			"preferencesEditorInputName": "Preferences",
+			"preferencesEditorLabelIcon": "Icon of the preferences editor label.",
 			"settingsEditor2InputName": "설정",
 			"settingsEditorLabelIcon": "설정 편집기 레이블의 아이콘입니다."
 		},

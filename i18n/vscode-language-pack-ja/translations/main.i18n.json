@@ -2427,6 +2427,9 @@
 			"filtered": "次の理由により、問題は一時停止しています: \"{0}\"",
 			"filtered.network": "次の理由により、問題は一時停止しています: \"{0}\" および {1} その他"
 		},
+		"vs/platform/mcp/common/mcpGalleryService": {
+			"noReadme": "No README available"
+		},
 		"vs/platform/menubar/electron-main/menubar": {
 			"cancel": "キャンセル",
 			"mAbout": "{0} のバージョン情報",
@@ -2471,15 +2474,14 @@
 			"cantUninstall": "シェル コマンド '{0}' をアンインストールできません。",
 			"ok": "OK(&&O)",
 			"sourceMissing": "'{0}' にシェル スクリプトが見つかりません",
+			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
+			"trace.message": "Successfully created the trace file",
+			"trace.ok": "&&OK",
 			"warnEscalation": "管理者特権でシェル コマンドをインストールできるように、{0} が 'osascript' のプロンプトを出します。",
 			"warnEscalationUninstall": "管理者特権でシェル コマンドをアンインストールできるように、{0} が 'osascript' を求めます。"
 		},
 		"vs/platform/process/electron-main/processMainService": {
-			"local": "ローカル",
-			"processExplorer": "プロセス エクスプローラー",
-			"trace.detail": "問題点を作成し、次のファイルを手動で添付してください:\r\n{0}",
-			"trace.message": "トレース ファイルが正常に作成されました",
-			"trace.ok": "OK(&O)"
+			"local": "ローカル"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "コマンド '{0}' でエラーが発生しました",
@@ -3134,17 +3136,6 @@
 			"startupUserDataAndExtensionsDirErrorDetail": "{0}\r\n\r\n次のディレクトリが書き込み可能であることをご確認ください。\r\n\r\n{1}",
 			"statusWarning": "警告: --status 引数は、{0} が既に実行中の場合にのみ使用できます。{0} の起動後にもう一度実行してください。"
 		},
-		"vs/code/electron-sandbox/processExplorer/processExplorerMain": {
-			"copy": "コピー",
-			"copyAll": "すべてコピー",
-			"cpu": "CPU (%)",
-			"debug": "デバッグ",
-			"forceKillProcess": "プロセスの強制中止",
-			"killProcess": "プロセスの中止",
-			"memory": "メモリ (MB)",
-			"name": "プロセス名",
-			"pid": "PID"
-		},
 		"vs/code/electron-utility/sharedProcess/sharedProcessMain": {
 			"networkk": "ネットワーク",
 			"sharedLog": "共有済み"
@@ -3212,6 +3203,15 @@
 		},
 		"vs/workbench/api/browser/mainThreadLanguageModels": {
 			"languageModelsAccountId": "言語モデル"
+		},
+		"vs/workbench/api/browser/mainThreadMcp": {
+			"allow": "&&Allow",
+			"confirmLogin": "The MCP Server '{0}' wants to sign in using {1}.",
+			"confirmRelogin": "The MCP Server '{0}' wants you to sign in again using {1}.",
+			"incorrectAccount": "Incorrect account detected",
+			"incorrectAccountDetail": "The chosen account, {0}, does not match the requested account, {1}.",
+			"keep": "Keep {0}",
+			"loginWith": "Login with {0}"
 		},
 		"vs/workbench/api/browser/mainThreadMessageService": {
 			"cancel": "キャンセル",
@@ -3787,8 +3787,8 @@
 			"ok": "OK"
 		},
 		"vs/workbench/browser/parts/editor/auxiliaryEditorPart": {
-			"disableCompactAuxiliaryWindow": "[コンパクト モード] の設定解除",
-			"enableCompactAuxiliaryWindow": "[コンパクト モード] の設定",
+			"disableCompactAuxiliaryWindow": "Turn Off Compact Mode",
+			"enableCompactAuxiliaryWindow": "Turn On Compact Mode",
 			"toggleCompactAuxiliaryWindow": "[ウィンドウのコンパクト モード] を切り替え"
 		},
 		"vs/workbench/browser/parts/editor/binaryDiffEditor": {
@@ -4294,6 +4294,7 @@
 			"manage": "管理",
 			"manage profile": "{0} (プロファイル) の管理",
 			"manageTrustedExtensions": "信頼された拡張機能の管理",
+			"manageTrustedMCPServers": "Manage Trusted MCP Servers",
 			"signOut": "サインアウト"
 		},
 		"vs/workbench/browser/parts/notifications/notificationAccessibleView": {
@@ -4837,8 +4838,7 @@
 			"focusedView": "キーボード フォーカスがあるビューの識別子",
 			"groupEditorsCount": "開かれているエディター グループの数",
 			"inZenMode": "Zen Mode が有効になっているかどうか",
-			"isAuxiliaryEditorPart": "エディター パーツが補助ウィンドウ内にある",
-			"isAuxiliaryTitleBar": "タイトル バーは補助ウィンドウに表示されています",
+			"isAuxiliaryWindow": "Window is an auxiliary window",
 			"isAuxiliaryWindowFocusedContext": "補助ウィンドウがフォーカスされているかどうか",
 			"isCompactTitleBar": "タイトル バーはコンパクト モードです",
 			"isFileSystemResource": "リソースがファイル システム プロバイダーによってサポートされているかどうか",
@@ -5068,6 +5068,11 @@
 			"reloadWindowWithExtensionsDisabled": "拡張機能が無効な状態での再読み込み",
 			"revealUserDataFolder": "ユーザー データ フォルダーの表示",
 			"showGPUInfo": "GPU 情報の表示",
+			"stopTracing": "Stop Tracing",
+			"stopTracing.button": "&&Relaunch and Enable Tracing",
+			"stopTracing.detail": "This can take up to one minute to complete.",
+			"stopTracing.message": "Tracing requires to launch with a '--trace' argument",
+			"stopTracing.title": "Creating trace file...",
 			"toggleDevTools": "開発者ツールの切り替え"
 		},
 		"vs/workbench/electron-sandbox/actions/installActions": {
@@ -5081,8 +5086,8 @@
 			"close": "ウィンドウを閉じる",
 			"closeWindow": "ウィンドウを閉じる",
 			"current": "現在のウィンドウ",
-			"disableWindowAlwaysOnTop": "[常に手前に表示] を解除",
-			"enableWindowAlwaysOnTop": "[常に手前に表示] を設定",
+			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
+			"enableWindowAlwaysOnTop": "Turn On Always on Top",
 			"miCloseWindow": "ウィンドウを閉じる(&&E)",
 			"miZoomIn": "拡大(&&Z)",
 			"miZoomOut": "縮小(&&Z)",
@@ -5104,6 +5109,7 @@
 			"argv.disableHardwareAcceleration": "ハードウェア アクセラレータを無効にします。グラフィックの問題が発生した場合にのみ、このオプションを変更してください。",
 			"argv.disableLcdText": "LCD フォントのアンチエイリアシングを無効にします。",
 			"argv.enableCrashReporter": "クラッシュ レポートを無効にすることを許可します。値が変更された場合は、アプリを再起動する必要があります。",
+			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
 			"argv.enebleProposedApi": "拡張機能 ID のリストに対して提案された API を有効にします ('vscode.git' など)。提案された API は不安定で、警告なしに中断することがあります。これは拡張機能の開発とテストを目的とする場合にのみ設定してください。",
 			"argv.force-renderer-accessibility": "レンダラーに強制的にアクセスできるようにします。この変更は、Linux でスクリーン リーダーを使用している場合にのみ行います。その他のプラットフォームでは、レンダラーは自動的にアクセスできるようになります。このフラグは、editor.accessibilitySupport がオンの場合に自動的に設定されます。",
 			"argv.forceColorProfile": "使用するカラー プロファイルをオーバーライドできます。色が正しく表示されない場合は、これを 'srgb' に設定して再起動してみてください。",
@@ -5115,7 +5121,7 @@
 			"closeWhenEmpty": "最後のエディターを閉じたときに、ウィンドウも閉じるかどうかを制御します。この設定はフォルダーを表示していないウィンドウにのみ適用されます。",
 			"confirmSaveUntitledWorkspace": "別のワークスペースに切り替えるときに、開かれている無題のワークスペースを保存するか破棄するかの質問を、確認ダイアログに表示するかどうかを制御します。確認ダイアログを無効にすると、無題のワークスペースは常に破棄されるようになります。",
 			"controlsStyle": "ウィンドウ コントロールの外観を、OS によるネイティブ表示、カスタム描画、または非表示に調整します。変更を適用するには、完全な再起動が必要です。",
-			"dialogStyle": "ダイアログ ウィンドウの外観を調整します。",
+			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
 			"enableCrashReporterDeprecated": "この設定が false の場合、新しい設定の値に関係なくテレメトリは送信されません。{0}設定に結合されているため、非推奨になりました。",
 			"keyboardConfigurationTitle": "キーボード",
 			"mergeAllWindowTabs": "すべてのウィンドウを統合",
@@ -5488,6 +5494,18 @@
 			"title": "このワークスペースのアカウント設定の '{0}'",
 			"use new account": "新しいアカウントの使用..."
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForMcpServerAction": {
+			"accounts": "Accounts",
+			"currentAccount": "Current account",
+			"manageAccountPreferenceForMcpServer": "Manage MCP Server Account Preferences",
+			"noAccountUsage": "This MCP server has not used any accounts yet.",
+			"noAccounts": "No accounts are currently used by this MCP server.",
+			"pickAProviderTitle": "Manage MCP Server Account Preferences",
+			"placeholder v2": "Manage '{0}' account preferences for {1}...",
+			"selectProvider": "Select an authentication provider to manage account preferences for",
+			"title": "'{0}' Account Preferences For This Workspace",
+			"use new account": "Use a new account..."
+		},
 		"vs/workbench/contrib/authentication/browser/actions/manageTrustedExtensionsForAccountAction": {
 			"accountLastUsedDate": "このアカウントの最終使用は {0}",
 			"accountPreferences": "この拡張機能のアカウント設定を管理します",
@@ -5502,6 +5520,20 @@
 			"trustedExtensionTooltip": "この拡張機能は Microsoft によって信頼されており\r\n常にこのアカウントにアクセスできます",
 			"trustedExtensions": "Microsoft によって信頼されている"
 		},
+		"vs/workbench/contrib/authentication/browser/actions/manageTrustedMcpServersForAccountAction": {
+			"accountLastUsedDate": "Last used this account {0}",
+			"accountPreferences": "Manage account preferences for this MCP server",
+			"accounts": "Accounts",
+			"manageMcpServers": "Choose which MCP servers can access this account",
+			"manageTrustedMcpServers": "Manage Trusted MCP Servers",
+			"manageTrustedMcpServers.cancel": "Cancel",
+			"manageTrustedMcpServersForAccount": "Manage Trusted MCP Servers For Account",
+			"noTrustedMcpServers": "This account has not been used by any MCP servers.",
+			"notUsed": "Has not used this account",
+			"pickAccount": "Pick an account to manage trusted MCP servers for",
+			"trustedMcpServerTooltip": "This MCP server is trusted by Microsoft and\r\nalways has access to this account",
+			"trustedMcpServers": "Trusted by Microsoft"
+		},
 		"vs/workbench/contrib/authentication/browser/actions/signOutOfAccountAction": {
 			"signOut": "サインアウト(&&S)",
 			"signOutMessage": "アカウント '{0}' は、以下によって使用されていました:\r\n\r\n{1}\r\n\r\nこれらの拡張機能からサインアウトしますか?",
@@ -5511,6 +5543,7 @@
 		"vs/workbench/contrib/authentication/browser/authentication.contribution": {
 			"authentication": "認証",
 			"authentication.Placeholder": "要求されたアカウントはまだありません...",
+			"authenticationMcpAuthorizationServers": "MCP Authorization Servers",
 			"authenticationid": "ID",
 			"authenticationlabel": "ラベル",
 			"loading": "読み込んでいます..."
@@ -5645,6 +5678,9 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatActions": {
 			"actions.interactiveSession.focus": "Focus Chat List",
+			"agent.newSession": "Start new session?",
+			"agent.newSession.confirm": "Yes",
+			"agent.newSessionMessage": "Changing the chat mode will end your current edit session. Would you like to change the chat mode?",
 			"chat.category": "チャット",
 			"chat.clear.label": "すべてのワークスペース チャットをクリア",
 			"chat.history.label": "チャットの表示...",
@@ -5665,9 +5701,11 @@
 			"dismiss": "無視",
 			"interactiveSession.clearHistory.label": "入力履歴のクリア",
 			"interactiveSession.focusInput.label": "Focus Chat Input",
+			"interactiveSession.history.clear": "Clear All Workspace Chats",
 			"interactiveSession.history.delete": "削除",
 			"interactiveSession.history.editor": "エディターで開く",
 			"interactiveSession.history.pick": "チャットに切り替える",
+			"interactiveSession.history.title": "Workspace Chat History",
 			"interactiveSession.open": "新しいチャット エディター",
 			"manageCopilot": "Copilot の管理",
 			"more": "その他...",
@@ -5680,6 +5718,7 @@
 			"showCopilotUsageExtensions": "Copilot を使用して拡張機能を表示する",
 			"signInToChatSetup": "サインインして Copilot を使用する...",
 			"switchChat.confirmPhrase": "チャットを切り替えると、現在の編集セッションが終了します。",
+			"switchMode.confirmPhrase": "Switching chat modes will end your current edit session.",
 			"title4": "Copilot",
 			"toggle.chatControl": "Copilot コントロール",
 			"toggle.chatControlsDescription": "タイトル バーの Copilot コントロールの表示/非表示を切り替えます",
@@ -5707,31 +5746,24 @@
 			"interactive.previousCodeBlock.label": "前のコード ブロック",
 			"interactive.runInTerminal.label": "ターミナルに挿入"
 		},
+		"vs/workbench/contrib/chat/browser/actions/chatContext": {
+			"chatContext.attachScreenshot.labelElectron.Window": "Screenshot Window",
+			"chatContext.attachScreenshot.labelWeb": "Screenshot",
+			"chatContext.editors": "Open Editors",
+			"chatContext.relatedFiles": "Related Files",
+			"chatContext.tools": "Tools...",
+			"chatContext.tools.extension": "Extensions",
+			"chatContext.tools.internal": "Built-In",
+			"chatContext.tools.mcp": "MCP Servers",
+			"chatContext.tools.placeholder": "Select a tool",
+			"imageFromClipboard": "Image from Clipboard",
+			"pastedImage": "Pasted Image",
+			"relatedFiles": "Add related files to your working set"
+		},
 		"vs/workbench/contrib/chat/browser/actions/chatContextActions": {
 			"chat.insertSearchResults": "検索結果をチャットに追加する",
-			"chatContext.attach.instructions.label": "手順...",
 			"chatContext.attach.placeholder": "添付ファイルの検索",
-			"chatContext.attachScreenshot.labelElectron.Window": "スクリーンショット ウィンドウ",
-			"chatContext.attachScreenshot.labelWeb": "スクリーンショット",
-			"chatContext.diagnstic": "問題...",
-			"chatContext.editors": "エディターを開く",
-			"chatContext.folder": "ファイルとフォルダー...",
-			"chatContext.notebook.kernelVariable": "カーネル変数...",
-			"chatContext.notebook.selectkernelVariable": "カーネル変数を選択して挿入する",
-			"chatContext.relatedFiles": "関連ファイル",
-			"chatContext.searchResults": "検索結果",
-			"chatContext.symbol": "記号...",
-			"chatContext.tools": "ツール...",
-			"chatContext.tools.extension": "拡張機能",
-			"chatContext.tools.internal": "組み込み",
-			"chatContext.tools.mcp": "MCP サーバー",
-			"chatContext.tools.placeholder": "ツールの選択",
-			"imageFromClipboard": "クリップボードからの画像",
-			"markers.panel.allErrors": "すべての問題",
-			"markers.panel.at.ln.col.number": "[Ln {0}、Col {1}]",
-			"pastedImage": "貼り付けられた画像",
-			"pickAProblem": "Select a problem to attach",
-			"relatedFiles": "関連ファイルをワーキング セットに追加する",
+			"goBack": "Go back ↩",
 			"workbench.action.chat.attachContext.label.2": "コンテキストの追加...",
 			"workbench.action.chat.attachFile.label": "ファイルをチャットに追加",
 			"workbench.action.chat.attachFolder.label": "チャットにフォルダーを追加",
@@ -5747,9 +5779,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
 			"actions.chat.submitWithCodebase": "{0} で送信",
-			"agent.newSession": "新しいセッションを開始しますか?",
-			"agent.newSession.confirm": "はい",
-			"agent.newSessionMessage": "チャット モードを変更すると、現在の編集セッションが終了します。チャット モードを変更しますか?",
 			"chat.newChat.label": "新しいチャットに送信",
 			"edits.submit.label": "送信",
 			"interactive.cancel.label": "取り消す",
@@ -5762,8 +5791,7 @@
 			"interactive.toggleRequestPausd.label": "要求の一時停止の切り替え",
 			"requestIsPaused": "要求の再開",
 			"requestNotPaused": "要求の一時停止",
-			"setChatMode": "モードの設定",
-			"switchMode.confirmPhrase": "チャット モードを切り替えると、現在の編集セッションが終了します。"
+			"setChatMode": "モードの設定"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatFileTreeActions": {
 			"interactive.nextFileTree.label": "次のファイル ツリー",
@@ -5833,7 +5861,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/promptActions/chatAttachInstructionsAction": {
 			"attach-instructions.capitalized.ellipses": "命令を添付...",
-			"commands.instructions.select-dialog.placeholder": "添付する命令ファイルの選択"
+			"chatContext.attach.instructions.label": "Instructions...",
+			"commands.instructions.select-dialog.placeholder": "添付する命令ファイルの選択",
+			"placeholder": "Select instructions files to attach",
+			"user-data-dir.capitalized": "User data folder"
 		},
 		"vs/workbench/contrib/chat/browser/actions/promptActions/chatRunPromptAction": {
 			"commands.prompt.select-dialog.placeholder": "実行するプロンプト ファイルを選択します (新しいチャットで使用するには、{0} キーを押したままにします)",
@@ -5854,6 +5885,7 @@
 			"user-data-dir.capitalized": "ユーザー データ フォルダー"
 		},
 		"vs/workbench/contrib/chat/browser/attachments/implicitContextAttachment": {
+			"cell.lowercase": "cell",
 			"chat.fileAttachment": "{0}、{1} をアタッチしました",
 			"chat.fileAttachmentWithRange": "{0}、{1}、行 {2} から行 {3} をアタッチしました",
 			"disable": "現在の {0} コンテキストを無効にする",
@@ -5905,6 +5937,7 @@
 			"chat.sendElementsToChat.attachCSS": "Controls whether CSS of the selected element will be added to the chat. {0} must be enabled.",
 			"chat.sendElementsToChat.attachImages": "Controls whether a screenshot of the selected element will be added to the chat. {0} must be enabled.",
 			"chat.sendElementsToChat.enabled": "Simple Browser からチャットに要素を送信できるかどうかを制御します。",
+			"chat.signInWithAlternateProvider": "Enable alternative sign-in provider.",
 			"chat.tools.autoApprove": "ツールの使用を自動的に承認するかどうかを制御します。",
 			"chat.useFileStorage": "ストレージ サービスではなく、ディスクにチャット セッションを格納できるようにします。これを有効にすると、既存のセッションが新しい形式に、ワークスペースごとに 1 回限り移行されます。",
 			"clear": "新しいチャットの開始",
@@ -5916,6 +5949,7 @@
 			"interactiveSession.editor.wordWrap": "チャット コード ブロックで行を折り返すかどうかを制御します。",
 			"interactiveSessionConfigurationTitle": "チャット",
 			"mcp.discovery.source": "{0} サーバーの検出を有効にします",
+			"mcp.gallery.serviceUrl": "Configure the MCP Gallery service URL to connect to",
 			"mpc.discovery.enabled": "マシン上のモデル コンテキスト プロトコル サーバーの検出を構成します。`true` または `false` に設定してすべてのソースを無効または有効にして、有効にしたいマッピング ソースを指定します。",
 			"save-chat-to-prompt-file": "チャットをプロンプト ファイルに保存",
 			"workspaceConfig.mcp.description": "モデル コンテキスト プロトコル サーバー構成"
@@ -5965,28 +5999,6 @@
 			"rerun": "{0}{1} なしで再実行する"
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatAttachmentsContentPart": {
-			"chat.attachment": "添付コンテキスト、{0}",
-			"chat.attachment3": "コンテキスト {0} をアタッチしました。",
-			"chat.clickToViewContents": "クリックすると次の内容が表示されます: {0}",
-			"chat.elementAttachment": "アタッチされた要素、 {0}",
-			"chat.fileAttachment3": "{0} をアタッチしました。",
-			"chat.fileAttachmentHover": "選択したモデルは、この {0} の種類をサポートしていません。",
-			"chat.fileAttachmentWithRange3": "{0}、行 {1} から行 {2} をアタッチしました。",
-			"chat.imageAttachment": "添付画像、{0}",
-			"chat.imageAttachmentHover": "{0}",
-			"chat.imageAttachmentWarning": "この GIF は部分的に省略されました。現在のフレームが送信されました。",
-			"chat.notebookOutputFileAttachment3": "{0} をアタッチしました。",
-			"chat.notebookOutputImageAttachment": "アタッチ済み: {0}",
-			"chat.notebookOutputOmittedFileAttachment": "{0} を省略しました。",
-			"chat.notebookOutputOmittedImageAttachment": "{0} を省略しました",
-			"chat.notebookOutputPartialFileAttachment": "{0} を部分的にアタッチしました。",
-			"chat.notebookOutputPartiallyOmittedImageAttachment": "部分的に省略されました: {0}",
-			"chat.omittedFileAttachment": "{0} を省略しました。",
-			"chat.omittedFileAttachmentWithRange": "{0}、行 {1} から行 {2} を省略しました。",
-			"chat.omittedImageAttachment": "この画像を省略しました: {0}",
-			"chat.partialFileAttachment": "{0} を部分的にアタッチしました。",
-			"chat.partialFileAttachmentWithRange": "{0}、行 {1} から行 {2} を部分的にアタッチしました。",
-			"chat.partiallyOmittedImageAttachment": "この画像を部分的に省略しました: {0}",
 			"resource": "スキームとパスを含めた、チャット添付ファイル リソースのすべての値"
 		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatCodeCitationContentPart": {
@@ -6042,20 +6054,26 @@
 			"chat.input": "入力",
 			"chat.output": "出力"
 		},
-		"vs/workbench/contrib/chat/browser/chatContentParts/chatToolInvocationPart": {
-			"allowGloballTooltip": "このツールの実行を確認せずに常に許可します。",
-			"allowGlobally": "常に許可",
-			"allowSession": "このセッションで許可する",
-			"allowSesssionTooltip": "このツールを確認せずにこのセッションで実行できるようにします。",
-			"allowWorkspace": "このワークスペースで許可する",
-			"allowWorkspaceTooltip": "このツールを確認せずにこのワークスペースで実行できるようにします。",
-			"cancel": "キャンセル",
-			"continue": "続行",
-			"seeMore": "さらに表示",
-			"toolResultData": "Data of type {0} ({1} bytes)"
-		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTreeContentPart": {
 			"treeAriaLabel": "ファイル ツリー"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatInputOutputMarkdownProgressPart": {
+			"toolResultData": "Data of type {0} ({1} bytes)"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatTerminalToolSubPart": {
+			"cancel": "Cancel",
+			"continue": "Continue"
+		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/toolInvocationParts/chatToolConfirmationSubPart": {
+			"allowGloballTooltip": "Always allow this tool to run without confirmation.",
+			"allowGlobally": "Always Allow",
+			"allowSession": "Allow in this Session",
+			"allowSesssionTooltip": "Allow this tool to run in this session without confirmation.",
+			"allowWorkspace": "Allow in this Workspace",
+			"allowWorkspaceTooltip": "Allow this tool to run in this workspace without confirmation.",
+			"cancel": "Cancel",
+			"continue": "Continue",
+			"seeMore": "See more"
 		},
 		"vs/workbench/contrib/chat/browser/chatDragAndDrop": {
 			"attacAsContext": "{0} をコンテキストとしてアタッチする",
@@ -6168,17 +6186,20 @@
 			"diff.generic": "{0} (チャットからの変更)"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditing/simpleBrowserEditorOverlay": {
-			"cancel": "キャンセル",
 			"cancelSelection": "クリックして選択を取り消します。",
+			"cancelSelectionLabel": "Cancel",
 			"chat.configureElements": "Configure Attachments Sent",
 			"chat.expandOverlay": "Expand Overlay",
 			"chat.hideOverlay": "Collapse Overlay",
 			"chat.nextSelection": "Select Again",
+			"continuousSelectionDropdown": "Continuous Selection",
 			"elementCancelMessage": "選択が取り消されました",
 			"elementSelectionComplete": "Element added to chat",
 			"elementSelectionInProgress": "Selecting element...",
 			"elementSelectionMessage": "Add element to chat",
+			"finishSelectionLabel": "Done",
 			"selectAnElement": "クリックして要素を選択します。",
+			"selectElementDropdown": "Select an Element",
 			"startSelection": "Start"
 		},
 		"vs/workbench/contrib/chat/browser/chatEditorInput": {
@@ -6226,6 +6247,7 @@
 			"paused": "一時停止",
 			"poorlyWrittenOrFormatted": "不適切な書き込みまたは書式設定",
 			"refusedAValidRequest": "有効な要求を拒否した",
+			"renderFailMsg": "Failed to render content",
 			"reportIssue": "問題の報告",
 			"usedAgent": "[[(rerun without)]]",
 			"usedAgentSlashCommand": "{0} を使用 [[(なしで再実行)]]",
@@ -6270,14 +6292,11 @@
 			"pastedImageAttachment": "貼り付けられた画像の添付ファイル",
 			"pastedImageName": "貼り付けられた画像"
 		},
-		"vs/workbench/contrib/chat/browser/chatSelectedTools": {
-			"tool.0": "{0} {1}",
-			"tool.1": "{2} の {0} {1}"
-		},
 		"vs/workbench/contrib/chat/browser/chatSetup": {
 			"agentDescription": "エージェント モードでワークスペース内のファイルを編集します",
 			"chat.category": "チャット",
 			"chatDescription": "Copilot に質問します",
+			"continueWithProvider": "Continue with {0}",
 			"copilotFailedWarning": "Copilot の準備に失敗しました。チャット ビューでガイダンスを確認してください。",
 			"copilotFreeTitle": "無料で Copilot の使用を開始する",
 			"copilotProTitle": "Copilot Pro の使用を開始する",
@@ -6291,7 +6310,6 @@
 			"enterpriseInstance": "{0} インスタンスは何ですか?",
 			"enterpriseInstancePlaceholder": "つまり\"octocat\" or \"https://octocat.ghe.com\"...",
 			"enterpriseSetupError": "指定された {0} インスタンスが無効です。もう一度入力しますか?",
-			"headerDialog": "[Copilot]({0}) は AI ペア プログラマーです。入力候補を使用してコードをより迅速に記述したり、複数のファイルにまたがってバグ修正や新しい機能の構築をしたり、チャットを通じてコードベースについて学習したりできます。",
 			"hideChatSetup": "Copilot を非表示にする",
 			"hideChatSetupButton": "Copilot を非表示にする",
 			"hideChatSetupConfirm": "Copilot を非表示にしますか?",
@@ -6300,28 +6318,24 @@
 			"invalidEnterpriseInstance": "有効な {0} インスタンス (\"octocat\" または \"https://octocat.ghe.com\" など) を入力する必要があります",
 			"manageOverages": "Manage Copilot Overages",
 			"managePlan": "Copilot Pro にアップグレード",
-			"maybeLater": "後で行う",
 			"retry": "再試行",
 			"settingUpCopilotNeeded": "チャットを使用するには、Copilot を設定する必要があります。",
-			"settings": "Copilot Free と Pro では、[パブリック コード]({0}) 提案が表示されることがあります。また、製品の改善のためにお客様のデータを使用する場合があります。これらの [設定はいつでも]({1}) 変更できます。",
+			"settings": "GitHub Copilot Free, Pro and Pro+ may show [public code]({0}) suggestions and we may use your data for product improvement. You can change these [settings]({1}) at any time.",
 			"setupChatProgress": "Copilot を準備中...",
 			"setupChatSignIn2": "{0} にサインインしています。",
 			"setupCopilot": "Copilot を設定します。",
+			"setupCopilotButton": "Set up Copilot",
 			"setupErrorDialog": "Copilot のセットアップに失敗しました。もう一度やり直しますか?",
 			"setupToolDisplayName": "新しいワークスペース",
 			"setupToolsDescription": "VS Code で新しいワークスペースをスキャフォールディングします",
-			"setupWithEnterpriseProvider": "{0} アカウントでサインイン",
-			"setupWithProvider": "{0} アカウントでサインイン",
-			"signInButton": "サインイン",
+			"signInWithProvider": "Sign in with a {0} account",
 			"signUp": "サインインして Copilot を使用する",
 			"signUpFree": "サインインして Copilot を無料で使用する",
-			"terms": "続行すると、[使用条件]({0})および[プライバシー ポリシー]({1})に同意したことになります。",
 			"triggerChatSetup": "Copilot で AI 機能を無料で使用する...",
 			"triggerChatSetupFromAccounts": "サインインして Copilot を使用する...",
 			"unknownSetupError": "Copilot の設定中にエラーが発生しました。もう一度やり直しますか?",
 			"unknownSignInError": "{0} にサインインできませんでした。もう一度やり直しますか?",
 			"unknownSignInErrorDetail": "Copilot を使用するには、サインインする必要があります。",
-			"useCopilotButton": "Copilot を使用",
 			"vscodeAgentDescription": "VS Code に関する質問をする",
 			"waitingCopilot": "Copilot を準備しています。",
 			"waitingCopilot2": "Copilot の準備がほぼ整いました。",
@@ -6339,7 +6353,10 @@
 			"completionsDisabledStatus": "コード補完が無効です",
 			"completionsLabel": "コード補完",
 			"completionsQuotaExceededStatus": "補完のクォータに達しました",
+			"copilotDisabledStatus": "Copilot Disabled",
 			"enableAdditionalUsage": "Manage paid premium requests",
+			"enableCopilotButton": "Enable Copilot",
+			"enableDescription": "Enable Copilot to use AI features.",
 			"gaugeBackground": "ゲージの背景色。",
 			"gaugeBorder": "ゲージ境界線の色。",
 			"gaugeErrorBackground": "ゲージ エラーの背景色。",
@@ -6375,6 +6392,8 @@
 			"chatWidget.tips.withoutParticipants": "{0}、または {1} と入力し、コンテキストをアタッチします",
 			"editsMessage": "作業する一連のファイルを定義して、編集セッションを開始します。次に、行う変更を Copilot に依頼します。",
 			"editsTitle": "Copilot で編集する",
+			"input.1": "Follow instructions from ${0}.",
+			"input.N": "Follow instructions from the prompt files.",
 			"scrollDownButtonLabel": "下にスクロール"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6398,6 +6417,11 @@
 			"desc": "MCP サーバー: {0}",
 			"fileEntryDescription": "{0} ({1})",
 			"installLabel": "チャット拡張機能をインストール...",
+			"loading": "Loading...",
+			"mcp.prompt.error": "Error resolving prompt: {0}",
+			"mcp.prompt.image": "Prompt Image",
+			"mcp.prompt.resource": "Prompt Resource",
+			"optional": "Optional",
 			"promptFileDescription": "ユーザー プロンプト ファイル",
 			"promptFileDescriptionWorkspace": "ワークスペース プロンプト ファイル"
 		},
@@ -6414,9 +6438,6 @@
 			"chat.modelPicker.label": "モデルの選択",
 			"chat.moreModels": "Premium モデルの追加",
 			"chat.moreModels.tooltip": "Premium モデルの追加"
-		},
-		"vs/workbench/contrib/chat/browser/promptSyntax/contributions/attachInstructionsCommand": {
-			"attach-instructions.capitalized.ellipses": "アタッチ手順..."
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/contributions/createPromptCommand/createPromptCommand": {
 			"commands.new.instructions.local.title": "新しい命令ファイル...",
@@ -6642,7 +6663,6 @@
 			"workbench.action.speech.stopReadAloud": "音声読み上げを停止する"
 		},
 		"vs/workbench/contrib/chat/electron-sandbox/tools/fetchPageTool": {
-			"fetchWebPage.confirmationMessageManageTrustedDomains": "[信頼されたドメインの管理]({0}) をすれば、今後この確認をスキップできます。",
 			"fetchWebPage.confirmationTitle.plural": "信頼されていない Web ページをフェッチしますか?",
 			"fetchWebPage.confirmationTitle.singular": "信頼されていない Web ページをフェッチしますか?",
 			"fetchWebPage.invalidUrl": "無効な URL",
@@ -7247,6 +7267,7 @@
 			"debug.console.fontSize": "デバッグ コンソール内のフォント サイズをピクセル単位で制御します。",
 			"debug.console.historySuggestions": "以前に型指定された入力をデバッグ コンソールが提案する必要があるかどうかを制御します。",
 			"debug.console.lineHeight": "デバッグ コンソール内での行の高さをピクセル単位で制御します。フォント サイズから行の高さを計算するには 0 を使用します。",
+			"debug.console.maximumLines": "Controls the maximum number of lines in the Debug Console.",
 			"debug.console.wordWrap": "行をデバッグ コンソールで折り返す必要があるかどうかを制御します。",
 			"debug.disassemblyView.showSourceCode": "逆アセンブリ ビューでソース コードを表示する。",
 			"debug.enableStatusBarColor": "デバッガーがアクティブな場合のステータス バーの色。",
@@ -8151,7 +8172,6 @@
 			"extensions.autoUpdate.false": "拡張機能は自動的には更新されません。",
 			"extensions.autoUpdate.true": "すべての拡張機能の更新プログラムを自動的にダウンロードしてインストールします。",
 			"extensions.gallery.serviceUrl": "マーケットプレース サービスの URL を構成してから次に接続します:",
-			"extensions.gallery.useUnpkgResourceApi": "有効にすると、更新する拡張機能が Unpkg サービスからフェッチされます。",
 			"extensions.supportUntrustedWorkspaces": "拡張機能の信頼されていないワークペースのサポートをオーバーライドします。`true` を使用する拡張機能は常に有効になります。`limited` を使用する拡張機能は常に有効になり、信頼を必要とする機能は拡張子により非表示にされます。`false` を使用している拡張機能は、ワークスペースが信頼されている場合にのみ有効になります。",
 			"extensions.supportUntrustedWorkspaces.false": "拡張機能は、ワークスペースが信頼されている場合にのみ有効になります。",
 			"extensions.supportUntrustedWorkspaces.limited": "拡張機能は常に有効になり、信頼が必要な機能は非表示にされます。",
@@ -8192,6 +8212,8 @@
 			"installPrereleaseAndDonotSync": "プレリリースのインストール (同期しない)",
 			"installVSIX": "拡張機能の VSIX のインストール",
 			"installWorkspaceRecommendedExtensions": "ワークスペースのおすすめの拡張機能をインストール",
+			"installed filter": "Installed",
+			"installedExtensions": "Show Installed Extensions",
 			"manageExtensionsHelp": "拡張機能の管理",
 			"manageExtensionsQuickAccessPlaceholder": "Enter キーを押して拡張機能を管理してください。",
 			"miPreferencesExtensions": "拡張機能(&&E)",
@@ -8431,6 +8453,7 @@
 			"clearSearchResultsIcon": "拡張機能のビューの '検索結果のクリア' アクションのアイコン。",
 			"configureRecommendedIcon": "拡張機能のビューの 'お勧めの拡張機能の構成' アクションのアイコン。",
 			"errorIcon": "拡張機能のエディターにエラー メッセージと共に表示されるアイコン。",
+			"extension.border": "The border color of an extension.",
 			"extensionsViewIcon": "拡張機能ビューのアイコンを表示します。",
 			"filterIcon": "拡張機能のビュー内の 'フィルター' アクションのアイコン。",
 			"infoIcon": "拡張機能のエディターに情報メッセージと共に表示されるアイコン。",
@@ -8656,7 +8679,8 @@
 		"vs/workbench/contrib/extensions/common/searchExtensionsTool": {
 			"searchExtensionsTool.displayName": "拡張機能の検索",
 			"searchExtensionsTool.modelDescription": "これは、Visual Studio Code 拡張機能のマーケットプレースを参照するためのツールです。このツールを使用すると、モデルが拡張機能を検索し、それらに関する詳細情報を取得できます。モデルは、拡張機能を発見したり、既知の拡張機能に関する情報を解決したりする必要がある場合、このツールを使用する必要があります。このツールを使用するには、モデルが拡張機能のカテゴリ、関連する検索キーワード、または既知の拡張機能 ID を提供する必要があります。検索結果には偽陽性が含まれる可能性があるため、確認とフィルタリングが推奨されます。",
-			"searchExtensionsTool.noInput": "検索するカテゴリ、キーワード、または ID を指定してください。"
+			"searchExtensionsTool.noInput": "検索するカテゴリ、キーワード、または ID を指定してください。",
+			"searchExtensionsTool.userDescription": "Search for extensions in the Visual Studio Code Extensions Marketplace."
 		},
 		"vs/workbench/contrib/extensions/electron-sandbox/debugExtensionHostAction": {
 			"debugExtensionHost": "新しいウィンドウで拡張機能ホストのデバッグを開始する",
@@ -9532,14 +9556,12 @@
 			"loadingData": "データを読み込んでいます...",
 			"marketplace": "拡張機能マーケットプレース",
 			"marketplacePlaceholder": "例: インストールされている拡張機能を無効にできません",
-			"noSimilarIssues": "類似の問題は見つかりませんでした",
 			"open": "開く",
 			"openIssueReporter": "外部問題報告者を開く",
 			"pasteData": "必要なデータが送信するには大きすぎたため、クリップボードに書き込みました。貼り付けてください。",
 			"performanceIssue": "パフォーマンスの問題 (フリーズ、低速、クラッシュ)",
 			"performanceIssueDesciption": "このパフォーマンスの問題はいつ発生しましたか? それは起動時ですか? それとも特定のアクションのあとですか? GitHub-flavored Markdown に対応しています。GitHub 上で確認するときに問題を編集してスクリーンショットを追加できます。",
 			"previewOnGitHub": "GitHub 上でプレビュー",
-			"rateLimited": "No duplicate issues found: GitHub query limit exceeded.",
 			"saveExtensionData": "拡張機能データの保存",
 			"selectExtension": "拡張機能の選択",
 			"selectSource": "ソースの選択",
@@ -9635,15 +9657,6 @@
 			"saveExtensionData": "拡張機能データの保存",
 			"undefinedPlaceholder": "タイトルを入力してください",
 			"updateAvailable": "{0} の新しいバージョンを使用できます。"
-		},
-		"vs/workbench/contrib/issue/electron-sandbox/process.contribution": {
-			"miOpenProcessExplorerer": "&&プロセス エクスプローラーを開く",
-			"openProcessExplorer": "プロセス エクスプローラーを開く",
-			"stopTracing": "トレースの停止",
-			"stopTracing.button": "トレースの再起動と有効化(&R)",
-			"stopTracing.detail": "完了するまでに最大 1 分かかる場合があります。",
-			"stopTracing.message": "トレースは '--trace' 引数を指定して起動する必要があります",
-			"stopTracing.title": "トレース ファイルを作成しています..."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "キーボード ショートカットの切り替えのトラブルシューティング"
@@ -9842,6 +9855,12 @@
 			"viewAsTree": "ツリーとして表示",
 			"viewAsTreeDescription": "問題ビューをツリーとして表示します。"
 		},
+		"vs/workbench/contrib/markers/browser/markersChatContext": {
+			"chatContext.diagnstic": "Problems...",
+			"chatContext.diagnstic.placeholder": "Select a problem to attach",
+			"markers.panel.allErrors": "All Problems",
+			"markers.panel.at.ln.col.number": "[Ln {0}, Col {1}]"
+		},
 		"vs/workbench/contrib/markers/browser/markersFileDecorations": {
 			"label": "問題",
 			"markers.showOnFile": "ファイルとフォルダーのエラーと警告を表示します。オフの場合、{0} に上書きされます。",
@@ -9916,11 +9935,17 @@
 			"problems.view.focus.label": "問題 (エラー、警告、情報) にフォーカス",
 			"problems.view.toggle.label": "問題 (エラー、警告、情報) の切り替え"
 		},
+		"vs/workbench/contrib/mcp/browser/mcp.contribution": {
+			"mcp": "MCP Servers",
+			"mcp-installed": "MCP Servers - Installed",
+			"mcpServer": "MCP Server"
+		},
 		"vs/workbench/contrib/mcp/browser/mcpCommands": {
 			"mcp.addConfiguration": "サーバーの追加...",
 			"mcp.addConfiguration.description": "新しいモデル コンテキスト プロトコルを mcp.json 設定にインストールします",
 			"mcp.addServer": "サーバーを追加する",
 			"mcp.addServer.description": "新しいサーバー構成を追加する",
+			"mcp.command.browse": "MCP Servers",
 			"mcp.command.installFromActivation": "インストール...",
 			"mcp.command.restartServer": "サーバーの再起動",
 			"mcp.command.showConfiguration": "構成の表示",
@@ -9979,6 +10004,7 @@
 			"mcp.serverType.pip": "Pip パッケージ",
 			"mcp.serverType.pip.description": "Pip パッケージ名からインストールする",
 			"mcp.serverType.placeholder": "追加する MCP サーバーの種類を選択する",
+			"mcp.servers.browse": "Browse MCP Servers...",
 			"mcp.target..remote.description": "このリモート コンピューターで使用可能",
 			"mcp.target.remote": "リモート設定",
 			"mcp.target.title": "構成を保存する場所を選択する",
@@ -10004,6 +10030,43 @@
 			"server.toolCount": "{0} 個のツール",
 			"server.toolCountCached": "{0} 個のキャッシュされたツール"
 		},
+		"vs/workbench/contrib/mcp/browser/mcpServerActions": {
+			"config": "Show Configuration",
+			"install": "Install",
+			"manage": "Manage",
+			"output": "Show Output",
+			"restart": "Restart Server",
+			"start": "Start Server",
+			"stop": "Stop Server",
+			"uninstall": "Uninstall"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerEditor": {
+			"Install Info": "Installation",
+			"Marketplace Info": "Marketplace",
+			"Readme title": "Readme",
+			"Version": "Version",
+			"details": "Details",
+			"detailstooltip": "Extension details, rendered from the extension's 'README.md' file",
+			"id": "Identifier",
+			"last released": "Last Released",
+			"name": "Extension name",
+			"noReadme": "No README available.",
+			"repository": "Repository",
+			"resources": "Resources"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerEditorInput": {
+			"extensionsEditorLabelIcon": "Icon of the extensions editor label.",
+			"extensionsInputName": "Extension: {0}"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServersView": {
+			"mcp servers": "MCP Servers"
+		},
+		"vs/workbench/contrib/mcp/browser/mcpServerWidgets": {
+			"install count": "Install count",
+			"publisher": "Publisher ({0})",
+			"ratedLabel": "Average rating: {0} out of 5",
+			"verified publisher": "This publisher has verified ownership of {0}"
+		},
 		"vs/workbench/contrib/mcp/common/discovery/extensionMcpDiscovery": {
 			"invalidData": "MCP コレクションの配列が必要です",
 			"invalidId": "'id' は空でない文字列である必要があります。",
@@ -10024,6 +10087,7 @@
 			"app.mcp.json.title": "モデル コンテキスト プロトコル サーバー",
 			"app.mcp.json.type": "サーバーの種類。",
 			"app.mcp.json.url": "Streamable HTTP または SSE エンドポイントの URL。",
+			"app.mcp.json.url.pattern": "The URL must start with 'http://' or 'https://'.",
 			"mcp.discovery.source.claude-desktop": "Claude Desktop",
 			"mcp.discovery.source.cursor-global": "カーソル (グローバル)",
 			"mcp.discovery.source.cursor-workspace": "カーソル (ワークスペース)",
@@ -10069,6 +10133,7 @@
 			"msg.title": "{0} を実行する"
 		},
 		"vs/workbench/contrib/mcp/common/mcpTypes": {
+			"mcpServer": "Icon used for the MCP server.",
 			"mcpstate.error": "エラー {0}",
 			"mcpstate.running": "実行中",
 			"mcpstate.starting": "開始しています",
@@ -10490,8 +10555,11 @@
 			"notebookActions.restoreCellprompt": "生成"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebook.chat.contribution": {
+			"chatContext.notebook.kernelVariable": "Kernel Variable...",
+			"chatContext.notebook.kernelVariable.placeholder": "Select a kernel variable",
 			"notebookActions.addOutputToChat": "チャットにセル出力を追加",
-			"pickKernelVariableLabel": "カーネルから変数を選択します"
+			"pickKernelVariableLabel": "カーネルから変数を選択します",
+			"selectKernelVariablePlaceholder": "Select a kernel variable"
 		},
 		"vs/workbench/contrib/notebook/browser/controller/chat/notebookChatContext": {
 			"notebookCellChatFocused": "セル チャット エディターがフォーカスされているかどうか",
@@ -11174,6 +11242,7 @@
 			"openWorkspaceSettings": "ワークスペース設定を開く",
 			"openWorkspaceSettingsFile": "ワークスペース設定を開く (JSON)",
 			"preferences": "基本設定",
+			"preferencesEditor": "Preferences Editor",
 			"settings": "設定",
 			"settings.clearResults": "検索結果のクリア設定",
 			"settings.focusFile": "設定ファイルにフォーカスする",
@@ -11194,6 +11263,10 @@
 			"languageDescriptionConfigured": "({0})",
 			"pickLanguage": "言語の選択"
 		},
+		"vs/workbench/contrib/preferences/browser/preferencesEditor": {
+			"FullTextSearchPlaceholder": "Search {0}",
+			"preferencesTabSwitcherBarAriaLabel": "Preferences Tab Switcher"
+		},
 		"vs/workbench/contrib/preferences/browser/preferencesIcons": {
 			"keybindingsAddIcon": "キー バインド UI 内の追加アクションのアイコン。",
 			"keybindingsEditIcon": "キー バインド UI 内の編集アクションのアイコン。",
@@ -11202,6 +11275,7 @@
 			"preferencesClearInput": "設定およびキー バインド UI 内での入力のクリアのアイコン。",
 			"preferencesDiscardIcon": "設定 UI 内の破棄アクションのアイコン。",
 			"preferencesOpenSettings": "設定を開くコマンドのアイコン。",
+			"preferencesSashBorder": "The color of the Preferences editor splitview sash border.",
 			"settingsEditIcon": "設定 UI 内の編集アクションのアイコン。",
 			"settingsFilter": "設定 UI のフィルターを提案するボタンのアイコン。",
 			"settingsMoreActionIcon": "設定 UI 内の [その他のアクション] アクションのアイコン。",
@@ -11439,6 +11513,33 @@
 			"textInputBoxBackground": "設定エディターのテキスト入力ボックスの背景。",
 			"textInputBoxBorder": "設定エディターのテキスト入力ボックスの境界線。",
 			"textInputBoxForeground": "設定エディターのテキスト入力ボックスの前景。"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.contribution": {
+			"miOpenProcessExplorerer": "Open &&Process Explorer",
+			"openProcessExplorer": "Open Process Explorer",
+			"promptOpenWith.processExplorer.displayName": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
+			"copy": "Copy",
+			"copyAll": "Copy All",
+			"debug": "Debug",
+			"forceKillProcess": "Force Kill Process",
+			"killProcess": "Kill Process",
+			"processCpu": "CPU (%)",
+			"processExplorer": "Process Explorer",
+			"processMemory": "Memory (MB)",
+			"processName": "Process Name",
+			"processPid": "PID"
+		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
+			"processExplorerEditorLabelIcon": "Icon of the process explorer editor label.",
+			"processExplorerInputName": "Process Explorer"
+		},
+		"vs/workbench/contrib/processExplorer/electron-sandbox/processExplorer.contribution": {
+			"processExplorer": "Process Explorer"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"askXInChat": "{0} に問い合わせ: {1}",
@@ -11688,6 +11789,8 @@
 		},
 		"vs/workbench/contrib/remote/electron-sandbox/remote.contribution": {
 			"remote": "リモート",
+			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
+			"remote.category": "Remote",
 			"remote.downloadExtensionsLocally": "有効にすると、拡張機能がローカルにダウンロードされ、リモート上にインストールされます。",
 			"wslFeatureInstalled": "プラットフォームに WSL 機能がインストールされているかどうか"
 		},
@@ -11917,6 +12020,11 @@
 			"scmGraphHistoryItemRefColor": "履歴項目の参照色。",
 			"scmGraphHistoryItemRemoteRefColor": "履歴項目のリモート参照色。"
 		},
+		"vs/workbench/contrib/scm/browser/scmHistoryChatContext": {
+			"chatContext.scmHistoryItems": "Source Control History Items...",
+			"chatContext.scmHistoryItems.placeholder": "Select a source control history item",
+			"files": "file(s)"
+		},
 		"vs/workbench/contrib/scm/browser/scmHistoryViewPane": {
 			"activeRepository": "アクティブなリポジトリのソース管理グラフを表示する",
 			"all": "すべて",
@@ -11935,6 +12043,7 @@
 			"items": "{0} 個の項目",
 			"loadMore": "{0} さらに読み込む...",
 			"openChanges": "変更を開く",
+			"openFile": "Open File",
 			"referencePicker": "履歴項目の参照ピッカー",
 			"refreshGraph": "最新の情報に更新",
 			"repositoryPicker": "リポジトリ ピッカー",
@@ -11959,6 +12068,7 @@
 			"scmInput.accessibilityHelp": "{0}、{1} を使用して、ソース管理のアクセシビリティのヘルプを開きます。",
 			"scmInput.accessibilityHelpNoKb": "{0}、詳細については、[ユーザー補助ヘルプを開く] コマンドを実行して詳細を確認してください。",
 			"scmInputCancelAction": "取り消す",
+			"scmInputGenerateCommitMessage": "Generate Commit Message with Copilot",
 			"scmInputMoreActions": "その他のアクション...",
 			"scmInputRow.accessibilityHelp": "ソース管理の入力です。{0} を使用して、ソース管理のアクセシビリティ のヘルプを開きます。",
 			"scmInputRow.accessibilityHelpNoKb": "ソース管理入力、詳細については [ユーザー補助ヘルプ] コマンドを実行してください。",
@@ -12008,6 +12118,13 @@
 			"openToBottom": "一番下に開く",
 			"openToSide": "横に開く",
 			"recentlyOpenedSeparator": "最近開いたもの"
+		},
+		"vs/workbench/contrib/search/browser/chatContributions": {
+			"chatContext.attach.files.placeholder": "Search file or folder by name",
+			"chatContext.folder": "Files & Folders...",
+			"chatContext.searchResults": "Search Results",
+			"select.symb": "Select a symbol",
+			"symbols": "Symbols..."
 		},
 		"vs/workbench/contrib/search/browser/patternInputWidget": {
 			"defaultLabel": "入力",
@@ -12076,6 +12193,11 @@
 			"search.searchEditor.singleClickBehaviour.peekDefinition": "シングルクリックすると、[定義をここに表示] ウィンドウが開きます。",
 			"search.searchOnType": "入力中の文字列を全てのファイルから検索する。",
 			"search.searchOnTypeDebouncePeriod": "{0} が有効になっている場合、文字入力と検索開始の間の入力待ちをミリ秒単位で制御します。{0} が無効になっている場合、効果はありません。",
+			"search.searchView.keywordSuggestions": "Enable keyword suggestions in the search view.",
+			"search.searchView.semanticSearchBehavior": "Controls the behavior of the semantic search results displayed in the search view.",
+			"search.searchView.semanticSearchBehavior.auto": "Request semantic results automatically with every search.",
+			"search.searchView.semanticSearchBehavior.manual": "Only request semantic search results manually.",
+			"search.searchView.semanticSearchBehavior.runOnEmpty": "Request semantic results automatically only when text search results are empty.",
 			"search.seedOnFocus": "検索ビューにフォーカスを置いたときに、検索クエリが、エディターで選択されているテキストに更新されます。これは、クリックされたときか、`workbench.views.search.focus` コマンドがトリガーされたときに発生します。",
 			"search.seedWithNearestWord": "アクティブなエディターで何も選択されていないときに、カーソルに最も近い語からのシード検索を有効にします。",
 			"search.showLineNumbers": "検索結果に行番号を表示するかどうかを制御します。",
@@ -12488,11 +12610,13 @@
 			"TaskService.fetchingBuildTasks": "ビルド タスクをフェッチしています...",
 			"TaskService.fetchingTestTasks": "テスト タスクをフェッチしています...",
 			"TaskService.ignoredFolder": "次のワークスペース フォルダーはタスク バージョン 0.1.0 を使用しているため無視されます: {0}",
+			"TaskService.instanceToTerminate": "Select an instance to terminate",
 			"TaskService.noBuildTask": "実行するビルド タスクがありません。ビルド タスクを構成する...",
 			"TaskService.noBuildTask1": "ビルド タスクが定義されていません。tasks.json ファイルでタスクに 'isBuildCommand' というマークを付けてください。",
 			"TaskService.noBuildTask2": "ビルド タスクが定義されていません。tasks.json ファイルでタスクに 'build' グループとしてマークを付けてください。",
 			"TaskService.noConfiguration": "エラー: {0} タスクの検出は、次の構成のタスクに貢献しませんでした。\r\n{1}\r\nこのタスクは無視されます。",
 			"TaskService.noEntryToRun": "タスクの構成",
+			"TaskService.noInstanceRunning": "No instance is currently running",
 			"TaskService.noTaskIsRunning": "実行中のタスクはありません",
 			"TaskService.noTaskRunning": "現在実行中のタスクはありません",
 			"TaskService.noTaskToRestart": "再起動するタスクがありません",
@@ -12521,8 +12645,8 @@
 			"TaskService.taskToTerminate": "終了するタスクを選択",
 			"TaskService.template": "タスク テンプレートを選択",
 			"TaskService.terminateAllRunningTasks": "すべての実行中のタスク",
+			"TaskSystem.InstancePolicy.warn": "The instance limit for this task has been reached.",
 			"TaskSystem.active": "既に実行中のタスクがあります。まずこのタスクを終了してから、別のタスクを実行してください。",
-			"TaskSystem.activeSame.noBackground": "タスク '{0}' は既にアクティブです。",
 			"TaskSystem.configurationErrors": "エラー: 指定したタスク構成に検証エラーがあり、使用できません。最初にエラーを修正してください。",
 			"TaskSystem.invalidTaskJson": "エラー: tasks.json ファイルの内容に構文エラーがあります。タスクを実行する前に修正してください。",
 			"TaskSystem.invalidTaskJsonOther": "エラー: {0}の json タスクの内容に構文エラーがあります。タスクを実行する前に修正してください。",
@@ -12543,7 +12667,6 @@
 			"detected": "検出されたタスク",
 			"moreThanOneBuildTask": "tasks.json には定義されたビルド タスクが多数あります。最初の 1 つを実行します。",
 			"recentlyUsed": "最近使用されたタスク",
-			"restartTask": "タスクの再開",
 			"runTask.arg": "クイック ピックに表示されるタスクをフィルター処理します",
 			"runTask.label": "フィルター処理するタスクのラベルまたは用語",
 			"runTask.task": "フィルター処理するタスクのラベルまたは用語",
@@ -12552,7 +12675,7 @@
 			"saveBeforeRun.save": "保存(&&S)",
 			"savePersistentTask": "永続タスクの保存中: {0}",
 			"selectProblemMatcher": "スキャンするタスク出力のエラーと警告の種類を選択",
-			"showOutput": "出力の表示",
+			"showOutput": "Show Output",
 			"taskEvent": "タスク イベントの種類: {0}",
 			"taskQuickPick.userSettings": "ユーザー",
 			"taskService.getSavedTasks": "タスク ストレージからタスクを取得しています。",
@@ -12569,9 +12692,10 @@
 			"taskService.upgradeVersion": "非推奨のタスク バージョン 0.1.0 が削除されました。タスクはバージョン 2.0.0 にアップグレードされました。差分を開いて、アップグレードを確認します。",
 			"taskService.upgradeVersionPlural": "非推奨のタスク バージョン 0.1.0 が削除されました。タスクはバージョン 2.0.0 にアップグレードされました。差分を開いて、アップグレードを確認します。",
 			"taskServiceOutputPrompt": "タスク エラーがあります。詳細は出力をご覧ください。",
+			"taskServiceOutputPromptChat": "There are task errors. Use chat to fix them or view the output for details.",
 			"tasks": "タスク",
 			"tasksJsonComment": "\t// tasks.json の形式に関するドキュメントについては \r\n\t// https://go.microsoft.com/fwlink/?LinkId=733558 を参照してください",
-			"terminateTask": "タスクの終了",
+			"troubleshootWithChat": "Fix with Chat",
 			"unexpectedTaskType": "\"{0}\" タスクのタスク プロバイダーで予期せずに種類が \"{1}\" のタスクが提供されました。\r\n"
 		},
 		"vs/workbench/contrib/tasks/browser/runAutomaticTasks": {
@@ -12731,6 +12855,12 @@
 			"JsonSchema.tasks.identifier": "launch.json または dependsOn 句のタスクを参照するユーザー定義の識別子。",
 			"JsonSchema.tasks.identifier.deprecated": "ユーザー定義識別子は非推奨です。カスタム タスクには参照として名前が使用され、拡張機能から提供されるタスクには定義されたタスク識別子が使用されます。",
 			"JsonSchema.tasks.instanceLimit": "同時に実行できるタスクのインスタンスの数。",
+			"JsonSchema.tasks.instancePolicy": "Policy to apply when instance limit is reached.",
+			"JsonSchema.tasks.instancePolicy.prompt": "Asks which instance to terminate.",
+			"JsonSchema.tasks.instancePolicy.silent": "Does nothing.",
+			"JsonSchema.tasks.instancePolicy.terminateNewest": "Terminates the newest instance.",
+			"JsonSchema.tasks.instancePolicy.terminateOldest": "Terminates the oldest instance.",
+			"JsonSchema.tasks.instancePolicy.warn": "Does nothing but warns that the instance limit has been reached.",
 			"JsonSchema.tasks.isBuildCommand.deprecated": "isBuildCommand プロパティは非推奨です。代わりに group プロパティを使用してください。また 1.14 リリース ノートをご確認ください。",
 			"JsonSchema.tasks.isShellCommand.deprecated": "isShellCommand プロパティは使用されていません。代わりに、タスクの type プロパティとオプションの shell プロパティをご使用ください。また 1.14 リリース ノートをご確認ください。",
 			"JsonSchema.tasks.isTestCommand.deprecated": "isTestCommand プロパティは非推奨です。代わりに group プロパティを使用してください。また 1.14 リリース ノートをご確認ください。",
@@ -13284,6 +13414,7 @@
 			"terminal.integrated.hideOnLastClosed": "最後のターミナルが閉じられたときにターミナル ビューを非表示にするかどうか。これは、ターミナルがビュー コンテナー内の唯一の表示可能なビューである場合にのみ発生します。",
 			"terminal.integrated.hideOnStartup": "スタートアップ時にターミナル ビューを非表示にするかどうか。固定セッションがない場合にターミナルを作成しないようにします。",
 			"terminal.integrated.ignoreBracketedPasteMode": "ターミナルがモードに設定されている場合でも、ターミナルがかっこで囲まれた貼り付けモードを無視するかどうかを制御します。貼り付け時に {0} と {1} シーケンスを省略します。これは、たとえばサブシェルで発生する可能性のあるモードをシェルが優先していない場合に便利です。",
+			"terminal.integrated.killGracefully": "Controls how terminal processes are terminated. When enabled, attempts a graceful shutdown of the process tree. On POSIX, this will send `SIGTERM`. On Windows, it uses `taskkill.exe` without the `/F` (force) flag. Note that this may allow misbehaving processes to remain running. When disabled (default), processes are terminated with: `SIGHUP`.",
 			"terminal.integrated.letterSpacing": "ターミナルの文字間隔を制御します。これは、文字間に追加する追加のピクセル数を表す整数値です。",
 			"terminal.integrated.lineHeight": "ターミナルの行の高さを制御します。この数にターミナルのフォント サイズを掛けて、実際の行の高さをピクセル単位で算出します。",
 			"terminal.integrated.macOptionClickForcesSelection": "macOS で option キーを押しながらクリックしたときに選択を強制するかどうかを制御します。これにより、標準 (行) の選択が強制され、列選択モードが使用されなくなります。これにより、たとえば tmux でマウス モードが有効になっている場合などに、通常のターミナル選択を使用してコピーと貼り付けを行うことができます。",
@@ -13913,6 +14044,7 @@
 			"run test": "テストを実行する",
 			"selectTestToRun": "実行するテストの選択",
 			"testOverflowItems": "その他 {0} 件のテスト...",
+			"testing.cancelRun": "Cancel Test Run",
 			"testing.gutterMsg.contextMenu": "テスト オプションをクリックする",
 			"testing.gutterMsg.coverage": "カバレッジを使用したテストを実行するにはクリックし、さらにオプションを表示するには右クリックします",
 			"testing.gutterMsg.debug": "テストをデバッグするにはクリックし、さらにオプションを表示するには右クリックします",
@@ -14096,6 +14228,7 @@
 			"testing.cursorInsideTestRange": "カーソルが現在テスト範囲内にあるかどうか",
 			"testing.hasConfigurableConfig": "任意のテスト構成を構成できるかどうかを示す",
 			"testing.hasCoverableTests": "任意のテスト コントローラーがカバレッジ構成を登録したかどうかを示します",
+			"testing.hasCoverageInFile": "Indicates coverage has been reported in the curent editor.",
 			"testing.hasDebuggableTests": "任意のテスト コントローラーがデバッグ構成を登録したかどうかを示します",
 			"testing.hasNonDefaultConfig": "任意のテスト コントローラーが既定以外の構成を登録したかどうかを示します",
 			"testing.hasPerTestCoverage": "テストごとのカバレッジが利用可能かどうかを示します",
@@ -14869,6 +15002,7 @@
 			"quickOpen": "ファイルをすばやく開く",
 			"runProject": "プロジェクトの実行",
 			"runTasks": "自動検出されたタスクの実行",
+			"settings": "GitHub Copilot Free, Pro and Pro+ may show [public code]({0}) suggestions and we may use your data for product improvement. You can change these [settings]({1}) at any time.",
 			"setupCopilotButton.chatWithCopilot": "Copilot とチャットする",
 			"setupCopilotButton.setup": "Copilot の設定",
 			"setupCopilotButton.signIn": "Copilot の設定",
@@ -15241,6 +15375,17 @@
 			"sign in": "サインインが要求されました",
 			"signInRequest": "{1} (1) を使用するには {0} でサインインします",
 			"useOtherAccount": "別のアカウントにサインインする"
+		},
+		"vs/workbench/services/authentication/browser/authenticationMcpService": {
+			"accessRequest": "Grant access to {0} for {1}... (1)",
+			"allow": "&&Allow",
+			"confirmAuthenticationAccess": "The MCP server '{0}' wants to access the {1} account '{2}'.",
+			"deny": "&&Deny",
+			"getSessionPlateholder": "Select an account for '{0}' to use or Esc to cancel",
+			"selectAccount": "The MCP server '{0}' wants to access a {1} account",
+			"sign in": "Sign in requested",
+			"signInRequest": "Sign in with {0} to use {1} (1)",
+			"useOtherAccount": "Sign in to another account"
 		},
 		"vs/workbench/services/authentication/browser/authenticationService": {
 			"authentication.id": "認証プロバイダーの ID。",
@@ -15878,6 +16023,8 @@
 			"openFolderFirst": "ワークスペースまたはフォルダーの設定を作成するには、最初にフォルダーまたはワークスペースを開きます。"
 		},
 		"vs/workbench/services/preferences/common/preferencesEditorInput": {
+			"preferencesEditorInputName": "Preferences",
+			"preferencesEditorLabelIcon": "Icon of the preferences editor label.",
 			"settingsEditor2InputName": "設定",
 			"settingsEditorLabelIcon": "設定エディター ラベルのアイコン。"
 		},
