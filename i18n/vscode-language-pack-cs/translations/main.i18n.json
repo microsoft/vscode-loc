@@ -225,6 +225,12 @@
 		"vs/editor/browser/services/hoverService/updatableHoverWidget": {
 			"iconLabel.loading": "Načítání..."
 		},
+		"vs/editor/browser/services/inlineCompletionsService": {
+			"action.inlineSuggest.cancelSnooze": "Cancel Snooze Inline Suggestions",
+			"action.inlineSuggest.snooze": "Snooze Inline Suggestions",
+			"inlineCompletions.snoozed": "Whether inline completions are currently snoozed",
+			"snooze.placeholder": "Select snooze duration for Code completions and NES"
+		},
 		"vs/editor/browser/widget/codeEditor/codeEditorWidget": {
 			"cursors.maximum": "Počet kurzorů byl omezen na {0}. Zvažte použití funkce [find and replace](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace) pro větší změny nebo zvýšení nastavení limitu více kurzorů editoru.",
 			"goToSetting": "Zvýšit limit více kurzorů"
@@ -586,6 +592,7 @@
 			"inlineSuggest.suppressInlineSuggestions": "Potlačí vložené dokončování pro zadaná ID rozšíření – oddělená čárkami.",
 			"inlineSuggest.suppressSuggestions": "Určuje, jak vložené návrhy interagují s widgetem návrhů. Pokud je tato možnost povolená, widget návrhů se nezobrazí automaticky, pokud jsou k dispozici vložené návrhy.",
 			"inlineSuggest.syntaxHighlightingEnabled": "Určuje, jestli se má v editoru zobrazovat zvýrazňování syntaxe pro vložené návrhy.",
+			"inlineSuggest.triggerCommandOnProviderChange": "Controls whether to trigger a command when the inline suggestion provider changes.",
 			"letterSpacing": "Určuje mezery mezi písmeny v pixelech.",
 			"lineHeight": "Určuje výšku řádku. \r\n – Při použití hodnoty 0 se automaticky vypočítá výška řádku z velikosti písma.\r\n – Hodnoty mezi 0 a 8 se použijí jako multiplikátor s velikostí písma.\r\n – Hodnoty větší nebo rovny 8 se použijí jako efektivní hodnoty.",
 			"lineNumbers": "Řídí zobrazování čísel řádků.",
@@ -4825,7 +4832,6 @@
 			"workbench.reduceMotion.on": "Vždy vykreslovat s omezeným pohybem.",
 			"workbench.secondarySideBar.defaultVisibility.hidden": "Sekundární boční panel je ve výchozím nastavení skrytý.",
 			"workbench.secondarySideBar.defaultVisibility.visible": "Sekundární boční panel je ve výchozím nastavení viditelný.",
-			"workbench.secondarySideBar.defaultVisibility.visibleInNewWorkspace": "Sekundární boční panel je ve výchozím nastavení viditelný, pokud je otevřen nový pracovní prostor.",
 			"workbench.secondarySideBar.defaultVisibility.visibleInWorkspace": "Sekundární boční panel je ve výchozím nastavení viditelný, pokud je otevřen pracovní prostor.",
 			"workbench.view.showQuietly": "Pokud rozšíření žádá o zobrazení skrytého zobrazení, zobrazí místo toho ukazatel stavového řádku, na který lze kliknout.",
 			"wrapTabs": "Určuje, jestli mají být karty při překročení dostupného místa zalomeny na více řádků nebo jestli se má zobrazit posuvník. Tato hodnota je ignorována, pokud možnost {0} není nastavena na hodnotu {1}.",
@@ -5191,7 +5197,7 @@
 			"toggleWindowTabsBar": "Toggle Window Tabs Bar",
 			"touchbar.enabled": "Enables the macOS touchbar buttons on the keyboard if available.",
 			"touchbar.ignored": "Sada identifikátorů pro položky na dotykovém panelu, které by se neměly zobrazovat (příklad: workbench.action.navigateBack)",
-			"window.border": "Controls the border color of the window. Set to `off` to disable or to a specific color in Hex, RGB, RGBA, HSL, HSLA format. This requires Windows to have the 'Show accent color on title bars and window borders' enabled and is ignored when {0} is set to {1}.",
+			"window.border": "Určuje barvu ohraničení okna. Pokud chcete zakázat, nastavte hodnotu off nebo nastavte konkrétní barvu ve formátu Hex, RGB, RGBA, HSL, HSLA. To vyžaduje, aby byla v systému Windows povolena možnost pro zobrazení barvy zvýraznění záhlaví a ohraničení oken. Pokud je {0} nastaveno na {1}, ignoruje se.",
 			"window.clickThroughInactive": "If enabled, clicking on an inactive window will both activate the window and trigger the element under the mouse if it is clickable. If disabled, clicking anywhere on an inactive window will activate it only and a second click is required on the element.",
 			"window.customTitleBarVisibility": "Umožňuje upravit, kdy se má zobrazit vlastní záhlaví. Vlastní záhlaví se dá skrýt v režimu zobrazení na celou obrazovku, pokud je nastavena hodnota Windowed. Vlastní záhlaví lze skrýt pouze v případě, že není použito zobrazení na celou obrazovku s možností Never, pokud je vlastnost {0} nastavena na hodnotu Native.",
 			"window.customTitleBarVisibility.auto": "Automaticky změní viditelnost vlastního záhlaví.",
@@ -5770,6 +5776,8 @@
 			"copilotQuotaReached": "Dosáhli jste kvóty pro Copilot.",
 			"currentChatLabel": "aktuální",
 			"dismiss": "Zavřít",
+			"generateInstructions": "Generate Workspace Instructions File",
+			"generateInstructions.short": "Generate Instructions",
 			"interactiveSession.clearHistory.label": "Vymazat historii vstupu",
 			"interactiveSession.focusInput.label": "Vstup chatu na intenzivní práci",
 			"interactiveSession.history.clear": "Vymazat všechny chaty pracovního prostoru",
@@ -5779,6 +5787,7 @@
 			"interactiveSession.history.title": "Historie chatu pracovního prostoru",
 			"interactiveSession.open": "Nový editor chatu",
 			"manageCopilot": "Spravovat Copilot",
+			"mcp.servers": "MCP Servers",
 			"more": "Další…",
 			"newChatTitle": "Nový název chatu",
 			"openChat": "Otevřít chat",
@@ -5794,8 +5803,6 @@
 			"toggle.chatControl": "Ovládací prvky Copilotu",
 			"toggle.chatControlsDescription": "Přepnout viditelnost ovládacích prvků Copilotu v záhlaví",
 			"toggleChat": "Přepnout chat",
-			"updateInstructions": "Vygenerovat pokyny",
-			"updateInstructions.short": "Vygenerovat pokyny",
 			"upgradeChat": "Upgradovat plán Copilotu",
 			"upgradePlan": "Upgradovat plán Copilotu",
 			"upgradePro": "Upgradovat na Copilot Pro",
@@ -5848,7 +5855,7 @@
 			"workbench.action.chat.logInputHistory.label": "Protokolovat historii vstupů chatu"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
-			"actions.chat.createRemoteJob": "Nasdílení změn do agenta pro psaní kódu",
+			"actions.chat.createRemoteJob": "Push to Copilot coding agent",
 			"actions.chat.submitWithCodebase": "Odeslat s: {0}",
 			"analyzingChatHistory": "Analyzuje se historie chatu.",
 			"chat.newChat.label": "Odeslat do nového chatu",
@@ -5872,7 +5879,7 @@
 			"interactive.toggleAgent.label": "Nastavit režim chatu",
 			"interactive.toggleRequestPausd.label": "Přepnout žádost pozastavena",
 			"remoteAgentError": "Relace agenta pro psaní kódu byla zrušena.",
-			"remoteJobCreating": "Nasdílení změn do agenta pro psaní kódu",
+			"remoteJobCreating": "Pushing to Copilot coding agent",
 			"requestIsPaused": "Žádost o obnovení činnosti",
 			"requestNotPaused": "Pozastavit žádost",
 			"setChatMode": "Nastavit režim"
@@ -6191,7 +6198,7 @@
 			"accept.file": "Nechat",
 			"acceptAllEdits": "Zachovat všechny úpravy",
 			"addFilesFromReferences": "Přidat soubory z odkazů",
-			"chat.editRequests.label": "Edit Request",
+			"chat.editRequests.label": "Upravit žádost",
 			"chat.editing.discardAll.confirmation.manyFiles": "Tato akce vrátí zpět změny provedené uživatelem {0} v(e) {1} souborech. Chcete pokračovat?",
 			"chat.editing.discardAll.confirmation.oneFile": "Tato akce vrátí zpět změny provedené uživatelem {0} v {1}. Chcete pokračovat?",
 			"chat.editing.discardAll.confirmation.primaryButton": "Ano",
@@ -6454,6 +6461,7 @@
 			"chatQuotaExceededStatus": "Bylo dosaženo kvóty chatu.",
 			"chatStatus": "Stav Copilotu",
 			"chatsLabel": "Zprávy v chatu",
+			"completionsAndNES": "Completions / NES",
 			"completionsDisabledStatus": "Dokončování kódu zakázáno",
 			"completionsLabel": "Dokončování kódu",
 			"completionsQuotaExceededStatus": "Dosáhli jste kvóty pro dokončení.",
@@ -6480,9 +6488,13 @@
 			"quotaUnlimited": "Zahrnuto",
 			"settings.codeCompletions": "Dokončování kódu (všechny soubory)",
 			"settings.codeCompletionsLanguage": "Dokončování kódu ({0})",
+			"settings.mute5minutes": "Mute for 5 mins",
 			"settings.nextEditSuggestions": "Návrh dalších úprav",
+			"settings.plus5mins": "+5 mins",
+			"settings.snooze": "Snooze",
+			"settings.snooze5minutes": "Snooze completions and NES for 5 mins",
+			"settings.snoozeAdditional5minutes": "Snooze additional 5 mins",
 			"settingsLabel": "Nastavení",
-			"settingsTitle": "Nastavení",
 			"settingsTooltip": "Otevřít nastavení",
 			"signInDescription": "Přihlaste se, abyste mohli používat funkce nástroje Copilot AI.",
 			"signInToUseCopilotButton": "Pokud chcete používat Copilot, přihlaste se",
@@ -6493,12 +6505,13 @@
 			"agentMessage": "Požádejte Copilot, aby upravil vaše soubory v [režimu agenta]({0}). Copilot automaticky použije více žádostí k výběru souborů k úpravě, spuštění příkazů terminálu a iteraci chyb.",
 			"chatDescription": "Zeptat se Copilotu",
 			"chatMessage": "Copilot využívá umělou inteligenci, nelze proto vyloučit chyby. Než výstup použijete, pečlivě ho zkontrolujte.",
-			"chatWidget.suggestedPrompts.gettingStarted": "Ask @vscode",
-			"chatWidget.suggestedPrompts.newProject": "Create a #new Project",
+			"chatWidget.suggestedPrompts.gettingStarted": "Zeptat se @vscode",
+			"chatWidget.suggestedPrompts.newProject": "Vytvořit #nový projekt",
 			"chatWidget.tips": "{0} nebo napište {1} pro připojení kontextu\r\n\r\n{2} pro chat s rozšířeními\r\n\r\nNapište {3} pro použití příkazů",
 			"chatWidget.tips.withoutParticipants": "{0} nebo napište {1} pro připojení kontextu",
 			"editsMessage": "Spusťte relaci úprav tak, že definujete sadu souborů, se kterými chcete pracovat. Pak požádejte Copilot o změny, které chcete provést.",
 			"editsTitle": "Upravit pomocí Copilotu",
+			"expChatTitle": "Get Started with VS Code",
 			"scrollDownButtonLabel": "Posunout dolů"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6617,8 +6630,8 @@
 			"user-data-dir.capitalized": "Složka uživatelských dat"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptCodingAgentActionOverlay": {
-			"runPromptWithCodingAgent": "Run with Coding Agent",
-			"runWithCodingAgent.label": "{0} Spustit s agentem pro psaní kódu"
+			"runPromptWithCodingAgent": "Run prompt file in a remote coding agent",
+			"runWithCodingAgent.label": "{0} Push to Copilot coding agent"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolsCodeLensProvider": {
 			"configure-tools.capitalized.ellipsis": "Konfigurovat nástroje...",
@@ -6699,7 +6712,7 @@
 			"chatIsEnabled": "True, pokud je chat povolen, protože je aktivován výchozí účastník chatu s implementací.",
 			"chatItemId": "ID položky chatu",
 			"chatLastItemId": "ID poslední položky chatu",
-			"chatMode": "The 'kind' of the current chat mode- Agent for custom modes.",
+			"chatMode": "Druh aktuálního režimu chatu – agent pro vlastní režimy.",
 			"chatModelsAreUserSelectable": "True, když uživatel může model chatu vybrat ručně",
 			"chatPanelExtensionParticipantRegistered": "True, pokud je výchozí účastník chatu zaregistrovaný pro panel z rozšíření.",
 			"chatPanelLocation": "Umístění panelu chatu",
@@ -6721,7 +6734,7 @@
 			"interactiveInputHasFocus": "True, pokud má vstup chatu fokus",
 			"interactiveInputHasText": "True, pokud má vstup chatu text.",
 			"interactiveSessionCurrentlyEditing": "True, když se aktuální požadavek upravuje.",
-			"interactiveSessionCurrentlyEditingInput": "True when the current request input at the bottom is being edited.",
+			"interactiveSessionCurrentlyEditingInput": "True, když se upravuje aktuální vstup požadavku v dolní části.",
 			"interactiveSessionRequestInProgress": "True, pokud aktuální požadavek stále probíhá.",
 			"interactiveSessionResponseVote": "Když se hlasuje pro odpověď, nastaví se na „pro“. Když se hlasuje proti ní, nastaví se na „proti“. V opačném případě jde o prázdný řetězec.",
 			"toolsCount": "Počet nástrojů dostupných v chatu."
@@ -6819,7 +6832,7 @@
 			"toolSetName": "ToolSet: {0}\r\n\r\n"
 		},
 		"vs/workbench/contrib/chat/common/promptSyntax/languageProviders/promptLinkDiagnosticsProvider": {
-			"fileNotFound": "File not found."
+			"fileNotFound": "Soubor se nenašel."
 		},
 		"vs/workbench/contrib/chat/common/promptSyntax/parsers/promptHeader/headerBase": {
 			"prompt.header.diagnostics.parsing-error": "Nepodařilo se analyzovat hlavičku výzvy: {0}",
@@ -6928,22 +6941,22 @@
 			"copilotWorkspaceTrust": "Copilot is currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/electron-browser/tools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binary files are not supported at the moment.",
+			"fetchWebPage.binaryNotSupported": "Binární soubory se v tuto chvíli nepodporují.",
 			"fetchWebPage.confirmationMessage.plural": "Webový obsah může obsahovat škodlivý kód nebo se pokusit o útoky prostřednictvím injektáže výzvy.",
 			"fetchWebPage.confirmationMessage.singular": "Webový obsah může obsahovat škodlivý kód nebo se pokusit o útoky prostřednictvím injektáže výzvy.",
 			"fetchWebPage.confirmationTitle.plural": "Načíst webové stránky?",
 			"fetchWebPage.confirmationTitle.singular": "Načíst webovou stránku?",
 			"fetchWebPage.invalidUrl": "Neplatná adresa URL",
-			"fetchWebPage.invocationMessage.plural": "Fetching {0} resources",
+			"fetchWebPage.invocationMessage.plural": "Načítají se prostředky ({0})",
 			"fetchWebPage.invocationMessage.singular": "Načítá se: {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Fetching [resource]({0})",
+			"fetchWebPage.invocationMessage.singularAsLink": "Načítá se [prostředek]({0})",
 			"fetchWebPage.modelDescription": "Načte hlavní obsah z webové stránky. Tento nástroj je užitečný pro shrnutí nebo analýzu obsahu webové stránky.",
 			"fetchWebPage.noValidUrls": "Nejsou zadané žádné platné adresy URL.",
-			"fetchWebPage.pastTenseMessage.plural": "Fetched {0} resources, but the following were invalid URLs:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Fetched resource, but the following was an invalid URL:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Fetched {0} resources",
+			"fetchWebPage.pastTenseMessage.plural": "Načetly se prostředky ({0}), ale následující adresy URL byly neplatné:\r\n\r\n{1}\r\n\r\n",
+			"fetchWebPage.pastTenseMessage.singular": "Načetl se prostředek, ale následující adresa URL byla neplatná:\r\n\r\n{0}\r\n\r\n",
+			"fetchWebPage.pastTenseMessageResult.plural": "Načetly se prostředky ({0})",
 			"fetchWebPage.pastTenseMessageResult.singular": "Načteno: {0}",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Fetched [resource]({0})",
+			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Načetl se [prostředek]({0})",
 			"fetchWebPage.urlsDescription": "Pole adres URL, ze kterého se má načíst obsah"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
@@ -14318,9 +14331,9 @@
 			"suggest.suggestOnTriggerCharacters": "Určuje, jestli se mají při napsání aktivačních znaků automaticky zobrazovat návrhy.",
 			"suggest.upArrowNavigatesHistory": "Určuje, jestli klávesa se šipkou nahoru prochází historii příkazů, když je fokus na prvním návrhu a navigace ještě neproběhla. Pokud je tato možnost nastavená na false, šipka nahoru přesune fokus na poslední návrh.",
 			"terminal.integrated.selectionMode": "Určuje, jak funguje výběr návrhů v integrovaném terminálu.",
-			"terminal.integrated.selectionMode.always": "Vždy vybrat",
-			"terminal.integrated.selectionMode.never": "Do explicitní navigace uživatelem v návrzích nedojde k žádnému výběru.",
-			"terminal.integrated.selectionMode.partial": "Zobrazí ohraničení a vloží návrh pouze pomocí klávesy Tabulátor, dokud nedojde k navigaci. Potom se zobrazí výběr a vložení pomocí klávesy Enter nebo Tabulátor.",
+			"terminal.integrated.selectionMode.always": "Always select a suggestion when automatically triggering IntelliSense. `Enter` or `Tab` can be used to accept the first suggestion.",
+			"terminal.integrated.selectionMode.never": "Never select a suggestion when automatically triggering IntelliSense. The list must be navigated via `Down` before `Enter` or `Tab` can be used to accept the active suggestion.",
+			"terminal.integrated.selectionMode.partial": "Partially select a suggestion when automatically triggering IntelliSense. `Tab` can be used to accept the first suggestion, only after navigating the suggestions via `Down` will `Enter` also accept the active suggestion.",
 			"terminalWindowsExecutableSuggestionSetting": "Sada spustitelných rozšíření příkazů systému Windows, která budou zahrnuta jako návrhy v terminálu\r\n\r\nVe výchozím nastavení je zahrnuto mnoho spustitelných souborů, které jsou uvedeny níže:\r\n\r\n{0}.\r\n\r\nPokud chcete rozšíření vyloučit, nastavte ho na false.\r\n\r\n. Pokud chcete do seznamu zahrnout položku, která není, přidejte ji a nastavte ji na true."
 		},
 		"vs/workbench/contrib/terminalContrib/typeAhead/common/terminalTypeAheadConfiguration": {

@@ -225,6 +225,12 @@
 		"vs/editor/browser/services/hoverService/updatableHoverWidget": {
 			"iconLabel.loading": "Cargando..."
 		},
+		"vs/editor/browser/services/inlineCompletionsService": {
+			"action.inlineSuggest.cancelSnooze": "Cancel Snooze Inline Suggestions",
+			"action.inlineSuggest.snooze": "Snooze Inline Suggestions",
+			"inlineCompletions.snoozed": "Whether inline completions are currently snoozed",
+			"snooze.placeholder": "Select snooze duration for Code completions and NES"
+		},
 		"vs/editor/browser/widget/codeEditor/codeEditorWidget": {
 			"cursors.maximum": "El número de cursores se ha limitado a {0}. Considere la posibilidad de usar [buscar y reemplazar](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace) para realizar cambios mayores o aumentar la configuración del límite de varios cursores del editor.",
 			"goToSetting": "Aumentar el límite de varios cursores"
@@ -586,6 +592,7 @@
 			"inlineSuggest.suppressInlineSuggestions": "Suprime los complementos en línea para los id. de extensión especificados, separados por comas.",
 			"inlineSuggest.suppressSuggestions": "Controla cómo interactúan las sugerencias insertadas con el widget de sugerencias. Si se habilita, el widget de sugerencias no se muestra automáticamente cuando hay sugerencias insertadas disponibles.",
 			"inlineSuggest.syntaxHighlightingEnabled": "Controla si se va a mostrar el resaltado de sintaxis para las sugerencias insertadas en el editor.",
+			"inlineSuggest.triggerCommandOnProviderChange": "Controls whether to trigger a command when the inline suggestion provider changes.",
 			"letterSpacing": "Controla el espacio entre letras en píxeles.",
 			"lineHeight": "Controla el alto de línea. \r\n - Use 0 para calcular automáticamente el alto de línea a partir del tamaño de la fuente.\r\n - Los valores entre 0 y 8 se usarán como multiplicador con el tamaño de fuente.\r\n - Los valores mayores o igual que 8 se usarán como valores efectivos.",
 			"lineNumbers": "Controla la visualización de los números de línea.",
@@ -4825,7 +4832,6 @@
 			"workbench.reduceMotion.on": "Representar siempre con movimiento reducido.",
 			"workbench.secondarySideBar.defaultVisibility.hidden": "La barra lateral secundaria está oculta de forma predeterminada.",
 			"workbench.secondarySideBar.defaultVisibility.visible": "La barra lateral secundaria es visible de forma predeterminada.",
-			"workbench.secondarySideBar.defaultVisibility.visibleInNewWorkspace": "La barra lateral secundaria está visible de forma predeterminada si se abre un área de trabajo nueva.",
 			"workbench.secondarySideBar.defaultVisibility.visibleInWorkspace": "La barra lateral secundaria está visible de forma predeterminada si se abre un área de trabajo.",
 			"workbench.view.showQuietly": "Si una extensión solicita que se muestre una vista oculta, muestre en su lugar un indicador de barra de estado en el que se pueda hacer clic.",
 			"wrapTabs": "Controla si las tabulaciones deben ajustarse en varias líneas al superar el espacio disponible o si debe mostrarse una barra de desplazamiento en su lugar. Este valor se omite cuando {0} no se establece en \"{1}\".",
@@ -5770,6 +5776,8 @@
 			"copilotQuotaReached": "Cuota de Copilot alcanzada",
 			"currentChatLabel": "actual",
 			"dismiss": "Ignorar",
+			"generateInstructions": "Generate Workspace Instructions File",
+			"generateInstructions.short": "Generate Instructions",
 			"interactiveSession.clearHistory.label": "Borrar el historial de entradas",
 			"interactiveSession.focusInput.label": "Enfocar entrada de chat",
 			"interactiveSession.history.clear": "Borrar todos los chats del área de trabajo",
@@ -5779,6 +5787,7 @@
 			"interactiveSession.history.title": "Historial de chats del área de trabajo",
 			"interactiveSession.open": "Nuevo Editor de chat",
 			"manageCopilot": "Administrar Copilot",
+			"mcp.servers": "MCP Servers",
 			"more": "Más...",
 			"newChatTitle": "Nuevo título del chat",
 			"openChat": "Abrir chat",
@@ -5794,8 +5803,6 @@
 			"toggle.chatControl": "Controles de Copilot",
 			"toggle.chatControlsDescription": "Alternar visibilidad de los controles Copilot en la barra de título",
 			"toggleChat": "Alternar chat",
-			"updateInstructions": "Generar instrucciones",
-			"updateInstructions.short": "Generar instrucciones",
 			"upgradeChat": "Actualizar plan de Copilot",
 			"upgradePlan": "Actualizar plan de Copilot",
 			"upgradePro": "Actualizar a Copilot Pro",
@@ -5848,7 +5855,7 @@
 			"workbench.action.chat.logInputHistory.label": "Registrar historial de entrada de chat"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
-			"actions.chat.createRemoteJob": "Insertar en el agente de codificación",
+			"actions.chat.createRemoteJob": "Push to Copilot coding agent",
 			"actions.chat.submitWithCodebase": "Enviar con {0}",
 			"analyzingChatHistory": "Análisis del historial de chats",
 			"chat.newChat.label": "Enviar a nuevo chat",
@@ -5872,7 +5879,7 @@
 			"interactive.toggleAgent.label": "Establecer modo de chat",
 			"interactive.toggleRequestPausd.label": "Alternar solicitud pausada",
 			"remoteAgentError": "Sesión del agente de codificación cancelada.",
-			"remoteJobCreating": "Insertando en el agente de codificación",
+			"remoteJobCreating": "Pushing to Copilot coding agent",
 			"requestIsPaused": "Reanudar solicitud",
 			"requestNotPaused": "Pausar solicitud",
 			"setChatMode": "Establecer modo"
@@ -6454,6 +6461,7 @@
 			"chatQuotaExceededStatus": "Cuota de chat alcanzada",
 			"chatStatus": "Estado de Copilot",
 			"chatsLabel": "Mensajes de chat",
+			"completionsAndNES": "Completions / NES",
 			"completionsDisabledStatus": "Completaciones de código deshabilitadas",
 			"completionsLabel": "Completaciones de código",
 			"completionsQuotaExceededStatus": "Se alcanzó la cuota de finalizaciones",
@@ -6480,9 +6488,13 @@
 			"quotaUnlimited": "Incluido",
 			"settings.codeCompletions": "Finalizaciones de código (todos los archivos)",
 			"settings.codeCompletionsLanguage": "Completaciones de código ({0})",
+			"settings.mute5minutes": "Mute for 5 mins",
 			"settings.nextEditSuggestions": "Siguientes sugerencias de edición",
+			"settings.plus5mins": "+5 mins",
+			"settings.snooze": "Snooze",
+			"settings.snooze5minutes": "Snooze completions and NES for 5 mins",
+			"settings.snoozeAdditional5minutes": "Snooze additional 5 mins",
 			"settingsLabel": "Configuración",
-			"settingsTitle": "Configuración",
 			"settingsTooltip": "Abrir configuración",
 			"signInDescription": "Inicie sesión para usar las características de IA de Copilot.",
 			"signInToUseCopilotButton": "Iniciar sesión para usar Copilot",
@@ -6493,12 +6505,13 @@
 			"agentMessage": "Pida a Copilot que edite los archivos en [modo de agente]({0}). Copilot usará automáticamente varias solicitudes para seleccionar archivos para editar, ejecutar comandos de terminal e iterar en caso de errores.",
 			"chatDescription": "Preguntar a Copilot",
 			"chatMessage": "Copilot funciona con IA, por lo que es posible que se produzcan errores. Revise la salida cuidadosamente antes de usarla.",
-			"chatWidget.suggestedPrompts.gettingStarted": "Ask @vscode",
-			"chatWidget.suggestedPrompts.newProject": "Create a #new Project",
+			"chatWidget.suggestedPrompts.gettingStarted": "Preguntar a @vscode",
+			"chatWidget.suggestedPrompts.newProject": "Crear un #nuevo proyecto",
 			"chatWidget.tips": "{0} o escriba {1} para adjuntar contexto\r\n\r\n{2} para chatear con extensiones\r\n\r\nEscriba {3} para usar comandos",
 			"chatWidget.tips.withoutParticipants": "{0} o escriba {1} para adjuntar contexto",
 			"editsMessage": "Inicie la sesión de edición definiendo un conjunto de archivos con los que desea trabajar. A continuación, pida a Copilot los cambios que quiere realizar.",
 			"editsTitle": "Editar con Copilot",
+			"expChatTitle": "Get Started with VS Code",
 			"scrollDownButtonLabel": "Desplazar hacia abajo"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6617,8 +6630,8 @@
 			"user-data-dir.capitalized": "Carpeta de datos del usuario"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptCodingAgentActionOverlay": {
-			"runPromptWithCodingAgent": "Ejecutar con el Agente de codificación",
-			"runWithCodingAgent.label": "{0} Ejecutar con el agente de codificación"
+			"runPromptWithCodingAgent": "Run prompt file in a remote coding agent",
+			"runWithCodingAgent.label": "{0} Push to Copilot coding agent"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolsCodeLensProvider": {
 			"configure-tools.capitalized.ellipsis": "Configurar herramientas...",
@@ -6699,7 +6712,7 @@
 			"chatIsEnabled": "True cuando el chat está habilitado porque se activa un participante de chat predeterminado con una implementación.",
 			"chatItemId": "Id. del elemento de chat.",
 			"chatLastItemId": "Id. del último elemento de chat.",
-			"chatMode": "The 'kind' of the current chat mode- Agent for custom modes.",
+			"chatMode": "La \"variante\" del modo de chat actual: agente para modos personalizados.",
 			"chatModelsAreUserSelectable": "True cuando el usuario puede seleccionar manualmente el modelo de chat.",
 			"chatPanelExtensionParticipantRegistered": "True cuando se registra un participante de chat predeterminado para el panel desde una extensión.",
 			"chatPanelLocation": "Ubicación del panel de chat.",
@@ -6928,22 +6941,22 @@
 			"copilotWorkspaceTrust": "Copilot is currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/electron-browser/tools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binary files are not supported at the moment.",
+			"fetchWebPage.binaryNotSupported": "Los archivos binarios no se admiten en este momento.",
 			"fetchWebPage.confirmationMessage.plural": "El contenido web puede contener código malintencionado o intentar ataques de inyección de indicaciones.",
 			"fetchWebPage.confirmationMessage.singular": "El contenido web puede contener código malintencionado o intentar ataques de inyección de indicaciones.",
 			"fetchWebPage.confirmationTitle.plural": "¿Capturar páginas web?",
 			"fetchWebPage.confirmationTitle.singular": "¿Capturar página web?",
 			"fetchWebPage.invalidUrl": "Dirección URL no válida",
-			"fetchWebPage.invocationMessage.plural": "Fetching {0} resources",
+			"fetchWebPage.invocationMessage.plural": "Capturando {0} recursos",
 			"fetchWebPage.invocationMessage.singular": "Capturando {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Fetching [resource]({0})",
+			"fetchWebPage.invocationMessage.singularAsLink": "Capturando [resource]({0})",
 			"fetchWebPage.modelDescription": "Captura el contenido principal de una página web. Esta herramienta es útil para resumir o analizar el contenido de una página web.",
 			"fetchWebPage.noValidUrls": "No se proporcionaron direcciones URL válidas.",
-			"fetchWebPage.pastTenseMessage.plural": "Fetched {0} resources, but the following were invalid URLs:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Fetched resource, but the following was an invalid URL:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Fetched {0} resources",
+			"fetchWebPage.pastTenseMessage.plural": "Se capturaron {0} recursos, pero las siguientes direcciones URL no eran válidas:\r\n\r\n{1}\r\n\r\n",
+			"fetchWebPage.pastTenseMessage.singular": "Se ha capturado el recurso, pero la siguiente dirección URL no es válida:\r\n\r\n{0}\r\n\r\n",
+			"fetchWebPage.pastTenseMessageResult.plural": "{0} recursos capturados",
 			"fetchWebPage.pastTenseMessageResult.singular": "Se capturó {0}",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Fetched [resource]({0})",
+			"fetchWebPage.pastTenseMessageResult.singularAsLink": "[resource]({0}) capturado",
 			"fetchWebPage.urlsDescription": "Matriz de direcciones URL de las que se va a capturar contenido."
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
@@ -14318,9 +14331,9 @@
 			"suggest.suggestOnTriggerCharacters": "Controla si deben aparecer sugerencias de forma automática al escribir caracteres desencadenadores.",
 			"suggest.upArrowNavigatesHistory": "Determina si la tecla de flecha arriba navega por el historial de comandos cuando el foco está en la primera sugerencia y aún no se ha producido la navegación. Cuando se establece en false, la flecha arriba moverá el foco a la última sugerencia en su lugar.",
 			"terminal.integrated.selectionMode": "Controla cómo funciona la selección de sugerencias en el terminal integrado.",
-			"terminal.integrated.selectionMode.always": "Seleccionar siempre.",
-			"terminal.integrated.selectionMode.never": "No se realizará ninguna selección hasta que el usuario navegue explícitamente por las sugerencias.",
-			"terminal.integrated.selectionMode.partial": "Mostrará un borde y solo insertará la sugerencia mediante la tecla TAB hasta que se haya producido la navegación. Después de eso, mostrará la selección y la insertará mediante la tecla ENTRAR o TAB.",
+			"terminal.integrated.selectionMode.always": "Always select a suggestion when automatically triggering IntelliSense. `Enter` or `Tab` can be used to accept the first suggestion.",
+			"terminal.integrated.selectionMode.never": "Never select a suggestion when automatically triggering IntelliSense. The list must be navigated via `Down` before `Enter` or `Tab` can be used to accept the active suggestion.",
+			"terminal.integrated.selectionMode.partial": "Partially select a suggestion when automatically triggering IntelliSense. `Tab` can be used to accept the first suggestion, only after navigating the suggestions via `Down` will `Enter` also accept the active suggestion.",
 			"terminalWindowsExecutableSuggestionSetting": "Conjunto de extensiones ejecutables de comandos de Windows que se incluirán como sugerencias en el terminal.\r\n\r\nMuchos ejecutables se incluyen de forma predeterminada, se enumeran a continuación:\r\n\r\n{0}.\r\n\r\nPara excluir una extensión, establézcala en 'false'\r\n\r\n. Para incluir uno que no esté en la lista, agréguelo y establézcalo en 'true'."
 		},
 		"vs/workbench/contrib/terminalContrib/typeAhead/common/terminalTypeAheadConfiguration": {
