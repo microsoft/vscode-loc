@@ -225,6 +225,12 @@
 		"vs/editor/browser/services/hoverService/updatableHoverWidget": {
 			"iconLabel.loading": "正在載入..."
 		},
+		"vs/editor/browser/services/inlineCompletionsService": {
+			"action.inlineSuggest.cancelSnooze": "Cancel Snooze Inline Suggestions",
+			"action.inlineSuggest.snooze": "Snooze Inline Suggestions",
+			"inlineCompletions.snoozed": "Whether inline completions are currently snoozed",
+			"snooze.placeholder": "Select snooze duration for Code completions and NES"
+		},
 		"vs/editor/browser/widget/codeEditor/codeEditorWidget": {
 			"cursors.maximum": "游標數目已限制為 {0}。請考慮使用 [尋找和取代](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace) 進行較大型的變更，或增加編輯器的多重游標限制設定。",
 			"goToSetting": "增加多重游標限制"
@@ -586,6 +592,7 @@
 			"inlineSuggest.suppressInlineSuggestions": "抑制指定擴充功能的內嵌完成 -- 以逗號分隔。",
 			"inlineSuggest.suppressSuggestions": "控制內嵌建議如何與建議小工具互動。如果啟用，有可用的內嵌建議時，不會自動顯示建議小工具。",
 			"inlineSuggest.syntaxHighlightingEnabled": "控制是否要在編輯器中顯示內嵌建議的語法強調顯示。",
+			"inlineSuggest.triggerCommandOnProviderChange": "Controls whether to trigger a command when the inline suggestion provider changes.",
 			"letterSpacing": "控制字母間距 (像素)。",
 			"lineHeight": "控制行高。\r\n - 使用 0 從字型大小自動計算行高。\r\n - 使用介於 0 和 8 之間的值作為字型大小的乘數。\r\n - 大於或等於 8 的值將用來作為有效值。",
 			"lineNumbers": "控制行號的顯示。",
@@ -4825,7 +4832,6 @@
 			"workbench.reduceMotion.on": "一律以精簡動作呈現。",
 			"workbench.secondarySideBar.defaultVisibility.hidden": "根據預設，會隱藏次要側邊欄。",
 			"workbench.secondarySideBar.defaultVisibility.visible": "根據預設，會顯示次要側邊欄。",
-			"workbench.secondarySideBar.defaultVisibility.visibleInNewWorkspace": "如果開啟新工作區，預設會顯示次要側邊欄。",
 			"workbench.secondarySideBar.defaultVisibility.visibleInWorkspace": "如果開啟工作區，預設會顯示次要側邊欄。",
 			"workbench.view.showQuietly": "如果延伸模組要求顯示隱藏的檢視，請改為顯示可點選的狀態列指示器。",
 			"wrapTabs": "控制索引標籤在超過可用空間時是否要換成多行，或是否改為顯示捲軸。當未設為 '{1}' 時，會忽略 {0}。",
@@ -5770,6 +5776,8 @@
 			"copilotQuotaReached": "已達 Copilot 配額",
 			"currentChatLabel": "目前",
 			"dismiss": "關閉",
+			"generateInstructions": "Generate Workspace Instructions File",
+			"generateInstructions.short": "Generate Instructions",
 			"interactiveSession.clearHistory.label": "清除輸入歷程記錄",
 			"interactiveSession.focusInput.label": "聚焦聊天輸入",
 			"interactiveSession.history.clear": "清除所有工作區聊天",
@@ -5779,6 +5787,7 @@
 			"interactiveSession.history.title": "工作區聊天記錄",
 			"interactiveSession.open": "新聊天編輯器",
 			"manageCopilot": "管理 Copilot",
+			"mcp.servers": "MCP Servers",
 			"more": "其他...",
 			"newChatTitle": "新增聊天標題",
 			"openChat": "開啟聊天",
@@ -5794,8 +5803,6 @@
 			"toggle.chatControl": "Copilot 控制項",
 			"toggle.chatControlsDescription": "切換 Copilot 控制項在標題列中的可見度",
 			"toggleChat": "切換聊天",
-			"updateInstructions": "Generate Instructions",
-			"updateInstructions.short": "Generate Instructions",
 			"upgradeChat": "升級 Copilot 方案",
 			"upgradePlan": "升級 Copilot 方案",
 			"upgradePro": "升級至 Copilot Pro",
@@ -5848,7 +5855,7 @@
 			"workbench.action.chat.logInputHistory.label": "記錄聊天輸入歷程記錄"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
-			"actions.chat.createRemoteJob": "推送至編碼代理程式",
+			"actions.chat.createRemoteJob": "Push to Copilot coding agent",
 			"actions.chat.submitWithCodebase": "使用 {0} 傳送",
 			"analyzingChatHistory": "正在分析聊天記錄",
 			"chat.newChat.label": "傳送至新聊天",
@@ -5872,7 +5879,7 @@
 			"interactive.toggleAgent.label": "設定聊天模式",
 			"interactive.toggleRequestPausd.label": "切換要求已暫停",
 			"remoteAgentError": "編碼代理程式工作階段已取消。",
-			"remoteJobCreating": "正在推送至編碼代理程式",
+			"remoteJobCreating": "Pushing to Copilot coding agent",
 			"requestIsPaused": "繼續要求",
 			"requestNotPaused": "暫停要求",
 			"setChatMode": "設定模式"
@@ -6454,6 +6461,7 @@
 			"chatQuotaExceededStatus": "已達聊天配額",
 			"chatStatus": "Copilot 狀態",
 			"chatsLabel": "聊天訊息",
+			"completionsAndNES": "Completions / NES",
 			"completionsDisabledStatus": "程式碼完成已停用",
 			"completionsLabel": "程式碼完成",
 			"completionsQuotaExceededStatus": "已達到完成配額",
@@ -6480,9 +6488,13 @@
 			"quotaUnlimited": "已包括",
 			"settings.codeCompletions": "程式碼完成 (全部檔案)",
 			"settings.codeCompletionsLanguage": "程式碼完成 ({0})",
+			"settings.mute5minutes": "Mute for 5 mins",
 			"settings.nextEditSuggestions": "下一個編輯建議",
+			"settings.plus5mins": "+5 mins",
+			"settings.snooze": "Snooze",
+			"settings.snooze5minutes": "Snooze completions and NES for 5 mins",
+			"settings.snoozeAdditional5minutes": "Snooze additional 5 mins",
 			"settingsLabel": "設定",
-			"settingsTitle": "設定",
 			"settingsTooltip": "開啟設定",
 			"signInDescription": "登入以使用 Copilot AI 功能。",
 			"signInToUseCopilotButton": "登入以使用 Copilot",
@@ -6493,12 +6505,13 @@
 			"agentMessage": "要求 Copilot 在 [代理程式模式]({0}) 中編輯您的檔案。Copilot 將自動使用多個要求來選擇要編輯的檔案、執行終端命令，並反覆調整錯誤。",
 			"chatDescription": "詢問 Copilot",
 			"chatMessage": "Copilot 是由 AI 提供，因此可能會發生錯誤。使用前請仔細檢閱輸出。",
-			"chatWidget.suggestedPrompts.gettingStarted": "Ask @vscode",
-			"chatWidget.suggestedPrompts.newProject": "Create a #new Project",
+			"chatWidget.suggestedPrompts.gettingStarted": "詢問 @vscode",
+			"chatWidget.suggestedPrompts.newProject": "建立#新專案",
 			"chatWidget.tips": "{0} 或輸入 {1} 以附加內容\r\n\r\n{2} 可使用延伸模組聊天\r\n\r\n輸入 {3} 可使用命令",
 			"chatWidget.tips.withoutParticipants": "{0} 或輸入 {1} 以附加內容",
 			"editsMessage": "定義一組您要使用的檔案以開始編輯工作階段。然後向 Copilot 詢問您想要進行的變更。",
 			"editsTitle": "使用 Copilot 編輯",
+			"expChatTitle": "Get Started with VS Code",
 			"scrollDownButtonLabel": "向下捲動"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6607,7 +6620,7 @@
 			"commands.new-modefile.select-dialog.label": "建立新自訂聊天模式檔案...",
 			"commands.new-promptfile.select-dialog.label": "新增提示檔案...",
 			"commands.prompts.use.select-dialog.delete-prompt.confirm.message": "確定要刪除 '{0}' 嗎?",
-			"commands.update-instructions.select-dialog.label": "Generate instructions...",
+			"commands.update-instructions.select-dialog.label": "產生指示...",
 			"copy": "複製或移動 (按 {0})",
 			"delete": "刪除",
 			"help": "説明",
@@ -6617,8 +6630,8 @@
 			"user-data-dir.capitalized": "使用者資料資料夾"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptCodingAgentActionOverlay": {
-			"runPromptWithCodingAgent": "搭配編碼代理程式執行",
-			"runWithCodingAgent.label": "{0} Run with Coding Agent"
+			"runPromptWithCodingAgent": "Run prompt file in a remote coding agent",
+			"runWithCodingAgent.label": "{0} Push to Copilot coding agent"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolsCodeLensProvider": {
 			"configure-tools.capitalized.ellipsis": "設定工具...",
@@ -6699,7 +6712,7 @@
 			"chatIsEnabled": "啟用聊天時為 True，因為預設聊天參與者已使用實作來啟用。",
 			"chatItemId": "聊天項目的識別碼。",
 			"chatLastItemId": "最後一個聊天項目的識別碼。",
-			"chatMode": "The 'kind' of the current chat mode- Agent for custom modes.",
+			"chatMode": "目前聊天模式的「種類」 - 自訂模式的代理程式。",
 			"chatModelsAreUserSelectable": "當使用者可手動選取聊天模型時為 True。",
 			"chatPanelExtensionParticipantRegistered": "當預設聊天參與者是從擴充功能註冊面板時為 True。",
 			"chatPanelLocation": "聊天面板的位置。",
@@ -6928,22 +6941,22 @@
 			"copilotWorkspaceTrust": "Copilot is currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/electron-browser/tools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binary files are not supported at the moment.",
+			"fetchWebPage.binaryNotSupported": "目前不支援二進位檔案。",
 			"fetchWebPage.confirmationMessage.plural": "網頁內容可能包含惡意程式碼或嘗試提示插入攻擊。",
 			"fetchWebPage.confirmationMessage.singular": "網頁內容可能包含惡意程式碼或嘗試提示插入攻擊。",
 			"fetchWebPage.confirmationTitle.plural": "擷取網頁?",
 			"fetchWebPage.confirmationTitle.singular": "擷取網頁?",
 			"fetchWebPage.invalidUrl": "無效的 URL",
-			"fetchWebPage.invocationMessage.plural": "Fetching {0} resources",
+			"fetchWebPage.invocationMessage.plural": "正在擷取 {0} 個[資源]",
 			"fetchWebPage.invocationMessage.singular": "正在擷取 {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Fetching [resource]({0})",
+			"fetchWebPage.invocationMessage.singularAsLink": "正在擷取[資源]({0})",
 			"fetchWebPage.modelDescription": "從網頁擷取主要內容。此工具適合用於摘要或分析網頁的內容。",
 			"fetchWebPage.noValidUrls": "未提供有效的 URL。",
-			"fetchWebPage.pastTenseMessage.plural": "Fetched {0} resources, but the following were invalid URLs:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Fetched resource, but the following was an invalid URL:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Fetched {0} resources",
+			"fetchWebPage.pastTenseMessage.plural": "已擷取 {0} 個資源，但下列為無效的 URL:\r\n\r\n{1}\r\n\r\n",
+			"fetchWebPage.pastTenseMessage.singular": "已擷取資源，但下列為無效的 URL:\r\n\r\n{0}\r\n\r\n",
+			"fetchWebPage.pastTenseMessageResult.plural": "已擷取 {0} 個資源",
 			"fetchWebPage.pastTenseMessageResult.singular": "已擷取 {0}",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Fetched [resource]({0})",
+			"fetchWebPage.pastTenseMessageResult.singularAsLink": "已擷取[資源]({0})",
 			"fetchWebPage.urlsDescription": "要從中擷取內容的 URL 陣列。"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
@@ -14318,9 +14331,9 @@
 			"suggest.suggestOnTriggerCharacters": "控制建議是否應在鍵入觸發字元時自動顯示。",
 			"suggest.upArrowNavigatesHistory": "決定當焦點位於第一個建議且尚未進行導覽時，向上鍵是否瀏覽命令歷程記錄。設為 False 時，向上鍵會改為將焦點移至最後一個建議。",
 			"terminal.integrated.selectionMode": "控制建議選取項目在整合式終端中的運作方式。",
-			"terminal.integrated.selectionMode.always": "一律選取。",
-			"terminal.integrated.selectionMode.never": "在使用者明確導覽建議之前，不會自動選取任何建議。",
-			"terminal.integrated.selectionMode.partial": "將顯示框線，並只透過 Tab 鍵插入建議，直到使用者導覽為止。在導覽之後，會顯示選取項目，並可透過 Enter 或 Tab 鍵插入建議。",
+			"terminal.integrated.selectionMode.always": "Always select a suggestion when automatically triggering IntelliSense. `Enter` or `Tab` can be used to accept the first suggestion.",
+			"terminal.integrated.selectionMode.never": "Never select a suggestion when automatically triggering IntelliSense. The list must be navigated via `Down` before `Enter` or `Tab` can be used to accept the active suggestion.",
+			"terminal.integrated.selectionMode.partial": "Partially select a suggestion when automatically triggering IntelliSense. `Tab` can be used to accept the first suggestion, only after navigating the suggestions via `Down` will `Enter` also accept the active suggestion.",
 			"terminalWindowsExecutableSuggestionSetting": "將包含在終端機中作為建議的一組 Windows 命令可執行檔延伸模組。\r\n\r\n預設包含許多可執行檔，如下所示：\r\n\r\n{0}。\r\n\r\n若要排除延伸模組，請將其設定為 'false'\r\n\r\n.若要包含不在清單中的清單，請將它新增並設定為 『true』。"
 		},
 		"vs/workbench/contrib/terminalContrib/typeAhead/common/terminalTypeAheadConfiguration": {

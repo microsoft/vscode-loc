@@ -225,6 +225,12 @@
 		"vs/editor/browser/services/hoverService/updatableHoverWidget": {
 			"iconLabel.loading": "正在加载…"
 		},
+		"vs/editor/browser/services/inlineCompletionsService": {
+			"action.inlineSuggest.cancelSnooze": "Cancel Snooze Inline Suggestions",
+			"action.inlineSuggest.snooze": "Snooze Inline Suggestions",
+			"inlineCompletions.snoozed": "Whether inline completions are currently snoozed",
+			"snooze.placeholder": "Select snooze duration for Code completions and NES"
+		},
 		"vs/editor/browser/widget/codeEditor/codeEditorWidget": {
 			"cursors.maximum": "已将光标数限制为 {0}。请考虑使用 [查找和替换](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace)进行较大的更改或增加编辑器多光标限制设置。",
 			"goToSetting": "增加多光标限制"
@@ -586,6 +592,7 @@
 			"inlineSuggest.suppressInlineSuggestions": "抑制指定扩展 ID (以逗号分隔)的内联补全功能。",
 			"inlineSuggest.suppressSuggestions": "控制内联建议如何与建议小组件交互。如果启用，当内联建议可用时，不会自动显示建议小组件。",
 			"inlineSuggest.syntaxHighlightingEnabled": "控制是否在编辑器中显示内联建议的语法突出显示。",
+			"inlineSuggest.triggerCommandOnProviderChange": "Controls whether to trigger a command when the inline suggestion provider changes.",
 			"letterSpacing": "控制字母间距(像素)。",
 			"lineHeight": "控制行高。\r\n - 使用 0 根据字号自动计算行高。\r\n - 介于 0 和 8 之间的值将用作字号的乘数。\r\n - 大于或等于 8 的值将用作有效值。",
 			"lineNumbers": "控制行号的显示。",
@@ -4825,7 +4832,6 @@
 			"workbench.reduceMotion.on": "始终减少动作呈现。",
 			"workbench.secondarySideBar.defaultVisibility.hidden": "默认情况下，辅助边栏是隐藏的。",
 			"workbench.secondarySideBar.defaultVisibility.visible": "默认情况下，辅助边栏是可见的。",
-			"workbench.secondarySideBar.defaultVisibility.visibleInNewWorkspace": "如果已打开新工作区，则默认显示辅助侧边栏。",
 			"workbench.secondarySideBar.defaultVisibility.visibleInWorkspace": "如果已打开工作区，辅助侧栏默认是可见的。",
 			"workbench.view.showQuietly": "如果扩展请求显示隐藏视图，则改为显示可单击的状态栏指示器。",
 			"wrapTabs": "控制当超出可用空间时，选项卡是否应在多行之间换行，或者是否应显示滚动条。如果未将 {0} 设置为 {1}，则会忽略此值。",
@@ -5770,6 +5776,8 @@
 			"copilotQuotaReached": "已达到 Copilot 配额",
 			"currentChatLabel": "当前",
 			"dismiss": "关闭",
+			"generateInstructions": "Generate Workspace Instructions File",
+			"generateInstructions.short": "Generate Instructions",
 			"interactiveSession.clearHistory.label": "清除输入历史记录",
 			"interactiveSession.focusInput.label": "焦点聊天输入",
 			"interactiveSession.history.clear": "清除所有工作区聊天",
@@ -5779,6 +5787,7 @@
 			"interactiveSession.history.title": "工作区聊天历史记录",
 			"interactiveSession.open": "新建聊天编辑器",
 			"manageCopilot": "管理 Copilot",
+			"mcp.servers": "MCP Servers",
 			"more": "更多...",
 			"newChatTitle": "新聊天标题",
 			"openChat": "打开聊天",
@@ -5794,8 +5803,6 @@
 			"toggle.chatControl": "Copilot 控件",
 			"toggle.chatControlsDescription": "切换标题栏中 Copilot 控件的可见性",
 			"toggleChat": "切换聊天",
-			"updateInstructions": "生成指令",
-			"updateInstructions.short": "生成指令",
 			"upgradeChat": "升级 Copilot 计划",
 			"upgradePlan": "升级 Copilot 计划",
 			"upgradePro": "升级到 Copilot Pro",
@@ -5848,7 +5855,7 @@
 			"workbench.action.chat.logInputHistory.label": "日志聊天输入历史记录"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
-			"actions.chat.createRemoteJob": "推送到编码智能体",
+			"actions.chat.createRemoteJob": "Push to Copilot coding agent",
 			"actions.chat.submitWithCodebase": "通过 {0} 发送",
 			"analyzingChatHistory": "正在分析聊天历史记录",
 			"chat.newChat.label": "发送到新聊天",
@@ -5872,7 +5879,7 @@
 			"interactive.toggleAgent.label": "设置聊天模式",
 			"interactive.toggleRequestPausd.label": "切换请求已暂停",
 			"remoteAgentError": "编码智能体会话已取消。",
-			"remoteJobCreating": "正在推送到编码智能体",
+			"remoteJobCreating": "Pushing to Copilot coding agent",
 			"requestIsPaused": "恢复请求",
 			"requestNotPaused": "暂停请求",
 			"setChatMode": "设置模式"
@@ -6454,6 +6461,7 @@
 			"chatQuotaExceededStatus": "已达到聊天配额",
 			"chatStatus": "Copilot 状态",
 			"chatsLabel": "聊天消息",
+			"completionsAndNES": "Completions / NES",
 			"completionsDisabledStatus": "已禁用代码补全",
 			"completionsLabel": "代码补全",
 			"completionsQuotaExceededStatus": "已达到完成配额",
@@ -6480,9 +6488,13 @@
 			"quotaUnlimited": "已包含",
 			"settings.codeCompletions": "代码补全(全部文件)",
 			"settings.codeCompletionsLanguage": "代码补全({0})",
+			"settings.mute5minutes": "Mute for 5 mins",
 			"settings.nextEditSuggestions": "下一个编辑建议",
+			"settings.plus5mins": "+5 mins",
+			"settings.snooze": "Snooze",
+			"settings.snooze5minutes": "Snooze completions and NES for 5 mins",
+			"settings.snoozeAdditional5minutes": "Snooze additional 5 mins",
 			"settingsLabel": "设置",
-			"settingsTitle": "设置",
 			"settingsTooltip": "打开“设置”",
 			"signInDescription": "登录以使用 Copilot AI 功能。",
 			"signInToUseCopilotButton": "登录以使用 Copilot",
@@ -6493,12 +6505,13 @@
 			"agentMessage": "要求 Copilot 在 [代理模式]({0})下编辑文件。Copilot 将自动使用多个请求来选取要编辑的文件、运行终端命令并迭代处理错误。",
 			"chatDescription": "询问 Copilot",
 			"chatMessage": "Copilot 由 AI 提供支持，因此可能会出现错误。请在使用前仔细查看输出。",
-			"chatWidget.suggestedPrompts.gettingStarted": "Ask @vscode",
-			"chatWidget.suggestedPrompts.newProject": "Create a #new Project",
+			"chatWidget.suggestedPrompts.gettingStarted": "询问 @vscode",
+			"chatWidget.suggestedPrompts.newProject": "创建#new项目",
 			"chatWidget.tips": "{0} 或输入 {1} 以附加上下文\r\n\r\n{2} 与扩展聊天\r\n\r\n输入 {3} 以使用命令",
 			"chatWidget.tips.withoutParticipants": "{0} 或输入 {1} 以附加上下文",
 			"editsMessage": "通过定义要使用的一组文件来启动编辑会话。然后要求 Copilot 进行你想要的更改。",
 			"editsTitle": "使用 Copilot 编辑",
+			"expChatTitle": "Get Started with VS Code",
 			"scrollDownButtonLabel": "向下滚动"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6617,8 +6630,8 @@
 			"user-data-dir.capitalized": "用户数据文件夹"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptCodingAgentActionOverlay": {
-			"runPromptWithCodingAgent": "使用编码智能体运行",
-			"runWithCodingAgent.label": "{0} 使用编码代理运行"
+			"runPromptWithCodingAgent": "Run prompt file in a remote coding agent",
+			"runWithCodingAgent.label": "{0} Push to Copilot coding agent"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolsCodeLensProvider": {
 			"configure-tools.capitalized.ellipsis": "配置工具...",
@@ -6699,7 +6712,7 @@
 			"chatIsEnabled": "启用聊天时为 True，因为默认聊天参与者是使用实现激活的。",
 			"chatItemId": "聊天项的 ID。",
 			"chatLastItemId": "最后一个聊天项的 ID。",
-			"chatMode": "The 'kind' of the current chat mode- Agent for custom modes.",
+			"chatMode": "当前聊天模式的“种类”- 自定义模式的代理。",
 			"chatModelsAreUserSelectable": "如果用户可以手动选择聊天模型，则为 True。",
 			"chatPanelExtensionParticipantRegistered": "为扩展面板注册默认聊天参与者时为 True。",
 			"chatPanelLocation": "聊天面板的位置。",
@@ -6928,22 +6941,22 @@
 			"copilotWorkspaceTrust": "Copilot is currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/electron-browser/tools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binary files are not supported at the moment.",
+			"fetchWebPage.binaryNotSupported": "目前不支持二进制文件。",
 			"fetchWebPage.confirmationMessage.plural": "Web 内容可能包含恶意代码或尝试提示注入攻击。",
 			"fetchWebPage.confirmationMessage.singular": "Web 内容可能包含恶意代码或尝试提示注入攻击。",
 			"fetchWebPage.confirmationTitle.plural": "提取网页?",
 			"fetchWebPage.confirmationTitle.singular": "提取网页?",
 			"fetchWebPage.invalidUrl": "URL 无效",
-			"fetchWebPage.invocationMessage.plural": "Fetching {0} resources",
+			"fetchWebPage.invocationMessage.plural": "正在提取 {0} 资源",
 			"fetchWebPage.invocationMessage.singular": "正在提取 {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Fetching [resource]({0})",
+			"fetchWebPage.invocationMessage.singularAsLink": "正在提取[资源]({0})",
 			"fetchWebPage.modelDescription": "从网页中提取主要内容。此工具可用于总结或分析网页的内容。",
 			"fetchWebPage.noValidUrls": "未提供有效的 URL。",
-			"fetchWebPage.pastTenseMessage.plural": "Fetched {0} resources, but the following were invalid URLs:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Fetched resource, but the following was an invalid URL:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Fetched {0} resources",
+			"fetchWebPage.pastTenseMessage.plural": "已提取 {0} 资源，但以下 URL 无效:\r\n\r\n{1}\r\n\r\n",
+			"fetchWebPage.pastTenseMessage.singular": "已提取资源，但以下 URL 无效:\r\n\r\n{0}\r\n\r\n",
+			"fetchWebPage.pastTenseMessageResult.plural": "已提取 {0} 资源",
 			"fetchWebPage.pastTenseMessageResult.singular": "已提取 {0}",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Fetched [resource]({0})",
+			"fetchWebPage.pastTenseMessageResult.singularAsLink": "已提取[资源]({0})",
 			"fetchWebPage.urlsDescription": "要从中提取内容的 URL 数组。"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
@@ -14318,9 +14331,9 @@
 			"suggest.suggestOnTriggerCharacters": "控制在键入触发字符后是否自动显示建议。",
 			"suggest.upArrowNavigatesHistory": "确定当焦点位于第一个建议上且尚未进行导航时，向上键是否导航命令历史记录。设置为 false 时，向上箭会改为将焦点移动到最后一个建议。",
 			"terminal.integrated.selectionMode": "控制建议选择在集成终端中的工作方式。",
-			"terminal.integrated.selectionMode.always": "始终选择。",
-			"terminal.integrated.selectionMode.never": "在用户显式导航建议之前，不会进行任何选择。",
-			"terminal.integrated.selectionMode.partial": "将会显示边框，并仅在导航发生之前通过 Tab 插入建议。之后，它将显示选择并通过 Enter 或 Tab 插入。",
+			"terminal.integrated.selectionMode.always": "Always select a suggestion when automatically triggering IntelliSense. `Enter` or `Tab` can be used to accept the first suggestion.",
+			"terminal.integrated.selectionMode.never": "Never select a suggestion when automatically triggering IntelliSense. The list must be navigated via `Down` before `Enter` or `Tab` can be used to accept the active suggestion.",
+			"terminal.integrated.selectionMode.partial": "Partially select a suggestion when automatically triggering IntelliSense. `Tab` can be used to accept the first suggestion, only after navigating the suggestions via `Down` will `Enter` also accept the active suggestion.",
 			"terminalWindowsExecutableSuggestionSetting": "将作为建议包括在终端中的一组 Windows 命令可执行文件扩展。\r\n\r\n默认情况下包括许多可执行文件，如下所列：\r\n\r\n{0}。\r\n\r\n若要排除扩展，请将其设置为 “false”\r\n\r\n.若要将一个不在列表中，请添加它并将其设置为 “true”。"
 		},
 		"vs/workbench/contrib/terminalContrib/typeAhead/common/terminalTypeAheadConfiguration": {

@@ -225,6 +225,12 @@
 		"vs/editor/browser/services/hoverService/updatableHoverWidget": {
 			"iconLabel.loading": "로드 중..."
 		},
+		"vs/editor/browser/services/inlineCompletionsService": {
+			"action.inlineSuggest.cancelSnooze": "Cancel Snooze Inline Suggestions",
+			"action.inlineSuggest.snooze": "Snooze Inline Suggestions",
+			"inlineCompletions.snoozed": "Whether inline completions are currently snoozed",
+			"snooze.placeholder": "Select snooze duration for Code completions and NES"
+		},
 		"vs/editor/browser/widget/codeEditor/codeEditorWidget": {
 			"cursors.maximum": "커서 수를 {0}개로 제한했습니다. 더 큰 변경 내용을 위해서는 [찾아서 교체](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace)를 사용하거나 편집기 다중 커서 제한 설정을 늘리는 것이 좋습니다.",
 			"goToSetting": "다중 커서 제한 늘리기"
@@ -586,6 +592,7 @@
 			"inlineSuggest.suppressInlineSuggestions": "지정한 확장 ID에 대한 인라인 완성을 억제합니다. 쉼표로 구분됩니다.",
 			"inlineSuggest.suppressSuggestions": "인라인 제안이 제안 위젯과 상호 작용하는 방법을 제어합니다. 사용하도록 설정하면 인라인 제안을 사용할 수 있을 때 제안 위젯이 자동으로 표시되지 않습니다.",
 			"inlineSuggest.syntaxHighlightingEnabled": "편집기에서 인라인 제안에 대한 구문 강조 표시를 표시할지 여부를 제어합니다.",
+			"inlineSuggest.triggerCommandOnProviderChange": "Controls whether to trigger a command when the inline suggestion provider changes.",
 			"letterSpacing": "문자 간격(픽셀)을 제어합니다.",
 			"lineHeight": "선 높이를 제어합니다. \r\n - 0을 사용하여 글꼴 크기에서 줄 높이를 자동으로 계산합니다.\r\n - 0에서 8 사이의 값은 글꼴 크기의 승수로 사용됩니다.\r\n - 8보다 크거나 같은 값이 유효 값으로 사용됩니다.",
 			"lineNumbers": "줄 번호의 표시 여부를 제어합니다.",
@@ -4825,7 +4832,6 @@
 			"workbench.reduceMotion.on": "항상 감소된 동작으로 렌더링합니다.",
 			"workbench.secondarySideBar.defaultVisibility.hidden": "보조 사이드바를 기본적으로 숨깁니다.",
 			"workbench.secondarySideBar.defaultVisibility.visible": "보조 사이드바를 기본적으로 표시합니다.",
-			"workbench.secondarySideBar.defaultVisibility.visibleInNewWorkspace": "새 작업 영역을 열면 보조 사이드바가 기본적으로 표시됩니다.",
 			"workbench.secondarySideBar.defaultVisibility.visibleInWorkspace": "작업 영역을 열면 보조 사이드바가 기본적으로 표시됩니다.",
 			"workbench.view.showQuietly": "확장에서 숨겨진 보기를 표시하도록 요청하는 경우 클릭 가능한 상태 표시줄 표시기를 대신 표시합니다.",
 			"wrapTabs": "사용 가능한 공간을 초과할 때 탭을 여러 줄에 래핑할지 또는 스크롤 막대를 대신 표시할지 여부를 제어합니다. 이 값은 {0}(이)가 ‘{1}’로 설정되지 않은 경우 무시됩니다.",
@@ -5770,6 +5776,8 @@
 			"copilotQuotaReached": "Copilot 할당량에 도달했습니다.",
 			"currentChatLabel": "현재",
 			"dismiss": "해제",
+			"generateInstructions": "Generate Workspace Instructions File",
+			"generateInstructions.short": "Generate Instructions",
 			"interactiveSession.clearHistory.label": "입력 기록 지우기",
 			"interactiveSession.focusInput.label": "포커스 채팅 입력",
 			"interactiveSession.history.clear": "모든 작업 영역 채팅 지우기",
@@ -5779,6 +5787,7 @@
 			"interactiveSession.history.title": "작업 영역 채팅 기록",
 			"interactiveSession.open": "새 채팅 편집기",
 			"manageCopilot": "Copilot 관리",
+			"mcp.servers": "MCP Servers",
 			"more": "자세히...",
 			"newChatTitle": "새 채팅 제목",
 			"openChat": "채팅 열기",
@@ -5794,8 +5803,6 @@
 			"toggle.chatControl": "Copilot 컨트롤",
 			"toggle.chatControlsDescription": "제목 표시줄에서 Copilot 컨트롤의 표시 여부 설정/해제",
 			"toggleChat": "채팅 토글",
-			"updateInstructions": "지침 생성",
-			"updateInstructions.short": "지침 생성",
 			"upgradeChat": "Copilot 플랜 업그레이드",
 			"upgradePlan": "Copilot 플랜 업그레이드",
 			"upgradePro": "Copilot Pro로 업그레이드",
@@ -5848,7 +5855,7 @@
 			"workbench.action.chat.logInputHistory.label": "로그 채팅 입력 기록"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatExecuteActions": {
-			"actions.chat.createRemoteJob": "Coding 에이전트에 푸시",
+			"actions.chat.createRemoteJob": "Push to Copilot coding agent",
 			"actions.chat.submitWithCodebase": "{0}과(와) 함께 보내기",
 			"analyzingChatHistory": "채팅 기록 분석 중",
 			"chat.newChat.label": "새 채팅으로 보내기",
@@ -5872,7 +5879,7 @@
 			"interactive.toggleAgent.label": "채팅 모드 설정",
 			"interactive.toggleRequestPausd.label": "요청 토글 일시 중지됨",
 			"remoteAgentError": "Coding 에이전트 세션이 취소되었습니다.",
-			"remoteJobCreating": "Coding 에이전트에 푸시하는 중",
+			"remoteJobCreating": "Pushing to Copilot coding agent",
 			"requestIsPaused": "요청 다시 시작",
 			"requestNotPaused": "요청 일시 중지",
 			"setChatMode": "모드 설정"
@@ -6454,6 +6461,7 @@
 			"chatQuotaExceededStatus": "채팅 할당량에 도달했습니다.",
 			"chatStatus": "Copilot 상태",
 			"chatsLabel": "채팅 메시지",
+			"completionsAndNES": "Completions / NES",
 			"completionsDisabledStatus": "코드 완성 사용 안 함",
 			"completionsLabel": "코드 완성",
 			"completionsQuotaExceededStatus": "완료 할당량에 도달했습니다.",
@@ -6480,9 +6488,13 @@
 			"quotaUnlimited": "포함됨",
 			"settings.codeCompletions": "코드 완성(모든 파일)",
 			"settings.codeCompletionsLanguage": "코드 완성({0})",
+			"settings.mute5minutes": "Mute for 5 mins",
 			"settings.nextEditSuggestions": "다음 편집 제안",
+			"settings.plus5mins": "+5 mins",
+			"settings.snooze": "Snooze",
+			"settings.snooze5minutes": "Snooze completions and NES for 5 mins",
+			"settings.snoozeAdditional5minutes": "Snooze additional 5 mins",
 			"settingsLabel": "설정",
-			"settingsTitle": "설정",
 			"settingsTooltip": "설정 열기",
 			"signInDescription": "Copilot AI 기능을 사용하려면 로그인하세요.",
 			"signInToUseCopilotButton": "Copilot를 사용하려면 로그인하세요.",
@@ -6493,12 +6505,13 @@
 			"agentMessage": "Copilot에게 [agent mode]({0})에서 파일을 편집하도록 요청하세요. Copilot은 자동으로 여러 요청을 사용하여 편집할 파일을 선택하고, 터미널 명령을 실행하고, 오류 발생 시 반복 처리합니다.",
 			"chatDescription": "Copilot에게 질문하기",
 			"chatMessage": "Copilot은 AI로 구동되므로 실수가 발생할 수 있습니다. 사용하기 전에 출력을 신중하게 검토하세요.",
-			"chatWidget.suggestedPrompts.gettingStarted": "Ask @vscode",
-			"chatWidget.suggestedPrompts.newProject": "Create a #new Project",
+			"chatWidget.suggestedPrompts.gettingStarted": "@vscode에 문의하기",
+			"chatWidget.suggestedPrompts.newProject": "#새 프로젝트 만들기",
 			"chatWidget.tips": "{0} 또는 컨텍스트를 연결하려면 {1} 입력\r\n\r\n{2}: 확장 프로그램을 사용하여 채팅\r\n\r\n명령을 사용하려면 {3} 입력",
 			"chatWidget.tips.withoutParticipants": "{0} 또는 컨텍스트를 연결하려면 {1} 입력",
 			"editsMessage": "작업하려는 파일 집합을 정의하여 편집 세션을 시작합니다. 그런 다음, Copilot에게 변경하려는 내용을 요청합니다.",
 			"editsTitle": "Copilot으로 편집",
+			"expChatTitle": "Get Started with VS Code",
 			"scrollDownButtonLabel": "아래로 스크롤"
 		},
 		"vs/workbench/contrib/chat/browser/codeBlockPart": {
@@ -6617,8 +6630,8 @@
 			"user-data-dir.capitalized": "사용자 데이터 폴더"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptCodingAgentActionOverlay": {
-			"runPromptWithCodingAgent": "코딩 에이전트를 사용하여 실행",
-			"runWithCodingAgent.label": "{0} 코딩 에이전트를 사용하여 실행"
+			"runPromptWithCodingAgent": "Run prompt file in a remote coding agent",
+			"runWithCodingAgent.label": "{0} Push to Copilot coding agent"
 		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolsCodeLensProvider": {
 			"configure-tools.capitalized.ellipsis": "도구 구성...",
@@ -6699,7 +6712,7 @@
 			"chatIsEnabled": "채팅이 활성화된 경우 기본 채팅 참가자가 실행에 따라 활성화되므로 True입니다.",
 			"chatItemId": "채팅 항목의 ID입니다.",
 			"chatLastItemId": "마지막 채팅 항목의 ID입니다.",
-			"chatMode": "The 'kind' of the current chat mode- Agent for custom modes.",
+			"chatMode": "현재 채팅 모드의 '종류' - 사용자 지정 모드용 에이전트입니다.",
 			"chatModelsAreUserSelectable": "사용자가 수동으로 채팅 모델을 선택할 수 있는 경우 True입니다.",
 			"chatPanelExtensionParticipantRegistered": "확장의 패널에 기본 채팅 참가자가 등록되어 있을 경우 True입니다.",
 			"chatPanelLocation": "채팅 패널의 위치입니다.",
@@ -6928,22 +6941,22 @@
 			"copilotWorkspaceTrust": "Copilot is currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/electron-browser/tools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binary files are not supported at the moment.",
+			"fetchWebPage.binaryNotSupported": "현재 이진 파일은 지원되지 않습니다.",
 			"fetchWebPage.confirmationMessage.plural": "웹 콘텐츠는 악성 코드를 포함하거나 프롬프트 삽입 공격을 시도할 수 있습니다.",
 			"fetchWebPage.confirmationMessage.singular": "웹 콘텐츠는 악성 코드를 포함하거나 프롬프트 삽입 공격을 시도할 수 있습니다.",
 			"fetchWebPage.confirmationTitle.plural": "웹 페이지를 가져올까요?",
 			"fetchWebPage.confirmationTitle.singular": "웹 페이지를 가져올까요?",
 			"fetchWebPage.invalidUrl": "잘못된 URL",
-			"fetchWebPage.invocationMessage.plural": "Fetching {0} resources",
+			"fetchWebPage.invocationMessage.plural": "리소스 {0} 가져오는 중",
 			"fetchWebPage.invocationMessage.singular": "{0}을(를) 가져오는 중",
-			"fetchWebPage.invocationMessage.singularAsLink": "Fetching [resource]({0})",
+			"fetchWebPage.invocationMessage.singularAsLink": "[리소스]({0}) 가져오는 중",
 			"fetchWebPage.modelDescription": "웹 페이지에서 기본 콘텐츠를 가져옵니다. 이 도구는 웹 페이지의 콘텐츠를 요약하거나 분석하는 데 유용합니다.",
 			"fetchWebPage.noValidUrls": "유효한 URL이 제공되지 않았습니다.",
-			"fetchWebPage.pastTenseMessage.plural": "Fetched {0} resources, but the following were invalid URLs:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Fetched resource, but the following was an invalid URL:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Fetched {0} resources",
+			"fetchWebPage.pastTenseMessage.plural": "{0} 리소스를 가져왔지만 다음 URL이 잘못되었습니다.\r\n\r\n{1}\r\n\r\n",
+			"fetchWebPage.pastTenseMessage.singular": "리소스를 가져왔지만 다음 URL이 잘못되었습니다.\r\n\r\n{0}\r\n\r\n",
+			"fetchWebPage.pastTenseMessageResult.plural": "{0} 리소스 가져옴",
 			"fetchWebPage.pastTenseMessageResult.singular": "{0}을(를) 가져왔습니다.",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Fetched [resource]({0})",
+			"fetchWebPage.pastTenseMessageResult.singularAsLink": "[리소스]({0}) 가져옴",
 			"fetchWebPage.urlsDescription": "콘텐츠를 가져올 URL의 배열입니다."
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
@@ -14318,9 +14331,9 @@
 			"suggest.suggestOnTriggerCharacters": "트리거 문자를 입력할 때 제안을 자동으로 표시할지 여부를 제어합니다.",
 			"suggest.upArrowNavigatesHistory": "포커스가 첫 번째 제안에 있고 탐색이 아직 발생하지 않은 경우 위쪽 화살표 키가 명령 기록을 탐색하는지 여부를 결정합니다. false로 설정하면 위쪽 화살표가 포커스를 대신 마지막 제안으로 이동합니다.",
 			"terminal.integrated.selectionMode": "통합 터미널에서 제안 선택이 작동하는 방식을 제어합니다.",
-			"terminal.integrated.selectionMode.always": "항상 선택하세요.",
-			"terminal.integrated.selectionMode.never": "사용자가 제안을 명시적으로 탐색할 때까지 선택이 발생하지 않습니다.",
-			"terminal.integrated.selectionMode.partial": "탐색이 발생할 때까지 테두리가 표시되며, Tab을 통해서만 제안을 삽입합니다. 그 이후에는 선택 영역이 표시되고 Enter 또는 Tab을 통해 삽입됩니다.",
+			"terminal.integrated.selectionMode.always": "Always select a suggestion when automatically triggering IntelliSense. `Enter` or `Tab` can be used to accept the first suggestion.",
+			"terminal.integrated.selectionMode.never": "Never select a suggestion when automatically triggering IntelliSense. The list must be navigated via `Down` before `Enter` or `Tab` can be used to accept the active suggestion.",
+			"terminal.integrated.selectionMode.partial": "Partially select a suggestion when automatically triggering IntelliSense. `Tab` can be used to accept the first suggestion, only after navigating the suggestions via `Down` will `Enter` also accept the active suggestion.",
 			"terminalWindowsExecutableSuggestionSetting": "터미널에서 제안 사항으로 포함되는 Windows 명령 실행 파일 확장 집합입니다.\r\n\r\n대부분의 실행 파일은 기본적으로 아래에 나열되어 있습니다.\r\n\r\n{0}.\r\n\r\n확장을 제외하려면 'false'로 설정하세요.\r\n\r\n. 목록에 없는 항목을 포함하려면 추가한 후 'true'로 설정하세요."
 		},
 		"vs/workbench/contrib/terminalContrib/typeAhead/common/terminalTypeAheadConfiguration": {
