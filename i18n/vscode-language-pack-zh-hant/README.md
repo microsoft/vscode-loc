@@ -11,7 +11,7 @@
 ## 參與貢獻
 
 若要對翻譯提出改善意見反應，請在 [vscode-loc](https://github.com/microsoft/vscode-loc) 存放庫中建立問題。
-翻譯字串會在 Microsoft 當地語系化平台中維護。只有在 Microsoft 當地語系化平台中才能進行變更，並匯出至 vscode-loc 存放庫。因此，vscode-loc 存放庫中不接受提取要求。
+翻譯字串會在 Microsoft 當地語系化平台中維護。只有在 Microsoft 當地語系化平台中才能進行變更，並匯出至 vscode-loc 存放庫。因此，vscode-loc 存放庫中不接受拉取請求。
 
 ## 授權
 

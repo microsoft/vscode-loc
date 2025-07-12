@@ -32,6 +32,7 @@ extends:
     publishExtension: true
     useContinuousReleaseSignal: false
     usePreReleaseChannel: false
+    ghCreateRelease: false
     workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
     buildSteps:
       - pwsh: |
@@ -39,4 +40,9 @@ extends:
           $patch = Get-Date -Format yyyyMMddHH
           npm version "$($version.Major).$($version.Minor).$patch"
         displayName: Update version
+        workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
+
+      - pwsh: |
+          Join-Path $env:BUILD_SOURCESDIRECTORY LICENSE.md | Copy-Item -Destination .
+        displayName: Copy LICENSE.md file
         workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
