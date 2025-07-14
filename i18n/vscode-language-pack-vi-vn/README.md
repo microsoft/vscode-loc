@@ -24,6 +24,6 @@ Mã nguồn và các chuỗi được cấp phép theo giấy phép [MIT](https:
 
 **Người đóng góp:**
 
-- Renji Yuuei
+- Renji Yuusei
 
 **Chúc bạn vui vẻ!**
