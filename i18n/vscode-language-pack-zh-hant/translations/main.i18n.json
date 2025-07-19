@@ -6023,13 +6023,16 @@
 			"newUntitledFile": "新增未命名的編輯器",
 			"selectOption": "選取要套用程式代碼區塊的位置"
 		},
+		"vs/workbench/contrib/chat/browser/actions/manageModelsActions": {
+			"manageLanguageModels": "Manage Language Models..."
+		},
 		"vs/workbench/contrib/chat/browser/attachments/implicitContextAttachment": {
 			"cell.lowercase": "儲存格",
 			"chat.fileAttachment": "已連結 {0}，{1}",
 			"chat.fileAttachmentWithRange": "已連結 {0}，{1}，行 {2} 至行 {3}",
 			"disable": "停用目前的 {0} 內容",
 			"enable": "啟用目前的 {0} 內容",
-			"enableHint": "已停用",
+			"enableHint": "Enable current {0} context",
 			"file.lowercase": "檔案",
 			"openEditor": "目前的 {0} 內容"
 		},
@@ -6608,6 +6611,7 @@
 			"vulnerabilitiesSingular": "{0} 個弱點"
 		},
 		"vs/workbench/contrib/chat/browser/contrib/chatInputCompletions": {
+			"activeFile": "Active file",
 			"fileEntryDescription": "{0} ({1})",
 			"installLabel": "安裝聊天延伸模組...",
 			"mcp.prompt.error": "解決提示時發生錯誤: {0}",
@@ -6631,6 +6635,8 @@
 			"screenshot": "螢幕擷取畫面"
 		},
 		"vs/workbench/contrib/chat/browser/modelPicker/modelPickerActionItem": {
+			"chat.manageModels": "Manage Models...",
+			"chat.manageModels.tooltip": "Manage language models",
 			"chat.modelPicker.label": "挑選模型",
 			"chat.moreModels": "新增進階版模型",
 			"chat.moreModels.tooltip": "新增進階模型"
@@ -6763,7 +6769,8 @@
 			"vscode.extension.contributes.chatViewsWelcome": "在聊天檢視中提供歡迎訊息"
 		},
 		"vs/workbench/contrib/chat/browser/viewsWelcome/chatViewWelcomeController": {
-			"agentModeSubtitle": "代理程式模式"
+			"agentModeSubtitle": "代理程式模式",
+			"suggestedPromptAriaLabel": "Suggested prompt: {0}"
 		},
 		"vs/workbench/contrib/chat/common/chatColors": {
 			"chat.avatarBackground": "聊天虛擬人偶的背景色彩。",
@@ -6792,7 +6799,6 @@
 			"chatItemId": "聊天項目的識別碼。",
 			"chatLastItemId": "最後一個聊天項目的識別碼。",
 			"chatMode": "目前聊天模式的「種類」 - 自訂模式的代理程式。",
-			"chatModelsAreUserSelectable": "當使用者可手動選取聊天模型時為 True。",
 			"chatPanelExtensionParticipantRegistered": "當預設聊天參與者是從擴充功能註冊面板時為 True。",
 			"chatPanelLocation": "聊天面板的位置。",
 			"chatParticipantRegistered": "當預設聊天參與者註冊面板時為 True。",
@@ -6862,7 +6868,9 @@
 		"vs/workbench/contrib/chat/common/languageModels": {
 			"vscode.extension.contributes.languageModels": "特定廠商的參與語言模型。",
 			"vscode.extension.contributes.languageModels.chatProviderRequired": "此貢獻點需要 'chatProvider' 提案。",
+			"vscode.extension.contributes.languageModels.displayName": "The display name of the language model vendor.",
 			"vscode.extension.contributes.languageModels.emptyVendor": "廠商欄位不可為空白。",
+			"vscode.extension.contributes.languageModels.managementCommand": "A command to manage the language model vendor, e.g. 'Manage Copilot models'. This is used in the chat model picker. If not provided, a gear icon is not rendered during vendor selection.",
 			"vscode.extension.contributes.languageModels.vendor": "語言模型全域唯一的廠商。",
 			"vscode.extension.contributes.languageModels.vendorAlreadyRegistered": "廠商 '{0}' 已經註冊，無法註冊兩次",
 			"vscode.extension.contributes.languageModels.whitespaceVendor": "廠商欄位的開頭或結尾不能含有空格。"
@@ -14216,15 +14224,11 @@
 			"runInTerminalTool.userDescription": "Tool for running commands in the terminal"
 		},
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalChatAgentToolsConfiguration": {
-			"allowList": "A list of commands or regular expressions that allow the run in terminal tool commands to run without explicit approval. These will be matched against the start of a command. A regular expression can be provided by wrapping the string in `/` characters.\r\n\r\nExamples:\r\n- `\"mkdir\"` Will allow all command lines starting with `mkdir`\r\n- `\"npm run build\"` Will allow all command lines starting with `npm run build`\r\n- `\"/^git (status|show\\b.*)$/\"` will allow `git status` and all command lines starting with `git show`\r\n- `\"/.*/\"` will allow all command lines\r\n\r\nThis will be overridden by anything that matches an entry in `#chat.agent.terminal.denyList#`.",
-			"allowList.false": "不允許該模式。",
-			"allowList.key": "要比對的命令開頭。可以通過將字串包裹在 '/' 字元中來提供規則運算式。",
-			"allowList.true": "Allow the pattern.",
-			"coreToolsEnabled": "Whether the experimental core tools are enabled. This required VS Code to be restarted.",
-			"denyList": "A list of commands or regular expressions that override matches in `#chat.agent.terminal.allowList#` and force a command line to require explicit approval. This will be matched against the start of a command. A regular expression can be provided by wrapping the string in `/` characters.\r\n\r\nExamples:\r\n- `\"rm\"` will require explicit approval for any command starting with `rm`\r\n- `\"/^git (push|pull)/\"` will require explicit approval for any command starting with `git push` or `git pull` \r\n\r\nThis provides basic protection by preventing certain commands from running automatically, especially those a user would likely want to approve first. It is not intended as a comprehensive security measure or a defense against prompt injection.",
-			"denyList.key": "要比對的命令開頭。可以通過將字串包裹在 '/' 字元中來提供規則運算式。",
-			"denyList.value.false": "請勿拒絕該模式。",
-			"denyList.value.true": "Deny the pattern."
+			"autoApprove": "A list of commands or regular expressions that control whether the run in terminal tool commands require explicit approval. These will be matched against the start of a command. A regular expression can be provided by wrapping the string in `/` characters followed by optional flags such as `i`.\r\n\r\nSet to `true` to automatically approve commands, `false` to always require explicit approval or `null` to unset the value.\r\n\r\nExamples:\r\n- `\"mkdir\": true` Will allow all command lines starting with `mkdir`\r\n- `\"npm run build\": true` Will allow all command lines starting with `npm run build`\r\n- `\"rm\": false` Will require explicit approval for all command lines starting with `rm`\r\n- `\"/^git (status|show\\b.*)$/\": true` will allow `git status` and all command lines starting with `git show`\r\n- `\"/^Get-ChildItem\\b/i\": true` will allow Get-ChildItem command regardless of casing\r\n- `\"/.*/\": true` will allow all command lines\r\n- `\"rm\": null` will unset the default `false` value for `rm`\r\n\r\nNote that these commands and regular expressions are evaluated for every _sub-command_  within a single command line, so `foo && bar` for example will need both `foo` and `bar` to match a `true` entry and must not match a `false` entry in order to auto approve. Inline commands are also detected so `echo $(rm file)` will need both `echo $(rm file)` and `rm file` to pass.",
+			"autoApprove.false": "Require explicit approval for the pattern.",
+			"autoApprove.key": "The start of a command to match against. A regular expression can be provided by wrapping the string in `/` characters.",
+			"autoApprove.null": "Ignore the pattern, this is useful for unsetting the same pattern set at a higher scope.",
+			"autoApprove.true": "Automatically approve the pattern."
 		},
 		"vs/workbench/contrib/terminalContrib/clipboard/browser/terminal.clipboard.contribution": {
 			"workbench.action.terminal.copyAndClearSelection": "複製並清除選取範圍",
@@ -14486,6 +14490,13 @@
 			"terminal.integrated.localEchoExcludePrograms": "在終端標題中找到這些程式名稱時，將會停用本機回應。",
 			"terminal.integrated.localEchoLatencyThreshold": "網路延遲的長度 (毫秒)，本機編輯將在終端上回應，而不等待伺服器認知。如果是 '0'，本機回應將一律開啟，如果是 '-1' 則將會停用。",
 			"terminal.integrated.localEchoStyle": "本機回應文字的終端樣式; 可以是字型樣式或 RGB 色彩。"
+		},
+		"vs/workbench/contrib/terminalContrib/voice/browser/terminalVoice": {
+			"terminalVoiceTextInserted": "{0} inserted"
+		},
+		"vs/workbench/contrib/terminalContrib/voice/browser/terminalVoiceActions": {
+			"workbench.action.terminal.startDictation": "Start Dictation in Terminal",
+			"workbench.action.terminal.stopDictation": "Stop Dictation in Terminal"
 		},
 		"vs/workbench/contrib/terminalContrib/wslRecommendation/browser/terminal.wslRecommendation.contribution": {
 			"install": "安裝",
@@ -15893,7 +15904,6 @@
 			"keyboard shortcuts": "鍵盤快速鍵",
 			"menuContexts": "功能表內容",
 			"menus.changeTitle": "原始檔控制內嵌變更功能表",
-			"menus.chatModelPicker": "聊天模型選擇器下拉選單",
 			"menus.chatSessions": "The Chat Sessions menu.",
 			"menus.chatTerminal": "終端操作功能表中的 [聊天] 子功能表。",
 			"menus.chatTextEditor": "文字編輯器操作功能表中的 [聊天] 子功能表。",
