@@ -5804,7 +5804,7 @@
 			"chat.requestHistory": "Na caixa de entrada, use as setas para cima e para baixo para navegar pelo histórico de solicitações. Edite a entrada e use enter ou o botão enviar para executar uma nova solicitação.",
 			"chat.signals": "Acessibilidade Os sinais podem ser alterados por meio de configurações com o prefixo signal.chat. Por padrão, se uma solicitação demorar mais de 4 segundos, você ouvirá um som indicando que o progresso ainda está ocorrendo.",
 			"chatAgent.acceptTool": "Para aceitar uma ação de ferramenta, use o comando de Confirmação de Aceitação da Ferramenta {0}.",
-			"chatAgent.autoApprove": "To automatically approve tool actions without manual confirmation, set {0} to {1} in your settings.",
+			"chatAgent.autoApprove": "Para aprovar automaticamente ações de ferramentas sem confirmação manual, defina chat.tools.autoApprove como true nas suas configurações.",
 			"chatAgent.openEditedFilesSetting": "Por padrão, quando arquivos são editados, eles serão abertos. Para alterar esse comportamento, defina accessibility.openChatEditedFiles como falso nas configurações.",
 			"chatAgent.overview": "A exibição do agente de chat é usada para aplicar edições em arquivos em seu workspace, habilitar a execução de comandos no terminal e muito mais.",
 			"chatAgent.runCommand": "Para executar a ação, use o comando aceitar ferramenta{0}.",
@@ -6117,9 +6117,9 @@
 			"chat.agent.enabled.description": "Enable agent mode for chat. When this is enabled, agent mode can be activated via the dropdown in the view.",
 			"chat.agent.maxRequests": "The maximum number of requests to allow per-turn in agent mode. When the limit is reached, will ask to confirm to continue.",
 			"chat.agent.thinkingCollapsedByDefault": "Controls how thinking is rendered.",
-			"chat.agent.thinkingMode.collapsed": "Collapsed normal",
-			"chat.agent.thinkingMode.collapsedPreview": "Collapsed and show thinking related tool calls as they come in.",
-			"chat.agent.thinkingMode.expanded": "Uncollapsed (expanded)",
+			"chat.agent.thinkingMode.collapsed": "Thinking parts will be collapsed by default.",
+			"chat.agent.thinkingMode.collapsedPreview": "Thinking parts will be expanded first, then collapse once we reach a part that is not thinking.",
+			"chat.agent.thinkingMode.expanded": "Thinking parts will be expanded by default.",
 			"chat.agent.thinkingMode.none": "Do not show the thinking",
 			"chat.checkpoints.enabled": "Habilita pontos de verificação no chat. Os pontos de verificação permitem restaurar o chat para um estado anterior.",
 			"chat.checkpoints.showFileChanges": "Controla se as alterações de arquivo no ponto de verificação do chat devem ser exibidas.",
@@ -6132,6 +6132,7 @@
 			"chat.editing.confirmEditRequestRetry": "Se deseja mostrar uma confirmação antes de repetir uma solicitação e suas edições associadas.",
 			"chat.edits2Enabled": "Habilitar o novo modo de Edições baseado em chamadas de ferramentas. Quando essa opção está habilitada, os modelos que não dão suporte a chamadas de ferramentas ficam indisponíveis para o modo de Edições.",
 			"chat.emptyChatState": "Mostra um estado de chat vazio modificado com dicas no texto do espaço reservado de entrada.",
+			"chat.emptyState.history.enabled": "Show recent chat history on the empty chat state.",
 			"chat.experimental.detectParticipant.enabled": "Habilita a detecção automática do participante do chat para o chat do painel.",
 			"chat.experimental.detectParticipant.enabled.deprecated": "Esta configuração foi preterida. Em vez disso, use 'chat.detectParticipant.enabled'.",
 			"chat.extensionToolsEnabled": "Habilitar o uso de ferramentas contribuídas por extensões de terceiros.",
@@ -6179,7 +6180,9 @@
 			"chat.signInDialogVariant": "Controlar as variações da caixa de diálogo de entrada.",
 			"chat.todoListTool.enabled": "Habilitado listas de tarefas no chat, que o agente usa como uma ferramenta para planejamento, acompanhamento de progresso e gerenciamento de contexto em fluxos de trabalho complexos de desenvolvimento.",
 			"chat.todoListTool.writeOnly": "Quando ativado, a ferramenta de tarefas opera no modo somente escrita, exigindo que o agente lembre das tarefas no contexto.",
+			"chat.tools.autoApprove.description": "Controla se o uso da ferramenta deve ser aprovado automaticamente. Permite que todas as ferramentas sejam executadas automaticamente sem a confirmação do usuário, substituindo as configurações específicas da ferramenta, como a aprovação automática do terminal. Use com cuidado: examine cuidadosamente as ferramentas selecionadas e tenha cuidado extra com possíveis fontes de injeção de solicitação!",
 			"chat.tools.autoApprove.edits": "Controla se as edições feitas pelo chat são aprovadas automaticamente. O padrão é aprovar todas as edições, exceto aquelas feitas em determinados arquivos que têm potencial para causar efeitos colaterais imediatos, como `**/.vscode/*.json`.\r\n\r\nOs arquivos são comparados com os padrões glob na ordem em que são especificados.",
+			"chat.tools.autoApprove.markdownDescription": "Controla se o uso da ferramenta deve ser aprovado automaticamente.\r\n\r\nPermite que todas as ferramentas sejam executadas automaticamente sem a confirmação do usuário, substituindo as configurações específicas da ferramenta, como a aprovação automática do terminal.\r\n\r\nUse com cuidado: examine cuidadosamente as ferramentas selecionadas e tenha cuidado extra com possíveis fontes de injeção de solicitação!",
 			"chat.undoRequests.restoreInput": "Controla se a entrada do chat deve ser restaurada quando uma solicitação de desfazer é feita. A entrada será preenchida com o texto da solicitação que foi restaurada.",
 			"chat.useAgentMd.description": "Controls whether instructions from `AGENTS.MD` file found in a workspace roots are added to all chat requests.",
 			"chat.useAgentMd.title": "Use AGENTS.MD file",
@@ -6290,9 +6293,6 @@
 			"chatMultiDiff.oneFile": "1 arquivo alterado",
 			"chatMultiDiffList": "Alterações de Arquivo"
 		},
-		"vs/workbench/contrib/chat/browser/chatContentParts/chatPinnedContentPart": {
-			"chat.pinned.thinking.header.base": "Pensando..."
-		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatProgressContentPart": {
 			"workingMessage": "Trabalhando..."
 		},
@@ -6318,9 +6318,20 @@
 			"edits0": "As alterações foram anuladas.",
 			"editsSummary": "Fez alterações."
 		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/chatThinkingContentPart": {
+			"chat.pinned.thinking.header.done": "Thought for a few seconds...",
+			"chat.thinking.header": "Thinking..."
+		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTodoListWidget": {
 			"chat.todoList.clearButton": "Limpar todas as tarefas pendentes",
 			"chat.todoList.clearButton.ariaLabel": "Limpar todas as tarefas pendentes",
+			"chat.todoList.collapseButtonWithProgress": "Collapse {0}",
+			"chat.todoList.expandButtonWithProgress": "Expand {0}",
+			"chat.todoList.item": "{0}, {1}",
+			"chat.todoList.itemWithDescription": "{0}, {1}, {2}",
+			"chat.todoList.status.completed": "completed",
+			"chat.todoList.status.inProgress": "in progress",
+			"chat.todoList.status.notStarted": "not started",
 			"chat.todoList.title": "Tarefas pendentes",
 			"chat.todoList.titleWithProgress": "Tarefas pendentes ({0}/{1})"
 		},
@@ -6555,7 +6566,6 @@
 			"suggeste.title": "{0} - {1}"
 		},
 		"vs/workbench/contrib/chat/browser/chatListRenderer": {
-			"chat.pinned.thinking.header.done": "Thought for a few seconds...",
 			"chatConfirmationAction": "selecionado “{0}”",
 			"checkpointRestore": "Ponto de Verificação Restaurado",
 			"didNotFollowInstructions": "Não seguiu as instruções",
@@ -6666,6 +6676,7 @@
 			"enterpriseInstance": "Qual é a sua instância {0}?",
 			"enterpriseInstancePlaceholder": "ou seja, \"octocat\" ou \"https://octocat.ghe.com\"...",
 			"forceSignIn": "Sign in to use AI features",
+			"hideChatSetup": "Ocultar recursos de IA",
 			"installingChat": "Getting chat ready...",
 			"invalidEnterpriseInstance": "Você deve inserir uma instância {0} válida (ou seja, \"octocat\" ou \"https://octocat.ghe.com\")",
 			"manageOverages": "Manage GitHub Copilot Overages",
@@ -6758,6 +6769,9 @@
 		"vs/workbench/contrib/chat/browser/chatWidget": {
 			"agentMessage": "Ask to edit your files in [agent mode]({0}). Agent mode will automatically use multiple requests to pick files to edit, run terminal commands, and iterate on errors.",
 			"agentTitle": "Criar com modo agente.",
+			"chat.history.list": "Chat History",
+			"chat.history.showAllHover": "Show history...",
+			"chat.history.title": "Chat History",
 			"chat.input.placeholder.lockedToAgent": "Conversar com {0}",
 			"chatDescription": "Perguntar sobre o código.",
 			"chatDisclaimer": "As respostas da IA podem estar incorretas.",
@@ -6822,12 +6836,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/contrib/screenshot": {
 			"screenshot": "Captura de tela"
-		},
-		"vs/workbench/contrib/chat/browser/languageModelToolsService": {
-			"autoApprove2.button.disable": "Disable",
-			"autoApprove2.button.enable": "Enable",
-			"autoApprove2.markdown": "Global auto approve also known as \"YOLO mode\" disables manual approval completely for _all tools in all workspaces_, allowing the agent to act fully autonomously. This is extremely dangerous and is *never* recommended, even containerized environments like [Codespaces](https://github.com/features/codespaces) and [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) have user keys forwarded into the container that could be compromised.\r\n\r\n**This feature disables [critical security protections](https://code.visualstudio.com/docs/copilot/security) and makes it much easier for an attacker to compromise the machine.**",
-			"autoApprove2.title": "Enable global auto approve?"
 		},
 		"vs/workbench/contrib/chat/browser/modelPicker/modelPickerActionItem": {
 			"chat.manageModels": "Gerenciar os modelos...",
@@ -6991,6 +6999,7 @@
 			"chatExtensionInvalid": "True quando a extensão de chat instalada é inválida e precisa ser atualizada.",
 			"chatHasCustomChatModes": "Verdadeiro quando o chat tem modos de chat personalizados disponíveis.",
 			"chatHasFileAttachments": "True quando o chat tiver anexos de arquivos.",
+			"chatInEmptyStateWithHistoryEnabled": "True when chat empty state history is enabled AND chat is in empty state.",
 			"chatIsEnabled": "True quando o chat está habilitado porque um participante padrão de chat padrão está ativado com uma implementação.",
 			"chatIsHistoryItem": "Verdadeiro quando o item da sessão de chat é do histórico.",
 			"chatItemId": "A ID do item de chat.",

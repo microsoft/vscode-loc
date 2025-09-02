@@ -5804,7 +5804,7 @@
 			"chat.requestHistory": "在输入框中，使用向上和向下箭头导航请求历史记录。编辑输入并使用 Enter 或提交按钮运行新请求。",
 			"chat.signals": "可通过带有 signals.chat 前缀的设置更改辅助功能信号。默认情况下，如果请求超过 4 秒，你将听到一个声音，指示仍在进行中。",
 			"chatAgent.acceptTool": "要接受工具操作，请使用“接受工具确认”命令{0}。",
-			"chatAgent.autoApprove": "To automatically approve tool actions without manual confirmation, set {0} to {1} in your settings.",
+			"chatAgent.autoApprove": "要自动批准工具操作而不进行手动确认，请在设置中将 chat.tools.autoApprove 设置为 true。",
 			"chatAgent.openEditedFilesSetting": "默认情况下，对文件进行编辑时，这些文件将被打开。若要更改此行为，请在设置中将 accessibility.openChatEditedFiles 设置为 false。",
 			"chatAgent.overview": "聊天代理视图用于跨工作区中的文件应用编辑、在终端中启用运行命令等。",
 			"chatAgent.runCommand": "要执行此操作，请使用 accept tool 命令{0}。",
@@ -6117,9 +6117,9 @@
 			"chat.agent.enabled.description": "Enable agent mode for chat. When this is enabled, agent mode can be activated via the dropdown in the view.",
 			"chat.agent.maxRequests": "The maximum number of requests to allow per-turn in agent mode. When the limit is reached, will ask to confirm to continue.",
 			"chat.agent.thinkingCollapsedByDefault": "Controls how thinking is rendered.",
-			"chat.agent.thinkingMode.collapsed": "Collapsed normal",
-			"chat.agent.thinkingMode.collapsedPreview": "Collapsed and show thinking related tool calls as they come in.",
-			"chat.agent.thinkingMode.expanded": "Uncollapsed (expanded)",
+			"chat.agent.thinkingMode.collapsed": "Thinking parts will be collapsed by default.",
+			"chat.agent.thinkingMode.collapsedPreview": "Thinking parts will be expanded first, then collapse once we reach a part that is not thinking.",
+			"chat.agent.thinkingMode.expanded": "Thinking parts will be expanded by default.",
 			"chat.agent.thinkingMode.none": "Do not show the thinking",
 			"chat.checkpoints.enabled": "在聊天中启用检查点。使用检查点可以将聊天还原到以前的状态。",
 			"chat.checkpoints.showFileChanges": "控制是否显示聊天检查点文件更改。",
@@ -6132,6 +6132,7 @@
 			"chat.editing.confirmEditRequestRetry": "是否在重试请求及其关联的编辑之前显示确认消息。",
 			"chat.edits2Enabled": "启用基于工具调用的新编辑模式。启用此功能后，不支持工具调用的模型将无法用于编辑模式。",
 			"chat.emptyChatState": "显示修改后的空聊天状态，并在输入占位符文本中提供提示。",
+			"chat.emptyState.history.enabled": "Show recent chat history on the empty chat state.",
 			"chat.experimental.detectParticipant.enabled": "为 panel 聊天启用聊天参与者自动删除功能。",
 			"chat.experimental.detectParticipant.enabled.deprecated": "此设置已弃用。请改用“chat.detectParticipant.enabled”。",
 			"chat.extensionToolsEnabled": "使用由第三方扩展提供的工具启用。",
@@ -6179,7 +6180,9 @@
 			"chat.signInDialogVariant": "控制登录对话框的变体。",
 			"chat.todoListTool.enabled": "在聊天中启用待办事项列表，代理以该列表作为工具对复杂开发工作流进行规划、进度跟踪和上下文管理。",
 			"chat.todoListTool.writeOnly": "启用后，待办事项工具在只写模式下运行，这要求代理在上下文中记住待办事项。",
+			"chat.tools.autoApprove.description": "控制是否应自动批准工具使用。允许所有工具在未经用户确认的情况下自动运行，从而覆盖任何特定于工具的设置(例如终端自动批准)。谨慎使用: 仔细查看所选工具，并特别注意可能的提示注入源!",
 			"chat.tools.autoApprove.edits": "控制是否自动批准聊天所做的编辑。默认设置是批准所有编辑，但对某些文件所做的可能会导致立即产生意外副作用的编辑除外，例如 `**/.vscode/*.json`。\r\n\r\n文件按照指定的顺序与 glob 模式匹配。",
+			"chat.tools.autoApprove.markdownDescription": "控制是否应自动批准工具使用。\r\n\r\n允许_所有_工具在未经用户确认的情况下自动运行，从而覆盖任何特定于工具的设置(例如终端自动批准)。\r\n\r\n谨慎使用: 仔细查看所选工具，并特别注意可能的提示注入源!",
 			"chat.undoRequests.restoreInput": "控制在发出撤消请求时是否应还原聊天的输入。输入将使用已还原请求的文本填充。",
 			"chat.useAgentMd.description": "Controls whether instructions from `AGENTS.MD` file found in a workspace roots are added to all chat requests.",
 			"chat.useAgentMd.title": "Use AGENTS.MD file",
@@ -6290,9 +6293,6 @@
 			"chatMultiDiff.oneFile": "已更改 1 个文件",
 			"chatMultiDiffList": "文件更改"
 		},
-		"vs/workbench/contrib/chat/browser/chatContentParts/chatPinnedContentPart": {
-			"chat.pinned.thinking.header.base": "正在思考..."
-		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatProgressContentPart": {
 			"workingMessage": "正在运行..."
 		},
@@ -6318,9 +6318,20 @@
 			"edits0": "已中止进行更改。",
 			"editsSummary": "已进行更改。"
 		},
+		"vs/workbench/contrib/chat/browser/chatContentParts/chatThinkingContentPart": {
+			"chat.pinned.thinking.header.done": "Thought for a few seconds...",
+			"chat.thinking.header": "Thinking..."
+		},
 		"vs/workbench/contrib/chat/browser/chatContentParts/chatTodoListWidget": {
 			"chat.todoList.clearButton": "清除所有待办事项",
 			"chat.todoList.clearButton.ariaLabel": "清除所有待办事项",
+			"chat.todoList.collapseButtonWithProgress": "Collapse {0}",
+			"chat.todoList.expandButtonWithProgress": "Expand {0}",
+			"chat.todoList.item": "{0}, {1}",
+			"chat.todoList.itemWithDescription": "{0}, {1}, {2}",
+			"chat.todoList.status.completed": "completed",
+			"chat.todoList.status.inProgress": "in progress",
+			"chat.todoList.status.notStarted": "not started",
 			"chat.todoList.title": "待办事项",
 			"chat.todoList.titleWithProgress": "待办事项({0}/{1})"
 		},
@@ -6555,7 +6566,6 @@
 			"suggeste.title": "{0} - {1}"
 		},
 		"vs/workbench/contrib/chat/browser/chatListRenderer": {
-			"chat.pinned.thinking.header.done": "Thought for a few seconds...",
 			"chatConfirmationAction": "已选择“{0}”",
 			"checkpointRestore": "已还原检查点",
 			"didNotFollowInstructions": "未按照说明操作",
@@ -6666,6 +6676,7 @@
 			"enterpriseInstance": "你的 {0} 实例是什么?",
 			"enterpriseInstancePlaceholder": "即\"octocat\" 或 \"https://octocat.ghe.com\"...",
 			"forceSignIn": "Sign in to use AI features",
+			"hideChatSetup": "隐藏 AI 功能",
 			"installingChat": "Getting chat ready...",
 			"invalidEnterpriseInstance": "必须输入有效的 {0} 实例(即 \"octocat\" 或 \"https://octocat.ghe.com\")",
 			"manageOverages": "Manage GitHub Copilot Overages",
@@ -6758,6 +6769,9 @@
 		"vs/workbench/contrib/chat/browser/chatWidget": {
 			"agentMessage": "Ask to edit your files in [agent mode]({0}). Agent mode will automatically use multiple requests to pick files to edit, run terminal commands, and iterate on errors.",
 			"agentTitle": "使用代理模式生成。",
+			"chat.history.list": "Chat History",
+			"chat.history.showAllHover": "Show history...",
+			"chat.history.title": "Chat History",
 			"chat.input.placeholder.lockedToAgent": "与 {0} 聊天",
 			"chatDescription": "询问代码的情况。",
 			"chatDisclaimer": "AI 答复可能不准确。",
@@ -6822,12 +6836,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/contrib/screenshot": {
 			"screenshot": "屏幕截图"
-		},
-		"vs/workbench/contrib/chat/browser/languageModelToolsService": {
-			"autoApprove2.button.disable": "Disable",
-			"autoApprove2.button.enable": "Enable",
-			"autoApprove2.markdown": "Global auto approve also known as \"YOLO mode\" disables manual approval completely for _all tools in all workspaces_, allowing the agent to act fully autonomously. This is extremely dangerous and is *never* recommended, even containerized environments like [Codespaces](https://github.com/features/codespaces) and [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) have user keys forwarded into the container that could be compromised.\r\n\r\n**This feature disables [critical security protections](https://code.visualstudio.com/docs/copilot/security) and makes it much easier for an attacker to compromise the machine.**",
-			"autoApprove2.title": "Enable global auto approve?"
 		},
 		"vs/workbench/contrib/chat/browser/modelPicker/modelPickerActionItem": {
 			"chat.manageModels": "管理模型...",
@@ -6991,6 +6999,7 @@
 			"chatExtensionInvalid": "已安装的聊天扩展无效且需要更新时为 True。",
 			"chatHasCustomChatModes": "如果聊天具有可用的自定义聊天模式，则为 True。",
 			"chatHasFileAttachments": "当聊天有文件附件时为 True。",
+			"chatInEmptyStateWithHistoryEnabled": "True when chat empty state history is enabled AND chat is in empty state.",
 			"chatIsEnabled": "启用聊天时为 True，因为默认聊天参与者是使用实现激活的。",
 			"chatIsHistoryItem": "当聊天会话项来自历史记录时为 True。",
 			"chatItemId": "聊天项的 ID。",
