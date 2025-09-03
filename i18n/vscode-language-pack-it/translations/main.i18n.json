@@ -5804,7 +5804,7 @@
 			"chat.requestHistory": "Nella casella di input usare le frecce SU e GIÙ per spostarsi nella cronologia delle richieste. Modificare l'input e usare INVIO o il pulsante Invia per eseguire una nuova richiesta.",
 			"chat.signals": "I segnali di accessibilità possono essere modificati tramite le impostazioni con un prefisso signals.chat. Per impostazione predefinita, se una richiesta richiede più di 4 secondi, si sentirà un suono che indica che l'avanzamento è ancora in corso.",
 			"chatAgent.acceptTool": "Per accettare un'azione dello strumento, utilizzare il comando Accetta conferma strumento{0}.",
-			"chatAgent.autoApprove": "Per approvare automaticamente le azioni degli strumenti senza conferma manuale, impostare chat.tools.autoApprove su true nelle impostazioni.",
+			"chatAgent.autoApprove": "To automatically approve tool actions without manual confirmation, set {0} to {1} in your settings.",
 			"chatAgent.openEditedFilesSetting": "Per impostazione predefinita, quando vengono apportate modifiche ai file, questi vengono aperti. Per modificare questo comportamento, impostare accessibility.openChatEditedFiles su false nelle impostazioni.",
 			"chatAgent.overview": "La visualizzazione dell'agente chat è utilizzata per applicare modifiche tra i file nella tua area di lavoro, abilitare l'esecuzione di comandi nel terminale e altro ancora.",
 			"chatAgent.runCommand": "Per eseguire l'azione, usa il comando accept tool{0}.",
@@ -5965,6 +5965,7 @@
 			"actions.chat.createRemoteJob": "Delegare all'agente di codifica",
 			"actions.chat.submitWithCodebase": "Invia con {0}",
 			"analyzingChatHistory": "Analisi della cronologia della chat",
+			"attachedFiles": "The user has attached the following files from their workspace:",
 			"chat.newChat.label": "Invia a nuova chat",
 			"chat.remove.confirmation.checkbox": "Non chiedere più",
 			"chat.remove.confirmation.message2": "Questa operazione rimuoverà tutte le richieste successive e annullerà le modifiche apportate a {0}. Continuare?",
@@ -6113,6 +6114,7 @@
 			"openEditor": "Contesto {0} corrente"
 		},
 		"vs/workbench/contrib/chat/browser/chat.contribution": {
+			"autoApprove2.description": "Global auto approve also known as \"YOLO mode\" disables manual approval completely for all tools in all workspaces, allowing the agent to act fully autonomously. This is extremely dangerous and is *never* recommended, even containerized environments like Codespaces and Dev Containers have user keys forwarded into the container that could be compromised.\r\n\r\nThis feature disables critical security protections and makes it much easier for an attacker to compromise the machine.",
 			"chat": "Chat",
 			"chat.agent.enabled.description": "Enable agent mode for chat. When this is enabled, agent mode can be activated via the dropdown in the view.",
 			"chat.agent.maxRequests": "The maximum number of requests to allow per-turn in agent mode. When the limit is reached, will ask to confirm to continue.",
@@ -6180,9 +6182,7 @@
 			"chat.signInDialogVariant": "Controllare le varianti della finestra di dialogo di accesso.",
 			"chat.todoListTool.enabled": "Consente la creazione di elenchi di attività nella chat, usate dall'agente come strumento per la pianificazione, il rilevamento dello stato di avanzamento e la gestione del contesto nei flussi di lavoro di sviluppo complessi.",
 			"chat.todoListTool.writeOnly": "Se abilitato, lo strumento attività opera in modalità di sola scrittura, richiedendo all'agente di ricordare le attività nel contesto.",
-			"chat.tools.autoApprove.description": "Controlla se l'uso dello strumento deve essere approvato automaticamente. Consenti l'esecuzione automatica di tutti gli strumenti senza conferma da parte dell'utente, ignorando eventuali impostazioni specifiche degli strumenti, come l'approvazione automatica del terminale. Usare con cautela: esaminare attentamente gli strumenti selezionati e prestare particolare attenzione alle possibili origini di inserimento della richiesta.",
 			"chat.tools.autoApprove.edits": "Controlla se le modifiche apportate dalla chat vengono approvate automaticamente. Per impostazione predefinita, vengono approvate tutte le modifiche tranne quelle apportate a determinati file che potrebbero causare effetti collaterali immediati indesiderati, ad esempio '**/.vscode/*.json'.\r\n\r\nI file vengono confrontati con i modelli glob nell'ordine in cui sono specificati.",
-			"chat.tools.autoApprove.markdownDescription": "Controlla se l'uso dello strumento deve essere approvato automaticamente.\r\n\r\nConsente l'esecuzione automatica di _tutti_ gli strumenti senza conferma da parte dell'utente, ignorando eventuali impostazioni specifiche degli strumenti, come l'approvazione automatica del terminale.\r\n\r\nUsare con cautela: esaminare attentamente gli strumenti selezionati e prestare particolare attenzione alle possibili origini di inserimento della richiesta.",
 			"chat.undoRequests.restoreInput": "Controlla se l'input della chat deve essere ripristinato quando viene effettuata una richiesta di annullamento. L'input verrà riempito con il testo della richiesta ripristinata.",
 			"chat.useAgentMd.description": "Controls whether instructions from `AGENTS.MD` file found in a workspace roots are added to all chat requests.",
 			"chat.useAgentMd.title": "Use AGENTS.MD file",
@@ -6836,6 +6836,12 @@
 		},
 		"vs/workbench/contrib/chat/browser/contrib/screenshot": {
 			"screenshot": "Screenshot"
+		},
+		"vs/workbench/contrib/chat/browser/languageModelToolsService": {
+			"autoApprove2.button.disable": "Disable",
+			"autoApprove2.button.enable": "Enable",
+			"autoApprove2.markdown": "Global auto approve also known as \"YOLO mode\" disables manual approval completely for _all tools in all workspaces_, allowing the agent to act fully autonomously. This is extremely dangerous and is *never* recommended, even containerized environments like [Codespaces](https://github.com/features/codespaces) and [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) have user keys forwarded into the container that could be compromised.\r\n\r\n**This feature disables [critical security protections](https://code.visualstudio.com/docs/copilot/security) and makes it much easier for an attacker to compromise the machine.**",
+			"autoApprove2.title": "Enable global auto approve?"
 		},
 		"vs/workbench/contrib/chat/browser/modelPicker/modelPickerActionItem": {
 			"chat.manageModels": "Gestisci modelli...",
@@ -13088,12 +13094,14 @@
 			"getSearchResultsLabel": "Ottieni risultati della ricerca"
 		},
 		"vs/workbench/contrib/search/browser/searchActionsFind": {
+			"excludeFileTypeFromSearch": "Exclude File Type from Search",
 			"excludeFolderFromSearch": "Escludi cartella dalla ricerca",
 			"findInFiles": "Cerca nei file",
 			"findInFiles.args": "Set di opzioni per la ricerca",
 			"findInFiles.description": "Apre una ricerca nell'area di lavoro",
 			"findInFolder": "Trova nella cartella...",
 			"findInWorkspace": "Trova nell'area di lavoro...",
+			"includeFileTypeInSearch": "Include File Type from Search",
 			"miFindInFiles": "Cerca nei &&file",
 			"restrictResultsToFolder": "Limita ricerca alla cartella",
 			"revealInSideBar": "Visualizza nella vista Esplora risorse",
