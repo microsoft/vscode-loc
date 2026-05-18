@@ -1836,6 +1836,7 @@
 		"vs/editor/contrib/snippet/browser/snippetController2": {
 			"hasNextTabstop": "スニペット モードのときに、次のタブ位置があるかどうか",
 			"hasPrevTabstop": "スニペット モードのときに、前のタブ位置があるかどうか",
+			"inSnippetChoice": "Whether the current snippet tab stop is a choice",
 			"inSnippetMode": "現在のエディターがスニペット モードであるかどうか",
 			"next": "次のプレースホルダーに移動..."
 		},
@@ -2167,9 +2168,13 @@
 			"agentHost.config.customizations.title": "プラグイン",
 			"agentHost.config.customizations.uri": "プラグイン URI",
 			"agentHost.config.defaultShell.description": "ホスト管理ターミナルで使用するシェル実行可能ファイルへの絶対パス。通常は接続された VS Code クライアントから `terminal.integrated.agentHostProfile.<os>` がプッシュされ、存在しない場合は `terminal.integrated.defaultProfile.<os>` にフォールバックします。さらに設定が未定義の場合は、エージェント ホストはシステムのシェルにフォールバックします。サポートされているのはパスのみで、ワークベンチ プロファイルの `args` と `env` はまだ引き継がれません。ワークベンチはこれをローカルのエージェント ホストに対してのみプッシュします。リモート エージェント ホストのオペレーターは、リモート マシンの `agent-host-config.json` で直接設定する必要があります。",
-			"agentHost.config.defaultShell.title": "既定のシェル"
+			"agentHost.config.defaultShell.title": "既定のシェル",
+			"agentHost.config.disableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use the SDK's default terminal behavior instead of Agent Host's terminal tool override.",
+			"agentHost.config.disableCustomTerminalTool.title": "Use SDK Terminal Tool"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
+			"agentHost.config.telemetryLevel.description": "Most restrictive telemetry level requested by connected clients.",
+			"agentHost.config.telemetryLevel.title": "Telemetry Level",
 			"agentHost.sessionConfig.autoApprove": "承認",
 			"agentHost.sessionConfig.autoApprove.autopilot": "Autopilot (プレビュー)",
 			"agentHost.sessionConfig.autoApprove.autopilotDescription": "最初から最後まで自律的に反復処理する",
@@ -2198,6 +2203,9 @@
 			"claude.modelThinkingLevel.medium": "中",
 			"claude.modelThinkingLevel.title": "思考レベル",
 			"claude.modelThinkingLevel.xhigh": "非常に高い"
+		},
+		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
+			"sshKbiDefaultPrompt": "Authentication required for {0}@{1}"
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "エージェント ホスト"
@@ -2283,6 +2291,10 @@
 			"agentHost.planReview.title": "計画のレビュー",
 			"agentHost.planReview.viewPlanLink": "完全な計画を表示する"
 		},
+		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
+			"copilotSlashCommand.compact.description": "Free up context by compacting the conversation history",
+			"copilotSlashCommand.plan.description": "Create an implementation plan before coding"
+		},
 		"vs/platform/agentHost/node/copilot/copilotToolDisplay": {
 			"copilot.permission.default.message": "モデルに {0} への呼び出しを許可しますか?",
 			"copilot.permission.default.title": "ツールの呼び出しを許可しますか?",
@@ -2307,11 +2319,12 @@
 			"toolComplete.patch": "編集されたファイル",
 			"toolComplete.patchFile": "編集された {0}",
 			"toolComplete.patchFiles": "編集された {0}",
-			"toolComplete.readShell": "シェル出力の読み取り",
+			"toolComplete.readTerminal": "Read Terminal",
 			"toolComplete.shell": "{0} 件のコマンドを実行しました",
 			"toolComplete.shellCmd": "{0} を実行しました",
 			"toolComplete.skill": "スキル {0} の読み取り",
 			"toolComplete.skillName": "スキル {0} の読み取り",
+			"toolComplete.sql": "Executed SQL query",
 			"toolComplete.view": "ファイルの読み取り",
 			"toolComplete.viewFile": "{0} を読み取りました",
 			"toolComplete.viewFileFromLine": "{0} の {1} 行目から末尾までを読み取る",
@@ -2332,11 +2345,12 @@
 			"toolInvoke.patch": "ファイルを編集しています",
 			"toolInvoke.patchFile": "{0} を編集しています",
 			"toolInvoke.patchFiles": "{0} を編集しています",
-			"toolInvoke.readShell": "シェル出力を読み取っています",
+			"toolInvoke.readTerminal": "Reading Terminal",
 			"toolInvoke.shell": "{0} 件のコマンドを実行しています",
 			"toolInvoke.shellCmd": "{0} を実行しています",
 			"toolInvoke.skill": "スキル {0} を読み取り中",
 			"toolInvoke.skillName": "スキル {0} を読み取り中",
+			"toolInvoke.sql": "Executing SQL query",
 			"toolInvoke.view": "ファイルを読み込んでいます",
 			"toolInvoke.viewFile": "{0} を読み取っています",
 			"toolInvoke.viewFileFromLine": "{0} の {1} 行目から末尾までを読み取っています",
@@ -2344,23 +2358,49 @@
 			"toolInvoke.viewFileRange": "{0} の {1} から {2} 行を読み取り中",
 			"toolInvoke.writeShell": "入力をシェルに送信しています",
 			"toolInvoke.writeShellCmd": "シェルに {0} を送信しています",
+			"toolName.applyPatch": "Apply Patch",
 			"toolName.askUser": "ユーザーに質問する",
-			"toolName.bash": "Bash",
-			"toolName.bashShutdown": "シェルを停止",
+			"toolName.codeReview": "Code Review",
+			"toolName.codeqlChecker": "CodeQL Security Scan",
 			"toolName.create": "ファイルの作成",
+			"toolName.createPullRequest": "Create Pull Request",
 			"toolName.edit": "ファイルの編集",
-			"toolName.exitPlanMode": "計画",
-			"toolName.glob": "ファイルの検索",
-			"toolName.grep": "検索",
-			"toolName.listShells": "シェルの一覧を表示",
+			"toolName.exitPlanModeFull": "Exit Plan Mode",
+			"toolName.fetchCopilotCliDocumentation": "Fetch Documentation",
+			"toolName.fetchWebContent": "Fetch Web Content",
+			"toolName.ghAdvisoryDatabase": "Check Dependencies",
+			"toolName.invokeSkill": "Invoke Skill",
+			"toolName.listAgents": "List Agents",
+			"toolName.listShellSessions": "List Shell Sessions",
+			"toolName.lsp": "Language Server",
+			"toolName.mcpReload": "Reload MCP Config",
+			"toolName.mcpValidate": "Validate MCP Config",
+			"toolName.parallelValidation": "Validate Changes",
 			"toolName.patch": "パッチ",
-			"toolName.powershell": "PowerShell",
-			"toolName.readShell": "シェル出力を読み取りました",
+			"toolName.proposeWork": "Propose Work",
+			"toolName.read": "Read",
+			"toolName.readAgent": "Read Agent",
+			"toolName.readTerminal": "Read Terminal",
+			"toolName.replyToComment": "Reply to Comment",
+			"toolName.reportIntent": "Report Intent",
+			"toolName.reportProgress": "Progress update",
+			"toolName.search": "Search",
+			"toolName.searchCode": "Search Code",
+			"toolName.shell": "Run Shell Command",
+			"toolName.showFile": "Show File",
 			"toolName.skill": "スキルの読み取り",
-			"toolName.view": "ファイルの表示",
-			"toolName.webFetch": "Web フェッチ",
+			"toolName.sql": "Execute SQL",
+			"toolName.stopShell": "Stop Terminal Session",
+			"toolName.storeMemory": "Store Memory",
+			"toolName.task": "Delegate Task",
+			"toolName.taskComplete": "Task Complete",
+			"toolName.think": "Thinking",
+			"toolName.toolSearchToolRegex": "Search Tools",
+			"toolName.updateTodo": "Update Todo",
 			"toolName.webSearch": "Web 検索",
-			"toolName.writeShell": "シェル入力の書き込み"
+			"toolName.writeAgent": "Write to Agent",
+			"toolName.writeBash": "Write to Bash",
+			"toolName.writePowerShell": "Write to PowerShell"
 		},
 		"vs/platform/agentHost/node/sessionPermissions": {
 			"sessionPermissions.allowOnce": "一度のみ許可",
@@ -2385,6 +2425,7 @@
 			"browserZoomPercent": "{0}%"
 		},
 		"vs/platform/browserView/electron-main/browserViewMainService": {
+			"browser.contextMenu.addElementToChat": "Add Element to Chat",
 			"browser.contextMenu.back": "戻る",
 			"browser.contextMenu.copyImage": "画像のコピー",
 			"browser.contextMenu.copyImageUrl": "イメージ URL のコピー",
@@ -3672,12 +3713,12 @@
 			"activeSessionHasGitSyncActionRunning": "アクティブなセッションに現在実行中の Git 同期アクションがあるかどうか",
 			"activeSessionProviderId": "アクティブなセッションのプロバイダー ID",
 			"activeSessionType": "アクティブなセッションのセッションの種類",
+			"activeSessionWorkspaceIsVirtual": "Whether the active session's workspace is virtual",
 			"chatBarFocus": "チャット バーにキーボード フォーカスがあるかどうか",
 			"chatBarVisible": "チャット バーが表示されるかどうか",
 			"chatSessionProviderId": "コンテキスト メニュー オーバーレイ内のセッションのプロバイダー ID",
 			"editorMaximized": "エディター領域を最大化するかどうか",
 			"isActiveSessionArchived": "アクティブなセッションがアーカイブ (完了としてマーク) されているかどうか",
-			"isActiveSessionBackgroundProvider": "アクティブなセッションがバックグラウンド エージェント プロバイダーを使用しているかどうか",
 			"isNewChatInSession": "ユーザーがアクティブなセッション内で新しいチャットを作成しているかどうか",
 			"sessionWorkspacePickerGroup": "セッション ワークスペース ピッカーの現在アクティブなグループ タブ",
 			"sessionsAquariumActive": "セッションの重ね合わせオーバーレイがアクティブかどうか",
@@ -3686,6 +3727,20 @@
 			"sessionsIsPhoneLayout": "現在のレイアウトが電話レイアウトかどうか",
 			"sessionsKeyboardVisible": "仮想キーボードが表示されているかどうか",
 			"sessionsWelcomeVisible": "セッションのウェルカム オーバーレイが表示されるかどうか"
+		},
+		"vs/sessions/common/sizes": {
+			"agents.fontSize.body1": "Primary body font size for the agents window.",
+			"agents.fontSize.body2": "Secondary body font size for the agents window.",
+			"agents.fontSize.heading1": "Heading 1 font size for the agents window (welcome screen title).",
+			"agents.fontSize.heading2": "Heading 2 font size for the agents window (title).",
+			"agents.fontSize.heading3": "Heading 3 font size for the agents window (subtitle).",
+			"agents.fontSize.label1": "Label 1 font size for the agents window (interactive tabs).",
+			"agents.fontSize.label2": "Label 2 font size for the agents window (metadata emphasis).",
+			"agents.fontSize.label3": "Label 3 font size for the agents window (metadata primary).",
+			"agents.fontSize.label4": "Label 4 font size for the agents window (badge).",
+			"agents.fontWeight.medium": "Medium font weight (500) for the agents window.",
+			"agents.fontWeight.regular": "Regular font weight (400) for the agents window.",
+			"agents.fontWeight.semiBold": "SemiBold font weight (600) for the agents window."
 		},
 		"vs/sessions/common/theme": {
 			"agentFeedbackInputWidget.border": "エディターに表示されるエージェント フィードバック入力ウィジェットの境界線の色。",
@@ -3721,10 +3776,6 @@
 			"join.closeStorage": "UI 状態を保存しています"
 		},
 		"vs/sessions/services/sessions/common/session": {
-			"claudeCode": "Claude",
-			"copilotCLI": "Copilot CLI",
-			"copilotCloud": "クラウド",
-			"localSession": "ローカル",
 			"sessionWorkspaceGroup.local": "ローカル",
 			"sessionWorkspaceGroup.remote": "リモート"
 		},
@@ -3743,10 +3794,7 @@
 			"agenticSignOutMessage": "エージェント ウィンドウからサインアウトしますか?",
 			"agentsAccountStatusTitleBar": "エージェントのアカウントと状態",
 			"loadingAccountHeader": "アカウントを読み込んでいます...",
-			"selectColorTheme": "配色テーマ",
-			"sessionsAccountMenu.keyboardShortcuts": "キーボード ショートカット",
-			"sessionsAccountMenu.personalize": "個人用設定",
-			"sessionsAccountMenu.subscription": "サブスクリプション",
+			"sessionsAccountSubscriptionSectionLabel": "Subscription",
 			"settings": "設定",
 			"signIn": "サインイン",
 			"signOut": "サインアウト"
@@ -3925,19 +3973,8 @@
 			"changesView.noChanges": "変更されたファイルやその他のセッション成果物がここに表示されます。",
 			"changesView.viewChanges": "すべての変更点を表示",
 			"changesViewTree": "変更ツリー",
-			"chatEditing.versionsAllChanges": "すべての変更点",
-			"chatEditing.versionsAllChanges.description": "このセッションで行われたすべての変更点を表示する",
-			"chatEditing.versionsBranchChanges": "ブランチの変更点",
-			"chatEditing.versionsLastTurnChanges": "直前の変更点",
-			"chatEditing.versionsLastTurnChanges.description": "直前のターンからの変更点のみを表示する",
 			"chatEditing.versionsPicker": "バージョン",
-			"chatEditing.versionsUncommittedChanges": "コミットされていない変更",
-			"chatEditing.versionsUncommittedChanges.description": "このセッションでコミットされていない変更を表示します",
 			"sessions.changes.title": "セッションの変更",
-			"sessionsChanges.versionsAllChanges": "すべての変更点",
-			"sessionsChanges.versionsBranchChanges": "ブランチの変更点",
-			"sessionsChanges.versionsLastTurn": "直前のターンの変更点",
-			"sessionsChanges.versionsUncommittedChanges": "コミットされていない変更",
 			"setListViewMode": "一覧として表示",
 			"setTreeViewMode": "ツリーとして表示"
 		},
@@ -3952,7 +3989,7 @@
 			"ci.pendingState": "保留中",
 			"ci.runningState": "実行中",
 			"ci.successfulState": "成功",
-			"fixCIChecks": "CI チェックを修正"
+			"fixChecks": "Fix Checks"
 		},
 		"vs/sessions/contrib/changes/browser/checksWidget": {
 			"ci.checkAriaLabel": "{0}、{1}",
@@ -3963,38 +4000,6 @@
 			"ci.openOnGitHub": "GitHub で開く",
 			"ci.rerunCheck": "チェックを再実行",
 			"ci.toggleChecks": "チェックを切り替え"
-		},
-		"vs/sessions/contrib/chat/browser/agentHost/agentHostModelPicker": {
-			"agentHostModelPicker": "モデル"
-		},
-		"vs/sessions/contrib/chat/browser/agentHost/agentHostModePicker": {
-			"agentHostModePicker.ariaLabel": "エージェント モード ピッカー",
-			"agentHostModePicker.triggerAriaLabel": "エージェント モードの選択、{0}"
-		},
-		"vs/sessions/contrib/chat/browser/agentHost/agentHostSessionConfigPicker": {
-			"agentHostAutoApprove.autopilot.warning.detail": "オートパイロットはすべてのツール呼び出しを自動承認し、タスクが完了するまで自律的に作業を続けます。これには、ターミナル コマンド、ファイル編集、および外部ツールの呼び出しが含まれます。エージェントは、確認を求めずに、ユーザーに代わって決定を行います。\r\n\r\n[停止] ボタンをクリックすると、いつでもエージェントを停止できます。これは、現在のセッションにのみ適用されます。",
-			"agentHostAutoApprove.autopilot.warning.title": "オートパイロットを有効にしますか?",
-			"agentHostAutoApprove.bypass.warning.detail": "[承認をバイパス] を有効にすると、確認を求めることなく、すべてのツール呼び出しが自動的に承認されます。これには、ファイルの編集、ターミナル コマンド、外部ツールの呼び出しが含まれます。",
-			"agentHostAutoApprove.bypass.warning.title": "承認のバイパスを有効にしますか?",
-			"agentHostAutoApprove.warning.cancel": "キャンセル",
-			"agentHostAutoApprove.warning.confirm": "有効にする",
-			"agentHostAutoApprove.warning.detailWithDefaultSetting": "{0}\r\n\r\nこれを新しいチャット セッションの開始時のアクセス許可レベルにするには、[{1}](command:workbench.action.openSettings?%5B%22{1}%22%5D) 設定を変更してください。",
-			"agentHostNewSessionApprovePicker": "セッションの承認",
-			"agentHostNewSessionModePicker": "エージェント モード",
-			"agentHostRunningSessionConfigPicker": "セッションの承認",
-			"agentHostRunningSessionModePicker": "エージェント モード",
-			"agentHostSessionConfig.ariaLabel": "{0} ピッカー",
-			"agentHostSessionConfig.filter": "フィルター オプション...",
-			"agentHostSessionConfig.triggerAria": "{0}: {1}",
-			"agentHostSessionConfig.triggerAriaReadOnly": "{0}: {1}、読み取り専用",
-			"agentHostSessionConfigPicker": "セッションの構成",
-			"mobileAgentHostSessionConfig.repoSheet.branchSearchAria": "ベース ブランチの検索",
-			"mobileAgentHostSessionConfig.repoSheet.branchSearchEmpty": "一致するブランチがありません。",
-			"mobileAgentHostSessionConfig.repoSheet.branchSearchPlaceholder": "ブランチを検索",
-			"mobileAgentHostSessionConfig.repoSheet.branchSection": "ベース ブランチ",
-			"mobileAgentHostSessionConfig.repoSheet.isolationSection": "分離",
-			"mobileAgentHostSessionConfig.repoSheet.title": "作業ツリー",
-			"selected": "(選択済み)"
 		},
 		"vs/sessions/contrib/chat/browser/aiCustomizationWorkspaceService": {
 			"commitToRepoFailed": "カスタマイズはこのセッションの作業ツリーに保存されましたが、既定のブランチには適用できませんでした。手動で適用する必要がある場合があります。",
@@ -4172,6 +4177,7 @@
 			"workspacePicker.ariaLabel": "ワークスペース ピッカー",
 			"workspacePicker.browseSelectAction": "選択...",
 			"workspacePicker.browseSelectLocal": "選択...",
+			"workspacePicker.experimental": "Experimental",
 			"workspacePicker.filter": "ワークスペースの検索...",
 			"workspacePicker.pickAriaLabel": "ワークスペースを選択して開始します",
 			"workspacePicker.selectedAriaLabel": "{0} の新しいセッション"
@@ -4348,6 +4354,330 @@
 			"policyBlocked.learnMore": "詳細情報",
 			"policyBlocked.openVSCode": "VS Code を開く",
 			"policyBlocked.title": "エージェントが無効"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostClaudePermissionModePicker": {
+			"agentHostClaudePermissionModePicker.ariaLabel": "Approvals Picker",
+			"agentHostClaudePermissionModePicker.triggerAriaLabel": "Pick Approvals, {0}",
+			"permissions.learnMore": "Learn more about permissions"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostModelPicker": {
+			"agentHostModelPicker": "Model"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostModePicker": {
+			"agentHostModePicker.ariaLabel": "Agent Mode Picker",
+			"agentHostModePicker.triggerAriaLabel": "Pick Agent Mode, {0}"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionBranchActions": {
+			"copySessionBranchName": "Copy Session Branch Name"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionConfigPicker": {
+			"agentHostAutoApprove.autopilot.warning.detail": "Autopilot will auto-approve all tool calls and continue working autonomously until the task is complete. This includes terminal commands, file edits, and external tool calls. The agent will make decisions on your behalf without asking for confirmation.\r\n\r\nYou can stop the agent at any time by clicking the stop button. This applies to the current session only.",
+			"agentHostAutoApprove.autopilot.warning.title": "Enable Autopilot?",
+			"agentHostAutoApprove.bypass.warning.detail": "Bypass Approvals will auto-approve all tool calls without asking for confirmation. This includes file edits, terminal commands, and external tool calls.",
+			"agentHostAutoApprove.bypass.warning.title": "Enable Bypass Approvals?",
+			"agentHostAutoApprove.warning.cancel": "Cancel",
+			"agentHostAutoApprove.warning.confirm": "Enable",
+			"agentHostAutoApprove.warning.detailWithDefaultSetting": "{0}\r\n\r\nTo make this the starting permission level for new chat sessions, change the [{1}](command:workbench.action.openSettings?%5B%22{1}%22%5D) setting.",
+			"agentHostNewSessionApprovePicker": "Session Approvals",
+			"agentHostNewSessionModePicker": "Agent Mode",
+			"agentHostRunningSessionConfigPicker": "Session Approvals",
+			"agentHostRunningSessionModePicker": "Agent Mode",
+			"agentHostRunningSessionPermissionModePicker": "Approvals",
+			"agentHostSessionConfig.ariaLabel": "{0} Picker",
+			"agentHostSessionConfig.filter": "Filter options...",
+			"agentHostSessionConfig.triggerAria": "{0}: {1}",
+			"agentHostSessionConfig.triggerAriaReadOnly": "{0}: {1}, Read-Only",
+			"agentHostSessionConfigPicker": "Session Configuration",
+			"mobileAgentHostSessionConfig.repoSheet.branchSearchAria": "Search base branches",
+			"mobileAgentHostSessionConfig.repoSheet.branchSearchEmpty": "No matching branches.",
+			"mobileAgentHostSessionConfig.repoSheet.branchSearchPlaceholder": "Search branches",
+			"mobileAgentHostSessionConfig.repoSheet.branchSection": "Base Branch",
+			"mobileAgentHostSessionConfig.repoSheet.isolationSection": "Isolation",
+			"mobileAgentHostSessionConfig.repoSheet.title": "Worktree",
+			"selected": "(Selected)"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostSettings.contribution": {
+			"agentHostSettings.label": "Host Settings",
+			"openHostSettings": "Open Host Settings"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostSettingsFileSystemProvider": {
+			"agentHostSettings.header": "Agent host settings.",
+			"agentHostSettings.notObject": "Agent host settings must be a JSON object.",
+			"agentHostSettings.parseError": "Failed to parse agent host settings as JSON.",
+			"agentHostSettings.saveHint": "Edit values below and save to apply. Unknown properties are ignored."
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostSkillButtons": {
+			"agentSessions.runSkill.createDraftPR": "Create Draft Pull Request",
+			"agentSessions.runSkill.createPR": "Create Pull Request",
+			"agentSessions.runSkill.merge": "Merge Changes",
+			"agentSessions.runSkill.updatePR": "Sync Pull Request"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentSessionSettings.contribution": {
+			"agentSessionSettings.label": "Session Settings",
+			"openSessionSettings": "Open Session Settings"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentSessionSettingsFileSystemProvider": {
+			"agentSessionSettings.header": "Session settings for this agent host session.",
+			"agentSessionSettings.notObject": "Agent session settings must be a JSON object.",
+			"agentSessionSettings.parseError": "Failed to parse agent session settings as JSON.",
+			"agentSessionSettings.saveHint": "Edit values below and save to apply. Unknown or non-mutable properties are ignored."
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/baseAgentHostSessionsProvider": {
+			"copilotCLI": "Copilot CLI",
+			"noAgents": "Agent host has not advertised any agents yet.",
+			"notConnectedSend": "Cannot send request: not connected to agent host."
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/exportDebugLogsAction": {
+			"exportAgentHostDebugLogs": "Export Agent Host Debug Logs..."
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/localAgentHostSessionsProvider": {
+			"localAgentHostLabel": "Local Agent Host",
+			"localAgentHostSessionTypeLocation": "Local"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/openSessionEventsFileActions": {
+			"openSessionEventsFile": "Open Copilot CLI State File"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/branchPicker": {
+			"branchPicker.ariaLabel": "Branch Picker",
+			"branchPicker.filter": "Filter branches...",
+			"branchPicker.select": "Branch",
+			"branchPicker.triggerAriaLabel": "Pick Branch, {0}"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/claudePermissionModePicker": {
+			"claude.permissionMode.acceptEdits": "Edit Automatically",
+			"claude.permissionMode.acceptEdits.description": "Claude edits files without asking",
+			"claude.permissionMode.auto": "Auto",
+			"claude.permissionMode.auto.description": "A model classifier approves or denies tool operations automatically",
+			"claude.permissionMode.default": "Ask Before Edits",
+			"claude.permissionMode.default.description": "Claude asks for approval before making changes",
+			"claude.permissionMode.plan": "Plan Mode",
+			"claude.permissionMode.plan.description": "Claude creates a plan before making changes",
+			"claudePermissionModePicker.ariaLabel": "Permission Mode",
+			"claudePermissionModePicker.triggerAriaLabel": "Pick Permission Mode, {0}"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessions.contribution": {
+			"sessions.chat.claudeAgent.enabled": "Enable Claude Agent sessions in the Agents window. Start and resume agentic coding sessions powered by Anthropic's Claude Agent SDK directly. Uses your existing Copilot subscription.",
+			"sessions.chat.localAgent.enabled": "Enable Local VS Code chat sessions in the Agents Window.",
+			"sessions.github.copilot.multiChatSessions": "Whether to enable multiple chats within a single session in the Copilot Chat sessions provider."
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessionsActions": {
+			"branchPicker": "Branch",
+			"claudePermissionModePicker": "Permission Mode",
+			"cloudModelPicker": "Model",
+			"deleteSession": "Delete...",
+			"isolationPicker": "Isolation Mode",
+			"localModelPicker": "Model",
+			"modePicker": "Mode",
+			"permissionPicker": "Permissions"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessionsChangesets": {
+			"allChanges": "All Changes",
+			"allChangesDescription": "Show all changes made in this session",
+			"branchChanges": "Branch Changes",
+			"changesCategory": "Changes",
+			"checkpointsCategory": "Checkpoints",
+			"lastTurnChanges": "Last Turn Changes",
+			"lastTurnChangesDescription": "Show only changes made in the last turn",
+			"uncommittedChanges": "Uncommitted Changes",
+			"uncommittedChangesDescription": "Show uncommitted changes in this session"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessionsProvider": {
+			"claudeCode": "Claude",
+			"copilotChatSessionsProvider": "Copilot Chat",
+			"copilotCloud": "Cloud",
+			"deleteChat.confirm": "Are you sure you want to delete this chat?",
+			"deleteChat.delete": "Delete",
+			"deleteChat.detail": "This action cannot be undone.",
+			"deleteSession.confirm": "Are you sure you want to delete this session?",
+			"deleteSession.delete": "Delete",
+			"deleteSession.detail": "This action cannot be undone.",
+			"deleteSession.detailMultiple": "This will delete all {0} chats in this session. This action cannot be undone.",
+			"localSession": "Local",
+			"new chat": "New Chat",
+			"new session": "New Session",
+			"repositories": "Repositories",
+			"sessionWorkspaceGroup.github": "GitHub"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/isolationPicker": {
+			"isolationMode.folder": "Folder",
+			"isolationMode.worktree": "Worktree",
+			"isolationPicker.ariaLabel": "Isolation Mode",
+			"isolationPicker.triggerAriaLabel": "Pick Isolation Mode, {0}"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/mobilePermissionPicker": {
+			"permissionPicker.title": "Approvals",
+			"permissions.autoApprove": "Bypass Approvals",
+			"permissions.autoApprove.subtext": "All tool calls are auto-approved",
+			"permissions.autopilot": "Autopilot (Preview)",
+			"permissions.autopilot.subtext": "Autonomously iterates from start to finish",
+			"permissions.default": "Default Approvals",
+			"permissions.default.subtext": "Copilot uses your configured settings",
+			"permissions.learnMore": "Learn more about permissions"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/modelPicker": {
+			"modelPicker.ariaLabel": "Model Picker",
+			"modelPicker.auto": "Auto",
+			"modelPicker.filter": "Filter models...",
+			"modelPicker.triggerAriaLabel": "Pick Model, {0}"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/modePicker": {
+			"configureCustomAgents": "Configure Custom Agents...",
+			"modePicker.ariaLabel": "Mode Picker",
+			"modePicker.triggerAriaLabel": "Pick Mode, {0}"
+		},
+		"vs/sessions/contrib/providers/copilotChatSessions/browser/permissionPicker": {
+			"permissionPicker.ariaLabel": "Permission Picker",
+			"permissionPicker.triggerAriaLabel": "Pick Permission Level, {0}",
+			"permissions.autoApprove": "Bypass Approvals",
+			"permissions.autoApprove.label": "Bypass Approvals",
+			"permissions.autoApprove.subtext": "All tool calls are auto-approved",
+			"permissions.autopilot": "Autopilot (Preview)",
+			"permissions.autopilot.label": "Autopilot (Preview)",
+			"permissions.autopilot.subtext": "Autonomously iterates from start to finish",
+			"permissions.default": "Default Approvals",
+			"permissions.default.label": "Default Approvals",
+			"permissions.default.subtext": "Copilot uses your configured settings",
+			"permissions.learnMore": "Learn more about permissions"
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/manageRemoteAgentHosts": {
+			"manageHosts.actionsHeader": "Add or Manage",
+			"manageHosts.placeholder": "Select a remote to manage or pick an action",
+			"manageHosts.remoteHostsHeader": "Remote Agent Hosts",
+			"manageHosts.removeTooltip": "Remove",
+			"manageHosts.title": "Manage Remote Agent Hosts",
+			"manageRemoteAgentHosts": "Manage Remote Agent Hosts..."
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/remoteAgentHost.contribution": {
+			"chat.agentHost.forwardSSHAgent": "When enabled, forwards the local SSH agent to the remote machine during SSH agent host connections to hosts whose SSH config has `ForwardAgent yes`. Only enable this for trusted hosts. The remote agent host process must be restarted for this setting to take effect.",
+			"chat.agentHost.localFilePermissions": "Per-host filesystem grants for remote agent hosts. Maps a remote agent host address to URI strings and the access mode the host has been granted (`r` for read, `rw` for read and write). Hosts cannot read or write any files outside the granted URIs without prompting; a URI grant covers descendants. This setting is normally maintained by the agent-host permission prompts and rarely edited by hand.",
+			"chat.agentHost.localFilePermissions.read": "Read-only access.",
+			"chat.agentHost.localFilePermissions.readWrite": "Read and write access.",
+			"chat.remoteAgentHosts": "A list of WebSocket remote agent host addresses to connect to (e.g. \"localhost:3000\"). SSH remote agent host details are managed by VS Code.",
+			"chat.remoteAgentHosts.address": "The WebSocket address of the remote agent host (e.g. \"localhost:3000\").",
+			"chat.remoteAgentHosts.autoConnect": "Automatically connect to online dev tunnel and SSH-configured remote agent hosts on startup. When disabled, cached sessions are still shown but connections are established only on demand.",
+			"chat.remoteAgentHosts.connectionToken": "An optional connection token for authenticating with the remote agent host.",
+			"chat.remoteAgentHosts.enabled": "Enable connecting to remote agent hosts.",
+			"chat.remoteAgentHosts.name": "A display name for this remote agent host.",
+			"chat.remoteAgentTunnels": "Additional dev tunnel names to look for when connecting to remote agent hosts. These are looked up in addition to tunnels automatically enumerated from your account.",
+			"chat.sshRemoteAgentHostCommand": "For development: Override the command used to start the remote agent host over SSH. When set, skips automatic CLI installation and runs this command instead. The command must print a WebSocket URL matching ws://127.0.0.1:PORT (optionally with ?tkn=TOKEN) to stdout or stderr./"
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/remoteAgentHostActions": {
+			"addNewSSHHost": "Add New SSH Host...",
+			"addRemoteAgentHost": "Add Remote Agent Host...",
+			"addRemoteFailed": "Failed to connect to remote agent host {0}.",
+			"addRemotePrompt": "Paste a host, host:port, or WebSocket URL. Example: {0}",
+			"addRemoteTitle": "Add Remote Agent Host",
+			"addRemoteValidationEmpty": "Enter a remote agent host address.",
+			"addRemoteValidationInvalid": "Enter a valid host, host:port, or WebSocket URL.",
+			"configureSSHHosts": "Configure SSH Hosts...",
+			"connectViaSSH": "Connect to Remote Agent Host via SSH",
+			"connectViaSSHShort": "SSH...",
+			"connectViaTunnel": "Connect to Remote Agent Host via Dev Tunnel",
+			"connectViaTunnelShort": "Tunnels...",
+			"nameRemotePlaceholder": "My Remote",
+			"nameRemotePrompt": "Enter a display name for this remote agent host.",
+			"nameRemoteTitle": "Name Remote Agent Host",
+			"nameRemoteValidationEmpty": "Enter a name for this remote agent host.",
+			"sshAddNewHost": "Add New SSH Host...",
+			"sshAuthAgent": "SSH Agent",
+			"sshAuthAgentDesc": "Use the running SSH agent for authentication",
+			"sshAuthKey": "Private Key File",
+			"sshAuthKeyDesc": "Authenticate with a private key file",
+			"sshAuthPassword": "Password",
+			"sshAuthPasswordDesc": "Authenticate with a password",
+			"sshAuthPlaceholder": "Choose how to authenticate with {0}",
+			"sshAuthTitle": "Authentication Method",
+			"sshConfigCreateFailed": "Failed to create SSH config file: {0}",
+			"sshConfigListFailed": "Failed to list SSH config files: {0}",
+			"sshConfigOpenFailed": "Failed to open SSH config file: {0}",
+			"sshConfigPickPlaceholder": "Select an SSH configuration file",
+			"sshConfigPickTitle": "Select SSH configuration file to edit",
+			"sshConfigureHosts": "Configure SSH Hosts...",
+			"sshConnectFailed": "Failed to connect via SSH to {0}: {1}",
+			"sshConnecting": "Connecting to {0} via SSH...",
+			"sshHostEmpty": "Enter an SSH host.",
+			"sshHostInvalid": "Invalid SSH host.",
+			"sshHostInvalidPort": "Enter a valid port number.",
+			"sshHostMissingAfterAt": "Enter a host name after '@'.",
+			"sshHostPickerPlaceholder": "Select configured SSH host or enter user@host",
+			"sshHostTitle": "Connect via SSH",
+			"sshKeyEmpty": "Enter a key file path.",
+			"sshKeyPrompt": "Enter the path to your SSH private key.",
+			"sshKeyTitle": "Private Key Path",
+			"sshNameEmpty": "Enter a name.",
+			"sshNamePlaceholder": "My Remote",
+			"sshNamePrompt": "Enter a display name for this SSH remote.",
+			"sshNameTitle": "Name Remote",
+			"sshPasswordEmpty": "Enter a password.",
+			"sshPasswordPrompt": "Enter the password for {0}@{1}.",
+			"sshPasswordTitle": "SSH Password",
+			"sshResolveConfigFailed": "Failed to resolve SSH config for {0}: {1}",
+			"sshUsernameEmpty": "Enter a username.",
+			"sshUsernameMissingInHost": "Enter a username before '@'.",
+			"sshUsernamePrompt": "Enter the username for {0}.",
+			"sshUsernameTitle": "SSH Username",
+			"tunnelAuthFailed": "Authentication failed. Please try again.",
+			"tunnelConnectFailed": "Failed to connect to tunnel '{0}': {1}",
+			"tunnelConnecting": "Connecting to tunnel '{0}'...",
+			"tunnelListFailed": "Failed to list dev tunnels: {0}",
+			"tunnelNoneFound": "No dev tunnels with agent host support were found. Start a tunnel with 'code tunnel' on another machine.",
+			"tunnelPickPlaceholder": "Select a dev tunnel to connect to",
+			"tunnelPickTitle": "Connect via Dev Tunnel"
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/remoteAgentHostCustomizationHarness": {
+			"remoteAgentHost.addPlugin": "Add Remote Plugin",
+			"remoteAgentHost.addPluginTooltip": "Add a plugin folder that already exists on this remote agent host.",
+			"remoteAgentHost.pluginAlreadyConfigured": "'{0}' is already configured on {1}.",
+			"remoteAgentHost.removeConfiguredPlugin": "Remove from Remote Host",
+			"remoteAgentHost.selectPluginFolder": "Select Plugin Folder on {0}"
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/remoteAgentHostSessionsProvider": {
+			"connectFailed": "Failed to connect to remote agent host '{0}': {1}",
+			"folders": "Folders",
+			"noAgents": "Remote agent host '{0}' has not advertised any agents yet.",
+			"notConnected": "Unable to connect to remote agent host '{0}'.",
+			"notConnectedSend": "Cannot send request: not connected to remote agent host '{0}'.",
+			"notConnectedSession": "Cannot create session: not connected to remote agent host '{0}'.",
+			"selectRemoteFolder": "Select Folder on {0}"
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/remoteAgentHostTerminal.contribution": {
+			"agentHostTerminal.channelRemote": "Agent Host Terminal ({0})"
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/remoteHostOptions": {
+			"agentHostIncompatibleNotification": "Cannot connect to {0}: {1}",
+			"agentHostIncompatibleShowOptions": "Show Options",
+			"agentHostIncompatibleUpdate": "Update Server",
+			"workspacePicker.copyAddress": "Copy Address",
+			"workspacePicker.hoverConnected": "Remote agent host is connected and ready.",
+			"workspacePicker.hoverConnectedAddr": "Remote agent host is connected and ready.\r\n\r\nAddress: {0}",
+			"workspacePicker.hoverConnecting": "Attempting to connect to remote agent host...",
+			"workspacePicker.hoverConnectingAddr": "Attempting to connect to remote agent host...\r\n\r\nAddress: {0}",
+			"workspacePicker.hoverDisconnected": "Remote agent host is disconnected.",
+			"workspacePicker.hoverDisconnectedAddr": "Remote agent host is disconnected.\r\n\r\nAddress: {0}",
+			"workspacePicker.hoverIncompatible": "Cannot connect to remote agent host: {0}\r\n\r\nThis client speaks protocol version {1}.",
+			"workspacePicker.hoverIncompatibleAddr": "Cannot connect to remote agent host: {0}\r\n\r\nThis client speaks protocol version {1}.\r\n\r\nAddress: {2}",
+			"workspacePicker.incompatibleValidationClient": "Incompatible protocol version. We speak {0}. Error from {1}: {2}\r\n\r\n Ensure {3} and {1} are both up to date.",
+			"workspacePicker.incompatibleValidationServer": "Incompatible protocol version. We speak {0}, but {1} speaks {2}. Ensure {3} and {1} are both up to date.",
+			"workspacePicker.openSettings": "Open Settings",
+			"workspacePicker.reconnect": "Reconnect",
+			"workspacePicker.remoteOptionsTitle": "Options for {0}",
+			"workspacePicker.removeRemote": "Remove Remote",
+			"workspacePicker.showOutput": "Show Output",
+			"workspacePicker.statusConnecting": "Connecting",
+			"workspacePicker.statusIncompatible": "Incompatible",
+			"workspacePicker.statusOffline": "Offline",
+			"workspacePicker.statusOnline": "Online",
+			"workspacePicker.updateServer": "Update Server",
+			"workspacePicker.upgradeCountdown": "Restarting in {0}s...",
+			"workspacePicker.upgradeFailed": "Failed to update {0}: {1}",
+			"workspacePicker.upgradeFailedWithReason": "Failed to update {0}: {1}",
+			"workspacePicker.upgradeNotNeeded": "{0} is already on the latest version.",
+			"workspacePicker.upgradeNotStarted": "{0} did not start an update.",
+			"workspacePicker.upgradeReconnecting": "Reconnecting...",
+			"workspacePicker.upgradingServer": "Updating {0}..."
+		},
+		"vs/sessions/contrib/providers/remoteAgentHost/browser/tunnelAgentHost.contribution": {
+			"tunnelConnecting": "Connecting to tunnel '{0}'..."
 		},
 		"vs/sessions/contrib/remoteAgentHost/browser/manageRemoteAgentHosts": {
 			"manageHosts.actionsHeader": "追加または管理",
@@ -4544,10 +4874,10 @@
 			"secondsDuration": "現在",
 			"sessionItemAria": "{0}、作成された {1}",
 			"sessionsList": "セッション",
-			"showLessAria": "表示するセッションを減らす",
+			"showLessAria": "Show fewer sessions",
 			"showLessCompact": "表示を減らす",
-			"showLessWorkspacesAria": "表示するワークスペースを減らす",
-			"showLessWorkspacesCompact": "表示するワークスペースを減らす",
+			"showLessWorkspacesAria": "Show fewer workspaces",
+			"showLessWorkspacesCompact": "Show fewer workspaces",
 			"showMoreAria": "その他 {0} セッションを表示する",
 			"showMoreCompact": "他 {0} 件",
 			"showMoreWorkspacesAria": "{0} 件のその他のワークスペースを表示する",
@@ -7443,6 +7773,7 @@
 			"browser.linkOpenedHint.openSettings": "設定を開く",
 			"browser.newTabAction": "新しいタブ",
 			"browser.openAction": "統合ブラウザーを開く",
+			"browser.openFileAction": "Open in Integrated Browser",
 			"browser.openLocalhostLinks": "有効にすると、ターミナル、チャット、その他のソースからの localhost リンク (`localhost`、`127.0.0.1`、`[::1]`) および全インターフェイス リンク (`0.0.0.0`、`[0:0:0:0:0:0:0:0]`、`[::]`) は、システム ブラウザーではなく統合ブラウザーで開かれます。",
 			"browser.openNewTab": "新しい統合ブラウザー タブ",
 			"browser.openOrListAction": "ブラウザー",
@@ -7931,6 +8262,7 @@
 			"interactive.submit.label": "送信",
 			"interactive.submitWithoutDispatch.label": "送信",
 			"interactive.switchToNextModel.label": "次のモデルに切り替える",
+			"interactive.switchToNextPinnedModel.label": "Switch to Next Pinned Model",
 			"interactive.toggleAgent.label": "次のエージェントに切り替える",
 			"selectWorkspace": "ターゲット ワークスペースの選択",
 			"sendToAgent": "エージェントに送信",
@@ -8116,6 +8448,20 @@
 			"showAll": "組み込み、拡張機能、プラグインのリソースを表示",
 			"skills": "スキル"
 		},
+		"vs/workbench/contrib/chat/browser/actions/exportAgentHostDebugLogsAction": {
+			"exportAgentHostDebugLogs": "Export Agent Host Debug Logs...",
+			"exportDebugLogs.folderDialogTitle": "Select Folder for Agent Host Debug Logs",
+			"exportDebugLogs.noFiles.activeSession": "No log files were found for the active Agent Host session.",
+			"exportDebugLogs.noFiles.currentWindow": "No Agent Host log files were found for the current window.",
+			"exportDebugLogs.saveError": "Failed to save debug logs: {0}"
+		},
+		"vs/workbench/contrib/chat/browser/actions/openCopilotCliStateFileAction": {
+			"openSessionEventsFile": "Open Copilot CLI State File",
+			"openSessionEventsFile.noHome": "Remote agent host '{0}' did not report a home directory.",
+			"openSessionEventsFile.noSession": "No Copilot CLI session is active.",
+			"openSessionEventsFile.notConnected": "No active connection found for remote agent host '{0}'.",
+			"openSessionEventsFile.unsupported": "The active chat session is not a Copilot CLI session."
+		},
 		"vs/workbench/contrib/chat/browser/agentPluginActions": {
 			"disable": "無効にする",
 			"disableForWorkspace": "無効にする (ワークスペース)",
@@ -8159,6 +8505,21 @@
 			"agentHost.displayName": "{0} - エージェント ホスト",
 			"agentHostHarnessLabel.local": "{0} [ローカル]"
 		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
+			"agentHostChatInputPicker.ariaLabel": "{0} Picker",
+			"agentHostChatInputPicker.filter": "Filter...",
+			"agentHostChatInputPicker.learnMorePermissions": "Learn more about permissions",
+			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
+			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, Read-Only",
+			"selected": "(Selected)"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
+			"agentHost.autoApprovePicker": "Auto-Approve",
+			"agentHost.branchPicker": "Branch",
+			"agentHost.isolationPicker": "Isolation",
+			"agentHost.modePicker": "Agent Mode",
+			"agentHost.permissionModePicker": "Approvals"
+		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostEditingSession": {
 			"multiDiffEditorInput.name": "おすすめの編集"
 		},
@@ -8173,6 +8534,12 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
 			"agentHost.authRequired": "セッションを開始するには認証が必要です。サインインして、もう一度お試しください。",
+			"agentHost.elicit.url.cancel": "Cancel",
+			"agentHost.elicit.url.instruction": "Open this URL?",
+			"agentHost.elicit.url.open": "Open {0}",
+			"agentHost.elicit.url.title": "Authorization Required",
+			"agentHost.responseDetails.credit": "{0} credit",
+			"agentHost.responseDetails.credits": "{0} credits",
 			"chat.forked.fallbackTitle": "フォークされたセッション",
 			"chat.forked.title": "フォーク済み: {0}"
 		},
@@ -8433,6 +8800,7 @@
 			"agent": "エージェント",
 			"agentInstructionsGroup": "エージェントの指示",
 			"agentInstructionsGroupDescription": "すべてのエージェントのやり取りに対して命令ファイルが自動的に読み込まれます (例: AGENTS.md、CLAUDE.md、copilot-instructions.md)。",
+			"agents": "Agents",
 			"agentsDescription": "特定の開発タスクに合わせて異なるペルソナを採用するように AI を構成します。各エージェントは独自の指示、ツール、動作を持っています。",
 			"builtinGroup": "組み込み",
 			"builtinGroupDescription": "アプリケーションに付属する組み込みのカスタマイズ。",
@@ -8486,6 +8854,7 @@
 			"fromPlugin": "プラグイン: {0}",
 			"groupAriaLabel": "{0}、{1} 項目、{2}",
 			"hook": "フック",
+			"hooks": "Hooks",
 			"hooksDescription": "エージェントのライフサイクル中に特定の時点で実行されるプロンプト。",
 			"instructions": "指示",
 			"instructionsDescription": "AI がコードを生成し、開発タスクを処理する方法に自動的に影響する共通のガイドラインとルールを定義します。",
@@ -8508,11 +8877,13 @@
 			"pluginGroup": "プラグイン",
 			"pluginGroupDescription": "インストールされているプラグインによって提供される読み取り専用のカスタマイズ。",
 			"prompt": "プロンプト",
+			"prompts": "Prompts",
 			"promptsDescription": "コードの生成、レビューの実行、コンポーネントのスキャフォールディングなどの一般的な開発タスクに再利用可能なプロンプト。",
 			"remoteClientGroupShort": "ローカル",
 			"remoteHostGroupShort": "リモート",
 			"searchPlaceholder": "検索するテキストを入力...",
 			"skill": "スキル",
+			"skills": "Skills",
 			"skillsDescription": "Copilot が特殊なタスクを実行する際に、必要に応じて読み込む手順、スクリプト、リソースのフォルダー。",
 			"tryDifferentSearch": "別の検索語句をお試しください",
 			"userGroup": "ユーザー",
@@ -8695,6 +9066,7 @@
 			"mcpAccessDisabledSettingLink": "[設定] で構成します。",
 			"mcpAccessDisabledTitle": "MCP サーバーが無効になっています",
 			"mcpGroupAriaLabel": "{0}、{1} 項目、{2}",
+			"mcpServers": "MCP Servers",
 			"mcpServersDescription": "AI が外部のツールとサービスを使用できるようにするオープン標準。MCP サーバーは、ファイル操作、データベース、API などのためのツールを提供します。",
 			"mcpServersListAriaLabel": "MCP サーバー",
 			"noGalleryResults": "'{0}' に一致するサーバーはありません",
@@ -8750,6 +9122,7 @@
 			"pluginInstalledItemAriaLabelDisabled": "{0}。無効",
 			"pluginInstalledItemAriaLabelEnabled": "{0}。有効",
 			"pluginItemAriaLabel": "{0}。{1}",
+			"plugins": "Plugins",
 			"pluginsDescription": "再利用可能なパッケージからコマンド、スキル、エージェント、フック、MCP サーバーを追加するプラグインを使用して、AI エージェントを拡張します。",
 			"pluginsDisabledByPolicy": "チャットでのプラグイン統合は組織によって無効化されています。詳細については、組織の管理者にお問い合わせください。",
 			"pluginsDisabledBySettingPrefix": "プラグインは設定で無効になっています。",
@@ -8878,8 +9251,15 @@
 			"chat.agentHost.ahpJsonlLogging": "有効にすると、エージェント ホスト接続のすべての AHP トランスポート メッセージを、ウィンドウのログ ディレクトリ内の JSONL ファイルに記録します。",
 			"chat.agentHost.claudeAgent.path": "試験段階。ローカル テスト専用です。ローカルにインストールされた `@anthropic-ai/claude-agent-sdk` パッケージへの絶対パス。設定すると、Claude エージェント プロバイダーがエージェント ホスト内に登録され、このパスから SDK が読み込まれます。`#chat.agentHost.enabled#` が必要です。変更を有効にするには、エージェント ホスト プロセスを再起動する必要があります。この設定は、SDK が拡張機能マーケットプレースを通じて提供されると削除されます。",
 			"chat.agentHost.clientTools": "エージェント ホスト セッションでクライアント提供ツールとして公開するツール参照名です。",
+			"chat.agentHost.customTerminalTool.enabled": "When enabled, Copilot SDK sessions use the Agent Host terminal tool override instead of the SDK's default terminal behavior.",
 			"chat.agentHost.enabled": "有効にすると、一部のエージェントは別のエージェント ホスト プロセスで実行されます。",
 			"chat.agentHost.ipcLogging": "有効にすると、各エージェント ホストのすべての IPC トラフィックが専用の出力チャネルにログ記録されます。",
+			"chat.agentHost.otel.captureContent": "When enabled, includes prompt and response content in OTel span attributes. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Privacy-sensitive: do not enable in environments that ship spans to shared sinks.",
+			"chat.agentHost.otel.dbSpanExporter.enabled": "When enabled, the agent host persists every emitted OTel span to a local SQLite database. Spans can be inspected via the `Export Agent Host Traces Database` command. Compatible with external exporters: spans are written to SQLite *and* forwarded to the user-configured sink.",
+			"chat.agentHost.otel.enabled": "When enabled, the agent host emits OpenTelemetry traces from the Copilot SDK. Requires `#chat.agentHost.enabled#`. Either configure `#chat.agentHost.otel.otlpEndpoint#` to ship traces to an external collector or enable `#chat.agentHost.otel.dbSpanExporter.enabled#` to capture them locally.",
+			"chat.agentHost.otel.exporterType": "Exporter backend used by the Copilot SDK when `#chat.agentHost.otel.enabled#` is on. `otlp-grpc` is downgraded to `otlp-http` transparently in the CLI runtime.",
+			"chat.agentHost.otel.otlpEndpoint": "OTLP endpoint URL when exporter type is `otlp-http` or `otlp-grpc`. Sets `OTEL_EXPORTER_OTLP_ENDPOINT` inside the agent host process.",
+			"chat.agentHost.otel.outfile": "Output path for span JSON lines when exporter type is `file`. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
 			"chat.agentLocations.invalidPath": "パスは相対パスであるか、'~/' で始まる必要があります。絶対パスと '\\' 区切り記号はサポートされていません。",
 			"chat.agentSessionProjection.enabled": "優先ワークスペースでエージェント セッションをレビューするために、エージェント セッション プロジェクション モードを有効にするかどうかを制御します。",
 			"chat.agentSkillsLocations.description": "チャット セッションで使用できるエージェント スキル (`{0}`) の場所を指定します。[詳細情報]({1})。\r\n\r\n各パスには、SKILL.md ファイルが含まれるスキルのサブフォルダーが含まれる必要があります (例: `my-skills/skillA/SKILL.md` がある場合は `my-skills` を追加します)。相対パスは、ワークスペースのルート フォルダーから解決されます。",
@@ -8997,6 +9377,7 @@
 			"chat.notifyWindowOnResponseReceived.always": "ウィンドウにフォーカスがある場合でも、応答に対する OS 通知を常に表示します。",
 			"chat.notifyWindowOnResponseReceived.off": "応答の OS 通知を表示しないでください。",
 			"chat.notifyWindowOnResponseReceived.windowNotFocused": "ウィンドウにフォーカスがない場合に、応答の OS 通知を表示します。",
+			"chat.offlineByok": "Experimental: enable BYOK chat features without GitHub sign-in.",
 			"chat.permissions.default.autoApprove.description": "承認のバイパス モードで新しいチャット セッションを開始します。",
 			"chat.permissions.default.autoApprove.label": "承認のバイパス",
 			"chat.permissions.default.autopilot.description": "オートパイロット モードで新しいチャット セッションを開始します。",
@@ -9021,7 +9402,7 @@
 			"chat.reusablePrompts.config.locations.description": "チャット セッションで実行できる再利用可能なプロンプト ファイル (`*{0}`) の場所を指定します。[詳細情報]({1})。\r\n\r\n相対パスは、ワークスペースのルート フォルダーから解決されます。",
 			"chat.reusablePrompts.config.locations.title": "プロンプト ファイルの場所",
 			"chat.sendElementsToChat.attachImages": "選択した要素のスクリーンショットをチャットに追加するかどうかを制御します。",
-			"chat.sessionSync.enabled": "GitHub.com へのセッション同期を有効にします。有効にすると、Copilot セッション データが GitHub アカウントに同期され、デバイス間でのアクセスやより詳細な分析が可能になります。ローカル セッション追跡も有効にする必要があります。",
+			"chat.sessionSync.enabled": "Enable session sync to GitHub.com. When enabled, Copilot session data is synced to your GitHub account for cross-device access and richer insights. Requires `#github.copilot.chat.localIndex.enabled#` to also be enabled.",
 			"chat.sessionSync.enabled.policy": "デバイス間での Copilot セッション履歴の GitHub.com へのセッション同期を有効にします。組織のポリシーで無効化されている場合、セッション データはローカルにのみ保存されます。",
 			"chat.sessionSync.excludeRepositories": "セッション同期から除外するリポジトリ パターン。正確な `owner/repo` 名または `my-org/*` のような glob パターンを使用します。一致するリポジトリのセッションはローカルにのみ保存されます。",
 			"chat.subagents.allowInvocationsFromSubagents": "サブエージェントによるサブエージェントの呼び出しを許可します。",
@@ -9035,12 +9416,10 @@
 			"chat.tools.confirmationCarousel": "有効にすると、複数のツールの確認が入力欄の上にカルーセル形式でまとめて表示されます。",
 			"chat.tools.eligibleForAutoApproval": "自動承認の対象となるツールを制御します。'false' に設定されたツールには、常に確認が表示され、自動承認のオプションは提供されません。既定の動作 (またはツールを 'true' に設定すること) により、ツールで自動承認オプションが提供される場合があります。",
 			"chat.tools.fetchPage.approvedUrls": "チャット ツールから要求されたときに、自動的に承認する URL を制御します。キーは URL パターンであり、要求と応答の両方を承認する場合は 'true'、拒否する場合は 'false'、詳細に制御するには 'approveRequest' プロパティと 'approveResponse' プロパティを持つオブジェクトを値に指定できます。\r\n\r\n例:\r\n- `\"https://example.com\": true` - example.com へのすべての要求を承認します\r\n- `\"https://*.example.com\": true` - example.com の任意のサブドメインへのすべての要求を承認します\r\n- `\"https://example.com/api/*\": { \"approveRequest\": true, \"approveResponse\": false }` - example.com/api パスへの要求は承認しますが、応答は承認しません",
-			"chat.tools.renameTool.enabled": "ワークスペース全体でコード シンボルの名前を変更するための rename ツールを使用できるかどうかを制御します。",
 			"chat.tools.riskAssessment.enabled": "有効にすると、ターミナル ツールの確認で LLM 生成のリスク レベル (安全/注意/慎重に確認) と簡単な説明が表示されます。",
 			"chat.tools.riskAssessment.model": "ツール リスク評価の生成に使用される言語モデル ID。小型で高速なモデルである必要があります。",
 			"chat.tools.terminal.simpleCollapsible": "有効にすると、ターミナル ツール呼び出しは常に簡略化されたビューの折りたたみ可能なコンテナーに表示されます。",
 			"chat.tools.todos.showWidget": "チャット入力の上に ToDo リスト ウィジェットを表示するかどうかを制御します。有効にすると、ウィジェットはエージェントによって作成された ToDo 項目を表示し、進行状況に応じて更新します。",
-			"chat.tools.usagesTool.enabled": "コード シンボルの参照、定義、実装を検索するための usages ツールを使用できるかどうかを制御します。",
 			"chat.undoRequests.restoreInput": "元に戻す要求が行われたときにチャットの入力を復元するかどうかを制御します。入力には、復元された要求のテキストが入力されます。",
 			"chat.unifiedAgentsBar.enabled": "コマンド センターの検索ボックスを統合チャットおよび検索ウィジェットに置き換えます。",
 			"chat.upvoteAnimation": "チャットの応答でサムズ アップ ボタンをクリックしたときにアニメーションを表示するかどうかを制御します。",
@@ -9065,6 +9444,8 @@
 			"chat.useNestedAgentMd.title": "入れ子になった AGENTS.md ファイルを使用する",
 			"chat.useSkillAdherencePrompt.description": "該当する場合にモデルが単にスキルを発表するのではなく即座にスキルを呼び出すよう促す、より強力なスキル準拠プロンプトを使用するかどうかを制御します。",
 			"chat.useSkillAdherencePrompt.title": "スキル準拠プロンプトを使用する",
+			"chat.utilityModel.description": "Override the language model used by built-in utility flows (titles, summaries, fallback responses, etc.). Leave empty to use the default model.",
+			"chat.utilitySmallModel.description": "Override the language model used by built-in small/fast utility flows (commit messages, intent detection, inline-chat progress, etc.). A fast and inexpensive model is recommended. Leave empty to use the default model.",
 			"chat.viewProgressBadge.enabled": "チャット ビューで開かれているエージェント セッションが進行中の場合、そのビューに進行状況バッジを表示します。",
 			"chat.viewSessions.enabled": "チャットが空の場合はチャット エージェント セッションを表示するか、チャット ビューの幅が十分な場合は横に表示します。",
 			"chat.viewSessions.orientation": "チャットと並べて表示される際のチャット エージェント セッション ビューの向きを制御します。",
@@ -9558,6 +9939,8 @@
 			"chatImageCarousel.allImages": "会話の画像"
 		},
 		"vs/workbench/contrib/chat/browser/chatManagement/chatManagement.contribution": {
+			"enableChatForByok": "Enabling AI features…",
+			"enableChatForByokReason": "Enabling AI features",
 			"languageModelsOpenSettings": "言語モデル設定コマンドをを開くためのアイコン。",
 			"models.clearResults": "モデルの検索結果をクリアする",
 			"modelsManagementEditor": "モデル管理エディター",
@@ -9617,9 +10000,11 @@
 			"models.managedByOrganization": "モデルの追加は組織によって管理されています",
 			"models.outputCost.plural": "出力コスト: 100 万トークンあたり {0} クレジット",
 			"models.outputCost.singular": "出力コスト: 100 万トークンあたりの {0} クレジット",
+			"models.pinModel": "Pin Model",
 			"models.pricing": "価格",
 			"models.toolCalling": "ツール",
 			"models.tools": "ツール",
+			"models.unpinModel": "Unpin Model",
 			"models.vision": "ビジョン",
 			"modelsTable.ariaLabel": "言語モデル",
 			"outputCost.ariaLabel.plural": "出力コスト: 100 万トークンあたり {0} クレジット",
@@ -9633,9 +10018,10 @@
 			"visible.ariaLabel": "表示されるモデル"
 		},
 		"vs/workbench/contrib/chat/browser/chatOutputItemRenderer": {
+			"chatOutputRenderer.codeBlockLanguageIdentifiers": "Code block language identifiers that this renderer can handle",
 			"chatOutputRenderer.mimeTypes": "このレンダラーが処理できる MIME の種類",
 			"chatOutputRenderer.viewType": "レンダラーの一意識別子。",
-			"vscode.extension.contributes.chatOutputRenderer": "チャット出力の特定の MIME の種類にレンダラーを提供します"
+			"vscode.extension.contributes.chatOutputRenderer": "Contributes a renderer for specific MIME types and code block language identifiers in chat outputs"
 		},
 		"vs/workbench/contrib/chat/browser/chatParticipant.contribution": {
 			"chat.viewContainer.label": "チャット",
@@ -9735,7 +10121,7 @@
 			"fix": "修正プログラム",
 			"forceSignIn": "サインインして AI 機能を使用する",
 			"hideChatSetup": "AI 機能を非表示にする方法について説明します",
-			"manageAdditionalSpend": "GitHub Copilot の追加支出を管理する",
+			"manageAdditionalSpend": "Manage GitHub Copilot Budget",
 			"managePlan": "GitHub Copilot Pro へのアップグレード",
 			"restartExtensionHost.reason.disable": "AI 機能を無効にする",
 			"restartExtensionHost.reason.enable": "AI 機能を有効にする",
@@ -9834,8 +10220,6 @@
 			"completions.snoozeAdditional5minutes": "さらに 5 分間一時停止する",
 			"completions.snoozeTimeDescription": "残りの期間、インライン候補は非表示になります",
 			"completionsLabel": "インライン候補",
-			"configureAdditionalSpend": "追加支出の構成",
-			"configureBudget": "予算を構成する",
 			"creditsLabel": "クレジット",
 			"enableAIFeatures": "AI 機能を使用する",
 			"enableCopilotButton": "AI 機能を有効にする",
@@ -9849,18 +10233,21 @@
 			"inlineSuggestionsEnabled": "有効",
 			"inlineSuggestionsTab": "インライン提案",
 			"learnMore": "詳細を確認する",
-			"manageAdditionalSpend": "追加支出の管理",
 			"manageBudget": "予算の管理",
 			"modelLabel": "モデル",
 			"premiumChatsLabel": "プレミアム要求",
 			"premiumIncluded": "組織のプランに含まれています。",
-			"quotaAdditionalUsageActive": "追加の支出が設定されています。制限がリセットされるまで使用が継続されます。",
-			"quotaAdditionalUsageApproaching": "制限に達すると、追加の支出が発生します。",
+			"premiumIncludedCompact": "{0} included with your organization's plan.",
+			"premiumLimitReached": "Organization limit reached.",
+			"premiumLimitReachedCompact": "{0} limit reached.",
+			"quotaAdditionalUsageActive": "Additional budget is configured. Usage will continue until limits reset.",
+			"quotaAdditionalUsageApproaching": "Once the limit is reached, additional budget will be used.",
 			"quotaBudgetActive": "プレミアム要求予算が構成されています。制限がリセットされるまで使用が継続されます。",
 			"quotaBudgetApproaching": "上限に達すると、プレミアム要求の予算が使用されます。",
 			"quotaCreditsDisplay": "{0} / {1}",
 			"quotaDisplay": "{0}%",
 			"quotaLabel": "Copilot 設定の管理",
+			"quotaLabelUsed": "{0} used",
 			"quotaLimited": "制限あり",
 			"quotaPaused": "制限がリセットされるまで、Copilot は一時停止します。",
 			"quotaPausedEnterprise": "制限がリセットされるまで、Copilot は一時停止します。詳細については、管理者にお問い合わせください。",
@@ -9940,7 +10327,8 @@
 		},
 		"vs/workbench/contrib/chat/browser/defaultModelContribution": {
 			"defaultModel": "自動 (ベンダーの既定値)",
-			"defaultModelDescription": "ベンダーの既定のモデルを使用する"
+			"defaultModelDescription": "ベンダーの既定のモデルを使用する",
+			"modelLabelWithVendor": "{0} ({1})"
 		},
 		"vs/workbench/contrib/chat/browser/enablementActions": {
 			"disable": "無効にする",
@@ -10323,6 +10711,10 @@
 			"tool.usages.results": "`{0}` の使用状況を分析しました、{1} 件の結果",
 			"tool.usages.userDescription": "シンボルの参照、定義、実装を検索する"
 		},
+		"vs/workbench/contrib/chat/browser/utilityModelContribution": {
+			"chat.utilityModel.defaultEntry.description": "Use the built-in default utility model",
+			"chat.utilityModel.defaultEntry.label": "Default"
+		},
 		"vs/workbench/contrib/chat/browser/viewsWelcome/chatViewsWelcomeHandler": {
 			"chatViewsWelcome.content": "ウェルカム メッセージの内容。最初のコマンド リンクはボタンとして表示されます。",
 			"chatViewsWelcome.icon": "ウェルカム メッセージのアイコン。",
@@ -10400,6 +10792,8 @@
 			"miGotoTypeDefinition": "型定義へ移動(&&T)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatMarkdownContentPart": {
+			"chat.codeBlockOutputError": "Error rendering the code block",
+			"chat.codeBlockOutputRendering": "Rendering code block...",
 			"chat.codeblock.applyingEdits": "編集を適用しています",
 			"chat.codeblock.applyingPercentage": "({0}%)...",
 			"chat.codeblock.deletions": "{0} 件の削除",
@@ -10408,6 +10802,7 @@
 			"chat.codeblock.generating": "編集を生成しています...",
 			"chat.codeblock.insertions": "{0} 件の挿入",
 			"chat.codeblock.insertions.one": "1 個の挿入",
+			"chat.renderedCodeBlockLabel": "Rendered code block {0}",
 			"summary": "{0}、{1}、{2} を編集しました"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatMcpServersInteractionContentPart": {
@@ -10509,7 +10904,7 @@
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatQuotaExceededPart": {
 			"clickToContinue": "クリックして再試行",
 			"configureBudget": "予算を構成する",
-			"enableAdditionalUsage": "追加支出の構成",
+			"enableAdditionalUsage": "Configure Budget",
 			"upgradeToCopilotPro": "GitHub Copilot Pro へのアップグレード",
 			"waitWarning": "変更が有効になるまでに数分かかる場合があります。"
 		},
@@ -10702,13 +11097,17 @@
 			"tool.skip": "スキップ"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatTerminalToolProgressPart": {
+			"chat.terminal.backgroundSuffix": " in background",
 			"chat.terminal.ran.plain": "{0} を実行しました",
 			"chat.terminal.ran.prefix": "実行しました ",
 			"chat.terminal.ranInSandbox.prefix": "実行しました ",
 			"chat.terminal.running.plain": "{0} を実行しています",
 			"chat.terminal.running.prefix": "実行中 ",
+			"chat.terminal.runningInBackground.plain": "Running {0} in background",
 			"chat.terminal.runningInSandbox.prefix": "実行中 ",
+			"chat.terminal.sandbox.backgroundSuffix": " in sandbox (background)",
 			"chat.terminal.sandbox.suffix": " サンドボックス内",
+			"chat.terminal.showTerminal": "Show",
 			"chat.terminal.skipped.plain": "スキップされた {0}",
 			"chat.terminal.skipped.prefix": "スキップされました ",
 			"chat.terminal.skippedInSandbox.prefix": "スキップされました ",
@@ -10865,19 +11264,25 @@
 			"chat.modelPicker.ariaLabel": "モデル {0} を選択する",
 			"chat.modelPicker.auto": "自動",
 			"chat.modelPicker.checkUpdateHover": "このモデルには、より新しいバージョンの VS Code が必要です。アクセスするには、[VS Code を更新](command:update.checkForUpdate) してください。",
-			"chat.modelPicker.cost": "コスト",
 			"chat.modelPicker.downloadUpdateHover": "このモデルには、より新しいバージョンの VS Code が必要です。アクセスするには、[更新をダウンロード](command:update.downloadUpdate) してください。",
 			"chat.modelPicker.effortAriaLabel": "思考の負荷: {0}",
 			"chat.modelPicker.effortTooltip": "思考量の設定",
 			"chat.modelPicker.otherModels": "その他のモデル",
+			"chat.modelPicker.pin": "Pin Model",
+			"chat.modelPicker.pinned": "Pinned",
 			"chat.modelPicker.restartUpdateHover": "このモデルには、より新しいバージョンの VS Code が必要です。アクセスするには、[再起動して更新](command:update.restartToUpdate) してください。",
 			"chat.modelPicker.search": "モデルの検索",
 			"chat.modelPicker.tokensAriaLabel": "コンテキスト サイズ: {0}",
 			"chat.modelPicker.tokensTooltip": "コンテキスト サイズの設定",
+			"chat.modelPicker.unpin": "Unpin Model",
 			"chat.modelPicker.updateDescription": "VS Code の更新",
 			"chat.modelPicker.upgradeHover": "最適なモデルを使用するには、[GitHub Copilot Pro にアップグレード](command:workbench.action.chat.upgradePlan \" \") してください。",
 			"chat.modelPicker.upgradeHoverProPlus": "最適なモデルを使用するには、[GitHub Copilot Pro+ にアップグレード](command:workbench.action.chat.upgradePlan \" \") してください。",
 			"chat.modelPicker.upgradeLink": "[アップグレード](command:workbench.action.chat.upgradePlan \" \")",
+			"chat.priceCategory.high": "High cost",
+			"chat.priceCategory.low": "Low cost",
+			"chat.priceCategory.medium": "Medium cost",
+			"chat.priceCategory.veryHigh": "Very high cost",
 			"chat.tokens.costHint": "サイズを大きくすると、長時間のセッションではコストが増加する可能性があります",
 			"chat.tokens.header": "コンテキスト サイズ",
 			"models.cacheCostLabel": "キャッシュされた入力",
@@ -10889,6 +11294,7 @@
 			"models.effortDefault": "{0} (既定)",
 			"models.inputCostLabel": "入力",
 			"models.outputCostLabel": "出力",
+			"models.priceCategoryTitle": "Cost",
 			"models.priceTitle": "コスト (1M トークンあたり)",
 			"models.tokensDefault": "{0} (既定値)"
 		},
@@ -11059,6 +11465,7 @@
 			"chatModelId": "現在選択されているチャット モデルの短い ID (例: 'gpt-4.1')。",
 			"chatModelsAreUserSelectable": "ユーザーがチャット モデルを手動で選択できる場合は TRUE です。",
 			"chatNewChatButtonExperimentIcon": "新しいチャット ボタンのアイコンのバリアントで、実験によって制御されます。値は 'copilot'、'new-session'、'comment'、または既定の空です。",
+			"chatNonCopilotModelsAreUserSelectable": "True when a user-selectable chat model from a non-Copilot vendor is available.",
 			"chatPanelExtensionParticipantRegistered": "既定のチャット参加者が拡張機能からパネルに登録されている場合は true です。",
 			"chatPanelLocation": "チャット パネルの場所。",
 			"chatParticipantRegistered": "既定のチャット参加者がパネルに登録されている場合は true です。",
@@ -11150,14 +11557,12 @@
 			"chatMultidiff.autoGenerated": "{0} 個のファイルへの変更"
 		},
 		"vs/workbench/contrib/chat/common/languageModels": {
-			"booleanRequired": "true または false を入力してください",
 			"configureLanguageModelGroup": "グループ名",
 			"enterName": "名前を入力してください",
 			"enterValue": "{0} の値を入力してください",
 			"languageModelGroupName": "グループの名前を入力してください",
 			"models.enumDefault": "{0} (既定)",
 			"nameExists": "この名前を持つ言語モデル グループがすでに存在します",
-			"numberRequired": "数を入力してください",
 			"selectValue": "{0} の値を選択してください",
 			"valueRequired": "値は必須です",
 			"vscode.extension.contributes.languageModelChatProviders": "特定のベンダーの言語モデル チャット プロバイダーを提供します。",
@@ -11735,9 +12140,6 @@
 			"chat.thinkingShimmer": "考え中/作業中ラベルのきらめき強調表示。",
 			"chatCheckpointSeparator": "チャット チェックポイントの区切り記号の色。"
 		},
-		"vs/workbench/contrib/chat/common/widget/input/modelPickerWidget": {
-			"chat.modelPicker.other": "その他のモデル"
-		},
 		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
 			"workbench.action.chat.openStorageFolder.label": "チャット ストレージ フォルダーを開く"
 		},
@@ -11749,6 +12151,15 @@
 		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
 			"debugAgentHost.noInspectPort": "エージェント ホスト プロセスの Node.js インスペクターを有効にできませんでした。",
 			"debugAgentHostInDevTools": "開発ツールでローカル エージェント ホスト プロセスをデバッグする"
+		},
+		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
+			"exportDebugLogs.saveDialogTitle": "Export Agent Host Debug Logs",
+			"exportDebugLogs.zipFilter": "Zip Archive"
+		},
+		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
+			"exportAgentTracesDB.error": "Failed to export agent host traces database: {0}",
+			"exportAgentTracesDB.label": "Export Agent Host Traces Database...",
+			"exportAgentTracesDB.notFound": "No agent host trace database found yet. Run an agent session with `#chat.agentHost.otel.dbSpanExporter.enabled#` turned on to populate it."
 		},
 		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
 			"keywordActivation.status.active": "'Hey Code' をリッスンしています...",
@@ -12338,7 +12749,8 @@
 		},
 		"vs/workbench/contrib/customEditor/browser/customEditorDiffInput": {
 			"customEditorDiffLabel": "{0} - {1}",
-			"customEditorDiffTitle": "{0} ({1})"
+			"customEditorDiffTitle": "{0} ({1})",
+			"customEditorSideBySideDiffTitle": "{0} ({1})"
 		},
 		"vs/workbench/contrib/customEditor/browser/customEditorInput": {
 			"editorCannotMove": "'{0}' を移動できません: エディターには、現在のウィンドウでのみ保存できる変更が含まれています。",
@@ -12356,15 +12768,12 @@
 		},
 		"vs/workbench/contrib/customEditor/common/extensionPoint": {
 			"contributes.customEditors": "提供されるカスタム エディター。",
-			"contributes.diffEditorPriority": "ユーザーが差分を開いたときに、カスタム エディターを自動的に有効にするかどうかを制御します。指定しない場合は、`priority` の値が使用されます。",
-			"contributes.diffEditorPriority.default": "そのリソースに対して他の既定のカスタム エディターが登録されていない場合、ユーザーが差分を開くと、このエディターが自動的に使用されます。",
-			"contributes.diffEditorPriority.option": "ユーザーが差分を開いたときにこのエディターが自動的に使用されることはありませんが、ユーザーは `Reopen With` コマンドを使用してこのエディターに切り替えることができます。",
 			"contributes.displayName": "カスタム エディターの、人間が判読できる名前です。これは、使用するエディターを選択するときにユーザーに表示されます。",
-			"contributes.mergeEditorPriority": "ユーザーがマージ エディターを開いたときに、カスタム エディターを自動的に有効にするかどうかを制御します。指定しない場合は、`priority` の値が使用されます。",
-			"contributes.mergeEditorPriority.default": "ユーザーがマージ エディターを開いたときに、そのリソースに対して他の既定のカスタム エディターが登録されていない場合は、このエディターが自動的に使用されます。",
-			"contributes.mergeEditorPriority.option": "ユーザーがマージ エディターを開いたときにこのエディターが自動的に使用されることはありませんが、ユーザーは `Reopen With` コマンドを使用してこのエディターに切り替えることができます。",
-			"contributes.priority": "ユーザーがファイルを開いたときにカスタム エディターを自動的に有効にするかどうかを制御します。これは、'workbench.editorAssociations' 設定を使用してユーザーによって上書きされる可能性があります。",
+			"contributes.priority": "Controls if the custom editor is enabled automatically when the user opens a file, diff, or merge editor. This may be overridden by users using the `workbench.editorAssociations` or `workbench.diffEditorAssociations` setting.",
 			"contributes.priority.default": "ユーザーがリソースを開いたときに、そのリソースに対して他の既定のカスタム エディターが登録されていない場合は、このエディターが自動的に使用されます。",
+			"contributes.priority.diff": "Controls if the custom editor is enabled automatically when the user opens a diff. When not specified, the value of `editor` is used.",
+			"contributes.priority.editor": "Controls if the custom editor is enabled automatically when the user opens a file.",
+			"contributes.priority.merge": "Controls if the custom editor is enabled automatically when the user opens a merge editor. When not specified, the value of `editor` is used.",
 			"contributes.priority.option": "ユーザーがリソースを開いたときにこのエディターが自動的に使用されることはありませんが、ユーザーは [再び開く] コマンドを使用してこのエディターに切り替えることができます。",
 			"contributes.selector": "カスタム エディターが有効にされている glob のセット。",
 			"contributes.selector.filenamePattern": "カスタム エディターが有効にされている glob。",
@@ -17945,6 +18354,10 @@
 			"fileReplaceChanges": "{0} ↔ {1} (置換のプレビュー)",
 			"searchReplace.source": "検索と置換"
 		},
+		"vs/workbench/contrib/search/browser/search.common.contribution": {
+			"search.searchOnType": "Search all files as you type.",
+			"search.searchOnTypeDebouncePeriod": "When {0} is enabled, controls the timeout in milliseconds between a character being typed and the search starting. Has no effect when {0} is disabled."
+		},
 		"vs/workbench/contrib/search/browser/search.contribution": {
 			"exclude": "フルテキスト検索と Quick Open のファイル検索でファイルとフォルダーを除外するための [glob パターン](https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options) を構成します。クイック オープンで最近開いたリストからファイルを除外するには、パターンを絶対 (例: '**/node_modules/**') にする必要があります。'#files.exclude#' 設定からすべての glob パターンを継承します。",
 			"exclude.boolean": "ファイル パスの照合基準となる glob パターン。これを true または false に設定すると、パターンがそれぞれ有効/無効になります。",
@@ -17966,6 +18379,7 @@
 			"search.decorations.colors": "検索ファイルの装飾に色を使用するかどうかを制御します。",
 			"search.defaultViewMode": "既定の検索結果ビュー モードを制御します。",
 			"search.experimental.closedNotebookResults": "閉じているノートブックのノートブック エディターのリッチ コンテンツの結果を表示します。この設定を変更した後、検索結果を更新してください。",
+			"search.experimental.useIgnoreFilesInFindFiles": "When enabled, the legacy `findFiles` extension API honors the user's `#search.useIgnoreFiles#` setting instead of always ignoring `.gitignore`. Extensions that explicitly pass `null` as the `exclude` argument still get unfiltered results. Telemetry is emitted regardless of this setting to help decide future defaults.",
 			"search.followSymlinks": "検索中にシンボリック リンクをたどるかどうかを制御します。",
 			"search.globalFindClipboard": "macOS で検索ビューが共有の検索クリップボードを読み取りまたは変更するかどうかを制御します。",
 			"search.location": "検索をサイドバーのビューとして表示するか、より水平方向の空間をとるためにパネル領域のパネルとして表示するかを制御します。",
@@ -17980,8 +18394,6 @@
 			"search.quickOpen.includeHistory": "最近開いたファイルの結果を、Quick Open の結果ファイルに含めるかどうか。",
 			"search.quickOpen.includeSymbols": "グローバル シンボル検索の結果を、Quick Open の結果ファイルに含めるかどうか。",
 			"search.ripgrep.maxThreads": "検索に使用するスレッドの数。0 に設定すると、エンジンによってこの値が自動的に決定されます。",
-			"search.searchOnType": "入力中の文字列を全てのファイルから検索する。",
-			"search.searchOnTypeDebouncePeriod": "{0} が有効になっている場合、文字入力と検索開始の間の入力待ちをミリ秒単位で制御します。{0} が無効になっている場合、効果はありません。",
 			"search.searchView.keywordSuggestions": "検索ビューでキーワード候補を有効にします。",
 			"search.searchView.semanticSearchBehavior": "検索ビューに表示されるセマンティック検索結果の動作を制御します。",
 			"search.searchView.semanticSearchBehavior.auto": "検索ごとにセマンティック結果を自動的に要求します。",
@@ -17994,7 +18406,6 @@
 			"search.sortOrder": "検索結果の並べ替え順序を制御します。",
 			"search.usePCRE2": "テキスト検索に PCRE2 正規表現エンジンを使用するかどうか。これにより、先読みや後方参照といった高度な正規表現機能を使用できるようになります。ただし、すべての PCRE2 機能がサポートされているわけではありません。JavaScript によってサポートされる機能のみが使用できます。",
 			"search.useReplacePreview": "一致項目を選択するか置換するときに、置換のプレビューを開くかどうかを制御します。",
-			"searchConfigurationTitle": "検索",
 			"searchSortOrder.countAscending": "結果は、ファイルごとのカウントで昇順に並べ替えられます。",
 			"searchSortOrder.countDescending": "結果は、ファイルあたりの数で降順に並べ替えられます。",
 			"searchSortOrder.default": "結果はフォルダー名とファイル名でアルファベット順に並べ替えられます。",
@@ -18266,6 +18677,9 @@
 			"openToBottom": "一番下に開く",
 			"openToSide": "横に開く"
 		},
+		"vs/workbench/contrib/search/common/search": {
+			"searchConfigurationTitle": "Search"
+		},
 		"vs/workbench/contrib/searchEditor/browser/searchEditor": {
 			"label.excludes": "検索除外パターン",
 			"label.includes": "検索包含パターン",
@@ -18299,7 +18713,6 @@
 			"search.searchEditor.singleClickBehaviour": "検索エディターで結果をダブルクリックした場合の効果を構成します。",
 			"search.searchEditor.singleClickBehaviour.default": "シングルクリックでは何も行われません。",
 			"search.searchEditor.singleClickBehaviour.peekDefinition": "シングルクリックすると、[定義をここに表示] ウィンドウが開きます。",
-			"searchConfigurationTitle": "検索",
 			"searchEditor": "検索エディター",
 			"searchEditor.action.decreaseSearchEditorContextLines": "コンテキスト行を減らす",
 			"searchEditor.action.increaseSearchEditorContextLines": "コンテキスト行を増やす",
@@ -19397,7 +19810,7 @@
 			"terminal.integrated.unicodeVersion": "ターミナルでの文字幅を評価するときに使用する Unicode のバージョンを制御します。絵文字や他のワイド文字で占める領域の大きさが正しくない場合や、バックスペースによる削除の量が多すぎるか少なすぎる場合には、この設定を微調整してみてください。",
 			"terminal.integrated.unicodeVersion.eleven": "バージョン 11 の Unicode。このバージョンでは、Unicode の最新バージョンを使用する最新のシステムでのサポートが向上しています。",
 			"terminal.integrated.unicodeVersion.six": "バージョン 6 の Unicode。これは古いバージョンであり、古いシステムで適切に動作するはずです。",
-			"terminal.integrated.windowsUseConptyDll": "Windows に付属する conpty.dll (v1.25.260303002) ではなく、VS Code に付属する試験的なバージョンを使用するかどうか。",
+			"terminal.integrated.windowsUseConptyDll": "Whether to use the conpty.dll (v1.25.260303002) shipped with VS Code, instead of the one bundled with Windows.",
 			"terminal.integrated.wordSeparators": "ダブルクリックして単語を選択し、フォールバック 'word' リンクの検出時に、単語区切り記号と見なされるすべての文字を含む文字列。これはリンク検出に使用されるため、リンクの検出時に使用される ':' などの文字を含めると、'file:10:5' などのリンクの行と列の部分が無視されます。",
 			"terminalDescription": "タイトルの右側に表示されるターミナルの説明を制御します。変数は以下のコンテキストに基づいて置換されます。",
 			"terminalIntegratedConfigurationTitle": "統合ターミナル",
@@ -19779,7 +20192,9 @@
 			"detachBackgroundProcesses.description": "永続的なターミナル プロセスをデタッチして、VS Code 終了時に存続させるかどうか。有効にすると、`mode: \"async\"` (レガシ: `isBackground: true`) で開始されたコマンドが `nohup` (POSIX) または `Start-Process` (Windows) でラップされ、ターミナルが破棄された後もプロセスが実行され続けます。",
 			"enforceTimeoutFromModel.description": "ターミナル ツールで実行する際に、モデルが提供するタイムアウト値を強制するかどうかを指定します。有効にすると、モデルがタイムアウト パラメーターを提供した場合、その時間が経過した後にツールはコマンドの追跡を停止し、これまでに収集した出力を返します。",
 			"idlePollInterval.description": "コマンドの実行がいつ終了したかを検出するために、ターミナル ツールでの実行で使用されるアイドル ポーリング間隔をミリ秒単位で構成します。値を小さくするとコマンド検出は速くなりますが、低速システムでは誤検知が発生する可能性があります。これは主に、シェル統合イベントの代わりにアイドル検出が使用されるシェル統合のないターミナルに影響します。",
+			"idleSilenceTimeoutMs.description": "Number of milliseconds the run in terminal tool will wait for new output from a synchronous command before moving it to a background terminal and returning what was collected so far. The process is not killed — the tool returns the terminal ID so the model can poll, send input, or kill it. Set to {0} to disable.",
 			"ignoreDefaultAutoApproveRules.description": "{0} で定義されているとおりにターミナル ツールでの実行に使用される組み込みの既定の自動承認ルールを無視するかどうか。この設定を有効にすると、ターミナル ツールでの実行では、既定のルール セットからのルールは無視されますが、ユーザー設定、リモート設定、ワークスペース設定で定義されているルールには引き続き従います。この設定は自己責任で使用してください。既定の自動承認ルールは、危険なコマンドの実行から保護できるよう設計されています。",
+			"outputDeltas.description": "When enabled, repeated get terminal output tool calls return only output added since the previous poll for the same terminal execution, or a short unchanged-output message when there is no new output.",
 			"outputLocation.chat": "チャット内でのみターミナルの出力を表示します。",
 			"outputLocation.description": "ターミナル ツールの実行結果の出力を表示する場所です。",
 			"outputLocation.terminal": "チャットに加えて、パネルやエディターでターミナルを表示します。",
@@ -20767,7 +21182,7 @@
 			"showUpdateInfo": "更新情報の表示",
 			"showUpdateInfo.prompt": "レンダリングするマークダウンまたはマークダウン/ボタンを含む JSON を入力します (URL から読み込むには空のままにします)",
 			"update.noReleaseNotesOnline": "このバージョンの {0} には、オンラインのリリース ノートがありません",
-			"updateButton": "&更新(&U)"
+			"updateButton": "更新(&&U)"
 		},
 		"vs/workbench/contrib/update/browser/updateTitleBarEntry": {
 			"updateIndicator.checking": "確認しています...",
@@ -21984,7 +22399,7 @@
 			"learnMore": "詳細情報",
 			"ok": "OK",
 			"plan.businessName": "Copilot Business",
-			"plan.eduName": "Copilot EDU",
+			"plan.eduName": "Copilot Student",
 			"plan.enterpriseName": "Copilot Enterprise",
 			"plan.freeName": "Copilot Free",
 			"plan.maxName": "Copilot Max",
