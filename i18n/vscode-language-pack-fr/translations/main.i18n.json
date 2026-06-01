@@ -2162,6 +2162,10 @@
 			"selectPrevCodeAction.title": "Sélectionner l’action précédente",
 			"toggleSectionCodeAction.title": "Activer/désactiver la section"
 		},
+		"vs/platform/agentHost/common/agentHost.config.contribution": {
+			"chat.agentHost.enabled": "When enabled, some agents run in a separate agent host process.",
+			"chatAgentHostConfigurationTitle": "Chat Agent Host"
+		},
 		"vs/platform/agentHost/common/agentHostCustomizationConfig": {
 			"agentHost.config.customizations.description": "Plug-ins configurés sur cet hôte d’agent et disponibles pour les sessions à distance.",
 			"agentHost.config.customizations.descriptionField": "Description",
@@ -2199,9 +2203,19 @@
 			"agentHost.sessionConfig.permissions.toolName": "Nom de l’outil",
 			"agentHost.sessionConfig.permissionsDescription": "Permissions de session par outil. Mis à jour automatiquement lors de l'approbation d'un outil « dans cette session »."
 		},
+		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
+			"chat.agentHost.claudeAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `@anthropic-ai/claude-agent-sdk` package. When set, the Claude agent provider is registered inside the agent host and the SDK is loaded from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect. This setting will be removed once the SDK is delivered through the Extension Marketplace.",
+			"chat.agentHost.otel.captureContent": "When enabled, includes prompt and response content in OTel span attributes. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Privacy-sensitive: do not enable in environments that ship spans to shared sinks.",
+			"chat.agentHost.otel.dbSpanExporter.enabled": "When enabled, the agent host persists every emitted OTel span to a local SQLite database. Spans can be inspected via the `Export Agent Host Traces Database` command. Compatible with external exporters: spans are written to SQLite *and* forwarded to the user-configured sink.",
+			"chat.agentHost.otel.enabled": "When enabled, the agent host emits OpenTelemetry traces from the Copilot SDK. Requires `#chat.agentHost.enabled#`. Either configure `#chat.agentHost.otel.otlpEndpoint#` to ship traces to an external collector or enable `#chat.agentHost.otel.dbSpanExporter.enabled#` to capture them locally.",
+			"chat.agentHost.otel.exporterType": "Exporter backend used by the Copilot SDK when `#chat.agentHost.otel.enabled#` is on. `otlp-grpc` is downgraded to `otlp-http` transparently in the CLI runtime.",
+			"chat.agentHost.otel.otlpEndpoint": "OTLP endpoint URL when exporter type is `otlp-http` or `otlp-grpc`. Sets `OTEL_EXPORTER_OTLP_ENDPOINT` inside the agent host process.",
+			"chat.agentHost.otel.outfile": "Output path for span JSON lines when exporter type is `file`. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
+			"chat.agentHost.rubberDuck.enabled": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model. Requires `#chat.agentHost.enabled#`.",
+			"chatAgentHostStarterConfigurationTitle": "Chat Agent Host Starter"
+		},
 		"vs/platform/agentHost/common/changesetUri": {
 			"branchChangeset.label": "Modifications de la branche",
-			"thisTurnChangeset.label": "Ce tour",
 			"uncommittedChangeset.description": "Afficher les modifications non validées dans cette session",
 			"uncommittedChangeset.label": "Changements non validés"
 		},
@@ -2229,11 +2243,12 @@
 			"agentHost.config.sandbox.windowsEnabled.title": "Bac à sable activé (Windows)",
 			"agentHost.config.sandbox.windowsFileSystem.title": "Système de fichiers du bac à sable Windows"
 		},
-		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
-			"sshKbiDefaultPrompt": "Authentification obligatoire pour {0}@{1}"
-		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "Hôte de l’agent"
+		},
+		"vs/platform/agentHost/node/agentService": {
+			"agentHost.forkedSessionFallback": "Forked Session",
+			"agentHost.forkedTitlePrefix": "Forked: "
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "Approbations",
@@ -2321,6 +2336,9 @@
 			"claude.toolInvoke.webFetch": "Récupération de {0}",
 			"claude.toolInvoke.webFetchGeneric": "Récupération de l’URL"
 		},
+		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
+			"claude.discovered.displayName": "Discovered in Claude"
+		},
 		"vs/platform/agentHost/node/copilot/copilotAgent": {
 			"agentHost.sessionConfig.branch": "Branche",
 			"agentHost.sessionConfig.branchDescription": "Branche de base à partir de laquelle travailler",
@@ -2360,7 +2378,15 @@
 		},
 		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
 			"copilotSlashCommand.compact.description": "Libérer le contexte en compactant l’historique des conversations",
-			"copilotSlashCommand.plan.description": "Créer un plan d’implémentation avant de coder"
+			"copilotSlashCommand.plan.description": "Créer un plan d’implémentation avant de coder",
+			"copilotSlashCommand.research.description": "Run deep research on a topic using search and web sources",
+			"copilotSlashCommand.rubberDuck.description": "Get an independent critique of the current approach"
+		},
+		"vs/platform/agentHost/node/copilot/copilotSystemNotification": {
+			"agentHost.copilot.systemNotification.agentCompleted": "Background agent completed",
+			"agentHost.copilot.systemNotification.shellCompleted": "Shell completed",
+			"agentHost.copilot.systemNotification.shellDescriptionCompleted": "`{0}` completed",
+			"agentHost.copilot.systemNotification.shellIdCompleted": "Shell `{0}` completed"
 		},
 		"vs/platform/agentHost/node/copilot/copilotToolDisplay": {
 			"copilot.permission.default.message": "Autoriser le modèle à appeler {0} ?",
@@ -2478,37 +2504,9 @@
 			"sessionPermissions.allowSession": "Autoriser dans cette session",
 			"sessionPermissions.skip": "Ignorer"
 		},
-		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
-			"ssh.failedToReadPrivateKey": "Échec de la lecture du fichier de clé privée : {0}",
-			"ssh.keyFileAuthRequiresPath": "L'authentification par fichier clé nécessite un chemin vers une clé privée.",
-			"sshKeyPassphraseName": "Phrase secrète SSH",
-			"sshKeyPassphrasePrompt": "Entrer la phrase secrète pour la clé SSH {0}.",
-			"sshProgressCheckingAgent": "Vérification de l’existence de l’hôte de l’agent en cours... Merci de patienter.",
-			"sshProgressConnecting": "Établissement de la connexion SSH en cours... Merci de patienter.",
-			"sshProgressDownloadingCLI": "Installation de l’interface CLI VS Code sur l’agent distant en cours... Merci de patienter.",
-			"sshProgressForwarding": "Connexion à l’hôte d’agent distant en cours... Merci de patienter.",
-			"sshProgressInstallingCLI": "Vérification de l’installation de l’interface CLI distante en cours... Merci de patienter.",
-			"sshProgressStartingAgent": "Lancement de l’hôte de l’agent distant en cours... Merci de patienter."
-		},
-		"vs/platform/agentHost/node/tunnelHostMainService": {
-			"tunnelHost.log": "Connexions à distance"
-		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "Zoom de page : {0} %",
 			"browserZoomPercent": "{0} %"
-		},
-		"vs/platform/browserView/electron-main/browserViewMainService": {
-			"browser.contextMenu.addElementToChat": "Ajouter un élément à une conversation",
-			"browser.contextMenu.back": "Retour",
-			"browser.contextMenu.copyImage": "Copier une image",
-			"browser.contextMenu.copyImageUrl": "Copier l’URL de l’image",
-			"browser.contextMenu.copyLink": "Copiez un lien",
-			"browser.contextMenu.forward": "Transférer",
-			"browser.contextMenu.inspect": "Inspecter",
-			"browser.contextMenu.openImageInNewTab": "Ouvrir l’image dans un nouvel onglet",
-			"browser.contextMenu.openLinkInExternalBrowser": "Ouvrir le lien dans un navigateur externe",
-			"browser.contextMenu.openLinkInNewTab": "Ouvrir le lien dans un nouvel onglet",
-			"browser.contextMenu.reload": "Recharger"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
 			"config.policy.duplicate": "Impossible d’inscrire '{0}'. Le {1} de stratégie associé est déjà inscrit auprès de {2}.",
@@ -2560,17 +2558,6 @@
 			"moreFiles": "...{0} fichiers supplémentaires non affichés",
 			"okButton": "&&OK",
 			"yesButton": "&&Oui"
-		},
-		"vs/platform/dialogs/electron-browser/dialog": {
-			"aboutDetail": "Version : {0}\r\nValidation : {1}\r\nDate : {2}\r\nElectron : {3}\r\nElectronBuildId : {4}\r\nChromium : {5}\r\nNode.js : {6}\r\nV8 : {7}\r\nSystème d’exploitation : {8}"
-		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "Ouvrir",
-			"openFile": "Ouvrir un fichier",
-			"openFolder": "Ouvrir un dossier",
-			"openWorkspace": "&&Ouvrir",
-			"openWorkspaceTitle": "Ouvrir l’espace de travail à partir du fichier",
-			"selectFolder": "&&Sélectionner un dossier"
 		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "Le fichier est trop volumineux pour être ouvert en tant qu'éditeur sans titre. Chargez-le d'abord dans l'Explorateur de fichiers, puis réessayez."
@@ -2782,6 +2769,14 @@
 			"fileSystemNotAllowedError": "Autorisations insuffisantes. Réessayez et autorisez l’opération.",
 			"fileSystemRenameError": "Renommer n’est pris en charge que pour les fichiers."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Directory is not empty",
+			"fileExceedsStorageQuota": "File exceeds available storage quota",
+			"fileIsDirectory": "File is Directory",
+			"fileNotDirectory": "File is not a directory",
+			"fileNotExists": "File does not exist",
+			"internal": "Internal error occurred in IndexedDB File System Provider. ({0})"
+		},
 		"vs/platform/files/common/files": {
 			"sizeB": "{0} o",
 			"sizeGB": "{0} Go",
@@ -2821,10 +2816,6 @@
 		},
 		"vs/platform/files/common/io": {
 			"fileTooLargeError": "Le fichier est trop volumineux pour être ouvert"
-		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "Échec du déplacement de « {0} » vers la corbeille ({1})",
-			"trashFailed": "Échec du déplacement de « {0} » vers la corbeille ({1})"
 		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "Impossible de copier '{0}' dans '{1}' ({2}).",
@@ -2922,68 +2913,12 @@
 		"vs/platform/mcp/common/mcpManagementService": {
 			"not allowed to install": "Ce serveur MCP ne peut pas être installé, car {0}"
 		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "Annuler",
-			"exit": "&&Quitter",
-			"mAbout": "À propos de {0}",
-			"mBringToFront": "Tout mettre au premier plan",
-			"mEdit": "&&Edition",
-			"mFile": "&&Fichier",
-			"mGoto": "Attei&&ndre",
-			"mHelp": "&&Aide",
-			"mHide": "Masquer {0}",
-			"mHideOthers": "Masquer les autres",
-			"mMergeAllWindows": "Fusionner toutes les fenêtres",
-			"mMinimize": "Réduire",
-			"mMoveTabToNewWindow": "Déplacer l’onglet vers une nouvelle fenêtre",
-			"mNewTab": "Nouvel onglet",
-			"mRun": "E&&xécuter",
-			"mSelection": "&&Sélection",
-			"mServices": "Services",
-			"mShowAll": "Afficher tout",
-			"mShowNextTab": "Afficher l'onglet suivant",
-			"mShowPreviousTab": "Afficher l'onglet précédent",
-			"mTerminal": "&&Terminal",
-			"mView": "Affic&&hage",
-			"mWindow": "Fenêtre",
-			"mZoom": "Zoom",
-			"miCheckForUpdates": "Rechercher les &&mises à jour...",
-			"miCheckingForUpdates": "Recherche des mises à jour...",
-			"miDownloadUpdate": "Télécharger la mise à jour disp&&onible",
-			"miDownloadingUpdate": "Téléchargement de la mise à jour...",
-			"miInstallUpdate": "Installer la &&mise à jour...",
-			"miInstallingUpdate": "Installation de la mise à jour...",
-			"miNewWindow": "Nouvelle &&fenêtre",
-			"miPreferences": "Pr&&éférences",
-			"miQuit": "Quitter {0}",
-			"miRestartToUpdate": "Redémarrer pour &&mettre à jour",
-			"miSwitchWindow": "Changer de &&fenêtre...",
-			"quit": "&&Quitter",
-			"quitMessage": "Voulez-vous vraiment quitter ?",
-			"quitMessageMac": "Voulez-vous vraiment quitter ?"
-		},
 		"vs/platform/meteredConnection/common/meteredConnection.config.contribution": {
 			"meteredConnection": "Contrôle si la connexion réseau actuelle doit être considérée comme limitée. Lorsqu’elle est limitée, les mises à jour automatiques, les téléchargements d’extensions et autres activités réseau en arrière-plan sont reportés pour réduire l’utilisation des données.",
 			"meteredConnection.auto": "Détectez automatiquement les connexions limitées en utilisant le statut réseau du système d’exploitation.",
 			"meteredConnection.off": "Ne traitez jamais la connexion réseau comme limitée.",
 			"meteredConnection.on": "Toujours traiter la connexion réseau comme limitée. Les mises à jour et téléchargements automatiques seront reportés.",
 			"networkConfigurationTitle": "Réseau"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "Annuler",
-			"cantCreateBinFolder": "Impossible de désinstaller la commande shell « {0} ».",
-			"cantUninstall": "Impossible de désinstaller la commande shell '{0}'.",
-			"copyLink": "&&Copier le lien",
-			"ok": "&&OK",
-			"openExternalErrorLinkMessage": "Désolé, une erreur s’est produite lors de l’ouverture d’un lien dans votre navigateur par défaut.",
-			"openExternalProgramErrorMessage": "Désolé, une erreur est survenue lors de l'ouverture d'un programme externe.",
-			"sourceMissing": "Impossible de trouver le script shell dans « {0} »",
-			"trace.detail": "Signalez le problème, et attachez manuellement le fichier suivant :\r\n{0}",
-			"trace.message": "Le fichier de trace a été créé",
-			"trace.ok": "&&OK",
-			"tracing.alreadyInProgress": "Une session de traçage est déjà en cours. Utilisez la commande `\"{0}\"` pour l’arrêter en premier.",
-			"warnEscalation": "{0} va maintenant demander avec « osascript » des privilèges d’administrateur pour installer la commande shell.",
-			"warnEscalationUninstall": "{0} va maintenant demander avec « osascript » des privilèges d’administrateur pour désinstaller la commande shell."
 		},
 		"vs/platform/networkFilter/common/networkFilterService": {
 			"networkFilter.blockedByPolicy": "L’accès à {0} est bloqué par la stratégie de domaine réseau (voir les paramètres `{1}` et `{2}`)."
@@ -2992,9 +2927,6 @@
 			"severityPrefix.error": "Erreur : {0}",
 			"severityPrefix.info": "Info : {0}",
 			"severityPrefix.warning": "Avertissement : {0}"
-		},
-		"vs/platform/process/electron-main/processMainService": {
-			"local": "Local"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "La commande « {0} » a entraîné une erreur",
@@ -3052,16 +2984,6 @@
 		},
 		"vs/platform/quickinput/browser/tree/quickTree": {
 			"quickInputBox.ariaLabel": "Taper pour affiner les résultats."
-		},
-		"vs/platform/remoteTunnel/common/remoteTunnel": {
-			"remoteTunnelLog": "Service de tunnel distant"
-		},
-		"vs/platform/remoteTunnel/node/remoteTunnelService": {
-			"remoteTunnelService.authorizing": "Connexion en tant que {0} ({1})",
-			"remoteTunnelService.building": "Génération de l’interface CLI à partir de sources",
-			"remoteTunnelService.openTunnel": "Ouverture du tunnel",
-			"remoteTunnelService.openTunnelWithName": "Ouverture du tunnel{0}",
-			"remoteTunnelService.serviceInstallFailed": "Échec de l’installation du tunnel en tant que service, démarrage de la session..."
 		},
 		"vs/platform/request/common/request": {
 			"electronFetch": "Contrôle si l'utilisation de l'implémentation fetch d'Electron au lieu de celle de Node.js doit être activée. Toutes les extensions locales obtiendront l'implémentation d'Electron pour l'API de recherche globale.",
@@ -3546,9 +3468,6 @@
 			"updateMode": "Choisissez si vous voulez recevoir des mises à jour automatiques. Nécessite un redémarrage après le changement. Les mises à jour sont récupérées auprès d'un service en ligne Microsoft.",
 			"updateTitleBar": "Affichez l’indicateur de mise à jour dans la barre de titre."
 		},
-		"vs/platform/update/electron-main/notAvailableUpdateDialog": {
-			"noUpdatesAvailable": "Aucune mise à jour n'est disponible actuellement."
-		},
 		"vs/platform/userDataProfile/common/userDataProfile": {
 			"defaultProfile": "Par défaut"
 		},
@@ -3585,58 +3504,20 @@
 		"vs/platform/userDataSync/common/userDataSyncResourceProvider": {
 			"incompatible sync data": "Impossible d'analyser les données de synchronisation, car elles ne sont pas compatibles avec la version actuelle."
 		},
-		"vs/platform/windows/electron-main/windowImpl": {
-			"appGone": "La fenêtre s’est terminée de manière inattendue",
-			"appGoneDetailEmptyWindow": "Nous sommes désolés pour la gêne occasionnée. Vous pouvez ouvrir une nouvelle fenêtre vide pour recommencer.",
-			"appGoneDetailWorkspace": "Nous vous prions de nous excuser pour ce désagrément. Vous pouvez rouvrir la fenêtre pour reprendre l'action au moment où elle a été interrompue.",
-			"appGoneDetails": "La fenêtre s’est terminée de manière inattendue (raison : '{0}', code : '{1}')",
-			"appStalled": "La fenêtre ne répond pas",
-			"appStalledDetail": "Vous pouvez rouvrir ou fermer la fenêtre, ou continuer à patienter.",
-			"close": "&&Fermer",
-			"doNotRestoreEditors": "Ne pas restaurer les éditeurs",
-			"hiddenMenuBar": "Vous pouvez toujours accéder à la barre de menus en appuyant sur la touche Alt.",
-			"newWindow": "&&Nouvelle fenêtre",
-			"reopen": "&&Rouvrir",
-			"wait": "&&Continuer à attendre"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"allow": "&&Autoriser",
-			"cancel": "&&Annuler",
-			"confirmOpenDetail": "Le chemin '{0}' utilise un hôte qui n’est pas autorisé. À moins que vous ne fassiez confiance à l’hôte, vous devez appuyer sur 'Annuler'",
-			"confirmOpenMessage": "L’hôte '{0}' est introuvable dans la liste des hôtes autorisés. Voulez-vous l’autoriser quand même ?",
-			"doNotAskAgain": "Autoriser définitivement les '{0}' hôtes",
-			"learnMore": "&&En savoir plus",
-			"ok": "&&OK",
-			"pathNotExistDetail": "Désolé... Le chemin d’accès « {0} » n’existe pas sur cet ordinateur.",
-			"pathNotExistTitle": "Le chemin d'accès n'existe pas",
-			"uriInvalidDetail": "L’URI '{0}' n’est pas valide et ne peut pas être ouverte.",
-			"uriInvalidTitle": "L'URI ne peut pas être ouverte"
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "Espace de travail de code"
-		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"cancel": "&&Annuler",
-			"clearButtonLabel": "&&Effacer",
-			"confirmClearDetail": "Cette action est irréversible !",
-			"confirmClearRecentsMessage": "Voulez-vous effacer tous les fichiers et espaces de travail récemment ouverts ?",
-			"newWindow": "Nouvelle fenêtre",
-			"newWindowDesc": "Ouvre une nouvelle fenêtre",
-			"recentFolders": "Dossiers récents",
-			"recentFoldersAndWorkspaces": "Dossiers et espaces de travail récents",
-			"untitledWorkspace": "Sans titre (espace de travail)",
-			"workspaceName": "{0} (espace de travail)"
-		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "&&OK",
-			"workspaceOpenedDetail": "L’espace de travail est déjà ouvert dans une autre fenêtre. Veuillez s’il vous plaît d’abord fermer cette fenêtre et puis essayez à nouveau.",
-			"workspaceOpenedMessage": "Impossible d’enregistrer l’espace de travail '{0}'"
 		},
 		"vs/server/node/remoteExtensionHostAgentCli": {
 			"remotecli": "Interface CLI distante"
 		},
 		"vs/server/node/serverEnvironmentService": {
 			"acceptLicenseTerms": "Si cette option est définie, l’utilisateur accepte les termes du contrat de licence du serveur et le serveur démarre sans invite de l’utilisateur.",
+			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
+			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
+			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
+			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
+			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
+			"agent-host-port": "The port the agent host WebSocket server should listen on.",
 			"connection-token": "Secret qui doit être inclus dans toutes les demandes",
 			"connection-token-file": "Chemin d’accès à un fichier qui contient le jeton de connexion",
 			"default-folder": "Dossier d’espace de travail à ouvrir lorsqu’aucune entrée n’est spécifiée dans l’URL du navigateur. Chemin d’accès relatif ou absolu résolu par rapport au répertoire de travail actuel",
@@ -3654,154 +3535,6 @@
 		"vs/server/node/serverServices": {
 			"remoteExtensionLog": "Serveur"
 		},
-		"vs/sessions/browser/accountTitleBarState": {
-			"accountSignedInAria": "Connecté en tant que {0} avec {1}",
-			"accountSignedInAriaNameOnly": "Connecté en tant que {0}",
-			"agentsSignedOut": "Agents déconnectés",
-			"agentsSignedOutAria": "Les agents sont déconnectés",
-			"copilotAllQuotaReachedAria": "Quota de suggestion intégrée et de conversation GitHub Copilot atteint",
-			"copilotChatQuotaReachedAria": "Quota de conversation GitHub Copilot atteint",
-			"copilotCompletionsQuotaReachedAria": "Quota de suggestion intégrée GitHub Copilot atteint",
-			"copilotQuotaReached": "Quota atteint",
-			"copilotTokensRemaining": "Jetons restants",
-			"copilotTokensRemainingAria": "{0} % de jetons GitHub Copilot restants",
-			"copilotUnavailable": "Copilot non disponible",
-			"copilotUnavailableDisabledAria": "GitHub Copilot est désactivé",
-			"copilotUnavailableUntrustedAria": "GitHub Copilot n’est pas disponible dans des espaces de travail non fiables",
-			"loadingAccount": "Chargement du compte en cours… Merci de patienter.",
-			"loadingAccountAria": "Chargement de compte",
-			"signInAria": "Connectez-vous à votre compte",
-			"signInLabel": "Se connecter"
-		},
-		"vs/sessions/browser/layoutActions": {
-			"agentPanelCloseIcon": "Icône pour fermer le panneau.",
-			"agentSidebarToggleClosedIcon": "Icône de la barre latérale des sessions une fois qu’elle est fermée.",
-			"agentSidebarToggleOpenIcon": "Icône de la barre latérale des sessions une fois qu’elle est ouverte.",
-			"openAndCloseSecondarySidebar": "Ouvrir/afficher et fermer/masquer la barre latérale secondaire",
-			"openAndCloseSidebar": "Ouvrir/afficher et fermer/masquer la barre latérale",
-			"secondarySidebarHidden": "Barre latérale secondaire masquée",
-			"secondarySidebarVisible": "Barre latérale secondaire affichée",
-			"sidebarHidden": "Barre latérale principale masquée",
-			"sidebarVisible": "Barre latérale principale affichée",
-			"togglePanel": "Activer/désactiver la visibilité du panneau",
-			"toggleSecondarySidebar": "Activer/désactiver la visibilité de la barre latérale secondaire",
-			"toggleSidebar": "Basculer la visibilité de la barre latérale primaire",
-			"toggleWindowAlwaysOnTop": "Activer/désactiver Toujours visible"
-		},
-		"vs/sessions/browser/parts/auxiliaryBarPart": {
-			"auxiliaryBarAriaLabel": "Détails de la session"
-		},
-		"vs/sessions/browser/parts/chatCompositeBar": {
-			"closeChat": "Fermer",
-			"renameChat": "Renommer",
-			"renameChat.prompt": "Renommer la conversation"
-		},
-		"vs/sessions/browser/parts/menubar.contribution": {
-			"mEdit": "&&Edition",
-			"mFile": "&&Fichier",
-			"mGo": "&&Accéder",
-			"mHelp": "&&Aide",
-			"mPreferences": "Pr&&éférences",
-			"mTerminal": "&&Terminal",
-			"mView": "Affic&&hage"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileChangesView": {
-			"changesView.back": "Retour",
-			"changesView.backLabel": "Retour",
-			"changesView.changeAdded": "ajouté",
-			"changesView.changeDeleted": "supprimé",
-			"changesView.changeModified": "modifié",
-			"changesView.empty": "Aucun changement dans cette session pour l'instant.",
-			"changesView.rowAria": "{0}, {1}, +{2} -{3}",
-			"changesView.subtitleFilePlural": "{0} fichiers",
-			"changesView.subtitleFileSingular": "1 fichier",
-			"changesView.title": "Modifications de session"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffColors": {
-			"agentsMobileDiff.addedForeground": "Couleur de premier plan utilisée pour les fichiers / lignes ajoutés dans la liste des modifications mobiles et la superposition de différences de la fenêtre des sessions d'agent.",
-			"agentsMobileDiff.deletedForeground": "Couleur de premier plan utilisée pour les fichiers supprimés / lignes retirées dans la liste des modifications mobiles et la superposition de différences de la fenêtre des sessions d'agent.",
-			"agentsMobileDiff.modifiedForeground": "Couleur de premier plan utilisée pour les fichiers modifiés dans la liste des modifications mobiles de la fenêtre des sessions d'agent."
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffView": {
-			"diffView.back": "Retour",
-			"diffView.backLabel": "Retour",
-			"diffView.loading": "Chargement en cours… Merci de patienter.",
-			"diffView.nextFile": "Fichier suivant",
-			"diffView.noChanges": "Aucune modification n’existe dans ce fichier.",
-			"diffView.position": "{0} / {1}",
-			"diffView.prevFile": "Fichier précédent"
-		},
-		"vs/sessions/browser/parts/mobile/mobilePickerSheet": {
-			"mobilePickerSheet.done": "Terminé",
-			"mobilePickerSheet.doneAriaLabel": "Fermer {0}",
-			"mobilePickerSheet.noResults": "Aucun résultat",
-			"mobilePickerSheet.searching": "Recherche…"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSessionFilterChips": {
-			"chipCompleted": "Terminé",
-			"chipFailed": "Échec",
-			"chipInProgress": "En cours",
-			"filterChipsLabel": "Filtres de l’état de la session",
-			"findAriaLabel": "Rechercher une session",
-			"sortGroup": "Trier",
-			"sortGroupAriaLabel": "Options de tri et de regroupement"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSortGroupSheet": {
-			"sortGroupSheet.close": "Fermer"
-		},
-		"vs/sessions/browser/parts/mobile/mobileTitlebarPart": {
-			"mobileAccount.close": "Fermer",
-			"mobileAccount.loading": "Chargement en cours… Merci de patienter.",
-			"mobileAccount.signedOut": "Non connecté",
-			"mobileAccount.title": "Compte",
-			"mobileTopBar.account": "Compte",
-			"mobileTopBar.changes": "Afficher les modifications",
-			"mobileTopBar.changesTooltip": "{0} fichiers modifiés (+{1} -{2})",
-			"mobileTopBar.closeSessions": "Fermer les sessions",
-			"mobileTopBar.newSession": "Nouvelle session",
-			"mobileTopBar.newSessionAria": "Nouvelle session",
-			"mobileTopBar.openSessions": "Sessions ouvertes"
-		},
-		"vs/sessions/browser/sessionsSetUpService": {
-			"loading": "Chargement",
-			"sessions.aiDisabled.detail": "Activez les fonctionnalités d'IA pour continuer à utiliser les Agents.",
-			"sessions.aiDisabled.enable": "Activer les fonctionnalités IA",
-			"sessions.signIn": "Connectez-vous pour utiliser les agents",
-			"sessions.signingIn": "Connexion en cours… Merci de patienter.",
-			"sessions.signingIn.detail": "Veuillez terminer la connexion dans le navigateur.",
-			"sessions.welcome.detail": "Votre expérience de codage assistée par l'IA, où des agents explorent, construisent et itèrent avec vous.",
-			"sessions.welcome.getStarted": "Prise en main",
-			"sessions.welcome.title": "Bienvenue à {0}",
-			"walkthrough.productName": "{0} - Agents",
-			"welcomeFooter": "En continuant, vous acceptez les [Conditions générales]({1}) et la [Déclaration de confidentialité]({2}) de {0}. {3} Copilot peut afficher des suggestions de [code public]({4}) et utiliser vos données pour améliorer le produit. Vous pouvez modifier ces [settings]({5}) à tout moment."
-		},
-		"vs/sessions/browser/widget/openInVSCodeWidget": {
-			"openInVSCodeHover": "Ouvrir dans la fenêtre de l'éditeur VS Code"
-		},
-		"vs/sessions/common/categories": {
-			"agents": "Agents"
-		},
-		"vs/sessions/common/contextkeys": {
-			"activeChatBar": "Identificateur du panneau de barre de conversation actif",
-			"activeSessionHasGitRepository": "Indique si la session active est associée à un référentiel Git",
-			"activeSessionHasGitSyncActionRunning": "Indique si une action de synchronisation Git est actuellement en cours d'exécution dans la session active",
-			"activeSessionProviderId": "ID du fournisseur de la session active",
-			"activeSessionType": "Type de session de la session active",
-			"activeSessionWorkspaceIsVirtual": "Indique si l’espace de travail de la session active est virtuel",
-			"chatBarFocus": "Indique si la barre de conversation a le focus clavier",
-			"chatBarVisible": "Indique si la barre de conversation est visible",
-			"chatSessionProviderId": "ID du fournisseur d’une session dans les superpositions de menu contextuel",
-			"editorMaximized": "Indique si la zone de l’éditeur est agrandie",
-			"isActiveSessionArchived": "Indique si la session active est archivée (marquée comme terminée)",
-			"isNewChatInSession": "Indique si l’utilisateur est en train de rédiger une nouvelle conversation dans la session active",
-			"sessionWorkspacePickerGroup": "Onglet de groupe actif actuellement dans le sélecteur d’espace de travail de session",
-			"sessionsAquariumActive": "Indique si la superposition aquarium des sessions est active",
-			"sessionsCanGoBack": "Indique si une session précédente figure dans l'historique de navigation",
-			"sessionsCanGoForward": "Indique s'il y a une session suivante dans l'historique de navigation",
-			"sessionsIsPhoneLayout": "Indique si la disposition actuelle correspond à celle d’un téléphone",
-			"sessionsKeyboardVisible": "Indique si le clavier virtuel est visible",
-			"sessionsWelcomeVisible": "Indique si la superposition d’accueil des sessions est visible"
-		},
 		"vs/sessions/common/sizes": {
 			"agents.fontSize.body1": "Taille de police principale du corps pour la fenêtre des agents.",
 			"agents.fontSize.body2": "Taille de police secondaire du corps pour la fenêtre des agents.",
@@ -3817,6 +3550,8 @@
 			"agents.fontWeight.semiBold": "Poids de police SemiBold (600) pour la fenêtre des agents."
 		},
 		"vs/sessions/common/theme": {
+			"activeSessionView.background": "Background color of an active session view in the agent sessions window.",
+			"activeSessionView.foreground": "Foreground color of an active session view in the agent sessions window.",
 			"agentFeedbackInputWidget.border": "Couleur de la bordure du widget de saisie des commentaires de l’agent affiché dans l’éditeur.",
 			"agents.background": "Couleur d’arrière-plan du shell de la fenêtre des sessions d’assistant et de la base du dégradé.",
 			"agentsBadge.background": "Couleur d’arrière-plan des badges dans la fenêtre des sessions d’assistant.",
@@ -3837,27 +3572,9 @@
 			"agentsUnreadBadge.background": "Couleur d’arrière-plan du badge indiquant le nombre de sessions non lues sur le bouton bascule de la barre latérale.",
 			"agentsUnreadBadge.foreground": "Couleur de premier plan du badge indiquant le nombre de sessions non lues sur le bouton bascule de la barre latérale.",
 			"agentsUpdateButton.downloadedBackground": "Couleur d’arrière-plan du bouton de mise à jour une fois le téléchargement terminé dans la fenêtre des sessions de l’agent.",
-			"agentsUpdateButton.downloadingBackground": "Couleur d’arrière-plan du bouton de mise à jour pour afficher la progression du téléchargement dans la fenêtre des sessions de l’agent."
-		},
-		"vs/sessions/electron-browser/actions/vscodeActions": {
-			"openInVSCode": "Ouvrir dans l’Éditeur",
-			"openVSCodeWindow": "Ouvrir la fenêtre VS Code"
-		},
-		"vs/sessions/electron-browser/parts/titlebarPart": {
-			"agentsWindowTitle": "Agents"
-		},
-		"vs/sessions/electron-browser/sessions.main": {
-			"join.closeStorage": "Enregistrement de l’état de l’interface utilisateur"
-		},
-		"vs/sessions/services/sessions/common/session": {
-			"sessionWorkspaceGroup.local": "Local",
-			"sessionWorkspaceGroup.remote": "Distant"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "Indique si la session active prend en charge plusieurs conversations"
-		},
-		"vs/sessions/services/workspace/browser/workspaceContextService": {
-			"agentsWindow": "Fenêtre des agents"
+			"agentsUpdateButton.downloadingBackground": "Couleur d’arrière-plan du bouton de mise à jour pour afficher la progression du téléchargement dans la fenêtre des sessions de l’agent.",
+			"inactiveSessionView.background": "Background color of an inactive session view in the agent sessions window.",
+			"inactiveSessionView.foreground": "Foreground color of an inactive session view in the agent sessions window."
 		},
 		"vs/sessions/contrib/accountMenu/browser/account.contribution": {
 			"accountAvatarAlt": "Image de profil pour GitHub pour {0}",
@@ -5164,6 +4881,9 @@
 			"learnMore": "En savoir plus",
 			"loginWith": "Se connecter avec {0}",
 			"no": "Non",
+			"xaaResourceSecretPlaceholder": "Resource client secret",
+			"xaaResourceSecretPrompt": "The resource at '{0}' uses a per-resource client identifier '{1}'. Enter the matching client secret (leave blank if none). The value is saved in OS secret storage; manage it later via the 'Set Client Secret' code lens in mcp.json.",
+			"xaaResourceSecretTitle": "Resource Client Secret Required",
 			"yes": "Oui"
 		},
 		"vs/workbench/api/browser/mainThreadChatSessions": {
@@ -5228,6 +4948,11 @@
 			"incorrectAccountDetail": "Le compte choisi, {0}, ne correspond pas au compte demandé, {1}.",
 			"keep": "Conserver {0}",
 			"loginWith": "Se connecter avec {0}",
+			"mcp.enterpriseManaged.issuerInvalid": "Enterprise-managed MCP authentication requires `mcp.enterpriseManagedAuth.idp.issuer` to be a valid URL; got '{0}'.",
+			"mcp.enterpriseManaged.issuerMissing": "Enterprise-managed MCP authentication requires `mcp.enterpriseManagedAuth.idp.issuer` to be configured. Set it via enterprise policy (Windows Group Policy / macOS managed preferences / Linux `/etc/vscode/policy.json`) or, for local testing, by hand-editing `settings.json`.",
+			"mcp.enterpriseManaged.issuerNotHttp": "Enterprise-managed MCP authentication requires `mcp.enterpriseManagedAuth.idp.issuer` to use the `https` or `http` scheme; got '{0}'.",
+			"mcp.enterpriseManaged.missingAS": "The enterprise-managed MCP server '{0}' did not advertise an `authorization_servers` entry in its protected-resource metadata.",
+			"mcp.enterpriseManaged.missingResource": "The enterprise-managed MCP server '{0}' did not advertise a protected-resource metadata document with a 'resource' identifier.",
 			"mcpAuthSessionRemoved": "Session d’authentification pour {0} supprimée, arrêt du serveur"
 		},
 		"vs/workbench/api/browser/mainThreadMessageService": {
@@ -6650,6 +6375,10 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "Indique si le focus clavier se trouve dans le contrôle Quick Open"
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "Reset User Data",
+			"reset user data message": "Would you like to reset your data (settings, keybindings, extensions, snippets and UI State) and reload?"
+		},
 		"vs/workbench/browser/window": {
 			"closeWindowButtonLabel": "&&Fermer la fenêtre",
 			"closeWindowMessage": "Voulez-vous vraiment fermer la fenêtre ?",
@@ -7216,183 +6945,6 @@
 			"treeView.notRegistered": "Aucune arborescence avec l'ID \"{0}\" n'est inscrite.",
 			"views log": "Vues"
 		},
-		"vs/workbench/electron-browser/actions/developerActions": {
-			"configureRuntimeArguments": "Configurer les arguments de runtime",
-			"reloadWindowWithExtensionsDisabled": "Recharger avec les extensions désactivées",
-			"revealUserDataFolder": "Divulguer le dossier des données utilisateur",
-			"showContentTracing": "Afficher le suivi du contenu",
-			"showGPUInfo": "Afficher les informations sur le processeur graphique",
-			"startTracing": "Lancer le traçage",
-			"startTracing.ariaLabel": "Enregistrement de la trace du niveau de performance. Cliquez pour arrêter l’enregistrement.",
-			"startTracing.name": "Trace du niveau de performance",
-			"startTracing.recording": "Trace d’enregistrement (cliquer pour arrêter)",
-			"startTracing.tooltip": "Cliquez pour arrêter l’enregistrement",
-			"stopTracing": "Arrêter le traçage",
-			"stopTracing.button": "&&Relancer et activer le suivi",
-			"stopTracing.detail": "Cette opération peut prendre jusqu’à une minute.",
-			"stopTracing.message": "Aucune session de traçage n’est en cours. Utilisez « Développeur : Lancer le traçage » ou lancez avec l’argument « --trace » pour commencer le traçage.",
-			"stopTracing.title": "Création du fichier de trace...",
-			"toggleDevTools": "Activer/désactiver les outils de développement"
-		},
-		"vs/workbench/electron-browser/actions/installActions": {
-			"install": "Installer la commande '{0}' dans PATH",
-			"shellCommand": "Commande shell",
-			"successFrom": "La commande d'interpréteur de commandes '{0}' a été correctement désinstallée à partir de PATH.",
-			"successIn": "La commande d'interpréteur de commandes '{0}' a été correctement installée dans PATH.",
-			"uninstall": "Désinstaller la commande '{0}' de PATH"
-		},
-		"vs/workbench/electron-browser/actions/windowActions": {
-			"close": "Fermer la fenêtre",
-			"closeActive": "Fermez la fenêtre active",
-			"closeOtherWindows": "Fermer les autres fenêtres",
-			"closeWindow": "Fermer la fenêtre",
-			"current": "Fenêtre active",
-			"disableWindowAlwaysOnTop": "Désactiver Toujours visible",
-			"enableWindowAlwaysOnTop": "Activer Toujours visible",
-			"miCloseWindow": "Ferm&&er la fenêtre",
-			"miZoomIn": "&&Zoom avant",
-			"miZoomOut": "&&Zoom arrière",
-			"miZoomReset": "&&Réinitialiser le zoom",
-			"quickSwitchWindow": "Changement rapide de fenêtre...",
-			"switchToMainWindow": "Basculer vers la fenêtre principale",
-			"switchWindow": "Changer de fenêtre...",
-			"switchWindowPlaceHolder": "Sélectionner une fenêtre vers laquelle basculer",
-			"toggleWindowAlwaysOnTop": "Basculer la fenêtre toujours au premier plan",
-			"windowDirtyAriaLabel": "{0}, fenêtre contenant des changements non enregistrés",
-			"windowGroup": "groupe de fenêtres",
-			"zoomIn": "Zoom avant",
-			"zoomOut": "Zoom arrière",
-			"zoomReset": "Réinitialiser le zoom"
-		},
-		"vs/workbench/electron-browser/desktop.contribution": {
-			"application.shellEnvironmentResolutionTimeout": "Contrôle le délai d’expiration en secondes avant d’abandonner la résolution de l’environnement d’interpréteur de commandes lorsque l’application n’est pas déjà lancée à partir d’un terminal. Pour plus d’informations, consultez notre [documentation](https://go.microsoft.com/fwlink/?linkid=2149667).",
-			"argv.crashReporterId": "ID unique utilisé pour mettre en corrélation les rapports de plantage envoyés à partir de cette instance d'application.",
-			"argv.disableChromiumSandbox": "Désactive le bac à sable Chromium. Cela est utile lors de l’exécution de VS Code avec élévation de privilèges sur Linux et sous AppLocker sur Windows.",
-			"argv.disableHardwareAcceleration": "Désactive l'accélération matérielle. Changez cette option UNIQUEMENT si vous rencontrez des problèmes graphiques.",
-			"argv.disableLcdText": "Désactive l’anticrénelage de polices NULL.",
-			"argv.enableCrashReporter": "Permet de désactiver les rapports de plantage. Doit permettre le redémarrage de l'application en cas de changement de la valeur.",
-			"argv.enableRDPDisplayTracking": "Garantit que les fenêtres agrandies sont restaurées pour s’afficher correctement pendant la reconnexion RDP.",
-			"argv.enebleProposedApi": "Activez les API proposées pour une liste d'ID d'extension (par exemple 'vscode.git'). Les API proposées sont instables et peuvent cesser de fonctionner sans avertissement à tout moment. Ne définissez cette option qu'à des fins de développement et de test d'extension.",
-			"argv.force-renderer-accessibility": "Force l'accessibilité du renderer. Changez ce paramètre UNIQUEMENT si vous utilisez un lecteur d'écran sur Linux. Sur les autres plateformes, le renderer est automatiquement accessible. Cet indicateur est automatiquement défini si vous avez activé editor.accessibilitySupport.",
-			"argv.forceColorProfile": "Permet de remplacer le profil de couleur à utiliser. Si des couleurs ne s'affichent pas correctement, essayez de définir la valeur 'srgb' et redémarrez.",
-			"argv.jsFlags": "Spécifie les indicateurs du moteur JavaScript V8 à passer (par exemple, « --max-old-space-size=4096 »). Ces options sont appliquées au processus principal, au processus de rendu et aux processus utilitaires.",
-			"argv.locale": "Langue d'affichage à utiliser. Le choix d'une autre langue nécessite l'installation du pack linguistique associé.",
-			"argv.logLevel": "Niveau de journalisation à utiliser. La valeur par défaut est 'info'. Les valeurs autorisées sont 'error', 'warn', 'info', 'debug', 'trace', 'off'.",
-			"argv.passwordStore": "Configure le backend utilisé pour stocker les secrets sous Linux. Cet argument est ignoré sous Windows et macOS.",
-			"argv.proxyBypassList": "Ignorez tout proxy spécifié pour la liste d’hôtes séparée par des points-virgules. Exemple de valeur « <local>;*.microsoft.com;*foo.com; 1.2.3.4:5678 », utilisera le serveur proxy pour tous les hôtes, à l’exception des adresses locales (localhost, 127.0.0.1, etc.), microsoft.com sous-domaines, hôtes qui contiennent le suffixe foo.com et n’importe quel élément au format 1.2.3.4:5678",
-			"argv.remoteDebuggingPort": "Spécifie le port à utiliser pour le débogage à distance.",
-			"argv.useInMemorySecretStorage": "Garantit qu'un magasin en mémoire sera utilisé pour le stockage secret au lieu d'utiliser le magasin d'informations d'identification du système d'exploitation. Ceci est souvent utilisé lors de l'exécution de tests d'extension VS Code ou lorsque vous rencontrez des difficultés avec le magasin d'informations d'identification.",
-			"closeWhenEmpty": "Contrôle si la fermeture du dernier éditeur doit également fermer la fenêtre. Ce paramètre s’applique uniquement pour les fenêtres qui n'affichent pas de dossiers.",
-			"confirmSaveUntitledWorkspace": "Contrôle si une boîte de dialogue de confirmation vous demande d’enregistrer ou d’abandonner un espace de travail ouvert sans titre dans la fenêtre lors de la commutation vers un autre espace de travail. Si vous désactivez de boîte de dialogue de confirmation, le programme abandonne toujours l’espace de travail sans titre.",
-			"controlsStyle": "Ajustez l’apparence des contrôles de fenêtre pour qu’ils soient natifs du système d’exploitation, dessinés sur mesure ou masqués. Un redémarrage complet est nécessaire pour appliquer les modifications.",
-			"dialogStyle": "Ajuster l’apparence des boîtes de dialogue pour qu’elles soient natives au système d’exploitation ou personnalisées.",
-			"enableCrashReporterDeprecated": "Si ce paramètre a la valeur false, aucune télémétrie n’est envoyée, quelle que soit la valeur du nouveau paramètre. Déprécié en raison d’une combinaison dans le paramètre {0}.",
-			"keyboardConfigurationTitle": "Clavier",
-			"mergeAllWindowTabs": "Fusionner toutes les fenêtres",
-			"miExit": "&&Quitter",
-			"moveWindowTabToNewWindow": "Déplacer l’onglet de la fenêtre vers la nouvelle fenêtre",
-			"newTab": "Nouvel onglet de fenêtre",
-			"newWindowDimensions": "Contrôle les dimensions d'ouverture d'une nouvelle fenêtre quand au moins une fenêtre est déjà ouverte. Par défaut, une nouvelle fenêtre s'ouvre au centre de l'écran avec des dimensions réduites. Notez que ce paramètre n'a aucun impact sur la première fenêtre ouverte, laquelle est toujours restaurée à la taille et l'emplacement définis au moment de sa fermeture. ",
-			"openWithoutArgumentsInNewWindow": "Contrôle si une nouvelle fenêtre vide doit s’ouvrir lors du démarrage d’une seconde instance sans arguments, ou si la dernière instance en cours d’exécution doit obtenir le focus.\r\nNotez qu’il peut encore exister des cas où ce paramètre est ignoré (par exemple lorsque vous utilisez l'option de ligne de commande `--new-window` or `--reuse-window`).",
-			"restoreFullscreen": "Contrôle si une fenêtre doit être restaurée en mode plein écran si elle a été fermée dans ce mode.",
-			"restoreWindows": "Contrôle la manière dont les fenêtres et les éditeurs qu'elles contiennent sont restaurés à l'ouverture.",
-			"security.promptForLocalFileProtocolHandling": "Si elle est activée, une boîte de dialogue demandera une confirmation chaque fois qu'un fichier local ou un espace de travail est sur le point de s'ouvrir via un gestionnaire de protocole.",
-			"security.promptForRemoteFileProtocolHandling": "Si elle est activée, une boîte de dialogue demandera une confirmation chaque fois qu'un fichier ou un espace de travail distant est sur le point de s'ouvrir via un gestionnaire de protocole.",
-			"showNextWindowTab": "Afficher l'onglet de fenêtre suivant",
-			"showPreviousTab": "Afficher l'onglet de fenêtre précédent",
-			"telemetry.enableCrashReporting": "Activez la collecte des rapports d’incident. Cela nous permet d’améliorer la stabilité. \r\nCette option nécessite un redémarrage pour prendre effet.",
-			"telemetryConfigurationTitle": "Télémétrie",
-			"titleBarStyle": "Ajustez l’apparence de la barre de titre de la fenêtre pour qu’elle soit native par le système d’exploitation ou personnalisée. L'application des changements nécessite un redémarrage complet.",
-			"toggleWindowTabsBar": "Activer/désactiver la barre de fenêtres d’onglets",
-			"touchbar.enabled": "Active les boutons de la touchbar macOS sur le clavier si disponible.",
-			"touchbar.ignored": "Ensemble d'identificateurs pour les entrées de la Touch Bar qui ne doivent pas apparaître (par exemple 'workbench.action.navigateBack').",
-			"window.border.color": "{0} : couleur spécifique au format Hex, RVB, RGBA, HSL, HSLA",
-			"window.border.default": "{0} : respecter les paramètres du thème de couleur, revenir aux paramètres Windows",
-			"window.border.off": "{0} : désactiver les couleurs de bordure",
-			"window.border.prefix": "Contrôle la couleur de bordure de la fenêtre :",
-			"window.border.suffix": "Utilisez {0} pour définir des couleurs différentes pour les fenêtres actives et inactives. Ce paramètre est ignoré quand {1} est défini sur {2}.",
-			"window.border.system": "{0} : respecter uniquement les paramètres de Windows",
-			"window.clickThroughInactive": "Si activée, cliquer sur une fenêtre inactive activera la fenêtre et déclenchera l’élément sous la souris, si elle est cliquable. Si désactivé, cliquer n’importe où sur une fenêtre inactive va seulement l'activer et un second clic sur l’élément sera nécessaire.",
-			"window.customTitleBarVisibility": "Ajustez le moment où la barre de titre personnalisée doit s’afficher. La barre de titre personnalisée peut être masquée en mode plein écran avec l’option « windowed ». La barre de titre personnalisée peut uniquement être masquée en mode autre que plein écran avec l’option « never » lorsque {0} est défini sur « native ».",
-			"window.customTitleBarVisibility.auto": "Modifie automatiquement la visibilité de la barre de titre personnalisée.",
-			"window.customTitleBarVisibility.never": "Masquer la barre de titre personnalisée lorsque {0} est défini sur « native ».",
-			"window.customTitleBarVisibility.windowed": "Masquez la barre de titre personnalisée en plein écran. Lorsque vous n’êtes pas en plein écran, modifiez automatiquement la visibilité de la barre de titre personnalisée.",
-			"window.doubleClickIconToClose": "Si cette option est activée, ce paramètre ferme la fenêtre lorsque l’icône de l’application dans la barre de titre est double-cliquée. La fenêtre ne pourra pas être déplacée par l’icône. Ce paramètre n’est effectif que si {0} est défini sur « personnalisé ».",
-			"window.menuStyle": "Ajustez le style du menu pour qu'il soit natif du système d'exploitation, personnalisé ou hérité du style de la barre de titre défini dans {0}. Cela affecte également l'apparence du menu contextuel. L'application des changements nécessite un redémarrage complet.",
-			"window.menuStyle.custom": "Utilisez le menu personnalisé.",
-			"window.menuStyle.custom.mac": "Utilisez le menu contextuel personnalisé.",
-			"window.menuStyle.inherit": "Faites correspondre le style du menu au style de la barre de titre défini dans {0}.",
-			"window.menuStyle.inherit.mac": "Faites correspondre le style du menu contextuel du style de la barre de titre défini dans {0}.",
-			"window.menuStyle.mac": "Ajustez l'apparence du menu contextuel pour qu'elle soit native au système d'exploitation, personnalisée ou héritée du style de barre de titre défini dans {0}.",
-			"window.menuStyle.native": "Utilisez le menu natif. Ceci est ignoré lorsque {0} est défini sur {1}.",
-			"window.menuStyle.native.mac": "Utilisez le menu contextuel natif.",
-			"window.nativeFullScreen": "Détermine si le plein écran natif doit être utilisé sur macOS. Désactivez cette option pour empêcher macOS de créer un espace en cas de passage au plein écran.",
-			"window.nativeTabs": "Active les onglets de fenêtre natifs de macOS. Notez que vous devez redémarrer l'ordinateur pour appliquer les modifications et que les onglets natifs désactivent tout style de barre de titre personnalisé configuré, le cas échéant.",
-			"window.newWindowDimensions.default": "Permet d'ouvrir les nouvelles fenêtres au centre de l'écran.",
-			"window.newWindowDimensions.fullscreen": "Permet d'ouvrir les nouvelles fenêtres en mode plein écran.",
-			"window.newWindowDimensions.inherit": "Permet d'ouvrir les nouvelles fenêtres avec la même dimension que la dernière fenêtre active.",
-			"window.newWindowDimensions.maximized": "Permet d'ouvrir les nouvelles fenêtres de manière agrandie.",
-			"window.newWindowDimensions.offset": "Ouvrez les nouvelles fenêtres avec la même dimension que la dernière fenêtre active et une position décalée.",
-			"window.openWithoutArgumentsInNewWindow.off": "Mettre le focus sur la dernière instance active",
-			"window.openWithoutArgumentsInNewWindow.on": "Ouvrir une nouvelle fenêtre vide.",
-			"window.reopenFolders.all": "Rouvre toutes les fenêtres, sauf si un dossier, un espace de travail ou un fichier est ouvert (par exemple à partir de la ligne de commande). Si un fichier est ouvert, il remplace l’un des éditeurs précédemment ouverts dans une fenêtre.",
-			"window.reopenFolders.folders": "Rouvre toutes les fenêtres qui comportaient des dossiers ou des espaces de travail ouverts, sauf si un dossier, un espace de travail ou un fichier est ouvert (par exemple à partir de la ligne de commande). Si un fichier est ouvert, il remplace l’un des éditeurs précédemment ouverts dans une fenêtre.",
-			"window.reopenFolders.none": "Ne rouvre jamais une fenêtre. À moins qu'un dossier ou un espace de travail ne soit ouvert (par exemple à partir de la ligne de commande), une fenêtre vide s'affiche.",
-			"window.reopenFolders.one": "Rouvre la dernière fenêtre active, sauf si un dossier, un espace de travail ou un fichier est ouvert (par exemple à partir de la ligne de commande). Si un fichier est ouvert, il remplace l’un des éditeurs précédemment ouverts dans une fenêtre.",
-			"window.reopenFolders.preserve": "Rouvre toujours toutes les fenêtres. Si un dossier ou un espace de travail est ouvert (par exemple à partir de la ligne de commande), il s'ouvre dans une nouvelle fenêtre, sauf s'il est déjà ouvert. Si des fichiers sont ouverts, ils s’ouvrent dans l’une des fenêtres restaurées avec les éditeurs qui ont été ouverts précédemment.",
-			"windowConfigurationTitle": "Fenêtre",
-			"zoomLevel": "Ajustez le niveau de zoom par défaut pour toutes les fenêtres. Chaque incrément au-dessus de « 0 » (par exemple, « 1 ») ou au-dessous (par exemple, « -1 ») représente le zoom « 20 % » plus grand ou plus petit. Vous pouvez également entrer des décimales pour ajuster le niveau de zoom avec une granularité plus fine. Veuillez consulter {0} pour savoir si les commandes « Zoom avant » et « Zoom arrière » appliquent le niveau de zoom à toutes les fenêtres ou uniquement à la fenêtre active.",
-			"zoomPerWindow": "Contrôle si les commandes « Zoom avant » et « Zoom arrière » appliquent le niveau de zoom à toutes les fenêtres ou uniquement à la fenêtre active. Veuillez consulter le lien {0} pour configurer un niveau de zoom par défaut pour toutes les fenêtres."
-		},
-		"vs/workbench/electron-browser/desktop.main": {
-			"join.closeStorage": "Enregistrement de l’état de l’interface utilisateur"
-		},
-		"vs/workbench/electron-browser/parts/dialogs/dialogHandler": {
-			"copy": "&&Copier",
-			"okButton": "OK"
-		},
-		"vs/workbench/electron-browser/window": {
-			"appRootWarning.banner": "Les fichiers que vous stockez dans le dossier d’installation ('{0}') peuvent être ÉCRASÉS ou EFFACÉS de manière IRRÉVERSIBLE sans avertissement au moment de la mise à jour.",
-			"configure": "Configurer",
-			"downloadArmBuild": "Télécharger",
-			"keychainWriteError": "Échec de l'écriture des informations de connexion dans le trousseau. Erreur '{0}'.",
-			"learnMore": "Découvrir plus d’informations",
-			"loginButton": "&&Se connecter",
-			"macoseolmessage": "{0} sur {1} ne recevront bientôt plus de mises à jour. Envisagez de mettre à niveau votre version macOS.",
-			"password": "Mot de passe",
-			"proxyAuthRequired": "Authentification du proxy obligatoire",
-			"proxyDetail": "Le proxy '{0}' nécessite un nom d'utilisateur et un mot de passe.",
-			"rememberCredentials": "Mémoriser mes informations d'identification",
-			"resolveShellEnvironment": "Résolution de l’environnement d’interpréteur de commandes...",
-			"restart": "Redémarrer",
-			"runningAsRoot": "Il est déconseillé d’exécuter {0} en tant qu’utilisateur root.",
-			"runningTranslated": "Vous exécutez une version émulée de {0}. Pour de meilleures performances, téléchargez la version native arm64 de {0} pour votre machine.",
-			"sharedProcessCrash": "Un processus en arrière-plan partagé s’est arrêté de manière inattendue. Redémarrez l’application pour récupérer.",
-			"showArgvParseWarning": "Le fichier d’arguments d’exécution « argv.json » contient des erreurs. Corrigez-les et redémarrez.",
-			"showArgvParseWarningAction": "Ouvrir un fichier",
-			"shutdownErrorClose": "Une erreur inattendue a empêché la fermeture de la fenêtre.",
-			"shutdownErrorDetail": "Erreur : {0}",
-			"shutdownErrorLoad": "Une erreur inattendue a empêché de modifier l’espace de travail.",
-			"shutdownErrorQuit": "Une erreur inattendue a empêché l’application de quitter.",
-			"shutdownErrorReload": "Une erreur inattendue a empêché le rechargement de la fenêtre.",
-			"shutdownForceClose": "Fermer quand même",
-			"shutdownForceLoad": "Modifier quand même",
-			"shutdownForceQuit": "Quitter quand même",
-			"shutdownForceReload": "Recharger quand même",
-			"shutdownTitleClose": "La fermeture de la fenêtre prend un peu plus de temps...",
-			"shutdownTitleLoad": "Le changement de l'espace de travail prend un peu plus de temps...",
-			"shutdownTitleQuit": "Quitter l'application prend un peu plus de temps...",
-			"shutdownTitleReload": "Le rechargement de la fenêtre prend un peu plus de temps...",
-			"status.windowZoom": "Zoom de fenêtre",
-			"troubleshooting": "Guide de résolution des problèmes",
-			"username": "Nom d’utilisateur",
-			"willShutdownDetail": "Les opérations suivantes sont toujours en cours d’exécution : \r\n{0}",
-			"zoomIn": "Zoom avant",
-			"zoomNumber": "Niveau de zoom : {0} ({1} %)",
-			"zoomOut": "Zoom arrière",
-			"zoomReset": "Réinitialiser",
-			"zoomSettings": "Paramètres"
-		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
 			"accessibility.chat.showCheckmarks": "Contrôle l’affichage des icônes de coche sur les appels d’outils terminés et autres éléments réductibles dans les réponses de chat.",
 			"accessibility.debugWatchVariableAnnouncements": "Contrôle si les modifications de variable doivent être annoncées dans l’affichage espion de débogage.",
@@ -7770,276 +7322,6 @@
 			"browserView.shareWithAgent.dontAskAgain": "Ne plus me poser la question",
 			"browserView.shareWithAgent.message": "Partager cette page du navigateur avec l’assistant ?",
 			"browserView.shareWithAgent.title": "Partager avec l’assistant ?"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserEditor": {
-			"browser.canGoBack": "Indique si le navigateur peut retourner",
-			"browser.canGoForward": "Indique si le navigateur peut avancer",
-			"browser.certCloseTab": "Fermer un onglet",
-			"browser.certDetailsHeading": "Détails du certificat",
-			"browser.certError": "Erreur",
-			"browser.certErrorDescription": "Nous n’avons pas pu vérifier le certificat de sécurité de ce site.",
-			"browser.certErrorExtraWarning": " Votre connexion n’est pas privée.",
-			"browser.certErrorLabel": "Erreur de certificat",
-			"browser.certFingerprint": "Empreinte digitale",
-			"browser.certGoBack": "Retour",
-			"browser.certIssuer": "Émetteur",
-			"browser.certProceed": "Continuer quand même (non sécurisé)",
-			"browser.certSubject": "Objet",
-			"browser.certValid": "Valide",
-			"browser.editorFocused": "Indique si l’éditeur du navigateur est ciblé",
-			"browser.errorUrlLabel": "URL :",
-			"browser.hasError": "Indique si le navigateur rencontre une erreur de chargement",
-			"browser.hasUrl": "Vérifier si une URL est chargée dans le navigateur",
-			"browser.loadErrorLabel": "Impossible de charger la page",
-			"browser.overlayPauseDetail.notification": "Fermez la notification pour continuer à utiliser le navigateur.",
-			"browser.overlayPauseHeading.notification": "En pause à cause d’une notification",
-			"browser.urlPlaceholder": "Entrer une URL",
-			"browser.welcomeSubtitle": "Saisissez une URL ci-dessus pour commencer.",
-			"browser.welcomeSubtitleChat": "Utilisez Ajouter un élément à la conversation pour référencer des éléments de l’interface utilisateur dans les requêtes de conversation.",
-			"browser.welcomeTitle": "Navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserView.contribution": {
-			"browser.editorLabel": "Navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserViewActions": {
-			"browser.focusUrlInputAction": "Mettre le focus sur le champ URL",
-			"browser.goBackAction": "Retour",
-			"browser.goForwardAction": "Suivant",
-			"browser.hardReloadAction": "Rechargement forcé",
-			"browser.openExternalAction": "Ouvrir dans un navigateur externe",
-			"browser.openSettingsAction": "Paramètres du navigateur",
-			"browser.reloadAction": "Recharger",
-			"browserCategory": "Navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures": {
-			"browser.clearEphemeralStorageAction": "Effacer le stockage (éphémère)",
-			"browser.clearGlobalStorageAction": "Effacer le stockage (global)",
-			"browser.clearWorkspaceStorageAction": "Effacer le stockage (espace de travail)",
-			"browser.dataStorage": "Contrôle la manière dont les données du navigateur (cookies, cache, stockage) sont partagées entre les vues du navigateur.\r\n\r\n**Remarque** : dans les espaces de travail non approuvés, ce paramètre est ignoré et le stockage `ephemeral` est toujours utilisé.",
-			"browser.dataStorage.ephemeral": "Chaque vue du navigateur possède sa propre session, qui est supprimée à sa fermeture.",
-			"browser.dataStorage.global": "Toutes les vues du navigateur partagent une session persistante unique dans tous les espaces de travail.",
-			"browser.dataStorage.workspace": "Les vues du navigateur dans un même espace de travail partagent une session persistante. Si aucun espace de travail n’est ouvert, le stockage `ephemeral` est utilisé.",
-			"browser.storageScope": "Portée de stockage de la vue actuelle du navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDevToolsFeature": {
-			"browser.devToolsOpen": "Indique si les outils de développement sont ouverts pour la vue actuelle du navigateur",
-			"browser.toggleDevToolsAction": "Activer/désactiver les outils de développement"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures": {
-			"browser.addConsoleLogsToChatAction": "Ajouter les journaux de la console à la conversation",
-			"browser.addElementToChatAction": "Ajouter un élément à une conversation",
-			"browser.addScreenshotToChatAction": "Ajouter une capture d’écran à la conversation",
-			"browser.agentSharingContentWarning.detail": "Les pages peuvent contenir des requêtes masquées qui peuvent influencer le comportement de l’agent. Vérifiez attentivement le contenu joint avant de l’envoyer.",
-			"browser.agentSharingContentWarning.dontShowAgain": "Ne plus afficher",
-			"browser.agentSharingContentWarning.message": "Soyez prudent lorsque vous joignez du contenu provenant de sources non approuvées.",
-			"browser.agentSharingContentWarning.ok": "&&OK",
-			"browser.chatActionsSubmenu": "Ajouter à la conversation",
-			"browser.elementSelectionActive": "Indique si la sélection d’éléments est active",
-			"browser.enableChatTools": "Lorsque cette option est activée, les assistants de conversation peuvent utiliser les outils du navigateur pour ouvrir des pages dans le navigateur intégré et interagir avec celles-ci.",
-			"browser.shareWithAgent": "Partager avec l’agent",
-			"browser.sharingWithAgent": "Partage avec l’agent",
-			"browser.unshareWithAgent": "Arrêter le partage avec l’assistant",
-			"browserCategory": "Navigateur",
-			"browserScreenshot": "Capture d’écran du navigateur",
-			"consoleLogs": "Journaux de la console",
-			"workbench.browser.agentHostChatToolsEnabled": "Lorsqu’ils sont activés, les outils de navigateur intégrés sont exposés comme outils fournis par le client aux sessions hôtes d’agent dans la fenêtre Sessions. Nécessite {0} et {1}."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures": {
-			"browser.device.dimensionsLabel": "Dimensions :",
-			"browser.device.dprAriaLabel": "Ratio de pixels de l'appareil",
-			"browser.device.dprLabel": "DPR :",
-			"browser.device.dprTitle": "Ratio de pixels de l’appareil (vide = valeur par défaut du système)",
-			"browser.device.heightAriaLabel": "Hauteur de la fenêtre d'affichage",
-			"browser.device.inputPlaceholderAuto": "automatique",
-			"browser.device.scaleLabel": "Échelle :",
-			"browser.device.swapDimensionsTitle": "Permuter les dimensions",
-			"browser.device.widthAriaLabel": "Largeur de la fenêtre d’affichage",
-			"browser.device.zoomAriaLabel": "Facteur de zoom",
-			"browser.device.zoomAuto": "Automatique ({0} %)",
-			"browser.devicePresets.mobileTag": "mobile",
-			"browser.devicePresets.placeholder": "Sélectionner une prédéfinition d’appareil",
-			"browser.emulationHasUserAgent": "Indique si l’émulation du navigateur a une chaîne d’agent utilisateur personnalisée",
-			"browser.emulationIsMobile": "Indique si l’émulation du navigateur est en mode mobile",
-			"browser.emulationToolbar.close": "Fermer",
-			"browser.emulationToolbar.mobile": "Émulation mobile",
-			"browser.emulationToolbar.presets": "Appliquer la présélection...",
-			"browser.emulationToolbar.reset": "Réinitialiser",
-			"browser.emulationToolbar.userAgent": "Définir l’agent utilisateur...",
-			"browser.emulationToolbarVisible": "Indique si la barre d’outils d’émulation du navigateur est visible",
-			"browser.hideEmulationToolbar": "Masquer la barre d’outils d’émulation",
-			"browser.pickDevicePreset": "Émuler l’appareil...",
-			"browser.resetEmulation": "Réinitialiser l’émulation",
-			"browser.setUserAgent": "Émuler l’agent utilisateur...",
-			"browser.showEmulationToolbar": "Afficher la barre d’outils d’émulation",
-			"browser.toggleMobileEmulation": "Activer / désactiver l’émulation mobile",
-			"browser.userAgent.prompt": "Chaîne de l’agent utilisateur (laissez vide pour VS Code par défaut)"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
-			"browser.findNextAction": "Rechercher le suivant",
-			"browser.findPreviousAction": "Rechercher l’élément précédent",
-			"browser.findWidgetFocused": "Indique si le widget de recherche du navigateur est focalisé",
-			"browser.findWidgetVisible": "Indique si le widget de recherche du navigateur est visible",
-			"browser.hideFindAction": "Fermer le widget de recherche",
-			"browser.showFindAction": "Rechercher dans la page"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorZoomFeature": {
-			"browser.canZoomIn": "Indique si le navigateur peut effectuer un zoom avant supplémentaire",
-			"browser.canZoomOut": "Indique si le navigateur peut effectuer un zoom arrière supplémentaire",
-			"browser.defaultZoomLevel.matchWindow": "Correspond au niveau de zoom actuel de l’interface utilisateur de l’application.",
-			"browser.pageZoom": "Niveau de zoom par défaut pour tous les sites dans le navigateur intégré.",
-			"browser.resetZoomAction": "Réinitialiser le zoom",
-			"browser.zoomInAction": "Zoom avant",
-			"browser.zoomOutAction": "Zoom arrière"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
-			"browser.backgroundGroup": "Arrière-plan",
-			"browser.closeAll": "Fermer tous les onglets du navigateur",
-			"browser.closeAllInGroup": "Fermer tous les onglets du navigateur dans le groupe",
-			"browser.closeAllInGroupShort": "Fermer tous les onglets du navigateur",
-			"browser.closeAllTabs": "Fermer tout",
-			"browser.closeTab": "Fermer",
-			"browser.editorOpen": "Indique si un éditeur de navigateur est actuellement ouvert",
-			"browser.linkOpenedHint.ariaLabel": "Ce lien s'est ouvert dans le navigateur intégré",
-			"browser.linkOpenedHint.detail": "**Navigateur intégré**\r\n\r\nLes liens Localhost s'ouvrent automatiquement dans le navigateur intégré.",
-			"browser.linkOpenedHint.dismiss": "Ne plus afficher",
-			"browser.linkOpenedHint.label": "Lien ouvert ici",
-			"browser.linkOpenedHint.openSettings": "Ouvrir les paramètres",
-			"browser.newTabAction": "Nouvel onglet",
-			"browser.openAction": "Ouvrir Navigateur intégré",
-			"browser.openFileAction": "Ouvrir dans Navigateur intégré",
-			"browser.openLocalhostLinks": "Lorsque cette option est activée, les liens localhost (`localhost`, `127.0.0.1`, `[::1]`) et les liens vers toutes les interfaces (`0.0.0.0`, `[0:0:0:0:0:0:0:0]`, `[::]`) provenant du terminal, de la conversation et d’autres sources s’ouvrent dans le navigateur intégré au lieu du navigateur système.",
-			"browser.openNewTab": "Nouvel onglet Navigateur intégré",
-			"browser.openOrListAction": "Navigateur",
-			"browser.quickOpenAction": "Onglet de navigateur Quick Open...",
-			"browser.quickOpenPlaceholder": "Sélectionner un onglet de navigateur",
-			"browser.showInTitleBar": "Détermine si le bouton Navigateur intégré s'affiche dans la barre de titre.",
-			"browser.showInTitleBar.false": "Le bouton n’est jamais affiché dans la barre de titre.",
-			"browser.showInTitleBar.true": "Le bouton n’est jamais affiché dans la barre de titre.",
-			"browser.showInTitleBar.whenOpen": "Le bouton s’affiche dans la barre de titre lorsqu’un éditeur de navigateur est ouvert.",
-			"browserEntryAriaLabelWithGroup": "{0}, {1}",
-			"miOpenBrowser": "&&Navigateur",
-			"toggle.browser": "Navigateur intégré",
-			"toggle.browserDescription": "Activer/désactiver la visibilité du bouton Navigateur intégré dans la barre de titre"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/siteInfoWidget": {
-			"browser.certHoverDetail1": "Votre connexion à ce site n’est pas sécurisée.",
-			"browser.certHoverDetail2": "Vous avez précédemment choisi de continuer vers « {0} » malgré une erreur de certificat ({1}).",
-			"browser.certHoverHeading": "Le certificat n’est pas approuvé",
-			"browser.certRevoke": "Révoquer et fermer",
-			"browser.notSecure": "Non sécurisé"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserToolHelpers": {
-			"browser.blockedByPolicy": "Bloqué par la stratégie de domaine réseau",
-			"browser.element": "élément",
-			"browser.open.alreadyOpen": "Est déjà ouvert : {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserTools.contribution": {
-			"browserContext.label": "Pages du navigateur",
-			"browserToolSet.description": "Ouvrir des pages du navigateur intégré et interagir avec celles-ci"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/clickBrowserTool": {
-			"browser.click.invocation": "Clic sur {0} dans {1}",
-			"browser.click.invocation.middle": "Clic central sur {0} dans {1}",
-			"browser.click.invocation.right": "Clic droit sur {0} dans {1}",
-			"browser.click.past": "Clic effectué sur {0} dans {1}",
-			"browser.click.past.middle": "Clic central effectué sur {0} dans {1}",
-			"browser.click.past.right": "Clic droit effectué sur {0} dans {1}",
-			"browser.dblClick.invocation": "Double clic sur {0} dans {1}",
-			"browser.dblClick.past": "Double-clic effectué sur {0} dans {1}",
-			"clickBrowserTool.displayName": "Cliquer sur l'élément",
-			"clickBrowserTool.userDescription": "Cliquer sur un élément d'une page de navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/dragElementTool": {
-			"browser.drag.invocation": "Glissement de {0} vers {1} dans {2}",
-			"browser.drag.past": "Glissement effectué de {0} vers {1} dans {2}",
-			"dragElementTool.displayName": "Faire glisser l’élément",
-			"dragElementTool.userDescription": "Faire glisser un élément sur un autre élément"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/handleDialogBrowserTool": {
-			"browser.handleDialog.invocation": "Traitement du dialogue dans {0}",
-			"browser.handleDialog.past": "Dialogue traité dans {0}",
-			"handleDialogBrowserTool.displayName": "Gérer la boîte de dialogue",
-			"handleDialogBrowserTool.userDescription": "Répondre à une boîte de dialogue dans une page de navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/hoverElementTool": {
-			"browser.hover.invocation": "Survol de {0} dans {1}",
-			"browser.hover.past": "Survol effectué de {0} dans {1}",
-			"hoverElementTool.displayName": "Passer le curseur sur l’élément",
-			"hoverElementTool.userDescription": "Passer le curseur sur un élément d'une page de navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/navigateBrowserTool": {
-			"browser.goBack.invocation": "Navigation en arrière dans {0}",
-			"browser.goBack.past": "Navigation en arrière effectuée dans {0}",
-			"browser.goForward.invocation": "Navigation en avant dans {0}",
-			"browser.goForward.past": "Navigation en avant effectuée dans {0}",
-			"browser.navigate.confirmMessage": "Cela permettra au navigateur d'accéder à {0} et à l’assistant d’accéder à son contenu.",
-			"browser.navigate.confirmTitle": "Naviguer dans le navigateur ?",
-			"browser.navigate.invocation": "Navigation vers {0} dans {1}",
-			"browser.navigate.past": "Navigation effectuée vers {0} dans {1}",
-			"browser.reload.invocation": "Rechargement de {0}",
-			"browser.reload.past": "Rechargement effectué de {0}",
-			"navigateBrowserTool.displayName": "Naviguer dans la page",
-			"navigateBrowserTool.userDescription": "Naviguer ou recharger une page du navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserTool": {
-			"browser.open.confirmMessage": "Cela ouvrira {0} dans le navigateur intégré. L’agent pourra lire et interagir avec son contenu.",
-			"browser.open.confirmTitle": "Ouvrir la page du navigateur ?",
-			"browser.open.invocation": "Ouverture de la page du navigateur à {0}",
-			"browser.open.newPageOption": "Non, ouvrir une nouvelle page à {0}",
-			"browser.open.noPagesOption": "Non - Ne partager aucun onglet avec l’agent",
-			"browser.open.past": "Page du navigateur ouverte à {0}",
-			"browser.open.prompt.invocation": "Inviter l’utilisateur à partager un onglet de navigateur",
-			"browser.open.prompt.past": "A invité l’utilisateur à partager un onglet de navigateur",
-			"browser.open.result": "Ouverture effectuée de {0}",
-			"browser.open.shareExistingOption": "Oui, partager « {0} » - {1}",
-			"browser.open.shareQuestion.message": "Voulez-vous partager un onglet de navigateur existant ?",
-			"browser.open.shareQuestion.title": "Partager l’onglet du navigateur",
-			"browser.open.sharedResult": "L’utilisateur a partagé {0}",
-			"openBrowserTool.displayName": "Ouvrir la page du navigateur",
-			"openBrowserTool.userDescription": "Ouvrir une URL dans le navigateur intégré"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserToolNonAgentic": {
-			"browser.open.nonAgentic.confirmMessage": "Cela ouvrira {0} dans le navigateur intégré. L’assistant ne pourra pas lire son contenu.",
-			"browser.open.nonAgentic.confirmTitle": "Ouvrir la page du navigateur ?",
-			"browser.open.nonAgentic.invocation": "Ouverture de la page du navigateur à {0}",
-			"browser.open.nonAgentic.past": "Page du navigateur ouverte à {0}",
-			"browser.open.nonAgentic.result": "Ouverture effectuée de {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/readBrowserTool": {
-			"browser.read.invocation": "Lecture de {0}",
-			"browser.read.past": "Lire {0}",
-			"readBrowserTool.displayName": "Lire la page",
-			"readBrowserTool.userDescription": "Lire le contenu d’une page de navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/runPlaywrightCodeTool": {
-			"browser.runCode.confirmDisclaimer": "Assurez-vous de faire confiance au code avant de continuer.",
-			"browser.runCode.confirmTitle": "Exécuter le code Playwright ?",
-			"browser.runCode.invocation": "Exécution du code Playwright…",
-			"browser.runCode.past": "Code Playwright exécuté",
-			"browser.runCode.waitInvocation": "En attente de l’achèvement du code Playwright...",
-			"browser.runCode.waitPast": "A attendu le code Playwright",
-			"runPlaywrightCodeTool.displayName": "Exécuter le code Playwright",
-			"runPlaywrightCodeTool.userDescription": "Exécuter un extrait de code Playwright sur une page de navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/screenshotBrowserTool": {
-			"browser.screenshot.invocation": "Capturer une capture d’écran du navigateur",
-			"browser.screenshot.invocation.element": "Capture d’écran de {0}",
-			"browser.screenshot.past": "Capture d’écran du navigateur",
-			"browser.screenshot.past.element": "Capture d’écran effectuée de {0}",
-			"screenshotBrowserTool.displayName": "Page de capture d’écran",
-			"screenshotBrowserTool.userDescription": "Capturer une capture d’écran d’une page de navigateur"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/typeBrowserTool": {
-			"browser.pressKey.invocation": "Appui de la touche `{0}` dans {1}",
-			"browser.pressKey.invocation.element": "Appui de la touche `{0}` dans {1} de {2}",
-			"browser.pressKey.past": "Appui de la touche `{0}` effectué dans {1}",
-			"browser.pressKey.past.element": "Appui de la touche `{0}` effectué dans {1} de {2}",
-			"browser.type.invocation": "Entrée de texte dans {0}",
-			"browser.type.invocation.element": "Entrée de texte dans {0} de {1}",
-			"browser.type.past": "Entrée de texte effectuée dans {0}",
-			"browser.type.past.element": "Entrée de texte effectuée dans {0} de {1}",
-			"typeBrowserTool.displayName": "Saisir du texte dans la page",
-			"typeBrowserTool.userDescription": "Saisir du texte ou appuyer sur des touches dans une page du navigateur"
 		},
 		"vs/workbench/contrib/bulkEdit/browser/bulkEditService": {
 			"areYouSureQuiteBulkEdit.detail": "« {0} » est en cours.",
@@ -8469,11 +7751,13 @@
 			"installPluginFromSource": "Installer le plugin depuis la source",
 			"localMarketplace": "Local",
 			"managePluginMarketplaces": "Gérer les plateformes Marketplace de plug-ins",
+			"managedMarketplace": "{0} (managed by enterprise policy)",
 			"noMarketplaces": "Aucune plateforme de Marketplace de plug-in n’est configurée",
 			"openMarketplaceDirectory": "Ouvrir un dossier",
 			"pluginSourcePlaceholder": "Propriétaire/dépôt ou URL de git clone",
 			"pluginSourcePrompt": "Saisissez un dépôt GitHub ou une URL git pour installer un plugin depuis",
 			"plugins": "Plug-ins",
+			"removeManagedMarketplace": "Enterprise policy manages '{0}', so it can't be removed here.",
 			"removeMarketplace": "Supprimer une plateforme Marketplace",
 			"selectMarketplace": "Sélectionnez une plateforme Marketplace de plug-ins",
 			"selectMarketplaceAction": "Sélectionner une action pour « {0} »",
@@ -8603,6 +7887,7 @@
 			"install": "Installer",
 			"openPluginFolder": "Ouvrir le dossier des plugins",
 			"openReadme": "Ouvrir le fichier LISEZMOI",
+			"pluginPolicyBlocked": "The plugin \"{0}\" has been disabled by your organization and cannot be enabled.",
 			"uninstall": "Désinstaller"
 		},
 		"vs/workbench/contrib/chat/browser/agentPluginEditor/agentPluginEditor": {
@@ -8634,10 +7919,6 @@
 			"noAgentPlugins": "Aucun plug-in d’assistant trouvé.",
 			"update": "Mettre à jour"
 		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} – Hôte d’agent",
-			"agentHostHarnessLabel.local": "{0} [Local]"
-		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
 			"agentHostChatInputPicker.ariaLabel": "Sélecteur {0}",
 			"agentHostChatInputPicker.filter": "Filtrer...",
@@ -8649,18 +7930,9 @@
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "Approuver automatiquement",
 			"agentHost.branchPicker": "Branche",
-			"agentHost.customAgentPicker": "Assistant",
 			"agentHost.isolationPicker": "Isolation",
 			"agentHost.modePicker": "Mode Assistant",
 			"agentHost.permissionModePicker": "Approbations"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostCustomAgentPicker": {
-			"agentPickerCustomCategory": "Agents personnalisés",
-			"agentPickerDefault": "Assistant",
-			"agentPickerDefaultCategory": "Par défaut",
-			"agentPickerDefaultHover": "Utilisez l’agent par défaut.",
-			"configureCustomAgents": "Configurer les assistants personnalisés...",
-			"viewAgent": "Affiche l’agent {0}"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostPermissionUiContribution": {
 			"agentHost.permission.allow": "Autoriser",
@@ -8670,24 +7942,6 @@
 			"agentHost.permission.oneMorePending": "+1 autre requête en attente",
 			"agentHost.permission.read": "L'hôte de l'agent distant « {0} » souhaite lire {1}",
 			"agentHost.permission.write": "L'hôte de l'agent distant « {0} » souhaite écrire {1}"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
-			"agentHost.authRequired": "L’authentification est obligatoire pour démarrer une session. Veuillez vous reconnecter, puis réessayez.",
-			"agentHost.elicit.url.cancel": "Annuler",
-			"agentHost.elicit.url.instruction": "Voulez-vous ouvrir cette URL ?",
-			"agentHost.elicit.url.open": "Ouvrir {0}",
-			"agentHost.elicit.url.title": "Autorisation requise",
-			"agentHost.responseDetails.credit": "Crédit de {0}",
-			"agentHost.responseDetails.credits": "{0} crédits",
-			"chat.forked.fallbackTitle": "Session dupliquée",
-			"chat.forked.title": "Dupliqué : {0}"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
-			"agentHostTerminal.channelLocal": "Terminal de l’hôte d’agent (local)",
-			"agentHostTerminal.local": "Local"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
-			"ahp.running": "{0} est en cours d’exécution... Merci de patienter."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "Terminé",
@@ -9072,7 +8326,6 @@
 		"vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagementEditor": {
 			"agents": "Assistants",
 			"agentsDesc": "Définissez des agents personnalisés dotés de personas spécialisés, d’un accès aux outils et d’instructions pour des tâches spécifiques.",
-			"aiCustomizationManagementSashBorder": "Couleur de la bordure du séparateur de la vue fractionnée de l'éditeur de personnalisations de l'agent.",
 			"backToList": "Retour à la liste",
 			"backToListTooltip": "Retour à la liste",
 			"backToMcpList": "Retour aux serveurs MCP",
@@ -9181,6 +8434,7 @@
 			"addMcpServer": "Ajoutez une configuration de serveur MCP pour commencer",
 			"addServer": "Ajouter un serveur",
 			"addServerTooltip": "Ajouter un serveur",
+			"backToInstalled": "Back to installed servers",
 			"browseMarketplace": "Parcourir la Marketplace",
 			"builtInGroup": "Intégré(e)",
 			"builtInGroupDescription": "Serveurs MCP intégrés à VS Code. Ceux-ci sont disponibles automatiquement.",
@@ -9204,6 +8458,7 @@
 			"mcpAccessDisabledBySettingPrefix": "Les serveurs MCP sont désactivés dans les paramètres. ",
 			"mcpAccessDisabledSettingLink": "Configurez dans les paramètres.",
 			"mcpAccessDisabledTitle": "Les serveurs MCP sont désactivés",
+			"mcpBrowseBack": "Back",
 			"mcpGroupAriaLabel": "{0}, éléments {1}, {2}",
 			"mcpServers": "Serveurs MCP",
 			"mcpServersDescription": "Norme ouverte permettant à l’IA d’utiliser des outils et des services externes. Les serveurs MCP fournissent des outils pour les opérations sur fichiers, les bases de données, les API, et plus encore.",
@@ -9388,17 +8643,9 @@
 			"chat.agent.thinkingMode.fixedScrolling": "Afficher la réflexion dans un panneau de diffusion en continu à hauteur fixe qui défile automatiquement ; cliquez sur l’en-tête pour développer à la hauteur maximale.",
 			"chat.agent.thinkingStyle": "Contrôle le rendu de la réflexion.",
 			"chat.agentHost.ahpJsonlLogging": "Lorsqu'il est activé, enregistre tous les messages de transport AHP relatifs aux connexions d'hôtes agents dans des fichiers JSONL, situés dans le répertoire de journaux de la fenêtre.",
-			"chat.agentHost.claudeAgent.path": "Expérimental, pour tests locaux uniquement. Chemin absolu vers un package `@anthropic-ai/claude-agent-sdk` installé localement. Une fois défini, le fournisseur d'agent Claude est enregistré au sein de l'hôte d'agent et le SDK est chargé depuis ce chemin. Nécessite `#chat.agentHost.enabled#`. Le processus hôte de l'agent doit être redémarré pour que les modifications prennent effet. Ce paramètre sera supprimé une fois le SDK distribué via la Marketplace des extensions.",
 			"chat.agentHost.clientTools": "Noms de référence des outils à exposer comme outils fournis par le client dans les sessions d’hôte d’agent.",
 			"chat.agentHost.customTerminalTool.enabled": "Lorsqu’elle est activée, cette option fait en sorte que les sessions Copilot SDK utilisent la configuration personnalisée du terminal Agent Host au lieu du comportement par défaut du terminal du SDK.",
-			"chat.agentHost.enabled": "Lorsque cette option est activée, certains agents s’exécutent dans un processus d’hôte d’agent distinct.",
 			"chat.agentHost.ipcLogging": "Une fois cette option activée, tout le trafic IPC de chaque hôte d’agent est journalisé dans un canal de sortie dédié.",
-			"chat.agentHost.otel.captureContent": "Lorsque cette option est activée, inclut le contenu des invites et des réponses dans les attributs des étendues OTel. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Point sensible pour la Confidentialité : ne l’activez pas dans des environnements qui envoient des étendues vers des récepteurs partagés.",
-			"chat.agentHost.otel.dbSpanExporter.enabled": "Lorsqu’il est activé, l’hôte d’agent enregistre de façon persistante chaque span OTel émis dans une base de données SQLite locale. Les spans peuvent être inspectées à l’aide de la commande `Export Agent Host Traces Database`. Compatible avec les exportateurs externes : les spans sont écrites dans SQLite *et* transférées vers le récepteur configuré par l’utilisateur(-trice).",
-			"chat.agentHost.otel.enabled": "Lorsque cette option est activée, l’hôte de l’agent émet des traces OpenTelemetry depuis le Kit de développement logiciel (SDK) Copilot. Nécessite `#chat.agentHost.enabled#`. Configurez `#chat.agentHost.otel.otlpEndpoint#` pour envoyer les traces vers un collecteur externe ou activez `#chat.agentHost.otel.dbSpanExporter.enabled#` pour les capturer localement.",
-			"chat.agentHost.otel.exporterType": "Back-end de l’exportateur utilisé par le Kit de développement logiciel (SDK) Copilot lorsque `#chat.agentHost.otel.enabled#` est activé. `otlp-grpc` est rétrogradé en `otlp-http` de manière transparente dans l’environnement d’exécution CLI.",
-			"chat.agentHost.otel.otlpEndpoint": "URL du point de terminaison OTLP lorsque le type d’exportateur est `otlp-http` ou `otlp-grpc`. Définit `OTEL_EXPORTER_OTLP_ENDPOINT` dans le processus de l’hôte de l’agent.",
-			"chat.agentHost.otel.outfile": "Chemin de sortie des lignes JSON des étendues lorsque le type d’exportateur est `file`. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
 			"chat.agentLocations.invalidPath": "Les chemins doivent être relatifs ou commencer par « ~/ ». Les chemins absolus et les séparateurs « \\ » ne sont pas pris en charge.",
 			"chat.agentSessionProjection.enabled": "Contrôle l’activation du mode Projection de session d’agent pour examiner les sessions d’agents dans un espace de travail focalisé.",
 			"chat.agentSkillsLocations.description": "Spécifiez le ou les emplacements des compétences d’agent (`{0}`) pouvant être utilisées dans les sessions de conversation. [En savoir plus]({1}).\r\n\r\nChaque chemin doit contenir des sous-dossiers de compétences avec des fichiers SKILL.md (p. ex. ajoutez `my-skills` si vous avez `my-skills/skillA/SKILL.md`). Les chemins relatifs sont résolus à partir du ou des dossiers racines de votre espace de travail.",
@@ -9410,6 +8657,10 @@
 			"chat.agentsControl.compact": "Remplace la zone de recherche du centre de commandes par un indicateur d’état compact de l’agent et un widget de conversation unifié.",
 			"chat.agentsControl.enabled": "Contrôle l’apparence de l’indicateur « État de l’agent » dans le centre de commandes de la barre de titre. Lorsqu’il est défini sur `hidden`, l’indicateur n’est pas affiché. Les autres valeurs affichent l’indicateur et activent automatiquement {0}. Les indicateurs de session non lue et en cours nécessitent l’activation de {1}.",
 			"chat.agentsControl.hidden": "L’indicateur d’état de l’agent est masqué dans la barre de titre.",
+			"chat.agentsHandoffTip.mode": "Controls the tip shown above the chat input offering to continue eligible agent sessions in the Agents Window.",
+			"chat.agentsHandoffTip.mode.custom": "Show the handoff tip with an alternate description.",
+			"chat.agentsHandoffTip.mode.default": "Show the handoff tip with the default description.",
+			"chat.agentsHandoffTip.mode.hidden": "Never show the handoff tip.",
 			"chat.allowAnonymousAccess": "Contrôle si l’accès anonyme est autorisé dans la conversation.",
 			"chat.approvedAccountOrganizations": "Liste des identifiants d’organisation GitHub dont les membres sont autorisés à utiliser les fonctionnalités d’IA. Lorsqu’elle est définie sur une liste non vide, les fonctionnalités d’IA sont désactivées jusqu’à ce que l’utilisateur se connecte à un compte GitHub appartenant à l’une des organisations spécifiées et que les données de stratégie au niveau du compte soient résolues. Définissez sur « * » pour autoriser tout compte GitHub ou GitHub Enterprise authentifié.",
 			"chat.approvedAccountOrganizations.policy.description": "Définir cette stratégie sur une liste non vide active la porte Compte approuvé : toutes les fonctionnalités d’IA sont désactivées jusqu’à ce que l’utilisateur se connecte à un compte GitHub dont les organisations croisent cette liste ET que les données de stratégie côté compte soient résolues. La comparaison ne tient pas compte de la casse. Utilisez « * » comme caractère générique pour accepter tout compte GitHub ou GitHub Enterprise connecté (utilisez-le pour les déploiements GitHub Enterprise où la liste des organisations n’est pas affichée).",
@@ -9424,7 +8675,6 @@
 			"chat.artifacts.rules.groupName": "Nom d’affichage du groupe d’artefacts.",
 			"chat.artifacts.rules.onlyShowGroup": "Si l’option est activée, affiche uniquement l’en-tête du groupe au lieu des éléments individuels.",
 			"chat.autoReply.description": "Ignorez automatiquement les carrousels de questions en indiquant à l'assistant que l'utilisateur n'est pas disponible et qu'il doit faire preuve de discernement. Il s'agit d'un paramètre avancé susceptible d'entraîner des choix ou des actions involontaires, fondés sur un contexte incomplet.",
-			"chat.autopilot.enabled": "Contrôle si le mode Autopilot est disponible dans le sélecteur d'autorisations. Lorsqu'il est activé, Autopilot approuve automatiquement tous les appels d'outils et poursuit son exécution jusqu'à ce que la tâche soit terminée.",
 			"chat.checkpoints.enabled": "Active les points de contrôle dans la conversation. Les points de contrôle vous permettent de restaurer l’état précédent de la conversation.",
 			"chat.checkpoints.showFileChanges": "Permet de contrôler l’affichage des modifications apportées au fichier de point de contrôle de conversation.",
 			"chat.codeBlock.showProgressAnimation.description": "Lors de l’application des modifications, affichez une animation de progression dans la pastille du bloc de code. Si l’option est désactivée, le pourcentage de progression s’affiche.",
@@ -9515,7 +8765,6 @@
 			"chat.notifyWindowOnResponseReceived.always": "Toujours afficher les notifications du système d’exploitation pour les réponses, même lorsque la fenêtre est ciblée.",
 			"chat.notifyWindowOnResponseReceived.off": "Ne jamais afficher les notifications du système d’exploitation pour les réponses.",
 			"chat.notifyWindowOnResponseReceived.windowNotFocused": "Afficher les notifications du système d’exploitation pour les réponses lorsque la fenêtre n’est pas ciblée.",
-			"chat.offlineByok": "Expérimental : activez les fonctionnalités de conversation BYOK sans connexion à GitHub.",
 			"chat.permissions.default.autoApprove.description": "Lancez de nouvelles sessions de conversation en mode Contourner les approbations.",
 			"chat.permissions.default.autoApprove.label": "Contournement des approbations",
 			"chat.permissions.default.autopilot.description": "Lancez de nouvelles sessions de conversation en mode Autopilot.",
@@ -9528,7 +8777,13 @@
 			"chat.planReview.inlineEditor.enabled": "Lorsqu'il est activé, le widget de révision de plan intègre un éditeur en ligne, par opposition à un onglet d'éditeur distinct.",
 			"chat.pluginLocations": "Des annuaires de plugins à découvrir. Chaque clé est un chemin pointant directement vers un dossier de plugin, et la valeur l'active (`true`) ou le désactive (`false`). Les chemins peuvent être absolus, relatifs à la racine de l'espace de travail, ou commencer par `~/` pour le répertoire personnel de l'utilisateur.",
 			"chat.plugins.enabled": "Activez l’intégration du plug-in d’assistant dans la conversation.",
-			"chat.plugins.marketplaces": "Markeplaces de plugins à interroger. Les entrées peuvent être des raccourcis GitHub (`owner/repo`), des URI directs de dépôt Git (`https://...git`, `ssh://...git`, or `git@host:path.git`), ou des URI de dépôt local (`file:///...`). Les entrées équivalentes sous forme de raccourcis GitHub et d’URI sont dédupliquées.",
+			"chat.plugins.enabledPlugins": "Enterprise-managed plugin enablement. Keys are plugin IDs in `<plugin>@<marketplace>` form (resolved to Copilot CLI install paths); values enable (`true`) or disable (`false`) the plugin. Discovered alongside the path-keyed entries in {0}. When set by policy, also restricts which marketplace-discovered plugins are allowed to load (only IDs mapped to `true` here pass the gate).",
+			"chat.plugins.enabledPlugins.policy": "Plugin enablement. Keys are plugin IDs in `<plugin>@<marketplace>` form; values enable or disable the plugin.",
+			"chat.plugins.extraMarketplaces": "Enterprise-managed additional plugin marketplaces. Unioned with {0}.",
+			"chat.plugins.extraMarketplaces.policy": "Additional plugin marketplaces to query. Keys are marketplace names; values are GitHub shorthand (`owner/repo[#ref]`) or Git URIs (`<url>[#ref]`).",
+			"chat.plugins.marketplaces": "Plugin marketplaces to query. Entries may be GitHub shorthand (`owner/repo` or `owner/repo#ref`), direct Git repository URIs (`https://...git`, `ssh://...git`, or `git@host:path.git`, each optionally suffixed with `#ref`), or local repository URIs (`file:///...`). Equivalent GitHub shorthand and URI entries are deduplicated.",
+			"chat.plugins.strictMarketplaces": "When enabled, only marketplaces supplied via enterprise policy are trusted. Plugins from any other marketplace will not load.",
+			"chat.plugins.strictMarketplaces.policy": "Only trust marketplaces supplied via enterprise policy; plugins from any other marketplace will not load.",
 			"chat.progressBorder.enabled": "Affichez une bordure dégradée animée autour de l’entrée de chat pendant que l’assistant travaille ou réfléchit. Lorsque cette option est activée et que la réduction du mouvement n’est pas activé, cela remplace {0} pour le désactiver. N’a aucun effet lorsque la réduction du mouvement est activé.",
 			"chat.promptFileLocations.invalidPath": "Les chemins doivent être relatifs ou commencer par « ~/ ». Les chemins absolus et les séparateurs « \\ » ne sont pas pris en charge. Les motifs glob sont déconseillés et seront supprimés dans les prochaines versions.",
 			"chat.promptFilesRecommendations.description": "Configurez les fichiers de requête à recommander dans l’affichage d’accueil de la conversation. Chaque clé est un nom de fichier de requête, et la valeur peut être `true` pour toujours recommander, `false` pour ne jamais recommander, ou une expression [when clause](https://aka.ms/vscode-when-clause) comme `resourceExtname == .js` ou `resourceLangId == markdown`.",
@@ -9546,6 +8801,7 @@
 			"chat.subagents.allowInvocationsFromSubagents": "Autorisez des sous-agents à invoquer des sous-agents.",
 			"chat.subagents.allowInvocationsFromSubagents.md": "Contrôle si les sous-agents peuvent invoquer d’autres sous-agents. Lorsque cette option est activée, l’imbrication est limitée à une profondeur de 5 au maximum.",
 			"chat.tips.enabled": "Contrôle l’affichage des conseils au-dessus des messages utilisateur dans la conversation. De nouveaux conseils sont ajoutés fréquemment, ce qui est un moyen utile de rester informé des dernières fonctionnalités.",
+			"chat.titleBar.openInAgentsWindow.enabled": "Controls whether the Open in Agents Window button is shown in the title bar.",
 			"chat.titleBar.signIn.enabled": "Contrôle si le bouton de connexion Copilot s'affiche dans la barre de titre lorsque l'utilisateur est déconnecté. Lorsqu'il est désactivé, l'élément d'authentification se replie dans la barre d'état.",
 			"chat.toolReferenceName.description": "{0} – {1}",
 			"chat.tools.autoApprove.edits": "Contrôle si les modifications apportées par l’agent sont automatiquement approuvées. La valeur par défaut est d’approuver toutes les modifications, à l’exception de celles apportées à certains fichiers susceptibles d’entraîner des effets secondaires immédiats non intentionnels, tels que `**/.vscode/*.json`.\r\n\r\nDéfinir sur `true` pour approuver automatiquement les modifications apportées aux fichiers correspondants, ou sur `false` pour toujours exiger une approbation explicite. Le dernier modèle correspondant à un fichier donné détermine si la modification est approuvée automatiquement.",
@@ -9597,6 +8853,11 @@
 			"interactiveSession.editor.wordWrap": "Contrôle si les lignes doivent être enveloppées dans les codeblocks de la conversation.",
 			"interactiveSessionConfigurationTitle": "Conversation",
 			"mcp.discovery.enabled": "Configure la découverte des serveurs du Model Context Protocol à partir de la configuration de diverses autres applications.",
+			"mcp.enterpriseManagedAuth.idp": "(Preview) The OAuth/OIDC IdP configuration used for enterprise-managed Model Context Protocol (MCP) servers. Typically delivered via enterprise policy (Windows Group Policy / macOS managed preferences / Linux `/etc/vscode/policy.json`); developers may hand-edit `settings.json` for local testing. Properties: `issuer` (HTTPS URL), `clientId`, `clientSecret`.",
+			"mcp.enterpriseManagedAuth.idp.clientId": "The OAuth client ID registered with the SSO issuer for this device.",
+			"mcp.enterpriseManagedAuth.idp.clientSecret": "The OAuth client secret paired with `clientId`. Intended for local development only.",
+			"mcp.enterpriseManagedAuth.idp.issuer": "The OAuth/OIDC issuer URL of the SSO authorization server. Must be an `https://` URL.",
+			"mcp.enterpriseManagedAuth.idp.policy": "The OAuth/OIDC IdP configuration used for enterprise-managed Model Context Protocol (MCP) server authentication. Delivered through enterprise policy (Windows Group Policy, macOS managed preferences, Linux `/etc/vscode/policy.json`).",
 			"mcp.gallery.serviceUrl": "Configurer l’URL du service de la galerie MCP à laquelle se connecter",
 			"mcp.list": "Répertorier les serveurs"
 		},
@@ -10211,6 +9472,32 @@
 			"showExtension": "Afficher l’extension",
 			"vscode.extension.contributes.chatParticipant": "Contribue à un participant à la conversation"
 		},
+		"vs/workbench/contrib/chat/browser/chatQuotaNotification": {
+			"manageBudget": "Manage Budget",
+			"manageBudget2": "Manage Budget",
+			"manageBudget3": "Manage Budget",
+			"quota.approaching.default": "Set additional budget to cover extra usage.",
+			"quota.approaching.free": "Upgrade to continue past the limit.",
+			"quota.approaching.managed": "Contact your admin to increase your limits.",
+			"quota.approaching.overageEnabled": "Additional budget is enabled to cover extra usage.",
+			"quota.approaching.title": "Credits at {0}%",
+			"quota.blocked.managed": "Your organization or enterprise has exceeded its Copilot budget. Contact your admin to resume usage.",
+			"quota.blocked.managed.title": "Usage Blocked",
+			"quota.exhausted.anonymous": "Sign in to keep going.",
+			"quota.exhausted.default": "Manage your budget to keep building.",
+			"quota.exhausted.free": "Upgrade to keep going.",
+			"quota.exhausted.hadOverage": "Increase your budget to keep building.",
+			"quota.exhausted.managed": "Contact your admin to increase your limits.",
+			"quota.exhausted.title": "Credit Limit Reached",
+			"quota.overage.desc": "Additional budget is now covering extra usage.",
+			"quota.overage.title": "Credit Limit Reached",
+			"rateLimit.resets": "Resets on {0}.",
+			"rateLimit.session": "You've used {0}% of your session rate limit.",
+			"rateLimit.weekly": "You've used {0}% of your weekly rate limit.",
+			"signIn": "Sign In",
+			"upgrade": "Upgrade",
+			"upgrade2": "Upgrade"
+		},
 		"vs/workbench/contrib/chat/browser/chatRepoInfo": {
 			"chat.repoInfo.enabled": "Contrôle la capture des métadonnées légères du référentiel (branche, commit, dépôts distants) lors de l’envoi d’une requête de conversation pour des diagnostics internes.",
 			"chatRepoInfoConfigurationTitle": "Informations sur le référentiel de conversation"
@@ -10274,7 +9561,7 @@
 			"chat.category": "Conversation",
 			"explain": "Expliquer",
 			"fix": "Correctif",
-			"forceSignIn": "Connectez-vous pour utiliser les fonctionnalités IA",
+			"forceSignIn": "Sign in to use GitHub Copilot",
 			"hideChatSetup": "Découvrez comment masquer les fonctionnalités IA",
 			"manageAdditionalSpend": "Gérer le budget de GitHub Copilot",
 			"managePlan": "Mettre à niveau vers GitHub Copilot Pro",
@@ -10341,7 +9628,7 @@
 			"settings": "En continuant, vous acceptez les [Conditions générales]({1}) et la [Déclaration de confidentialité]({2}) de {0}. {3} Copilot peut afficher des suggestions de [code public]({4}) et utiliser vos données pour améliorer le produit. Vous pouvez modifier ces [settings]({5}) à tout moment.",
 			"settingsAnonymous": "En continuant, vous acceptez les [Conditions générales]({1}) et la [Déclaration de confidentialité]({2}) de {0}.",
 			"setupAIButton": "Utiliser les fonctionnalités d’IA",
-			"signIn": "Connectez-vous pour utiliser les fonctionnalités IA",
+			"signIn": "Sign in to use GitHub Copilot",
 			"startUsing": "Commencez à utiliser les fonctionnalités d’IA"
 		},
 		"vs/workbench/contrib/chat/browser/chatSlashCommands": {
@@ -10398,9 +9685,12 @@
 			"premiumLimitReached": "Limite de l’entreprise atteinte.",
 			"premiumLimitReachedCompact": "{0} limite atteinte.",
 			"quotaAdditionalUsageActive": "Un budget supplémentaire est configuré. L’utilisation continuera jusqu’à la réinitialisation des limites.",
+			"quotaAdditionalUsageActiveEnterprise": "You've used your included credits. Your organization covers additional usage, so you can keep working.",
 			"quotaAdditionalUsageApproaching": "Une fois la limite atteinte, du budget supplémentaire sera utilisé.",
+			"quotaAdditionalUsageApproachingEnterprise": "You're approaching your included credits. Your organization covers additional usage, so there's no interruption.",
 			"quotaBudgetActive": "Le budget des requêtes Premium est configuré. L’utilisation continuera jusqu’à la réinitialisation des limites.",
 			"quotaBudgetApproaching": "Une fois la limite atteinte, le budget de requêtes premium sera utilisé.",
+			"quotaBudgetExceededEnterprise": "Your organization or enterprise has exceeded its Copilot budget. Contact your admin to resume usage.",
 			"quotaCreditsDisplay": "{0}/{1}",
 			"quotaDisplay": "{0} %",
 			"quotaLabel": "Gérer les paramètres Copilot",
@@ -10433,7 +9723,7 @@
 			"chatStatus": "État de Copilot",
 			"chatStatusAria": "État de Copilot",
 			"completionsDisabledStatus": "Suggestions intégrées désactivées",
-			"completionsQuotaExceededStatus": "Quota de suggestions intégrées atteint",
+			"completionsQuotaExceededStatus": "Inline suggestions limit reached",
 			"completionsSnoozedStatus": "Suggestions intégrées mises en veille",
 			"copilotDisabledStatus": "Copilot désactivé",
 			"signIn": "Se connecter"
@@ -11074,6 +10364,7 @@
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatQuotaExceededPart": {
 			"clickToContinue": "Cliquez pour réessayer",
 			"manageBudget": "Gérer le budget",
+			"upgradePlan": "Upgrade",
 			"upgradeToCopilotPro": "Mettre à niveau vers GitHub Copilot Pro",
 			"waitWarning": "Les modifications seront effectives dans quelques minutes."
 		},
@@ -11114,6 +10405,10 @@
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatSuggestNextWidget": {
 			"chat.currentMode": "mode actuel",
 			"chat.proceedFrom": "Continuer depuis {0}",
+			"chat.suggestNext.continueInAgentsWindow": "Continue in Agents Window",
+			"chat.suggestNext.handoffDefaultQuery": "Continue the previous chat.",
+			"chat.suggestNext.handoffHeader": "Handing off from VS Code chat. Original request:",
+			"chat.suggestNext.handoffPlanHeader": "Plan from VS Code chat:",
 			"chat.suggestNext.item": "{0}",
 			"chat.suggestNext.moreOptions": "Autres options pour {0}",
 			"chat.suggestNext.startWithAutopilot": "Commencer avec Autopilot",
@@ -11252,8 +10547,10 @@
 			"autoApprove.markdown": "Cela permettra à un sous-ensemble configurable de commandes de s’exécuter de manière autonome dans le terminal. Il fournit des *protections optimales* et suppose que l’agent n’agit pas de manière malveillante.",
 			"autoApprove.markdown2": "En savoir plus sur les risques potentiels et comment les éviter.",
 			"autoApprove.title": "Voulez-vous activer l’approbation automatique du terminal ?",
+			"chat.terminal.allowNetwork.defaultReason": "The model did not provide a reason for requesting unrestricted network access in the sandbox.",
 			"chat.terminal.detail.approvalNeeded": "Approbation requise :",
 			"chat.terminal.detail.sandboxInsufficient": "Bac à sable insuffisant :",
+			"chat.terminal.detail.unrestrictedNetwork": "Unrestricted network access:",
 			"chat.terminal.unsandboxedExecution.defaultReason": "Le modèle n’a pas fourni de raison pour demander une exécution hors bac à sable.",
 			"newRule.session": "Règle d’approbation automatique de la session {0} ajoutée",
 			"newRule.session.plural": "Règles d’approbation automatique de la session {0} ajoutées",
@@ -11469,8 +10766,7 @@
 			"models.longContextPriceTitle": "Coût du contexte long (par 1 million de jetons)",
 			"models.outputCostLabel": "Résultat",
 			"models.priceCategoryTitle": "Coût",
-			"models.priceTitle": "Coût (par million de jetons)",
-			"models.tokensDefault": "{0} (par défaut)"
+			"models.priceTitle": "Coût (par million de jetons)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter": {
 			"chatPhoneInput.autoLabel": "Automatique",
@@ -11679,6 +10975,7 @@
 			"inInteractiveInput": "True lorsque le focus est dans l’entrée de conversation, false dans le cas contraire.",
 			"inQuickChat": "True quand l’interface utilisateur de la conversation rapide a le focus, sinon false.",
 			"interactiveInputHasFocus": "Valeur true lorsque l’entrée de la conversation a le focus.",
+			"interactiveInputHasSendableContent": "True when the chat input has text or file attachments that can be sent.",
 			"interactiveInputHasText": "True lorsque l’entrée de la conversation contient du texte.",
 			"interactiveSessionCurrentlyEditing": "Vrai lorsque la requête actuelle est en cours de modification.",
 			"interactiveSessionCurrentlyEditingInput": "Vrai lorsque l'entrée de la demande actuelle en bas est en cours de modification.",
@@ -11692,7 +10989,11 @@
 		},
 		"vs/workbench/contrib/chat/common/attachments/chatVariableEntries": {
 			"chat.attachment.problems.all": "Tous les problèmes",
-			"chat.attachment.problems.inFile": "Problèmes dans {0}"
+			"chat.attachment.problems.inFile": "Problèmes dans {0}",
+			"chat.attachmentSummary.file.many": "Attached {0} files",
+			"chat.attachmentSummary.file.one": "Attached 1 file",
+			"chat.attachmentSummary.image.many": "Attached {0} images",
+			"chat.attachmentSummary.image.one": "Attached 1 image"
 		},
 		"vs/workbench/contrib/chat/common/chatImageExtraction": {
 			"chatImageExtraction.defaultTitle": "Images",
@@ -12192,35 +11493,6 @@
 			"tool.askQuestions.displayName": "Poser des questions de clarification",
 			"tool.askQuestions.userDescription": "Posez des questions de clarification structurées en utilisant des entrées à sélection unique, à multi-sélection ou libre pour recueillir les exigences de la tâche avant de continuer."
 		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatExternalPathConfirmation": {
-			"addPath": "Ajouter un chemin d’accès...",
-			"addPathDescription": "Autoriser dossier dans cet espace de travail",
-			"allowFolderSession": "Autoriser ce dossier dans cette session",
-			"allowFolderSessionDetail": "Autoriser la lecture des fichiers de ce dossier sans confirmation supplémentaire dans cette session de conversation",
-			"allowRepoSession": "Autoriser tous les fichiers de ce référentiel pour cette session",
-			"allowRepoSessionDetail": "Autoriser la lecture des fichiers à partir de {0}",
-			"allowRepoSessionDetailLookup": "Recherche le référentiel Git contenant ce chemin d’accès",
-			"sessionScope": "Session",
-			"workspaceScope": "Espace de travail"
-		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatUrlFetchingConfirmation": {
-			"allowRequestsCheckbox": "Effectuer des demandes sans confirmation",
-			"allowResponsesCheckbox": "Autoriser les réponses sans confirmation",
-			"approveAll": "Tout approuver",
-			"approveRequestTo": "Autoriser les demandes à {0}",
-			"approveResponseFrom": "Autoriser les réponses de {0}",
-			"approves": "Approuve {0}",
-			"delete": "Supprimer",
-			"denyAll": "Refuser tout",
-			"moreOptions": "Autoriser les requêtes à...",
-			"moreOptionsManage": "Plus d’options...",
-			"moreOptionsMultiple": "Configurer les approbations d’URL...",
-			"noApprovals": "Aucune approbation",
-			"openSettings": "Ouvrir les paramètres",
-			"requests": "requêtes",
-			"responses": "réponses",
-			"selectApproval": "Sélectionnez le modèle d’URL à approuver"
-		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/manageTodoListTool": {
 			"todo.added.multiple": "Ajouté à {0} tâches à faire",
 			"todo.added.single": "Ajouté 1 tâche à faire",
@@ -12314,90 +11586,6 @@
 			"chat.slashCommandForeground": "Couleur de premier plan d’une commande à barre oblique de conversation.",
 			"chat.thinkingShimmer": "Mise en surbrillance miroitante pour les étiquettes de réflexion ou de travail.",
 			"chatCheckpointSeparator": "Couleur du séparateur de point de contrôle de la conversation."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
-			"workbench.action.chat.openStorageFolder.label": "Ouvrir le dossier de stockage des conversations"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatExportZip": {
-			"chat.exportAsZip.label": "Exporter la conversation au format zip...",
-			"chatExportZip.error": "Nous n’avons pas pu exporter la conversation au format zip : {0}",
-			"chatExportZip.noRepoData": "Conversation exportée sans contexte de référentiel. Aucun référentiel Git n’a été détecté."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
-			"debugAgentHost.noInspectPort": "Impossible d’activer l’inspecteur Node.js pour le processus hôte de l’agent.",
-			"debugAgentHostInDevTools": "Déboguer le processus hôte de l’agent local dans les outils de développement"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
-			"exportDebugLogs.saveDialogTitle": "Exporter les journaux de débogage de l’hôte de l’agent",
-			"exportDebugLogs.zipFilter": "Archive ZIP"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
-			"exportAgentTracesDB.error": "Échec de l’exportation de la base de données des traces de l’hôte de l’agent : {0}",
-			"exportAgentTracesDB.label": "Exporter la base de données des traces de l’hôte de l’agent...",
-			"exportAgentTracesDB.notFound": "Aucune base de données de traces de l’hôte de l’agent n’a encore été trouvée. Exécutez une session d’agent avec `#chat.agentHost.otel.dbSpanExporter.enabled#` activé pour la renseigner."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
-			"keywordActivation.status.active": "Écoute de « Hey Code »...",
-			"keywordActivation.status.inactive": "En attente de la fin de la conversation vocale...",
-			"keywordActivation.status.name": "Activation par mot clé vocal",
-			"listening": "J'écoute",
-			"scopedChatSynthesisInProgress": "Défini comme un emplacement où l’enregistrement vocal à partir du microphone est en cours pour la conversation vocale. Cette clé n’est définie qu’à l’échelle, par contexte de conversation.",
-			"scopedVoiceChatGettingReady": "Vrai lorsque vous vous préparez à recevoir une entrée vocale du microphone pour un chat vocal. Cette clé n’est définie qu’à l’échelle, par contexte de conversation.",
-			"scopedVoiceChatInProgress": "Défini comme un emplacement où l’enregistrement vocal à partir du microphone est en cours pour la conversation vocale. Cette clé n’est définie qu’à l’échelle, par contexte de conversation.",
-			"voice.keywordActivation": "Contrôle si l’expression mot clé « Hey Code » est reconnue pour démarrer une session de conversation vocale. L’activation de cette option démarre l’enregistrement depuis le microphone, mais l’audio est traité localement et n’est jamais envoyé à un serveur.",
-			"voice.keywordActivation.chatInContext": "L’activation par mot clé est activée et écoute « Hey Code » pour démarrer une session de conversation vocale dans l’éditeur ou l’affichage actif en fonction du focus clavier.",
-			"voice.keywordActivation.chatInView": "L’activation par mot clé est activée et écoute « Hey Code » pour démarrer une session de conversation vocale dans la vue de conversation.",
-			"voice.keywordActivation.inlineChat": "L'activation des mots clés est activée et l'écoute de « Hey Code » pour démarrer une session de chat vocal dans l'éditeur actif si possible.",
-			"voice.keywordActivation.off": "L’activation par mot clé est désactivée.",
-			"voice.keywordActivation.quickChat": "L’activation par mot clé est activée et écoute « Hey Code » pour démarrer une session de conversation vocale dans la conversation rapide.",
-			"workbench.action.chat.holdToVoiceChatInChatView.label": "Maintenir Voice Chat dans la vue Chat",
-			"workbench.action.chat.inlineVoiceChat": "Chat vocal inline",
-			"workbench.action.chat.quickVoiceChat.label": "Chat vocal rapide",
-			"workbench.action.chat.readChatResponseAloud": "Lecture à voix haute",
-			"workbench.action.chat.startVoiceChat.label": "Démarrer le chat vocal",
-			"workbench.action.chat.stopListening.label": "Arrêter l’écoute",
-			"workbench.action.chat.stopListeningAndSubmit.label": "Arrêter l’écoute et envoyer",
-			"workbench.action.chat.stopReadChatItemAloud": "Arrêter la lecture à voix haute",
-			"workbench.action.chat.voiceChatInView.label": "Chat vocal en mode Conversation",
-			"workbench.action.speech.stopReadAloud": "Arrêter la lecture à voix haute"
-		},
-		"vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions": {
-			"openAgentsWindow": "Ouvrir la fenêtre des agents",
-			"openInAgentsHover": "Ouvrir dans la fenêtre Agents",
-			"openWorkspaceInAgentsWindow": "Ouvrir dans Assistants"
-		},
-		"vs/workbench/contrib/chat/electron-browser/builtInTools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Les fichiers binaires ne sont pas pris en charge pour le moment.",
-			"fetchWebPage.confirmationMessage.plural": "Le contenu web peut contenir du code malveillant ou tenter des attaques par injection d’invite.",
-			"fetchWebPage.confirmationTitle.plural": "Récupérer des pages web",
-			"fetchWebPage.confirmationTitle.singular": "Voulez-vous récupérer une page web ?",
-			"fetchWebPage.fetchedFrom": "Récupéré à partir de {0}",
-			"fetchWebPage.invalidUrl": "URL non valide",
-			"fetchWebPage.invocationMessage.plural": "Récupération de {0} ressources",
-			"fetchWebPage.invocationMessage.singular": "Récupération de {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Récupération de [ressources]({0})",
-			"fetchWebPage.noValidUrls": "Aucune URL valide fournie.",
-			"fetchWebPage.pastTenseMessage.plural": "Ressources {0} récupérées, mais les URL suivantes n’étaient pas valides :\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "La ressource a été récupérée, mais l’URL suivante n’était pas valide :\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Récupération de {0} ressources",
-			"fetchWebPage.pastTenseMessageResult.singular": "{0} a été récupéré",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Ressource [récupérée]({0})",
-			"fetchWebPage.urlMentionedInPrompt": "Approuvé automatiquement car l’URL figurait dans la requête",
-			"fetchWebPage.urlsDescription": "Tableau d’URL à partir desquelles le contenu est récupéré."
-		},
-		"vs/workbench/contrib/chat/electron-browser/chat.contribution": {
-			"changeWorkspace.detail": "La session s'arrêtera si vous changez d'espace de travail.",
-			"changeWorkspace.message": "Une session est en cours. Êtes-vous sûr de vouloir changer d'espace de travail ?",
-			"chatRequestInProgress": "Une session est en cours.",
-			"closeTheWindow.detail": "La session s'arrêtera si vous fermez la fenêtre.",
-			"closeTheWindow.message": "Une session est en cours. Voulez-vous vraiment fermer la fenêtre ?",
-			"copilotWorkspaceTrust": "Les fonctionnalités IA sont actuellement uniquement pris en charge dans les espaces de travail approuvés.",
-			"exit.detail": "La session s'arrêtera si vous quittez.",
-			"exit.message": "Une session est en cours. Êtes-vous sûr de vouloir quitter ?",
-			"quit.detail": "La session s'arrêtera si vous quittez.",
-			"quit.message": "Une session est en cours. Voulez-vous vraiment quitter ?",
-			"reloadTheWindow.detail": "La session s'arrêtera si vous rechargez la fenêtre.",
-			"reloadTheWindow.message": "Une session est en cours. Êtes-vous sûr de vouloir recharger la fenêtre ?"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "Déclenche des actions de code sur les enregistrements explicites et les enregistrements automatiques déclenchés par les changements de fenêtre ou de focus.",
@@ -12729,12 +11917,6 @@
 			"schema.wordPattern.flags": "Les options d'expression régulière utilisées pour la recherche",
 			"schema.wordPattern.flags.errorMessage": "Doit valider l'expression régulière `/^([gimuy]+)$/`.",
 			"schema.wordPattern.pattern": "L'expression régulière utilisée pour la recherche"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "Coller la sélection du Presse-papiers"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/startDebugTextMate": {
-			"startDebugTextMate": "Démarrer la journalisation de la grammaire de la syntaxe TextMate"
 		},
 		"vs/workbench/contrib/commands/common/commands.contribution": {
 			"runCommands": "Commandes d'exécution",
@@ -14085,12 +13267,12 @@
 			"InstallVSIXs.successNoReload": "Installation des extensions effectuée.",
 			"InstallVSIXs.successReload": "Installation des extensions effectuée. Veuillez recharger Visual Studio Code pour les activer.",
 			"InstallVSIXs.successRestart": "Installation des extensions effectuée. Veuillez redémarrer les extensions pour les activer.",
-			"all": "Toutes les extensions",
 			"autoRestart": "Si cette option est activée, les extensions redémarrent automatiquement après une mise à jour si la fenêtre n’est pas active. Il peut y avoir une perte de données si vous avez des notebooks ou des éditeurs personnalisés ouverts.",
 			"builtin": "L'extension '{0}' est une extension intégrée qui ne peut pas être désinstallée",
 			"builtin filter": "Intégrée",
 			"checkForUpdates": "Rechercher les mises à jour d'extensions",
 			"clearExtensionsSearchResults": "Effacer les résultats de la recherche d'extensions",
+			"delayed": "Delayed",
 			"disableAll": "Désactiver toutes les extensions installées",
 			"disableAllWorkspace": "Désactiver toutes les extensions installées pour cet espace de travail",
 			"disableAutoUpdate": "Désactiver la mise à jour automatique de toutes les extensions",
@@ -14103,7 +13285,6 @@
 			"enableAllWorkspace": "Activer toutes les extensions pour cet espace de travail",
 			"enableAutoUpdate": "Activer la mise à jour automatique de toutes les extensions",
 			"enablePreRleaseLabel": "Passer à la version préliminaire",
-			"enabled": "Uniquement les extensions activées",
 			"enabled filter": "Activée",
 			"extension": "Extension",
 			"extension updates filter": "Mises à jour",
@@ -14118,9 +13299,9 @@
 			"extensions.affinity": "Configurez une extension à exécuter dans un autre processus hôte d’extension.",
 			"extensions.allowOpenInModalEditor": "Contrôle si les extensions et les serveurs MCP s’ouvrent dans une superposition modale de l’éditeur.",
 			"extensions.autoUpdate": "Contrôle le comportement de mise à jour automatique des extensions. Les mises à jour sont récupérées à partir d'un service en ligne Microsoft.",
-			"extensions.autoUpdate.enabled": "Téléchargez et installez automatiquement les mises à jour uniquement pour les extensions activées.",
-			"extensions.autoUpdate.false": "Les extensions ne sont pas mises à jour automatiquement.",
-			"extensions.autoUpdate.true": "Télécharge et installe automatiquement les mises à jour pour toutes les extensions.",
+			"extensions.autoUpdate.delayed": "Enabled extensions are updated automatically, but only 6 hours after a new version has been published.",
+			"extensions.autoUpdate.off": "Extensions are not updated automatically.",
+			"extensions.autoUpdate.on": "Enabled extensions are updated automatically.",
 			"extensions.gallery.serviceUrl": "Configurer l’URL du service Marketplace à laquelle se connecter",
 			"extensions.supportAgentsWindow": "Outrepasser la prise en charge de la fenêtre Agents par une extension. Les extensions utilisant `true` seront activées dans la fenêtre Agents, même si elles seraient autrement désactivées.",
 			"extensions.supportUntrustedWorkspaces": "Remplacez la prise en charge d’une extension par un espace de travail non approuvé. Les extensions utilisant la valeur `true` sont toujours activées. Les extensions utilisant la valeur `limited` sont toujours activées et l’extension masquera les fonctionnalités nécessitant une approbation. Les extensions utilisant la valeur `false` ne sont activées que dans un espace de travail approuvé.",
@@ -14174,9 +13355,10 @@
 			"most popular filter": "La plus populaire",
 			"most popular recommended": "Recommandée",
 			"noUpdatesAvailable": "Toutes les extensions sont à jour.",
-			"none": "Aucun",
 			"notFound": "Extension '{0}' introuvable.",
 			"notInstalled": "L'extension '{0}' n'est pas installée. Vérifiez que vous utilisez l'ID d'extension complet, y compris l'éditeur, par ex. : ms-vscode.csharp.",
+			"off": "Off",
+			"on": "On",
 			"recently published filter": "Publiée récemment",
 			"recentlyPublishedExtensions": "Afficher les extensions récemment publiées",
 			"refreshExtension": "Actualiser",
@@ -14233,6 +13415,9 @@
 			"workbench.extensions.uninstallExtension.description": "Désinstaller l'extension donnée",
 			"workspace unsupported filter": "Espace de travail non pris en charge"
 		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "Running Extensions"
+		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "Cette extension est désactivée, car elle n’est pas prise en charge dans {0} pour le web.",
 			"Defined to run in desktop": "Cette extension est désactivée, car elle est définie pour s’exécuter uniquement dans {0} pour le Bureau.",
@@ -14245,6 +13430,7 @@
 			"Uninstalling": "Désinstallation en cours",
 			"VS Code for Web": "{0} pour le web",
 			"auto update message": "Veuillez [examiner l’extension]({0}) et la mettre à jour manuellement.",
+			"autoUpdateDelayed": "This extension is not updated yet because extension auto updates are configured to be delayed by 6 hours. It will be auto updated {0}.",
 			"cancel": "Annuler",
 			"cannot be installed": "L'extension '{0}' n'est pas disponible dans {1}. Pour en savoir plus, cliquez sur Plus d'informations.",
 			"check logs": "Pour plus d'informations, consultez le [journal]({0}).",
@@ -14662,72 +13848,10 @@
 			"searchExtensionsTool.noInput": "Veuillez fournir une catégorie ou un mot-clé à rechercher.",
 			"searchExtensionsTool.userDescription": "Recherchez des extensions VS Code"
 		},
-		"vs/workbench/contrib/extensions/electron-browser/debugExtensionHostAction": {
-			"debugExtensionHost": "Déboguer l’hôte d’extension dans une nouvelle fenêtre",
-			"debugExtensionHost.launch.name": "Joindre un hôte d’extension",
-			"debugExtensionHost.progress": "Association du débogueur à l’hôte d’extension",
-			"debugExtensionHostAndRenderer": "Déboguer l’hôte d’extension et le moteur de rendu dans une nouvelle fenêtre",
-			"debugRenderer": "Déboguer le moteur de rendu dans une nouvelle fenêtre",
-			"debugRenderer.launch.name": "Attacher le renderer",
-			"debugRenderer.progress": "Attacher le débogueur au moteur de renderer",
-			"openDevToolsForExtensionHost": "Déboguer l’hôte d’extension dans des outils de développement",
-			"restart1": "Déboguer les extensions",
-			"restart2": "Pour déboguer les extensions, un redémarrage est nécessaire. Voulez-vous redémarrer « {0} » maintenant ?",
-			"restart3": "&&Redémarrer",
-			"selectExtensionHost": "Sélectionner l’hôte d’extension"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionProfileService": {
-			"profilingExtensionHost": "Hôte d'extension de profilage",
-			"profilingExtensionHostTime": "Profilage de l'hôte d'extension ({0} sec)",
-			"restart1": "Profiler les extensions",
-			"restart2": "Pour profiler les extensions, un redémarrage est nécessaire. Voulez-vous redémarrer '{0}' maintenant ?",
-			"restart3": "&&Redémarrer",
-			"selectAndStartDebug": "Cliquer pour arrêter le profilage",
-			"status.profiler": "Profileur d'extension"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensions.contribution": {
-			"runtimeExtension": "Exécution des extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsActions": {
-			"cleanUpExtensionsFolder": "Nettoyer le dossier d’extensions",
-			"openExtensionsFolder": "Ouvrir le dossier d'extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsAutoProfiler": {
-			"show": "Afficher les extensions",
-			"unresponsive-exthost": "L'extension '{0}' a mis très longtemps à exécuter sa dernière opération et a empêché l'exécution d'autres extensions."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
-			"attach.msg": "Il s'agit d'un rappel pour vérifier que vous n'avez pas oublié d'attacher '{0}' au problème que vous venez de créer.",
-			"attach.msg2": "Il s'agit d'un rappel pour vérifier que vous n'avez pas oublié d'attacher '{0}' à un problème de performance existant.",
-			"attach.title": "Avez-vous attaché le profil du processeur ?",
-			"cmd.report": "Signaler un problème",
-			"cmd.reportOrShow": "Problème de performance",
-			"cmd.show": "Afficher les problèmes"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "Démarrer le profilage d'hôte d'extension",
-			"openExtensionHostProfile": "Ouvrir un profil d’hôte d’extension",
-			"saveExtensionHostProfile": "Enregistrer le profilage d'hôte d'extension",
-			"saveprofile.dialogTitle": "Enregistrer le profilage d'hôte d'extension",
-			"stopExtensionHostProfileStart": "Arrêter le profilage d'hôte d'extension"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction.Integrated": "Ouvrir dans le terminal intégré",
-			"scopedConsoleAction.external": "Ouvrir dans un terminal externe",
-			"scopedConsoleAction.wt": "Ouvrir dans le Terminal Windows"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "Lors de l’ouverture d’un fichier depuis l’explorateur dans un terminal, détermine le type de terminal qui sera lancé.",
-			"globalConsoleAction": "Ouvrir un nouveau terminal externe",
-			"selectWorkspace": "Sélectionner le dossier de l’espace de travail",
-			"sourceControlRepositories.openInTerminalKind": "Détermine le type de terminal qui sera lancé lors de l’ouverture d’un référentiel à partir de la vue Référentiels de contrôle de code source dans un terminal",
-			"terminal.external.linuxExec": "Personnalise le terminal à exécuter sur Linux.",
-			"terminal.external.osxExec": "Personnalise l’application de terminal à exécuter sur macOS.",
-			"terminal.external.windowsExec": "Personnalise le terminal à exécuter sur Windows.",
-			"terminal.kind.both": "Affichez à la fois les actions de terminal intégrées et externes.",
-			"terminal.kind.external": "Affichez l’action du terminal externe.",
-			"terminal.kind.integrated": "Affichez l’action du terminal intégré.",
-			"terminalConfigurationTitle": "Terminal externe"
+			"scopedConsoleAction.Integrated": "Open in Integrated Terminal",
+			"scopedConsoleAction.external": "Open in External Terminal",
+			"scopedConsoleAction.wt": "Open in Windows Terminal"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "Configurez le mode d'ouverture à utiliser pour les URI externes (HTTP, HTTPS).",
@@ -15183,13 +14307,6 @@
 			"openEditorsFocus": "La valeur est true quand la vue ÉDITEURS OUVERTS a le focus.",
 			"viewHasSomeCollapsibleItem": "La valeur est True quand un espace de travail de la vue EXPLORATEUR a un enfant racine réductible."
 		},
-		"vs/workbench/contrib/files/electron-browser/fileActions.contribution": {
-			"filesCategory": "Fichier",
-			"miShare": "Partager",
-			"openContainer": "Ouvrir le dossier contenant",
-			"revealInMac": "Révéler dans le Finder",
-			"revealInWindows": "Révéler dans l'Explorateur de fichiers"
-		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
 			"formatter.default": "Définit un fournisseur de plages de pliage par défaut qui est prioritaire sur tous les autres fournisseurs de plages de pliage. Doit être l’identificateur d’une extension contribuant à un fournisseur de plage de pliage.",
 			"null": "Tous",
@@ -15570,6 +14687,9 @@
 			"vscode": "Visual Studio Code",
 			"vscodePlaceholder": "Par exemple, le panneau Problèmes est manquant dans Workbench"
 		},
+		"vs/workbench/contrib/issue/browser/issue.contribution": {
+			"statusUnsupported": "The --status argument is not yet supported in browsers."
+		},
 		"vs/workbench/contrib/issue/browser/issueFormService": {
 			"additionalIssueData": "Données supplémentaires sur le problème",
 			"cancel": "Annuler",
@@ -15581,133 +14701,6 @@
 			"ok": "&&OK",
 			"pasteData": "Nous avons écrit les données nécessaires dans votre presse-papiers, car elles étaient trop volumineuses à envoyer. Veuillez les coller.",
 			"yes": "&&Oui"
-		},
-		"vs/workbench/contrib/issue/browser/issueQuickAccess": {
-			"contributedIssuePage": "Ouvrir la page d’extension",
-			"extensions": "Extensions",
-			"reportExtensionMarketplace": "Marketplace des extensions"
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorInput": {
-			"discard": "Abandonner",
-			"discardIssue": "Voulez-vous ignorer le rapport de problème ?",
-			"discardIssueDetail": "Votre rapport de problème contient des modifications non enregistrées qui seront perdues.",
-			"issueReporterEditorInputName": "Signaler un problème",
-			"issueReporterIcon": "Icône de l’éditeur du rapporteur de problèmes."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "Aucune donnée disponible sur le rapporteur du problème.",
-			"noExperiments": "Aucune expérience active.",
-			"openSystemSettings": "Ouvrir les paramètres système",
-			"recordingTooLarge": "L’enregistrement s’est arrêté automatiquement : la limite d’envoi de 100 Mo a été atteinte.",
-			"screenRecordingPermissionDenied": "{0} a besoin de l’autorisation d’Enregistrement de l’écran pour enregistrer des vidéos. Accorder l’accès dans les Paramètres système, puis cliquer de nouveau sur Enregistrer.",
-			"screenRecordingPermissionDeniedGeneric": "L’autorisation d’enregistrement d’écran a été refusée. Autorisez {0} pour enregistrer l’écran et réessayez."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
-			"abExperiments": "Expériences A/B",
-			"additionalInformation": "Informations supplémentaires",
-			"additionalPerformanceData": "Données de performances supplémentaires",
-			"additionalPerformanceDataDescription": "Inclure éventuellement les processus en cours d’exécution et les métadonnées de l’espace de travail pour aider à diagnostiquer les problèmes de performances.",
-			"attachments": "Pièces jointes ({0})",
-			"back": "Retour",
-			"bug": "Bogue",
-			"bugGuidance": "Décrivez ce qui s’est passé, les étapes à reproduire, ce à quoi vous vous attendiez et ce que vous avez observé à la place.",
-			"captureOptions": "Options de Capture",
-			"category": "Catégorie",
-			"categoryRequired": "Sélectionnez une catégorie pour continuer.",
-			"closeTab": "Fermer",
-			"composeMessage": "Décrire",
-			"defaultGuidance": "Sélectionnez une catégorie ci-dessus, puis décrivez votre retour en détail.",
-			"deleteRecording": "Supprimer l’enregistrement",
-			"deleteScreenshot": "Supprimer la capture d'écran",
-			"describeHeading": "Décrivez vos commentaires",
-			"description": "Description",
-			"descriptionPlaceholder": "Décrire le problème en détail...",
-			"descriptionRequired": "Entrez une description pour continuer.",
-			"editScreenshot": "Cliquez pour modifier la capture d’écran",
-			"excludeAllExtraAttachments": "Exclure tout",
-			"excludeAllExtraAttachmentsAria": "Exclure toutes les données supplémentaires du problème à partir de ce problème",
-			"expand": "Développer",
-			"extension": "Extension",
-			"extensionData": "Données d’extension",
-			"extensionExternalIssueUrl": "Cette extension utilise un outil de signalement de problèmes externe. L’aperçu ouvrira cet outil de signalement de problèmes.",
-			"extensionNoIssueUrl": "Cette extension ne fournit pas d’URL de signalement de problème.",
-			"extensionPlaceholder": "Par exemple. Texte de remplacement manquant sur l’image lisez-moi de l’extension",
-			"extensionRequired": "Sélectionnez une extension à continuer.",
-			"extensionSource": "Une extension VS Code",
-			"extensions": "Extensions ({0})",
-			"featureGuidance": "Décrire la fonctionnalité que vous aimeriez voir, le problème qu’elle résoudrait et les alternatives que vous avez envisagées.",
-			"featureRequest": "Requête de fonctionnalité",
-			"feedbackCategory": "Catégorie",
-			"fiveSeconds": "5 secondes",
-			"generateTitle": "Générez un titre à partir de la description",
-			"generateTitleBtn": "Générer à partir de la description",
-			"generatingTitle": "Génération en cours...",
-			"hideToolbarInScreenshots": "Masquer la barre d’outils dans les captures d’écran",
-			"includeAllExtraAttachments": "Inclure tout",
-			"includeAllExtraAttachmentsAria": "Inclure toutes les données supplémentaires du problème dans ce problème",
-			"includeInIssue": "Inclure dans le problème",
-			"issueTargetRepo": "Un ticket sera créé dans {0} / {1}.",
-			"issueTitle": "Titre",
-			"issueTitlePlaceholder": "Bref résumé du problème",
-			"loadingDiagnostics": "Chargement des diagnostics...",
-			"loadingExtensionData": "Chargement des données du problème d’extension...",
-			"loadingProcessInfo": "Chargement des processus en cours d’exécution...",
-			"loadingSystemInfo": "Chargement des informations système...",
-			"loadingWorkspaceInfo": "Chargement des métadonnées de l’espace de travail...",
-			"markdownSupported": "La mise en forme Markdown est prise en charge.",
-			"marketplace": "Marketplace des extensions",
-			"marketplacePlaceholder": "Par exemple Nous ne pouvons pas désactiver l’extension installée",
-			"maxAttachmentsReached": "Nombre maximal de pièces jointes atteint",
-			"minimize": "Réduire",
-			"next": "Suivant",
-			"noDelay": "Aucun délai",
-			"noDescription": "(aucune description)",
-			"noSimilarIssues": "Aucun problème similaire trouvé.",
-			"noTitle": "(sans titre)",
-			"openExternalIssueReporter": "Ouvrir le Reporter de problèmes externes",
-			"or": "ou",
-			"perfGuidance": "Décrire ce qui est lent, quand cela se produit, si c’est constant ou intermittent, et les schémas que vous avez remarqués.",
-			"performanceIssue": "Problème de performance",
-			"previewOnGitHub": "Aperçu sur GitHub",
-			"recordVideo": "Enregistrer la vidéo",
-			"recordingActive": "Enregistrement actif",
-			"recordingThumbnailAlt": "Enregistrement {0}",
-			"refresh": "Actualiser",
-			"refreshPerformanceData": "Recharger les processus en cours d’exécution et les métadonnées de l’espace de travail",
-			"reportIssue": "Signaler un problème",
-			"reviewSubmit": "Vérifier et envoyer",
-			"runningProcesses": "Processus en cours d'exécution",
-			"screenshot": "Capture d’écran",
-			"screenshotAlt": "Capture d’écran {0}",
-			"screenshots": "Pièces jointes",
-			"screenshotsHeading": "Ajouter des pièces jointes pour fournir plus de contexte",
-			"screenshotsSubtitle": "Vous pouvez ajouter jusqu’à {0} captures d’écran ou vidéos. Naviguez dans VS Code et choisissez quand capturer.",
-			"searchingSimilarIssues": "Recherche de problèmes similaires...",
-			"selectExtension": "Sélectionner une extension",
-			"shortcutHintIntro": "Utiliser la barre de capture flottante ou appuyez sur",
-			"similarIssues": "Problèmes similaires",
-			"similarIssuesNeedsTitle": "Entrer un titre pour rechercher des problèmes similaires.",
-			"similarIssuesSearchFailed": "Nous ne pouvons pas rechercher des problèmes similaires.",
-			"skip": "Ignorer",
-			"stepOf": "Étape {0} sur {1}",
-			"stopRecording": "Arrêter l’enregistrement",
-			"submit": "Vérifier",
-			"systemInformation": "Informations système",
-			"target": "Cible",
-			"targetRequired": "Sélectionner une cible pour continuer.",
-			"tenSeconds": "10 secondes",
-			"threeSeconds": "3 secondes",
-			"titleRequired": "Entrer un titre pour continuer.",
-			"toCapture": "pour faire une capture d’écran",
-			"toRecord": "pour démarrer ou arrêter l’enregistrement",
-			"unknown": "Inconnu",
-			"unknownSource": "Je ne sais pas",
-			"updateAvailable": "Une nouvelle version de {0} est disponible.",
-			"uploading": "Chargement en cours...",
-			"vscode": "Visual Studio Code",
-			"vscodePlaceholder": "Par exemple Le panneau Problèmes est manquant dans Workbench",
-			"waitingForDiagnostics": "En attente du chargement des diagnostics de performances",
-			"workspaceMetadata": "Métadonnées d'espace de travail"
 		},
 		"vs/workbench/contrib/issue/browser/issueReporterPage": {
 			"acknowledgements": "Je comprends que la version de mon VS Code n’a pas été mise à jour et que ce problème peut être résolu.",
@@ -15763,59 +14756,9 @@
 			"troubleshootIssue": "Résoudre le problème...",
 			"use insiders": "Cela signifie probablement que le problème a déjà été résolu et sera disponible dans une prochaine version. Vous pouvez utiliser {0} insiders en toute sécurité jusqu’à ce que la nouvelle version stable soit disponible."
 		},
-		"vs/workbench/contrib/issue/browser/screenshotAnnotation": {
-			"annotationHint": "Modifier la capture d’écran pour mettre en évidence le problème",
-			"apply": "Appliquer",
-			"arrow": "Flèche",
-			"cancel": "Annuler",
-			"colorValue": "{0} : {1}",
-			"crop": "Rogner",
-			"discard": "Abandonner",
-			"ellipse": "Ellipse",
-			"eraser": "Gomme",
-			"fillColor": "Couleur de remplissage",
-			"freehand": "Dessiner",
-			"opacity": "Opacité",
-			"pan": "Panoramique",
-			"rectangle": "Rectangle",
-			"redo": "Restaurer",
-			"save": "Enregistrer",
-			"select": "Sélectionner / Déplacer",
-			"setFillColor": "Définir la couleur de remplissage",
-			"setOpacity": "Définir l’opacité",
-			"setStrokeColor": "Définir la couleur du trait",
-			"setStrokeWidth": "Définir l’épaisseur du trait sur {0} px",
-			"setTextSize": "Définir la taille du texte sur {0} px",
-			"strokeColor": "Couleur du trait",
-			"strokeWidth": "Épaisseur du trait",
-			"text": "Texte",
-			"textBackgroundColor": "Couleur d'arrière-plan",
-			"textColor": "Couleur du texte",
-			"textSize": "Taille du texte",
-			"toolOptions": "Options de l’outil",
-			"transparentColor": "{0} : transparent",
-			"typeText": "Saisir du texte",
-			"undo": "Annuler"
-		},
 		"vs/workbench/contrib/issue/common/issue.contribution": {
 			"miReportIssue": "Signaler le p&&roblème",
 			"reportIssueInEnglish": "Signaler un problème..."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issue.contribution": {
-			"issueReporter.wizard.enabled": "Activer l’assistant de signalement de problèmes nouvelle génération au lieu de l’assistant de signalement de problèmes classique.",
-			"issueReporter.wizard.fullWorkspaceScan": "Lors de la collecte automatique des diagnostics de performances pour l’assistant de signalement de problèmes, parcourez l’espace de travail complet au lieu de vous arrêter à la limite par défaut de 20 000 fichiers. Définir false sur les très grands espaces de travail si l’analyse ralentit le rendu initial de l’assistant.",
-			"issueReporterConfigurationTitle": "Rapporteur du problème",
-			"issueReporterEditorPaneTitle": "Rapporteur du problème",
-			"openIssueReporter": "Ouvrir le rapporteur de problèmes",
-			"reportPerformanceIssue": "Signaler un problème de performance...",
-			"tasksQuickAccessPlaceholder": "Tapez le nom d’une extension sur lequel créer un rapport."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
-			"noCurrentExperiments": "Aucune expérience active.",
-			"pasteData": "Nous avons écrit les données nécessaires dans votre presse-papiers, car elles étaient trop volumineuses à envoyer. Veuillez les coller.",
-			"saveExtensionData": "Enregistrer les données d’extension",
-			"undefinedPlaceholder": "Entrez un titre",
-			"updateAvailable": "Une nouvelle version de {0} est disponible."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "Activer/désactiver la résolution des problèmes liés aux raccourcis clavier"
@@ -15900,11 +14843,6 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "Historique local"
 		},
-		"vs/workbench/contrib/localHistory/electron-browser/localHistoryCommands": {
-			"openContainer": "Ouvrir le dossier contenant",
-			"revealInMac": "Afficher dans le Finder",
-			"revealInWindows": "Afficher dans l'Explorateur de fichiers"
-		},
 		"vs/workbench/contrib/localization/common/localization.contribution": {
 			"language id": "ID de langage",
 			"localizations": "Modules linguistiques",
@@ -15928,17 +14866,6 @@
 			"installed": "Installé",
 			"moreInfo": "Plus d’informations"
 		},
-		"vs/workbench/contrib/localization/electron-browser/localization.contribution": {
-			"changeAndRestart": "Changer de langage et redémarrer",
-			"neverAgain": "Ne plus afficher",
-			"updateLocale": "Voulez-vous changer le langage d’affichage de {0} à {1} et redémarrer ?"
-		},
-		"vs/workbench/contrib/localization/electron-browser/minimalTranslations": {
-			"installAndRestart": "Installer et Redémarrer",
-			"installAndRestartMessage": "Installez le module linguistique pour remplacer le langage d'affichage par {0}.",
-			"searchMarketplace": "Rechercher sur la Marketplace",
-			"showLanguagePackExtensions": "Recherchez dans les modules linguistiques du Marketplace pour remplacer le langage d'affichage par {0}."
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"remote name": "{0} (distant)",
 			"setDefaultLogLevel": "Définir comme niveau de journal par défaut",
@@ -15958,10 +14885,6 @@
 			"selectlog": "Définir le niveau de journalisation",
 			"sessions placeholder": "Sélectionner une session",
 			"setLogLevel": "Définir le niveau de journalisation (log) ..."
-		},
-		"vs/workbench/contrib/logs/electron-browser/logsActions": {
-			"openExtensionLogsFolder": "Ouvrir le dossier des journaux d'extension",
-			"openLogsFolder": "Ouvrir le dossier des journaux"
 		},
 		"vs/workbench/contrib/markdown/browser/markdownSettingRenderer": {
 			"alreadysetBoolFalse": "« {0} : {1} » est déjà désactivé",
@@ -16509,7 +15432,8 @@
 			"app.mcp.json.cwd": "Répertoire de travail de cette commande de serveur. La valeur par défaut correspond au dossier de l’espace de travail lorsqu’il est exécuté dans un espace de travail.",
 			"app.mcp.json.headers": "En-têtes supplémentaires envoyés au serveur.",
 			"app.mcp.json.oauth": "Configuration OAuth pour l’authentification auprès du serveur.",
-			"app.mcp.json.oauth.clientId": "ID client OAuth à utiliser lors de l’authentification auprès du serveur. Pour définir de manière sécurisée le secret client correspondant, utilisez la lentille de code *Set Client Secret* au-dessus de ce champ – les secrets sont stockés dans le magasin de secrets du système d’exploitation, et non dans ce fichier.",
+			"app.mcp.json.oauth.clientId": "The OAuth client ID to use when authenticating with the server. When `enterpriseManaged` is `true`, this is the **resource** authorization server's client ID (the client trusted by the protected resource), not the IdP's. To set the matching client secret, use the *Set Client Secret* code lens above this field — secrets are stored in the OS secret store, not in this file.",
+			"app.mcp.json.oauth.enterpriseManaged": "(Preview) When set to `true`, this MCP server authenticates through the SSO issuer configured by `#mcp.enterpriseManagedAuth.idp#` using OAuth Identity Assertion Authorization Grant (ID-JAG). After a one-time sign-in, subsequent enterprise-managed servers connect silently. The IdP issuer and client credentials are read from the `#mcp.enterpriseManagedAuth.idp#` setting; the `clientId` on this server entry is passed to the resource authorization server.",
 			"app.mcp.json.sandbox": "Configuration bac à sable qui détermine l’accès au système de fichiers et au réseau. La mise en bac à sable est activée lorsque la propriété sandboxEnabled est définie au niveau du serveur, uniquement sur Mac OS et Linux.",
 			"app.mcp.json.sandbox.filesystem": "Paramètres d’accès au système de fichiers pour le serveur en mode bac à sable. Les modèles Glob ne sont pris en charge que sur Mac OS.",
 			"app.mcp.json.sandbox.filesystem.allowWrite": "Liste des chemins de fichiers que le serveur n’est pas autorisé à écrire, par ex. `~/src/`.",
@@ -16793,12 +15717,6 @@
 			"showBase": "Si l’éditeur de fusion affiche la version de base",
 			"showBaseAtTop": "Si la base doit être affichée en haut",
 			"showNonConflictingChanges": "Si l’éditeur de fusion affiche des modifications non conflictuelles"
-		},
-		"vs/workbench/contrib/mergeEditor/electron-browser/devCommands": {
-			"merge.dev.openSelectionInTemporaryMergeEditor": "Ouvrir la sélection dans l’éditeur de fusion temporaire",
-			"merge.dev.openState": "Ouvrir l’état de l’éditeur de fusion à partir de JSON",
-			"mergeEditor": "Éditeur de fusion (Dev)",
-			"mergeEditor.enterJSON": "Entrer JSON"
 		},
 		"vs/workbench/contrib/meteredConnection/browser/meteredConnection.contribution": {
 			"configureMeteredConnection": "Configurer la connexion limitée",
@@ -17658,18 +16576,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "Niveau de performance du démarrage"
 		},
-		"vs/workbench/contrib/performance/electron-browser/performance.contribution": {
-			"experimental.rendererProfiling": "Si activés, les convertisseurs lents sont automatiquement profilés."
-		},
-		"vs/workbench/contrib/performance/electron-browser/startupProfiler": {
-			"prof.detail": "Signalez le problème, et attachez manuellement les fichiers suivants :\r\n{0}",
-			"prof.detail.restart": "Un redémarrage final est nécessaire pour continuer à utiliser '{0}'. Nous vous remercions une fois de plus pour votre contribution.",
-			"prof.message": "Création réussie des profils.",
-			"prof.restart": "Redémarrer",
-			"prof.restart.button": "&&Redémarrer",
-			"prof.restartAndFileIssue": "&&Créer le problème et redémarrer",
-			"prof.thanks": "Merci de votre aide."
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditor": {
 			"SearchKeybindings.FullTextSearchPlaceholder": "Taper pour rechercher dans les combinaisons de touches",
 			"SearchKeybindings.KeybindingsSearchPlaceholder": "Enregistrement des touches. Appuyer sur Echap pour sortir",
@@ -17713,6 +16619,18 @@
 			"defineKeybinding.existing": "{0} commandes existantes ont cette combinaison de touche",
 			"defineKeybinding.initial": "Appuyez sur la combinaison de touches souhaitée puis appuyez sur Entrée",
 			"defineKeybinding.oneExists": "1 commande existante a cette combinaison de touche"
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"clear": "Effacer les résultats de la recherche",
@@ -18054,6 +16972,9 @@
 			"openProcessExplorer": "Ouvrir l’Explorateur de processus",
 			"promptOpenWith.processExplorer.displayName": "Explorateur de processus"
 		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
 		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
 			"copy": "Copier",
 			"copyAll": "Copier tout",
@@ -18069,9 +16990,6 @@
 		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
 			"processExplorerEditorLabelIcon": "Icône de l’étiquette de l’explorateur de processus.",
 			"processExplorerInputName": "Explorateur de processus"
-		},
-		"vs/workbench/contrib/processExplorer/electron-browser/processExplorer.contribution": {
-			"processExplorer": "Explorateur de processus"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "&&Effacer",
@@ -18216,6 +17134,10 @@
 			"workspace.tooltip": "Modification sur {0}",
 			"workspace.tooltip2": "Certaines [fonctionnalités ne sont pas disponibles]({0}) pour les ressources situées sur un système de fichiers virtuel."
 		},
+		"vs/workbench/contrib/remote/browser/remoteStartEntry": {
+			"remote.category": "Remote",
+			"remote.showWebStartEntryActions": "Show Remote Start Entry for web"
+		},
 		"vs/workbench/contrib/remote/browser/tunnelFactory": {
 			"tunnelPrivacy.private": "Privé",
 			"tunnelPrivacy.public": "Public"
@@ -18318,13 +17240,6 @@
 			"triggerReconnect": "Connexion : déclencher la reconnexion",
 			"ui": "Extension de type interface utilisateur. Dans une fenêtre distante, ce type d'extension est activé seulement s'il est disponible sur la machine locale.",
 			"workspace": "Extension de type espace de travail. Dans une fenêtre distante, ce type d'extension est activé seulement s'il est disponible sur la machine distante."
-		},
-		"vs/workbench/contrib/remote/electron-browser/remote.contribution": {
-			"remote": "Distant",
-			"remote.actions.closeUnusedPorts": "Fermer les ports transférés inutilisés",
-			"remote.category": "Distant",
-			"remote.downloadExtensionsLocally": "Quand les extensions activées sont téléchargées localement et installées sur la machine distante.",
-			"wslFeatureInstalled": "Indique si la fonctionnalité WSL est installée sur la plateforme"
 		},
 		"vs/workbench/contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution": {
 			"remoteCodingAgentsExtPoint": "Contribue aux intégrations de l’assistant de codage à distance au widget de conversation.",
@@ -19429,6 +18344,9 @@
 			"taskQuickPick.showAll": "Afficher toutes les tâches...",
 			"taskType": "Toutes les {0} tâches"
 		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "Process task system is not support in the web."
+		},
 		"vs/workbench/contrib/tasks/browser/tasksQuickAccess": {
 			"TaskService.pickRunTask": "Sélectionner la tâche à exécuter",
 			"noTaskResults": "Aucune tâche correspondante"
@@ -19707,12 +18625,6 @@
 			"dotnetCore": "Exécute une commande de génération .NET Core",
 			"externalCommand": "Exemple d'exécution d'une commande externe arbitraire",
 			"msbuild": "Exécute la cible de génération"
-		},
-		"vs/workbench/contrib/tasks/electron-browser/taskService": {
-			"TaskSystem.exitAnyways": "&&Quitter quand même",
-			"TaskSystem.noProcess": "La tâche lancée n'existe plus. Si la tâche a engendré des processus en arrière-plan, la sortie de VS Code risque de donner lieu à des processus orphelins. Pour éviter ce problème, démarrez le dernier processus en arrière-plan avec un indicateur d'attente.",
-			"TaskSystem.runningTask": "Une tâche est en cours d'exécution. Voulez-vous la terminer ?",
-			"TaskSystem.terminateTask": "&&Terminer la tâche"
 		},
 		"vs/workbench/contrib/telemetry/browser/telemetry.contribution": {
 			"showTelemetry": "Afficher la télémétrie"
@@ -20229,9 +19141,6 @@
 			"workbench.action.terminal.scrollToPreviousCommand": "Faire défiler jusqu'à la commande précédente",
 			"workbench.action.terminal.sizeToContentWidthInstance": "Activer/désactiver la taille vers la largeur du contenu"
 		},
-		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
-			"workbench.action.terminal.newLocal": "Créer un terminal intégré (local)"
-		},
 		"vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
 			"workbench.action.terminal.accessibleBufferGoToNextCommand": "Accéder à la commande suivante dans la mémoire tampon accessible",
 			"workbench.action.terminal.accessibleBufferGoToPreviousCommand": "Accéder à la commande précédente dans la mémoire tampon accessible",
@@ -20389,17 +19298,42 @@
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalTool": {
 			"allow": "Autoriser",
 			"runInTerminal": "Voulez-vous exécuter la commande `{0}` ?",
+			"runInTerminal.allowNetwork": "Allow the sandbox to run `{0}` command with unrestricted network access.",
+			"runInTerminal.allowNetwork.autoRetry": "Retry `{0}` command in the sandbox by allowing network access?",
+			"runInTerminal.allowNetwork.autoRetry.confirmationMessage": "`{0}`",
+			"runInTerminal.allowNetwork.autoRetry.domain": "Retry `{0}` command in the sandbox by allowing network access to {1}?",
+			"runInTerminal.allowNetwork.autoRetry.invocation": "Running `{0}` in the sandbox with unrestricted network access",
+			"runInTerminal.allowNetwork.autoRetry.reason": "The sandboxed execution output indicated the sandbox blocked required network access.",
+			"runInTerminal.allowNetwork.confirmationMessage": "Explanation: {0}\r\n\r\nGoal: {1}\r\n\r\nReason for allowing unrestricted network access in the sandbox: {2}",
+			"runInTerminal.allowNetwork.confirmationMessage.defaultReason": "The model indicated that this sandboxed command needs unrestricted network access.",
+			"runInTerminal.allowNetwork.disabled.invocation": "Not running `{0}` because unrestricted network access in the sandbox is disabled",
+			"runInTerminal.allowNetwork.disabled.result": "The command was not executed because it requested unrestricted network access in the terminal sandbox, but per-command network access is disabled by chat.agent.sandbox.retryWithAllowNetworkRequests. Run the command with restricted network access instead, or enable the setting to allow network access requests.",
+			"runInTerminal.bubblewrap.cancel": "Cancel",
+			"runInTerminal.bubblewrap.cancelled": "Bubblewrap sandbox repair was cancelled by the user.",
+			"runInTerminal.bubblewrap.disableOnly.message": "Bubblewrap is installed but cannot create the required sandbox namespace. You may disable Ubuntu's unprivileged user namespace restriction and retry. This reduces system security.",
+			"runInTerminal.bubblewrap.disableRestriction": "Disable Restriction and Retry",
+			"runInTerminal.bubblewrap.message": "Bubblewrap is installed but cannot create the required sandbox namespace. Apply the recommended AppArmor fix, or disable Ubuntu's unprivileged user namespace restriction and retry. Disabling the restriction reduces system security.",
+			"runInTerminal.bubblewrap.profileDidNotResolve": "The AppArmor repair completed, but bubblewrap still cannot create the required sandbox namespace. Run the command again and choose Disable Restriction and Retry only if you accept the reduced system security.",
+			"runInTerminal.bubblewrap.repairAppArmor": "Apply AppArmor Fix",
+			"runInTerminal.bubblewrap.repairFailed": "Bubblewrap repair failed (exit code {0}). The command was not executed.",
+			"runInTerminal.bubblewrap.repairUnknown": "Could not determine whether the bubblewrap repair succeeded. The command was not executed.",
+			"runInTerminal.bubblewrap.stillUnavailable": "Bubblewrap still cannot create the required sandbox namespace after remediation. The command was not executed.",
+			"runInTerminal.bubblewrap.title": "Repair Bubblewrap Sandbox",
+			"runInTerminal.bubblewrap.unusable": "Bubblewrap is installed but cannot create the required sandbox namespace on this system. The command was not executed.",
 			"runInTerminal.confirmationMessage": "Explication : {0}\r\n\r\nObjectif : {1}",
 			"runInTerminal.defaultExplanation": "Aucune explication n’est fournie",
 			"runInTerminal.defaultGoal": "Aucun objectif n’est fourni",
 			"runInTerminal.inDirectory": "Exécuter la commande `{0}` au sein de `{1}` ?",
 			"runInTerminal.invocation": "`{0}` est en cours d’exécution",
 			"runInTerminal.invocation.sandbox": "Exécution de `{0}` dans le bac à sable",
+			"runInTerminal.missingDeps.bubblewrapFailed": "Sandbox dependencies were installed, but bubblewrap cannot create the required sandbox namespace. Run the command again to choose an available repair option.",
+			"runInTerminal.missingDeps.bubblewrapFailedNoRepair": "Sandbox dependencies were installed, but bubblewrap cannot create the required sandbox namespace on this system. The command was not executed.",
 			"runInTerminal.missingDeps.cancel": "Annuler",
 			"runInTerminal.missingDeps.cancelled": "L’installation de la dépendance du bac à sable a été annulée par l’utilisateur.",
 			"runInTerminal.missingDeps.failed": "L’installation de la dépendance du bac à sable a échoué (code de sortie {0}). La commande n’a pas été exécutée.",
 			"runInTerminal.missingDeps.install": "Installer",
 			"runInTerminal.missingDeps.message": "Les dépendances suivantes, nécessaires à l’exécution en mode sandbox, ne sont pas installées : {0}. Voulez-vous les installer ?",
+			"runInTerminal.missingDeps.recheckFailed": "Sandbox prerequisites are still not satisfied after installation. The command was not executed.",
 			"runInTerminal.missingDeps.title": "Dépendances du bac à sable manquantes",
 			"runInTerminal.missingDeps.unknown": "Impossible de déterminer si l’installation de la dépendance du bac à sable a réussi. La commande n’a pas été exécutée.",
 			"runInTerminal.presentationOverride": "Exécuter la commande `{0}` dans `{1}` ?",
@@ -20437,9 +19371,9 @@
 			"runInTerminalTool.displayName": "Exécuter dans le terminal",
 			"runInTerminalTool.userDescription": "Exécutez des commandes dans le terminal",
 			"skip": "Ignorer",
-			"terminalAssessingOutput": "`{0}` peut nécessiter une entrée",
-			"terminalCommandCompleted": "`{0}` est terminé",
-			"terminalProcessExited": "Le terminal `{0}` s’est fermé"
+			"terminalAssessingOutput": "{0} may need input",
+			"terminalCommandCompleted": "{0} completed",
+			"terminalProcessExited": "{0} terminal exited"
 		},
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/sendToTerminalTool": {
 			"focusTerminal": "Placer le focus sur le terminal",
@@ -20507,14 +19441,15 @@
 			"agentSandbox.fileSystemMac.deprecated": "Utiliser {0} à la place",
 			"agentSandbox.linuxFileSystemSetting": "Remarque : ce paramètre ne s’applique que lorsque {0} est activé. Contrôle l’accès au système de fichiers dans le bac à sable sous Linux. Les chemins ne prennent pas en charge les modèles Glob, mais uniquement les chemins littéraux (p. ex. : ./src/, ~/.ssh, .env). **bubblewrap**, **socat** et **ripgrep** doivent être installés pour que ce paramètre fonctionne.",
 			"agentSandbox.linuxFileSystemSetting.allowRead": "Tableau de chemins pour rétablir l'accès en lecture au sein des régions interdites. A priorité sur denyRead.",
-			"agentSandbox.linuxFileSystemSetting.allowWrite": "Tableau de chemins supplémentaires permettant d’autoriser l’accès en écriture. Laissez vide pour refuser les écritures en dehors des dossiers de l’espace de travail et du répertoire temporaire du bac à sable.",
+			"agentSandbox.linuxFileSystemSetting.allowWrite": "Array of additional paths to allow write access. Leave empty to disallow writes outside the workspace folders, workspace storage folder, and sandbox temp directory.",
 			"agentSandbox.linuxFileSystemSetting.denyRead": "Groupe des chemins pour refuser l’accès en lecture. Laissez-le vide pour autoriser la lecture de tous les chemins.",
 			"agentSandbox.linuxFileSystemSetting.denyWrite": "Groupe des chemins pour refuser l’accès en écriture dans les chemins autorisés (prévaut sur allowWrite).",
 			"agentSandbox.macFileSystemSetting": "Remarque : ce paramètre ne s’applique que lorsque {0} est activé. Contrôle l’accès au système de fichiers dans le bac à sable sous macOS. Les chemins prennent également en charge les modèles Glob de style git (p. ex. : *.ts, ./src, ./src/**/*.ts, file?.txt).",
 			"agentSandbox.macFileSystemSetting.allowRead": "Tableau de chemins pour rétablir l'accès en lecture au sein des régions interdites. A priorité sur denyRead.",
-			"agentSandbox.macFileSystemSetting.allowWrite": "Tableau de chemins supplémentaires permettant d’autoriser l’accès en écriture. Laissez vide pour refuser les écritures en dehors des dossiers de l’espace de travail et du répertoire temporaire du bac à sable.",
+			"agentSandbox.macFileSystemSetting.allowWrite": "Array of additional paths to allow write access. Leave empty to disallow writes outside the workspace folders, workspace storage folder, and sandbox temp directory.",
 			"agentSandbox.macFileSystemSetting.denyRead": "Groupe des chemins pour refuser l’accès en lecture. Laissez-le vide pour autoriser la lecture de tous les chemins.",
 			"agentSandbox.macFileSystemSetting.denyWrite": "Groupe des chemins pour refuser l’accès en écriture dans les chemins autorisés (prévaut sur allowWrite).",
+			"agentSandbox.retryWithAllowNetworkRequests": "Controls whether agent mode terminal commands can retry in the sandbox with unrestricted network access after user confirmation. This applies only when {0} is set to `on` and preserves file system sandboxing while relaxing network restrictions for an approved command.",
 			"agentSandbox.runtimeSetting": "Remarque : ce paramètre ne s’applique que lorsque {0} est activé. Les paires clé/valeur sont transmises à la racine de la configuration du runtime du bac à sable.",
 			"agentSandbox.windowsEnabledSetting": "Contrôle si le mode agent utilise le bac à sable sur Windows.",
 			"agentSandbox.windowsEnabledSetting.allowNetworkDescription": "Activez le sandboxing pour les outils en mode Assistant sur Windows et autorisez tous les domaines du réseau.",
@@ -20580,7 +19515,7 @@
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalSandboxService": {
 			"deleteFilesInSandboxTempDir": "Supprimer les fichiers dans le répertoire temporaire du bac à sable",
 			"runInTerminal.missingDeps.focusTerminal": "Focus sur le terminal",
-			"runInTerminal.missingDeps.passwordPromptMessage": "L’installation des dépendances manquantes du bac à sable peut vous demander votre mot de passe sudo. Sélectionnez Focus Terminal pour le saisir dans le terminal.",
+			"runInTerminal.missingDeps.passwordPromptMessage": "Applying sandbox prerequisites may prompt for your sudo password. Select Focus Terminal to type it in the terminal.",
 			"runInTerminal.missingDeps.passwordPromptTitle": "Le terminal attend une entrée."
 		},
 		"vs/workbench/contrib/terminalContrib/clipboard/browser/terminal.clipboard.contribution": {
@@ -21885,12 +20820,6 @@
 			"workbench.actions.sync.resolveResourceRef": "Afficher les données de synchronisation JSON brut",
 			"workbench.actions.sync.turnOffSyncOnMachine": "Désactiver la synchronisation des paramètres"
 		},
-		"vs/workbench/contrib/userDataSync/electron-browser/userDataSync.contribution": {
-			"Open Backup folder": "Ouvrir le dossier des sauvegardes locales",
-			"download sync activity complete": "L'activité de synchronisation des paramètres a été correctement téléchargée.",
-			"no backups": "Le dossier des sauvegardes locales n'existe pas",
-			"open": "Ouvrir un dossier"
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "Si cette option est activée, les conseils en filigrane s'affichent quand aucun éditeur n'est ouvert.",
 			"watermark.findInFiles": "Chercher dans les fichiers",
@@ -21945,11 +20874,6 @@
 			"webview.settingsHeader": "Paramètres que vous pouvez ajuster ({0} ouvre Paramètres) :",
 			"webview.statusDesc": "Vous effectuez une recherche dans le contenu web.",
 			"webview.statusHeader": "État actuel de la recherche :"
-		},
-		"vs/workbench/contrib/webview/electron-browser/webviewCommands": {
-			"iframeWebviewAlert": "Utilisation d'outils de développement standard pour déboguer une vue web basée sur un iframe",
-			"openToolsDescription": "Ouvre Outils de développement pour les vues web actives",
-			"openToolsLabel": "Ouvrir les outils de développement Webview"
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "Rechercher l'occurrence suivante",
@@ -22314,10 +21238,10 @@
 			"onboarding.sessions.agentsTutorial": "Tutoriel sur les agents",
 			"onboarding.sessions.customize": "Personnalisez vos assistants",
 			"onboarding.sessions.customize.desc": "Adaptez Copilot à votre projet grâce à des instructions et des agents personnalisés, des compétences, des invites réutilisables et des serveurs MCP qui se connectent aux outils et au contexte sur lesquels vous vous appuyez.",
-			"onboarding.sessions.group.chat": "Choisissez votre agent",
-			"onboarding.sessions.group.more": "Assistants qui fonctionnent à votre façon",
+			"onboarding.sessions.group.chat": "Agents made for the task",
+			"onboarding.sessions.group.more": "Agents that work your way",
 			"onboarding.sessions.planMode": "Plan",
-			"onboarding.sessions.planMode.desc": "Élaborez un plan de mise en œuvre structuré avant toute modification du code, puis confiez-le à un agent d'implémentation pour exécution.",
+			"onboarding.sessions.planMode.desc": "Produce a structured implementation plan before any code changes, then hand it off to an agent to execute.",
 			"onboarding.sessions.runAnywhere": "Exécutez vos agents partout",
 			"onboarding.sessions.runAnywhere.desc": "Exécutez des assistants localement pour des tâches interactives, en arrière-plan avec Copilot CLI, ou dans le cloud à l'aide d'assistants cloud qui ouvrent une pull request que votre équipe pourra examiner.",
 			"onboarding.sessions.signInNudge": "Connexion nécessaire pour accéder aux fonctionnalités basées sur l’IA",
@@ -22345,7 +21269,7 @@
 			"onboarding.signIn.github": "Continuer avec GitHub",
 			"onboarding.signIn.github.aria": "Continuer avec GitHub",
 			"onboarding.signIn.google": "Continuer avec Google",
-			"onboarding.signIn.heroSubtitle": "Connectez-vous pour continuer le développement basé sur l’IA.",
+			"onboarding.signIn.heroSubtitle": "Sign in to use GitHub Copilot.",
 			"onboarding.signIn.heroTitle": "Bienvenue dans VS Code",
 			"onboarding.signIn.signedIn": "Vous êtes connecté(e). Vous pouvez passer à l’étape suivante.",
 			"onboarding.step.agentSessions.subtitle.before": "Ouvrez la conversation à tout moment avec ",
@@ -22611,6 +21535,7 @@
 			"menus.chatMultiDiffContext": "Menu contextuel Multi-Diff de la discussion.",
 			"menus.chatNewSession": "Menu de nouvelle session de conversation.",
 			"menus.chatSessions": "Menu Sessions de conversation.",
+			"menus.chatSessionsItemContext": "The context menu for items in the Sessions window's session list.",
 			"menus.chatSessionsNewSession": "Menu des nouvelles sessions de conversation.",
 			"menus.chatTextEditor": "Le sous-menu Chat dans le menu contextuel de l'éditeur de texte.",
 			"menus.commandPalette": "Palette de commandes",
@@ -22757,14 +21682,11 @@
 			"authenticationExtensionPoint": "Ajoute une authentification"
 		},
 		"vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService": {
-			"lifecycleVeto": "Les modifications que vous avez apportées risquent de ne pas être enregistrées. Veuillez cocher « Annuler » et réessayer.",
-			"retry": "&&Réessayer",
-			"unableToOpenWindow": "Le navigateur a bloqué l'ouverture d'une nouvelle fenêtre. Appuyez sur « Réessayer » pour réessayer.",
-			"unableToOpenWindowDetail": "Veuillez autoriser les fenêtres contextuelles pour ce site web dans vos [paramètres de navigateur]({0}).",
-			"unableToOpenWindowError": "Impossible d'ouvrir une nouvelle fenêtre."
-		},
-		"vs/workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService": {
-			"backupErrorDetails": "Essayez d'abord de sauvegarder ou de rétablir les éditeurs avec les modifications non sauvegardées, puis réessayez."
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again.",
+			"retry": "&&Retry",
+			"unableToOpenWindow": "The browser blocked opening a new window. Press 'Retry' to try again.",
+			"unableToOpenWindowDetail": "Please allow pop-ups for this website in your [browser settings]({0}).",
+			"unableToOpenWindowError": "Unable to open a new window."
 		},
 		"vs/workbench/services/chat/common/chatEntitlementService": {
 			"learnMore": "En savoir plus",
@@ -22906,6 +21828,15 @@
 			"saveChangesMessages": "Voulez-vous enregistrer les modifications apportées aux {0} fichiers suivants ?",
 			"saveFileAs.title": "Enregistrer sous"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "&&En savoir plus",
+			"openFiles": "Ouvrir des &&fichiers...",
+			"openRemote": "&&Ouvrir un dépôt distant...",
+			"pickFolderAndOpen": "Nous n’avons pas pu ouvrir les dossiers. Essayez plutôt d’ajouter un dossier à l’espace de travail.",
+			"pickWorkspaceAndOpen": "Nous n’avons pas pu ouvrir les espaces de travail. Essayez plutôt d’ajouter un dossier à l’espace de travail.",
+			"unsupportedBrowserDetail": "Votre navigateur ne prend pas en charge l’ouverture de dossiers locaux. \r\nVous pouvez ouvrir des fichiers uniques ou ouvrir un référentiel distant.",
+			"unsupportedBrowserMessage": "L’ouverture des dossiers locaux n’est pas prise en charge."
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "Ouvrir le fichier local...",
 			"openLocalFileFolder": "Ouvrir un dépôt local...",
@@ -22984,11 +21915,19 @@
 			"extensionsDisabled": "Toutes les extensions installées sont temporairement désactivées.",
 			"noWorkspace": "Aucun espace de travail."
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "Cannot add '{0}' because this extension is not a web extension.",
+			"openInstalledWebExtensionsResource": "Open Installed Web Extensions Resource"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionFeaturesManagemetService": {
 			"accessExtensionFeature": "Accéder à la fonctionnalité « {0} »",
 			"accessExtensionFeatureMessage": "L’extension « {0} » souhaite accéder à la fonctionnalité « {1} ».",
 			"allow": "Autoriser",
 			"disallow": "Ne pas autoriser"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "Browser",
+			"remote": "Remote"
 		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "L'installation de l'extension {0} a échoué : manifeste introuvable.",
@@ -23038,19 +21977,6 @@
 			"extensionDefault": "Icône utilisée pour l'extension par défaut dans la vue et l’éditeur des extensions.",
 			"extensionIconVerifiedForeground": "La couleur de l'icône de l'éditeur vérifié de l'extension.",
 			"verifiedPublisher": "Icône utilisée pour l’éditeur d’extension vérifié dans la vue et l’éditeur d’extensions."
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService": {
-			"extensionGalleryManifestService.accountChange": "{0} est désormais configuré sur une autre Marketplace. Veuillez redémarrer pour appliquer les modifications.",
-			"restart": "&&Redémarrer"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionManagementServerService": {
-			"local": "Local",
-			"remote": "Distant"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Impossible d’installer l’extension « {0} ». {1}",
-			"notFoundCompatibleDependency": "Impossible d'installer l'extension '{0}' car elle n'est pas compatible avec la version actuelle de {1} (version {2}).",
-			"notFoundReleaseExtension": "Impossible d’installer la version de mise en production de '{0}' extension, car elle n’a pas de version de mise en production."
 		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "Ajouter une recommandation d'extension à",
@@ -23184,36 +22110,6 @@
 			"overwritingExtension": "Remplacement de l'extension {0} par {1}.",
 			"overwritingWithWorkspaceExtension": "Remplacement de {0} par l’extension d’espace de travail {1}."
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Des extensions ont été modifiées sur le disque. Veuillez recharger la fenêtre.",
-			"extensionUnderDevelopment.invalid": "Échec du chargement de l’extension « {0} » en cours de développement, car elle n’est pas valide : {1}",
-			"extensionsUnderDevelopment.invalid": "Échec du chargement des extensions {0} en cours de développement, car elles ne sont pas valides : {1}",
-			"reloadWindow": "Recharger la fenêtre"
-		},
-		"vs/workbench/services/extensions/electron-browser/localProcessExtensionHost": {
-			"extensionHost.startupFail": "L'hôte d'extension n'a pas démarré en moins de 10 secondes. Il existe peut-être un problème.",
-			"extensionHost.startupFailDebug": "L'hôte d'extension n'a pas démarré en moins de 10 secondes. Il est peut-être arrêté à la première ligne et a besoin d'un débogueur pour continuer.",
-			"join.extensionDevelopment": "Fin de la session de débogage d’extension",
-			"reloadWindow": "Recharger la fenêtre"
-		},
-		"vs/workbench/services/extensions/electron-browser/nativeExtensionService": {
-			"devTools": "Ouvrir les Outils de développement",
-			"enable": "Activer et recharger",
-			"enableResolver": "L'extension '{0}' est nécessaire pour ouvrir la fenêtre distante.\r\nOK pour l'activer ?",
-			"extensionService.autoRestart": "L’hôte d’extension s’est arrêté de manière inattendue. Redémarrage en cours...",
-			"extensionService.crash": "L’hôte d’extension s’est arrêté de façon inattendue 3 fois au cours des 5 dernières minutes.",
-			"extensionService.versionMismatchCrash": "L'hôte de l’extension ne peut pas démarrer : incompatibilité de version.",
-			"getEnvironmentFailure": "Impossible de récupérer l'environnement à distance",
-			"install": "Installer et recharger",
-			"installResolver": "L’extension « {0} » est nécessaire pour ouvrir la fenêtre distante.\r\n Voulez-vous installer l’extension ?",
-			"learnMore": "Découvrir plus d’informations",
-			"relaunch": "Relancer VS Code",
-			"resolverExtensionNotFound": "`{0}` introuvable dans la Marketplace",
-			"restart": "Redémarrer l’hôte d'extension",
-			"restartExtensionHost": "Redémarrer l’hôte d'extension",
-			"restartExtensionHost.reason": "Une requête explicite",
-			"startBisect": "Démarrer l'extension Bisect"
-		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"fileWatcher": "Observateur de fichiers"
 		},
@@ -23298,6 +22194,10 @@
 			"vscode.extension.contributes.keybindings.when": "Condition quand la touche est active.",
 			"vscode.extension.contributes.keybindings.win": "Touche ou séquence de touches spécifique à Windows."
 		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Contrôlez la disposition du clavier utilisée sur le Web.",
+			"keyboardConfigurationTitle": "Clavier"
+		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "Placer vos combinaisons de touches dans ce fichier pour remplacer les valeurs par défaut",
 			"errorInvalidConfiguration": "Impossible d’écrire dans le fichier de configuration des combinaisons de touches. Il y a un objet qui n'est pas de type Array. Veuillez ouvrir le fichier pour nettoyer et réessayer.",
@@ -23352,13 +22252,12 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "Les modifications que vous avez apportées risquent de ne pas être enregistrées. Veuillez cocher « Annuler » et réessayer."
 		},
-		"vs/workbench/services/localization/electron-browser/localeService": {
-			"argvInvalid": "Impossible d’écrire le langage d’affichage. Ouvrez les paramètres d’exécution, corrigez les erreurs/avertissements qu’il contient, puis réessayez.",
-			"installing": "Installation de la prise en charge linguistique {0} ...",
-			"openArgv": "Ouvrir les paramètres du runtime",
-			"restart": "&&Redémarrer",
-			"restartDisplayLanguageDetail1": "Pour modifier le langage d’affichage à {0}, {1} doit redémarrer.",
-			"restartDisplayLanguageMessage1": "Voulez-vous redémarrer {0} pour basculer vers {1} ?"
+		"vs/workbench/services/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "Press the reload button to refresh the page and use your browser's language.",
+			"clearDisplayLanguageMessage": "To change the display language, {0} needs to reload",
+			"relaunchDisplayLanguageDetail": "Press the reload button to refresh the page and set the display language to {0}.",
+			"relaunchDisplayLanguageMessage": "To change the display language, {0} needs to reload",
+			"reload": "&&Reload"
 		},
 		"vs/workbench/services/log/common/logConstants": {
 			"window": "Fenêtre"
@@ -23445,6 +22344,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "Message de progression"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "An unexpected error occurred that requires a reload of this page.",
+			"connectionErrorDetail": "The workbench failed to connect to the server (Error: {0})",
+			"reload": "&&Reload"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"RemoteHelpInformationExtPoint": "Apporte des informations d'aide pour Remote",
 			"RemoteHelpInformationExtPoint.documentation": "URL, ou commande qui retourne l'URL, de la page de documentation de votre projet",
@@ -23462,16 +22366,15 @@
 			"tunnel.source.user": "Utilisateur réacheminé",
 			"tunnel.staticallyForwarded": "Réacheminement statique"
 		},
-		"vs/workbench/services/remote/electron-browser/remoteAgentService": {
-			"connectionError": "La connexion au serveur hôte d'extension distant a échoué (erreur : {0})",
-			"devTools": "Ouvrir les Outils de développement",
-			"directUrl": "Ouvrir dans le navigateur"
-		},
-		"vs/workbench/services/request/electron-browser/requestService": {
+		"vs/workbench/services/request/browser/requestService": {
 			"network": "Réseau"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "Le dossier d'espace de travail n'existe pas : {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/secrets/electron-browser/secretStorageService": {
 			"encryptionNotAvailableJustTroubleshootingGuide": "Impossible d’identifier un porte-clés du système d’exploitation pour stocker les données liées au chiffrement dans votre environnement de bureau actuel.",
@@ -23525,9 +22428,6 @@
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants1": "Exécution d'actions de code et de formateurs...",
 			"skip": "Ignorez"
-		},
-		"vs/workbench/services/textfile/electron-browser/nativeTextFileService": {
-			"join.textFiles": "Enregistrement des fichiers texte"
 		},
 		"vs/workbench/services/textMate/browser/textMateTokenizationFeatureImpl": {
 			"alreadyDebugging": "Déjà en cours de journalisation.",
@@ -23782,13 +22682,6 @@
 			"invalid.semanticTokenTypeConfiguration": "'configuration.semanticTokenType' doit être un tableau",
 			"invalid.superType.format": "'configuration.{0}.superType' doit suivre le modèle letterOrDigit[-_letterOrDigit]*"
 		},
-		"vs/workbench/services/themes/electron-browser/themes.contribution": {
-			"window.systemColorTheme": "Définissez le mode couleur pour les éléments d’interface utilisateur natifs tels que les boîtes de dialogue, la barre de titre et les menus. Même si votre système d’exploitation est configuré en mode de couleurs claires, vous pouvez sélectionner un thème de couleur système sombre pour la fenêtre. Vous pouvez également configurer l’ajustement automatique en fonction du paramètre {0}.\r\n\r\nRemarque : ce paramètre est ignoré quand {1} est activé.",
-			"window.systemColorTheme.auto": "Utilisez les couleurs de widget natives claires pour les thèmes de couleur claire et sombres pour les thèmes de couleur sombre.",
-			"window.systemColorTheme.dark": "Utilisez des couleurs de widget natives foncées.",
-			"window.systemColorTheme.default": "Les couleurs de widget natives correspondent aux couleurs système.",
-			"window.systemColorTheme.light": "Utilisez des couleurs de widget natives claires."
-		},
 		"vs/workbench/services/userDataProfile/browser/extensionsResource": {
 			"all profiles and disabled": "Tous les profils",
 			"exclude": "Sélectionner {0} extension",
@@ -23986,23 +22879,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "Annuler/Rétablir"
 		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupService": {
-			"join.workingCopyBackups": "Sauvegarder les copies de travail"
-		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "Cliquez sur « Annuler » pour mettre fin à l'attente et pour sauvegarder ou rétablir les éditeurs avec les modifications non sauvegardées.",
-			"backupBeforeShutdownMessage": "La sauvegarde des éditeurs avec des modifications non sauvegardées prend un peu plus de temps...",
-			"backupErrorDetails": "Essayez d'abord de sauvegarder ou de rétablir les éditeurs avec les modifications non sauvegardées, puis réessayez.",
-			"backupTrackerBackupFailed": "Les éditeurs suivants, dont les modifications n’ont pas été sauvegardées, n’ont pas pu être enregistrés dans l’emplacement de sauvegarde.",
-			"backupTrackerConfirmFailed": "Les éditeurs suivants dont les modifications n'ont pas été sauvegardées n'ont pas pu être sauvegardés ou annulés.",
-			"discardBackupsBeforeShutdown": "L’abandon des sauvegardes prend un peu plus de temps...",
-			"ok": "&&OK",
-			"revertBeforeShutdown": "L'annulation des éditeurs avec des changements non sauvegardés prend un peu plus de temps...",
-			"saveBeforeShutdown": "La sauvegarde des éditeurs avec des modifications non sauvegardées prend un peu plus de temps...",
-			"shutdownForceClose": "Fermer quand même",
-			"shutdownForceQuit": "Quitter quand même",
-			"shutdownForceReload": "Recharger quand même"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "Impossible d’écrire dans le fichier de configuration de l’espace de travail. Veuillez ouvrir le fichier pour y corriger les erreurs/avertissements et essayez à nouveau.",
 			"openWorkspaceConfigurationFile": "Ouvrir la Configuration de l’espace de travail",
@@ -24012,16 +22888,6 @@
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "Confiance en l'espace de travail",
 			"workspaceTrustEditorLabelIcon": "Icône de l’étiquette de l’éditeur de confiance en l’espace de travail."
-		},
-		"vs/workbench/services/workspaces/electron-browser/workspaceEditingService": {
-			"doNotAskAgain": "Toujours ignorer les espaces de travail sans titre sans demander",
-			"doNotSave": "N&&e pas enregistrer",
-			"restartExtensionHost.reason": "Ouverture d’un espace de travail multi-racine",
-			"save": "&&Enregistrer",
-			"saveWorkspaceDetail": "Enregistrez votre espace de travail si vous avez l’intention de le rouvrir.",
-			"saveWorkspaceMessage": "Voulez-vous enregistrer la configuration de votre espace de travail dans un fichier ?",
-			"workspaceOpenedDetail": "L’espace de travail est déjà ouvert dans une autre fenêtre. Veuillez s’il vous plaît d’abord fermer cette fenêtre et puis essayez à nouveau.",
-			"workspaceOpenedMessage": "Impossible d’enregistrer l’espace de travail '{0}'"
 		}
 	}
 }
