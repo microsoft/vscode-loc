@@ -2175,8 +2175,10 @@
 			"agentHost.config.customizations.uri": "Eklenti Tekdüzen Kaynak Tanımlayıcısı",
 			"agentHost.config.defaultShell.description": "Ana makine tarafından yönetilen terminallerin kullandığı kabuk çalıştırılabilir dosyasının mutlak yolu. Normalde bağlı VS Code istemcisi tarafından `terminal.integrated.agentHostProfile.<os>` üzerinden gönderilir ve `terminal.integrated.defaultProfile.<os>` değerine geri döner; ayarlanmadığında aracı konak sistem kabuğuna geri döner. Yalnızca path desteklenir; çalışma alanı profilindeki `args` ve `env` henüz iletilmez. Çalışma alanı bunu yalnızca yerel aracı konak için gönderir — uzak aracı konak işleten kişiler bunu uzak makinedeki `agent-host-config.json` dosyasında doğrudan ayarlamalıdır.",
 			"agentHost.config.defaultShell.title": "Varsayılan Kabuk",
-			"agentHost.config.disableCustomTerminalTool.description": "Etkinleştirildiğinde, Copilot SDK oturumları Aracı Ana Bilgisayarının terminal aracını geçersiz kılma ayarı yerine SDK'nın varsayılan terminal davranışını kullanır.",
-			"agentHost.config.disableCustomTerminalTool.title": "SDK Terminal Aracını Kullan"
+			"agentHost.config.enableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use Agent Host's terminal tool override instead of the SDK's default terminal behavior.",
+			"agentHost.config.enableCustomTerminalTool.title": "Use Agent Host Terminal Tool",
+			"agentHost.config.rubberDuck.description": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model.",
+			"agentHost.config.rubberDuck.title": "Rubber Duck Agent"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
 			"agentHost.config.sessionSyncEnabled.description": "copilot-sdk CLI'ı için uzak oturum eşitlemenin etkin olup olmadığını belirtir.",
@@ -2205,13 +2207,15 @@
 		},
 		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
 			"chat.agentHost.claudeAgent.path": "Deneysel, yalnızca yerel test için. Yerel olarak yüklenmiş `@anthropic-ai/claude-agent-sdk` paketinin mutlak yolu. Ayarlandığında, Claude aracı sağlayıcısı aracı konağı içinde kaydedilir ve SDK bu yoldan yüklenir. `#chat.agentHost.enabled#` gerektirir. Değişikliklerin etkili olması için aracı ana işlemi yeniden başlatılmalıdır. SDK Uzantı Marketi üzerinden sunulduğunda bu ayar kaldırılır.",
+			"chat.agentHost.codexAgent.binaryArgs": "Additional command-line arguments passed to `codex app-server`. Primarily useful for debugging (for example, `--log-level=debug`).",
+			"chat.agentHost.codexAgent.codexHome": "Optional override for `$CODEX_HOME`. Controls where the codex binary reads config and writes rollouts. When empty, codex uses its default (`~/.codex`).",
+			"chat.agentHost.codexAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `codex` binary. When set, the Codex agent provider is registered inside the agent host and `codex app-server` is spawned from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
 			"chat.agentHost.otel.captureContent": "Etkinleştirildiğinde, OTel yayılım özniteliklerine istem ve yanıt içeriğini ekler. `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` değerini ayarlar. Gizlilik açısından hassastır: Yayılımları paylaşılan hedeflere gönderen ortamlarda etkinleştirmeyin.",
 			"chat.agentHost.otel.dbSpanExporter.enabled": "Etkinleştirildiğinde, aracı ana bilgisayarı yerel bir SQLite veritabanına yayılan her OTel yayılmasını kalıcı hale getirmektedir. Yayılmalar (span), `Export Agent Host Traces Database` komutu aracılığıyla incelenebilir. Dış aktarıcılarla uyumludur: yayılmalar (span) SQLite’a yazılır ve kullanıcı tarafından yapılandırılan hedefe iletilir.",
 			"chat.agentHost.otel.enabled": "Etkinleştirildiğinde, aracı ana bilgisayarı Copilot SDK'sından OpenTelemetry izleri oluşturur. `#chat.agentHost.enabled#` gerektirir. İzleri harici bir toplayıcıya göndermek için `#chat.agentHost.otel.otlpEndpoint#` yapılandırın veya bunları yerel olarak toplamak için `#chat.agentHost.otel.dbSpanExporter.enabled#` etkinleştirin.",
 			"chat.agentHost.otel.exporterType": "`#chat.agentHost.otel.enabled#` açık olduğunda Copilot SDK tarafından kullanılan dışarı aktarıcı arka ucu. `otlp-grpc`, CLI çalışma zamanında şeffaf biçimde `otlp-http` olarak düşürülür.",
 			"chat.agentHost.otel.otlpEndpoint": "Dışarı aktarıcı türü `otlp-http` veya `otlp-grpc` olduğunda OTLP uç nokta URL'si. `OTEL_EXPORTER_OTLP_ENDPOINT` değerini aracı ana bilgisayarı işlemi içinde ayarlar.",
 			"chat.agentHost.otel.outfile": "Dışarı aktarıcı türü `file` olduğunda yayılma JSON satırları için çıkış yolu. `COPILOT_OTEL_FILE_EXPORTER_PATH` ayarlar.",
-			"chat.agentHost.rubberDuck.enabled": "Etkinleştirildiğinde kodlama aracısı kod değişikliklerini tamamlayıcı bir model kullanarak gözden geçirmek için bir lastik ördek inceleme alt aracısı kullanır. `#chat.agentHost.enabled#` gerektirir.",
 			"chatAgentHostStarterConfigurationTitle": "Sohbet Aracı Ana Makinesi Başlatıcısı"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2243,15 +2247,45 @@
 			"agentHost.config.sandbox.windowsEnabled.title": "Korumalı Alan Etkin (Windows)",
 			"agentHost.config.sandbox.windowsFileSystem.title": "Windows Korumalı Alanı Dosya Sistemi"
 		},
-		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
-			"sshKbiDefaultPrompt": "Authentication required for {0}@{1}"
+		"vs/platform/agentHost/node/agentHostCommitOperationHandler": {
+			"agentHost.changeset.commit.authExpired": "Authentication is required to generate a commit message. Please sign in to GitHub Copilot and try again.",
+			"agentHost.changeset.commit.authRequired": "Sign in to GitHub Copilot to generate a commit message.",
+			"agentHost.changeset.commit.cancelled": "Commit operation was cancelled.",
+			"agentHost.changeset.commit.committed": "Committed changes with message: `{0}`",
+			"agentHost.changeset.commit.diffFailed": "Could not compute uncommitted changes to generate a commit message.",
+			"agentHost.changeset.commit.emptyMessage": "Generated commit message was empty.",
+			"agentHost.changeset.commit.noChanges": "No uncommitted changes to commit."
+		},
+		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
+			"agentHost.changeset.commit": "Commit"
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "Aracı Ana Bilgisayarı"
 		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationHandler": {
+			"agentHost.changeset.pr.authRequired": "Sign in to GitHub with repository access to create a pull request.",
+			"agentHost.changeset.pr.body": "Created from `{0}` targeting `{1}`.",
+			"agentHost.changeset.pr.cancelled": "Pull request operation was cancelled.",
+			"agentHost.changeset.pr.commitMessage": "Agent Host changes for {0}",
+			"agentHost.changeset.pr.computeChangesFailed": "Could not compute branch changes to create a pull request.",
+			"agentHost.changeset.pr.created": "Created pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.createdDraft": "Created draft pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.existing": "Pull request [#{0}]({1}) already exists.",
+			"agentHost.changeset.pr.noChanges": "There are no branch changes to create a pull request for."
+		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationProvider": {
+			"agentHost.changeset.createDraftPR": "Create Draft Pull Request",
+			"agentHost.changeset.createPR": "Create Pull Request"
+		},
+		"vs/platform/agentHost/node/agentHostRenameCommand": {
+			"agentHostSlashCommand.rename.description": "Rename this chat"
+		},
 		"vs/platform/agentHost/node/agentService": {
 			"agentHost.forkedSessionFallback": "Çatallı Oturum",
 			"agentHost.forkedTitlePrefix": "Çatallandı: "
+		},
+		"vs/platform/agentHost/node/agentSideEffects": {
+			"agentHostRename.renamed": "Renamed: {0}"
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "Onaylar",
@@ -2341,6 +2375,50 @@
 		},
 		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
 			"claude.discovered.displayName": "Claude'da keşfedildi"
+		},
+		"vs/platform/agentHost/node/codex/codexAgent": {
+			"codex.modelThinkingLevel.description": "Controls how much reasoning effort Codex uses.",
+			"codex.modelThinkingLevel.high": "High",
+			"codex.modelThinkingLevel.low": "Low",
+			"codex.modelThinkingLevel.medium": "Medium",
+			"codex.modelThinkingLevel.minimal": "Minimal",
+			"codex.modelThinkingLevel.title": "Thinking Level",
+			"codex.sessionConfig.additionalDirectories": "Additional Writable Directories",
+			"codex.sessionConfig.additionalDirectories.item": "Directory",
+			"codex.sessionConfig.additionalDirectoriesDescription": "Absolute paths the sandbox is allowed to write to, in addition to the workspace. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.approvalPolicy": "Approvals",
+			"codex.sessionConfig.approvalPolicy.never": "No Escalations",
+			"codex.sessionConfig.approvalPolicy.neverDescription": "Never ask for elevated permission; commands that cannot run in the sandbox are rejected.",
+			"codex.sessionConfig.approvalPolicy.onFailure": "Ask on Failure",
+			"codex.sessionConfig.approvalPolicy.onFailureDescription": "Try commands in the sandbox first, then ask to retry with elevated permission if the sandbox blocks them.",
+			"codex.sessionConfig.approvalPolicy.onRequest": "Ask When Needed",
+			"codex.sessionConfig.approvalPolicy.onRequestDescription": "Ask only when Codex determines a command needs elevated permission.",
+			"codex.sessionConfig.approvalPolicy.untrusted": "Ask More Often",
+			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Ask before more command categories so you can review actions more closely.",
+			"codex.sessionConfig.approvalPolicyDescription": "How Codex requests approval for tool calls.",
+			"codex.sessionConfig.modelReasoningEffort": "Reasoning Effort",
+			"codex.sessionConfig.modelReasoningEffort.high": "High",
+			"codex.sessionConfig.modelReasoningEffort.low": "Low",
+			"codex.sessionConfig.modelReasoningEffort.medium": "Medium",
+			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimal",
+			"codex.sessionConfig.modelReasoningEffortDescription": "Controls how much reasoning effort Codex uses.",
+			"codex.sessionConfig.networkAccessEnabled": "Network",
+			"codex.sessionConfig.networkAccessEnabledDescription": "Allow sandboxed tool calls to make outbound network requests. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.sandboxMode": "Sandbox",
+			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Full Access (Dangerous)",
+			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Tool calls have unrestricted disk and network access.",
+			"codex.sessionConfig.sandboxMode.readOnly": "Read-Only",
+			"codex.sessionConfig.sandboxMode.readOnlyDescription": "Tool calls can read the workspace but cannot modify files.",
+			"codex.sessionConfig.sandboxMode.workspaceWrite": "Workspace Write",
+			"codex.sessionConfig.sandboxMode.workspaceWriteDescription": "Tool calls can read and write within the workspace; network is controlled separately.",
+			"codex.sessionConfig.sandboxModeDescription": "Filesystem and network restrictions applied to tool calls.",
+			"codex.sessionConfig.webSearchMode": "Web Search",
+			"codex.sessionConfig.webSearchMode.cached": "Cached Only",
+			"codex.sessionConfig.webSearchMode.disabled": "Disabled",
+			"codex.sessionConfig.webSearchMode.live": "Live",
+			"codex.sessionConfig.webSearchModeDescription": "Web-search tool availability for the model.",
+			"codexAgent.description": "Codex agent backed by the OpenAI Codex app-server",
+			"codexAgent.displayName": "Codex"
 		},
 		"vs/platform/agentHost/node/copilot/copilotAgent": {
 			"agentHost.sessionConfig.branch": "Dal",
@@ -2507,37 +2585,9 @@
 			"sessionPermissions.allowSession": "Bu Oturumda izin ver",
 			"sessionPermissions.skip": "Atla"
 		},
-		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
-			"ssh.failedToReadPrivateKey": "Failed to read private key file: {0}",
-			"ssh.keyFileAuthRequiresPath": "Key file authentication requires a private key path.",
-			"sshKeyPassphraseName": "SSH Key Passphrase",
-			"sshKeyPassphrasePrompt": "Enter passphrase for SSH key {0}.",
-			"sshProgressCheckingAgent": "Checking for existing agent host...",
-			"sshProgressConnecting": "Establishing SSH connection...",
-			"sshProgressDownloadingCLI": "Installing VS Code CLI on remote...",
-			"sshProgressForwarding": "Connecting to remote agent host...",
-			"sshProgressInstallingCLI": "Checking remote CLI installation...",
-			"sshProgressStartingAgent": "Starting remote agent host..."
-		},
-		"vs/platform/agentHost/node/tunnelHostMainService": {
-			"tunnelHost.log": "Remote Connections"
-		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "Sayfa yakınlaştırma: {0}%",
 			"browserZoomPercent": "%{0}"
-		},
-		"vs/platform/browserView/electron-main/browserViewMainService": {
-			"browser.contextMenu.addElementToChat": "Add Element to Chat",
-			"browser.contextMenu.back": "Back",
-			"browser.contextMenu.copyImage": "Copy Image",
-			"browser.contextMenu.copyImageUrl": "Copy Image URL",
-			"browser.contextMenu.copyLink": "Copy Link",
-			"browser.contextMenu.forward": "Forward",
-			"browser.contextMenu.inspect": "Inspect",
-			"browser.contextMenu.openImageInNewTab": "Open Image in New Tab",
-			"browser.contextMenu.openLinkInExternalBrowser": "Open Link in External Browser",
-			"browser.contextMenu.openLinkInNewTab": "Open Link in New Tab",
-			"browser.contextMenu.reload": "Reload"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
 			"config.policy.duplicate": "'{0}' kaydedilemiyor. İlişkili ilke {1}, zaten {2} ile kaydedilmiş.",
@@ -2589,17 +2639,6 @@
 			"moreFiles": "...{0} ek dosya gösterilmedi",
 			"okButton": "&&Tamam",
 			"yesButton": "&&Evet"
-		},
-		"vs/platform/dialogs/electron-browser/dialog": {
-			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDate: {2}\r\nElectron: {3}\r\nElectronBuildId: {4}\r\nChromium: {5}\r\nNode.js: {6}\r\nV8: {7}\r\nOS: {8}"
-		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "Open",
-			"openFile": "Open File",
-			"openFolder": "Open Folder",
-			"openWorkspace": "&&Open",
-			"openWorkspaceTitle": "Open Workspace from File",
-			"selectFolder": "&&Select folder"
 		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "Dosya adsız düzenleyici olarak açılmak için çok büyük. Lütfen önce dosyayı dosya gezginine yükleyin ve sonra yeniden deneyin."
@@ -2811,6 +2850,14 @@
 			"fileSystemNotAllowedError": "İzinler yetersiz. Lütfen yeniden deneyin ve işleme izin ver.",
 			"fileSystemRenameError": "Yeniden adlandırma yalnızca dosyalar için desteklenir."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Dizin boş değil",
+			"fileExceedsStorageQuota": "Dosya, kullanılabilir depolama kotasını aşıyor",
+			"fileIsDirectory": "Dosya Dizindir",
+			"fileNotDirectory": "Dosya bir dizin değil",
+			"fileNotExists": "Dosya yok",
+			"internal": "IndexedDB Dosya Sistemi Sağlayıcısında iç hata oluştu. ({0})"
+		},
 		"vs/platform/files/common/files": {
 			"sizeB": "{0} Bayt",
 			"sizeGB": "{0} GB",
@@ -2850,10 +2897,6 @@
 		},
 		"vs/platform/files/common/io": {
 			"fileTooLargeError": "Dosya açılamayacak kadar büyük"
-		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "Failed to move '{0}' to the recycle bin ({1})",
-			"trashFailed": "Failed to move '{0}' to the trash ({1})"
 		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "'{0}', '{1}' ({2}) içine kopyalanamıyor.",
@@ -2951,68 +2994,12 @@
 		"vs/platform/mcp/common/mcpManagementService": {
 			"not allowed to install": "Bu mcp sunucusu {0} nedeniyle yüklenemiyor."
 		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "Cancel",
-			"exit": "&&Exit",
-			"mAbout": "About {0}",
-			"mBringToFront": "Bring All to Front",
-			"mEdit": "&&Edit",
-			"mFile": "&&File",
-			"mGoto": "&&Go",
-			"mHelp": "&&Help",
-			"mHide": "Hide {0}",
-			"mHideOthers": "Hide Others",
-			"mMergeAllWindows": "Merge All Windows",
-			"mMinimize": "Minimize",
-			"mMoveTabToNewWindow": "Move Tab to New Window",
-			"mNewTab": "New Tab",
-			"mRun": "&&Run",
-			"mSelection": "&&Selection",
-			"mServices": "Services",
-			"mShowAll": "Show All",
-			"mShowNextTab": "Show Next Tab",
-			"mShowPreviousTab": "Show Previous Tab",
-			"mTerminal": "&&Terminal",
-			"mView": "&&View",
-			"mWindow": "Window",
-			"mZoom": "Zoom",
-			"miCheckForUpdates": "Check for &&Updates...",
-			"miCheckingForUpdates": "Checking for Updates...",
-			"miDownloadUpdate": "D&&ownload Available Update",
-			"miDownloadingUpdate": "Downloading Update...",
-			"miInstallUpdate": "Install &&Update...",
-			"miInstallingUpdate": "Installing Update...",
-			"miNewWindow": "New &&Window",
-			"miPreferences": "&&Preferences",
-			"miQuit": "Quit {0}",
-			"miRestartToUpdate": "Restart to &&Update",
-			"miSwitchWindow": "Switch &&Window...",
-			"quit": "&&Quit",
-			"quitMessage": "Are you sure you want to exit?",
-			"quitMessageMac": "Are you sure you want to quit?"
-		},
 		"vs/platform/meteredConnection/common/meteredConnection.config.contribution": {
 			"meteredConnection": "Geçerli ağ bağlantısının tarifeli olarak değerlendirilip değerlendirilmeyeceğini kontrol eder. Tarifeli olduğunda, otomatik güncelleştirmeler, uzantı indirmeleri ve diğer arka plan ağ etkinlikleri veri kullanımını azaltmak için ertelenir.",
 			"meteredConnection.auto": "İşletim sisteminin ağ durumunu kullanarak tarifeli bağlantıları otomatik olarak algılar.",
 			"meteredConnection.off": "Ağ bağlantısını asla tarifeli bağlantı olarak işleme.",
 			"meteredConnection.on": "Ağ bağlantısını her zaman tarifeli olarak işle. Otomatik güncelleştirmeler ve indirmeler ertelenir.",
 			"networkConfigurationTitle": "Ağ"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "Cancel",
-			"cantCreateBinFolder": "Unable to install the shell command '{0}'.",
-			"cantUninstall": "Unable to uninstall the shell command '{0}'.",
-			"copyLink": "&&Copy Link",
-			"ok": "&&OK",
-			"openExternalErrorLinkMessage": "An error occurred opening a link in your default browser.",
-			"openExternalProgramErrorMessage": "An error occurred opening an external program.",
-			"sourceMissing": "Unable to find shell script in '{0}'",
-			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
-			"trace.message": "Successfully created the trace file",
-			"trace.ok": "&&OK",
-			"tracing.alreadyInProgress": "A tracing session is already in progress. Use command `\"{0}\"` to stop it first.",
-			"warnEscalation": "{0} will now prompt with 'osascript' for Administrator privileges to install the shell command.",
-			"warnEscalationUninstall": "{0} will now prompt with 'osascript' for Administrator privileges to uninstall the shell command."
 		},
 		"vs/platform/networkFilter/common/networkFilterService": {
 			"networkFilter.blockedByPolicy": "{0} erişimi ağ etki alanı ilkesi tarafından engellendi (bkz. `{1}` ve `{2}` ayarları)."
@@ -3021,9 +3008,6 @@
 			"severityPrefix.error": "Hata: {0}",
 			"severityPrefix.info": "Bilgi: {0}",
 			"severityPrefix.warning": "Uyarı: {0}"
-		},
-		"vs/platform/process/electron-main/processMainService": {
-			"local": "Local"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "'{0}' komutu bir hatayla sonuçlandı",
@@ -3081,16 +3065,6 @@
 		},
 		"vs/platform/quickinput/browser/tree/quickTree": {
 			"quickInputBox.ariaLabel": "Sonuçları daraltmak için yazın."
-		},
-		"vs/platform/remoteTunnel/common/remoteTunnel": {
-			"remoteTunnelLog": "Remote Tunnel Service"
-		},
-		"vs/platform/remoteTunnel/node/remoteTunnelService": {
-			"remoteTunnelService.authorizing": "Connecting as {0} ({1})",
-			"remoteTunnelService.building": "Building CLI from sources",
-			"remoteTunnelService.openTunnel": "Opening tunnel",
-			"remoteTunnelService.openTunnelWithName": "Opening tunnel {0}",
-			"remoteTunnelService.serviceInstallFailed": "Failed to install tunnel as a service, starting in session..."
 		},
 		"vs/platform/request/common/request": {
 			"electronFetch": "Node.js yerine Electron'un getirme uygulamasının kullanılıp kullanılmayacağını denetler. Tüm yerel uzantılar, genel getirme API'si için Electron'un getirme uygulamasına sahip olacak.",
@@ -3495,6 +3469,20 @@
 			"cornerRadiusSmall": "Kompakt kullanıcı arayüzü öğeleri için küçük köşe yarıçapı.",
 			"cornerRadiusXLarge": "Çok belirgin kullanıcı arayüzü öğeleri için ekstra büyük köşe yarıçapı.",
 			"cornerRadiusXSmall": "Çok kompakt kullanıcı arayüzü öğeleri için ekstra küçük köşe yarıçapı.",
+			"spacingNone": "No spacing (0px).",
+			"spacingSize100": "Spacing of 10px.",
+			"spacingSize120": "Spacing of 12px.",
+			"spacingSize160": "Spacing of 16px.",
+			"spacingSize20": "Spacing of 2px.",
+			"spacingSize200": "Spacing of 20px.",
+			"spacingSize240": "Spacing of 24px.",
+			"spacingSize280": "Spacing of 28px.",
+			"spacingSize320": "Spacing of 32px.",
+			"spacingSize360": "Spacing of 36px.",
+			"spacingSize40": "Spacing of 4px.",
+			"spacingSize400": "Spacing of 40px.",
+			"spacingSize60": "Spacing of 6px.",
+			"spacingSize80": "Spacing of 8px.",
 			"strokeThickness": "Kenarlıklar ve dış hatlar için temel çizgi kalınlığı."
 		},
 		"vs/platform/theme/common/tokenClassificationRegistry": {
@@ -3575,9 +3563,6 @@
 			"updateMode": "Otomatik güncelleştirmeleri alıp almayacağınızı yapılandırın. Değişiklikten sonra yeniden başlatma gerektirir. Güncelleştirmeler bir Microsoft çevrimiçi hizmetinden getirilir.",
 			"updateTitleBar": "Başlık çubuğunda güncelleme göstergesini gösterin."
 		},
-		"vs/platform/update/electron-main/notAvailableUpdateDialog": {
-			"noUpdatesAvailable": "There are currently no updates available."
-		},
 		"vs/platform/userDataProfile/common/userDataProfile": {
 			"defaultProfile": "Varsayılan"
 		},
@@ -3614,52 +3599,8 @@
 		"vs/platform/userDataSync/common/userDataSyncResourceProvider": {
 			"incompatible sync data": "Eşitleme verileri, geçerli sürümle uyumlu olmadıklarından ayrıştırılamıyor."
 		},
-		"vs/platform/windows/electron-main/windowImpl": {
-			"appGone": "The window terminated unexpectedly",
-			"appGoneDetailEmptyWindow": "We are sorry for the inconvenience. You can open a new empty window to start again.",
-			"appGoneDetailWorkspace": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
-			"appGoneDetails": "The window terminated unexpectedly (reason: '{0}', code: '{1}')",
-			"appStalled": "The window is not responding",
-			"appStalledDetail": "You can reopen or close the window or keep waiting.",
-			"close": "&&Close",
-			"doNotRestoreEditors": "Don't restore editors",
-			"hiddenMenuBar": "You can still access the menu bar by pressing the Alt-key.",
-			"newWindow": "&&New Window",
-			"reopen": "&&Reopen",
-			"wait": "&&Keep Waiting"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"allow": "&&Allow",
-			"cancel": "&&Cancel",
-			"confirmOpenDetail": "The path '{0}' uses a host that is not allowed. Unless you trust the host, you should press 'Cancel'",
-			"confirmOpenMessage": "The host '{0}' was not found in the list of allowed hosts. Do you want to allow it anyway?",
-			"doNotAskAgain": "Permanently allow host '{0}'",
-			"learnMore": "&&Learn More",
-			"ok": "&&OK",
-			"pathNotExistDetail": "The path '{0}' does not exist on this computer.",
-			"pathNotExistTitle": "Path does not exist",
-			"uriInvalidDetail": "The URI '{0}' is not valid and can not be opened.",
-			"uriInvalidTitle": "URI can not be opened"
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "Kod Çalışma Alanı"
-		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"cancel": "&&Cancel",
-			"clearButtonLabel": "&&Clear",
-			"confirmClearDetail": "This action is irreversible!",
-			"confirmClearRecentsMessage": "Do you want to clear all recently opened files and workspaces?",
-			"newWindow": "New Window",
-			"newWindowDesc": "Opens a new window",
-			"recentFolders": "Recent Folders",
-			"recentFoldersAndWorkspaces": "Recent Folders & Workspaces",
-			"untitledWorkspace": "Untitled (Workspace)",
-			"workspaceName": "{0} (Workspace)"
-		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "&&OK",
-			"workspaceOpenedDetail": "The workspace is already opened in another window. Please close that window first and then try again.",
-			"workspaceOpenedMessage": "Unable to save workspace '{0}'"
 		},
 		"vs/server/node/remoteExtensionHostAgentCli": {
 			"remotecli": "Uzak CLI"
@@ -3689,183 +3630,15 @@
 		"vs/server/node/serverServices": {
 			"remoteExtensionLog": "Sunucu"
 		},
-		"vs/sessions/browser/accountTitleBarState": {
-			"accountSignedInAria": "{1} ile {0} olarak oturum açıldı",
-			"accountSignedInAriaNameOnly": "{0} olarak oturum açıldı",
-			"agentsSignedOut": "Aracılar Oturumu Kapattı",
-			"agentsSignedOutAria": "Aracılar oturumu kapattı",
-			"copilotAllQuotaReachedAria": "GitHub Copilot Chat ve satır içi öneri kotasına ulaşıldı",
-			"copilotChatQuotaReachedAria": "GitHub Copilot Chat kotasına ulaşıldı",
-			"copilotCompletionsQuotaReachedAria": "GitHub Copilot satır içi öneri kotasına ulaşıldı",
-			"copilotQuotaReached": "Kotaya Ulaşıldı",
-			"copilotTokensRemaining": "Kalan Belirteçler",
-			"copilotTokensRemainingAria": "%{0} GitHub Copilot belirteci kaldı",
-			"copilotUnavailable": "Copilot Kullanılamıyor",
-			"copilotUnavailableDisabledAria": "GitHub Copilot devre dışı bırakıldı",
-			"copilotUnavailableUntrustedAria": "GitHub Copilot güvenilmeyen çalışma alanlarında kullanılamıyor",
-			"loadingAccount": "Hesap Yükleniyor...",
-			"loadingAccountAria": "Hesap yükleniyor",
-			"signInAria": "Hesabınızda oturum açın",
-			"signInLabel": "Oturum Aç"
-		},
-		"vs/sessions/browser/layoutActions": {
-			"agentPanelCloseIcon": "Paneli kapatma simgesi.",
-			"agentSidebarToggleClosedIcon": "Kapalıyken oturumlar kenar çubuğunun simgesi.",
-			"agentSidebarToggleOpenIcon": "Açıkken oturumlar kenar çubuğunun simgesi.",
-			"openAndCloseSecondarySidebar": "İkincil Kenar Çubuğunu Aç veya Göster ve Kapat veya Gizle",
-			"openAndCloseSidebar": "Kenar Çubuğunu Aç veya Göster ve Kapat veya Gizle",
-			"secondarySidebarHidden": "İkincil Kenar Çubuğu gizlendi",
-			"secondarySidebarVisible": "İkincil Kenar Çubuğu gösterildi",
-			"sidebarHidden": "Birincil Kenar Çubuğu gizlendi",
-			"sidebarVisible": "Birincil Kenar Çubuğu gösterildi",
-			"togglePanel": "Panel Görünürlüğünü Aç/Kapat",
-			"toggleSecondarySidebar": "İkincil Kenar Çubuğunu Görünürlüğünü Aç/Kapat",
-			"toggleSidebar": "Birincil Kenar Çubuğu Görünürlüğünü Aç/Kapat",
-			"toggleWindowAlwaysOnTop": "Her Zaman Üstte Tut Ayarını Aç/Kapat"
-		},
-		"vs/sessions/browser/parts/auxiliaryBarPart": {
-			"auxiliaryBarAriaLabel": "Oturum Ayrıntıları"
-		},
-		"vs/sessions/browser/parts/chatCompositeBar": {
-			"closeChat": "Kapat",
-			"renameChat": "Yeniden adlandır",
-			"renameChat.prompt": "Sohbeti Yeniden Adlandır"
-		},
-		"vs/sessions/browser/parts/menubar.contribution": {
-			"mEdit": "&&Düzenle",
-			"mFile": "&&Dosya",
-			"mGo": "&&Git",
-			"mHelp": "&&Yardım",
-			"mPreferences": "&&Tercihler",
-			"mTerminal": "&&Terminal",
-			"mView": "&&Görünüm"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileChangesView": {
-			"changesView.back": "Geri",
-			"changesView.backLabel": "Geri",
-			"changesView.changeAdded": "eklendi",
-			"changesView.changeDeleted": "silindi",
-			"changesView.changeModified": "değiştirildi",
-			"changesView.empty": "Bu oturumda henüz hiç değişiklik yok.",
-			"changesView.rowAria": "{0}, {1}, +{2} -{3}",
-			"changesView.subtitleFilePlural": "{0} dosya",
-			"changesView.subtitleFileSingular": "1 dosya",
-			"changesView.title": "Oturum Değişiklikleri"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffColors": {
-			"agentsMobileDiff.addedForeground": "Aracı oturumları penceresindeki mobil değişiklikler listesinde ve fark katmanında eklenen dosyalar / satırlar için kullanılan ön plan rengi.",
-			"agentsMobileDiff.deletedForeground": "Aracı oturumları penceresindeki mobil değişiklikler listesinde ve fark katmanında silinen dosyalar / kaldırılan satırlar için kullanılan ön plan rengi.",
-			"agentsMobileDiff.modifiedForeground": "Aracı oturumları penceresindeki mobil değişiklikler listesinde değiştirilen dosyalar için kullanılan ön plan rengi."
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffView": {
-			"diffView.back": "Geri",
-			"diffView.loading": "Yükleniyor…",
-			"diffView.nextFile": "Sonraki dosya",
-			"diffView.noChanges": "Bu dosyada değişiklik yok.",
-			"diffView.position": "{0} / {1}",
-			"diffView.prevFile": "Önceki dosya"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileMultiDiffView": {
-			"multiDiffView.back": "Geri",
-			"multiDiffView.file": "dosya",
-			"multiDiffView.fileCount": "{0} {1}",
-			"multiDiffView.fileFallback": "dosya",
-			"multiDiffView.files": "dosyalar",
-			"multiDiffView.loadError": "Bu dosyadaki değişiklikler yüklenemiyor.",
-			"multiDiffView.loading": "Yükleniyor…",
-			"multiDiffView.noChanges": "Bu dosyada değişiklik yok.",
-			"multiDiffView.toggleFile": "Aç/Kapat {0}"
-		},
-		"vs/sessions/browser/parts/mobile/mobilePickerSheet": {
-			"mobilePickerSheet.done": "Bitti",
-			"mobilePickerSheet.doneAriaLabel": "{0} öğesini kapat",
-			"mobilePickerSheet.noResults": "Sonuç yok",
-			"mobilePickerSheet.searching": "Aranıyor…"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSessionFilterChips": {
-			"chipCompleted": "Tamamlandı",
-			"chipFailed": "Başarısız oldu",
-			"chipInProgress": "Devam Ediyor",
-			"filterChipsLabel": "Oturum durumu filtreleri",
-			"findAriaLabel": "Oturum bul",
-			"sortGroup": "Sırala",
-			"sortGroupAriaLabel": "Sıralama ve gruplandırma seçenekleri"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSortGroupSheet": {
-			"sortGroupSheet.close": "Kapat"
-		},
-		"vs/sessions/browser/parts/mobile/mobileTitlebarPart": {
-			"mobileAccount.close": "Kapat",
-			"mobileAccount.loading": "Yükleniyor...",
-			"mobileAccount.signedOut": "Oturum açılmadı",
-			"mobileAccount.title": "Hesap",
-			"mobileTopBar.account": "Hesap",
-			"mobileTopBar.changes": "Değişiklikleri görüntüle",
-			"mobileTopBar.changesTooltip": "{0} dosyaları değiştirildi (+{1} -{2})",
-			"mobileTopBar.closeSessions": "Oturumları kapat",
-			"mobileTopBar.filesChangedCount": "{0} dosya",
-			"mobileTopBar.filesChangedTooltip": "{0} dosya değiştirildi",
-			"mobileTopBar.newSession": "Yeni Oturum",
-			"mobileTopBar.newSessionAria": "Yeni oturum",
-			"mobileTopBar.openSessions": "Oturumları aç",
-			"mobileTopBar.singleFileChanged": "1 dosya",
-			"mobileTopBar.singleFileChangedTooltip": "1 dosya değiştirildi"
-		},
-		"vs/sessions/browser/sessionsSetUpService": {
-			"loading": "Yükleniyor",
-			"sessions.aiDisabled.detail": "Aracıları kullanmaya devam etmek için yapay zeka özelliklerini etkinleştirin.",
-			"sessions.aiDisabled.enable": "Yapay Zeka Özelliklerini Etkinleştir",
-			"sessions.signIn": "Aracıları kullanmak için oturum açın",
-			"sessions.signingIn": "Oturum açılıyor…",
-			"sessions.signingIn.detail": "Lütfen tarayıcıda oturum açma işlemini tamamlayın.",
-			"sessions.welcome.detail": "Aracıların sizinle birlikte keşfettiği, oluşturduğu ve yinelediği yapay zeka destekli kodlama deneyimi.",
-			"sessions.welcome.getStarted": "Kullanmaya Başlayın",
-			"sessions.welcome.title": "{0} ürününe hoş geldiniz",
-			"walkthrough.productName": "{0} - Aracılar",
-			"welcomeFooter": "Devam ederek, {0}'in [Şartlar]({1}) ve [Gizlilik Beyanı]({2}) kabul etmiş olursunuz., {3} Copilot, [halka açık kod]({4}) önerileri gösterebilir ve ürününü iyileştirmek için verilerinizi kullanabilir. Bu [ayarları]({5}) istediğiniz zaman değiştirebilirsiniz."
-		},
-		"vs/sessions/browser/widget/openInVSCodeWidget": {
-			"openInVSCodeHover": "VS Code Düzenleyici Penceresinde Aç"
-		},
-		"vs/sessions/common/categories": {
-			"agents": "Aracılar"
-		},
-		"vs/sessions/common/contextkeys": {
-			"activeSessionHasGitRepository": "Etkin oturumun ilişkili bir git deposu olup olmadığını belirtir",
-			"activeSessionHasGitSyncActionRunning": "Etkin oturumda şu anda çalışan bir git eşitleme eyleminin olup olmadığı",
-			"activeSessionProviderId": "Etkin oturumun sağlayıcı kimliği",
-			"activeSessionType": "Etkin oturumun oturum türü",
-			"activeSessionWorkspaceIsVirtual": "Etkin oturumun çalışma alanının sanal olup olmadığı",
-			"activeSessions": "Etkin oturumlar panelinin tanımlayıcısı",
-			"chatSessionProviderId": "Bağlam menüsü katmanındaki bir oturumun sağlayıcı kimliği",
-			"editorMaximized": "Düzenleyici alanının ekranı kaplayıp kaplamadığını belirtir",
-			"isActiveSessionArchived": "Etkin oturumun arşivlenip arşivlenmediğini (tamamlandı olarak işaretlenip işaretlenmediğini) belirtir",
-			"multipleSessionsVisible": "Oturumlar bölümünün kılavuzunda birden fazla oturumun görünür olup olmadığını belirtir",
-			"sessionIsCreated": "Oturum görünümündeki oturumun oluşturulup oluşturulmadığını belirtir (sohbet görünümü gösterilir, yeni oturum görünümü gösterilmez)",
-			"sessionIsMaximized": "Oturum görünümünün şu anda oturumlar bölümünün kılavuzunda büyütülmüş olup olmadığını belirtir",
-			"sessionIsSticky": "Oturum görünümündeki oturumun kılavuzda sabit olup olmadığını belirtir",
-			"sessionSupportsMultipleChats": "Oturum görünümündeki oturumun birden fazla sohbeti destekleyip desteklemediğini belirtir",
-			"sessionWorkspacePickerGroup": "Oturum çalışma alanı seçicisinde şu anda etkin olan grup sekmesi",
-			"sessionsAquariumActive": "Oturum akvaryum kaplamasının etkin olup olmaması",
-			"sessionsCanGoBack": "Gezinme geçmişinde önceki bir oturumun olup olmadığı",
-			"sessionsCanGoForward": "Gezinme geçmişinde sonraki bir oturumun olup olmadığı",
-			"sessionsFocus": "Oturumlar bölümünün klavye odağına sahip olup olmadığını belirtir",
-			"sessionsIsPhoneLayout": "Geçerli düzenin telefon düzeni olup olmadığı",
-			"sessionsKeyboardVisible": "Sanal klavyenin görünür olup olmadığı",
-			"sessionsVisible": "Oturumlar bölümünün görünür olup olmadığını belirtir",
-			"sessionsWelcomeVisible": "Oturum karşılama katmanının görünür olup olmadığını belirtir"
-		},
 		"vs/sessions/common/sizes": {
 			"agents.fontSize.body1": "Aracılar penceresi için birincil gövde yazı tipi boyutu.",
 			"agents.fontSize.body2": "Aracılar penceresi için ikincil gövde yazı tipi boyutu.",
 			"agents.fontSize.heading1": "Aracılar penceresi için başlık 1 yazı tipi boyutu (hoş geldiniz ekranı başlığı).",
 			"agents.fontSize.heading2": "Aracılar penceresi için 2. başlık yazı tipi boyutu (başlık).",
 			"agents.fontSize.heading3": "Aracılar penceresi için başlık 3 yazı tipi boyutu (alt başlık).",
-			"agents.fontSize.label1": "Aracılar penceresi için etiket 1 yazı tipi boyutu (etkileşimli sekmeler).",
-			"agents.fontSize.label2": "Aracılar penceresi için etiket 2 yazı tipi boyutu (meta veri vurgusu).",
-			"agents.fontSize.label3": "Aracılar penceresi için etiket 3 yazı tipi boyutu (birincil meta veri).",
-			"agents.fontSize.label4": "Aracılar penceresi için Etiket 4 yazı tipi boyutu (rozet).",
-			"agents.fontWeight.medium": "Aracılar penceresi için orta yazı tipi kalınlığı (500).",
+			"agents.fontSize.label1": "Label 1 font size for the agents window (section title, tabs).",
+			"agents.fontSize.label2": "Label 2 font size for the agents window (metadata).",
+			"agents.fontSize.label3": "Label 3 font size for the agents window (badge).",
 			"agents.fontWeight.regular": "Aracılar penceresi için normal yazı tipi kalınlığı (400).",
 			"agents.fontWeight.semiBold": "Aracılar penceresi için SemiBold yazı tipi kalınlığı (600)."
 		},
@@ -3895,26 +3668,6 @@
 			"agentsUpdateButton.downloadingBackground": "Aracı oturumları penceresinde indirme ilerlemesini göstermek için güncelleme düğmesinin arka plan rengi.",
 			"inactiveSessionView.background": "Aracı oturumları penceresindeki etkin olmayan oturum görünümünün arka plan rengi.",
 			"inactiveSessionView.foreground": "Aracı oturumları penceresindeki etkin olmayan oturum görünümünün ön plan rengi."
-		},
-		"vs/sessions/electron-browser/actions/vscodeActions": {
-			"openInVSCode": "Düzenleyicide Aç",
-			"openVSCodeWindow": "VS Code Penceresini Aç"
-		},
-		"vs/sessions/electron-browser/parts/titlebarPart": {
-			"agentsWindowTitle": "Aracılar"
-		},
-		"vs/sessions/electron-browser/sessions.main": {
-			"join.closeStorage": "Kullanıcı arabirimi durumu kaydediliyor"
-		},
-		"vs/sessions/services/sessions/common/session": {
-			"sessionWorkspaceGroup.local": "Yerel",
-			"sessionWorkspaceGroup.remote": "Uzak"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "Etkin oturumun birden fazla sohbeti destekleyip desteklemediğini belirtir"
-		},
-		"vs/sessions/services/workspace/browser/workspaceContextService": {
-			"agentsWindow": "Aracılar Penceresi"
 		},
 		"vs/sessions/contrib/accountMenu/browser/account.contribution": {
 			"accountAvatarAlt": "{0} için GitHub profil görüntüsü",
@@ -5975,6 +5728,7 @@
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbsControl": {
 			"breadcrumbsActive": "Odağın içerik haritalarında olup olmadığını belirtir",
+			"breadcrumbsHasSymbols": "Whether breadcrumbs contain symbol items",
 			"breadcrumbsPossible": "Düzenleyicinin içerik haritalarını gösterip gösteremeyeceğini belirtir",
 			"breadcrumbsVisible": "İçerik haritalarının şu anda görünür olup olmadığını belirtir",
 			"cmd.copyPath": "İçerik hataları yolunu kopyala",
@@ -6718,6 +6472,10 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "Klavye odağının hızlı açma denetiminin içinde olup olmadığını belirtir"
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "Kullanıcı Verilerini Sıfırla",
+			"reset user data message": "Verilerinizi (ayarlar, tuş bağlamaları, uzantılar, parçacıklar ve Kullanıcı Arabirimi Durumu) sıfırlamak ve yeniden yüklemek istiyor musunuz?"
+		},
 		"vs/workbench/browser/window": {
 			"closeWindowButtonLabel": "Pencereyi &&Kapat",
 			"closeWindowMessage": "Pencereyi kapatmak istediğinizden emin misiniz?",
@@ -7042,6 +6800,7 @@
 			"auxiliaryBarVisible": "Yardımcı çubuğun görünür olup olmadığını belirtir",
 			"bannerFocused": "Başlığın klavye odağına sahip olup olmadığını belirtir",
 			"dirtyWorkingCopies": "Kaydedilmemiş değişiklikler içeren çalışma kopyaları olup olmadığı",
+			"editorAreaFocus": "Whether the editor area (any editor part) has keyboard focus",
 			"editorIsOpen": "Düzenleyicinin açık olup olmadığını belirtir",
 			"editorPartEditorGroupMaximized": "Düzenleyici Bölümünün ekranı kaplayan grubu var",
 			"editorPartModal": "Odağın kalıcı düzenleyici bölümünde olup olmadığını belirtir",
@@ -7283,183 +7042,6 @@
 			"duplicateId": "'{0}' kimliğine sahip bir görünüm zaten kayıtlı",
 			"treeView.notRegistered": "'{0}' kimliğine sahip ağaç görünümü yok.",
 			"views log": "Görünümler"
-		},
-		"vs/workbench/electron-browser/actions/developerActions": {
-			"configureRuntimeArguments": "Configure Runtime Arguments",
-			"reloadWindowWithExtensionsDisabled": "Reload with Extensions Disabled",
-			"revealUserDataFolder": "Reveal User Data Folder",
-			"showContentTracing": "Show Content Tracing",
-			"showGPUInfo": "Show GPU Info",
-			"startTracing": "Start Tracing",
-			"startTracing.ariaLabel": "Recording performance trace. Click to stop recording.",
-			"startTracing.name": "Performance Trace",
-			"startTracing.recording": "Recording trace (click to stop)",
-			"startTracing.tooltip": "Click to stop recording",
-			"stopTracing": "Stop Tracing",
-			"stopTracing.button": "&&Relaunch and Enable Tracing",
-			"stopTracing.detail": "This can take up to one minute to complete.",
-			"stopTracing.message": "No tracing session is in progress. Use 'Developer: Start Tracing' or launch with a '--trace' argument to begin tracing.",
-			"stopTracing.title": "Creating trace file...",
-			"toggleDevTools": "Toggle Developer Tools"
-		},
-		"vs/workbench/electron-browser/actions/installActions": {
-			"install": "Install '{0}' command in PATH",
-			"shellCommand": "Shell Command",
-			"successFrom": "Shell command '{0}' successfully uninstalled from PATH.",
-			"successIn": "Shell command '{0}' successfully installed in PATH.",
-			"uninstall": "Uninstall '{0}' command from PATH"
-		},
-		"vs/workbench/electron-browser/actions/windowActions": {
-			"close": "Close Window",
-			"closeActive": "Close Active Window",
-			"closeOtherWindows": "Close Other Windows",
-			"closeWindow": "Close Window",
-			"current": "Current Window",
-			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
-			"enableWindowAlwaysOnTop": "Turn On Always on Top",
-			"miCloseWindow": "Clos&&e Window",
-			"miZoomIn": "&&Zoom In",
-			"miZoomOut": "&&Zoom Out",
-			"miZoomReset": "&&Reset Zoom",
-			"quickSwitchWindow": "Quick Switch Window...",
-			"switchToMainWindow": "Switch to Main Window",
-			"switchWindow": "Switch Window...",
-			"switchWindowPlaceHolder": "Select a window to switch to",
-			"toggleWindowAlwaysOnTop": "Toggle Window Always on Top",
-			"windowDirtyAriaLabel": "{0}, window with unsaved changes",
-			"windowGroup": "window group",
-			"zoomIn": "Zoom In",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset Zoom"
-		},
-		"vs/workbench/electron-browser/desktop.contribution": {
-			"application.shellEnvironmentResolutionTimeout": "Controls the timeout in seconds before giving up resolving the shell environment when the application is not already launched from a terminal. See our [documentation](https://go.microsoft.com/fwlink/?linkid=2149667) for more information.",
-			"argv.crashReporterId": "Unique id used for correlating crash reports sent from this app instance.",
-			"argv.disableChromiumSandbox": "Disables the Chromium sandbox. This is useful when running VS Code as elevated on Linux and running under Applocker on Windows.",
-			"argv.disableHardwareAcceleration": "Disables hardware acceleration. ONLY change this option if you encounter graphic issues.",
-			"argv.disableLcdText": "Disables LCD font antialiasing.",
-			"argv.enableCrashReporter": "Allows to disable crash reporting, should restart the app if the value is changed.",
-			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
-			"argv.enebleProposedApi": "Enable proposed APIs for a list of extension ids (such as `vscode.git`). Proposed APIs are unstable and subject to breaking without warning at any time. This should only be set for extension development and testing purposes.",
-			"argv.force-renderer-accessibility": "Forces the renderer to be accessible. ONLY change this if you are using a screen reader on Linux. On other platforms the renderer will automatically be accessible. This flag is automatically set if you have editor.accessibilitySupport: on.",
-			"argv.forceColorProfile": "Allows to override the color profile to use. If you experience colors appear badly, try to set this to `srgb` and restart.",
-			"argv.jsFlags": "Specifies V8 JavaScript engine flags to pass (e.g. \"--max-old-space-size=4096\"). These flags are applied to the main process, renderer and utility processes.",
-			"argv.locale": "The display Language to use. Picking a different language requires the associated language pack to be installed.",
-			"argv.logLevel": "Log level to use. Default is 'info'. Allowed values are 'error', 'warn', 'info', 'debug', 'trace', 'off'.",
-			"argv.passwordStore": "Configures the backend used to store secrets on Linux. This argument is ignored on Windows & macOS.",
-			"argv.proxyBypassList": "Bypass any specified proxy for the given semi-colon-separated list of hosts. Example value \"<local>;*.microsoft.com;*foo.com;1.2.3.4:5678\", will use the proxy server for all hosts except for local addresses (localhost, 127.0.0.1 etc.), microsoft.com subdomains, hosts that contain the suffix foo.com and anything at 1.2.3.4:5678",
-			"argv.remoteDebuggingPort": "Specifies the port to use for remote debugging.",
-			"argv.useInMemorySecretStorage": "Ensures that an in-memory store will be used for secret storage instead of using the OS's credential store. This is often used when running VS Code extension tests or when you're experiencing difficulties with the credential store.",
-			"closeWhenEmpty": "Controls whether closing the last editor should also close the window. This setting only applies for windows that do not show folders.",
-			"confirmSaveUntitledWorkspace": "Controls whether a confirmation dialog shows asking to save or discard an opened untitled workspace in the window when switching to another workspace. Disabling the confirmation dialog will always discard the untitled workspace.",
-			"controlsStyle": "Adjust the appearance of the window controls to be native by the OS, custom drawn or hidden. Changes require a full restart to apply.",
-			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
-			"enableCrashReporterDeprecated": "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated due to being combined into the {0} setting.",
-			"keyboardConfigurationTitle": "Keyboard",
-			"mergeAllWindowTabs": "Merge All Windows",
-			"miExit": "E&&xit",
-			"moveWindowTabToNewWindow": "Move Window Tab to New Window",
-			"newTab": "New Window Tab",
-			"newWindowDimensions": "Controls the dimensions of opening a new window when at least one window is already opened. Note that this setting does not have an impact on the first window that is opened. The first window will always restore the size and location as you left it before closing.",
-			"openWithoutArgumentsInNewWindow": "Controls whether a new empty window should open when starting a second instance without arguments or if the last running instance should get focus.\r\nNote that there can still be cases where this setting is ignored (e.g. when using the `--new-window` or `--reuse-window` command line option).",
-			"restoreFullscreen": "Controls whether a window should restore to full screen mode if it was exited in full screen mode.",
-			"restoreWindows": "Controls how windows and editors within are being restored when opening.",
-			"security.promptForLocalFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a local file or workspace is about to open through a protocol handler.",
-			"security.promptForRemoteFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a remote file or workspace is about to open through a protocol handler.",
-			"showNextWindowTab": "Show Next Window Tab",
-			"showPreviousTab": "Show Previous Window Tab",
-			"telemetry.enableCrashReporting": "Enable crash reports to be collected. This helps us improve stability. \r\nThis option requires restart to take effect.",
-			"telemetryConfigurationTitle": "Telemetry",
-			"titleBarStyle": "Adjust the appearance of the window title bar to be native by the OS or custom. Changes require a full restart to apply.",
-			"toggleWindowTabsBar": "Toggle Window Tabs Bar",
-			"touchbar.enabled": "Enables the macOS touchbar buttons on the keyboard if available.",
-			"touchbar.ignored": "A set of identifiers for entries in the touchbar that should not show up (for example `workbench.action.navigateBack`).",
-			"window.border.color": "{0}: specific color in Hex, RGB, RGBA, HSL, HSLA format",
-			"window.border.default": "{0}: respect color theme settings, fallback to Windows settings",
-			"window.border.off": "{0}: disable border colors",
-			"window.border.prefix": "Controls the border color of the window:",
-			"window.border.suffix": "Use {0} to set different colors for active and inactive windows. This setting is ignored when {1} is set to {2}.",
-			"window.border.system": "{0}: respect Windows settings only",
-			"window.clickThroughInactive": "If enabled, clicking on an inactive window will both activate the window and trigger the element under the mouse if it is clickable. If disabled, clicking anywhere on an inactive window will activate it only and a second click is required on the element.",
-			"window.customTitleBarVisibility": "Adjust when the custom title bar should be shown. The custom title bar can be hidden when in full screen mode with `windowed`. The custom title bar can only be hidden in non full screen mode with `never` when {0} is set to `native`.",
-			"window.customTitleBarVisibility.auto": "Automatically changes custom title bar visibility.",
-			"window.customTitleBarVisibility.never": "Hide custom titlebar when {0} is set to `native`.",
-			"window.customTitleBarVisibility.windowed": "Hide custom titlebar in full screen. When not in full screen, automatically change custom title bar visibility.",
-			"window.doubleClickIconToClose": "If enabled, this setting will close the window when the application icon in the title bar is double-clicked. The window will not be able to be dragged by the icon. This setting is effective only if {0} is set to `custom`.",
-			"window.menuStyle": "Adjust the menu style to either be native by the OS, custom, or inherited from the title bar style defined in {0}. This also affects the context menu appearance. Changes require a full restart to apply.",
-			"window.menuStyle.custom": "Use the custom menu.",
-			"window.menuStyle.custom.mac": "Use the custom context menu.",
-			"window.menuStyle.inherit": "Matches the menu style to the title bar style defined in {0}.",
-			"window.menuStyle.inherit.mac": "Matches the context menu style to the title bar style defined in {0}.",
-			"window.menuStyle.mac": "Adjust the context menu appearances to either be native by the OS, custom, or inherited from the title bar style defined in {0}.",
-			"window.menuStyle.native": "Use the native menu. This is ignored when {0} is set to {1}.",
-			"window.menuStyle.native.mac": "Use the native context menu.",
-			"window.nativeFullScreen": "Controls if native full-screen should be used on macOS. Disable this option to prevent macOS from creating a new space when going full-screen.",
-			"window.nativeTabs": "Enables macOS native window tabs. Note that changes require a full restart to apply and that native tabs will disable a custom title bar style if configured.",
-			"window.newWindowDimensions.default": "Open new windows in the center of the screen.",
-			"window.newWindowDimensions.fullscreen": "Open new windows in full screen mode.",
-			"window.newWindowDimensions.inherit": "Open new windows with same dimension as last active one.",
-			"window.newWindowDimensions.maximized": "Open new windows maximized.",
-			"window.newWindowDimensions.offset": "Open new windows with same dimension as last active one with an offset position.",
-			"window.openWithoutArgumentsInNewWindow.off": "Focus the last active running instance.",
-			"window.openWithoutArgumentsInNewWindow.on": "Open a new empty window.",
-			"window.reopenFolders.all": "Reopen all windows unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.folders": "Reopen all windows that had folders or workspaces opened unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.none": "Never reopen a window. Unless a folder or workspace is opened (e.g. from the command line), an empty window will appear.",
-			"window.reopenFolders.one": "Reopen the last active window unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.preserve": "Always reopen all windows. If a folder or workspace is opened (e.g. from the command line) it opens as a new window unless it was opened before. If files are opened they will open in one of the restored windows together with editors that were previously opened.",
-			"windowConfigurationTitle": "Window",
-			"zoomLevel": "Adjust the default zoom level for all windows. Each increment above `0` (e.g. `1`) or below (e.g. `-1`) represents zooming `20%` larger or smaller. You can also enter decimals to adjust the zoom level with a finer granularity. See {0} for configuring if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window.",
-			"zoomPerWindow": "Controls if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window. See {0} for configuring a default zoom level for all windows."
-		},
-		"vs/workbench/electron-browser/desktop.main": {
-			"join.closeStorage": "Saving UI state"
-		},
-		"vs/workbench/electron-browser/parts/dialogs/dialogHandler": {
-			"copy": "&&Copy",
-			"okButton": "OK"
-		},
-		"vs/workbench/electron-browser/window": {
-			"appRootWarning.banner": "Files you store within the installation folder ('{0}') may be OVERWRITTEN or DELETED IRREVERSIBLY without warning at update time.",
-			"configure": "Configure",
-			"downloadArmBuild": "Download",
-			"keychainWriteError": "Writing login information to the keychain failed with error '{0}'.",
-			"learnMore": "Learn More",
-			"loginButton": "&&Log In",
-			"macoseolmessage": "{0} on {1} will soon stop receiving updates. Consider upgrading your macOS version.",
-			"password": "Password",
-			"proxyAuthRequired": "Proxy Authentication Required",
-			"proxyDetail": "The proxy {0} requires a username and password.",
-			"rememberCredentials": "Remember my credentials",
-			"resolveShellEnvironment": "Resolving shell environment...",
-			"restart": "Restart",
-			"runningAsRoot": "It is not recommended to run {0} as root user.",
-			"runningTranslated": "You are running an emulated version of {0}. For better performance download the native arm64 version of {0} build for your machine.",
-			"sharedProcessCrash": "A shared background process terminated unexpectedly. Please restart the application to recover.",
-			"showArgvParseWarning": "The runtime arguments file 'argv.json' contains errors. Please correct them and restart.",
-			"showArgvParseWarningAction": "Open File",
-			"shutdownErrorClose": "An unexpected error prevented the window to close",
-			"shutdownErrorDetail": "Error: {0}",
-			"shutdownErrorLoad": "An unexpected error prevented to change the workspace",
-			"shutdownErrorQuit": "An unexpected error prevented the application to quit",
-			"shutdownErrorReload": "An unexpected error prevented the window to reload",
-			"shutdownForceClose": "Close Anyway",
-			"shutdownForceLoad": "Change Anyway",
-			"shutdownForceQuit": "Quit Anyway",
-			"shutdownForceReload": "Reload Anyway",
-			"shutdownTitleClose": "Closing the window is taking a bit longer...",
-			"shutdownTitleLoad": "Changing the workspace is taking a bit longer...",
-			"shutdownTitleQuit": "Quitting the application is taking a bit longer...",
-			"shutdownTitleReload": "Reloading the window is taking a bit longer...",
-			"status.windowZoom": "Window Zoom",
-			"troubleshooting": "Troubleshooting Guide",
-			"username": "Username",
-			"willShutdownDetail": "The following operations are still running: \r\n{0}",
-			"zoomIn": "Zoom In",
-			"zoomNumber": "Zoom Level: {0} ({1}%)",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset",
-			"zoomSettings": "Settings"
 		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
 			"accessibility.chat.showCheckmarks": "Tamamlanan araç çağrılarında ve sohbet yanıtlarındaki diğer daraltılabilir öğelerde onay işareti simgelerinin gösterilip gösterilmeyeceğini denetler.",
@@ -7839,300 +7421,6 @@
 			"browserView.shareWithAgent.message": "Bu tarayıcı sayfası aracıyla paylaşılsın mı?",
 			"browserView.shareWithAgent.title": "Aracıyla paylaşılsın mı?"
 		},
-		"vs/workbench/contrib/browserView/electron-browser/browserEditor": {
-			"browser.editorFocused": "Tarayıcı düzenleyicisinin odaklanmış olup olmadığı",
-			"browser.hasError": "Tarayıcının yükleme hatası olup olmadığını belirtir",
-			"browser.hasUrl": "Tarayıcıda bir URL’nin yüklü olup olmadığını belirtir",
-			"browserCategory": "Tarayıcı"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserView.contribution": {
-			"browser.editorLabel": "Tarayıcı"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures": {
-			"browser.clearEphemeralStorageAction": "Depolamayı Temizle (Kısa Süreli)",
-			"browser.clearGlobalStorageAction": "Depolamayı Temizle (Genel)",
-			"browser.clearWorkspaceStorageAction": "Depolamayı Temizle (Çalışma Alanı)",
-			"browser.dataStorage": "Tarayıcı verilerinin (çerezler, önbellek, depolama) tarayıcı görünümleri arasında nasıl paylaşılacağını kontrol eder.\r\n\r\n**Not**: Güvenilmeyen çalışma alanlarında bu ayar yoksayılır ve her zaman `ephemeral` depolama kullanılır.",
-			"browser.dataStorage.ephemeral": "Her tarayıcı görünümünün kapatıldığında temizlenen kendi oturumu vardır.",
-			"browser.dataStorage.global": "Tüm tarayıcı görünümleri tüm çalışma alanlarında tek bir kalıcı oturum kullanır.",
-			"browser.dataStorage.workspace": "Aynı çalışma alanı içindeki tarayıcı görünümleri kalıcı bir oturumu kullanır. Hiçbir çalışma alanı açılmazsa, `ephemeral` depolama kullanılır.",
-			"browser.storageScope": "Geçerli tarayıcı görünümünün depolama kapsamı"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDevToolsFeature": {
-			"browser.devToolsOpen": "Geliştirici araçlarının geçerli tarayıcı görünümü için açık olup olmadığı",
-			"browser.toggleDevToolsAction": "Geliştirici Araçlarını Aç/Kapat"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures": {
-			"browser.addAreaScreenshotToChatAction": "Alan Ekran Görüntüsünü Sohbete Ekle",
-			"browser.addConsoleLogsToChatAction": "Konsol günlüklerini sohbete ekle",
-			"browser.addElementToChatAction": "Sohbete Öğe Ekle",
-			"browser.addFullPageScreenshotToChatAction": "Sohbete Tam Sayfa Ekran Görüntüsü Ekleme (Deneysel)",
-			"browser.addScreenshotToChatAction": "Sohbete Ekran Görüntüsü Ekle",
-			"browser.agentSharingContentWarning.detail": "Sayfalar, aracı davranışını etkileyebilecek gizli istemler içerebilir. Göndermeden önce ekli içerikleri dikkatlice kontrol edin.",
-			"browser.agentSharingContentWarning.dontShowAgain": "Bir daha gösterme",
-			"browser.agentSharingContentWarning.message": "Güvenilmeyen kaynaklardan içerik eklerken dikkatli olun.",
-			"browser.agentSharingContentWarning.ok": "&&Tamam",
-			"browser.areaSelectionActive": "Alan seçiminin şu anda etkin olup olmadığını belirtir",
-			"browser.chatActionsSubmenu": "Sohbete Ekle",
-			"browser.elementSelectionActive": "Öğe seçiminin şu anda etkin olup olmadığı",
-			"browser.enableChatTools": "Etkinleştirildiğinde, sohbet araçları Tümleşik Tarayıcı'da sayfaları açmak ve bu sayfalarla etkileşim kurmak için tarayıcı araçlarını kullanabilir.",
-			"browser.experimentalUserTools.enabled": "Etkinleştirildiğinde, kullanıcıya yönelik deneysel araçlar Entegre Tarayıcı'nın Sohbete Ekle menüsünde kullanılabilir.",
-			"browser.shareWithAgent": "Aracıyla Paylaş",
-			"browser.sharingWithAgent": "Aracıyla Paylaşılıyor",
-			"browser.unshareWithAgent": "Aracıyla Paylaşımı Durdur",
-			"browserAreaScreenshot": "Tarayıcı Alanı Ekran Görüntüsü",
-			"browserCategory": "Tarayıcı",
-			"browserFullPageScreenshot": "Tarayıcı Tam Sayfa Ekran Görüntüsü",
-			"browserScreenshot": "Tarayıcı Ekran Görüntüsü",
-			"consoleLogs": "Konsol Günlükleri",
-			"workbench.browser.agentHostChatToolsEnabled": "Etkinleştirildiğinde, tümleşik tarayıcı araçları Oturumlar penceresindeki aracı ana bilgisayar oturumlarına istemci tarafından sağlanan araçlar olarak sunulur. {0} ve {1} gereklidir."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures": {
-			"browser.device.dimensionsLabel": "Boyutlar:",
-			"browser.device.dprAriaLabel": "Cihaz piksel oranı",
-			"browser.device.dprLabel": "DPR:",
-			"browser.device.dprTitle": "Cihaz piksel oranı (boş = sistem varsayılanı)",
-			"browser.device.heightAriaLabel": "Görünüm penceresi yüksekliği",
-			"browser.device.inputPlaceholderAuto": "otomatik",
-			"browser.device.scaleLabel": "Ölçek:",
-			"browser.device.swapDimensionsTitle": "Boyutları Değiştir",
-			"browser.device.widthAriaLabel": "Görünüm penceresi genişliği",
-			"browser.device.zoomAriaLabel": "Yakınlaştırma faktörü",
-			"browser.device.zoomAuto": "Otomatik (%{0})",
-			"browser.devicePresets.mobileTag": "mobil",
-			"browser.devicePresets.placeholder": "Bir cihaz ön ayarı seçin",
-			"browser.emulationHasUserAgent": "Tarayıcı öykünmesinin özel bir kullanıcı aracısı olup olmadığını belirtir",
-			"browser.emulationIsMobile": "Tarayıcı öykünmesinin mobil modda olup olmadığını belirtir",
-			"browser.emulationToolbar.close": "Kapat",
-			"browser.emulationToolbar.mobile": "Mobil Öykünme",
-			"browser.emulationToolbar.presets": "Ön Ayarı Uygula...",
-			"browser.emulationToolbar.reset": "Sıfırla",
-			"browser.emulationToolbar.userAgent": "Kullanıcı Aracısını Ayarla...",
-			"browser.emulationToolbarVisible": "Tarayıcı öykünme araç çubuğunun görünür olup olmadığını belirtir",
-			"browser.hideEmulationToolbar": "Öykünme Araç Çubuğunu Gizle",
-			"browser.pickDevicePreset": "Cihaza Öykün...",
-			"browser.resetEmulation": "Öykünmeyi Sıfırla",
-			"browser.setUserAgent": "Kullanıcı Aracısına Öykün...",
-			"browser.showEmulationToolbar": "Öykünme Araç Çubuğunu Göster",
-			"browser.toggleMobileEmulation": "Mobil Öykünmeyi Aç/Kapat",
-			"browser.userAgent.prompt": "Kullanıcı aracısı dizesi (VS Code varsayılanı için boş bırak)"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures": {
-			"browser.certCloseTab": "Sekmeyi Kapat",
-			"browser.certDetailsHeading": "Sertifika Ayrıntıları",
-			"browser.certError": "Hata",
-			"browser.certErrorDescription": "Bu sitenin güvenlik sertifikası doğrulanamadı.",
-			"browser.certErrorExtraWarning": " Bağlantınız özel değil.",
-			"browser.certErrorLabel": "Sertifika Hatası",
-			"browser.certFingerprint": "Parmak izi",
-			"browser.certGoBack": "Geri Dön",
-			"browser.certHoverDetail1": "Bu siteye bağlantınız güvenli değil.",
-			"browser.certHoverDetail2": "Daha önce, bir sertifika hatası ({1}) olmasına rağmen '{0}' işlemiyle devam etmeyi seçmiştiniz.",
-			"browser.certHoverHeading": "Sertifikaya Güvenilmiyor",
-			"browser.certIssuer": "Veren",
-			"browser.certProceed": "Yine de devam et (güvenli değil)",
-			"browser.certRevoke": "İptal Et ve Kapat",
-			"browser.certSubject": "Konu",
-			"browser.certValid": "Geçerli",
-			"browser.errorUrlLabel": "URL:",
-			"browser.loadErrorLabel": "Sayfa Yüklenemedi",
-			"browser.notSecure": "Güvenli Değil"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
-			"browser.findNextAction": "Sonrakini Bul",
-			"browser.findPreviousAction": "Öncekini Bul",
-			"browser.findWidgetFocused": "Tarayıcı bulma pencere öğesinin odaklanmış olup olmadığı",
-			"browser.findWidgetVisible": "Tarayıcı bulma pencere öğesinin görünür olup olmadığı",
-			"browser.hideFindAction": "Pencere Öğesini Bul'u Kapat",
-			"browser.showFindAction": "Sayfada Bul"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorZoomFeature": {
-			"browser.canZoomIn": "Tarayıcının daha fazla yakınlaştırıp yakınlaştıramayacağını belirtir",
-			"browser.canZoomOut": "Tarayıcının daha fazla uzaklaştırıp uzaklaştıramayacağını belirtir",
-			"browser.defaultZoomLevel.matchWindow": "Uygulamanın geçerli kullanıcı arayüzü yakınlaştırma düzeyiyle eşleşir.",
-			"browser.pageZoom": "Tümleşik Tarayıcı'da tüm siteler için varsayılan yakınlaştırma düzeyidir.",
-			"browser.resetZoomAction": "Yakınlaştırmayı Sıfırla",
-			"browser.zoomInAction": "Yakınlaştır",
-			"browser.zoomOutAction": "Uzaklaştır"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserFavoritesFeature": {
-			"browser.addFavorite": "Sık Kullanılanlara Ekle",
-			"browser.addFavoriteAction": "Sık Kullanılanlara Ekle",
-			"browser.favorites": "Sık kullanılanlar",
-			"browser.removeFavorite": "Sık Kullanılanlardan kaldır",
-			"browser.removeFavoriteAction": "Sık Kullanılanlardan kaldır",
-			"browser.removeFavoriteWithKb": "Sık Kullanılanlardan kaldır ({0})",
-			"browser.urlIsFavorited": "Geçerli tarayıcı URL'sinin sık kullanılanlar arasında olup olmadığını belirtir"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserNavigationFeatures": {
-			"browser.canGoBack": "Tarayıcının geri dönüp dönememesi",
-			"browser.canGoForward": "Tarayıcının ileri gidip gidememesi",
-			"browser.focusUrlInputAction": "Odak URL'si Girişi",
-			"browser.goBackAction": "Geri Dön",
-			"browser.goForwardAction": "İleri Git",
-			"browser.hardReloadAction": "Zorla Yeniden Yükle",
-			"browser.openExternalAction": "Dış Tarayıcıda Aç",
-			"browser.openSettingsAction": "Tarayıcı Ayarları",
-			"browser.reloadAction": "Yeniden yükle"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
-			"browser.backgroundGroup": "Arka plan",
-			"browser.closeAll": "Tüm Tarayıcı Sekmelerini Kapat",
-			"browser.closeAllInGroup": "Gruptaki Tüm Tarayıcı Sekmelerini Kapat",
-			"browser.closeAllInGroupShort": "Tüm Tarayıcı Sekmelerini Kapat",
-			"browser.closeAllTabs": "Tümünü Kapat",
-			"browser.closeTab": "Kapat",
-			"browser.editorOpen": "Herhangi bir tarayıcı düzenleyicisinin şu anda açık olup olmadığı",
-			"browser.linkOpenedHint.ariaLabel": "Bu bağlantı tümleşik tarayıcıda açıldı",
-			"browser.linkOpenedHint.detail": "**Tümleşik Tarayıcı**\r\n\r\nYerel ana bilgisayar bağlantıları tümleşik tarayıcıda otomatik olarak açılır.",
-			"browser.linkOpenedHint.dismiss": "Bir Daha Gösterme",
-			"browser.linkOpenedHint.label": "Bağlantı burada açıldı",
-			"browser.linkOpenedHint.openSettings": "Ayarları Aç",
-			"browser.newTabAction": "Yeni Sekme",
-			"browser.openAction": "Tümleşik Tarayıcıyı Aç",
-			"browser.openFileAction": "Tümleşik Tarayıcıda Aç",
-			"browser.openLocalhostLinks": "Etkinleştirildiğinde, terminalden, sohbetten ve diğer kaynaklardan localhost bağlantıları (`localhost`, `127.0.0.1`, `[::1]`) ve tüm arabirimlerin bağlantıları (`0.0.0.0`, `[0:0:0:0:0:0:0:0]`, `[::]`) sistem tarayıcısı yerine Tümleşik Tarayıcı'da açılır.",
-			"browser.openNewTab": "Yeni Tümleşik Tarayıcı Sekmesi",
-			"browser.openOrListAction": "Tarayıcı",
-			"browser.openTabs": "Açık Sekmeler",
-			"browser.openTabsDescription": "Geçiş yapmak için bir sekme seç",
-			"browser.quickOpenAction": "Tarayıcı Sekmesini Hızlı Aç...",
-			"browser.quickOpenPlaceholder": "Bir tarayıcı sekmesi seçin",
-			"browser.showInTitleBar": "Tümleşik Tarayıcı düğmesinin başlık çubuğunda gösterilip gösterilmeyeceğini denetler.",
-			"browser.showInTitleBar.false": "Düğme hiçbir zaman başlık çubuğunda gösterilmez.",
-			"browser.showInTitleBar.true": "Düğme her zaman başlık çubuğunda gösterilir.",
-			"browser.showInTitleBar.whenOpen": "Bir tarayıcı düzenleyicisi açık olduğunda düğme başlık çubuğunda gösterilir.",
-			"browserEntryAriaLabelWithGroup": "{0}, {1}",
-			"miOpenBrowser": "&&Tarayıcı",
-			"toggle.browser": "Tümleşik Tarayıcı",
-			"toggle.browserDescription": "Başlık çubuğundaki Tümleşik Tarayıcı düğmesinin görünürlüğünü değiştir"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature": {
-			"browser.welcomeSubtitle": "Başlamak için yukarıya bir URL girin.",
-			"browser.welcomeSubtitleChat": "Sohbet istemleri içindeki kullanıcı arabirimi öğelerine başvurulduğunda Sohbete Öğe Ekle'yi kullanın.",
-			"browser.welcomeTitle": "Tarayıcı"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/webContentsViewRendererFeature": {
-			"browser.overlayPauseDetail.notification": "Tarayıcıyı kullanmaya devam etmek için bildirimi kapatın.",
-			"browser.overlayPauseHeading.notification": "Bildirim nedeniyle duraklatıldı"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserToolHelpers": {
-			"browser.blockedByPolicy": "Ağ etki alanı ilkesi tarafından engellendi",
-			"browser.element": "öğe",
-			"browser.open.alreadyOpen": "Zaten açık: {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserTools.contribution": {
-			"browserContext.label": "Tarayıcı Sayfaları",
-			"browserToolSet.description": "Tümleşik tarayıcı sayfalarını açın ve etkileşimde bulunun"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/clickBrowserTool": {
-			"browser.click.invocation": "{1} içinde {0} öğesine tıklanıyor",
-			"browser.click.invocation.middle": "{1} içinde {0} öğesine orta tıklanıyor",
-			"browser.click.invocation.right": "{1} içinde {0} öğesine sağ tıklanıyor",
-			"browser.click.past": "{1} içinde {0} öğesine tıklandı",
-			"browser.click.past.middle": "{1} içinde {0} öğesine orta tıklandı",
-			"browser.click.past.right": "{1} içinde {0} öğesine sağ tıklandı",
-			"browser.dblClick.invocation": "{1} içinde {0} öğesine çift tıklanıyor",
-			"browser.dblClick.past": "{1} içinde {0} öğesine çift tıklandı",
-			"clickBrowserTool.displayName": "Öğeye Tıklayın",
-			"clickBrowserTool.userDescription": "Tarayıcı sayfasındaki bir öğeye tıklayın"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/dragElementTool": {
-			"browser.drag.invocation": "{2} içinde {0} öğesi {1} konumuna sürüklendi",
-			"browser.drag.past": "{2} içinde {0} öğesi {1} konumuna sürüklendi",
-			"dragElementTool.displayName": "Öğeyi Sürükle",
-			"dragElementTool.userDescription": "Bir öğeyi başka bir öğenin üzerine sürükleme"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/handleDialogBrowserTool": {
-			"browser.handleDialog.invocation": "{0} içinde iletişim kutusu işleniyor",
-			"browser.handleDialog.past": "{0} içinde iletişim kutusu işlendi",
-			"handleDialogBrowserTool.displayName": "İletişim kutusunu yönet",
-			"handleDialogBrowserTool.userDescription": "Tarayıcı sayfasındaki iletişim kutusuna yanıt verin"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/hoverElementTool": {
-			"browser.hover.invocation": "{1} içinde {0} üzerine geliniyor",
-			"browser.hover.past": "{1} içinde {0} üzerine gelindi",
-			"hoverElementTool.displayName": "Üzerine Gelme Öğesi",
-			"hoverElementTool.userDescription": "Tarayıcı sayfasındaki bir öğenin üzerine gelme"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/navigateBrowserTool": {
-			"browser.goBack.invocation": "{0} içinde geri gidiliyor",
-			"browser.goBack.past": "{0} içinde geri gidildi",
-			"browser.goForward.invocation": "{0} içinde ileri gidiliyor",
-			"browser.goForward.past": "{0} içinde ileri gidildi",
-			"browser.navigate.confirmMessage": "Bu işlem tarayıcıyı {0}‘e yönlendirir ve aracının içeriğe erişmesine izin verir.",
-			"browser.navigate.confirmTitle": "Tarayıcıda Gezilsin mi?",
-			"browser.navigate.invocation": "{1} içinde şuraya gidiliyor: {0}",
-			"browser.navigate.past": "{1} içinde şuraya gidildi: {0}",
-			"browser.reload.invocation": "{0} yeniden yükleniyor",
-			"browser.reload.past": "{0} yeniden yüklendi",
-			"navigateBrowserTool.displayName": "Sayfada Gezinme",
-			"navigateBrowserTool.userDescription": "Tarayıcı sayfasına gidin veya yeniden yükleyin"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserTool": {
-			"browser.open.confirmMessage": "Bu işlem {0} tümleşik tarayıcıda açılır. Aracı içeriğini okuyabilir ve içeriklerle etkileşim kurabilir.",
-			"browser.open.confirmTitle": "Tarayıcı Sayfası açılsın mı?",
-			"browser.open.invocation": "{0} üzerinde tarayıcı sayfası açılıyor",
-			"browser.open.newPageOption": "Hayır, {0} konumunda yeni bir sayfa aç",
-			"browser.open.noPagesOption": "Hayır - Aracıyla hiçbir sekmeyi paylaşma",
-			"browser.open.past": "{0} üzerinde tarayıcı sayfası açıldı",
-			"browser.open.prompt.invocation": "Kullanıcıdan bir tarayıcı sekmesi paylaşması isteniyor",
-			"browser.open.prompt.past": "Kullanıcıdan bir tarayıcı sekmesi paylaşması istendi",
-			"browser.open.result": "{0} açıldı",
-			"browser.open.shareExistingOption": "Evet, şunu paylaş: \"{0}\" - {1}",
-			"browser.open.shareQuestion.message": "Mevcut tarayıcı sekmesi paylaşılsın mı?",
-			"browser.open.shareQuestion.title": "Tarayıcı Sekmesini Paylaş",
-			"browser.open.sharedResult": "{0} kullanıcı tarafından paylaşıldı",
-			"openBrowserTool.displayName": "Tarayıcı Sayfasını Aç",
-			"openBrowserTool.userDescription": "Tümleşik tarayıcıda bir URL açın"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserToolNonAgentic": {
-			"browser.open.nonAgentic.confirmMessage": "Bu işlem {0} tümleşik tarayıcıda açılır. Aracı içeriğini okuyamaz.",
-			"browser.open.nonAgentic.confirmTitle": "Tarayıcı Sayfası açılsın mı?",
-			"browser.open.nonAgentic.invocation": "{0} üzerinde tarayıcı sayfası açılıyor",
-			"browser.open.nonAgentic.past": "{0} üzerinde tarayıcı sayfası açıldı",
-			"browser.open.nonAgentic.result": "{0} açıldı"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/readBrowserTool": {
-			"browser.read.invocation": "{0} okunuyor",
-			"browser.read.past": "{0} dosyasını oku",
-			"readBrowserTool.displayName": "Sayfayı Oku",
-			"readBrowserTool.userDescription": "Tarayıcı sayfası içeriğini okuyun"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/runPlaywrightCodeTool": {
-			"browser.runCode.confirmDisclaimer": "Devam etmeden önce koda güvendiğinizden emin olun.",
-			"browser.runCode.confirmTitle": "Playwright kodu çalıştırılsın mı?",
-			"browser.runCode.invocation": "Playwright kodu çalıştırılıyor...",
-			"browser.runCode.past": "Playwright kodu çalıştırıldı",
-			"browser.runCode.waitInvocation": "Playwright kodunun tamamlanması bekleniyor...",
-			"browser.runCode.waitPast": "Playwright kodu bekleniyor",
-			"runPlaywrightCodeTool.displayName": "Playwright kodunu çalıştır",
-			"runPlaywrightCodeTool.userDescription": "Bir tarayıcı sayfasında Playwright kod parçacığı çalıştırın"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/screenshotBrowserTool": {
-			"browser.screenshot.invocation": "Tarayıcı ekran görüntüsü yakalanıyor",
-			"browser.screenshot.invocation.element": "{0} öğesinin ekran görüntüsü yakalanıyor",
-			"browser.screenshot.past": "Yakalanan tarayıcı ekran görüntüsü",
-			"browser.screenshot.past.element": "{0} öğesinin ekran görüntüsü alındı",
-			"screenshotBrowserTool.displayName": "Sayfa Ekran Görüntüsü",
-			"screenshotBrowserTool.userDescription": "Tarayıcı sayfasının ekran görüntüsünü alın"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/typeBrowserTool": {
-			"browser.pressKey.invocation": "{1} içinde `{0}` tuşuna basılıyor",
-			"browser.pressKey.invocation.element": "{2} içinde {1} içinde `{0}` tuşuna basılıyor",
-			"browser.pressKey.past": "{1} içinde `{0}` tuşuna basıldı",
-			"browser.pressKey.past.element": "{2} içinde {1} içinde `{0}` tuşuna basıldı",
-			"browser.type.invocation": "{0} içinde metin yazılıyor",
-			"browser.type.invocation.element": "{1} içinde {0} öğesine metin yazılıyor",
-			"browser.type.past": "{0} içinde metin yazıldı",
-			"browser.type.past.element": "{1} içinde {0} öğesine metin yazıldı",
-			"typeBrowserTool.displayName": "Sayfaya yazma",
-			"typeBrowserTool.userDescription": "Tarayıcı sayfasına metin yazın veya tuşlara basın"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget": {
-			"browser.goTo": "Şuraya gidin: {0}",
-			"browser.urlPlaceholder": "URL girin"
-		},
 		"vs/workbench/contrib/bulkEdit/browser/bulkEditService": {
 			"areYouSureQuiteBulkEdit.detail": "'{0}' devam ediyor.",
 			"changeWorkspace.message": "Çalışma alanını değiştirmek istediğinizden emin misiniz?",
@@ -8450,6 +7738,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatDeveloperActions": {
 			"workbench.action.chat.clearRecentlyUsedLanguageModels.label": "Son Kullanılan Dil Modellerini Temizle",
+			"workbench.action.chat.inspectAgentHostSubscriptions.label": "Inspect Agent Host Subscriptions",
 			"workbench.action.chat.inspectChatModel.label": "Sohbet Modelini İncele",
 			"workbench.action.chat.inspectChatModelReferences.label": "Sohbet Modeli Referanslarını İncele",
 			"workbench.action.chat.logChatIndex.label": "Sohbet Dizinini Günlüğe Kaydet",
@@ -8729,12 +8018,12 @@
 			"noAgentPlugins": "Aracı eklentisi bulunamadı.",
 			"update": "Güncelleştir"
 		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} - Aracı Ana Bilgisayarı",
-			"agentHostHarnessLabel.local": "{0} [Yerel]"
-		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
 			"agentHostChatInputPicker.ariaLabel": "{0} Seçici",
+			"agentHostChatInputPicker.boolean.false": "Off",
+			"agentHostChatInputPicker.boolean.offLabel": "Off",
+			"agentHostChatInputPicker.boolean.onLabel": "On",
+			"agentHostChatInputPicker.boolean.true": "On",
 			"agentHostChatInputPicker.filter": "Filtrele...",
 			"agentHostChatInputPicker.learnMorePermissions": "İzinler hakkında daha fazla bilgi edinin",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
@@ -8743,8 +8032,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "Otomatik Onayla",
-			"agentHost.branchPicker": "Dal",
-			"agentHost.isolationPicker": "Yalıtım",
 			"agentHost.modePicker": "Aracı Modu",
 			"agentHost.permissionModePicker": "Onaylar"
 		},
@@ -8756,23 +8043,6 @@
 			"agentHost.permission.oneMorePending": "+1 istek daha bekliyor",
 			"agentHost.permission.read": "\"{0}\" uzak aracı konağı {1} okumak istiyor",
 			"agentHost.permission.write": "\"{0}\" uzak aracı konağı {1} yazmak istiyor"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
-			"agentHost.authRequired": "Oturum başlatmak için kimlik doğrulaması gerekir. Lütfen oturum açın ve yeniden deneyin.",
-			"agentHost.elicit.url.cancel": "İptal",
-			"agentHost.elicit.url.instruction": "Bu URL açılsın mı?",
-			"agentHost.elicit.url.open": "Şunu aç: {0}",
-			"agentHost.elicit.url.title": "Yetkilendirme Gerekiyor",
-			"agentHost.forkedSessionLabel": "Çatallı Oturum",
-			"agentHost.responseDetails.credit": "{0} kredi",
-			"agentHost.responseDetails.credits": "{0} kredi"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
-			"agentHostTerminal.channelLocal": "Aracı Ana Bilgisayarı Terminali (Yerel)",
-			"agentHostTerminal.local": "Yerel"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
-			"ahp.running": "{0} çalıştırılıyor..."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "Tamamlandı",
@@ -8793,6 +8063,7 @@
 			"chat.session.providerDescription.codex": "Düzenleyicide yeni bir Codex oturumu açar. Codex oturumları sohbet oturumları görünümünden yönetilebilir.",
 			"chat.session.providerDescription.growth": "Copilot özellikleri hakkında bilgi edinin.",
 			"chat.session.providerDescription.local": "Görevleri VS Code sohbetinde çalıştırın. Aracı sohbet yoluyla ilerler ve değişiklikleri ana çalışma alanınıza uygulamak için etkileşimli çalışır.",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [Agent Host]",
 			"chat.session.providerLabel.background": "Copilot CLI",
 			"chat.session.providerLabel.cloud": "Bulut",
 			"chat.session.providerLabel.local": "Yerel"
@@ -9176,6 +8447,8 @@
 			"editorViewRawButtonTooltip": "Ham markdown dosyasını göster",
 			"homeButton": "Genel bakış",
 			"homeButtonTooltip": "Genel bakışa geri dön",
+			"homeButtonTooltipWithHarness": "Current harness: {0}. Click to go to overview",
+			"homeButtonWithHarness": "{0}, Back to overview",
 			"hooks": "Kancalar",
 			"hooksDesc": "Dosya kaydetme veya görev çalıştırma gibi olaylarla tetiklenen otomatik eylemleri yapılandırın.",
 			"instructions": "Yönergeler",
@@ -9381,6 +8654,10 @@
 			"chat.NotebookImageAttachment": "Eklenen not defteri çıkışı {0}",
 			"chat.attachment": "Ekli bağlam, {0}",
 			"chat.attachment.clearButton": "Bağlamdan kaldır",
+			"chat.attachment.saveFileButton": "Save As...",
+			"chat.attachment.saveFileError": "Failed to save file: {0}",
+			"chat.attachment.saveImageButton": "Save Image As...",
+			"chat.attachment.saveImageError": "Failed to save image: {0}",
 			"chat.attachment.withDeleteHint": "{0} (Sil)",
 			"chat.browserToolsDisabled": "Tarayıcı araçları etkin değil.",
 			"chat.browserToolsDisabled.aria": "Tarayıcı araçları etkin değil, {0}",
@@ -9476,7 +8753,7 @@
 			"chat.agentHost.ahpJsonlLogging": "Etkinleştirildiğinde, aracı konağı bağlantıları için tüm AHP taşıma iletilerini pencerenin günlük dizini altındaki JSONL dosyalarına kaydeder.",
 			"chat.agentHost.clientTools": "Aracı konak oturumlarında istemci tarafından sağlanan araçlar olarak kullanıma sunulacak araç başvuru adları.",
 			"chat.agentHost.customTerminalTool.enabled": "Etkinleştirildiğinde, Copilot SDK oturumları SDK'nın varsayılan terminal davranışı yerine Aracı Ana Bilgisayarı terminal aracı geçersiz kılmasını kullanır.",
-			"chat.agentHost.ipcLogging": "Etkinleştirildiğinde, her aracı konağı için tüm IPC trafiğini ayrılmış bir çıkış kanalına kaydeder.",
+			"chat.agentHost.defaultChatProvider": "When enabled, the local agent host is used as the default provider in the VS Code chat session-target picker. Requires `#{0}#`.",
 			"chat.agentLocations.invalidPath": "Yollar göreli olmalıdır veya '~/' ile başlamalıdır. Mutlak yollar ve '\\' ayırıcıları desteklenmez.",
 			"chat.agentSessionProjection.enabled": "Odaklanmış bir çalışma alanında aracı oturumlarını gözden geçirmek için Aracı Oturumu Yansıtma modunun etkin olup olmadığını denetler.",
 			"chat.agentSkillsLocations.description": "Sohbet Oturumlarında kullanılabilecek aracı becerilerinin (`{0}`) konumlarını belirtin. [Daha Fazla Bilgi Edinin]({1}).\r\n\r\nHer yol, SKILL.md dosyaları içeren beceri alt klasörleri içermelidir (örneğin, `my-skills/skillA/SKILL.md` varsa `my-skills` ekleyin). Göreli yollar, çalışma alanınızın kök klasörlerinden çözümlenir.",
@@ -9506,6 +8783,7 @@
 			"chat.artifacts.rules.groupName": "Yapıt grubunun görünen adı.",
 			"chat.artifacts.rules.onlyShowGroup": "Doğru ise, tek tek öğeler yerine yalnızca grup üst bilgisini göster.",
 			"chat.autoReply.description": "Aracıya kullanıcının müsait olmadığını belirterek ve en iyi kararını vermesini isteyerek soru döngülerini otomatik olarak atlayın. Bu gelişmiş bir ayardır ve eksik bağlama dayalı istenmeyen seçimlere veya eylemlere yol açabilir.",
+			"chat.autopilot.advanced.enabled": "Enables **Advanced Autopilot**, a single switch that turns on all advanced Autopilot behaviors that delegate more of the loop to the agent. Currently, after each Autopilot turn a small, fast model evaluates whether your original request is complete; if not, Autopilot keeps working using that evaluation as guidance for the next turn, instead of relying on the agent to signal completion itself.",
 			"chat.checkpoints.enabled": "Sohbette denetim noktalarını etkinleştirir. Denetim noktaları, sohbeti önceki bir duruma geri yüklemenizi sağlar.",
 			"chat.checkpoints.showFileChanges": "Sohbet kontrol noktası dosyası değişikliklerinin gösterilip gösterilmeyeceğini kontrol eder.",
 			"chat.codeBlock.showProgressAnimation.description": "Düzenlemeleri uygularken, kod bloğu kutucuğunda bir ilerleme animasyonu gösterin. Devre dışı bırakıldığında, bunun yerine ilerleme yüzdesi gösterilir.",
@@ -10560,7 +9838,6 @@
 			"signIn": "Oturum Aç"
 		},
 		"vs/workbench/contrib/chat/browser/chatTipCatalog": {
-			"tip.agenticBrowser": "Aracının Entegre Tarayıcıdaki sayfaları açmasına ve bunlarla etkileşim kurmasına izin vermek için [{0}](command:workbench.action.openSettings?%5B%22workbench.browser.enableChatTools%22%5D \"Open Settings\") seçeneğini etkinleştirin.",
 			"tip.agentsWindow": "[Aracılar penceresinde](komut:{0} \"Aracılar Penceresini Aç\") aynı anda birden çok proje üzerinde çalışın.",
 			"tip.attachFiles": "Aracıya görev hakkında daha fazla bağlam yüklemek için dosya veya klasörlere # işaretiyle referans verin.",
 			"tip.autoAcceptDelay": "Kısa bir geri sayımın ardından aracının yaptığı değişiklikleri otomatik olarak kabul etmek için [{0}](command:workbench.action.openSettings?%5B%22chat.editing.autoAcceptDelay%22%5D \"Ayarları Aç\") öğesini yapılandırın.",
@@ -11287,6 +10564,7 @@
 			"chat.working.fun.1": "Hamster'a rüşvet verme",
 			"chat.working.fun.2": "Splines'i yeniden oluşturma",
 			"chat.working.fun.3": "Spagetti çözülüyor",
+			"chat.working.fun.4": "Communing with the codebase",
 			"chat.working.fun.minecraft.1": "Elmas madenciliği",
 			"chat.working.fun.ms.1": "Clippy Çağrılıyor"
 		},
@@ -11536,6 +10814,11 @@
 		"vs/workbench/contrib/chat/browser/widget/input/chatFollowups": {
 			"followUpAriaLabel": "Takip sorusu: {0}"
 		},
+		"vs/workbench/contrib/chat/browser/widget/input/chatGoalBannerWidget": {
+			"chat.goalBanner.dismiss": "Dismiss",
+			"chat.goalBanner.label": "Goal",
+			"chat.goalBanner.loading": "Determining goal…"
+		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationWidget": {
 			"dismissNotification": "Bildirimi kapat"
 		},
@@ -11666,7 +10949,7 @@
 			"permissions.autoApprove.policyDisabled": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
 			"permissions.autoApprove.subtext": "Tüm araç çağrıları otomatik olarak onaylanır",
 			"permissions.autopilot": "Otomatik Pilot (Önizleme)",
-			"permissions.autopilot.description": "Tüm araç çağrılarını otomatik onayla ve görev tamamlanana kadar devam et",
+			"permissions.autopilot.description": "Auto-approve all tool calls and continue until the task is done. Autopilot may increase costs.",
 			"permissions.autopilot.label": "Otomatik Pilot (Önizleme)",
 			"permissions.autopilot.policyDescription": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
 			"permissions.autopilot.policyDisabled": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
@@ -11681,7 +10964,9 @@
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "Aracı türleri hakkında bilgi edinin...",
 			"chat.sessionTarget.category.agent": "Aracı Türleri",
-			"chat.sessionTarget.category.other": "Diğer"
+			"chat.sessionTarget.category.other": "Diğer",
+			"chat.sessionTarget.upgradeHover": "[Upgrade to GitHub Copilot Pro](command:workbench.action.chat.upgradePlan) to delegate work to the cloud agent.",
+			"chat.sessionTarget.upgradeLink": "[Upgrade](command:workbench.action.chat.upgradePlan)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/workspacePickerActionItem": {
 			"openFolder": "Klasör Açın...",
@@ -12324,35 +11609,6 @@
 			"tool.askQuestions.displayName": "Net Sorular Sorun",
 			"tool.askQuestions.userDescription": "Devam etmeden önce görev gereksinimlerini toplamak için tek seçimli, çok seçimli veya serbest biçimli girişlerle yapılandırılmış net sorular sorun."
 		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatExternalPathConfirmation": {
-			"addPath": "Yol Ekle...",
-			"addPathDescription": "Bu çalışma alanında bir klasöre izin ver",
-			"allowFolderSession": "Bu oturumda bu klasöre izin ver",
-			"allowFolderSessionDetail": "Bu sohbet oturumunda daha fazla onay olmadan bu klasörden dosya okunmasına izin ver",
-			"allowRepoSession": "Bu oturum için bu depodaki tüm dosyalara izin verin",
-			"allowRepoSessionDetail": "{0} dosyalarından okuma izni ver",
-			"allowRepoSessionDetailLookup": "Bu yolun içinde bulunduğu git deposunu bulur",
-			"sessionScope": "Oturum",
-			"workspaceScope": "Çalışma alanı"
-		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatUrlFetchingConfirmation": {
-			"allowRequestsCheckbox": "Onay olmadan istekte bulun",
-			"allowResponsesCheckbox": "Onay olmadan yanıtlara izin ver",
-			"approveAll": "Tümünü onayla",
-			"approveRequestTo": "{0} isteklerine izin ver",
-			"approveResponseFrom": "{0} öğesinden gelen yanıtlara izin ver",
-			"approves": "Şunu onaylar: {0}",
-			"delete": "Sil",
-			"denyAll": "Tümünü reddet",
-			"moreOptions": "Şu isteklere izin ver:",
-			"moreOptionsManage": "Diğer Seçenekler...",
-			"moreOptionsMultiple": "URL Onaylarını Yapılandır...",
-			"noApprovals": "Onay yok",
-			"openSettings": "Ayarları aç",
-			"requests": "istekler",
-			"responses": "yanıtlar",
-			"selectApproval": "Onay için URL desenini seçin"
-		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/manageTodoListTool": {
 			"todo.added.multiple": "{0} yapılacak iş eklendi",
 			"todo.added.single": "1 yapılacak iş eklendi",
@@ -12446,99 +11702,6 @@
 			"chat.slashCommandForeground": "Sohbet eğik çizgi komutunun ön plan rengi.",
 			"chat.thinkingShimmer": "Düşünme ve çalışma etiketleri için ışıltı vurgusu.",
 			"chatCheckpointSeparator": "Sohbet kontrol noktası ayırıcı rengi."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
-			"workbench.action.chat.openStorageFolder.label": "Sohbet Depolama Klasörünü Aç"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatExportZip": {
-			"chat.exportAsZip.label": "Sohbeti Zip olarak dışarı aktar...",
-			"chatExportZip.error": "Sohbet zip olarak dışarı aktarılamadı: {0}",
-			"chatExportZip.noRepoData": "Sohbet, depo bağlamı olmadan dışa aktarıldı. Git deposu algılanmadı."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
-			"debugAgentHost.noInspectPort": "Aracı ana bilgisayar işlemi için Node.js denetçisi etkinleştirilemedi.",
-			"debugAgentHostInDevTools": "Geliştirme Araçlarında Yerel Aracı Ana Bilgisayar İşleminde Hata Ayıkla"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
-			"exportDebugLogs.saveDialogTitle": "Aracı Konağı Hata Ayıklama Günlüklerini Dışarı Aktar",
-			"exportDebugLogs.zipFilter": "Zip Arşivi"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
-			"exportAgentTracesDB.error": "Aracı konak izleme veritabanı dışarı aktarılamadı: {0}",
-			"exportAgentTracesDB.label": "Aracı Konak İzleme Veritabanını Dışarı Aktar...",
-			"exportAgentTracesDB.notFound": "Henüz aracı konak izleme veritabanı bulunamadı. Doldurmak için `#chat.agentHost.otel.dbSpanExporter.enabled#` açıkken bir aracı oturumu çalıştırın."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
-			"keywordActivation.status.active": "'Hey Code' dinleniyor...",
-			"keywordActivation.status.inactive": "Sesli sohbetin sona ermesi bekleniyor...",
-			"keywordActivation.status.name": "Sesli Anahtar Sözcük Etkinleştirme",
-			"listening": "Dinliyorum",
-			"scopedChatSynthesisInProgress": "Sesli sohbet için mikrofondan ses kaydının devam ettiği konum olarak tanımlandı. Bu anahtar, sohbet bağlamı başına yalnızca kapsamlı olarak tanımlanır.",
-			"scopedVoiceChatGettingReady": "Sesli sohbet için mikrofondan ses girişi almaya hazırlanırken true olur. Bu anahtar, sohbet bağlamı başına yalnızca kapsamlı olarak tanımlanır.",
-			"scopedVoiceChatInProgress": "Sesli sohbet için mikrofondan ses kaydının devam ettiği konum olarak tanımlandı. Bu anahtar, sohbet bağlamı başına yalnızca kapsamlı olarak tanımlanır.",
-			"voice.keywordActivation": "'Hey Code' anahtar sözcük tümceciğinin sesli sohbet oturumu başlatmak için tanınıp tanınmadığını denetler. Bunun etkinleştirilmesi mikrofondan kaydetmeyi başlatır ancak ses yerel olarak işlenir ve hiçbir zaman bir sunucuya gönderilmez.",
-			"voice.keywordActivation.chatInContext": "Anahtar sözcük etkinleştirme etkinleştirildi ve klavye odağına bağlı olarak etkin düzenleyicide veya görünümde sesli sohbet oturumu başlatmak için 'Hey Code' dinleniyor.",
-			"voice.keywordActivation.chatInView": "Anahtar sözcük etkinleştirme etkinleştirildi ve sohbet görünümünde sesli sohbet oturumu başlatmak için 'Hey Code' dinleniyor.",
-			"voice.keywordActivation.inlineChat": "Anahtar sözcük etkinleştirme özelliği etkin ve mümkünse, etkin düzenleyicide sesli sohbet oturumu başlatmak için 'Hey Code' dinleniyor.",
-			"voice.keywordActivation.off": "Anahtar sözcük etkinleştirme devre dışı bırakıldı.",
-			"voice.keywordActivation.quickChat": "Anahtar sözcük etkinleştirme etkinleştirildi ve hızlı sohbette sesli sohbet oturumu başlatmak için 'Hey Code' dinleniyor.",
-			"workbench.action.chat.holdToVoiceChatInChatView.label": "Sohbet Görünümünde Sesli Sohbet için Basılı Tutun",
-			"workbench.action.chat.inlineVoiceChat": "Satır İçi Sesli Sohbet",
-			"workbench.action.chat.quickVoiceChat.label": "Hızlı Sesli Sohbet",
-			"workbench.action.chat.readChatResponseAloud": "Sesli Okuma",
-			"workbench.action.chat.startVoiceChat.label": "Sesli Sohbet Başlat",
-			"workbench.action.chat.stopListening.label": "Dinlemeyi Durdur",
-			"workbench.action.chat.stopListeningAndSubmit.label": "Dinlemeyi Durdur ve Gönder",
-			"workbench.action.chat.stopReadChatItemAloud": "Sesli Okumayı Durdur",
-			"workbench.action.chat.voiceChatInView.label": "Sohbet Görünümünde Sesli Sohbet",
-			"workbench.action.speech.stopReadAloud": "Sesli Okumayı Durdur"
-		},
-		"vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions": {
-			"chat.agentsHandoff.tip.action": "Aracılar Penceresinde Aç",
-			"chat.agentsHandoff.tip.description": "Çalışma alanınızın yanında size özel, çok bölmeli bir görünüm elde edin.",
-			"chat.agentsHandoff.tip.description.copilot": "Copilot planınızla ücretsiz olarak çalışma alanınızın yanında size özel, çok bölmeli bir görünüm elde edin.",
-			"chat.agentsHandoff.tip.emptyWorkspace.description": "Copilot CLI oturumu başlatmak için Aracılar Penceresi'ni açın.",
-			"chat.agentsHandoff.tip.emptyWorkspace.message": "Copilot CLI [Local], açık bir klasör olmadan kullanılamaz.",
-			"chat.agentsHandoff.tip.message": "Bu oturuma Aracılar Penceresi'nde devam edin",
-			"openAgentsWindow": "Aracılar Penceresini Aç",
-			"openInAgentsHover": "Aracılar Penceresinde Aç",
-			"openSessionInAgentsWindow": "Aracılar Penceresinde Aç",
-			"openWorkspaceInAgentsWindow": "Aracılarda Aç",
-			"toggle.openInAgentsWindow": "Aracılar Penceresinde Aç",
-			"toggle.openInAgentsWindowDescription": "Başlık çubuğundaki Aracılar Penceresinde Aç düğmesinin görünürlüğünü aç/kapat"
-		},
-		"vs/workbench/contrib/chat/electron-browser/builtInTools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "İkili dosyalar şu anda desteklenmiyor.",
-			"fetchWebPage.confirmationMessage.plural": "Web içeriği kötü amaçlı kod içerebilir veya istem ekleme saldırılarına teşebbüs edebilir.",
-			"fetchWebPage.confirmationTitle.plural": "Web sayfaları getirilsin mi?",
-			"fetchWebPage.confirmationTitle.singular": "Web sayfası getirilsin mi?",
-			"fetchWebPage.fetchedFrom": "{0} dosyasından getirildi",
-			"fetchWebPage.invalidUrl": "Geçersiz URL",
-			"fetchWebPage.invocationMessage.plural": "{0} kaynak alınıyor",
-			"fetchWebPage.invocationMessage.singular": "{0} getiriliyor",
-			"fetchWebPage.invocationMessage.singularAsLink": "[Kaynak]({0}) getiriliyor",
-			"fetchWebPage.noValidUrls": "Geçerli URL sağlanmadı.",
-			"fetchWebPage.pastTenseMessage.plural": "{0} kaynak alındı, ancak aşağıdaki URL'ler geçersizdi:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Kaynak alındı, ancak aşağıdaki geçersiz bir URL idi:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "{0} kaynak getirildi",
-			"fetchWebPage.pastTenseMessageResult.singular": "{0} getirildi",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "[Kaynak]({0}) alındı",
-			"fetchWebPage.urlMentionedInPrompt": "URL istemde olduğu için otomatik olarak onaylandı",
-			"fetchWebPage.urlsDescription": "İçerik getirilecek bir URL dizisi."
-		},
-		"vs/workbench/contrib/chat/electron-browser/chat.contribution": {
-			"changeWorkspace.detail": "Çalışma alanını değiştirirseniz oturum duracaktır.",
-			"changeWorkspace.message": "Bir oturum devam ediyor. Çalışma alanını değiştirmek istediğinizden emin misiniz?",
-			"chatRequestInProgress": "Bir oturum devam ediyor.",
-			"closeTheWindow.detail": "Pencereyi kapatırsanız oturum duracaktır.",
-			"closeTheWindow.message": "Bir oturum devam ediyor. Pencereyi kapatmak istediğinizden emin misiniz?",
-			"copilotWorkspaceTrust": "Yapay zeka özellikleri şu anda yalnızca güvenilir çalışma alanlarında desteklenmektedir.",
-			"exit.detail": "Çıkarsanız oturum duracaktır.",
-			"exit.message": "Bir oturum devam ediyor. Çıkmak istediğinizden emin misiniz?",
-			"quit.detail": "Çıkarsanız oturum duracaktır.",
-			"quit.message": "Bir oturum devam ediyor. Çıkmak istediğinizden emin misiniz?",
-			"reloadTheWindow.detail": "Pencereyi yeniden yüklerseniz oturum duracaktır.",
-			"reloadTheWindow.message": "Bir oturum devam ediyor. Pencereyi yeniden yüklemek istediğinizden emin misiniz?"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "Pencere veya odak değişiklikleri tarafından tetiklenen açık kaydetmeler ve otomatik kaydetmeler sırasında Kod Eylemlerini tetikler.",
@@ -12821,7 +11984,13 @@
 			"schema.folding": "Dilin katlama ayarları.",
 			"schema.folding.markers": "'#region' ve 'endregion' gibi dile özgü katlama işaretçileri. Başlangıç ve bitiş normal ifadeleri tüm satırların içeriğine göre test edilir ve verimli bir şekilde tasarlanmalıdır",
 			"schema.folding.markers.end": "Bitiş işaretleyicisi için RegExp deseni. RegExp '^' ile başlamalıdır.",
+			"schema.folding.markers.end.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.end.flags": "The RegExp flags for the end marker.",
+			"schema.folding.markers.end.pattern": "The RegExp pattern for the end marker.",
 			"schema.folding.markers.start": "Başlangıç işaretleyicisi için RegExp deseni. RegExp '^' ile başlamalıdır.",
+			"schema.folding.markers.start.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.start.flags": "The RegExp flags for the start marker.",
+			"schema.folding.markers.start.pattern": "The RegExp pattern for the start marker.",
 			"schema.folding.offSide": "Bir dildeki bloklar girintileriyle ifade ediliyorsa dil, off-side kuralına bağlı kalır. Ayarlanırsa, boş satırlar sonraki bloğa ait olur.",
 			"schema.indentationRules": "Dilin girinti ayarları.",
 			"schema.indentationRules.decreaseIndentPattern": "Bu desenle eşleşen bir satır varsa sonraki tüm satırların girintisinin kaldırılması gerekir (başka bir kuralla eşleşene kadar).",
@@ -12870,12 +12039,6 @@
 			"schema.wordPattern.flags": "Sözcükleri eşleştirmek için kullanılan RegExp bayrakları.",
 			"schema.wordPattern.flags.errorMessage": "`/^([gimuy]+)$/` deseniyle eşleşmelidir.",
 			"schema.wordPattern.pattern": "Sözcükleri eşleştirmek için kullanılan RegExp deseni."
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "Paste Selection Clipboard"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/startDebugTextMate": {
-			"startDebugTextMate": "TextMate Söz Dizimi Gramerini Günlüğe Kaydetmeye Başla"
 		},
 		"vs/workbench/contrib/commands/common/commands.contribution": {
 			"runCommands": "Komutları Çalıştırma",
@@ -14373,6 +13536,9 @@
 			"workbench.extensions.uninstallExtension.description": "Belirtilen uzantıyı kaldır",
 			"workspace unsupported filter": "Çalışma Alanı Desteklenmiyor"
 		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "Uzantılar Çalıştırılıyor"
+		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "Web için {0} içinde desteklenmediğinden bu uzantı devre dışı bırakıldı.",
 			"Defined to run in desktop": "Bu uzantı, masaüstü için {0} çalıştırması için tanımlandığından devre dışı bırakıldı.",
@@ -14711,8 +13877,8 @@
 			"enableExtensionMessage": "'{0}' uzantısını etkinleştirmek istiyor musunuz?",
 			"enableExtensionTitle": "Uzantıyı Etkinleştir",
 			"extension not found": "'{0}' uzantısı bulunamadı.",
-			"extensions need reload": "Uzantıların yürürlüğe girmesi için pencerenin yeniden yüklenmesi gerekir.",
-			"extensions need restart": "Uzantıların yürürlüğe girmesi için yeniden başlatma gerekir.",
+			"extensions need reload": "Extensions require a window reload to apply updates.",
+			"extensions need restart": "All extensions require a restart to apply updates.",
 			"extensionsAutoRestart": "Güncelleştirmeleri etkinleştirmek için uzantılar otomatik olarak yeniden başlatıldı.",
 			"incompatible": "'{0}' uzantısı uyumlu olmadığından yüklenemiyor.",
 			"incompatibleExtensions": "Sürüm uyumsuzluğunu nedeniyle bazı uzantılar devre dışı bırakıldı. Bunları gözden geçirip güncelleştirin.",
@@ -14803,72 +13969,10 @@
 			"searchExtensionsTool.noInput": "Lütfen aranacak bir kategori veya anahtar sözcükler ya da kimlikler girin.",
 			"searchExtensionsTool.userDescription": "VS Code uzantılarını ara"
 		},
-		"vs/workbench/contrib/extensions/electron-browser/debugExtensionHostAction": {
-			"debugExtensionHost": "Debug Extension Host In New Window",
-			"debugExtensionHost.launch.name": "Attach Extension Host",
-			"debugExtensionHost.progress": "Attaching Debugger To Extension Host",
-			"debugExtensionHostAndRenderer": "Debug Extension Host and Renderer In New Window",
-			"debugRenderer": "Debug Renderer In New Window",
-			"debugRenderer.launch.name": "Attach Renderer",
-			"debugRenderer.progress": "Attaching Debugger To Renderer",
-			"openDevToolsForExtensionHost": "Debug Extension Host In Dev Tools",
-			"restart1": "Debug Extensions",
-			"restart2": "In order to debug extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectExtensionHost": "Pick extension host"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionProfileService": {
-			"profilingExtensionHost": "Profiling Extension Host",
-			"profilingExtensionHostTime": "Profiling Extension Host ({0} sec)",
-			"restart1": "Profile Extensions",
-			"restart2": "In order to profile extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectAndStartDebug": "Click to stop profiling.",
-			"status.profiler": "Extension Profiler"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensions.contribution": {
-			"runtimeExtension": "Running Extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsActions": {
-			"cleanUpExtensionsFolder": "Cleanup Extensions Folder",
-			"openExtensionsFolder": "Open Extensions Folder"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsAutoProfiler": {
-			"show": "Show Extensions",
-			"unresponsive-exthost": "The extension '{0}' took a very long time to complete its last operation and it has prevented other extensions from running."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
-			"attach.msg": "This is a reminder to make sure that you have not forgotten to attach '{0}' to the issue you have just created.",
-			"attach.msg2": "This is a reminder to make sure that you have not forgotten to attach '{0}' to an existing performance issue.",
-			"attach.title": "Did you attach the CPU-Profile?",
-			"cmd.report": "Report Issue",
-			"cmd.reportOrShow": "Performance Issue",
-			"cmd.show": "Show Issues"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "Start Extension Host Profile",
-			"openExtensionHostProfile": "Open Extension Host Profile",
-			"saveExtensionHostProfile": "Save Extension Host Profile",
-			"saveprofile.dialogTitle": "Save Extension Host Profile",
-			"stopExtensionHostProfileStart": "Stop Extension Host Profile"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction.Integrated": "Open in Integrated Terminal",
-			"scopedConsoleAction.external": "Open in External Terminal",
-			"scopedConsoleAction.wt": "Open in Windows Terminal"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "When opening a file from the Explorer in a terminal, determines what kind of terminal will be launched",
-			"globalConsoleAction": "Open New External Terminal",
-			"selectWorkspace": "Select workspace folder",
-			"sourceControlRepositories.openInTerminalKind": "When opening a repository from the Source Control Repositories view in a terminal, determines what kind of terminal will be launched",
-			"terminal.external.linuxExec": "Customizes which terminal to run on Linux.",
-			"terminal.external.osxExec": "Customizes which terminal application to run on macOS.",
-			"terminal.external.windowsExec": "Customizes which terminal to run on Windows.",
-			"terminal.kind.both": "Show both integrated and external terminal actions.",
-			"terminal.kind.external": "Show the external terminal action.",
-			"terminal.kind.integrated": "Show the integrated terminal action.",
-			"terminalConfigurationTitle": "External Terminal"
+			"scopedConsoleAction.Integrated": "Tümleşik Terminalde Aç",
+			"scopedConsoleAction.external": "Dış Terminalde Aç",
+			"scopedConsoleAction.wt": "Windows Terminal'da Aç"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "Dış URI'ler (http, https) için kullanılacak açıcıyı yapılandırın.",
@@ -15324,13 +14428,6 @@
 			"openEditorsFocus": "Odak AÇIK DÜZENLEYİCİLER görünümündeyse true olur.",
 			"viewHasSomeCollapsibleItem": "EXPLORER görünümündeki bir çalışma alanının daraltılabilir bir kök alt öğesi olduğunda true olur."
 		},
-		"vs/workbench/contrib/files/electron-browser/fileActions.contribution": {
-			"filesCategory": "Dosya",
-			"miShare": "Paylaş",
-			"openContainer": "İçeren Klasörü Aç",
-			"revealInMac": "Finder'da Ortaya Çıkar",
-			"revealInWindows": "Dosya Gezgini'nde Göster"
-		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
 			"formatter.default": "Diğer tüm katlama aralığı sağlayıcılarından daha öncelikli olan varsayılan bir kaynağa döndürme aralığı sağlayıcısı belirtir. Kaynağa döndürme aralığı sağlayıcısına katkıda bulunan bir uzantının tanımlayıcısı olmalıdır.",
 			"null": "Tümü",
@@ -15711,6 +14808,9 @@
 			"vscode": "Visual Studio Code",
 			"vscodePlaceholder": "Örneğin Workbench'de sorunlar paneli eksik"
 		},
+		"vs/workbench/contrib/issue/browser/issue.contribution": {
+			"statusUnsupported": "--status bağımsız değişkeni henüz tarayıcılarda desteklenmiyor."
+		},
 		"vs/workbench/contrib/issue/browser/issueFormService": {
 			"additionalIssueData": "Ek Sorun Verileri",
 			"cancel": "İptal",
@@ -15722,133 +14822,6 @@
 			"ok": "&&Tamam",
 			"pasteData": "İhtiyaç duyulan veri gönderilemeyecek kadar büyük olduğu için, bu veriyi panonuza kopyaladık. Lütfen yapıştırın.",
 			"yes": "&&Evet"
-		},
-		"vs/workbench/contrib/issue/browser/issueQuickAccess": {
-			"contributedIssuePage": "Open Extension Page",
-			"extensions": "Extensions",
-			"reportExtensionMarketplace": "Extension Marketplace"
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorInput": {
-			"discard": "Discard",
-			"discardIssue": "Discard issue report?",
-			"discardIssueDetail": "Your issue report has unsaved changes that will be lost.",
-			"issueReporterEditorInputName": "Report Issue",
-			"issueReporterIcon": "Icon for the issue reporter editor."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
-			"abExperiments": "A/B Experiments",
-			"additionalInformation": "Additional Information",
-			"additionalPerformanceData": "Additional Performance Data",
-			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
-			"attachments": "Attachments ({0})",
-			"back": "Back",
-			"bug": "Bug",
-			"bugGuidance": "Describe what happened, the steps to reproduce, what you expected, and what you observed instead.",
-			"captureOptions": "Capture options",
-			"category": "Category",
-			"categoryRequired": "Select a category to continue.",
-			"closeTab": "Close",
-			"composeMessage": "Describe",
-			"defaultGuidance": "Select a category above, then describe your feedback in detail.",
-			"deleteRecording": "Remove recording",
-			"deleteScreenshot": "Delete screenshot",
-			"describeHeading": "Describe your feedback",
-			"description": "Description",
-			"descriptionPlaceholder": "Describe the issue in detail...",
-			"descriptionRequired": "Enter a description to continue.",
-			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
-			"extension": "Extension",
-			"extensionData": "Extension Data",
-			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
-			"extensionNoIssueUrl": "This extension does not provide an issue reporting URL.",
-			"extensionPlaceholder": "E.g. Missing alt text on extension readme image",
-			"extensionRequired": "Select an extension to continue.",
-			"extensionSource": "A VS Code extension",
-			"extensions": "Extensions ({0})",
-			"featureGuidance": "Describe the feature you'd like to see, what problem it would solve, and any alternatives you've considered.",
-			"featureRequest": "Feature Request",
-			"feedbackCategory": "Category",
-			"fiveSeconds": "5 seconds",
-			"generateTitle": "Generate title from description",
-			"generateTitleBtn": "Generate from description",
-			"generatingTitle": "Generating...",
-			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
-			"issueTargetRepo": "Issue will be created in {0}/{1}.",
-			"issueTitle": "Title",
-			"issueTitlePlaceholder": "Brief summary of the issue",
-			"loadingDiagnostics": "Loading diagnostics...",
-			"loadingExtensionData": "Loading extension issue data...",
-			"loadingProcessInfo": "Loading currently running processes...",
-			"loadingSystemInfo": "Loading system information...",
-			"loadingWorkspaceInfo": "Loading workspace metadata...",
-			"markdownSupported": "Markdown formatting is supported.",
-			"marketplace": "Extensions Marketplace",
-			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
-			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
-			"next": "Next",
-			"noDelay": "No delay",
-			"noDescription": "(no description)",
-			"noSimilarIssues": "No similar issues found.",
-			"noTitle": "(no title)",
-			"openExternalIssueReporter": "Open External Issue Reporter",
-			"or": "or",
-			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
-			"performanceIssue": "Performance Issue",
-			"previewOnGitHub": "Preview on GitHub",
-			"recordVideo": "Record video",
-			"recordingActive": "Recording active",
-			"recordingThumbnailAlt": "Recording {0}",
-			"refresh": "Refresh",
-			"refreshPerformanceData": "Reload running processes and workspace metadata",
-			"reportIssue": "Report Issue",
-			"reviewSubmit": "Review and submit",
-			"runningProcesses": "Running Processes",
-			"screenshot": "Screenshot",
-			"screenshotAlt": "Screenshot {0}",
-			"screenshots": "Attachments",
-			"screenshotsHeading": "Add attachments for better context",
-			"screenshotsSubtitle": "You can add up to {0} screenshots or videos. Navigate VS Code and choose when to capture.",
-			"searchingSimilarIssues": "Searching similar issues...",
-			"selectExtension": "Select extension",
-			"shortcutHintIntro": "Use the floating capture bar, or press",
-			"similarIssues": "Similar Issues",
-			"similarIssuesNeedsTitle": "Enter a title to search for similar issues.",
-			"similarIssuesSearchFailed": "Unable to search for similar issues.",
-			"skip": "Skip",
-			"stepOf": "Step {0} of {1}",
-			"stopRecording": "Stop recording",
-			"submit": "Review",
-			"systemInformation": "System Information",
-			"target": "Target",
-			"targetRequired": "Select a target to continue.",
-			"tenSeconds": "10 seconds",
-			"threeSeconds": "3 seconds",
-			"titleRequired": "Enter a title to continue.",
-			"toCapture": "to capture a screenshot",
-			"toRecord": "to start or stop recording",
-			"unknown": "Unknown",
-			"unknownSource": "Don't know",
-			"updateAvailable": "A new version of {0} is available.",
-			"uploading": "Uploading...",
-			"vscode": "Visual Studio Code",
-			"vscodePlaceholder": "E.g. Workbench is missing problems panel",
-			"waitingForDiagnostics": "Waiting for performance diagnostics to finish loading",
-			"workspaceMetadata": "Workspace Metadata"
 		},
 		"vs/workbench/contrib/issue/browser/issueReporterPage": {
 			"acknowledgements": "VS Code sürümümün güncelleştirilmediğini ve bu sorunun kapatılabileceğini kabul ediyorum.",
@@ -15904,59 +14877,9 @@
 			"troubleshootIssue": "Sorunu Gider...",
 			"use insiders": "Bu büyük olasılıkla sorunla zaten ilgilenildiği ve sonraki sürümde çözülmüş olacağı anlamına gelir. Yeni kararlı sürüm kullanılabilir olana kadar {0} Insiders'ı kullanmaya devam edebilirsiniz."
 		},
-		"vs/workbench/contrib/issue/browser/screenshotAnnotation": {
-			"annotationHint": "Edit screenshot to highlight the problem",
-			"apply": "Apply",
-			"arrow": "Arrow",
-			"cancel": "Cancel",
-			"colorValue": "{0}: {1}",
-			"crop": "Crop",
-			"discard": "Discard",
-			"ellipse": "Ellipse",
-			"eraser": "Eraser",
-			"fillColor": "Fill Color",
-			"freehand": "Draw",
-			"opacity": "Opacity",
-			"pan": "Pan",
-			"rectangle": "Rectangle",
-			"redo": "Redo",
-			"save": "Save",
-			"select": "Select / Move",
-			"setFillColor": "Set Fill Color",
-			"setOpacity": "Set Opacity",
-			"setStrokeColor": "Set Stroke Color",
-			"setStrokeWidth": "Set Stroke Width to {0}px",
-			"setTextSize": "Set Text Size to {0}px",
-			"strokeColor": "Stroke Color",
-			"strokeWidth": "Stroke Width",
-			"text": "Text",
-			"textBackgroundColor": "Background Color",
-			"textColor": "Text Color",
-			"textSize": "Text Size",
-			"toolOptions": "Tool Options",
-			"transparentColor": "{0}: Transparent",
-			"typeText": "Type text",
-			"undo": "Undo"
-		},
 		"vs/workbench/contrib/issue/common/issue.contribution": {
 			"miReportIssue": "&&Sorun Raporla (İngilizce)",
 			"reportIssueInEnglish": "Sorun Bildir..."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issue.contribution": {
-			"issueReporter.wizard.enabled": "Enable the new issue reporter wizard instead of the classic issue reporter.",
-			"issueReporter.wizard.fullWorkspaceScan": "When auto-collecting performance diagnostics for the issue reporter wizard, walk the full workspace instead of stopping at the default 20,000-file cap. Set to false on very large workspaces if the scan slows the initial wizard render.",
-			"issueReporterConfigurationTitle": "Issue Reporter",
-			"issueReporterEditorPaneTitle": "Issue Reporter",
-			"openIssueReporter": "Open Issue Reporter",
-			"reportPerformanceIssue": "Report Performance Issue...",
-			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
-			"noCurrentExperiments": "No current experiments.",
-			"pasteData": "We have written the needed data into your clipboard because it was too large to send. Please paste.",
-			"saveExtensionData": "Save Extension Data",
-			"undefinedPlaceholder": "Please enter a title",
-			"updateAvailable": "A new version of {0} is available."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "Klavye Kısayollarını Değiştirme Sorunlarını Giderme"
@@ -16041,11 +14964,6 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "Yerel Geçmiş"
 		},
-		"vs/workbench/contrib/localHistory/electron-browser/localHistoryCommands": {
-			"openContainer": "İçeren Klasörü Aç",
-			"revealInMac": "Finder’da Göster",
-			"revealInWindows": "Dosya Gezgininde Göster"
-		},
 		"vs/workbench/contrib/localization/common/localization.contribution": {
 			"language id": "Dil Kimliği",
 			"localizations": "Dil Paketleri",
@@ -16069,17 +14987,6 @@
 			"installed": "Yüklü",
 			"moreInfo": "Daha Fazla Bilgi"
 		},
-		"vs/workbench/contrib/localization/electron-browser/localization.contribution": {
-			"changeAndRestart": "Dili Değiştirin ve Yeniden Başlatın",
-			"neverAgain": "Tekrar Gösterme",
-			"updateLocale": "{0} için görüntüleme dilini {1} olarak değiştirmek ve yeniden başlatmak istiyor musunuz?"
-		},
-		"vs/workbench/contrib/localization/electron-browser/minimalTranslations": {
-			"installAndRestart": "Yükle ve Yeniden Başlat",
-			"installAndRestartMessage": "Görüntüleme dilini {0} olarak değiştirmek için dil paketini yükleyin.",
-			"searchMarketplace": "Market'te Ara",
-			"showLanguagePackExtensions": "Ekran dilini {0} olarak değiştirmek için Market'teki arama dili paketleri."
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"remote name": "{0} (Uzak)",
 			"setDefaultLogLevel": "Varsayılan Günlük Düzeyini Ayarla",
@@ -16099,10 +15006,6 @@
 			"selectlog": "Günlük Düzeyini Ayarla",
 			"sessions placeholder": "Oturum Seç",
 			"setLogLevel": "Günlük Düzeyini Ayarla..."
-		},
-		"vs/workbench/contrib/logs/electron-browser/logsActions": {
-			"openExtensionLogsFolder": "Uzantı Günlükleri Klasörünü Aç",
-			"openLogsFolder": "Günlükler Klasörünü Aç"
 		},
 		"vs/workbench/contrib/markdown/browser/markdownSettingRenderer": {
 			"alreadysetBoolFalse": "\"{0}: {1}\" zaten devre dışı bırakıldı",
@@ -16935,12 +15838,6 @@
 			"showBase": "Birleştirme düzenleyicisi, temel sürümü gösterirse",
 			"showBaseAtTop": "Temelin en üstte gösterilip gösterilmeyeceğini belirtir",
 			"showNonConflictingChanges": "Birleştirme düzenleyicisi çakışmayan değişiklikler gösterirse"
-		},
-		"vs/workbench/contrib/mergeEditor/electron-browser/devCommands": {
-			"merge.dev.openSelectionInTemporaryMergeEditor": "Seçimi Geçici Birleştirme Düzenleyicisinde Aç",
-			"merge.dev.openState": "JSON'dan Birleştirme Düzenleyicisi Durumunu Aç",
-			"mergeEditor": "Birleştirme Düzenleyicisi (Geliştirme)",
-			"mergeEditor.enterJSON": "JSON girin"
 		},
 		"vs/workbench/contrib/meteredConnection/browser/meteredConnection.contribution": {
 			"configureMeteredConnection": "Tarifeli Bağlantıyı Yapılandır",
@@ -17805,18 +16702,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "Başlangıç Performansı"
 		},
-		"vs/workbench/contrib/performance/electron-browser/performance.contribution": {
-			"experimental.rendererProfiling": "Etkinleştirildiğinde yavaş işleyicilerin profili otomatik olarak oluşturulur."
-		},
-		"vs/workbench/contrib/performance/electron-browser/startupProfiler": {
-			"prof.detail": "Lütfen bir sorun oluşturun ve aşağıdaki dosyaları el ile ekleyin:\r\n{0}",
-			"prof.detail.restart": "'{0}' öğesini kullanmaya devam etmek için son bir yeniden başlatma işlemi gerekiyor. Katkınız için bir kez daha teşekkür ederiz.",
-			"prof.message": "Profiller başarıyla oluşturuldu.",
-			"prof.restart": "Yeniden Başlat",
-			"prof.restart.button": "&&Yeniden Başlat",
-			"prof.restartAndFileIssue": "&&Sorun Oluştur ve Yeniden Başlat",
-			"prof.thanks": "Bize yardımcı olduğunuz için teşekkür ederiz."
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditor": {
 			"SearchKeybindings.FullTextSearchPlaceholder": "Tuş bağlaması aramak için yazın",
 			"SearchKeybindings.KeybindingsSearchPlaceholder": "Tuşlar Kaydediliyor. Çıkmak için Escape tuşuna basın",
@@ -17860,6 +16745,18 @@
 			"defineKeybinding.existing": "Mevcut {0} komutta bu tuş bağlaması var",
 			"defineKeybinding.initial": "İstediğiniz tuş bileşimine, sonra ENTER tuşuna basın.",
 			"defineKeybinding.oneExists": "Mevcut 1 komutta bu tuş bağlaması var"
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"clear": "Arama Sonuçlarını Temizle",
@@ -18201,6 +17098,9 @@
 			"openProcessExplorer": "İşlem Gezginini Aç",
 			"promptOpenWith.processExplorer.displayName": "Süreç Gezgini"
 		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
 		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
 			"copy": "Kopyala",
 			"copyAll": "Tümünü Kopyala",
@@ -18216,9 +17116,6 @@
 		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
 			"processExplorerEditorLabelIcon": "İşlem gezgini düzenleyicisi etiketinin simgesi.",
 			"processExplorerInputName": "Süreç Gezgini"
-		},
-		"vs/workbench/contrib/processExplorer/electron-browser/processExplorer.contribution": {
-			"processExplorer": "Süreç Gezgini"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "&&Temizle",
@@ -18363,6 +17260,10 @@
 			"workspace.tooltip": "{0} üzerinde düzenleme",
 			"workspace.tooltip2": "[Bazı özellikler]({0}) sanal dosya sistemindeki kaynaklar için kullanılamaz."
 		},
+		"vs/workbench/contrib/remote/browser/remoteStartEntry": {
+			"remote.category": "Uzak",
+			"remote.showWebStartEntryActions": "Web için Uzaktan Başlangıç Girişini göster"
+		},
 		"vs/workbench/contrib/remote/browser/tunnelFactory": {
 			"tunnelPrivacy.private": "Özel",
 			"tunnelPrivacy.public": "Genel"
@@ -18465,13 +17366,6 @@
 			"triggerReconnect": "Bağlantı: Yeniden Bağlanmayı Tetikle",
 			"ui": "UI uzantı tipi. Uzak bir pencerede, böyle uzantılar yalnızca yerel makinede kullanılabilir olduğunda etkindir.",
 			"workspace": "Çalışma alanı uzantı tipi. Uzak bir pencerede, böyle uzantılar yalnızca uzaktan kullanılabilir olduğunda etkindir."
-		},
-		"vs/workbench/contrib/remote/electron-browser/remote.contribution": {
-			"remote": "Remote",
-			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
-			"remote.category": "Remote",
-			"remote.downloadExtensionsLocally": "When enabled extensions are downloaded locally and installed on remote.",
-			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution": {
 			"remoteCodingAgentsExtPoint": "Sohbet arabirim öğesine uzaktan kodlama aracısı tümleştirmeleri sağlar.",
@@ -19576,6 +18470,9 @@
 			"taskQuickPick.showAll": "Tüm Görevleri Göster...",
 			"taskType": "{0} görevin tümü"
 		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "İşlem görev sistemi web'de desteklenmiyor."
+		},
 		"vs/workbench/contrib/tasks/browser/tasksQuickAccess": {
 			"TaskService.pickRunTask": "Çalıştırılacak görevi seçin",
 			"noTaskResults": "Eşleşen görev yok"
@@ -19854,12 +18751,6 @@
 			"dotnetCore": ".NET Core derleme komutunu yürütür",
 			"externalCommand": "Rastgele bir dış komutu çalıştırma örneği",
 			"msbuild": "Derleme hedefini yürütür"
-		},
-		"vs/workbench/contrib/tasks/electron-browser/taskService": {
-			"TaskSystem.exitAnyways": "&&Exit Anyways",
-			"TaskSystem.noProcess": "The launched task doesn't exist anymore. If the task spawned background processes exiting VS Code might result in orphaned processes. To avoid this start the last background process with a wait flag.",
-			"TaskSystem.runningTask": "There is a task running. Do you want to terminate it?",
-			"TaskSystem.terminateTask": "&&Terminate Task"
 		},
 		"vs/workbench/contrib/telemetry/browser/telemetry.contribution": {
 			"showTelemetry": "Telemetriyi Göster"
@@ -20375,9 +19266,6 @@
 			"workbench.action.terminal.scrollToNextCommand": "Sonraki Komuta Kaydır",
 			"workbench.action.terminal.scrollToPreviousCommand": "Önceki Komuta Kaydır",
 			"workbench.action.terminal.sizeToContentWidthInstance": "Boyutu İçerik Genişliğine Değiştir"
-		},
-		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
-			"workbench.action.terminal.newLocal": "Yeni Tümleşik Terminal Oluştur (Yerel)"
 		},
 		"vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
 			"workbench.action.terminal.accessibleBufferGoToNextCommand": "Erişilebilir Arabellek Sonraki Komuta Git",
@@ -22043,12 +20931,6 @@
 			"workbench.actions.sync.resolveResourceRef": "Ham JSON eşitleme verilerini göster",
 			"workbench.actions.sync.turnOffSyncOnMachine": "Ayar Eşitlemesini Kapat"
 		},
-		"vs/workbench/contrib/userDataSync/electron-browser/userDataSync.contribution": {
-			"Open Backup folder": "Yerel Yedeklemeler Klasörünü Aç",
-			"download sync activity complete": "Ayarlar Eşitleme etkinliği başarıyla indirildi.",
-			"no backups": "Yerel yedeklemeler klasörü yok",
-			"open": "Klasör Aç"
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "Etkinleştirildiğinde, bir düzenleyici açık olmadığında eşik ipuçları gösterilir.",
 			"watermark.findInFiles": "Dosyalarda Bul",
@@ -22103,11 +20985,6 @@
 			"webview.settingsHeader": "Ayarlayabileceğiniz Ayarlar ({0} Ayarlar'ı açar):",
 			"webview.statusDesc": "Web içeriğinde arama yapıyorsunuz.",
 			"webview.statusHeader": "Geçerli Arama Durumu:"
-		},
-		"vs/workbench/contrib/webview/electron-browser/webviewCommands": {
-			"iframeWebviewAlert": "Iframe tabanlı web görünümünün hatalarını ayıklamak için standart geliştirici araçlarını kullanma",
-			"openToolsDescription": "Etkin web görünümleri için Geliştirici Araçlarını açar",
-			"openToolsLabel": "Web Görünümü Geliştirici Araçlarını Aç"
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "Sonrakini bul",
@@ -22916,14 +21793,11 @@
 			"authenticationExtensionPoint": "Kimlik doğrulaması ekler"
 		},
 		"vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService": {
-			"lifecycleVeto": "Yaptığınız değişiklikler kaydedilmemiş olabilir. Lütfen 'İptal' düğmesine basın ve yeniden deneyin.",
-			"retry": "&&Yeniden Dene",
-			"unableToOpenWindow": "Tarayıcı yeni bir pencerenin açılmasını engelledi. Tekrar denemek için 'Yeniden dene' düğmesine basın.",
-			"unableToOpenWindowDetail": "Lütfen [tarayıcı ayarlarınızda]({0}) bu web sitesi için açılır pencerelere izin verin.",
-			"unableToOpenWindowError": "Yeni bir pencere açılamıyor."
-		},
-		"vs/workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService": {
-			"backupErrorDetails": "Önce kaydedilmemiş değişikliklerle düzenleyicileri kaydetmeyi veya geri döndürmeyi deneyin ve sonra yeniden deneyin."
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again.",
+			"retry": "&&Retry",
+			"unableToOpenWindow": "The browser blocked opening a new window. Press 'Retry' to try again.",
+			"unableToOpenWindowDetail": "Please allow pop-ups for this website in your [browser settings]({0}).",
+			"unableToOpenWindowError": "Unable to open a new window."
 		},
 		"vs/workbench/services/chat/common/chatEntitlementService": {
 			"learnMore": "Daha Fazla Bilgi Edinin",
@@ -23065,12 +21939,22 @@
 			"saveChangesMessages": "Aşağıdaki {0} dosyadaki değişiklikleri kaydetmek istiyor musunuz?",
 			"saveFileAs.title": "Farklı Kaydet"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "&&Daha fazla bilgi edinin",
+			"openFiles": "&&Dosyaları Aç...",
+			"openRemote": "Uzak Olanı &&Aç...",
+			"pickFolderAndOpen": "Klasörler açılamıyor, bunun yerine çalışma alanına klasör eklemeyi deneyin.",
+			"pickWorkspaceAndOpen": "Çalışma alanları açılamıyor, bunun yerine çalışma alanına klasör eklemeyi deneyin.",
+			"unsupportedBrowserDetail": "Tarayıcınız yerel klasörleri açmayı desteklemiyor.\r\nYa tek dosyaları ya da uzak depoyu açabilirsiniz.",
+			"unsupportedBrowserMessage": "Yerel Klasörleri Açma Desteklenmiyor"
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "Yerel Dosyayı Aç...",
 			"openLocalFileFolder": "Yerel Klasörü Aç...",
 			"openLocalFolder": "Yerel Klasörü Aç...",
 			"remoteFileDialog.badPath": "Yol yok. Giriş dizininize gitmek için ~ kullanın.",
 			"remoteFileDialog.cancel": "İptal",
+			"remoteFileDialog.createFolderFailed": "Could not create folder: {0}",
 			"remoteFileDialog.hideDotFiles": "Nokta dosyalarını gizle",
 			"remoteFileDialog.invalidPath": "Lütfen geçerli bir yol girin.",
 			"remoteFileDialog.local": "Yerelleri Göster",
@@ -23079,6 +21963,7 @@
 			"remoteFileDialog.showDotFiles": "Nokta dosyalarını göster",
 			"remoteFileDialog.validateBadFilename": "Lütfen geçerli bir dosya adı girin.",
 			"remoteFileDialog.validateCreateDirectory": "{0} klasörü mevcut değil. Bu klasörü oluşturmak ister misiniz?",
+			"remoteFileDialog.validateCreateDirectoryOpen": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "{0} zaten var. Üzerine yazmak istediğinizden emin misiniz?",
 			"remoteFileDialog.validateFileOnly": "Lütfen bir dosya seçin.",
 			"remoteFileDialog.validateFolder": "Klasör zaten var. Lütfen yeni bir dosya adı kullanın.",
@@ -23143,11 +22028,19 @@
 			"extensionsDisabled": "Tüm yüklü uzantılar geçici olarak devre dışı bırakıldı.",
 			"noWorkspace": "Çalışma alanı yok."
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "Bu uzantı bir web uzantısı olmadığından '{0}' eklenemiyor.",
+			"openInstalledWebExtensionsResource": "Yüklü Web Uzantıları Kaynağını Aç"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionFeaturesManagemetService": {
 			"accessExtensionFeature": "'{0}' Özelliğine Erişin",
 			"accessExtensionFeatureMessage": "'{0}' uzantısı, '{1}' özelliğine erişmek istiyor.",
 			"allow": "İzin ver",
 			"disallow": "İzin Verme"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "Tarayıcı",
+			"remote": "Uzak"
 		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "{0} Uzantısı yüklenemedi: Bildirim dosyası bulunamadı.",
@@ -23197,19 +22090,6 @@
 			"extensionDefault": "Uzantılar görünümünde ve düzenleyicide varsayılan uzantı için kullanılan simge.",
 			"extensionIconVerifiedForeground": "Doğrulanmış uzantı yayıncısı için simge rengi.",
 			"verifiedPublisher": "Uzantılar görünümünde ve düzenleyicide doğrulanmış uzantı yayıncısı için kullanılan simge."
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService": {
-			"extensionGalleryManifestService.accountChange": "{0} is now configured to a different Marketplace. Please restart to apply the changes.",
-			"restart": "&&Restart"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionManagementServerService": {
-			"local": "Local",
-			"remote": "Remote"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
-			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
-			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "Şuraya uzantı önerisi ekle",
@@ -23343,36 +22223,6 @@
 			"overwritingExtension": "{1} ile {0} uzantısı üzerine yazma.",
 			"overwritingWithWorkspaceExtension": "Çalışma Alanı Uzantısı {1} ile {0} üzerine yazılıyor."
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Uzantılar diskte değiştirilmiş. Lütfen pencereyi yeniden yükleyin.",
-			"extensionUnderDevelopment.invalid": "Geçersiz olduğu için geliştirme aşamasındaki '{0}' uzantısı yüklenemedi: {1}",
-			"extensionsUnderDevelopment.invalid": "Geçersiz oldukları için geliştirme aşamasındaki {0} uzantısı yüklenemedi: {1}",
-			"reloadWindow": "Pencereyi Yeniden Yükle"
-		},
-		"vs/workbench/services/extensions/electron-browser/localProcessExtensionHost": {
-			"extensionHost.startupFail": "Uzantı konağı 10 saniye içinde başlamadı; bu sorun olabilir.",
-			"extensionHost.startupFailDebug": "Uzantı konağı 10 saniye içinde başlamadı; ilk satırda durdurulmuş olabilir; devam edebilmek için bir hata ayıklayıcı gerekiyor.",
-			"join.extensionDevelopment": "Uzantı hata ayıklama oturumu sonlandırılıyor",
-			"reloadWindow": "Pencereyi Yeniden Yükle"
-		},
-		"vs/workbench/services/extensions/electron-browser/nativeExtensionService": {
-			"devTools": "Açık Geliştirici Araçları",
-			"enable": "Etkinleştir ve Yeniden Yükle",
-			"enableResolver": "Uzak pencereyi açmak için '{0}' uzantısı gerekiyor.\r\nEtkinleştirilsin mi?",
-			"extensionService.autoRestart": "Uzantı ana bilgisayarı beklenmedik şekilde sonlandırıldı. Yeniden başlatılıyor...",
-			"extensionService.crash": "Uzantı ana bilgisayarı son 5 dakika içinde beklenmedik şekilde 3 kez sonlandırıldı.",
-			"extensionService.versionMismatchCrash": "Uzantı konağı başlatılamıyor: sürüm uyumsuzluğu.",
-			"getEnvironmentFailure": "Uzak ortam getirilemedi",
-			"install": "Yükle ve Yeniden Yükle",
-			"installResolver": "Uzak pencereyi açmak için '{0}' uzantısı gerekiyor.\r\nUzantıyı kurmak istiyor musunuz?",
-			"learnMore": "Daha Fazla Bilgi Edinin",
-			"relaunch": "VS Code'u Yeniden Başlat",
-			"resolverExtensionNotFound": "`{0}` markette bulunamadı",
-			"restart": "Uzantı Konağını Yeniden Başlat",
-			"restartExtensionHost": "Uzantı Konağını Yeniden Başlat",
-			"restartExtensionHost.reason": "Açık bir istek",
-			"startBisect": "Uzantıyı İkiye Bölmeyi Başlat"
-		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"fileWatcher": "Dosya Otomasyon İzleyicisi"
 		},
@@ -23457,6 +22307,10 @@
 			"vscode.extension.contributes.keybindings.when": "Anahtar etkin olduğunda koşul.",
 			"vscode.extension.contributes.keybindings.win": "Windows'a özgü tuş veya tuş sırası."
 		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Web'de kullanılan klavye düzenini denetleyin.",
+			"keyboardConfigurationTitle": "Klavye"
+		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "Varsayılanları geçersiz kılmak için tuş bağlamalarınızı bu dosyaya yerleştirin",
 			"errorInvalidConfiguration": "Tuş bağlaması yapılandırma dosyasına yazılamıyor. Dosya Array türünde olmayan bir nesne içeriyor. Lütfen temizlemek için dosyayı açın ve yeniden deneyin.",
@@ -23511,13 +22365,12 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "Yaptığınız değişiklikler kaydedilmemiş olabilir. Lütfen 'İptal' düğmesine basın ve yeniden deneyin."
 		},
-		"vs/workbench/services/localization/electron-browser/localeService": {
-			"argvInvalid": "Unable to write display language. Please open the runtime settings, correct errors/warnings in it and try again.",
-			"installing": "Installing {0} language support...",
-			"openArgv": "Open Runtime Settings",
-			"restart": "&&Restart",
-			"restartDisplayLanguageDetail1": "To change the display language to {0}, {1} needs to restart.",
-			"restartDisplayLanguageMessage1": "Restart {0} to switch to {1}?"
+		"vs/workbench/services/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "Sayfayı yenilemek için yeniden yükle düğmesine basın ve tarayıcınızın dilini kullanın.",
+			"clearDisplayLanguageMessage": "Görüntüleme dilini değiştirmek için {0} yeniden yüklenmeli",
+			"relaunchDisplayLanguageDetail": "Sayfayı yenilemek için yeniden yükle düğmesine basın ve görüntüleme dilini {0} olarak ayarlayın.",
+			"relaunchDisplayLanguageMessage": "Görüntüleme dilini değiştirmek için {0} yeniden yüklenmeli",
+			"reload": "&&Yeniden Yükle"
 		},
 		"vs/workbench/services/log/common/logConstants": {
 			"window": "Pencere"
@@ -23604,6 +22457,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "İlerleme Durumu İletisi"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "Bu sayfanın yeniden yüklenmesini gerektiren beklenmeyen bir hata oluştu.",
+			"connectionErrorDetail": "Workbench sunucuya bağlanamadı (Hata: {0})",
+			"reload": "&&Yeniden Yükle"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"RemoteHelpInformationExtPoint": "Uzak depo için yardım bilgilerine katkıda bulunur",
 			"RemoteHelpInformationExtPoint.documentation": "Projenizin belgeler sayfasına yönelik URL veya bu URL'yi döndüren bir komut",
@@ -23621,16 +22479,15 @@
 			"tunnel.source.user": "Kullanıcı Tarafından İletildi",
 			"tunnel.staticallyForwarded": "Statik Olarak İletildi"
 		},
-		"vs/workbench/services/remote/electron-browser/remoteAgentService": {
-			"connectionError": "Failed to connect to the remote extension host server (Error: {0})",
-			"devTools": "Open Developer Tools",
-			"directUrl": "Open in browser"
-		},
-		"vs/workbench/services/request/electron-browser/requestService": {
+		"vs/workbench/services/request/browser/requestService": {
 			"network": "Ağ"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "Çalışma alanı klasörü yok: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/secrets/electron-browser/secretStorageService": {
 			"encryptionNotAvailableJustTroubleshootingGuide": "Geçerli masaüstü ortamınızda şifrelemeyle ilgili verileri depolamak için bir işletim sistemi kimlik anahtarlığı tanımlanamadı.",
@@ -23684,9 +22541,6 @@
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants1": "Kod Eylemleri ve Biçimlendirenler Çalıştırılıyor...",
 			"skip": "Atla"
-		},
-		"vs/workbench/services/textfile/electron-browser/nativeTextFileService": {
-			"join.textFiles": "Metin dosyaları kaydediliyor"
 		},
 		"vs/workbench/services/textMate/browser/textMateTokenizationFeatureImpl": {
 			"alreadyDebugging": "Zaten Günlüğe Kaydediliyor.",
@@ -23941,13 +22795,6 @@
 			"invalid.semanticTokenTypeConfiguration": "'configuration.semanticTokenType' bir dizi olmalıdır",
 			"invalid.superType.format": "'configuration.{0}.superType', harfVeyaRakam[-_harfVeyaRakam]* desenini izlemelidir"
 		},
-		"vs/workbench/services/themes/electron-browser/themes.contribution": {
-			"window.systemColorTheme": "Yerel iletişim kutuları, menüler ve başlık çubuğu gibi yerel kullanıcı arabirimi öğeleri için renk modunu ayarlayın. İşletim sisteminiz açık renk modunda yapılandırılmış olsa bile, pencere için koyu sistem rengi temasını seçin. {0} ayarına göre otomatik olarak ayarlanması için de yapılandırabilirsiniz.\r\n\r\nNot: {1} etkinleştirildiğinde bu ayar yok sayılır.",
-			"window.systemColorTheme.auto": "Açık renk temaları için açık yerel pencere öğesi renklerini ve koyu renk temaları için koyu renkleri kullanın.",
-			"window.systemColorTheme.dark": "Koyu yerel pencere öğesi renklerini kullanın.",
-			"window.systemColorTheme.default": "Yerel pencere öğesi renkleri sistem renklerle eşleşiyor.",
-			"window.systemColorTheme.light": "Açık yerel pencere öğesi renklerini kullanın."
-		},
 		"vs/workbench/services/userDataProfile/browser/extensionsResource": {
 			"all profiles and disabled": "Tüm Profiller",
 			"exclude": "{0} uzantısını seçin",
@@ -24145,23 +22992,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "Geri Al/Yinele"
 		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupService": {
-			"join.workingCopyBackups": "Çalışma kopyalarını yedekle"
-		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "Beklemeyi durdurup kaydedilmemiş değişikliklere sahip düzenleyicileri kaydetmek veya geri döndürmek için 'İptal'e tıklayın.",
-			"backupBeforeShutdownMessage": "Kaydedilmemiş değişikliklere sahip düzenleyicilerin yedeklenmesi biraz uzun sürüyor...",
-			"backupErrorDetails": "Önce kaydedilmemiş değişikliklerle düzenleyicileri kaydetmeyi veya geri döndürmeyi deneyin ve sonra yeniden deneyin.",
-			"backupTrackerBackupFailed": "Kaydedilmemiş değişikliklere sahip aşağıdaki düzenleyiciler yedekleme konumuna kaydedilemedi.",
-			"backupTrackerConfirmFailed": "Kaydedilmemiş değişikliklere sahip aşağıdaki düzenleyiciler kaydedilemedi veya geri döndürülemedi.",
-			"discardBackupsBeforeShutdown": "Yedeklemelerin atılması biraz uzun sürüyor...",
-			"ok": "&&Tamam",
-			"revertBeforeShutdown": "Kaydedilmemiş değişikliklere sahip düzenleyicilerin geri alınması biraz uzun sürüyor...",
-			"saveBeforeShutdown": "Kaydedilmemiş değişikliklere sahip düzenleyicilerin kaydedilmesi biraz uzun sürüyor...",
-			"shutdownForceClose": "Yine de Kapat",
-			"shutdownForceQuit": "Yine de Çık",
-			"shutdownForceReload": "Yine de Yeniden Yükle"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "Çalışma alanı yapılandırma dosyasına yazılamıyor. Lütfen hatalarını/uyarılarını düzeltmek için dosyayı açın ve yeniden deneyin.",
 			"openWorkspaceConfigurationFile": "Çalışma Alanı Yapılandırmasını Aç",
@@ -24171,16 +23001,6 @@
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "Çalışma Alanı Güveni",
 			"workspaceTrustEditorLabelIcon": "Çalışma alanı güven düzenleyicisi etiketinin simgesi."
-		},
-		"vs/workbench/services/workspaces/electron-browser/workspaceEditingService": {
-			"doNotAskAgain": "Adsız çalışma alanlarını her zaman sormadan at",
-			"doNotSave": "Kay&&detme",
-			"restartExtensionHost.reason": "Çoklu köklü bir çalışma alanı açma",
-			"save": "&&Kaydet",
-			"saveWorkspaceDetail": "Yeniden açmayı planlıyorsanız çalışma alanınızı kaydedin.",
-			"saveWorkspaceMessage": "Çalışma alanı yapılandırmanızı bir dosya olarak kaydetmek istiyor musunuz?",
-			"workspaceOpenedDetail": "Çalışma alanı başka bir pencerede zaten açık. Lütfen önce bu pencereyi kapatın ve yeniden deneyin.",
-			"workspaceOpenedMessage": "'{0}' çalışma alanı kaydedilemiyor"
 		}
 	}
 }

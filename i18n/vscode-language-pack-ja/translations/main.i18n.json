@@ -2175,8 +2175,10 @@
 			"agentHost.config.customizations.uri": "プラグイン URI",
 			"agentHost.config.defaultShell.description": "ホスト管理ターミナルで使用するシェル実行可能ファイルへの絶対パス。通常は接続された VS Code クライアントから `terminal.integrated.agentHostProfile.<os>` がプッシュされ、存在しない場合は `terminal.integrated.defaultProfile.<os>` にフォールバックします。さらに設定が未定義の場合は、エージェント ホストはシステムのシェルにフォールバックします。サポートされているのはパスのみで、ワークベンチ プロファイルの `args` と `env` はまだ引き継がれません。ワークベンチはこれをローカルのエージェント ホストに対してのみプッシュします。リモート エージェント ホストのオペレーターは、リモート マシンの `agent-host-config.json` で直接設定する必要があります。",
 			"agentHost.config.defaultShell.title": "既定のシェル",
-			"agentHost.config.disableCustomTerminalTool.description": "有効にすると、Copilot SDK セッションでは、エージェント ホストのターミナル ツールのオーバーライドではなく、SDK の既定のターミナルの動作が使用されます。",
-			"agentHost.config.disableCustomTerminalTool.title": "SDK ターミナル ツールの使用"
+			"agentHost.config.enableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use Agent Host's terminal tool override instead of the SDK's default terminal behavior.",
+			"agentHost.config.enableCustomTerminalTool.title": "Use Agent Host Terminal Tool",
+			"agentHost.config.rubberDuck.description": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model.",
+			"agentHost.config.rubberDuck.title": "Rubber Duck Agent"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
 			"agentHost.config.sessionSyncEnabled.description": "copilot-sdk CLI でリモート セッション同期が有効かどうか。",
@@ -2205,13 +2207,15 @@
 		},
 		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
 			"chat.agentHost.claudeAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `@anthropic-ai/claude-agent-sdk` package. When set, the Claude agent provider is registered inside the agent host and the SDK is loaded from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect. This setting will be removed once the SDK is delivered through the Extension Marketplace.",
+			"chat.agentHost.codexAgent.binaryArgs": "Additional command-line arguments passed to `codex app-server`. Primarily useful for debugging (for example, `--log-level=debug`).",
+			"chat.agentHost.codexAgent.codexHome": "Optional override for `$CODEX_HOME`. Controls where the codex binary reads config and writes rollouts. When empty, codex uses its default (`~/.codex`).",
+			"chat.agentHost.codexAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `codex` binary. When set, the Codex agent provider is registered inside the agent host and `codex app-server` is spawned from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
 			"chat.agentHost.otel.captureContent": "When enabled, includes prompt and response content in OTel span attributes. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Privacy-sensitive: do not enable in environments that ship spans to shared sinks.",
 			"chat.agentHost.otel.dbSpanExporter.enabled": "When enabled, the agent host persists every emitted OTel span to a local SQLite database. Spans can be inspected via the `Export Agent Host Traces Database` command. Compatible with external exporters: spans are written to SQLite *and* forwarded to the user-configured sink.",
 			"chat.agentHost.otel.enabled": "When enabled, the agent host emits OpenTelemetry traces from the Copilot SDK. Requires `#chat.agentHost.enabled#`. Either configure `#chat.agentHost.otel.otlpEndpoint#` to ship traces to an external collector or enable `#chat.agentHost.otel.dbSpanExporter.enabled#` to capture them locally.",
 			"chat.agentHost.otel.exporterType": "Exporter backend used by the Copilot SDK when `#chat.agentHost.otel.enabled#` is on. `otlp-grpc` is downgraded to `otlp-http` transparently in the CLI runtime.",
 			"chat.agentHost.otel.otlpEndpoint": "OTLP endpoint URL when exporter type is `otlp-http` or `otlp-grpc`. Sets `OTEL_EXPORTER_OTLP_ENDPOINT` inside the agent host process.",
 			"chat.agentHost.otel.outfile": "Output path for span JSON lines when exporter type is `file`. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
-			"chat.agentHost.rubberDuck.enabled": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model. Requires `#chat.agentHost.enabled#`.",
 			"chatAgentHostStarterConfigurationTitle": "Chat Agent Host Starter"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2243,15 +2247,45 @@
 			"agentHost.config.sandbox.windowsEnabled.title": "サンドボックスが有効 (Windows)",
 			"agentHost.config.sandbox.windowsFileSystem.title": "Windows サンドボックス ファイルシステム"
 		},
-		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
-			"sshKbiDefaultPrompt": "{0}@{1} に認証が必要です"
+		"vs/platform/agentHost/node/agentHostCommitOperationHandler": {
+			"agentHost.changeset.commit.authExpired": "Authentication is required to generate a commit message. Please sign in to GitHub Copilot and try again.",
+			"agentHost.changeset.commit.authRequired": "Sign in to GitHub Copilot to generate a commit message.",
+			"agentHost.changeset.commit.cancelled": "Commit operation was cancelled.",
+			"agentHost.changeset.commit.committed": "Committed changes with message: `{0}`",
+			"agentHost.changeset.commit.diffFailed": "Could not compute uncommitted changes to generate a commit message.",
+			"agentHost.changeset.commit.emptyMessage": "Generated commit message was empty.",
+			"agentHost.changeset.commit.noChanges": "No uncommitted changes to commit."
+		},
+		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
+			"agentHost.changeset.commit": "Commit"
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "エージェント ホスト"
 		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationHandler": {
+			"agentHost.changeset.pr.authRequired": "Sign in to GitHub with repository access to create a pull request.",
+			"agentHost.changeset.pr.body": "Created from `{0}` targeting `{1}`.",
+			"agentHost.changeset.pr.cancelled": "Pull request operation was cancelled.",
+			"agentHost.changeset.pr.commitMessage": "Agent Host changes for {0}",
+			"agentHost.changeset.pr.computeChangesFailed": "Could not compute branch changes to create a pull request.",
+			"agentHost.changeset.pr.created": "Created pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.createdDraft": "Created draft pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.existing": "Pull request [#{0}]({1}) already exists.",
+			"agentHost.changeset.pr.noChanges": "There are no branch changes to create a pull request for."
+		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationProvider": {
+			"agentHost.changeset.createDraftPR": "Create Draft Pull Request",
+			"agentHost.changeset.createPR": "Create Pull Request"
+		},
+		"vs/platform/agentHost/node/agentHostRenameCommand": {
+			"agentHostSlashCommand.rename.description": "Rename this chat"
+		},
 		"vs/platform/agentHost/node/agentService": {
 			"agentHost.forkedSessionFallback": "Forked Session",
 			"agentHost.forkedTitlePrefix": "Forked: "
+		},
+		"vs/platform/agentHost/node/agentSideEffects": {
+			"agentHostRename.renamed": "Renamed: {0}"
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "承認",
@@ -2341,6 +2375,50 @@
 		},
 		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
 			"claude.discovered.displayName": "Discovered in Claude"
+		},
+		"vs/platform/agentHost/node/codex/codexAgent": {
+			"codex.modelThinkingLevel.description": "Controls how much reasoning effort Codex uses.",
+			"codex.modelThinkingLevel.high": "High",
+			"codex.modelThinkingLevel.low": "Low",
+			"codex.modelThinkingLevel.medium": "Medium",
+			"codex.modelThinkingLevel.minimal": "Minimal",
+			"codex.modelThinkingLevel.title": "Thinking Level",
+			"codex.sessionConfig.additionalDirectories": "Additional Writable Directories",
+			"codex.sessionConfig.additionalDirectories.item": "Directory",
+			"codex.sessionConfig.additionalDirectoriesDescription": "Absolute paths the sandbox is allowed to write to, in addition to the workspace. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.approvalPolicy": "Approvals",
+			"codex.sessionConfig.approvalPolicy.never": "No Escalations",
+			"codex.sessionConfig.approvalPolicy.neverDescription": "Never ask for elevated permission; commands that cannot run in the sandbox are rejected.",
+			"codex.sessionConfig.approvalPolicy.onFailure": "Ask on Failure",
+			"codex.sessionConfig.approvalPolicy.onFailureDescription": "Try commands in the sandbox first, then ask to retry with elevated permission if the sandbox blocks them.",
+			"codex.sessionConfig.approvalPolicy.onRequest": "Ask When Needed",
+			"codex.sessionConfig.approvalPolicy.onRequestDescription": "Ask only when Codex determines a command needs elevated permission.",
+			"codex.sessionConfig.approvalPolicy.untrusted": "Ask More Often",
+			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Ask before more command categories so you can review actions more closely.",
+			"codex.sessionConfig.approvalPolicyDescription": "How Codex requests approval for tool calls.",
+			"codex.sessionConfig.modelReasoningEffort": "Reasoning Effort",
+			"codex.sessionConfig.modelReasoningEffort.high": "High",
+			"codex.sessionConfig.modelReasoningEffort.low": "Low",
+			"codex.sessionConfig.modelReasoningEffort.medium": "Medium",
+			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimal",
+			"codex.sessionConfig.modelReasoningEffortDescription": "Controls how much reasoning effort Codex uses.",
+			"codex.sessionConfig.networkAccessEnabled": "Network",
+			"codex.sessionConfig.networkAccessEnabledDescription": "Allow sandboxed tool calls to make outbound network requests. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.sandboxMode": "Sandbox",
+			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Full Access (Dangerous)",
+			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Tool calls have unrestricted disk and network access.",
+			"codex.sessionConfig.sandboxMode.readOnly": "Read-Only",
+			"codex.sessionConfig.sandboxMode.readOnlyDescription": "Tool calls can read the workspace but cannot modify files.",
+			"codex.sessionConfig.sandboxMode.workspaceWrite": "Workspace Write",
+			"codex.sessionConfig.sandboxMode.workspaceWriteDescription": "Tool calls can read and write within the workspace; network is controlled separately.",
+			"codex.sessionConfig.sandboxModeDescription": "Filesystem and network restrictions applied to tool calls.",
+			"codex.sessionConfig.webSearchMode": "Web Search",
+			"codex.sessionConfig.webSearchMode.cached": "Cached Only",
+			"codex.sessionConfig.webSearchMode.disabled": "Disabled",
+			"codex.sessionConfig.webSearchMode.live": "Live",
+			"codex.sessionConfig.webSearchModeDescription": "Web-search tool availability for the model.",
+			"codexAgent.description": "Codex agent backed by the OpenAI Codex app-server",
+			"codexAgent.displayName": "Codex"
 		},
 		"vs/platform/agentHost/node/copilot/copilotAgent": {
 			"agentHost.sessionConfig.branch": "ブランチ",
@@ -2507,37 +2585,9 @@
 			"sessionPermissions.allowSession": "このセッションで許可する",
 			"sessionPermissions.skip": "スキップ"
 		},
-		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
-			"ssh.failedToReadPrivateKey": "秘密キー ファイルの読み取りに失敗しました: {0}",
-			"ssh.keyFileAuthRequiresPath": "キー ファイル認証には秘密キー パスが必要です。",
-			"sshKeyPassphraseName": "SSH キー パスフレーズ",
-			"sshKeyPassphrasePrompt": "SSH キー {0} のパスフレーズを入力してください。",
-			"sshProgressCheckingAgent": "既存のエージェント ホストを確認しています...",
-			"sshProgressConnecting": "SSH 接続を確立しています...",
-			"sshProgressDownloadingCLI": "リモートで VS Code CLI をインストールしています...",
-			"sshProgressForwarding": "リモート エージェント ホストに接続しています...",
-			"sshProgressInstallingCLI": "リモート CLI のインストールを確認しています...",
-			"sshProgressStartingAgent": "リモート エージェント ホストを起動しています..."
-		},
-		"vs/platform/agentHost/node/tunnelHostMainService": {
-			"tunnelHost.log": "リモート接続"
-		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "ページ ズーム: {0}%",
 			"browserZoomPercent": "{0}%"
-		},
-		"vs/platform/browserView/electron-main/browserViewMainService": {
-			"browser.contextMenu.addElementToChat": "チャットに要素を追加する",
-			"browser.contextMenu.back": "戻る",
-			"browser.contextMenu.copyImage": "画像のコピー",
-			"browser.contextMenu.copyImageUrl": "イメージ URL のコピー",
-			"browser.contextMenu.copyLink": "リンクのコピー",
-			"browser.contextMenu.forward": "転送",
-			"browser.contextMenu.inspect": "検査",
-			"browser.contextMenu.openImageInNewTab": "新しいタブで画像を開く",
-			"browser.contextMenu.openLinkInExternalBrowser": "外部ブラウザーでリンクを開く",
-			"browser.contextMenu.openLinkInNewTab": "新しいタブでリンクを開く",
-			"browser.contextMenu.reload": "再読み込み"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
 			"config.policy.duplicate": "'{0}' を登録できません。関連付けられたポリシー {1} は既に {2} に登録されています。",
@@ -2589,17 +2639,6 @@
 			"moreFiles": "...{0} 個の追加ファイルが表示されていません",
 			"okButton": "OK(&&O)",
 			"yesButton": "はい(&&Y)"
-		},
-		"vs/platform/dialogs/electron-browser/dialog": {
-			"aboutDetail": "バージョン: {0}\r\nコミット: {1}\r\n日付: {2}\r\nElectron: {3}\r\nElectronBuildId: {4}\r\nChromium: {5}\r\nNode.js: {6}\r\nV8: {7}\r\nOS: {8}"
-		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "開く",
-			"openFile": "ファイルを開く",
-			"openFolder": "フォルダーを開く",
-			"openWorkspace": "開く(&&O)",
-			"openWorkspaceTitle": "ファイルでワークスペースを開く",
-			"selectFolder": "フォルダーの選択(&S)"
 		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "ファイルが大きすぎて無題のエディターとして開けません。まずファイル エクスプローラーにアップロードしてから、もう一度お試しください。"
@@ -2811,6 +2850,14 @@
 			"fileSystemNotAllowedError": "十分なアクセス許可がありません。再試行して、操作を許可してください。",
 			"fileSystemRenameError": "リネームはファイルのみサポートされています。"
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Directory is not empty",
+			"fileExceedsStorageQuota": "File exceeds available storage quota",
+			"fileIsDirectory": "File is Directory",
+			"fileNotDirectory": "File is not a directory",
+			"fileNotExists": "File does not exist",
+			"internal": "Internal error occurred in IndexedDB File System Provider. ({0})"
+		},
 		"vs/platform/files/common/files": {
 			"sizeB": "{0}B",
 			"sizeGB": "{0}GB",
@@ -2850,10 +2897,6 @@
 		},
 		"vs/platform/files/common/io": {
 			"fileTooLargeError": "ファイルが大きすぎて開くことができません"
-		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "'{0}' をごみ箱に移動できませんでした ({1})",
-			"trashFailed": "'{0}' をごみ箱に移動できませんでした ({1})"
 		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "'{0}' を '{1}' にコピーできません ({2})。",
@@ -2951,68 +2994,12 @@
 		"vs/platform/mcp/common/mcpManagementService": {
 			"not allowed to install": "この MCP サーバーは {0} のため、インストールできません"
 		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "キャンセル",
-			"exit": "終了(&&E)",
-			"mAbout": "{0} のバージョン情報",
-			"mBringToFront": "すべてを手前に移動",
-			"mEdit": "編集(&&E)",
-			"mFile": "ファイル(&&F)",
-			"mGoto": "移動(&&G)",
-			"mHelp": "ヘルプ(&&H)",
-			"mHide": "{0} を非表示にする",
-			"mHideOthers": "その他を非表示にする",
-			"mMergeAllWindows": "すべてのウィンドウを統合",
-			"mMinimize": "最小化",
-			"mMoveTabToNewWindow": "タブを新しいウィンドウに移動",
-			"mNewTab": "新しいタブ",
-			"mRun": "実行(&&R)",
-			"mSelection": "選択(&&S)",
-			"mServices": "サービス",
-			"mShowAll": "すべて表示",
-			"mShowNextTab": "次のタブを表示",
-			"mShowPreviousTab": "前のタブを表示",
-			"mTerminal": "ターミナル(&&T)",
-			"mView": "表示(&&V)",
-			"mWindow": "ウィンドウ",
-			"mZoom": "ズーム",
-			"miCheckForUpdates": "更新の確認(&&U)...",
-			"miCheckingForUpdates": "更新を確認しています...",
-			"miDownloadUpdate": "利用可能な更新をダウンロード(&&O)",
-			"miDownloadingUpdate": "更新をダウンロードしています...",
-			"miInstallUpdate": "更新のインストール(&&U)...",
-			"miInstallingUpdate": "更新プログラムをインストールしています...",
-			"miNewWindow": "新しいウィンドウ(&&W)",
-			"miPreferences": "基本設定(&&P)",
-			"miQuit": "{0} を終了",
-			"miRestartToUpdate": "再起動して更新(&&U)",
-			"miSwitchWindow": "ウィンドウの切り替え(&&W)...",
-			"quit": "終了(&&Q)",
-			"quitMessage": "終了しますか?",
-			"quitMessageMac": "終了しますか?"
-		},
 		"vs/platform/meteredConnection/common/meteredConnection.config.contribution": {
 			"meteredConnection": "現在のネットワーク接続を従量制課金として扱うかどうかを制御します。従量制課金の場合、自動更新、拡張機能のダウンロード、その他のバックグラウンド ネットワーク アクティビティはデータ使用量を抑えるために延期されます。",
 			"meteredConnection.auto": "オペレーティング システムのネットワーク状態を使用して、従量制課金接続を自動的に検出します。",
 			"meteredConnection.off": "ネットワーク接続を従量制課金として扱わないでください。",
 			"meteredConnection.on": "ネットワーク接続は常に従量制課金として扱います。自動更新およびダウンロードは延期されます。",
 			"networkConfigurationTitle": "ネットワーク"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "キャンセル",
-			"cantCreateBinFolder": "シェル コマンド '{0}' をアンインストールできません。",
-			"cantUninstall": "シェル コマンド '{0}' をアンインストールできません。",
-			"copyLink": "リンクのコピー(&&C)",
-			"ok": "OK(&&O)",
-			"openExternalErrorLinkMessage": "既定のブラウザーでリンクを開く際にエラーが発生しました。",
-			"openExternalProgramErrorMessage": "外部プログラムを開く際にエラーが発生しました。",
-			"sourceMissing": "'{0}' にシェル スクリプトが見つかりません",
-			"trace.detail": "問題点を作成し、次のファイルを手動で添付してください:\r\n{0}",
-			"trace.message": "トレース ファイルが正常に作成されました",
-			"trace.ok": "OK(&&O)",
-			"tracing.alreadyInProgress": "トレース セッションは既に進行中です。最初にコマンド `\"{0}\"` を使用してこれを停止します。",
-			"warnEscalation": "管理者特権でシェル コマンドをインストールできるように、{0} が 'osascript' のプロンプトを出します。",
-			"warnEscalationUninstall": "管理者特権でシェル コマンドをアンインストールできるように、{0} が 'osascript' を求めます。"
 		},
 		"vs/platform/networkFilter/common/networkFilterService": {
 			"networkFilter.blockedByPolicy": "{0} へのアクセスは、ネットワーク ドメイン ポリシーによってブロックされています (`{1}` および `{2}` の設定を参照)。"
@@ -3021,9 +3008,6 @@
 			"severityPrefix.error": "エラー: {0}",
 			"severityPrefix.info": "情報: {0}",
 			"severityPrefix.warning": "警告: {0}"
-		},
-		"vs/platform/process/electron-main/processMainService": {
-			"local": "ローカル"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "コマンド '{0}' でエラーが発生しました",
@@ -3081,16 +3065,6 @@
 		},
 		"vs/platform/quickinput/browser/tree/quickTree": {
 			"quickInputBox.ariaLabel": "入力すると結果が絞り込まれます。"
-		},
-		"vs/platform/remoteTunnel/common/remoteTunnel": {
-			"remoteTunnelLog": "リモート トンネル サービス"
-		},
-		"vs/platform/remoteTunnel/node/remoteTunnelService": {
-			"remoteTunnelService.authorizing": "{0} として接続しています ({1})",
-			"remoteTunnelService.building": "ソースから CLI をビルドしています",
-			"remoteTunnelService.openTunnel": "トンネルを開いています",
-			"remoteTunnelService.openTunnelWithName": "トンネル {0} を開いています",
-			"remoteTunnelService.serviceInstallFailed": "セッションを開始して、サービスとしてトンネルをインストールできませんでした..."
 		},
 		"vs/platform/request/common/request": {
 			"electronFetch": "Node.js' ではなく、Electron のフェッチ実装の使用を有効にするかどうかを制御します。すべてのローカル拡張機能は、グローバル フェッチ API に対する Electron のフェッチ実装を取得します。",
@@ -3495,6 +3469,20 @@
 			"cornerRadiusSmall": "コンパクトな UI 要素の小さなコーナーの半径。",
 			"cornerRadiusXLarge": "特に際立つ UI 要素の特に大きなコーナーの半径。",
 			"cornerRadiusXSmall": "非常にコンパクトな UI 要素の場合は、コーナーの半径が非常に小さくなります。",
+			"spacingNone": "No spacing (0px).",
+			"spacingSize100": "Spacing of 10px.",
+			"spacingSize120": "Spacing of 12px.",
+			"spacingSize160": "Spacing of 16px.",
+			"spacingSize20": "Spacing of 2px.",
+			"spacingSize200": "Spacing of 20px.",
+			"spacingSize240": "Spacing of 24px.",
+			"spacingSize280": "Spacing of 28px.",
+			"spacingSize320": "Spacing of 32px.",
+			"spacingSize360": "Spacing of 36px.",
+			"spacingSize40": "Spacing of 4px.",
+			"spacingSize400": "Spacing of 40px.",
+			"spacingSize60": "Spacing of 6px.",
+			"spacingSize80": "Spacing of 8px.",
 			"strokeThickness": "罫線とアウトラインの基本ストロークの太さ。"
 		},
 		"vs/platform/theme/common/tokenClassificationRegistry": {
@@ -3575,9 +3563,6 @@
 			"updateMode": "自動更新を受け取るかどうかを構成します。変更後に再起動が必要です。更新プログラムは Microsoft のオンライン サービスから取得されます。",
 			"updateTitleBar": "タイトル バーに更新インジケーターを表示する"
 		},
-		"vs/platform/update/electron-main/notAvailableUpdateDialog": {
-			"noUpdatesAvailable": "現在入手可能な更新はありません。"
-		},
 		"vs/platform/userDataProfile/common/userDataProfile": {
 			"defaultProfile": "既定"
 		},
@@ -3614,246 +3599,8 @@
 		"vs/platform/userDataSync/common/userDataSyncResourceProvider": {
 			"incompatible sync data": "現在のバージョンと互換性がないため、同期データを解析できません。"
 		},
-		"vs/platform/windows/electron-main/windowImpl": {
-			"appGone": "ウィンドウが予期せず終了されました",
-			"appGoneDetailEmptyWindow": "ご不便をおかけして申し訳ございません。新しい空のウィンドウを開いて、もう一度開始できます。",
-			"appGoneDetailWorkspace": "ご不便をおかけして申し訳ありません。ウィンドウを再度開いて、中断したところから続行できます。",
-			"appGoneDetails": "ウィンドウが予期せず終了されました (理由: '{0}', コード: '{1}')",
-			"appStalled": "ウィンドウから応答がありません",
-			"appStalledDetail": "ウィンドウを再度開くか、閉じるか、このまま待機できます。",
-			"close": "閉じる(&&C)",
-			"doNotRestoreEditors": "エディターを復元しない",
-			"hiddenMenuBar": "引き続き Alt キーを押してメニュー バーにアクセスできます。",
-			"newWindow": "新しいウィンドウ(&&N)",
-			"reopen": "もう一度開く(&&R)",
-			"wait": "待機を続ける(&&K)"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"allow": "許可(&&A)",
-			"cancel": "キャンセル(&&C)",
-			"confirmOpenDetail": "パス `{0}` では、許可されていないホストを使用しています。このホストを信頼している場合を除き、[キャンセル] を押してください",
-			"confirmOpenMessage": "ホスト `{0}` は、許可されているホストのリストにありませんでした。許可しますか?",
-			"doNotAskAgain": "ホスト '{0}' を永続的に許可する",
-			"learnMore": "詳細情報(&&L)",
-			"ok": "OK(&&O)",
-			"pathNotExistDetail": "パス '{0}' はこのコンピューターに存在しません。",
-			"pathNotExistTitle": "パスが存在しません",
-			"uriInvalidDetail": "URI '{0}' が有効ではなく、開くことができません。",
-			"uriInvalidTitle": "URI を開くことができません"
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "コード ワークスペース"
-		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"cancel": "キャンセル(&&C)",
-			"clearButtonLabel": "クリア(&&C)",
-			"confirmClearDetail": "この操作は元に戻せません。",
-			"confirmClearRecentsMessage": "最近開いたファイルとワークスペースをすべてクリアしますか?",
-			"newWindow": "新しいウィンドウ",
-			"newWindowDesc": "新しいウィンドウを開く",
-			"recentFolders": "最近使用したフォルダー",
-			"recentFoldersAndWorkspaces": "最近使用したフォルダーとワークスペース",
-			"untitledWorkspace": "無題 (ワークスペース)",
-			"workspaceName": "{0} (ワークスペース)"
-		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "OK(&&O)",
-			"workspaceOpenedDetail": "ワークスペースは既に別のウィンドウで開いています。最初にそのウィンドウを閉じててから、もう一度やり直してください。",
-			"workspaceOpenedMessage": "ワークスペース '{0}' を保存できません"
-		},
-		"vs/server/node/remoteExtensionHostAgentCli": {
-			"remotecli": "リモート CLI"
-		},
-		"vs/server/node/serverEnvironmentService": {
-			"acceptLicenseTerms": "設定した場合、ユーザーはサーバー ライセンス条項に同意し、ユーザーはプロンプトなしでサーバーを起動します。",
-			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
-			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
-			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
-			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
-			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
-			"agent-host-port": "The port the agent host WebSocket server should listen on.",
-			"connection-token": "すべての要求に含める必要があるシークレット。",
-			"connection-token-file": "接続トークンを含むファイルへのパス。",
-			"default-folder": "ブラウザー URL に入力が指定されていない場合に開くワークスペース フォルダー。現在の作業ディレクトリに対して解決された相対パスまたは絶対パスです。",
-			"default-workspace": "ブラウザー URL に入力が指定されていないときに開くワークスペース。現在の作業ディレクトリに対して解決された相対パスまたは絶対パスです。",
-			"host": "サーバーがリッスンするホスト名または IP アドレスです。設定されていない場合、既定値は 'localhost' になります。",
-			"port": "サーバーがリッスンするポートです。0 が渡されると、ランダムな空きポートが選択されます。形式が num-num の範囲で渡された場合、範囲 (末尾を含む) から空いているポートが選択されます。",
-			"reconnection-grace-time": "再接続の猶予期間を秒単位で上書きします。既定値は 10800 (3 時間) です。",
-			"server-base-path": "Web UI とコード サーバーを指定するパス。既定値は '/' です。`",
-			"serverDataDir": "サーバー データを保持するディレクトリを指定します。",
-			"socket-path": "サーバーがリッスンするためのソケット ファイルへのパスです。",
-			"start-server": "拡張機能のインストールまたはアンインストール時にサーバーを起動します。'install-extension'、'install-builtin-extension'、および 'uninstall-extension' と組み合わせて使用します。",
-			"telemetry-level": "初期テレメトリ レベルを設定します。有効なレベルは 'off'、'crash'、'error'、'all' です。指定しない場合、サーバーはクライアントが接続するまでテレメトリを送信し、クライアントのテレメトリ設定を使用します。これを 'off' に設定することは --disable-telemetry と同じ意味になります",
-			"without-connection-token": "接続トークンなしで実行します。他の方法で接続が保護されている場合にのみ、これを使用してください。"
-		},
-		"vs/server/node/serverServices": {
-			"remoteExtensionLog": "サーバー"
-		},
-		"vs/sessions/browser/accountTitleBarState": {
-			"accountSignedInAria": "{1} を使用して {0} としてサインインしました",
-			"accountSignedInAriaNameOnly": "{0} としてサインイン済み",
-			"agentsSignedOut": "エージェントがサインアウトしました",
-			"agentsSignedOutAria": "エージェントがサインアウトされました",
-			"copilotAllQuotaReachedAria": "GitHub Copilot チャットとインライン候補クォータに達しました",
-			"copilotChatQuotaReachedAria": "GitHub Copilot チャット クォータに達しました",
-			"copilotCompletionsQuotaReachedAria": "GitHub Copilot とインライン候補クォータに達しました",
-			"copilotQuotaReached": "クォータに達しました",
-			"copilotTokensRemaining": "残りのトークン",
-			"copilotTokensRemainingAria": "残りの GitHub Copilot トークンの {0}%",
-			"copilotUnavailable": "Copilot を使用できません",
-			"copilotUnavailableDisabledAria": "GitHub Copilot は無効になっています",
-			"copilotUnavailableUntrustedAria": "GitHub Copilot は信頼されていないワークスペースでは使用できません",
-			"loadingAccount": "アカウントを読み込んでいます...",
-			"loadingAccountAria": "アカウントを読み込んでいます",
-			"signInAria": "アカウントにサインイン",
-			"signInLabel": "サインイン"
-		},
-		"vs/sessions/browser/layoutActions": {
-			"agentPanelCloseIcon": "パネルを閉じるアイコン。",
-			"agentSidebarToggleClosedIcon": "閉じているときのセッション サイド バーのアイコン。",
-			"agentSidebarToggleOpenIcon": "開いているときのセッション サイド バーのアイコン。",
-			"openAndCloseSecondarySidebar": "セカンダリ サイドバーを開く/表示および閉じる/非表示にする",
-			"openAndCloseSidebar": "サイドバーの開く/表示および閉じる/非表示",
-			"secondarySidebarHidden": "セカンダリ サイド バーが表示されていません",
-			"secondarySidebarVisible": "セカンダリ サイド バーが表示されています",
-			"sidebarHidden": "プライマリ サイド バーが表示されていません",
-			"sidebarVisible": "プライマリ サイド バーが表示されています",
-			"togglePanel": "パネルの表示/非表示の切り替え",
-			"toggleSecondarySidebar": "セカンダリ サイド バーの表示/非表示を切り替える",
-			"toggleSidebar": "プライマリ サイド バーの表示/非表示を切り替える",
-			"toggleWindowAlwaysOnTop": "常に手前に表示の切り替え"
-		},
-		"vs/sessions/browser/parts/auxiliaryBarPart": {
-			"auxiliaryBarAriaLabel": "セッションの詳細"
-		},
-		"vs/sessions/browser/parts/chatCompositeBar": {
-			"closeChat": "閉じる",
-			"renameChat": "名前の変更",
-			"renameChat.prompt": "チャット名の変更"
-		},
-		"vs/sessions/browser/parts/menubar.contribution": {
-			"mEdit": "編集(&&E)",
-			"mFile": "ファイル(&&F)",
-			"mGo": "移動(&&G)",
-			"mHelp": "ヘルプ(&&H)",
-			"mPreferences": "基本設定(&&P)",
-			"mTerminal": "ターミナル(&&T)",
-			"mView": "表示(&&V)"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileChangesView": {
-			"changesView.back": "戻る",
-			"changesView.backLabel": "戻る",
-			"changesView.changeAdded": "追加済み",
-			"changesView.changeDeleted": "削除済み",
-			"changesView.changeModified": "変更",
-			"changesView.empty": "このセッションにはまだ変更はありません。",
-			"changesView.rowAria": "{0}、{1}、+{2} -{3}",
-			"changesView.subtitleFilePlural": "{0} 個のファイル",
-			"changesView.subtitleFileSingular": "1 個のファイル",
-			"changesView.title": "セッションの変更"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffColors": {
-			"agentsMobileDiff.addedForeground": "エージェント セッション ウィンドウのモバイル変更リストと差分オーバーレイに追加されたファイル/行に使用される前景色。",
-			"agentsMobileDiff.deletedForeground": "エージェント セッション ウィンドウのモバイル変更リストと差分オーバーレイで削除されたファイル/行に使用される前景色。",
-			"agentsMobileDiff.modifiedForeground": "エージェント セッション ウィンドウのモバイル変更リストで変更されたファイルに使用される前景色。"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffView": {
-			"diffView.back": "戻る",
-			"diffView.loading": "読み込み中…",
-			"diffView.nextFile": "次のファイル",
-			"diffView.noChanges": "このファイルに変更はありません。",
-			"diffView.position": "{0} / {1}",
-			"diffView.prevFile": "前のファイル"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileMultiDiffView": {
-			"multiDiffView.back": "戻る",
-			"multiDiffView.file": "ファイル",
-			"multiDiffView.fileCount": "{0} {1}",
-			"multiDiffView.fileFallback": "ファイル",
-			"multiDiffView.files": "ファイル",
-			"multiDiffView.loadError": "このファイルの変更を読み込めません。",
-			"multiDiffView.loading": "読み込み中…",
-			"multiDiffView.noChanges": "このファイルに変更はありません。",
-			"multiDiffView.toggleFile": "{0} の切り替え"
-		},
-		"vs/sessions/browser/parts/mobile/mobilePickerSheet": {
-			"mobilePickerSheet.done": "完了",
-			"mobilePickerSheet.doneAriaLabel": "{0} を閉じる",
-			"mobilePickerSheet.noResults": "結果がありません",
-			"mobilePickerSheet.searching": "検索しています..."
-		},
-		"vs/sessions/browser/parts/mobile/mobileSessionFilterChips": {
-			"chipCompleted": "完了済み",
-			"chipFailed": "不合格",
-			"chipInProgress": "進行中",
-			"filterChipsLabel": "セッション状態フィルター",
-			"findAriaLabel": "セッションの検索",
-			"sortGroup": "並べ替え",
-			"sortGroupAriaLabel": "並べ替えとグループのオプション"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSortGroupSheet": {
-			"sortGroupSheet.close": "閉じる"
-		},
-		"vs/sessions/browser/parts/mobile/mobileTitlebarPart": {
-			"mobileAccount.close": "閉じる",
-			"mobileAccount.loading": "読み込んでいます...",
-			"mobileAccount.signedOut": "サインインしていません",
-			"mobileAccount.title": "アカウント",
-			"mobileTopBar.account": "アカウント",
-			"mobileTopBar.changes": "変更を表示",
-			"mobileTopBar.changesTooltip": "{0} 個のファイルが変更されました (+{1} -{2})",
-			"mobileTopBar.closeSessions": "セッションを閉じる",
-			"mobileTopBar.filesChangedCount": "{0} 個のファイル",
-			"mobileTopBar.filesChangedTooltip": "{0} 個のファイルが変更されました",
-			"mobileTopBar.newSession": "新しいセッション",
-			"mobileTopBar.newSessionAria": "新しいセッション",
-			"mobileTopBar.openSessions": "セッションを開く",
-			"mobileTopBar.singleFileChanged": "1 個のファイル",
-			"mobileTopBar.singleFileChangedTooltip": "1 個のファイルが変更されました"
-		},
-		"vs/sessions/browser/sessionsSetUpService": {
-			"loading": "読み込んでいます",
-			"sessions.aiDisabled.detail": "AI 機能を有効にして、エージェントの使用を継続します。",
-			"sessions.aiDisabled.enable": "AI 機能を有効にする",
-			"sessions.signIn": "サインインしてエージェントを使用する",
-			"sessions.signingIn": "サインインしています…",
-			"sessions.signingIn.detail": "ブラウザーでサインインを完了してください。",
-			"sessions.welcome.detail": "エージェントが共に探索、構築、反復する AI を利用したコーディング エクスペリエンス。",
-			"sessions.welcome.getStarted": "はじめに",
-			"sessions.welcome.title": "{0} へようこそ",
-			"walkthrough.productName": "{0} - エージェント",
-			"welcomeFooter": "続行すると、{0} の [使用条件]({1}) および [プライバシーに関する声明]({2}) に同意したものと見なされます。{3} Copilot は、[公開コード]({4}) の提案を表示し、お客様のデータを使用して製品を改善する場合があります。これらの [設定]({5}) はいつでも変更できます。"
-		},
-		"vs/sessions/browser/widget/openInVSCodeWidget": {
-			"openInVSCodeHover": "VS Code エディター ウィンドウで開く"
-		},
-		"vs/sessions/common/categories": {
-			"agents": "エージェント"
-		},
-		"vs/sessions/common/contextkeys": {
-			"activeSessionHasGitRepository": "アクティブなセッションに関連付けられている Git リポジトリがあるかどうか",
-			"activeSessionHasGitSyncActionRunning": "アクティブなセッションに現在実行中の Git 同期アクションがあるかどうか",
-			"activeSessionProviderId": "アクティブなセッションのプロバイダー ID",
-			"activeSessionType": "アクティブなセッションのセッションの種類",
-			"activeSessionWorkspaceIsVirtual": "アクティブなセッションのワークスペースが仮想かどうか",
-			"activeSessions": "アクティブなセッション パネルの識別子",
-			"chatSessionProviderId": "コンテキスト メニュー オーバーレイ内のセッションのプロバイダー ID",
-			"editorMaximized": "エディター領域を最大化するかどうか",
-			"isActiveSessionArchived": "アクティブなセッションがアーカイブ (完了としてマーク) されているかどうか",
-			"multipleSessionsVisible": "セッション部のグリッドに複数のセッションが表示されているかどうか",
-			"sessionIsCreated": "セッション ビューのセッションが作成済みかどうか (チャット ビューが表示され、新しいセッション ビューは表示されません)",
-			"sessionIsMaximized": "セッション ビューがセッション部のグリッドで現在最大化されているかどうか",
-			"sessionIsSticky": "セッション ビューのセッションがグリッド内で固定されているかどうか",
-			"sessionSupportsMultipleChats": "セッション ビューのセッションが複数のチャットをサポートしているかどうか",
-			"sessionWorkspacePickerGroup": "セッション ワークスペース ピッカーの現在アクティブなグループ タブ",
-			"sessionsAquariumActive": "セッションの重ね合わせオーバーレイがアクティブかどうか",
-			"sessionsCanGoBack": "ナビゲーション履歴に前のセッションがあるかどうか",
-			"sessionsCanGoForward": "ナビゲーション履歴に次のセッションがあるかどうか",
-			"sessionsFocus": "セッションの部分にキーボード フォーカスがあるかどうか",
-			"sessionsIsPhoneLayout": "現在のレイアウトが電話レイアウトかどうか",
-			"sessionsKeyboardVisible": "仮想キーボードが表示されているかどうか",
-			"sessionsVisible": "セッションの部分が表示されるかどうか",
-			"sessionsWelcomeVisible": "セッションのウェルカム オーバーレイが表示されるかどうか"
 		},
 		"vs/sessions/common/sizes": {
 			"agents.fontSize.body1": "エージェント ウィンドウの本文 (プライマリ) のフォント サイズ。",
@@ -3861,11 +3608,9 @@
 			"agents.fontSize.heading1": "エージェント ウィンドウの見出し 1 のフォント サイズ (ようこそ画面のタイトル)。",
 			"agents.fontSize.heading2": "エージェント ウィンドウの見出し 2 のフォント サイズ (タイトル)。",
 			"agents.fontSize.heading3": "エージェント ウィンドウの見出し 3 のフォント サイズ (サブタイトル)。",
-			"agents.fontSize.label1": "エージェント ウィンドウのラベル 1 のフォント サイズ (対話型タブ)。",
-			"agents.fontSize.label2": "エージェント ウィンドウのラベル 2 のフォント サイズ (メタデータ強調)。",
-			"agents.fontSize.label3": "エージェント ウィンドウのラベル 3 のフォント サイズ (メタデータ プライマリ)。",
-			"agents.fontSize.label4": "エージェント ウィンドウのラベル 4 のフォント サイズ (バッジ)。",
-			"agents.fontWeight.medium": "エージェント ウィンドウのフォントの太さを中 (500) にします。",
+			"agents.fontSize.label1": "Label 1 font size for the agents window (section title, tabs).",
+			"agents.fontSize.label2": "Label 2 font size for the agents window (metadata).",
+			"agents.fontSize.label3": "Label 3 font size for the agents window (badge).",
 			"agents.fontWeight.regular": "エージェント ウィンドウのフォントの太さを標準 (400) にします。",
 			"agents.fontWeight.semiBold": "エージェント ウィンドウのフォントの太さを中太字 (600) にします。"
 		},
@@ -3895,26 +3640,6 @@
 			"agentsUpdateButton.downloadingBackground": "エージェント セッション ウィンドウでダウンロードの進行状況を表示する更新ボタンの背景色。",
 			"inactiveSessionView.background": "エージェント セッション ウィンドウの非アクティブなセッション ビューの背景色。",
 			"inactiveSessionView.foreground": "エージェント セッション ウィンドウの非アクティブなセッション ビューの前景色。"
-		},
-		"vs/sessions/electron-browser/actions/vscodeActions": {
-			"openInVSCode": "エディターで開く",
-			"openVSCodeWindow": "VS Code ウィンドウを開く"
-		},
-		"vs/sessions/electron-browser/parts/titlebarPart": {
-			"agentsWindowTitle": "エージェント"
-		},
-		"vs/sessions/electron-browser/sessions.main": {
-			"join.closeStorage": "UI 状態を保存しています"
-		},
-		"vs/sessions/services/sessions/common/session": {
-			"sessionWorkspaceGroup.local": "ローカル",
-			"sessionWorkspaceGroup.remote": "リモート"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "アクティブなセッションが複数のチャットをサポートしているかどうか"
-		},
-		"vs/sessions/services/workspace/browser/workspaceContextService": {
-			"agentsWindow": "エージェント ウィンドウ"
 		},
 		"vs/sessions/contrib/accountMenu/browser/account.contribution": {
 			"accountAvatarAlt": "{0}の GitHub プロファイル イメージ",
@@ -5171,6 +4896,34 @@
 		"vs/sessions/contrib/welcome/browser/welcome.contribution": {
 			"resetSessionsWelcome": "エージェントのリセットへようこそ"
 		},
+		"vs/server/node/remoteExtensionHostAgentCli": {
+			"remotecli": "リモート CLI"
+		},
+		"vs/server/node/serverEnvironmentService": {
+			"acceptLicenseTerms": "設定した場合、ユーザーはサーバー ライセンス条項に同意し、ユーザーはプロンプトなしでサーバーを起動します。",
+			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
+			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
+			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
+			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
+			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
+			"agent-host-port": "The port the agent host WebSocket server should listen on.",
+			"connection-token": "すべての要求に含める必要があるシークレット。",
+			"connection-token-file": "接続トークンを含むファイルへのパス。",
+			"default-folder": "ブラウザー URL に入力が指定されていない場合に開くワークスペース フォルダー。現在の作業ディレクトリに対して解決された相対パスまたは絶対パスです。",
+			"default-workspace": "ブラウザー URL に入力が指定されていないときに開くワークスペース。現在の作業ディレクトリに対して解決された相対パスまたは絶対パスです。",
+			"host": "サーバーがリッスンするホスト名または IP アドレスです。設定されていない場合、既定値は 'localhost' になります。",
+			"port": "サーバーがリッスンするポートです。0 が渡されると、ランダムな空きポートが選択されます。形式が num-num の範囲で渡された場合、範囲 (末尾を含む) から空いているポートが選択されます。",
+			"reconnection-grace-time": "再接続の猶予期間を秒単位で上書きします。既定値は 10800 (3 時間) です。",
+			"server-base-path": "Web UI とコード サーバーを指定するパス。既定値は '/' です。`",
+			"serverDataDir": "サーバー データを保持するディレクトリを指定します。",
+			"socket-path": "サーバーがリッスンするためのソケット ファイルへのパスです。",
+			"start-server": "拡張機能のインストールまたはアンインストール時にサーバーを起動します。'install-extension'、'install-builtin-extension'、および 'uninstall-extension' と組み合わせて使用します。",
+			"telemetry-level": "初期テレメトリ レベルを設定します。有効なレベルは 'off'、'crash'、'error'、'all' です。指定しない場合、サーバーはクライアントが接続するまでテレメトリを送信し、クライアントのテレメトリ設定を使用します。これを 'off' に設定することは --disable-telemetry と同じ意味になります",
+			"without-connection-token": "接続トークンなしで実行します。他の方法で接続が保護されている場合にのみ、これを使用してください。"
+		},
+		"vs/server/node/serverServices": {
+			"remoteExtensionLog": "サーバー"
+		},
 		"vs/code/electron-main/app": {
 			"cancel": "いいえ(&&N)",
 			"confirmOpenDetail": "ご自身でこの要求を開始しなかった場合は、システムに対して攻撃が試行されている可能性があります。この要求を明示的に開始していない場合は、[いいえ] をクリックしてください",
@@ -5975,6 +5728,7 @@
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbsControl": {
 			"breadcrumbsActive": "階層リンクにフォーカスがあるかどうか",
+			"breadcrumbsHasSymbols": "Whether breadcrumbs contain symbol items",
 			"breadcrumbsPossible": "エディターで階層リンクを表示できるかどうか",
 			"breadcrumbsVisible": "階層リンクが現在表示されているかどうか",
 			"cmd.copyPath": "階層リンク パスのコピー",
@@ -6718,6 +6472,10 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "キーボード フォーカスが Quick Open コントロール内にあるかどうか"
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "ユーザー データをリセットする",
+			"reset user data message": "データ (設定、キー バインド、拡張機能、スニペット、UI 状態) をリセットして再読み込みしますか?"
+		},
 		"vs/workbench/browser/window": {
 			"closeWindowButtonLabel": "ウィンドウを閉じる(&&C)",
 			"closeWindowMessage": "ウィンドウを閉じますか?",
@@ -7042,6 +6800,7 @@
 			"auxiliaryBarVisible": "補助バーが見えるかどうか",
 			"bannerFocused": "バナーにキーボード フォーカスがあるかどうか",
 			"dirtyWorkingCopies": "変更が保存されていない作業コピーがあるかどうか",
+			"editorAreaFocus": "Whether the editor area (any editor part) has keyboard focus",
 			"editorIsOpen": "エディターが開いているかどうか",
 			"editorPartEditorGroupMaximized": "エディター パーツには最大化されたグループがあります",
 			"editorPartModal": "フォーカスがモーダル エディター パーツにあるかどうか",
@@ -7283,183 +7042,6 @@
 			"duplicateId": "ID '{0}' のビューは既に登録されています",
 			"treeView.notRegistered": "ID '{0}' のツリー ビューは登録されていません。",
 			"views log": "ビュー"
-		},
-		"vs/workbench/electron-browser/actions/developerActions": {
-			"configureRuntimeArguments": "Configure Runtime Arguments",
-			"reloadWindowWithExtensionsDisabled": "Reload with Extensions Disabled",
-			"revealUserDataFolder": "Reveal User Data Folder",
-			"showContentTracing": "Show Content Tracing",
-			"showGPUInfo": "Show GPU Info",
-			"startTracing": "Start Tracing",
-			"startTracing.ariaLabel": "Recording performance trace. Click to stop recording.",
-			"startTracing.name": "Performance Trace",
-			"startTracing.recording": "Recording trace (click to stop)",
-			"startTracing.tooltip": "Click to stop recording",
-			"stopTracing": "Stop Tracing",
-			"stopTracing.button": "&&Relaunch and Enable Tracing",
-			"stopTracing.detail": "This can take up to one minute to complete.",
-			"stopTracing.message": "No tracing session is in progress. Use 'Developer: Start Tracing' or launch with a '--trace' argument to begin tracing.",
-			"stopTracing.title": "Creating trace file...",
-			"toggleDevTools": "Toggle Developer Tools"
-		},
-		"vs/workbench/electron-browser/actions/installActions": {
-			"install": "Install '{0}' command in PATH",
-			"shellCommand": "Shell Command",
-			"successFrom": "Shell command '{0}' successfully uninstalled from PATH.",
-			"successIn": "Shell command '{0}' successfully installed in PATH.",
-			"uninstall": "Uninstall '{0}' command from PATH"
-		},
-		"vs/workbench/electron-browser/actions/windowActions": {
-			"close": "Close Window",
-			"closeActive": "Close Active Window",
-			"closeOtherWindows": "Close Other Windows",
-			"closeWindow": "Close Window",
-			"current": "Current Window",
-			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
-			"enableWindowAlwaysOnTop": "Turn On Always on Top",
-			"miCloseWindow": "Clos&&e Window",
-			"miZoomIn": "&&Zoom In",
-			"miZoomOut": "&&Zoom Out",
-			"miZoomReset": "&&Reset Zoom",
-			"quickSwitchWindow": "Quick Switch Window...",
-			"switchToMainWindow": "Switch to Main Window",
-			"switchWindow": "Switch Window...",
-			"switchWindowPlaceHolder": "Select a window to switch to",
-			"toggleWindowAlwaysOnTop": "Toggle Window Always on Top",
-			"windowDirtyAriaLabel": "{0}, window with unsaved changes",
-			"windowGroup": "window group",
-			"zoomIn": "Zoom In",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset Zoom"
-		},
-		"vs/workbench/electron-browser/desktop.contribution": {
-			"application.shellEnvironmentResolutionTimeout": "Controls the timeout in seconds before giving up resolving the shell environment when the application is not already launched from a terminal. See our [documentation](https://go.microsoft.com/fwlink/?linkid=2149667) for more information.",
-			"argv.crashReporterId": "Unique id used for correlating crash reports sent from this app instance.",
-			"argv.disableChromiumSandbox": "Disables the Chromium sandbox. This is useful when running VS Code as elevated on Linux and running under Applocker on Windows.",
-			"argv.disableHardwareAcceleration": "Disables hardware acceleration. ONLY change this option if you encounter graphic issues.",
-			"argv.disableLcdText": "Disables LCD font antialiasing.",
-			"argv.enableCrashReporter": "Allows to disable crash reporting, should restart the app if the value is changed.",
-			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
-			"argv.enebleProposedApi": "Enable proposed APIs for a list of extension ids (such as `vscode.git`). Proposed APIs are unstable and subject to breaking without warning at any time. This should only be set for extension development and testing purposes.",
-			"argv.force-renderer-accessibility": "Forces the renderer to be accessible. ONLY change this if you are using a screen reader on Linux. On other platforms the renderer will automatically be accessible. This flag is automatically set if you have editor.accessibilitySupport: on.",
-			"argv.forceColorProfile": "Allows to override the color profile to use. If you experience colors appear badly, try to set this to `srgb` and restart.",
-			"argv.jsFlags": "Specifies V8 JavaScript engine flags to pass (e.g. \"--max-old-space-size=4096\"). These flags are applied to the main process, renderer and utility processes.",
-			"argv.locale": "The display Language to use. Picking a different language requires the associated language pack to be installed.",
-			"argv.logLevel": "Log level to use. Default is 'info'. Allowed values are 'error', 'warn', 'info', 'debug', 'trace', 'off'.",
-			"argv.passwordStore": "Configures the backend used to store secrets on Linux. This argument is ignored on Windows & macOS.",
-			"argv.proxyBypassList": "Bypass any specified proxy for the given semi-colon-separated list of hosts. Example value \"<local>;*.microsoft.com;*foo.com;1.2.3.4:5678\", will use the proxy server for all hosts except for local addresses (localhost, 127.0.0.1 etc.), microsoft.com subdomains, hosts that contain the suffix foo.com and anything at 1.2.3.4:5678",
-			"argv.remoteDebuggingPort": "Specifies the port to use for remote debugging.",
-			"argv.useInMemorySecretStorage": "Ensures that an in-memory store will be used for secret storage instead of using the OS's credential store. This is often used when running VS Code extension tests or when you're experiencing difficulties with the credential store.",
-			"closeWhenEmpty": "Controls whether closing the last editor should also close the window. This setting only applies for windows that do not show folders.",
-			"confirmSaveUntitledWorkspace": "Controls whether a confirmation dialog shows asking to save or discard an opened untitled workspace in the window when switching to another workspace. Disabling the confirmation dialog will always discard the untitled workspace.",
-			"controlsStyle": "Adjust the appearance of the window controls to be native by the OS, custom drawn or hidden. Changes require a full restart to apply.",
-			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
-			"enableCrashReporterDeprecated": "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated due to being combined into the {0} setting.",
-			"keyboardConfigurationTitle": "Keyboard",
-			"mergeAllWindowTabs": "Merge All Windows",
-			"miExit": "E&&xit",
-			"moveWindowTabToNewWindow": "Move Window Tab to New Window",
-			"newTab": "New Window Tab",
-			"newWindowDimensions": "Controls the dimensions of opening a new window when at least one window is already opened. Note that this setting does not have an impact on the first window that is opened. The first window will always restore the size and location as you left it before closing.",
-			"openWithoutArgumentsInNewWindow": "Controls whether a new empty window should open when starting a second instance without arguments or if the last running instance should get focus.\r\nNote that there can still be cases where this setting is ignored (e.g. when using the `--new-window` or `--reuse-window` command line option).",
-			"restoreFullscreen": "Controls whether a window should restore to full screen mode if it was exited in full screen mode.",
-			"restoreWindows": "Controls how windows and editors within are being restored when opening.",
-			"security.promptForLocalFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a local file or workspace is about to open through a protocol handler.",
-			"security.promptForRemoteFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a remote file or workspace is about to open through a protocol handler.",
-			"showNextWindowTab": "Show Next Window Tab",
-			"showPreviousTab": "Show Previous Window Tab",
-			"telemetry.enableCrashReporting": "Enable crash reports to be collected. This helps us improve stability. \r\nThis option requires restart to take effect.",
-			"telemetryConfigurationTitle": "Telemetry",
-			"titleBarStyle": "Adjust the appearance of the window title bar to be native by the OS or custom. Changes require a full restart to apply.",
-			"toggleWindowTabsBar": "Toggle Window Tabs Bar",
-			"touchbar.enabled": "Enables the macOS touchbar buttons on the keyboard if available.",
-			"touchbar.ignored": "A set of identifiers for entries in the touchbar that should not show up (for example `workbench.action.navigateBack`).",
-			"window.border.color": "{0}: specific color in Hex, RGB, RGBA, HSL, HSLA format",
-			"window.border.default": "{0}: respect color theme settings, fallback to Windows settings",
-			"window.border.off": "{0}: disable border colors",
-			"window.border.prefix": "Controls the border color of the window:",
-			"window.border.suffix": "Use {0} to set different colors for active and inactive windows. This setting is ignored when {1} is set to {2}.",
-			"window.border.system": "{0}: respect Windows settings only",
-			"window.clickThroughInactive": "If enabled, clicking on an inactive window will both activate the window and trigger the element under the mouse if it is clickable. If disabled, clicking anywhere on an inactive window will activate it only and a second click is required on the element.",
-			"window.customTitleBarVisibility": "Adjust when the custom title bar should be shown. The custom title bar can be hidden when in full screen mode with `windowed`. The custom title bar can only be hidden in non full screen mode with `never` when {0} is set to `native`.",
-			"window.customTitleBarVisibility.auto": "Automatically changes custom title bar visibility.",
-			"window.customTitleBarVisibility.never": "Hide custom titlebar when {0} is set to `native`.",
-			"window.customTitleBarVisibility.windowed": "Hide custom titlebar in full screen. When not in full screen, automatically change custom title bar visibility.",
-			"window.doubleClickIconToClose": "If enabled, this setting will close the window when the application icon in the title bar is double-clicked. The window will not be able to be dragged by the icon. This setting is effective only if {0} is set to `custom`.",
-			"window.menuStyle": "Adjust the menu style to either be native by the OS, custom, or inherited from the title bar style defined in {0}. This also affects the context menu appearance. Changes require a full restart to apply.",
-			"window.menuStyle.custom": "Use the custom menu.",
-			"window.menuStyle.custom.mac": "Use the custom context menu.",
-			"window.menuStyle.inherit": "Matches the menu style to the title bar style defined in {0}.",
-			"window.menuStyle.inherit.mac": "Matches the context menu style to the title bar style defined in {0}.",
-			"window.menuStyle.mac": "Adjust the context menu appearances to either be native by the OS, custom, or inherited from the title bar style defined in {0}.",
-			"window.menuStyle.native": "Use the native menu. This is ignored when {0} is set to {1}.",
-			"window.menuStyle.native.mac": "Use the native context menu.",
-			"window.nativeFullScreen": "Controls if native full-screen should be used on macOS. Disable this option to prevent macOS from creating a new space when going full-screen.",
-			"window.nativeTabs": "Enables macOS native window tabs. Note that changes require a full restart to apply and that native tabs will disable a custom title bar style if configured.",
-			"window.newWindowDimensions.default": "Open new windows in the center of the screen.",
-			"window.newWindowDimensions.fullscreen": "Open new windows in full screen mode.",
-			"window.newWindowDimensions.inherit": "Open new windows with same dimension as last active one.",
-			"window.newWindowDimensions.maximized": "Open new windows maximized.",
-			"window.newWindowDimensions.offset": "Open new windows with same dimension as last active one with an offset position.",
-			"window.openWithoutArgumentsInNewWindow.off": "Focus the last active running instance.",
-			"window.openWithoutArgumentsInNewWindow.on": "Open a new empty window.",
-			"window.reopenFolders.all": "Reopen all windows unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.folders": "Reopen all windows that had folders or workspaces opened unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.none": "Never reopen a window. Unless a folder or workspace is opened (e.g. from the command line), an empty window will appear.",
-			"window.reopenFolders.one": "Reopen the last active window unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.preserve": "Always reopen all windows. If a folder or workspace is opened (e.g. from the command line) it opens as a new window unless it was opened before. If files are opened they will open in one of the restored windows together with editors that were previously opened.",
-			"windowConfigurationTitle": "Window",
-			"zoomLevel": "Adjust the default zoom level for all windows. Each increment above `0` (e.g. `1`) or below (e.g. `-1`) represents zooming `20%` larger or smaller. You can also enter decimals to adjust the zoom level with a finer granularity. See {0} for configuring if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window.",
-			"zoomPerWindow": "Controls if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window. See {0} for configuring a default zoom level for all windows."
-		},
-		"vs/workbench/electron-browser/desktop.main": {
-			"join.closeStorage": "Saving UI state"
-		},
-		"vs/workbench/electron-browser/parts/dialogs/dialogHandler": {
-			"copy": "&&Copy",
-			"okButton": "OK"
-		},
-		"vs/workbench/electron-browser/window": {
-			"appRootWarning.banner": "Files you store within the installation folder ('{0}') may be OVERWRITTEN or DELETED IRREVERSIBLY without warning at update time.",
-			"configure": "Configure",
-			"downloadArmBuild": "Download",
-			"keychainWriteError": "Writing login information to the keychain failed with error '{0}'.",
-			"learnMore": "Learn More",
-			"loginButton": "&&Log In",
-			"macoseolmessage": "{0} on {1} will soon stop receiving updates. Consider upgrading your macOS version.",
-			"password": "Password",
-			"proxyAuthRequired": "Proxy Authentication Required",
-			"proxyDetail": "The proxy {0} requires a username and password.",
-			"rememberCredentials": "Remember my credentials",
-			"resolveShellEnvironment": "Resolving shell environment...",
-			"restart": "Restart",
-			"runningAsRoot": "It is not recommended to run {0} as root user.",
-			"runningTranslated": "You are running an emulated version of {0}. For better performance download the native arm64 version of {0} build for your machine.",
-			"sharedProcessCrash": "A shared background process terminated unexpectedly. Please restart the application to recover.",
-			"showArgvParseWarning": "The runtime arguments file 'argv.json' contains errors. Please correct them and restart.",
-			"showArgvParseWarningAction": "Open File",
-			"shutdownErrorClose": "An unexpected error prevented the window to close",
-			"shutdownErrorDetail": "Error: {0}",
-			"shutdownErrorLoad": "An unexpected error prevented to change the workspace",
-			"shutdownErrorQuit": "An unexpected error prevented the application to quit",
-			"shutdownErrorReload": "An unexpected error prevented the window to reload",
-			"shutdownForceClose": "Close Anyway",
-			"shutdownForceLoad": "Change Anyway",
-			"shutdownForceQuit": "Quit Anyway",
-			"shutdownForceReload": "Reload Anyway",
-			"shutdownTitleClose": "Closing the window is taking a bit longer...",
-			"shutdownTitleLoad": "Changing the workspace is taking a bit longer...",
-			"shutdownTitleQuit": "Quitting the application is taking a bit longer...",
-			"shutdownTitleReload": "Reloading the window is taking a bit longer...",
-			"status.windowZoom": "Window Zoom",
-			"troubleshooting": "Troubleshooting Guide",
-			"username": "Username",
-			"willShutdownDetail": "The following operations are still running: \r\n{0}",
-			"zoomIn": "Zoom In",
-			"zoomNumber": "Zoom Level: {0} ({1}%)",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset",
-			"zoomSettings": "Settings"
 		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
 			"accessibility.chat.showCheckmarks": "チャット応答内の完了したツール呼び出しやその他の折りたたみ可能な項目にチェックマーク アイコンを表示するかどうかを制御します。",
@@ -7839,300 +7421,6 @@
 			"browserView.shareWithAgent.message": "このブラウザー ページをエージェントと共有しますか?",
 			"browserView.shareWithAgent.title": "エージェントと共有しますか?"
 		},
-		"vs/workbench/contrib/browserView/electron-browser/browserEditor": {
-			"browser.editorFocused": "ブラウザーのエディターがフォーカスされているかどうか",
-			"browser.hasError": "ブラウザーに読み込みエラーがあるかどうか",
-			"browser.hasUrl": "ブラウザーに URL が読み込まれているかどうか",
-			"browserCategory": "Browser"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserView.contribution": {
-			"browser.editorLabel": "ブラウザー"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures": {
-			"browser.clearEphemeralStorageAction": "ストレージをクリア (エフェメラル)",
-			"browser.clearGlobalStorageAction": "ストレージをクリア (グローバル)",
-			"browser.clearWorkspaceStorageAction": "ストレージをクリア (ワークスペース)",
-			"browser.dataStorage": "ブラウザー ビュー間でブラウザー データ (Cookie、キャッシュ、ストレージ) の共有方法を制御します。\r\n\r\n**注**: 信頼されていないワークスペースでは、この設定は無視され、常に `ephemeral` ストレージが使用されます。",
-			"browser.dataStorage.ephemeral": "各ブラウザー ビューは独自のセッションを持ち、セッションは閉じるとクリーンアップされます。",
-			"browser.dataStorage.global": "すべてのブラウザー ビューは、すべてのワークスペースで単一の永続的なセッションを共有します。",
-			"browser.dataStorage.workspace": "同じワークスペース内のブラウザー ビューは永続的なセッションを共有します。ワークスペースが開いていない場合は、`ephemeral` ストレージが使用されます。",
-			"browser.storageScope": "現在のブラウザー表示のストレージ範囲"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDevToolsFeature": {
-			"browser.devToolsOpen": "開発者ツールを現在のブラウザー ビューで開いているかどうか",
-			"browser.toggleDevToolsAction": "開発者ツールの切り替え"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures": {
-			"browser.addAreaScreenshotToChatAction": "Add Area Screenshot to Chat",
-			"browser.addConsoleLogsToChatAction": "チャットにコンソール ログを追加する",
-			"browser.addElementToChatAction": "チャットに要素を追加する",
-			"browser.addFullPageScreenshotToChatAction": "Add Full Page Screenshot to Chat (Experimental)",
-			"browser.addScreenshotToChatAction": "チャットにスクリーンショットを追加",
-			"browser.agentSharingContentWarning.detail": "ページには、エージェントの動作に影響を与える可能性のある非表示のプロンプトが含まれている場合があります。送信する前に、添付されたコンテンツを再確認してください。",
-			"browser.agentSharingContentWarning.dontShowAgain": "今後表示しない",
-			"browser.agentSharingContentWarning.message": "信頼できないソースからのコンテンツを添付する際は注意してください。",
-			"browser.agentSharingContentWarning.ok": "&&OK",
-			"browser.areaSelectionActive": "Whether area selection is currently active",
-			"browser.chatActionsSubmenu": "チャットに追加",
-			"browser.elementSelectionActive": "要素の選択が現在アクティブかどうか",
-			"browser.enableChatTools": "有効にすると、チャット エージェントはブラウザー ツールを使って統合ブラウザー内のページを開いて操作できるようになります。",
-			"browser.experimentalUserTools.enabled": "When enabled, experimental user-facing tools are available in the Integrated Browser's Add to Chat menu.",
-			"browser.shareWithAgent": "エージェントと共有",
-			"browser.sharingWithAgent": "エージェントとの共有",
-			"browser.unshareWithAgent": "エージェントとの共有を停止する",
-			"browserAreaScreenshot": "Browser Area Screenshot",
-			"browserCategory": "ブラウザー",
-			"browserFullPageScreenshot": "Browser Full Page Screenshot",
-			"browserScreenshot": "ブラウザーのスクリーンショット",
-			"consoleLogs": "コンソール ログ",
-			"workbench.browser.agentHostChatToolsEnabled": "有効にすると、[セッション] ウィンドウでエージェント ホスト セッションに、統合ブラウザー ツールがクライアント提供のツールとして公開されます。{0} および {1} が必要です。"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures": {
-			"browser.device.dimensionsLabel": "ディメンション:",
-			"browser.device.dprAriaLabel": "デバイス ピクセル比",
-			"browser.device.dprLabel": "DPR:",
-			"browser.device.dprTitle": "デバイス ピクセル比 (空白 = システムの既定値)",
-			"browser.device.heightAriaLabel": "ビューポートの高さ",
-			"browser.device.inputPlaceholderAuto": "オート",
-			"browser.device.scaleLabel": "スケール:",
-			"browser.device.swapDimensionsTitle": "ディメンションの入れ替え",
-			"browser.device.widthAriaLabel": "ビューポートの幅",
-			"browser.device.zoomAriaLabel": "ズーム ファクター",
-			"browser.device.zoomAuto": "オート ({0}%)",
-			"browser.devicePresets.mobileTag": "モバイル",
-			"browser.devicePresets.placeholder": "デバイス プリセットを選択する",
-			"browser.emulationHasUserAgent": "ブラウザー エミュレーションにカスタム ユーザー エージェントが設定されているかどうか",
-			"browser.emulationIsMobile": "ブラウザー エミュレーションがモバイル モードかどうか",
-			"browser.emulationToolbar.close": "閉じる",
-			"browser.emulationToolbar.mobile": "モバイル エミュレーション",
-			"browser.emulationToolbar.presets": "プリセットを適用...",
-			"browser.emulationToolbar.reset": "リセット",
-			"browser.emulationToolbar.userAgent": "ユーザー エージェントの設定...",
-			"browser.emulationToolbarVisible": "ブラウザー エミュレーション ツール バーが表示されるかどうか",
-			"browser.hideEmulationToolbar": "エミュレーション ツール バーを非表示にする",
-			"browser.pickDevicePreset": "デバイスのエミュレート...",
-			"browser.resetEmulation": "エミュレーションのリセット",
-			"browser.setUserAgent": "ユーザー エージェントのエミュレート...",
-			"browser.showEmulationToolbar": "エミュレーション ツール バーの表示",
-			"browser.toggleMobileEmulation": "モバイル エミュレーションの切り替え",
-			"browser.userAgent.prompt": "ユーザー エージェント文字列 (VS Code の既定値を使用する場合は空のままにします)"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures": {
-			"browser.certCloseTab": "Close Tab",
-			"browser.certDetailsHeading": "Certificate Details",
-			"browser.certError": "Error",
-			"browser.certErrorDescription": "This site's security certificate could not be verified.",
-			"browser.certErrorExtraWarning": " Your connection is not private.",
-			"browser.certErrorLabel": "Certificate Error",
-			"browser.certFingerprint": "Fingerprint",
-			"browser.certGoBack": "Go Back",
-			"browser.certHoverDetail1": "Your connection to this site is not secure.",
-			"browser.certHoverDetail2": "You previously chose to proceed to '{0}' despite a certificate error ({1}).",
-			"browser.certHoverHeading": "Certificate Not Trusted",
-			"browser.certIssuer": "Issuer",
-			"browser.certProceed": "Proceed anyway (unsafe)",
-			"browser.certRevoke": "Revoke and Close",
-			"browser.certSubject": "Subject",
-			"browser.certValid": "Valid",
-			"browser.errorUrlLabel": "URL:",
-			"browser.loadErrorLabel": "Failed to Load Page",
-			"browser.notSecure": "Not Secure"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
-			"browser.findNextAction": "次を検索",
-			"browser.findPreviousAction": "前を検索",
-			"browser.findWidgetFocused": "ブラウザーの検索ウィジェットがフォーカスされているかどうか",
-			"browser.findWidgetVisible": "ブラウザーの検索ウィジェットが表示されているかどうか",
-			"browser.hideFindAction": "検索ウィジェットを閉じる",
-			"browser.showFindAction": "ページ内の検索"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorZoomFeature": {
-			"browser.canZoomIn": "ブラウザーをさらに拡大できるかどうか",
-			"browser.canZoomOut": "ブラウザーをさらに縮小できるかどうか",
-			"browser.defaultZoomLevel.matchWindow": "アプリケーションの現在の UI ズーム レベルと一致します。",
-			"browser.pageZoom": "統合ブラウザー内のすべてのサイトの既定のズーム レベル。",
-			"browser.resetZoomAction": "ズームのリセット",
-			"browser.zoomInAction": "拡大",
-			"browser.zoomOutAction": "縮小"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserFavoritesFeature": {
-			"browser.addFavorite": "Add to Favorites",
-			"browser.addFavoriteAction": "Add to Favorites",
-			"browser.favorites": "Favorites",
-			"browser.removeFavorite": "Remove from Favorites",
-			"browser.removeFavoriteAction": "Remove from Favorites",
-			"browser.removeFavoriteWithKb": "Remove from Favorites ({0})",
-			"browser.urlIsFavorited": "Whether the current browser URL is a favorite"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserNavigationFeatures": {
-			"browser.canGoBack": "Whether the browser can go back",
-			"browser.canGoForward": "Whether the browser can go forward",
-			"browser.focusUrlInputAction": "Focus URL Input",
-			"browser.goBackAction": "Go Back",
-			"browser.goForwardAction": "Go Forward",
-			"browser.hardReloadAction": "Hard Reload",
-			"browser.openExternalAction": "Open in External Browser",
-			"browser.openSettingsAction": "Browser Settings",
-			"browser.reloadAction": "Reload"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
-			"browser.backgroundGroup": "バックグラウンド",
-			"browser.closeAll": "すべてのブラウザー タブを閉じる",
-			"browser.closeAllInGroup": "グループ内のすべてのタブを閉じる",
-			"browser.closeAllInGroupShort": "すべてのブラウザー タブを閉じる",
-			"browser.closeAllTabs": "すべて閉じる",
-			"browser.closeTab": "閉じる",
-			"browser.editorOpen": "ブラウザー エディターが現在開いているかどうか",
-			"browser.linkOpenedHint.ariaLabel": "このリンクは統合ブラウザーで開きます",
-			"browser.linkOpenedHint.detail": "**統合ブラウザー**\r\n\r\nLocalhost リンクは統合ブラウザーで自動的に開きます。",
-			"browser.linkOpenedHint.dismiss": "再表示しない",
-			"browser.linkOpenedHint.label": "ここにリンクが開いています",
-			"browser.linkOpenedHint.openSettings": "設定を開く",
-			"browser.newTabAction": "新しいタブ",
-			"browser.openAction": "統合ブラウザーを開く",
-			"browser.openFileAction": "統合ブラウザーで開く",
-			"browser.openLocalhostLinks": "有効にすると、ターミナル、チャット、その他のソースからの localhost リンク (`localhost`、`127.0.0.1`、`[::1]`) および全インターフェイス リンク (`0.0.0.0`、`[0:0:0:0:0:0:0:0]`、`[::]`) は、システム ブラウザーではなく統合ブラウザーで開かれます。",
-			"browser.openNewTab": "新しい統合ブラウザー タブ",
-			"browser.openOrListAction": "ブラウザー",
-			"browser.openTabs": "Open Tabs",
-			"browser.openTabsDescription": "Select a tab to switch",
-			"browser.quickOpenAction": "Quick Open ブラウザー タブ...",
-			"browser.quickOpenPlaceholder": "ブラウザー タブを選択する",
-			"browser.showInTitleBar": "[統合ブラウザー] ボタンをタイトル バーに表示するかどうかを制御します。",
-			"browser.showInTitleBar.false": "このボタンはタイトル バーに表示されることはありません。",
-			"browser.showInTitleBar.true": "このボタンはタイトル バーに常時表示されます。",
-			"browser.showInTitleBar.whenOpen": "このボタンは、ブラウザー エディターが開いている場合、タイトル バーに表示されます。",
-			"browserEntryAriaLabelWithGroup": "{0}、{1}",
-			"miOpenBrowser": "&&ブラウザー",
-			"toggle.browser": "統合ブラウザー",
-			"toggle.browserDescription": "タイトル バーの [統合ブラウザー] ボタンの表示/非表示を切り替える"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature": {
-			"browser.welcomeSubtitle": "Enter a URL above to get started.",
-			"browser.welcomeSubtitleChat": "Use Add Element to Chat to reference UI elements in chat prompts.",
-			"browser.welcomeTitle": "Browser"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/webContentsViewRendererFeature": {
-			"browser.overlayPauseDetail.notification": "Dismiss the notification to continue using the browser.",
-			"browser.overlayPauseHeading.notification": "Paused due to Notification"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserToolHelpers": {
-			"browser.blockedByPolicy": "ネットワーク ドメイン ポリシーによってブロックされました",
-			"browser.element": "要素",
-			"browser.open.alreadyOpen": "既に開いています: {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserTools.contribution": {
-			"browserContext.label": "ブラウザー ページ",
-			"browserToolSet.description": "統合ブラウザー ページを開いて操作する"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/clickBrowserTool": {
-			"browser.click.invocation": "{1} の [{0}] をクリックしています",
-			"browser.click.invocation.middle": "{1} で {0} を中クリックしています",
-			"browser.click.invocation.right": "{1} で {0} を右クリックしています",
-			"browser.click.past": "{1} の [{0}] をクリックしました",
-			"browser.click.past.middle": "{1} で {0} を中クリックしました",
-			"browser.click.past.right": "{1} で {0} を右クリックしました",
-			"browser.dblClick.invocation": "{1} で {0} をダブルクリックしています",
-			"browser.dblClick.past": "{1} で {0} をダブルクリックしました",
-			"clickBrowserTool.displayName": "要素をクリック",
-			"clickBrowserTool.userDescription": "ブラウザー ページの要素をクリックします"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/dragElementTool": {
-			"browser.drag.invocation": "{2} で {0} を {1} にドラッグします",
-			"browser.drag.past": "{2} の {0} を {1} にドラッグしました",
-			"dragElementTool.displayName": "要素のドラッグ",
-			"dragElementTool.userDescription": "要素を別の要素の上にドラッグする"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/handleDialogBrowserTool": {
-			"browser.handleDialog.invocation": "{0} のダイアログを処理しています",
-			"browser.handleDialog.past": "{0} でダイアログを処理しました",
-			"handleDialogBrowserTool.displayName": "ダイアログの操作",
-			"handleDialogBrowserTool.userDescription": "ブラウザー ページのダイアログに応答します"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/hoverElementTool": {
-			"browser.hover.invocation": "{1} で {0} の上にマウス ポインターを置いています",
-			"browser.hover.past": "{1} で {0} の上にマウス ポインターを置きました",
-			"hoverElementTool.displayName": "要素にカーソルを合わせる",
-			"hoverElementTool.userDescription": "ブラウザー ページ内の要素にカーソルを合わせる"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/navigateBrowserTool": {
-			"browser.goBack.invocation": "{0} で後方に移動しています",
-			"browser.goBack.past": "{0} で後方に移動しました",
-			"browser.goForward.invocation": "{0} で前方に移動しています",
-			"browser.goForward.past": "{0} で前方に移動しました",
-			"browser.navigate.confirmMessage": "これによりブラウザーが {0} に移動し、エージェントがそのコンテンツにアクセスできるようになります。",
-			"browser.navigate.confirmTitle": "ブラウザーに移動しますか?",
-			"browser.navigate.invocation": "{1} で {0}に移動しています",
-			"browser.navigate.past": "{1} の {0} に移動しました",
-			"browser.reload.invocation": "{0} を再度読み込んでいます",
-			"browser.reload.past": "{0} を再度読み込みました",
-			"navigateBrowserTool.displayName": "ページを移動する",
-			"navigateBrowserTool.userDescription": "ブラウザー ページの移動または再読み込み"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserTool": {
-			"browser.open.confirmMessage": "これにより統合ブラウザーで {0} が開きます。エージェントはそのコンテンツを読み取り、操作できるようになります。",
-			"browser.open.confirmTitle": "ブラウザー ページを開きますか?",
-			"browser.open.invocation": "{0} でブラウザー ページを開いています",
-			"browser.open.newPageOption": "いいえ、{0} で新しいページを開きます",
-			"browser.open.noPagesOption": "いいえ - エージェントとタブを共有しません",
-			"browser.open.past": "{0} でブラウザー ページを開きました",
-			"browser.open.prompt.invocation": "ブラウザー タブを共有するようにユーザーに求める",
-			"browser.open.prompt.past": "ブラウザー タブを共有するようユーザーに促すメッセージ",
-			"browser.open.result": "{0} を開きました",
-			"browser.open.shareExistingOption": "はい、\"{0}\" - {1} を共有します",
-			"browser.open.shareQuestion.message": "既存のブラウザー タブを共有しますか?",
-			"browser.open.shareQuestion.title": "ブラウザー タブの共有",
-			"browser.open.sharedResult": "ユーザーが {0} を共有しました",
-			"openBrowserTool.displayName": "ブラウザー ページを開く",
-			"openBrowserTool.userDescription": "統合ブラウザーで URL を開く"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserToolNonAgentic": {
-			"browser.open.nonAgentic.confirmMessage": "これにより統合ブラウザーで {0} が開きます。エージェントはその内容を読み取ることができません。",
-			"browser.open.nonAgentic.confirmTitle": "ブラウザー ページを開きますか?",
-			"browser.open.nonAgentic.invocation": "{0} でブラウザー ページを開いています",
-			"browser.open.nonAgentic.past": "{0} でブラウザー ページを開きました",
-			"browser.open.nonAgentic.result": "{0} を開きました"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/readBrowserTool": {
-			"browser.read.invocation": "{0} を読み取っています",
-			"browser.read.past": "{0} を読み取りました",
-			"readBrowserTool.displayName": "ページの読み取り",
-			"readBrowserTool.userDescription": "ブラウザー ページのコンテンツを読み取ります"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/runPlaywrightCodeTool": {
-			"browser.runCode.confirmDisclaimer": "続行する前に、コードが信頼できることを確認してください。",
-			"browser.runCode.confirmTitle": "Playwright コードを実行しますか?",
-			"browser.runCode.invocation": "Playwright コードを実行しています...",
-			"browser.runCode.past": "Playwright コードを実行しました",
-			"browser.runCode.waitInvocation": "Playwright コードの完了を待機しています...",
-			"browser.runCode.waitPast": "Playwright コードを待機しました",
-			"runPlaywrightCodeTool.displayName": "Playwright コードの実行",
-			"runPlaywrightCodeTool.userDescription": "ブラウザー ページに対して Playwright コード スニペットを実行します"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/screenshotBrowserTool": {
-			"browser.screenshot.invocation": "ブラウザーのスクリーンショットをキャプチャしています",
-			"browser.screenshot.invocation.element": "{0} のスクリーンショットをキャプチャしています",
-			"browser.screenshot.past": "キャプチャされたブラウザーのスクリーンショット",
-			"browser.screenshot.past.element": "{0} のスクリーンショットをキャプチャしました",
-			"screenshotBrowserTool.displayName": "スクリーンショット ページ",
-			"screenshotBrowserTool.userDescription": "ブラウザー ページのスクリーンショットをキャプチャします"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/typeBrowserTool": {
-			"browser.pressKey.invocation": "{1} でキー `{0}` を押しています",
-			"browser.pressKey.invocation.element": "{2} の {1} でキー `{0}` を押しています",
-			"browser.pressKey.past": "{1} でキー `{0}` を押しました",
-			"browser.pressKey.past.element": "{2} の {1} でキー `{0}` を押しました",
-			"browser.type.invocation": "{0} でテキストを入力しています",
-			"browser.type.invocation.element": "{1} の {0} でテキストを入力しています",
-			"browser.type.past": "{0} でテキストを入力しました",
-			"browser.type.past.element": "{1} の {0} でテキストを入力しました",
-			"typeBrowserTool.displayName": "ページに入力",
-			"typeBrowserTool.userDescription": "ブラウザー ページでテキストを入力するか、キーを押します"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget": {
-			"browser.goTo": "Go to {0}",
-			"browser.urlPlaceholder": "Enter a URL"
-		},
 		"vs/workbench/contrib/bulkEdit/browser/bulkEditService": {
 			"areYouSureQuiteBulkEdit.detail": "'{0}' が進行中です。",
 			"changeWorkspace.message": "ワークスペースを変更しますか?",
@@ -8450,6 +7738,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatDeveloperActions": {
 			"workbench.action.chat.clearRecentlyUsedLanguageModels.label": "最近使用した言語モデルをクリアする",
+			"workbench.action.chat.inspectAgentHostSubscriptions.label": "Inspect Agent Host Subscriptions",
 			"workbench.action.chat.inspectChatModel.label": "チャット モデルの検査",
 			"workbench.action.chat.inspectChatModelReferences.label": "チャット モデルの参照を検査する",
 			"workbench.action.chat.logChatIndex.label": "チャット インデックスをログする",
@@ -8729,12 +8018,12 @@
 			"noAgentPlugins": "エージェント プラグインが見つかりません。",
 			"update": "更新"
 		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} - Agent Host",
-			"agentHostHarnessLabel.local": "{0} [Local]"
-		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
 			"agentHostChatInputPicker.ariaLabel": "{0} ピッカー",
+			"agentHostChatInputPicker.boolean.false": "Off",
+			"agentHostChatInputPicker.boolean.offLabel": "Off",
+			"agentHostChatInputPicker.boolean.onLabel": "On",
+			"agentHostChatInputPicker.boolean.true": "On",
 			"agentHostChatInputPicker.filter": "フィルター処理...",
 			"agentHostChatInputPicker.learnMorePermissions": "アクセス許可に関する詳細",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
@@ -8743,8 +8032,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "自動承認",
-			"agentHost.branchPicker": "ブランチ",
-			"agentHost.isolationPicker": "分離",
 			"agentHost.modePicker": "エージェント モード",
 			"agentHost.permissionModePicker": "承認"
 		},
@@ -8756,23 +8043,6 @@
 			"agentHost.permission.oneMorePending": "さらに 1 件の要求を待機しています",
 			"agentHost.permission.read": "リモート エージェント ホスト \"{0}\" は {1} を読み取ります",
 			"agentHost.permission.write": "リモート エージェント ホスト \"{0}\" は、{1} を書き込みます"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
-			"agentHost.authRequired": "Authentication is required to start a session. Please sign in and try again.",
-			"agentHost.elicit.url.cancel": "Cancel",
-			"agentHost.elicit.url.instruction": "Open this URL?",
-			"agentHost.elicit.url.open": "Open {0}",
-			"agentHost.elicit.url.title": "Authorization Required",
-			"agentHost.forkedSessionLabel": "Forked Session",
-			"agentHost.responseDetails.credit": "{0} credit",
-			"agentHost.responseDetails.credits": "{0} credits"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
-			"agentHostTerminal.channelLocal": "Agent Host Terminal (Local)",
-			"agentHostTerminal.local": "Local"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
-			"ahp.running": "Running {0}..."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "完了済み",
@@ -8793,6 +8063,7 @@
 			"chat.session.providerDescription.codex": "エディターで新しいコーデックス セッションを開きます。コーデックス セッションはチャット セッション ビューから管理できます。",
 			"chat.session.providerDescription.growth": "Copilot の機能について説明します。",
 			"chat.session.providerDescription.local": "VS Code チャット内のタスクを実行します。エージェントはチャットを介して反復処理し、メイン ワークスペースに変更を対話的に実装するために対話的に動作します。",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [Agent Host]",
 			"chat.session.providerLabel.background": "Copilot CLI",
 			"chat.session.providerLabel.cloud": "クラウド",
 			"chat.session.providerLabel.local": "ローカル"
@@ -9176,6 +8447,8 @@
 			"editorViewRawButtonTooltip": "生のマークダウン ファイルを表示します",
 			"homeButton": "概要",
 			"homeButtonTooltip": "概要に戻る",
+			"homeButtonTooltipWithHarness": "Current harness: {0}. Click to go to overview",
+			"homeButtonWithHarness": "{0}, Back to overview",
 			"hooks": "フック",
 			"hooksDesc": "ファイルの保存やタスクの実行などのイベントでトリガーされる自動アクションを構成します。",
 			"instructions": "指示",
@@ -9381,6 +8654,10 @@
 			"chat.NotebookImageAttachment": "アタッチされたノートブックの出力、{0}",
 			"chat.attachment": "添付コンテキスト、{0}",
 			"chat.attachment.clearButton": "コンテキストから削除",
+			"chat.attachment.saveFileButton": "Save As...",
+			"chat.attachment.saveFileError": "Failed to save file: {0}",
+			"chat.attachment.saveImageButton": "Save Image As...",
+			"chat.attachment.saveImageError": "Failed to save image: {0}",
 			"chat.attachment.withDeleteHint": "{0} (削除)",
 			"chat.browserToolsDisabled": "ブラウザー ツールが有効になっていません。",
 			"chat.browserToolsDisabled.aria": "ブラウザー ツールが有効になっていません、{0}",
@@ -9476,7 +8753,7 @@
 			"chat.agentHost.ahpJsonlLogging": "有効にすると、エージェント ホスト接続のすべての AHP トランスポート メッセージを、ウィンドウのログ ディレクトリ内の JSONL ファイルに記録します。",
 			"chat.agentHost.clientTools": "エージェント ホスト セッションでクライアント提供ツールとして公開するツール参照名です。",
 			"chat.agentHost.customTerminalTool.enabled": "有効にすると、Copilot SDK セッションでは、SDK の既定のターミナルの動作ではなく、エージェント ホスト ターミナル ツールのオーバーライドが使用されます。",
-			"chat.agentHost.ipcLogging": "有効にすると、各エージェント ホストのすべての IPC トラフィックが専用の出力チャネルにログ記録されます。",
+			"chat.agentHost.defaultChatProvider": "When enabled, the local agent host is used as the default provider in the VS Code chat session-target picker. Requires `#{0}#`.",
 			"chat.agentLocations.invalidPath": "パスは相対パスであるか、'~/' で始まる必要があります。絶対パスと '\\' 区切り記号はサポートされていません。",
 			"chat.agentSessionProjection.enabled": "優先ワークスペースでエージェント セッションをレビューするために、エージェント セッション プロジェクション モードを有効にするかどうかを制御します。",
 			"chat.agentSkillsLocations.description": "チャット セッションで使用できるエージェント スキル (`{0}`) の場所を指定します。[詳細情報]({1})。\r\n\r\n各パスには、SKILL.md ファイルが含まれるスキルのサブフォルダーが含まれる必要があります (例: `my-skills/skillA/SKILL.md` がある場合は `my-skills` を追加します)。相対パスは、ワークスペースのルート フォルダーから解決されます。",
@@ -9506,6 +8783,7 @@
 			"chat.artifacts.rules.groupName": "成果物グループの表示名。",
 			"chat.artifacts.rules.onlyShowGroup": "true の場合、個々の項目ではなくグループ ヘッダーのみが表示されます。",
 			"chat.autoReply.description": "ユーザーが利用できないことをエージェントに伝え、最善の判断を下すことで、質問カルーセルを自動的にスキップします。これは高度な設定であり、不完全なコンテキストに基づく意図しない選択やアクションにつながる可能性があります。",
+			"chat.autopilot.advanced.enabled": "Enables **Advanced Autopilot**, a single switch that turns on all advanced Autopilot behaviors that delegate more of the loop to the agent. Currently, after each Autopilot turn a small, fast model evaluates whether your original request is complete; if not, Autopilot keeps working using that evaluation as guidance for the next turn, instead of relying on the agent to signal completion itself.",
 			"chat.checkpoints.enabled": "チャットでチェックポイントを有効にします。チェックポイントを使用すると、チャットを以前の状態に復元できます。",
 			"chat.checkpoints.showFileChanges": "チャット チェックポイント ファイルの変更を表示するかどうかを制御します。",
 			"chat.codeBlock.showProgressAnimation.description": "編集を適用するときに、コード ブロック ピルに進行状況アニメーションを表示します。無効にすると、代わりに進捗率が表示されます。",
@@ -10560,7 +9838,6 @@
 			"signIn": "サインイン"
 		},
 		"vs/workbench/contrib/chat/browser/chatTipCatalog": {
-			"tip.agenticBrowser": "[{0}](command:workbench.action.openSettings?%5B%22workbench.browser.enableChatTools%22%5D \"設定を開く\") を有効にすると、統合ブラウザーでエージェントがページを開き、操作できるようになります。",
 			"tip.agentsWindow": "[エージェント ウィンドウ](command:{0} \"エージェント ウィンドウを開く\")で、複数のプロジェクトを同時に扱えます。",
 			"tip.attachFiles": "# を使用してファイルまたはフォルダーを参照し、タスクに関するより多くのコンテキストをエージェントに提供します。",
 			"tip.autoAcceptDelay": "[{0}](command:workbench.action.openSettings?%5B%22chat.editing.autoAcceptDelay%22%5D \"Open Settings\") を構成して、短いカウントダウン後にエージェントからの変更を自動的に受け入れます。",
@@ -11287,6 +10564,7 @@
 			"chat.working.fun.1": "ハムスターに賄賂を渡しています",
 			"chat.working.fun.2": "網状スプラインを処理しています",
 			"chat.working.fun.3": "スパゲッティのもつれを解いています",
+			"chat.working.fun.4": "Communing with the codebase",
 			"chat.working.fun.minecraft.1": "ダイヤモンドを採掘しています",
 			"chat.working.fun.ms.1": "Clippy を呼び出しています"
 		},
@@ -11536,6 +10814,11 @@
 		"vs/workbench/contrib/chat/browser/widget/input/chatFollowups": {
 			"followUpAriaLabel": "フォローアップの質問: {0}"
 		},
+		"vs/workbench/contrib/chat/browser/widget/input/chatGoalBannerWidget": {
+			"chat.goalBanner.dismiss": "Dismiss",
+			"chat.goalBanner.label": "Goal",
+			"chat.goalBanner.loading": "Determining goal…"
+		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationWidget": {
 			"dismissNotification": "通知を閉じます"
 		},
@@ -11666,7 +10949,7 @@
 			"permissions.autoApprove.policyDisabled": "エンタープライズ ポリシーで無効",
 			"permissions.autoApprove.subtext": "すべてのツール呼び出しが自動承認されます",
 			"permissions.autopilot": "Autopilot (プレビュー)",
-			"permissions.autopilot.description": "すべてのツール呼び出しを自動承認し、タスクが完了するまで続行します",
+			"permissions.autopilot.description": "Auto-approve all tool calls and continue until the task is done. Autopilot may increase costs.",
 			"permissions.autopilot.label": "Autopilot (プレビュー)",
 			"permissions.autopilot.policyDescription": "エンタープライズ ポリシーで無効",
 			"permissions.autopilot.policyDisabled": "エンタープライズ ポリシーで無効",
@@ -11681,7 +10964,9 @@
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "エージェントの種類に関する詳細情報...",
 			"chat.sessionTarget.category.agent": "エージェントの種類",
-			"chat.sessionTarget.category.other": "その他"
+			"chat.sessionTarget.category.other": "その他",
+			"chat.sessionTarget.upgradeHover": "[Upgrade to GitHub Copilot Pro](command:workbench.action.chat.upgradePlan) to delegate work to the cloud agent.",
+			"chat.sessionTarget.upgradeLink": "[Upgrade](command:workbench.action.chat.upgradePlan)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/workspacePickerActionItem": {
 			"openFolder": "フォルダーを開く...",
@@ -12324,35 +11609,6 @@
 			"tool.askQuestions.displayName": "確認質問を行う",
 			"tool.askQuestions.userDescription": "続行前に、単一選択、複数選択、またはフリーフォーム入力を使ってタスク要件を収集するための構造化された確認質問を行います。"
 		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatExternalPathConfirmation": {
-			"addPath": "Add Path...",
-			"addPathDescription": "Allow a folder in this workspace",
-			"allowFolderSession": "Allow this folder in this session",
-			"allowFolderSessionDetail": "Allow reading files from this folder without further confirmation in this chat session",
-			"allowRepoSession": "Allow all files in this repository for this session",
-			"allowRepoSessionDetail": "Allow reading files from {0}",
-			"allowRepoSessionDetailLookup": "Looks up the containing git repository for this path",
-			"sessionScope": "Session",
-			"workspaceScope": "Workspace"
-		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatUrlFetchingConfirmation": {
-			"allowRequestsCheckbox": "Make requests without confirmation",
-			"allowResponsesCheckbox": "Allow responses without confirmation",
-			"approveAll": "Approve all",
-			"approveRequestTo": "Allow requests to {0}",
-			"approveResponseFrom": "Allow responses from {0}",
-			"approves": "Approves {0}",
-			"delete": "Delete",
-			"denyAll": "Deny all",
-			"moreOptions": "Allow requests to...",
-			"moreOptionsManage": "More Options...",
-			"moreOptionsMultiple": "Configure URL Approvals...",
-			"noApprovals": "No approvals",
-			"openSettings": "Open settings",
-			"requests": "requests",
-			"responses": "responses",
-			"selectApproval": "Select URL pattern to approve"
-		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/manageTodoListTool": {
 			"todo.added.multiple": "To Do 項目を {0} 件追加しました",
 			"todo.added.single": "To Do 項目を 1 件追加しました",
@@ -12446,99 +11702,6 @@
 			"chat.slashCommandForeground": "チャット スラッシュ コマンドの前景色。",
 			"chat.thinkingShimmer": "考え中/作業中ラベルのきらめき強調表示。",
 			"chatCheckpointSeparator": "チャット チェックポイントの区切り記号の色。"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
-			"workbench.action.chat.openStorageFolder.label": "Open Chat Storage Folder"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatExportZip": {
-			"chat.exportAsZip.label": "Export Chat as Zip...",
-			"chatExportZip.error": "Failed to export chat as zip: {0}",
-			"chatExportZip.noRepoData": "Exported chat without repository context. No Git repository was detected."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
-			"debugAgentHost.noInspectPort": "Could not enable the Node.js inspector for the agent host process.",
-			"debugAgentHostInDevTools": "Debug Local Agent Host Process In Dev Tools"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
-			"exportDebugLogs.saveDialogTitle": "Export Agent Host Debug Logs",
-			"exportDebugLogs.zipFilter": "Zip Archive"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
-			"exportAgentTracesDB.error": "Failed to export agent host traces database: {0}",
-			"exportAgentTracesDB.label": "Export Agent Host Traces Database...",
-			"exportAgentTracesDB.notFound": "No agent host trace database found yet. Run an agent session with `#chat.agentHost.otel.dbSpanExporter.enabled#` turned on to populate it."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
-			"keywordActivation.status.active": "Listening to 'Hey Code'...",
-			"keywordActivation.status.inactive": "Waiting for voice chat to end...",
-			"keywordActivation.status.name": "Voice Keyword Activation",
-			"listening": "I'm listening",
-			"scopedChatSynthesisInProgress": "Defined as a location where voice recording from microphone is in progress for voice chat. This key is only defined scoped, per chat context.",
-			"scopedVoiceChatGettingReady": "True when getting ready for receiving voice input from the microphone for voice chat. This key is only defined scoped, per chat context.",
-			"scopedVoiceChatInProgress": "Defined as a location where voice recording from microphone is in progress for voice chat. This key is only defined scoped, per chat context.",
-			"voice.keywordActivation": "Controls whether the keyword phrase 'Hey Code' is recognized to start a voice chat session. Enabling this will start recording from the microphone but the audio is processed locally and never sent to a server.",
-			"voice.keywordActivation.chatInContext": "Keyword activation is enabled and listening for 'Hey Code' to start a voice chat session in the active editor or view depending on keyboard focus.",
-			"voice.keywordActivation.chatInView": "Keyword activation is enabled and listening for 'Hey Code' to start a voice chat session in the chat view.",
-			"voice.keywordActivation.inlineChat": "Keyword activation is enabled and listening for 'Hey Code' to start a voice chat session in the active editor if possible.",
-			"voice.keywordActivation.off": "Keyword activation is disabled.",
-			"voice.keywordActivation.quickChat": "Keyword activation is enabled and listening for 'Hey Code' to start a voice chat session in the quick chat.",
-			"workbench.action.chat.holdToVoiceChatInChatView.label": "Hold to Voice Chat in Chat View",
-			"workbench.action.chat.inlineVoiceChat": "Inline Voice Chat",
-			"workbench.action.chat.quickVoiceChat.label": "Quick Voice Chat",
-			"workbench.action.chat.readChatResponseAloud": "Read Aloud",
-			"workbench.action.chat.startVoiceChat.label": "Start Voice Chat",
-			"workbench.action.chat.stopListening.label": "Stop Listening",
-			"workbench.action.chat.stopListeningAndSubmit.label": "Stop Listening and Submit",
-			"workbench.action.chat.stopReadChatItemAloud": "Stop Reading Aloud",
-			"workbench.action.chat.voiceChatInView.label": "Voice Chat in Chat View",
-			"workbench.action.speech.stopReadAloud": "Stop Reading Aloud"
-		},
-		"vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions": {
-			"chat.agentsHandoff.tip.action": "Open in Agents Window",
-			"chat.agentsHandoff.tip.description": "Get a dedicated, multi-pane view alongside your workspace.",
-			"chat.agentsHandoff.tip.description.copilot": "Free with your Copilot plan — get a dedicated, multi-pane view alongside your workspace.",
-			"chat.agentsHandoff.tip.emptyWorkspace.description": "Open the Agents Window to start a Copilot CLI session.",
-			"chat.agentsHandoff.tip.emptyWorkspace.message": "Copilot CLI [Local] isn't available without an open folder",
-			"chat.agentsHandoff.tip.message": "Continue this session in the Agents Window",
-			"openAgentsWindow": "Open Agents Window",
-			"openInAgentsHover": "Open in Agents Window",
-			"openSessionInAgentsWindow": "Open in Agents Window",
-			"openWorkspaceInAgentsWindow": "Open in Agents",
-			"toggle.openInAgentsWindow": "Open in Agents Window",
-			"toggle.openInAgentsWindowDescription": "Toggle visibility of the Open in Agents Window button in title bar"
-		},
-		"vs/workbench/contrib/chat/electron-browser/builtInTools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binary files are not supported at the moment.",
-			"fetchWebPage.confirmationMessage.plural": "Web content may contain malicious code or attempt prompt injection attacks.",
-			"fetchWebPage.confirmationTitle.plural": "Fetch web pages?",
-			"fetchWebPage.confirmationTitle.singular": "Fetch web page?",
-			"fetchWebPage.fetchedFrom": "Fetched from {0}",
-			"fetchWebPage.invalidUrl": "Invalid URL",
-			"fetchWebPage.invocationMessage.plural": "Fetching {0} resources",
-			"fetchWebPage.invocationMessage.singular": "Fetching {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Fetching [resource]({0})",
-			"fetchWebPage.noValidUrls": "No valid URLs provided.",
-			"fetchWebPage.pastTenseMessage.plural": "Fetched {0} resources, but the following were invalid URLs:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Fetched resource, but the following was an invalid URL:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Fetched {0} resources",
-			"fetchWebPage.pastTenseMessageResult.singular": "Fetched {0}",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Fetched [resource]({0})",
-			"fetchWebPage.urlMentionedInPrompt": "Auto approved because URL was in prompt",
-			"fetchWebPage.urlsDescription": "An array of URLs to fetch content from."
-		},
-		"vs/workbench/contrib/chat/electron-browser/chat.contribution": {
-			"changeWorkspace.detail": "The session will stop if you change the workspace.",
-			"changeWorkspace.message": "A session is in progress. Are you sure you want to change the workspace?",
-			"chatRequestInProgress": "A session is in progress.",
-			"closeTheWindow.detail": "The session will stop if you close the window.",
-			"closeTheWindow.message": "A session is in progress. Are you sure you want to close the window?",
-			"copilotWorkspaceTrust": "AI features are currently only supported in trusted workspaces.",
-			"exit.detail": "The session will stop if you exit.",
-			"exit.message": "A session is in progress. Are you sure you want to exit?",
-			"quit.detail": "The session will stop if you quit.",
-			"quit.message": "A session is in progress. Are you sure you want to quit?",
-			"reloadTheWindow.detail": "The session will stop if you reload the window.",
-			"reloadTheWindow.message": "A session is in progress. Are you sure you want to reload the window?"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "明示的な保存時にコード アクションをトリガーし、ウィンドウまたはフォーカスの変更によってトリガーされる自動保存を行います。",
@@ -12821,7 +11984,13 @@
 			"schema.folding": "言語の折り畳み設定。",
 			"schema.folding.markers": "'#region'や '#endregion'などの言語固有の折りたたみマーカー。開始と終了の正規表現はすべての行の内容に対してテストし効率的に設計してください。",
 			"schema.folding.markers.end": "終了マーカーの正規表現パターン。 正規表現は '^' で始めてください。",
+			"schema.folding.markers.end.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.end.flags": "The RegExp flags for the end marker.",
+			"schema.folding.markers.end.pattern": "The RegExp pattern for the end marker.",
 			"schema.folding.markers.start": "開始マーカーの正規表現パターン。 正規表現は '^' で始めてください。",
+			"schema.folding.markers.start.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.start.flags": "The RegExp flags for the start marker.",
+			"schema.folding.markers.start.pattern": "The RegExp pattern for the start marker.",
 			"schema.folding.offSide": "その言語のブロックがインデントで表現されている場合、言語はオフサイドルールに従います。 設定されている場合、空行は後続のブロックに属します。",
 			"schema.indentationRules": "言語のインデント設定。",
 			"schema.indentationRules.decreaseIndentPattern": "行がこのパターンに一致する場合、それ以後のすべての行はいったんインデント解除される必要があります (別のルールが一致するまで)。",
@@ -12870,12 +12039,6 @@
 			"schema.wordPattern.flags": "言葉の照合に使用する正規表現フラグ。",
 			"schema.wordPattern.flags.errorMessage": "`/^([gimuy]+)$/` パターンに一致する必要があります。",
 			"schema.wordPattern.pattern": "言葉の照合に使用する正規表現パターン。"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "クリップボードの選択内容を貼り付ける"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/startDebugTextMate": {
-			"startDebugTextMate": "TextMate 構文文法ログの開始"
 		},
 		"vs/workbench/contrib/commands/common/commands.contribution": {
 			"runCommands": "実行コマンド",
@@ -14373,6 +13536,9 @@
 			"workbench.extensions.uninstallExtension.description": "指定された拡張機能をアンインストールする",
 			"workspace unsupported filter": "サポートされていないワークスペース"
 		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "実行中の拡張機能"
+		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "この拡張機能は、Web 版の {0} ではサポートされていないため、無効になっています。",
 			"Defined to run in desktop": "この拡張機能は、デスクトップの {0} でのみ実行されるように定義されているため、無効になっています。",
@@ -14711,8 +13877,8 @@
 			"enableExtensionMessage": "'{0}' 拡張機能を有効にしますか?",
 			"enableExtensionTitle": "拡張機能の有効化",
 			"extension not found": "拡張機能 '{0}' が見つかりませんでした。",
-			"extensions need reload": "拡張機能を有効にするにはウィンドウの再読み込みが必要です。",
-			"extensions need restart": "拡張機能を有効にするには再起動が必要です。",
+			"extensions need reload": "Extensions require a window reload to apply updates.",
+			"extensions need restart": "All extensions require a restart to apply updates.",
 			"extensionsAutoRestart": "更新を有効にするために拡張機能が自動的に再起動されました。",
 			"incompatible": "'{0}' 拡張機能は互換性がないため、インストールできません。",
 			"incompatibleExtensions": "バージョンの互換性がないため、一部の拡張機能が無効になっています。これらを確認して更新します。",
@@ -14803,72 +13969,10 @@
 			"searchExtensionsTool.noInput": "検索するカテゴリ、キーワード、または ID を指定してください。",
 			"searchExtensionsTool.userDescription": "VS Code の拡張機能を検索します"
 		},
-		"vs/workbench/contrib/extensions/electron-browser/debugExtensionHostAction": {
-			"debugExtensionHost": "Debug Extension Host In New Window",
-			"debugExtensionHost.launch.name": "Attach Extension Host",
-			"debugExtensionHost.progress": "Attaching Debugger To Extension Host",
-			"debugExtensionHostAndRenderer": "Debug Extension Host and Renderer In New Window",
-			"debugRenderer": "Debug Renderer In New Window",
-			"debugRenderer.launch.name": "Attach Renderer",
-			"debugRenderer.progress": "Attaching Debugger To Renderer",
-			"openDevToolsForExtensionHost": "Debug Extension Host In Dev Tools",
-			"restart1": "Debug Extensions",
-			"restart2": "In order to debug extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectExtensionHost": "Pick extension host"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionProfileService": {
-			"profilingExtensionHost": "Profiling Extension Host",
-			"profilingExtensionHostTime": "Profiling Extension Host ({0} sec)",
-			"restart1": "Profile Extensions",
-			"restart2": "In order to profile extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectAndStartDebug": "Click to stop profiling.",
-			"status.profiler": "Extension Profiler"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensions.contribution": {
-			"runtimeExtension": "Running Extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsActions": {
-			"cleanUpExtensionsFolder": "Cleanup Extensions Folder",
-			"openExtensionsFolder": "Open Extensions Folder"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsAutoProfiler": {
-			"show": "Show Extensions",
-			"unresponsive-exthost": "The extension '{0}' took a very long time to complete its last operation and it has prevented other extensions from running."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
-			"attach.msg": "This is a reminder to make sure that you have not forgotten to attach '{0}' to the issue you have just created.",
-			"attach.msg2": "This is a reminder to make sure that you have not forgotten to attach '{0}' to an existing performance issue.",
-			"attach.title": "Did you attach the CPU-Profile?",
-			"cmd.report": "Report Issue",
-			"cmd.reportOrShow": "Performance Issue",
-			"cmd.show": "Show Issues"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "Start Extension Host Profile",
-			"openExtensionHostProfile": "Open Extension Host Profile",
-			"saveExtensionHostProfile": "Save Extension Host Profile",
-			"saveprofile.dialogTitle": "Save Extension Host Profile",
-			"stopExtensionHostProfileStart": "Stop Extension Host Profile"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction.Integrated": "Open in Integrated Terminal",
-			"scopedConsoleAction.external": "Open in External Terminal",
-			"scopedConsoleAction.wt": "Open in Windows Terminal"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "When opening a file from the Explorer in a terminal, determines what kind of terminal will be launched",
-			"globalConsoleAction": "Open New External Terminal",
-			"selectWorkspace": "Select workspace folder",
-			"sourceControlRepositories.openInTerminalKind": "When opening a repository from the Source Control Repositories view in a terminal, determines what kind of terminal will be launched",
-			"terminal.external.linuxExec": "Customizes which terminal to run on Linux.",
-			"terminal.external.osxExec": "Customizes which terminal application to run on macOS.",
-			"terminal.external.windowsExec": "Customizes which terminal to run on Windows.",
-			"terminal.kind.both": "Show both integrated and external terminal actions.",
-			"terminal.kind.external": "Show the external terminal action.",
-			"terminal.kind.integrated": "Show the integrated terminal action.",
-			"terminalConfigurationTitle": "External Terminal"
+			"scopedConsoleAction.Integrated": "統合ターミナルで開く",
+			"scopedConsoleAction.external": "外部ターミナルで開く",
+			"scopedConsoleAction.wt": "Windows ターミナルで開く"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "外部 URI (http、https) に使用する opener を構成します。",
@@ -15324,13 +14428,6 @@
 			"openEditorsFocus": "[開いているエディター] ビュー内にフォーカスがある場合は True です。",
 			"viewHasSomeCollapsibleItem": "エクスプローラー ビューのワークスペースに折りたたみ可能なルートの子要素がある場合は True。"
 		},
-		"vs/workbench/contrib/files/electron-browser/fileActions.contribution": {
-			"filesCategory": "ファイル",
-			"miShare": "共有",
-			"openContainer": "1 つ上のフォルダーを開く",
-			"revealInMac": "Finder で表示する",
-			"revealInWindows": "エクスプローラーで表示する"
-		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
 			"formatter.default": "他のすべての折りたたみ範囲プロバイダーよりも優先される既定の折りたたみ範囲プロバイダーを定義します。折りたたみ範囲プロバイダーに貢献する拡張機能の識別子である必要があります。",
 			"null": "すべて",
@@ -15711,6 +14808,9 @@
 			"vscode": "Visual Studio Code",
 			"vscodePlaceholder": "例: ワークベンチに問題パネルがありません"
 		},
+		"vs/workbench/contrib/issue/browser/issue.contribution": {
+			"statusUnsupported": "--status 引数はブラウザーではまだサポートされていません。"
+		},
 		"vs/workbench/contrib/issue/browser/issueFormService": {
 			"additionalIssueData": "その他の問題データ",
 			"cancel": "キャンセル",
@@ -15722,133 +14822,6 @@
 			"ok": "OK(&&O)",
 			"pasteData": "必要なデータが送信するには大きすぎたため、クリップボードに書き込みました。貼り付けてください。",
 			"yes": "はい(&&Y)"
-		},
-		"vs/workbench/contrib/issue/browser/issueQuickAccess": {
-			"contributedIssuePage": "Open Extension Page",
-			"extensions": "Extensions",
-			"reportExtensionMarketplace": "Extension Marketplace"
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorInput": {
-			"discard": "Discard",
-			"discardIssue": "Discard issue report?",
-			"discardIssueDetail": "Your issue report has unsaved changes that will be lost.",
-			"issueReporterEditorInputName": "Report Issue",
-			"issueReporterIcon": "Icon for the issue reporter editor."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
-			"abExperiments": "A/B Experiments",
-			"additionalInformation": "Additional Information",
-			"additionalPerformanceData": "Additional Performance Data",
-			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
-			"attachments": "Attachments ({0})",
-			"back": "Back",
-			"bug": "Bug",
-			"bugGuidance": "Describe what happened, the steps to reproduce, what you expected, and what you observed instead.",
-			"captureOptions": "Capture options",
-			"category": "Category",
-			"categoryRequired": "Select a category to continue.",
-			"closeTab": "Close",
-			"composeMessage": "Describe",
-			"defaultGuidance": "Select a category above, then describe your feedback in detail.",
-			"deleteRecording": "Remove recording",
-			"deleteScreenshot": "Delete screenshot",
-			"describeHeading": "Describe your feedback",
-			"description": "Description",
-			"descriptionPlaceholder": "Describe the issue in detail...",
-			"descriptionRequired": "Enter a description to continue.",
-			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
-			"extension": "Extension",
-			"extensionData": "Extension Data",
-			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
-			"extensionNoIssueUrl": "This extension does not provide an issue reporting URL.",
-			"extensionPlaceholder": "E.g. Missing alt text on extension readme image",
-			"extensionRequired": "Select an extension to continue.",
-			"extensionSource": "A VS Code extension",
-			"extensions": "Extensions ({0})",
-			"featureGuidance": "Describe the feature you'd like to see, what problem it would solve, and any alternatives you've considered.",
-			"featureRequest": "Feature Request",
-			"feedbackCategory": "Category",
-			"fiveSeconds": "5 seconds",
-			"generateTitle": "Generate title from description",
-			"generateTitleBtn": "Generate from description",
-			"generatingTitle": "Generating...",
-			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
-			"issueTargetRepo": "Issue will be created in {0}/{1}.",
-			"issueTitle": "Title",
-			"issueTitlePlaceholder": "Brief summary of the issue",
-			"loadingDiagnostics": "Loading diagnostics...",
-			"loadingExtensionData": "Loading extension issue data...",
-			"loadingProcessInfo": "Loading currently running processes...",
-			"loadingSystemInfo": "Loading system information...",
-			"loadingWorkspaceInfo": "Loading workspace metadata...",
-			"markdownSupported": "Markdown formatting is supported.",
-			"marketplace": "Extensions Marketplace",
-			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
-			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
-			"next": "Next",
-			"noDelay": "No delay",
-			"noDescription": "(no description)",
-			"noSimilarIssues": "No similar issues found.",
-			"noTitle": "(no title)",
-			"openExternalIssueReporter": "Open External Issue Reporter",
-			"or": "or",
-			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
-			"performanceIssue": "Performance Issue",
-			"previewOnGitHub": "Preview on GitHub",
-			"recordVideo": "Record video",
-			"recordingActive": "Recording active",
-			"recordingThumbnailAlt": "Recording {0}",
-			"refresh": "Refresh",
-			"refreshPerformanceData": "Reload running processes and workspace metadata",
-			"reportIssue": "Report Issue",
-			"reviewSubmit": "Review and submit",
-			"runningProcesses": "Running Processes",
-			"screenshot": "Screenshot",
-			"screenshotAlt": "Screenshot {0}",
-			"screenshots": "Attachments",
-			"screenshotsHeading": "Add attachments for better context",
-			"screenshotsSubtitle": "You can add up to {0} screenshots or videos. Navigate VS Code and choose when to capture.",
-			"searchingSimilarIssues": "Searching similar issues...",
-			"selectExtension": "Select extension",
-			"shortcutHintIntro": "Use the floating capture bar, or press",
-			"similarIssues": "Similar Issues",
-			"similarIssuesNeedsTitle": "Enter a title to search for similar issues.",
-			"similarIssuesSearchFailed": "Unable to search for similar issues.",
-			"skip": "Skip",
-			"stepOf": "Step {0} of {1}",
-			"stopRecording": "Stop recording",
-			"submit": "Review",
-			"systemInformation": "System Information",
-			"target": "Target",
-			"targetRequired": "Select a target to continue.",
-			"tenSeconds": "10 seconds",
-			"threeSeconds": "3 seconds",
-			"titleRequired": "Enter a title to continue.",
-			"toCapture": "to capture a screenshot",
-			"toRecord": "to start or stop recording",
-			"unknown": "Unknown",
-			"unknownSource": "Don't know",
-			"updateAvailable": "A new version of {0} is available.",
-			"uploading": "Uploading...",
-			"vscode": "Visual Studio Code",
-			"vscodePlaceholder": "E.g. Workbench is missing problems panel",
-			"waitingForDiagnostics": "Waiting for performance diagnostics to finish loading",
-			"workspaceMetadata": "Workspace Metadata"
 		},
 		"vs/workbench/contrib/issue/browser/issueReporterPage": {
 			"acknowledgements": "VS Codeのバージョンが更新されていないことを認識しており、この問題は解決された可能性があります。",
@@ -15904,59 +14877,9 @@
 			"troubleshootIssue": "問題のトラブルシューティング...",
 			"use insiders": "これは、問題が既に解決されており、今後のリリースで利用可能になる可能性があることを意味している可能性があります。新しい安定バージョンが利用可能になるまで、{0} Insiders を安全に使用できます。"
 		},
-		"vs/workbench/contrib/issue/browser/screenshotAnnotation": {
-			"annotationHint": "Edit screenshot to highlight the problem",
-			"apply": "Apply",
-			"arrow": "Arrow",
-			"cancel": "Cancel",
-			"colorValue": "{0}: {1}",
-			"crop": "Crop",
-			"discard": "Discard",
-			"ellipse": "Ellipse",
-			"eraser": "Eraser",
-			"fillColor": "Fill Color",
-			"freehand": "Draw",
-			"opacity": "Opacity",
-			"pan": "Pan",
-			"rectangle": "Rectangle",
-			"redo": "Redo",
-			"save": "Save",
-			"select": "Select / Move",
-			"setFillColor": "Set Fill Color",
-			"setOpacity": "Set Opacity",
-			"setStrokeColor": "Set Stroke Color",
-			"setStrokeWidth": "Set Stroke Width to {0}px",
-			"setTextSize": "Set Text Size to {0}px",
-			"strokeColor": "Stroke Color",
-			"strokeWidth": "Stroke Width",
-			"text": "Text",
-			"textBackgroundColor": "Background Color",
-			"textColor": "Text Color",
-			"textSize": "Text Size",
-			"toolOptions": "Tool Options",
-			"transparentColor": "{0}: Transparent",
-			"typeText": "Type text",
-			"undo": "Undo"
-		},
 		"vs/workbench/contrib/issue/common/issue.contribution": {
 			"miReportIssue": "問題を報告(&&I)",
 			"reportIssueInEnglish": "問題を英語で報告..."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issue.contribution": {
-			"issueReporter.wizard.enabled": "Enable the new issue reporter wizard instead of the classic issue reporter.",
-			"issueReporter.wizard.fullWorkspaceScan": "When auto-collecting performance diagnostics for the issue reporter wizard, walk the full workspace instead of stopping at the default 20,000-file cap. Set to false on very large workspaces if the scan slows the initial wizard render.",
-			"issueReporterConfigurationTitle": "Issue Reporter",
-			"issueReporterEditorPaneTitle": "Issue Reporter",
-			"openIssueReporter": "Open Issue Reporter",
-			"reportPerformanceIssue": "Report Performance Issue...",
-			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
-			"noCurrentExperiments": "No current experiments.",
-			"pasteData": "We have written the needed data into your clipboard because it was too large to send. Please paste.",
-			"saveExtensionData": "Save Extension Data",
-			"undefinedPlaceholder": "Please enter a title",
-			"updateAvailable": "A new version of {0} is available."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "キーボード ショートカットの切り替えのトラブルシューティング"
@@ -16041,11 +14964,6 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "ローカル履歴"
 		},
-		"vs/workbench/contrib/localHistory/electron-browser/localHistoryCommands": {
-			"openContainer": "1 つ上のフォルダーを開く",
-			"revealInMac": "Finder で表示する",
-			"revealInWindows": "エクスプローラーで表示する"
-		},
 		"vs/workbench/contrib/localization/common/localization.contribution": {
 			"language id": "言語 ID",
 			"localizations": "言語パック",
@@ -16069,17 +14987,6 @@
 			"installed": "インストール済み",
 			"moreInfo": "詳細情報"
 		},
-		"vs/workbench/contrib/localization/electron-browser/localization.contribution": {
-			"changeAndRestart": "言語を変更し再起動",
-			"neverAgain": "再表示しない",
-			"updateLocale": "{0} の表示言語を {1} に変更して再起動しますか?"
-		},
-		"vs/workbench/contrib/localization/electron-browser/minimalTranslations": {
-			"installAndRestart": "インストールして再起動",
-			"installAndRestartMessage": "表示言語を {0} に変更するには言語パックをインストールします。",
-			"searchMarketplace": "Marketplace を検索",
-			"showLanguagePackExtensions": "表示言語を {0} に変更するために Marketplace で言語パックを検索します。"
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"remote name": "{0} (リモート)",
 			"setDefaultLogLevel": "既定のログ レベルの設定",
@@ -16099,10 +15006,6 @@
 			"selectlog": "ログ レベルの設定",
 			"sessions placeholder": "セッションの選択",
 			"setLogLevel": "ログ レベルの設定..."
-		},
-		"vs/workbench/contrib/logs/electron-browser/logsActions": {
-			"openExtensionLogsFolder": "拡張機能のログ フォルダーを開く",
-			"openLogsFolder": "ログ フォルダーを開く"
 		},
 		"vs/workbench/contrib/markdown/browser/markdownSettingRenderer": {
 			"alreadysetBoolFalse": "\"{0}: {1}\" は既に無効になっています",
@@ -16935,12 +15838,6 @@
 			"showBase": "マージ エディターにベース バージョンが表示される場合",
 			"showBaseAtTop": "ベースを先頭に表示する必要がある場合",
 			"showNonConflictingChanges": "マージ エディターに競合していない変更を表示している場合"
-		},
-		"vs/workbench/contrib/mergeEditor/electron-browser/devCommands": {
-			"merge.dev.openSelectionInTemporaryMergeEditor": "一時マージ エディターで選択範囲を開く",
-			"merge.dev.openState": "JSON からマージ エディターの状態を開く",
-			"mergeEditor": "マージ エディター(Dev)",
-			"mergeEditor.enterJSON": "JSON を入力"
 		},
 		"vs/workbench/contrib/meteredConnection/browser/meteredConnection.contribution": {
 			"configureMeteredConnection": "従量制課金接続の構成",
@@ -17805,18 +16702,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "スタートアップ パフォーマンス"
 		},
-		"vs/workbench/contrib/performance/electron-browser/performance.contribution": {
-			"experimental.rendererProfiling": "有効にすると、低速レンダラーが自動的にプロファイルされます。"
-		},
-		"vs/workbench/contrib/performance/electron-browser/startupProfiler": {
-			"prof.detail": "問題点を作成し、次のファイルを手動で添付してください:\r\n{0}",
-			"prof.detail.restart": "'{0}' を引き続き使用するには、最後の再起動が必要です。 改めてあなたの貢献に感謝します。",
-			"prof.message": "プロファイルが正常に作成されました。",
-			"prof.restart": "再起動",
-			"prof.restart.button": "再起動(&&R)",
-			"prof.restartAndFileIssue": "案件を作成し再起動する(&&C)",
-			"prof.thanks": "ご協力いただき、ありがとうございます。"
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditor": {
 			"SearchKeybindings.FullTextSearchPlaceholder": "入力してキーバインド内を検索",
 			"SearchKeybindings.KeybindingsSearchPlaceholder": "キーを記録中。Esc キーを押して終了",
@@ -17860,6 +16745,18 @@
 			"defineKeybinding.existing": "{0} つの既存のコマンドがこのキーバインドを使用しています",
 			"defineKeybinding.initial": "任意のキーの組み合わせを押し、ENTER キーを押します。",
 			"defineKeybinding.oneExists": "1 つの既存のコマンドがこのキーバインドを使用しています"
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"clear": "検索結果のクリア",
@@ -18201,6 +17098,9 @@
 			"openProcessExplorer": "プロセス エクスプローラーを開く",
 			"promptOpenWith.processExplorer.displayName": "プロセス エクスプローラー"
 		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
 		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
 			"copy": "コピー",
 			"copyAll": "すべてコピー",
@@ -18216,9 +17116,6 @@
 		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
 			"processExplorerEditorLabelIcon": "プロセス エクスプローラー エディター ラベルのアイコン。",
 			"processExplorerInputName": "プロセス エクスプローラー"
-		},
-		"vs/workbench/contrib/processExplorer/electron-browser/processExplorer.contribution": {
-			"processExplorer": "プロセス エクスプローラー"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "クリア(&&C)",
@@ -18363,6 +17260,10 @@
 			"workspace.tooltip": "{0} での編集",
 			"workspace.tooltip2": "仮想ファイル システム上にあるリソースで [一部の機能は使用できません]({0})。"
 		},
+		"vs/workbench/contrib/remote/browser/remoteStartEntry": {
+			"remote.category": "リモート",
+			"remote.showWebStartEntryActions": "Web のリモート 開始エントリを表示する"
+		},
 		"vs/workbench/contrib/remote/browser/tunnelFactory": {
 			"tunnelPrivacy.private": "非公開",
 			"tunnelPrivacy.public": "公開"
@@ -18465,13 +17366,6 @@
 			"triggerReconnect": "接続: 再接続を開始します",
 			"ui": "UI 拡張機能の種類。リモート ウィンドウでは、これらの拡張機能はローカル マシンで使用可能な場合にのみ有効になります。",
 			"workspace": "ワークスペース拡張機能の種類。リモート ウィンドウでは、これらの拡張機能はリモートで使用可能な場合にのみ有効になります。"
-		},
-		"vs/workbench/contrib/remote/electron-browser/remote.contribution": {
-			"remote": "Remote",
-			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
-			"remote.category": "Remote",
-			"remote.downloadExtensionsLocally": "When enabled extensions are downloaded locally and installed on remote.",
-			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution": {
 			"remoteCodingAgentsExtPoint": "リモート コーディング エージェントの統合をチャット ウィジェットに提供します。",
@@ -19576,6 +18470,9 @@
 			"taskQuickPick.showAll": "すべてのタスクの表示...",
 			"taskType": "すべての {0} タスク"
 		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "プロセス タスク システムは Web でサポートされていません。"
+		},
 		"vs/workbench/contrib/tasks/browser/tasksQuickAccess": {
 			"TaskService.pickRunTask": "実行するタスクの選択",
 			"noTaskResults": "一致するタスクがありません"
@@ -19854,12 +18751,6 @@
 			"dotnetCore": ".NET Core ビルド コマンドの実行",
 			"externalCommand": "任意の外部コマンドを実行する例",
 			"msbuild": "ビルド ターゲットを実行"
-		},
-		"vs/workbench/contrib/tasks/electron-browser/taskService": {
-			"TaskSystem.exitAnyways": "&&Exit Anyways",
-			"TaskSystem.noProcess": "The launched task doesn't exist anymore. If the task spawned background processes exiting VS Code might result in orphaned processes. To avoid this start the last background process with a wait flag.",
-			"TaskSystem.runningTask": "There is a task running. Do you want to terminate it?",
-			"TaskSystem.terminateTask": "&&Terminate Task"
 		},
 		"vs/workbench/contrib/telemetry/browser/telemetry.contribution": {
 			"showTelemetry": "テレメトリの表示"
@@ -20375,9 +19266,6 @@
 			"workbench.action.terminal.scrollToNextCommand": "次のコマンドにスクロール",
 			"workbench.action.terminal.scrollToPreviousCommand": "前のコマンドにスクロール",
 			"workbench.action.terminal.sizeToContentWidthInstance": "コンテンツの幅にサイズを切り替える"
-		},
-		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
-			"workbench.action.terminal.newLocal": "新しい統合ターミナルを作成 (ローカル)"
 		},
 		"vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
 			"workbench.action.terminal.accessibleBufferGoToNextCommand": "アクセス可能なバッファー [次のコマンドに移動]",
@@ -22043,12 +20931,6 @@
 			"workbench.actions.sync.resolveResourceRef": "未加工の JSON 同期データの表示",
 			"workbench.actions.sync.turnOffSyncOnMachine": "設定の同期をオフにする"
 		},
-		"vs/workbench/contrib/userDataSync/electron-browser/userDataSync.contribution": {
-			"Open Backup folder": "ローカル バックアップ フォルダーを開く",
-			"download sync activity complete": "設定の同期アクティビティが正常にダウンロードされました。",
-			"no backups": "ローカルのバックアップ フォルダーが存在しません",
-			"open": "フォルダーを開く"
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "有効にすると、エディターを 1 つも開いていないときに透かしのヒントが表示されます。",
 			"watermark.findInFiles": "フォルダーを指定して検索",
@@ -22103,11 +20985,6 @@
 			"webview.settingsHeader": "調整できる設定 ({0} を使用すると [設定] が開きます):",
 			"webview.statusDesc": "Web コンテンツを検索しています。",
 			"webview.statusHeader": "現在の検索の状態:"
-		},
-		"vs/workbench/contrib/webview/electron-browser/webviewCommands": {
-			"iframeWebviewAlert": "iframe ベースの Web ビューをデバッグするために標準の開発ツールを使用しています",
-			"openToolsDescription": "アクティブな Web ビューの開発者ツールを開く",
-			"openToolsLabel": "Webview 開発者ツールを開く"
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "次を検索",
@@ -22916,14 +21793,11 @@
 			"authenticationExtensionPoint": "認証を提供します"
 		},
 		"vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService": {
-			"lifecycleVeto": "変更内容は保存されない可能性があります。[キャンセル] を押して、もう一度お試しください。",
-			"retry": "再試行(&&R)",
-			"unableToOpenWindow": "ブラウザーによって新しいウィンドウを開くことがブロックされました。[再試行] を押して、もう一度やり直してください。",
-			"unableToOpenWindowDetail": "[ブラウザー設定]({0}) でこの Web サイトのポップアップを許可してください。",
-			"unableToOpenWindowError": "新しいウィンドウを開くことができません。"
-		},
-		"vs/workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService": {
-			"backupErrorDetails": "最初に変更が保存されていないエディターを保存または復元してから、もう一度お試しください。"
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again.",
+			"retry": "&&Retry",
+			"unableToOpenWindow": "The browser blocked opening a new window. Press 'Retry' to try again.",
+			"unableToOpenWindowDetail": "Please allow pop-ups for this website in your [browser settings]({0}).",
+			"unableToOpenWindowError": "Unable to open a new window."
 		},
 		"vs/workbench/services/chat/common/chatEntitlementService": {
 			"learnMore": "詳細情報",
@@ -23065,12 +21939,22 @@
 			"saveChangesMessages": "次の {0} ファイルに対する変更を保存しますか?",
 			"saveFileAs.title": "名前を付けて保存"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "詳細情報(&&L)",
+			"openFiles": "ファイルを開く(&&F)...",
+			"openRemote": "リモートを開く(&&R)...",
+			"pickFolderAndOpen": "フォルダーを開くことができません。代わりにワークスペースにフォルダーを追加してみてください。",
+			"pickWorkspaceAndOpen": "ワークスペースを開くことができません。代わりにワークスペースにフォルダーを追加してみてください。",
+			"unsupportedBrowserDetail": "お使いのブラウザーではローカル フォルダーを開くことができません。\r\n 単一のファイルを開くか、リモート リポジトリを開くことができます。",
+			"unsupportedBrowserMessage": "ローカル フォルダーを開く操作はサポートされていません"
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "ローカル ファイルを開く...",
 			"openLocalFileFolder": "ローカルを開く...",
 			"openLocalFolder": "ローカル フォルダーを開く...",
 			"remoteFileDialog.badPath": "パスが存在しません。ホーム ディレクトリに移動するには、 ~ を使用します。",
 			"remoteFileDialog.cancel": "キャンセル",
+			"remoteFileDialog.createFolderFailed": "Could not create folder: {0}",
 			"remoteFileDialog.hideDotFiles": "ドット ファイルを非表示にする",
 			"remoteFileDialog.invalidPath": "有効なパスを入力してください。",
 			"remoteFileDialog.local": "ローカルを表示します。",
@@ -23079,6 +21963,7 @@
 			"remoteFileDialog.showDotFiles": "ドット ファイルの表示",
 			"remoteFileDialog.validateBadFilename": "有効なファイル名を入力してください。",
 			"remoteFileDialog.validateCreateDirectory": "フォルダー {0} が存在しません。作成しますか?",
+			"remoteFileDialog.validateCreateDirectoryOpen": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "{0} は既に存在します。上書きしますか?",
 			"remoteFileDialog.validateFileOnly": "ファイルを選択してください。",
 			"remoteFileDialog.validateFolder": "このフォルダーは既に存在します。新しいファイル名を使用してください。",
@@ -23143,11 +22028,19 @@
 			"extensionsDisabled": "インストールされているすべての拡張機能が一時的に無効になります。",
 			"noWorkspace": "ワークスペースがありません。"
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "この拡張機能は Web 拡張機能ではないため、'{0}' を追加できません。",
+			"openInstalledWebExtensionsResource": "インストールされている Web 拡張機能リソースを開く"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionFeaturesManagemetService": {
 			"accessExtensionFeature": "'{0}' 機能へのアクセス",
 			"accessExtensionFeatureMessage": "拡張機能 '{0}' は、'{1}' 機能にアクセスしようとしています。",
 			"allow": "許可",
 			"disallow": "許可しない"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "ブラウザー",
+			"remote": "リモート"
 		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "拡張機能 {0} をインストールできませんでした。マニフェストが見つかりません。",
@@ -23197,19 +22090,6 @@
 			"extensionDefault": "拡張機能ビューとエディターの既定の拡張機能に使用されるアイコン。",
 			"extensionIconVerifiedForeground": "拡張機能の確認済みの発行元のアイコンの色。",
 			"verifiedPublisher": "拡張機能ビューとエディターで確認済みの拡張機能の発行元用に使用されるアイコン。"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService": {
-			"extensionGalleryManifestService.accountChange": "{0} is now configured to a different Marketplace. Please restart to apply the changes.",
-			"restart": "&&Restart"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionManagementServerService": {
-			"local": "Local",
-			"remote": "Remote"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
-			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
-			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "拡張機能の推奨事項の追加先",
@@ -23343,36 +22223,6 @@
 			"overwritingExtension": "拡張機能 {0} を {1} で上書きしています。",
 			"overwritingWithWorkspaceExtension": "ワークスペース拡張機能 {1} で {0} 上書きしています。"
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "拡張機能がディスク上で変更されています。ウィンドウを再読み込みしてください。",
-			"extensionUnderDevelopment.invalid": "開発中の拡張機能 '{0}' は無効であるため、読み込めませんでした: {1}",
-			"extensionsUnderDevelopment.invalid": "開発中の拡張機能 {0} は無効であるため、読み込めませんでした: {1}",
-			"reloadWindow": "ウィンドウの再読み込み"
-		},
-		"vs/workbench/services/extensions/electron-browser/localProcessExtensionHost": {
-			"extensionHost.startupFail": "拡張機能ホストが 10 秒以内に開始されませんでした。問題が発生している可能性があります。",
-			"extensionHost.startupFailDebug": "拡張機能ホストが 10 秒以内に開始されませんでした。先頭行で停止している可能性があり、続行するにはデバッガーが必要です。",
-			"join.extensionDevelopment": "拡張機能デバッグ セッションを終了しています",
-			"reloadWindow": "ウィンドウの再読み込み"
-		},
-		"vs/workbench/services/extensions/electron-browser/nativeExtensionService": {
-			"devTools": "開発者ツールを開く",
-			"enable": "有効にしてリロード",
-			"enableResolver": "リモート ウィンドウを開くには、拡張機能 '{0}' が必要です。\r\n有効にしますか?",
-			"extensionService.autoRestart": "拡張機能ホストが予期せずに終了しました。再起動しています...",
-			"extensionService.crash": "拡張機能ホストが過去 5 分間に予期せず 3 回終了しました。",
-			"extensionService.versionMismatchCrash": "拡張機能のホストを開始できません。バージョンが一致しません。",
-			"getEnvironmentFailure": "リモート環境をフェッチできませんでした",
-			"install": "インストールして再度読み込む",
-			"installResolver": "リモート ウィンドウを開くには、拡張機能 '{0}' が必要です。\r\nこの拡張機能をインストールしますか?",
-			"learnMore": "詳細情報",
-			"relaunch": "VS Code を再起動",
-			"resolverExtensionNotFound": "`{0}` がマーケットプレイスで見つからない",
-			"restart": "拡張機能のホストを再起動",
-			"restartExtensionHost": "拡張機能のホストを再起動",
-			"restartExtensionHost.reason": "明示的な要求",
-			"startBisect": "拡張機能のバイセクトを開始"
-		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"fileWatcher": "File Watcher"
 		},
@@ -23457,6 +22307,10 @@
 			"vscode.extension.contributes.keybindings.when": "キーがアクティブの場合の条件。",
 			"vscode.extension.contributes.keybindings.win": "Windows 固有のキーまたはキー シーケンス。"
 		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Web で使用するキーボード レイアウトを制御します。",
+			"keyboardConfigurationTitle": "キーボード"
+		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "既定値を上書きするには、このファイル内にキー バインドを挿入します",
 			"errorInvalidConfiguration": "キー バインド構成ファイルを書き込めません。配列型ではないオブジェクトが存在します。クリーン アップするファイルを開いてからもう一度お試しください。",
@@ -23511,13 +22365,12 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "変更内容は保存されない可能性があります。[キャンセル] を押して、もう一度お試しください。"
 		},
-		"vs/workbench/services/localization/electron-browser/localeService": {
-			"argvInvalid": "Unable to write display language. Please open the runtime settings, correct errors/warnings in it and try again.",
-			"installing": "Installing {0} language support...",
-			"openArgv": "Open Runtime Settings",
-			"restart": "&&Restart",
-			"restartDisplayLanguageDetail1": "To change the display language to {0}, {1} needs to restart.",
-			"restartDisplayLanguageMessage1": "Restart {0} to switch to {1}?"
+		"vs/workbench/services/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "[再読み込み] ボタンを押してページを更新し、ブラウザーの言語を使用します。",
+			"clearDisplayLanguageMessage": "表示言語を変更するには、{0} を再度読み込む必要があります",
+			"relaunchDisplayLanguageDetail": "[再読み込み] ボタンを押してページを更新し、表示言語を{0}に設定します。",
+			"relaunchDisplayLanguageMessage": "表示言語を変更するには、{0} を再度読み込む必要があります",
+			"reload": "再読み込み(&&R)"
 		},
 		"vs/workbench/services/log/common/logConstants": {
 			"window": "ウィンドウ"
@@ -23604,6 +22457,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "進行状況メッセージ"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "このページの再読み込みが必要な予期しないエラーが発生しました。",
+			"connectionErrorDetail": "ワークベンチをサーバーに接続できませんでした (エラー: {0})",
+			"reload": "再読み込み(&&R)"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"RemoteHelpInformationExtPoint": "リモートのヘルプ情報への参加",
 			"RemoteHelpInformationExtPoint.documentation": "プロジェクトのドキュメント ページの URL、またはその URL を返すコマンド",
@@ -23621,16 +22479,15 @@
 			"tunnel.source.user": "ユーザーによる転送",
 			"tunnel.staticallyForwarded": "静的転送"
 		},
-		"vs/workbench/services/remote/electron-browser/remoteAgentService": {
-			"connectionError": "Failed to connect to the remote extension host server (Error: {0})",
-			"devTools": "Open Developer Tools",
-			"directUrl": "Open in browser"
-		},
-		"vs/workbench/services/request/electron-browser/requestService": {
+		"vs/workbench/services/request/browser/requestService": {
 			"network": "ネットワーク"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "ワークスペース フォルダーが存在しません: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/secrets/electron-browser/secretStorageService": {
 			"encryptionNotAvailableJustTroubleshootingGuide": "現在のデスクトップ環境で暗号化関連データを保存するための OS キーリングを識別できませんでした。",
@@ -23684,9 +22541,6 @@
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants1": "コード アクションとフォーマッタを実行しています...",
 			"skip": "スキップ"
-		},
-		"vs/workbench/services/textfile/electron-browser/nativeTextFileService": {
-			"join.textFiles": "テキスト ファイルの保存"
 		},
 		"vs/workbench/services/textMate/browser/textMateTokenizationFeatureImpl": {
 			"alreadyDebugging": "既にログ記録しています。",
@@ -23941,13 +22795,6 @@
 			"invalid.semanticTokenTypeConfiguration": "'configuration.semanticTokenType' は配列である必要があります",
 			"invalid.superType.format": "'configuration.{0}.superType' は letterOrDigit[-_letterOrDigit]* というパターンに従う必要があります"
 		},
-		"vs/workbench/services/themes/electron-browser/themes.contribution": {
-			"window.systemColorTheme": "ネイティブ ダイアログ、メニュー、タイトル バーなどのネイティブ UI 要素のカラー モードを設定します。OS がライトなカラー モードで構成されている場合でも、ウィンドウにはダークなシステム カラー テーマを選択できます。{0} 設定に基づいて自動的に調整するように構成することもできます。\r\n\r\n注: {1} が有効になっている場合、この設定は無視されます。",
-			"window.systemColorTheme.auto": "ライト カラーのテーマにはライトなネイティブ ウィジェットの色を使用し、ダーク テーマには濃色を使用します。",
-			"window.systemColorTheme.dark": "ダークなネイティブ ウィジェットの色を使用します。",
-			"window.systemColorTheme.default": "ネイティブ ウィジェットの色は、システム カラーと一致します。",
-			"window.systemColorTheme.light": "ライトなネイティブ ウィジェットの色を使用します。"
-		},
 		"vs/workbench/services/userDataProfile/browser/extensionsResource": {
 			"all profiles and disabled": "すべてのプロファイル",
 			"exclude": "{0} 拡張機能を選択",
@@ -24145,23 +22992,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "元に戻す/やり直す"
 		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupService": {
-			"join.workingCopyBackups": "作業コピーのバックアップ"
-		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "待機を停止し、変更が保存されていないエディターを保存または元に戻すには、[キャンセル] をクリックしてください。",
-			"backupBeforeShutdownMessage": "変更が保存されていないエディターのバックアップに少し時間がかかっています...",
-			"backupErrorDetails": "最初に変更が保存されていないエディターを保存または復元してから、もう一度お試しください。",
-			"backupTrackerBackupFailed": "次の変更が保存されていないエディターをバックアップ場所に保存できませんでした。",
-			"backupTrackerConfirmFailed": "次の変更が保存されていないエディターを保存または元に戻すことができませんでした。",
-			"discardBackupsBeforeShutdown": "バックアップの破棄に少し時間がかかっています...",
-			"ok": "OK(&&O)",
-			"revertBeforeShutdown": "変更が保存されていないエディターを元に戻すのに少し時間がかかっています...",
-			"saveBeforeShutdown": "変更が保存されていないエディターの保存に少し時間がかかっています...",
-			"shutdownForceClose": "閉じる",
-			"shutdownForceQuit": "このまま終了する",
-			"shutdownForceReload": "このまま再度読み込む"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "ワークスペース構成ファイルに書き込めません。ファイルを開いて、ファイル内のエラー/警告を修正してからもう一度お試しください。",
 			"openWorkspaceConfigurationFile": "ワークスペースの構成を開く",
@@ -24171,16 +23001,6 @@
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "ワークスペースの信頼",
 			"workspaceTrustEditorLabelIcon": "ワークスペース信頼エディター ラベルのアイコン。"
-		},
-		"vs/workbench/services/workspaces/electron-browser/workspaceEditingService": {
-			"doNotAskAgain": "確認なしで、常に無題のワークスペースを破棄する",
-			"doNotSave": "保存しない(&&N)",
-			"restartExtensionHost.reason": "マルチルート ワークスペースを開いています",
-			"save": "保存(&&S)",
-			"saveWorkspaceDetail": "再度開く予定があるならワークスペースを保存します。",
-			"saveWorkspaceMessage": "ワークスペースの構成をファイルとして保存しますか?",
-			"workspaceOpenedDetail": "ワークスペースは既に別のウィンドウで開いています。最初にそのウィンドウを閉じててから、もう一度やり直してください。",
-			"workspaceOpenedMessage": "ワークスペース '{0}' を保存できません"
 		}
 	}
 }

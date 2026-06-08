@@ -2175,8 +2175,10 @@
 			"agentHost.config.customizations.uri": "Identifikátor URI modulu plug-in",
 			"agentHost.config.defaultShell.description": "Absolutní cesta ke spustitelnému souboru prostředí používanému terminály spravovanými hostitelem. Obvykle se předává připojeným klientem VS Code z `terminal.integrated.agentHostProfile.<os>` (s návratem na `terminal.integrated.defaultProfile.<os>`). Když není nastavená, hostitel agenta použije systémové prostředí. Podporuje se jen cesta. `args` a `env` z profilu workbench se zatím nepředávají. Workbench toto nastavení předává jen pro místního hostitele agenta – operátoři vzdálených hostitelů agentů by ho měli nastavit přímo v souboru `agent-host-config.json` na vzdáleném počítači.",
 			"agentHost.config.defaultShell.title": "Výchozí prostředí",
-			"agentHost.config.disableCustomTerminalTool.description": "Pokud je tato možnost povolená, relace sady Copilot SDK používají výchozí chování terminálu sady SDK místo přepsání nástroje terminálu hostitele agenta.",
-			"agentHost.config.disableCustomTerminalTool.title": "Použít nástroje terminálu sady SDK"
+			"agentHost.config.enableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use Agent Host's terminal tool override instead of the SDK's default terminal behavior.",
+			"agentHost.config.enableCustomTerminalTool.title": "Use Agent Host Terminal Tool",
+			"agentHost.config.rubberDuck.description": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model.",
+			"agentHost.config.rubberDuck.title": "Rubber Duck Agent"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
 			"agentHost.config.sessionSyncEnabled.description": "Určuje, jestli je pro rozhraní příkazového řádku copilot-sdk povolená synchronizace vzdálené relace.",
@@ -2205,13 +2207,15 @@
 		},
 		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
 			"chat.agentHost.claudeAgent.path": "Experimentální, jen pro místní testování. Absolutní cesta k místně nainstalovanému balíčku `@anthropic-ai/claude-agent-sdk`. Když je nastavená, poskytovatel agenta Claude se zaregistruje v hostiteli agenta a sada SDK se načte z této cesty. Vyžaduje `#chat.agentHost.enabled#`. Aby se změny projevily, proces hostitele agenta se musí restartovat. Toto nastavení se odstraní, až bude sada SDK dodaná přes Extension Marketplace.",
+			"chat.agentHost.codexAgent.binaryArgs": "Additional command-line arguments passed to `codex app-server`. Primarily useful for debugging (for example, `--log-level=debug`).",
+			"chat.agentHost.codexAgent.codexHome": "Optional override for `$CODEX_HOME`. Controls where the codex binary reads config and writes rollouts. When empty, codex uses its default (`~/.codex`).",
+			"chat.agentHost.codexAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `codex` binary. When set, the Codex agent provider is registered inside the agent host and `codex app-server` is spawned from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
 			"chat.agentHost.otel.captureContent": "Pokud je tato možnost povolená, zahrnuje obsah výzvy a odpovědi v atributech rozsahu OTel. Nastaví `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Citlivé na ochranu osobních údajů: Nepovolujte v prostředích, která se dodávají do sdílených jímek.",
 			"chat.agentHost.otel.dbSpanExporter.enabled": "Pokud je tato možnost povolená, hostitel agenta zachová každý vygenerovaný rozsah OTel do místní databáze SQLite. Rozsahy lze zkontrolovat pomocí příkazu `Export Agent Host Traces Database`. Kompatibilní s externími exportéry: rozsahy se zapisují do SQLite *a* se předávají do jímky nakonfigurované uživatelem.",
 			"chat.agentHost.otel.enabled": "Pokud je tato možnost povolená, hostitel agenta generuje trasování OpenTelemetry ze sady Copilot SDK. Vyžaduje `#chat.agentHost.enabled#`. Buď nakonfigurujte `#chat.agentHost.otel.otlpEndpoint#` tak, aby se odesílala trasování do externího kolektoru, nebo povolte `#chat.agentHost.otel.dbSpanExporter.enabled#`, aby se trasování zachytávala místně.",
 			"chat.agentHost.otel.exporterType": "Back-end exportéru používaný sadou Copilot SDK, když `#chat.agentHost.otel.enabled#` je zapnuto. `otlp-grpc` se v modulu runtime rozhraní příkazového řádku transparentně downgraduje na `otlp-http`.",
 			"chat.agentHost.otel.otlpEndpoint": "Adresa URL koncového bodu OTLP, pokud je typ exportéru `otlp-http` nebo `otlp-grpc`. Nastaví `OTEL_EXPORTER_OTLP_ENDPOINT` uvnitř hostitelského procesu agenta.",
 			"chat.agentHost.otel.outfile": "Výstupní cesta pro řádky SPAN JSON, pokud je typ exportéru `file`. Nastaví `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
-			"chat.agentHost.rubberDuck.enabled": "Když je to povoleno, agent pro psaní kódu používá subagenta „rubber duck critic“ k posouzení změn kódu pomocí doplňkového modelu. Vyžaduje `#chat.agentHost.enabled#`.",
 			"chatAgentHostStarterConfigurationTitle": "Úvodní sada hostitele agenta chatu"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2243,15 +2247,45 @@
 			"agentHost.config.sandbox.windowsEnabled.title": "Sandbox povolen (Windows)",
 			"agentHost.config.sandbox.windowsFileSystem.title": "Systém souborů Sandboxu ve Windows"
 		},
-		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
-			"sshKbiDefaultPrompt": "Authentication required for {0}@{1}"
+		"vs/platform/agentHost/node/agentHostCommitOperationHandler": {
+			"agentHost.changeset.commit.authExpired": "Authentication is required to generate a commit message. Please sign in to GitHub Copilot and try again.",
+			"agentHost.changeset.commit.authRequired": "Sign in to GitHub Copilot to generate a commit message.",
+			"agentHost.changeset.commit.cancelled": "Commit operation was cancelled.",
+			"agentHost.changeset.commit.committed": "Committed changes with message: `{0}`",
+			"agentHost.changeset.commit.diffFailed": "Could not compute uncommitted changes to generate a commit message.",
+			"agentHost.changeset.commit.emptyMessage": "Generated commit message was empty.",
+			"agentHost.changeset.commit.noChanges": "No uncommitted changes to commit."
+		},
+		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
+			"agentHost.changeset.commit": "Commit"
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "Hostitel agenta"
 		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationHandler": {
+			"agentHost.changeset.pr.authRequired": "Sign in to GitHub with repository access to create a pull request.",
+			"agentHost.changeset.pr.body": "Created from `{0}` targeting `{1}`.",
+			"agentHost.changeset.pr.cancelled": "Pull request operation was cancelled.",
+			"agentHost.changeset.pr.commitMessage": "Agent Host changes for {0}",
+			"agentHost.changeset.pr.computeChangesFailed": "Could not compute branch changes to create a pull request.",
+			"agentHost.changeset.pr.created": "Created pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.createdDraft": "Created draft pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.existing": "Pull request [#{0}]({1}) already exists.",
+			"agentHost.changeset.pr.noChanges": "There are no branch changes to create a pull request for."
+		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationProvider": {
+			"agentHost.changeset.createDraftPR": "Create Draft Pull Request",
+			"agentHost.changeset.createPR": "Create Pull Request"
+		},
+		"vs/platform/agentHost/node/agentHostRenameCommand": {
+			"agentHostSlashCommand.rename.description": "Rename this chat"
+		},
 		"vs/platform/agentHost/node/agentService": {
 			"agentHost.forkedSessionFallback": "Forkovaná relace",
 			"agentHost.forkedTitlePrefix": "Vytvořen fork: "
+		},
+		"vs/platform/agentHost/node/agentSideEffects": {
+			"agentHostRename.renamed": "Renamed: {0}"
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "Schválení",
@@ -2341,6 +2375,50 @@
 		},
 		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
 			"claude.discovered.displayName": "Objeveno ve službě Claude"
+		},
+		"vs/platform/agentHost/node/codex/codexAgent": {
+			"codex.modelThinkingLevel.description": "Controls how much reasoning effort Codex uses.",
+			"codex.modelThinkingLevel.high": "High",
+			"codex.modelThinkingLevel.low": "Low",
+			"codex.modelThinkingLevel.medium": "Medium",
+			"codex.modelThinkingLevel.minimal": "Minimal",
+			"codex.modelThinkingLevel.title": "Thinking Level",
+			"codex.sessionConfig.additionalDirectories": "Additional Writable Directories",
+			"codex.sessionConfig.additionalDirectories.item": "Directory",
+			"codex.sessionConfig.additionalDirectoriesDescription": "Absolute paths the sandbox is allowed to write to, in addition to the workspace. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.approvalPolicy": "Approvals",
+			"codex.sessionConfig.approvalPolicy.never": "No Escalations",
+			"codex.sessionConfig.approvalPolicy.neverDescription": "Never ask for elevated permission; commands that cannot run in the sandbox are rejected.",
+			"codex.sessionConfig.approvalPolicy.onFailure": "Ask on Failure",
+			"codex.sessionConfig.approvalPolicy.onFailureDescription": "Try commands in the sandbox first, then ask to retry with elevated permission if the sandbox blocks them.",
+			"codex.sessionConfig.approvalPolicy.onRequest": "Ask When Needed",
+			"codex.sessionConfig.approvalPolicy.onRequestDescription": "Ask only when Codex determines a command needs elevated permission.",
+			"codex.sessionConfig.approvalPolicy.untrusted": "Ask More Often",
+			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Ask before more command categories so you can review actions more closely.",
+			"codex.sessionConfig.approvalPolicyDescription": "How Codex requests approval for tool calls.",
+			"codex.sessionConfig.modelReasoningEffort": "Reasoning Effort",
+			"codex.sessionConfig.modelReasoningEffort.high": "High",
+			"codex.sessionConfig.modelReasoningEffort.low": "Low",
+			"codex.sessionConfig.modelReasoningEffort.medium": "Medium",
+			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimal",
+			"codex.sessionConfig.modelReasoningEffortDescription": "Controls how much reasoning effort Codex uses.",
+			"codex.sessionConfig.networkAccessEnabled": "Network",
+			"codex.sessionConfig.networkAccessEnabledDescription": "Allow sandboxed tool calls to make outbound network requests. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.sandboxMode": "Sandbox",
+			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Full Access (Dangerous)",
+			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Tool calls have unrestricted disk and network access.",
+			"codex.sessionConfig.sandboxMode.readOnly": "Read-Only",
+			"codex.sessionConfig.sandboxMode.readOnlyDescription": "Tool calls can read the workspace but cannot modify files.",
+			"codex.sessionConfig.sandboxMode.workspaceWrite": "Workspace Write",
+			"codex.sessionConfig.sandboxMode.workspaceWriteDescription": "Tool calls can read and write within the workspace; network is controlled separately.",
+			"codex.sessionConfig.sandboxModeDescription": "Filesystem and network restrictions applied to tool calls.",
+			"codex.sessionConfig.webSearchMode": "Web Search",
+			"codex.sessionConfig.webSearchMode.cached": "Cached Only",
+			"codex.sessionConfig.webSearchMode.disabled": "Disabled",
+			"codex.sessionConfig.webSearchMode.live": "Live",
+			"codex.sessionConfig.webSearchModeDescription": "Web-search tool availability for the model.",
+			"codexAgent.description": "Codex agent backed by the OpenAI Codex app-server",
+			"codexAgent.displayName": "Codex"
 		},
 		"vs/platform/agentHost/node/copilot/copilotAgent": {
 			"agentHost.sessionConfig.branch": "Větev",
@@ -2507,37 +2585,9 @@
 			"sessionPermissions.allowSession": "Povolit v této relaci",
 			"sessionPermissions.skip": "Přeskočit"
 		},
-		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
-			"ssh.failedToReadPrivateKey": "Failed to read private key file: {0}",
-			"ssh.keyFileAuthRequiresPath": "Key file authentication requires a private key path.",
-			"sshKeyPassphraseName": "SSH Key Passphrase",
-			"sshKeyPassphrasePrompt": "Enter passphrase for SSH key {0}.",
-			"sshProgressCheckingAgent": "Checking for existing agent host...",
-			"sshProgressConnecting": "Establishing SSH connection...",
-			"sshProgressDownloadingCLI": "Installing VS Code CLI on remote...",
-			"sshProgressForwarding": "Connecting to remote agent host...",
-			"sshProgressInstallingCLI": "Checking remote CLI installation...",
-			"sshProgressStartingAgent": "Starting remote agent host..."
-		},
-		"vs/platform/agentHost/node/tunnelHostMainService": {
-			"tunnelHost.log": "Remote Connections"
-		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "Přiblížení stránky: {0} %",
 			"browserZoomPercent": "{0} %"
-		},
-		"vs/platform/browserView/electron-main/browserViewMainService": {
-			"browser.contextMenu.addElementToChat": "Add Element to Chat",
-			"browser.contextMenu.back": "Back",
-			"browser.contextMenu.copyImage": "Copy Image",
-			"browser.contextMenu.copyImageUrl": "Copy Image URL",
-			"browser.contextMenu.copyLink": "Copy Link",
-			"browser.contextMenu.forward": "Forward",
-			"browser.contextMenu.inspect": "Inspect",
-			"browser.contextMenu.openImageInNewTab": "Open Image in New Tab",
-			"browser.contextMenu.openLinkInExternalBrowser": "Open Link in External Browser",
-			"browser.contextMenu.openLinkInNewTab": "Open Link in New Tab",
-			"browser.contextMenu.reload": "Reload"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
 			"config.policy.duplicate": "Nelze zaregistrovat {0}. Přidružená zásada {1} je už zaregistrovaná v {2}.",
@@ -2589,17 +2639,6 @@
 			"moreFiles": "...nezobrazuje se několik dalších souborů (celkem {0})",
 			"okButton": "&&OK",
 			"yesButton": "&&Ano"
-		},
-		"vs/platform/dialogs/electron-browser/dialog": {
-			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDate: {2}\r\nElectron: {3}\r\nElectronBuildId: {4}\r\nChromium: {5}\r\nNode.js: {6}\r\nV8: {7}\r\nOS: {8}"
-		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "Open",
-			"openFile": "Open File",
-			"openFolder": "Open Folder",
-			"openWorkspace": "&&Open",
-			"openWorkspaceTitle": "Open Workspace from File",
-			"selectFolder": "&&Select folder"
 		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "Soubor je příliš velký na to, aby se dal otevřít v editoru bez názvu. Nahrajte prosím tento soubor nejdříve do Průzkumníka souborů a pak to zkuste znovu."
@@ -2811,6 +2850,14 @@
 			"fileSystemNotAllowedError": "Nedostatečná oprávnění. Zkuste to prosím znovu a povolte operaci.",
 			"fileSystemRenameError": "Přejmenování je podporováno pouze u souborů."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Adresář není prázdný",
+			"fileExceedsStorageQuota": "Soubor překračuje dostupnou kvótu úložiště.",
+			"fileIsDirectory": "Soubor je adresář",
+			"fileNotDirectory": "Soubor není adresář",
+			"fileNotExists": "Soubor neexistuje.",
+			"internal": "Ve zprostředkovateli systému souborů IndexedDB došlo k vnitřní chybě. ({0})"
+		},
 		"vs/platform/files/common/files": {
 			"sizeB": "{0} B",
 			"sizeGB": "{0} GB",
@@ -2850,10 +2897,6 @@
 		},
 		"vs/platform/files/common/io": {
 			"fileTooLargeError": "Soubor je pro otevření příliš velký."
-		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "Failed to move '{0}' to the recycle bin ({1})",
-			"trashFailed": "Failed to move '{0}' to the trash ({1})"
 		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "{0} nelze zkopírovat do {1} ({2}).",
@@ -2951,68 +2994,12 @@
 		"vs/platform/mcp/common/mcpManagementService": {
 			"not allowed to install": "Tento server mcp nelze nainstalovat, protože {0}"
 		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "Cancel",
-			"exit": "&&Exit",
-			"mAbout": "About {0}",
-			"mBringToFront": "Bring All to Front",
-			"mEdit": "&&Edit",
-			"mFile": "&&File",
-			"mGoto": "&&Go",
-			"mHelp": "&&Help",
-			"mHide": "Hide {0}",
-			"mHideOthers": "Hide Others",
-			"mMergeAllWindows": "Merge All Windows",
-			"mMinimize": "Minimize",
-			"mMoveTabToNewWindow": "Move Tab to New Window",
-			"mNewTab": "New Tab",
-			"mRun": "&&Run",
-			"mSelection": "&&Selection",
-			"mServices": "Services",
-			"mShowAll": "Show All",
-			"mShowNextTab": "Show Next Tab",
-			"mShowPreviousTab": "Show Previous Tab",
-			"mTerminal": "&&Terminal",
-			"mView": "&&View",
-			"mWindow": "Window",
-			"mZoom": "Zoom",
-			"miCheckForUpdates": "Check for &&Updates...",
-			"miCheckingForUpdates": "Checking for Updates...",
-			"miDownloadUpdate": "D&&ownload Available Update",
-			"miDownloadingUpdate": "Downloading Update...",
-			"miInstallUpdate": "Install &&Update...",
-			"miInstallingUpdate": "Installing Update...",
-			"miNewWindow": "New &&Window",
-			"miPreferences": "&&Preferences",
-			"miQuit": "Quit {0}",
-			"miRestartToUpdate": "Restart to &&Update",
-			"miSwitchWindow": "Switch &&Window...",
-			"quit": "&&Quit",
-			"quitMessage": "Are you sure you want to exit?",
-			"quitMessageMac": "Are you sure you want to quit?"
-		},
 		"vs/platform/meteredConnection/common/meteredConnection.config.contribution": {
 			"meteredConnection": "Určuje, jestli se má aktuální síťové připojení považovat za účtované podle objemu dat. V případě účtování podle objemu dat se odloží automatické aktualizace, stahování rozšíření a další síťové aktivity na pozadí, aby se snížilo využití dat.",
 			"meteredConnection.auto": "Automaticky zjišťujte připojení účtovaná podle objemu dat pomocí stavu sítě operačního systému.",
 			"meteredConnection.off": "Nikdy nepovažujte síťové připojení za účtované podle objemu dat.",
 			"meteredConnection.on": "Vždy zacházet se síťovým připojením jako s účtovaným podle objemu dat. Automatické aktualizace a stahování se odloží.",
 			"networkConfigurationTitle": "Síť"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "Cancel",
-			"cantCreateBinFolder": "Unable to install the shell command '{0}'.",
-			"cantUninstall": "Unable to uninstall the shell command '{0}'.",
-			"copyLink": "&&Copy Link",
-			"ok": "&&OK",
-			"openExternalErrorLinkMessage": "An error occurred opening a link in your default browser.",
-			"openExternalProgramErrorMessage": "An error occurred opening an external program.",
-			"sourceMissing": "Unable to find shell script in '{0}'",
-			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
-			"trace.message": "Successfully created the trace file",
-			"trace.ok": "&&OK",
-			"tracing.alreadyInProgress": "A tracing session is already in progress. Use command `\"{0}\"` to stop it first.",
-			"warnEscalation": "{0} will now prompt with 'osascript' for Administrator privileges to install the shell command.",
-			"warnEscalationUninstall": "{0} will now prompt with 'osascript' for Administrator privileges to uninstall the shell command."
 		},
 		"vs/platform/networkFilter/common/networkFilterService": {
 			"networkFilter.blockedByPolicy": "Přístup k {0} je blokován zásadami síťové domény (viz nastavení `{1}` a `{2}`)."
@@ -3021,9 +3008,6 @@
 			"severityPrefix.error": "Chyba: {0}",
 			"severityPrefix.info": "Informace: {0}",
 			"severityPrefix.warning": "Upozornění: {0}"
-		},
-		"vs/platform/process/electron-main/processMainService": {
-			"local": "Local"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "Výsledkem příkazu {0} je chyba.",
@@ -3081,16 +3065,6 @@
 		},
 		"vs/platform/quickinput/browser/tree/quickTree": {
 			"quickInputBox.ariaLabel": "Pokud chcete zúžit počet výsledků, začněte psát."
-		},
-		"vs/platform/remoteTunnel/common/remoteTunnel": {
-			"remoteTunnelLog": "Remote Tunnel Service"
-		},
-		"vs/platform/remoteTunnel/node/remoteTunnelService": {
-			"remoteTunnelService.authorizing": "Connecting as {0} ({1})",
-			"remoteTunnelService.building": "Building CLI from sources",
-			"remoteTunnelService.openTunnel": "Opening tunnel",
-			"remoteTunnelService.openTunnelWithName": "Opening tunnel {0}",
-			"remoteTunnelService.serviceInstallFailed": "Failed to install tunnel as a service, starting in session..."
 		},
 		"vs/platform/request/common/request": {
 			"electronFetch": "Určuje, jestli se má místo implementace Node.js povolit implementace načítání Electron. Všechna místní rozšíření získají pro globální rozhraní API pro načítání implementaci načítání Electron.",
@@ -3495,6 +3469,20 @@
 			"cornerRadiusSmall": "Poloměr malého rohu pro kompaktní prvky uživatelského rozhraní.",
 			"cornerRadiusXLarge": "Velmi velký poloměr rohů pro velmi výrazné prvky uživatelského rozhraní.",
 			"cornerRadiusXSmall": "Velmi malý poloměr rohů pro velmi kompaktní prvky uživatelského rozhraní.",
+			"spacingNone": "No spacing (0px).",
+			"spacingSize100": "Spacing of 10px.",
+			"spacingSize120": "Spacing of 12px.",
+			"spacingSize160": "Spacing of 16px.",
+			"spacingSize20": "Spacing of 2px.",
+			"spacingSize200": "Spacing of 20px.",
+			"spacingSize240": "Spacing of 24px.",
+			"spacingSize280": "Spacing of 28px.",
+			"spacingSize320": "Spacing of 32px.",
+			"spacingSize360": "Spacing of 36px.",
+			"spacingSize40": "Spacing of 4px.",
+			"spacingSize400": "Spacing of 40px.",
+			"spacingSize60": "Spacing of 6px.",
+			"spacingSize80": "Spacing of 8px.",
 			"strokeThickness": "Tloušťka základního tahu pro ohraničení a obrysy."
 		},
 		"vs/platform/theme/common/tokenClassificationRegistry": {
@@ -3575,9 +3563,6 @@
 			"updateMode": "Umožňuje nakonfigurovat, jestli budete dostávat automatické aktualizace. Po změně vyžaduje restart. Aktualizace se načítají z online služby Microsoftu.",
 			"updateTitleBar": "Zobrazte indikátor aktualizace v záhlaví."
 		},
-		"vs/platform/update/electron-main/notAvailableUpdateDialog": {
-			"noUpdatesAvailable": "There are currently no updates available."
-		},
 		"vs/platform/userDataProfile/common/userDataProfile": {
 			"defaultProfile": "Výchozí"
 		},
@@ -3614,52 +3599,8 @@
 		"vs/platform/userDataSync/common/userDataSyncResourceProvider": {
 			"incompatible sync data": "Nelze parsovat data synchronizace, protože nejsou kompatibilní s aktuální verzí."
 		},
-		"vs/platform/windows/electron-main/windowImpl": {
-			"appGone": "The window terminated unexpectedly",
-			"appGoneDetailEmptyWindow": "We are sorry for the inconvenience. You can open a new empty window to start again.",
-			"appGoneDetailWorkspace": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
-			"appGoneDetails": "The window terminated unexpectedly (reason: '{0}', code: '{1}')",
-			"appStalled": "The window is not responding",
-			"appStalledDetail": "You can reopen or close the window or keep waiting.",
-			"close": "&&Close",
-			"doNotRestoreEditors": "Don't restore editors",
-			"hiddenMenuBar": "You can still access the menu bar by pressing the Alt-key.",
-			"newWindow": "&&New Window",
-			"reopen": "&&Reopen",
-			"wait": "&&Keep Waiting"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"allow": "&&Allow",
-			"cancel": "&&Cancel",
-			"confirmOpenDetail": "The path '{0}' uses a host that is not allowed. Unless you trust the host, you should press 'Cancel'",
-			"confirmOpenMessage": "The host '{0}' was not found in the list of allowed hosts. Do you want to allow it anyway?",
-			"doNotAskAgain": "Permanently allow host '{0}'",
-			"learnMore": "&&Learn More",
-			"ok": "&&OK",
-			"pathNotExistDetail": "The path '{0}' does not exist on this computer.",
-			"pathNotExistTitle": "Path does not exist",
-			"uriInvalidDetail": "The URI '{0}' is not valid and can not be opened.",
-			"uriInvalidTitle": "URI can not be opened"
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "Pracovní prostor Code"
-		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"cancel": "&&Cancel",
-			"clearButtonLabel": "&&Clear",
-			"confirmClearDetail": "This action is irreversible!",
-			"confirmClearRecentsMessage": "Do you want to clear all recently opened files and workspaces?",
-			"newWindow": "New Window",
-			"newWindowDesc": "Opens a new window",
-			"recentFolders": "Recent Folders",
-			"recentFoldersAndWorkspaces": "Recent Folders & Workspaces",
-			"untitledWorkspace": "Untitled (Workspace)",
-			"workspaceName": "{0} (Workspace)"
-		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "&&OK",
-			"workspaceOpenedDetail": "The workspace is already opened in another window. Please close that window first and then try again.",
-			"workspaceOpenedMessage": "Unable to save workspace '{0}'"
 		},
 		"vs/server/node/remoteExtensionHostAgentCli": {
 			"remotecli": "Vzdálené rozhraní příkazového řádku"
@@ -3689,183 +3630,15 @@
 		"vs/server/node/serverServices": {
 			"remoteExtensionLog": "Server"
 		},
-		"vs/sessions/browser/accountTitleBarState": {
-			"accountSignedInAria": "Jste přihlášení jako {0} s {1}",
-			"accountSignedInAriaNameOnly": "Přihlášen/a jako {0}",
-			"agentsSignedOut": "Agenti jsou odhlášeni",
-			"agentsSignedOutAria": "Agenti jsou odhlášeni.",
-			"copilotAllQuotaReachedAria": "Dosáhlo se kvóty pro chat a vložené návrhy GitHub Copilota.",
-			"copilotChatQuotaReachedAria": "Dosaženo kvóty GitHub Copilot Chatu",
-			"copilotCompletionsQuotaReachedAria": "Dosáhlo se kvóty pro vložené návrhy GitHub Copilota.",
-			"copilotQuotaReached": "Bylo dosaženo kvóty",
-			"copilotTokensRemaining": "Zbývající tokeny",
-			"copilotTokensRemainingAria": "Zbývá {0} % tokenů GitHub Copilota",
-			"copilotUnavailable": "Copilot není k dispozici",
-			"copilotUnavailableDisabledAria": "GitHub Copilot je zakázaný.",
-			"copilotUnavailableUntrustedAria": "GitHub Copilot není v nedůvěryhodných pracovních prostorech k dispozici.",
-			"loadingAccount": "Načítá se účet...",
-			"loadingAccountAria": "Načítá se účet",
-			"signInAria": "Přihlášení k účtu",
-			"signInLabel": "Přihlásit se"
-		},
-		"vs/sessions/browser/layoutActions": {
-			"agentPanelCloseIcon": "Ikona pro zavření panelu",
-			"agentSidebarToggleClosedIcon": "Ikona pro boční panel relací při zavření.",
-			"agentSidebarToggleOpenIcon": "Ikona pro boční panel relací při otevření.",
-			"openAndCloseSecondarySidebar": "Otevřít/zobrazit a zavřít/skrýt sekundární boční panel",
-			"openAndCloseSidebar": "Otevřít/zobrazit a zavřít/skrýt boční panel",
-			"secondarySidebarHidden": "Skryt sekundární postranní panel",
-			"secondarySidebarVisible": "Zobrazen sekundární postranní panel",
-			"sidebarHidden": "Skryt primární postranní panel",
-			"sidebarVisible": "Zobrazen primární postranní panel",
-			"togglePanel": "Přepnout viditelnost panelu",
-			"toggleSecondarySidebar": "Přepnout viditelnost sekundárního postranního panelu",
-			"toggleSidebar": "Přepnout viditelnost primárního postranního panelu",
-			"toggleWindowAlwaysOnTop": "Přepnout Vždy navrchu"
-		},
-		"vs/sessions/browser/parts/auxiliaryBarPart": {
-			"auxiliaryBarAriaLabel": "Podrobnosti relace"
-		},
-		"vs/sessions/browser/parts/chatCompositeBar": {
-			"closeChat": "Zavřít",
-			"renameChat": "Přejmenovat",
-			"renameChat.prompt": "Přejmenovat chat"
-		},
-		"vs/sessions/browser/parts/menubar.contribution": {
-			"mEdit": "&&Upravit",
-			"mFile": "&&Soubor",
-			"mGo": "&&Přejít",
-			"mHelp": "&&Nápověda",
-			"mPreferences": "&&Předvolby",
-			"mTerminal": "&&Terminál",
-			"mView": "&&Zobrazit"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileChangesView": {
-			"changesView.back": "Zpět",
-			"changesView.backLabel": "Zpět",
-			"changesView.changeAdded": "přidáno",
-			"changesView.changeDeleted": "odstraněno",
-			"changesView.changeModified": "upraveno",
-			"changesView.empty": "V této relaci zatím nejsou žádné změny.",
-			"changesView.rowAria": "{0}, {1}, +{2} -{3}",
-			"changesView.subtitleFilePlural": "Počet souborů: {0}",
-			"changesView.subtitleFileSingular": "1 soubor",
-			"changesView.title": "Změny relace"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffColors": {
-			"agentsMobileDiff.addedForeground": "Barva popředí používaná pro přidané soubory / řádky v mobilním seznamu změn a překryvném zobrazení rozdílů v okně relací agentů.",
-			"agentsMobileDiff.deletedForeground": "Barva popředí používaná pro odstraněné soubory / odebrané řádky v mobilním seznamu změn a překryvném zobrazení rozdílů v okně relací agentů.",
-			"agentsMobileDiff.modifiedForeground": "Barva popředí používaná pro upravené soubory v mobilním seznamu změn v okně relací agentů."
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffView": {
-			"diffView.back": "Zpět",
-			"diffView.loading": "Načítání…",
-			"diffView.nextFile": "Další soubor",
-			"diffView.noChanges": "V tomto souboru nejsou žádné změny.",
-			"diffView.position": "{0} / {1}",
-			"diffView.prevFile": "Předchozí soubor"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileMultiDiffView": {
-			"multiDiffView.back": "Zpět",
-			"multiDiffView.file": "soubor",
-			"multiDiffView.fileCount": "{0} {1}",
-			"multiDiffView.fileFallback": "soubor",
-			"multiDiffView.files": "soubory",
-			"multiDiffView.loadError": "Nelze načíst změny v tomto souboru.",
-			"multiDiffView.loading": "Načítání…",
-			"multiDiffView.noChanges": "V tomto souboru nejsou žádné změny.",
-			"multiDiffView.toggleFile": "Přepnout {0}"
-		},
-		"vs/sessions/browser/parts/mobile/mobilePickerSheet": {
-			"mobilePickerSheet.done": "Hotovo",
-			"mobilePickerSheet.doneAriaLabel": "Zavřít {0}",
-			"mobilePickerSheet.noResults": "Žádné výsledky",
-			"mobilePickerSheet.searching": "Vyhledávání…"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSessionFilterChips": {
-			"chipCompleted": "Dokončeno",
-			"chipFailed": "Neúspěšné",
-			"chipInProgress": "Probíhající",
-			"filterChipsLabel": "Filtry stavu relace",
-			"findAriaLabel": "Najít relaci",
-			"sortGroup": "Seřadit",
-			"sortGroupAriaLabel": "Možnosti řazení a seskupení"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSortGroupSheet": {
-			"sortGroupSheet.close": "Zavřít"
-		},
-		"vs/sessions/browser/parts/mobile/mobileTitlebarPart": {
-			"mobileAccount.close": "Zavřít",
-			"mobileAccount.loading": "Probíhá načítání…",
-			"mobileAccount.signedOut": "Nejste přihlášeni",
-			"mobileAccount.title": "Účet",
-			"mobileTopBar.account": "Účet",
-			"mobileTopBar.changes": "Zobrazit změny",
-			"mobileTopBar.changesTooltip": "Změněné soubory: {0} (+{1} -{2})",
-			"mobileTopBar.closeSessions": "Zavřít relace",
-			"mobileTopBar.filesChangedCount": "Počet souborů: {0}",
-			"mobileTopBar.filesChangedTooltip": "Počet změněných souborů: {0}",
-			"mobileTopBar.newSession": "Nová relace",
-			"mobileTopBar.newSessionAria": "Nová relace",
-			"mobileTopBar.openSessions": "Otevřít relace",
-			"mobileTopBar.singleFileChanged": "1 soubor",
-			"mobileTopBar.singleFileChangedTooltip": "1 změněný soubor"
-		},
-		"vs/sessions/browser/sessionsSetUpService": {
-			"loading": "Načítání",
-			"sessions.aiDisabled.detail": "Pokud chcete Agenty používat dál, povolte funkce AI.",
-			"sessions.aiDisabled.enable": "Povolit funkce AI",
-			"sessions.signIn": "Přihlaste se, abyste mohli používat Agenty",
-			"sessions.signingIn": "Přihlašování…",
-			"sessions.signingIn.detail": "Dokončete prosím přihlášení v prohlížeči.",
-			"sessions.welcome.detail": "Vaše prostředí pro programování využívající AI, ve kterém agenti zkoumají, vytvářejí a iterují spolu s vámi.",
-			"sessions.welcome.getStarted": "Začínáme",
-			"sessions.welcome.title": "Vítá vás {0}",
-			"walkthrough.productName": "{0} – Agenti",
-			"welcomeFooter": "Pokračováním vyjadřujete souhlas s {0}[Podmínkami]({1}) a [Prohlášením o zásadách ochrany osobních údajů]({2}). {3} Copilot může zobrazovat [veřejný kód]({4}) návrhy a používat vaše data k vylepšování produktu. Tato [nastavení]({5}) můžete kdykoli změnit."
-		},
-		"vs/sessions/browser/widget/openInVSCodeWidget": {
-			"openInVSCodeHover": "Otevřít v okně editoru VS Code"
-		},
-		"vs/sessions/common/categories": {
-			"agents": "Agenti"
-		},
-		"vs/sessions/common/contextkeys": {
-			"activeSessionHasGitRepository": "Určuje, jestli má aktivní relace přidružené úložiště Git",
-			"activeSessionHasGitSyncActionRunning": "Jestli má aktivní relace právě spuštěnou akci synchronizace Gitu",
-			"activeSessionProviderId": "ID poskytovatele aktivní relace",
-			"activeSessionType": "Typ relace aktivní relace",
-			"activeSessionWorkspaceIsVirtual": "Určuje, jestli je pracovní prostor aktivní relace virtuální",
-			"activeSessions": "Identifikátor panelu aktivních relací",
-			"chatSessionProviderId": "ID poskytovatele relace v překryvech místní nabídky",
-			"editorMaximized": "Jestli je oblast editoru maximalizovaná",
-			"isActiveSessionArchived": "Určuje, jestli je aktivní relace archivovaná (označená jako dokončená).",
-			"multipleSessionsVisible": "Určuje, jestli je v mřížce části relací viditelná více než jedna relace",
-			"sessionIsCreated": "Určuje, jestli se vytvořila relace zobrazení relace (zobrazené zobrazení chatu, ne zobrazení nové relace)",
-			"sessionIsMaximized": "Určuje, jestli je zobrazení relace aktuálně maximalizované v mřížce části relací",
-			"sessionIsSticky": "Určuje, jestli je relace zobrazení relace v mřížce přichycená",
-			"sessionSupportsMultipleChats": "Určuje, jestli relace zobrazení relace podporuje více chatů",
-			"sessionWorkspacePickerGroup": "Karta aktuálně aktivní skupiny ve výběru pracovního prostoru relace",
-			"sessionsAquariumActive": "Jestli je překryvný prvek akvária relací aktivní",
-			"sessionsCanGoBack": "Jestli v historii navigace existuje předchozí relace",
-			"sessionsCanGoForward": "Jestli v historii navigace existuje další relace",
-			"sessionsFocus": "Určuje, jestli má část relací fokus klávesnice",
-			"sessionsIsPhoneLayout": "Určuje, jestli je aktuálním rozložením rozložení pro telefon.",
-			"sessionsKeyboardVisible": "Určuje, zda je viditelná virtuální klávesnice.",
-			"sessionsVisible": "Určuje, jestli je část relací viditelná",
-			"sessionsWelcomeVisible": "Určuje, jestli je uvítací překryvné okno relací viditelné."
-		},
 		"vs/sessions/common/sizes": {
 			"agents.fontSize.body1": "Velikost písma primárního textu pro okno agentů.",
 			"agents.fontSize.body2": "Velikost písma sekundárního textu pro okno agentů.",
 			"agents.fontSize.heading1": "Velikost písma nadpisu 1 pro okno agentů (název úvodní obrazovky).",
 			"agents.fontSize.heading2": "Velikost písma nadpisu 2 pro okno agentů (název).",
 			"agents.fontSize.heading3": "Velikost písma nadpisu 3 pro okno agentů (podnadpis).",
-			"agents.fontSize.label1": "Velikost písma popisku 1 pro okno agentů (interaktivní karty).",
-			"agents.fontSize.label2": "Velikost písma popisku 2 pro okno agentů (zvýraznění metadat).",
-			"agents.fontSize.label3": "Velikost písma popisku 3 pro okno agentů (primární metadata).",
-			"agents.fontSize.label4": "Velikost písma popisku 4 pro okno agentů (odznáček).",
-			"agents.fontWeight.medium": "Střední tloušťka písma (500) pro okno agentů.",
+			"agents.fontSize.label1": "Label 1 font size for the agents window (section title, tabs).",
+			"agents.fontSize.label2": "Label 2 font size for the agents window (metadata).",
+			"agents.fontSize.label3": "Label 3 font size for the agents window (badge).",
 			"agents.fontWeight.regular": "Normální tloušťka písma (400) pro okno agentů.",
 			"agents.fontWeight.semiBold": "Tloušťka písma SemiBold (600) pro okno agentů."
 		},
@@ -3895,26 +3668,6 @@
 			"agentsUpdateButton.downloadingBackground": "Barva pozadí tlačítka aktualizace, které zobrazuje průběh stahování v okně relací agenta",
 			"inactiveSessionView.background": "Barva pozadí neaktivního zobrazení relace v okně relací agenta.",
 			"inactiveSessionView.foreground": "Barva popředí neaktivního zobrazení relace v okně relací agenta."
-		},
-		"vs/sessions/electron-browser/actions/vscodeActions": {
-			"openInVSCode": "Otevřít v editoru",
-			"openVSCodeWindow": "Otevřít okno VS Code"
-		},
-		"vs/sessions/electron-browser/parts/titlebarPart": {
-			"agentsWindowTitle": "Agenti"
-		},
-		"vs/sessions/electron-browser/sessions.main": {
-			"join.closeStorage": "Ukládá se stav uživatelského rozhraní"
-		},
-		"vs/sessions/services/sessions/common/session": {
-			"sessionWorkspaceGroup.local": "Místní",
-			"sessionWorkspaceGroup.remote": "Vzdálené"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "Jestli aktivní relace podporuje více chatů"
-		},
-		"vs/sessions/services/workspace/browser/workspaceContextService": {
-			"agentsWindow": "Okno Agenti"
 		},
 		"vs/sessions/contrib/accountMenu/browser/account.contribution": {
 			"accountAvatarAlt": "Obrázek profilu GitHubu pro {0}",
@@ -5975,6 +5728,7 @@
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbsControl": {
 			"breadcrumbsActive": "Určuje, jestli má popis cesty fokus.",
+			"breadcrumbsHasSymbols": "Whether breadcrumbs contain symbol items",
 			"breadcrumbsPossible": "Určuje, jestli editor může zobrazit popis cesty.",
 			"breadcrumbsVisible": "Určuje, jestli jsou popisy cesty aktuálně viditelné.",
 			"cmd.copyPath": "Kopírovat cestu popisu cesty",
@@ -6718,6 +6472,10 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "Určuje, jestli je fokus klávesnice uvnitř ovládacího prvku rychlého otevření."
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "Resetovat uživatelská data",
+			"reset user data message": "Chcete obnovit data (nastavení, klávesové zkratky, rozšíření, fragmenty kódu a stav uživatelského rozhraní) a znovu je načíst?"
+		},
 		"vs/workbench/browser/window": {
 			"closeWindowButtonLabel": "&&Zavřít okno",
 			"closeWindowMessage": "Opravdu chcete okno zavřít?",
@@ -7042,6 +6800,7 @@
 			"auxiliaryBarVisible": "Určuje, zda je pomocný panel viditelný",
 			"bannerFocused": "Určuje, jestli má banner fokus klávesnice.",
 			"dirtyWorkingCopies": "Určuje, jestli existují nějaké pracovní kopie s neuloženými změnami.",
+			"editorAreaFocus": "Whether the editor area (any editor part) has keyboard focus",
 			"editorIsOpen": "Určuje, jestli je editor otevřený.",
 			"editorPartEditorGroupMaximized": "Část Editor má maximalizovanou skupinu.",
 			"editorPartModal": "Určuje, jestli je fokus v části modálního editoru.",
@@ -7283,183 +7042,6 @@
 			"duplicateId": "Zobrazení s ID {0} už je zaregistrované.",
 			"treeView.notRegistered": "Není zaregistrováno žádné zobrazení stromu s ID {0}.",
 			"views log": "Zobrazení"
-		},
-		"vs/workbench/electron-browser/actions/developerActions": {
-			"configureRuntimeArguments": "Configure Runtime Arguments",
-			"reloadWindowWithExtensionsDisabled": "Reload with Extensions Disabled",
-			"revealUserDataFolder": "Reveal User Data Folder",
-			"showContentTracing": "Show Content Tracing",
-			"showGPUInfo": "Show GPU Info",
-			"startTracing": "Start Tracing",
-			"startTracing.ariaLabel": "Recording performance trace. Click to stop recording.",
-			"startTracing.name": "Performance Trace",
-			"startTracing.recording": "Recording trace (click to stop)",
-			"startTracing.tooltip": "Click to stop recording",
-			"stopTracing": "Stop Tracing",
-			"stopTracing.button": "&&Relaunch and Enable Tracing",
-			"stopTracing.detail": "This can take up to one minute to complete.",
-			"stopTracing.message": "No tracing session is in progress. Use 'Developer: Start Tracing' or launch with a '--trace' argument to begin tracing.",
-			"stopTracing.title": "Creating trace file...",
-			"toggleDevTools": "Toggle Developer Tools"
-		},
-		"vs/workbench/electron-browser/actions/installActions": {
-			"install": "Install '{0}' command in PATH",
-			"shellCommand": "Shell Command",
-			"successFrom": "Shell command '{0}' successfully uninstalled from PATH.",
-			"successIn": "Shell command '{0}' successfully installed in PATH.",
-			"uninstall": "Uninstall '{0}' command from PATH"
-		},
-		"vs/workbench/electron-browser/actions/windowActions": {
-			"close": "Close Window",
-			"closeActive": "Close Active Window",
-			"closeOtherWindows": "Close Other Windows",
-			"closeWindow": "Close Window",
-			"current": "Current Window",
-			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
-			"enableWindowAlwaysOnTop": "Turn On Always on Top",
-			"miCloseWindow": "Clos&&e Window",
-			"miZoomIn": "&&Zoom In",
-			"miZoomOut": "&&Zoom Out",
-			"miZoomReset": "&&Reset Zoom",
-			"quickSwitchWindow": "Quick Switch Window...",
-			"switchToMainWindow": "Switch to Main Window",
-			"switchWindow": "Switch Window...",
-			"switchWindowPlaceHolder": "Select a window to switch to",
-			"toggleWindowAlwaysOnTop": "Toggle Window Always on Top",
-			"windowDirtyAriaLabel": "{0}, window with unsaved changes",
-			"windowGroup": "window group",
-			"zoomIn": "Zoom In",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset Zoom"
-		},
-		"vs/workbench/electron-browser/desktop.contribution": {
-			"application.shellEnvironmentResolutionTimeout": "Controls the timeout in seconds before giving up resolving the shell environment when the application is not already launched from a terminal. See our [documentation](https://go.microsoft.com/fwlink/?linkid=2149667) for more information.",
-			"argv.crashReporterId": "Unique id used for correlating crash reports sent from this app instance.",
-			"argv.disableChromiumSandbox": "Disables the Chromium sandbox. This is useful when running VS Code as elevated on Linux and running under Applocker on Windows.",
-			"argv.disableHardwareAcceleration": "Disables hardware acceleration. ONLY change this option if you encounter graphic issues.",
-			"argv.disableLcdText": "Disables LCD font antialiasing.",
-			"argv.enableCrashReporter": "Allows to disable crash reporting, should restart the app if the value is changed.",
-			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
-			"argv.enebleProposedApi": "Enable proposed APIs for a list of extension ids (such as `vscode.git`). Proposed APIs are unstable and subject to breaking without warning at any time. This should only be set for extension development and testing purposes.",
-			"argv.force-renderer-accessibility": "Forces the renderer to be accessible. ONLY change this if you are using a screen reader on Linux. On other platforms the renderer will automatically be accessible. This flag is automatically set if you have editor.accessibilitySupport: on.",
-			"argv.forceColorProfile": "Allows to override the color profile to use. If you experience colors appear badly, try to set this to `srgb` and restart.",
-			"argv.jsFlags": "Specifies V8 JavaScript engine flags to pass (e.g. \"--max-old-space-size=4096\"). These flags are applied to the main process, renderer and utility processes.",
-			"argv.locale": "The display Language to use. Picking a different language requires the associated language pack to be installed.",
-			"argv.logLevel": "Log level to use. Default is 'info'. Allowed values are 'error', 'warn', 'info', 'debug', 'trace', 'off'.",
-			"argv.passwordStore": "Configures the backend used to store secrets on Linux. This argument is ignored on Windows & macOS.",
-			"argv.proxyBypassList": "Bypass any specified proxy for the given semi-colon-separated list of hosts. Example value \"<local>;*.microsoft.com;*foo.com;1.2.3.4:5678\", will use the proxy server for all hosts except for local addresses (localhost, 127.0.0.1 etc.), microsoft.com subdomains, hosts that contain the suffix foo.com and anything at 1.2.3.4:5678",
-			"argv.remoteDebuggingPort": "Specifies the port to use for remote debugging.",
-			"argv.useInMemorySecretStorage": "Ensures that an in-memory store will be used for secret storage instead of using the OS's credential store. This is often used when running VS Code extension tests or when you're experiencing difficulties with the credential store.",
-			"closeWhenEmpty": "Controls whether closing the last editor should also close the window. This setting only applies for windows that do not show folders.",
-			"confirmSaveUntitledWorkspace": "Controls whether a confirmation dialog shows asking to save or discard an opened untitled workspace in the window when switching to another workspace. Disabling the confirmation dialog will always discard the untitled workspace.",
-			"controlsStyle": "Adjust the appearance of the window controls to be native by the OS, custom drawn or hidden. Changes require a full restart to apply.",
-			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
-			"enableCrashReporterDeprecated": "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated due to being combined into the {0} setting.",
-			"keyboardConfigurationTitle": "Keyboard",
-			"mergeAllWindowTabs": "Merge All Windows",
-			"miExit": "E&&xit",
-			"moveWindowTabToNewWindow": "Move Window Tab to New Window",
-			"newTab": "New Window Tab",
-			"newWindowDimensions": "Controls the dimensions of opening a new window when at least one window is already opened. Note that this setting does not have an impact on the first window that is opened. The first window will always restore the size and location as you left it before closing.",
-			"openWithoutArgumentsInNewWindow": "Controls whether a new empty window should open when starting a second instance without arguments or if the last running instance should get focus.\r\nNote that there can still be cases where this setting is ignored (e.g. when using the `--new-window` or `--reuse-window` command line option).",
-			"restoreFullscreen": "Controls whether a window should restore to full screen mode if it was exited in full screen mode.",
-			"restoreWindows": "Controls how windows and editors within are being restored when opening.",
-			"security.promptForLocalFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a local file or workspace is about to open through a protocol handler.",
-			"security.promptForRemoteFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a remote file or workspace is about to open through a protocol handler.",
-			"showNextWindowTab": "Show Next Window Tab",
-			"showPreviousTab": "Show Previous Window Tab",
-			"telemetry.enableCrashReporting": "Enable crash reports to be collected. This helps us improve stability. \r\nThis option requires restart to take effect.",
-			"telemetryConfigurationTitle": "Telemetry",
-			"titleBarStyle": "Adjust the appearance of the window title bar to be native by the OS or custom. Changes require a full restart to apply.",
-			"toggleWindowTabsBar": "Toggle Window Tabs Bar",
-			"touchbar.enabled": "Enables the macOS touchbar buttons on the keyboard if available.",
-			"touchbar.ignored": "A set of identifiers for entries in the touchbar that should not show up (for example `workbench.action.navigateBack`).",
-			"window.border.color": "{0}: specific color in Hex, RGB, RGBA, HSL, HSLA format",
-			"window.border.default": "{0}: respect color theme settings, fallback to Windows settings",
-			"window.border.off": "{0}: disable border colors",
-			"window.border.prefix": "Controls the border color of the window:",
-			"window.border.suffix": "Use {0} to set different colors for active and inactive windows. This setting is ignored when {1} is set to {2}.",
-			"window.border.system": "{0}: respect Windows settings only",
-			"window.clickThroughInactive": "If enabled, clicking on an inactive window will both activate the window and trigger the element under the mouse if it is clickable. If disabled, clicking anywhere on an inactive window will activate it only and a second click is required on the element.",
-			"window.customTitleBarVisibility": "Adjust when the custom title bar should be shown. The custom title bar can be hidden when in full screen mode with `windowed`. The custom title bar can only be hidden in non full screen mode with `never` when {0} is set to `native`.",
-			"window.customTitleBarVisibility.auto": "Automatically changes custom title bar visibility.",
-			"window.customTitleBarVisibility.never": "Hide custom titlebar when {0} is set to `native`.",
-			"window.customTitleBarVisibility.windowed": "Hide custom titlebar in full screen. When not in full screen, automatically change custom title bar visibility.",
-			"window.doubleClickIconToClose": "If enabled, this setting will close the window when the application icon in the title bar is double-clicked. The window will not be able to be dragged by the icon. This setting is effective only if {0} is set to `custom`.",
-			"window.menuStyle": "Adjust the menu style to either be native by the OS, custom, or inherited from the title bar style defined in {0}. This also affects the context menu appearance. Changes require a full restart to apply.",
-			"window.menuStyle.custom": "Use the custom menu.",
-			"window.menuStyle.custom.mac": "Use the custom context menu.",
-			"window.menuStyle.inherit": "Matches the menu style to the title bar style defined in {0}.",
-			"window.menuStyle.inherit.mac": "Matches the context menu style to the title bar style defined in {0}.",
-			"window.menuStyle.mac": "Adjust the context menu appearances to either be native by the OS, custom, or inherited from the title bar style defined in {0}.",
-			"window.menuStyle.native": "Use the native menu. This is ignored when {0} is set to {1}.",
-			"window.menuStyle.native.mac": "Use the native context menu.",
-			"window.nativeFullScreen": "Controls if native full-screen should be used on macOS. Disable this option to prevent macOS from creating a new space when going full-screen.",
-			"window.nativeTabs": "Enables macOS native window tabs. Note that changes require a full restart to apply and that native tabs will disable a custom title bar style if configured.",
-			"window.newWindowDimensions.default": "Open new windows in the center of the screen.",
-			"window.newWindowDimensions.fullscreen": "Open new windows in full screen mode.",
-			"window.newWindowDimensions.inherit": "Open new windows with same dimension as last active one.",
-			"window.newWindowDimensions.maximized": "Open new windows maximized.",
-			"window.newWindowDimensions.offset": "Open new windows with same dimension as last active one with an offset position.",
-			"window.openWithoutArgumentsInNewWindow.off": "Focus the last active running instance.",
-			"window.openWithoutArgumentsInNewWindow.on": "Open a new empty window.",
-			"window.reopenFolders.all": "Reopen all windows unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.folders": "Reopen all windows that had folders or workspaces opened unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.none": "Never reopen a window. Unless a folder or workspace is opened (e.g. from the command line), an empty window will appear.",
-			"window.reopenFolders.one": "Reopen the last active window unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.preserve": "Always reopen all windows. If a folder or workspace is opened (e.g. from the command line) it opens as a new window unless it was opened before. If files are opened they will open in one of the restored windows together with editors that were previously opened.",
-			"windowConfigurationTitle": "Window",
-			"zoomLevel": "Adjust the default zoom level for all windows. Each increment above `0` (e.g. `1`) or below (e.g. `-1`) represents zooming `20%` larger or smaller. You can also enter decimals to adjust the zoom level with a finer granularity. See {0} for configuring if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window.",
-			"zoomPerWindow": "Controls if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window. See {0} for configuring a default zoom level for all windows."
-		},
-		"vs/workbench/electron-browser/desktop.main": {
-			"join.closeStorage": "Saving UI state"
-		},
-		"vs/workbench/electron-browser/parts/dialogs/dialogHandler": {
-			"copy": "&&Copy",
-			"okButton": "OK"
-		},
-		"vs/workbench/electron-browser/window": {
-			"appRootWarning.banner": "Files you store within the installation folder ('{0}') may be OVERWRITTEN or DELETED IRREVERSIBLY without warning at update time.",
-			"configure": "Configure",
-			"downloadArmBuild": "Download",
-			"keychainWriteError": "Writing login information to the keychain failed with error '{0}'.",
-			"learnMore": "Learn More",
-			"loginButton": "&&Log In",
-			"macoseolmessage": "{0} on {1} will soon stop receiving updates. Consider upgrading your macOS version.",
-			"password": "Password",
-			"proxyAuthRequired": "Proxy Authentication Required",
-			"proxyDetail": "The proxy {0} requires a username and password.",
-			"rememberCredentials": "Remember my credentials",
-			"resolveShellEnvironment": "Resolving shell environment...",
-			"restart": "Restart",
-			"runningAsRoot": "It is not recommended to run {0} as root user.",
-			"runningTranslated": "You are running an emulated version of {0}. For better performance download the native arm64 version of {0} build for your machine.",
-			"sharedProcessCrash": "A shared background process terminated unexpectedly. Please restart the application to recover.",
-			"showArgvParseWarning": "The runtime arguments file 'argv.json' contains errors. Please correct them and restart.",
-			"showArgvParseWarningAction": "Open File",
-			"shutdownErrorClose": "An unexpected error prevented the window to close",
-			"shutdownErrorDetail": "Error: {0}",
-			"shutdownErrorLoad": "An unexpected error prevented to change the workspace",
-			"shutdownErrorQuit": "An unexpected error prevented the application to quit",
-			"shutdownErrorReload": "An unexpected error prevented the window to reload",
-			"shutdownForceClose": "Close Anyway",
-			"shutdownForceLoad": "Change Anyway",
-			"shutdownForceQuit": "Quit Anyway",
-			"shutdownForceReload": "Reload Anyway",
-			"shutdownTitleClose": "Closing the window is taking a bit longer...",
-			"shutdownTitleLoad": "Changing the workspace is taking a bit longer...",
-			"shutdownTitleQuit": "Quitting the application is taking a bit longer...",
-			"shutdownTitleReload": "Reloading the window is taking a bit longer...",
-			"status.windowZoom": "Window Zoom",
-			"troubleshooting": "Troubleshooting Guide",
-			"username": "Username",
-			"willShutdownDetail": "The following operations are still running: \r\n{0}",
-			"zoomIn": "Zoom In",
-			"zoomNumber": "Zoom Level: {0} ({1}%)",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset",
-			"zoomSettings": "Settings"
 		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
 			"accessibility.chat.showCheckmarks": "Určuje, jestli se ikony zaškrtnutí zobrazují u dokončených volání nástrojů a dalších sbalitelných položek v odpovědích na chat.",
@@ -7839,300 +7421,6 @@
 			"browserView.shareWithAgent.message": "Sdílet tuto stránku prohlížeče s agentem?",
 			"browserView.shareWithAgent.title": "Sdílet s agentem?"
 		},
-		"vs/workbench/contrib/browserView/electron-browser/browserEditor": {
-			"browser.editorFocused": "Určuje, jestli je fokus v editoru prohlížeče.",
-			"browser.hasError": "Určuje, jestli se v prohlížeči zobrazuje chyba načítání.",
-			"browser.hasUrl": "Určuje, jestli má prohlížeč načtenou adresu URL.",
-			"browserCategory": "Prohlížeč"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserView.contribution": {
-			"browser.editorLabel": "Prohlížeč"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures": {
-			"browser.clearEphemeralStorageAction": "Vymazat úložiště (dočasné)",
-			"browser.clearGlobalStorageAction": "Vymazat úložiště (globální)",
-			"browser.clearWorkspaceStorageAction": "Vymazat úložiště (pracovní prostor)",
-			"browser.dataStorage": "Určuje, jak se mezi zobrazeními prohlížeče sdílí data prohlížeče (soubory cookie, mezipaměť, úložiště).\r\n\r\n**Poznámka**: V nedůvěryhodných pracovních prostorech se toto nastavení ignoruje a vždy se používá úložiště `ephemeral`.",
-			"browser.dataStorage.ephemeral": "Každé zobrazení prohlížeče má vlastní relaci, která se po zavření vyčistí.",
-			"browser.dataStorage.global": "Všechna zobrazení prohlížeče ve všech pracovních prostorech sdílejí jednu trvalou relaci.",
-			"browser.dataStorage.workspace": "Zobrazení prohlížeče ve stejném pracovním prostoru sdílejí trvalou relaci. Pokud není otevřen žádný pracovní prostor, používá se úložiště `ephemeral`.",
-			"browser.storageScope": "Oblast úložiště aktuálního zobrazení prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDevToolsFeature": {
-			"browser.devToolsOpen": "Určuje, zda jsou pro aktuální zobrazení prohlížeče otevřené vývojářské nástroje.",
-			"browser.toggleDevToolsAction": "Přepnout Vývojářské nástroje"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures": {
-			"browser.addAreaScreenshotToChatAction": "Přidat snímek obrazovky oblasti do chatu",
-			"browser.addConsoleLogsToChatAction": "Přidat protokoly konzoly do chatu",
-			"browser.addElementToChatAction": "Přidat prvek do chatu",
-			"browser.addFullPageScreenshotToChatAction": "Přidat snímek obrazovky celé stránky do chatu (experimentální)",
-			"browser.addScreenshotToChatAction": "Přidat snímek obrazovky do chatu",
-			"browser.agentSharingContentWarning.detail": "Stránky můžou obsahovat skryté výzvy, které můžou ovlivnit chování agenta. Před odesláním pečlivě zkontrolujte připojený obsah.",
-			"browser.agentSharingContentWarning.dontShowAgain": "Příště už nezobrazovat",
-			"browser.agentSharingContentWarning.message": "Při připojování obsahu z nedůvěryhodných zdrojů buďte opatrní.",
-			"browser.agentSharingContentWarning.ok": "&&OK",
-			"browser.areaSelectionActive": "Určuje, jestli je výběr oblasti aktuálně aktivní",
-			"browser.chatActionsSubmenu": "Přidat do chatu",
-			"browser.elementSelectionActive": "Určuje, zda je výběr elementu právě aktivní",
-			"browser.enableChatTools": "Pokud je tato možnost povolená, můžou chatovací agenti používat nástroje prohlížeče k otevírání stránek a interakci se stránkami v integrovaném prohlížeči.",
-			"browser.experimentalUserTools.enabled": "Pokud je tato možnost povolená, jsou experimentální uživatelské nástroje dostupné v nabídce Přidat do chatu v integrovaném prohlížeči.",
-			"browser.shareWithAgent": "Sdílet s agentem",
-			"browser.sharingWithAgent": "Sdílení s agentem",
-			"browser.unshareWithAgent": "Ukončit sdílení s agentem",
-			"browserAreaScreenshot": "Snímek obrazovky oblasti prohlížeče",
-			"browserCategory": "Prohlížeč",
-			"browserFullPageScreenshot": "Snímek obrazovky celé stránky v prohlížeči",
-			"browserScreenshot": "Snímek obrazovky prohlížeče",
-			"consoleLogs": "Protokoly konzole",
-			"workbench.browser.agentHostChatToolsEnabled": "Pokud je tato možnost povolená, integrované nástroje prohlížeče se v okně Relace zpřístupní jako nástroje poskytované klientem pro relace hostitele agenta. Vyžaduje {0} a {1}."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures": {
-			"browser.device.dimensionsLabel": "Rozměry:",
-			"browser.device.dprAriaLabel": "Poměr pixelů zařízení",
-			"browser.device.dprLabel": "DPR:",
-			"browser.device.dprTitle": "Poměr pixelů zařízení (prázdné = výchozí nastavení systému)",
-			"browser.device.heightAriaLabel": "Výška zobrazení",
-			"browser.device.inputPlaceholderAuto": "automaticky",
-			"browser.device.scaleLabel": "Měřítko:",
-			"browser.device.swapDimensionsTitle": "Prohodit rozměry",
-			"browser.device.widthAriaLabel": "Šířka zobrazení",
-			"browser.device.zoomAriaLabel": "Faktor změny velikosti",
-			"browser.device.zoomAuto": "Automaticky ({0} %)",
-			"browser.devicePresets.mobileTag": "mobilní",
-			"browser.devicePresets.placeholder": "Vyberte předvolbu zařízení",
-			"browser.emulationHasUserAgent": "Určuje, jestli má emulace prohlížeče vlastního uživatelského agenta",
-			"browser.emulationIsMobile": "Určuje, jestli je emulace prohlížeče v mobilním režimu",
-			"browser.emulationToolbar.close": "Zavřít",
-			"browser.emulationToolbar.mobile": "Mobilní emulace",
-			"browser.emulationToolbar.presets": "Použít předvolbu...",
-			"browser.emulationToolbar.reset": "Resetovat",
-			"browser.emulationToolbar.userAgent": "Nastavit uživatelského agenta...",
-			"browser.emulationToolbarVisible": "Určuje, zda je zobrazen panel nástrojů emulace prohlížeče",
-			"browser.hideEmulationToolbar": "Skrýt panel nástrojů emulace",
-			"browser.pickDevicePreset": "Emulovat zařízení...",
-			"browser.resetEmulation": "Resetovat emulaci",
-			"browser.setUserAgent": "Emulovat uživatelského agenta...",
-			"browser.showEmulationToolbar": "Zobrazit panel nástrojů emulace",
-			"browser.toggleMobileEmulation": "Přepnout mobilní emulaci",
-			"browser.userAgent.prompt": "Identifikační řetězec prohlížeče (ponechte prázdný pro výchozí hodnotu VS Code)"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures": {
-			"browser.certCloseTab": "Zavřít kartu",
-			"browser.certDetailsHeading": "Podrobnosti o certifikátu",
-			"browser.certError": "Chyba",
-			"browser.certErrorDescription": "Certifikát zabezpečení tohoto webu nelze ověřit.",
-			"browser.certErrorExtraWarning": " Vaše připojení není soukromé.",
-			"browser.certErrorLabel": "Chyba certifikátu",
-			"browser.certFingerprint": "Otisk prstu",
-			"browser.certGoBack": "Zpět",
-			"browser.certHoverDetail1": "Vaše připojení k tomuto webu není zabezpečené.",
-			"browser.certHoverDetail2": "Dříve jste se rozhodli pokračovat na {0}, i když došlo k chybě certifikátu ({1}).",
-			"browser.certHoverHeading": "Certifikát není důvěryhodný",
-			"browser.certIssuer": "Vystavitel",
-			"browser.certProceed": "Přesto pokračovat (nebezpečné)",
-			"browser.certRevoke": "Odvolat a zavřít",
-			"browser.certSubject": "Předmět",
-			"browser.certValid": "Platné",
-			"browser.errorUrlLabel": "Adresa URL:",
-			"browser.loadErrorLabel": "Nepovedlo se načíst stránku",
-			"browser.notSecure": "Není zabezpečeno"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
-			"browser.findNextAction": "Najít další",
-			"browser.findPreviousAction": "Najít předchozí",
-			"browser.findWidgetFocused": "Určuje, zda má widget hledání v prohlížeči fokus.",
-			"browser.findWidgetVisible": "Určuje, zda má widget hledání v prohlížeči fokus.",
-			"browser.hideFindAction": "Zavřít widget Najít",
-			"browser.showFindAction": "Najít na stránce"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorZoomFeature": {
-			"browser.canZoomIn": "Určuje, jestli se zobrazení prohlížeče může ještě více přiblížit.",
-			"browser.canZoomOut": "Určuje, jestli se zobrazení prohlížeče může ještě více oddálit.",
-			"browser.defaultZoomLevel.matchWindow": "Odpovídá aktuální úrovni přiblížení uživatelského rozhraní aplikace.",
-			"browser.pageZoom": "Výchozí úroveň přiblížení pro všechny weby v integrovaném prohlížeči",
-			"browser.resetZoomAction": "Obnovit přiblížení",
-			"browser.zoomInAction": "Přiblížit",
-			"browser.zoomOutAction": "Oddálit"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserFavoritesFeature": {
-			"browser.addFavorite": "Přidat k oblíbeným",
-			"browser.addFavoriteAction": "Přidat k oblíbeným",
-			"browser.favorites": "Oblíbené",
-			"browser.removeFavorite": "Odebrat z oblíbených",
-			"browser.removeFavoriteAction": "Odebrat z oblíbených",
-			"browser.removeFavoriteWithKb": "Odebrat z oblíbených ({0})",
-			"browser.urlIsFavorited": "Určuje, jestli je aktuální adresa URL v prohlížeči v oblíbených"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserNavigationFeatures": {
-			"browser.canGoBack": "Určuje, zda se může prohlížeč vrátit zpět.",
-			"browser.canGoForward": "Určuje, zda může prohlížeč pokračovat vpřed.",
-			"browser.focusUrlInputAction": "Přepnout fokus na vstup URL adresy",
-			"browser.goBackAction": "Zpět",
-			"browser.goForwardAction": "Přejít vpřed",
-			"browser.hardReloadAction": "Vynucené opětovné načtení",
-			"browser.openExternalAction": "Otevřít v externím prohlížeči",
-			"browser.openSettingsAction": "Nastavení prohlížeče",
-			"browser.reloadAction": "Znovu načíst"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
-			"browser.backgroundGroup": "Pozadí",
-			"browser.closeAll": "Zavřít všechny karty prohlížeče",
-			"browser.closeAllInGroup": "Zavřít všechny karty prohlížeče ve skupině",
-			"browser.closeAllInGroupShort": "Zavřít všechny karty prohlížeče",
-			"browser.closeAllTabs": "Zavřít vše",
-			"browser.closeTab": "Zavřít",
-			"browser.editorOpen": "Určuje, jestli je aktuálně otevřený nějaký editor prohlížeče",
-			"browser.linkOpenedHint.ariaLabel": "Tento odkaz se otevřel v integrovaném prohlížeči.",
-			"browser.linkOpenedHint.detail": "**Integrovaný prohlížeč**\r\n\r\nOdkazy localhost se automaticky otevřou v integrovaném prohlížeči.",
-			"browser.linkOpenedHint.dismiss": "Příště už nezobrazovat",
-			"browser.linkOpenedHint.label": "Tady se otevřel odkaz.",
-			"browser.linkOpenedHint.openSettings": "Otevřít nastavení",
-			"browser.newTabAction": "Nová karta",
-			"browser.openAction": "Otevřít integrovaný prohlížeč",
-			"browser.openFileAction": "Otevřít v integrovaném prohlížeči",
-			"browser.openLocalhostLinks": "Pokud tuto možnost povolíte, odkazy localhost (`localhost`, `127.0.0.1`, `[::1]`) a odkazy na všechna rozhraní (`0.0.0.0`, `[0:0:0:0:0:0:0:0]`, `[::]`) z terminálu, chatu a dalších zdrojů se budou otevírat v integrovaném prohlížeči místo v systémovém prohlížeči.",
-			"browser.openNewTab": "Nová karta integrovaného prohlížeče",
-			"browser.openOrListAction": "Prohlížeč",
-			"browser.openTabs": "Otevřít karty",
-			"browser.openTabsDescription": "Vyberte kartu, na kterou chcete přepnout",
-			"browser.quickOpenAction": "Rychle otevřít kartu prohlížeče...",
-			"browser.quickOpenPlaceholder": "Vyberte kartu prohlížeče.",
-			"browser.showInTitleBar": "Určuje, jestli se v záhlaví zobrazuje tlačítko Integrovaný prohlížeč.",
-			"browser.showInTitleBar.false": "Tlačítko se nikdy nezobrazuje v záhlaví.",
-			"browser.showInTitleBar.true": "Tlačítko se vždy zobrazuje v záhlaví.",
-			"browser.showInTitleBar.whenOpen": "Tlačítko se zobrazí v záhlaví, když je otevřený editor prohlížeče.",
-			"browserEntryAriaLabelWithGroup": "{0}, {1}",
-			"miOpenBrowser": "&&Prohlížeč",
-			"toggle.browser": "Integrovaný prohlížeč",
-			"toggle.browserDescription": "Přepnout viditelnost tlačítka Integrovaný prohlížeč v záhlaví"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature": {
-			"browser.welcomeSubtitle": "Zadejte výše URL adresu pro začátek",
-			"browser.welcomeSubtitleChat": "Pomocí možnosti Přidat prvek do chatu můžete odkazovat na prvky uživatelského rozhraní ve výzvách chatu.",
-			"browser.welcomeTitle": "Prohlížeč"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/webContentsViewRendererFeature": {
-			"browser.overlayPauseDetail.notification": "Zavřete oznámení, abyste mohli pokračovat v používání prohlížeče.",
-			"browser.overlayPauseHeading.notification": "Pozastaveno kvůli oznámení"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserToolHelpers": {
-			"browser.blockedByPolicy": "Blokováno zásadami síťové domény",
-			"browser.element": "prvek",
-			"browser.open.alreadyOpen": "Již otevřeno: {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserTools.contribution": {
-			"browserContext.label": "Stránky prohlížeče",
-			"browserToolSet.description": "Otevření a interakce se stránkami integrovaného prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/clickBrowserTool": {
-			"browser.click.invocation": "Kliknutí na {0} v {1}",
-			"browser.click.invocation.middle": "Kliknutí prostředním tlačítkem myši na {0} v {1}",
-			"browser.click.invocation.right": "Kliknutí pravým tlačítkem myši na {0} v {1}",
-			"browser.click.past": "Kliknuto na {0} v {1}",
-			"browser.click.past.middle": "Kliknuto prostředním tlačítkem myši na {0} v {1}",
-			"browser.click.past.right": "Kliknuto pravým tlačítkem myši na {0} v {1}",
-			"browser.dblClick.invocation": "Poklikání na {0} v {1}",
-			"browser.dblClick.past": "Poklikáno na {0} v {1}",
-			"clickBrowserTool.displayName": "Kliknutí na prvek",
-			"clickBrowserTool.userDescription": "Kliknutí na prvek na stránce prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/dragElementTool": {
-			"browser.drag.invocation": "Přetažení {0} do {1} v {2}",
-			"browser.drag.past": "Přetaženo {0} do {1} v {2}",
-			"dragElementTool.displayName": "Přetáhnout prvek",
-			"dragElementTool.userDescription": "Přetažení prvku přes jiný prvek"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/handleDialogBrowserTool": {
-			"browser.handleDialog.invocation": "Zpracování dialogu v {0}",
-			"browser.handleDialog.past": "Zpracován dialog v {0}",
-			"handleDialogBrowserTool.displayName": "Zpracovat dialogové okno",
-			"handleDialogBrowserTool.userDescription": "Reakce na dialogové okno na stránce prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/hoverElementTool": {
-			"browser.hover.invocation": "Najetí myší na {0} v {1}",
-			"browser.hover.past": "Najeto myší na {0} v {1}",
-			"hoverElementTool.displayName": "Prvek při najetí myší",
-			"hoverElementTool.userDescription": "Najetí myší na prvek na stránce prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/navigateBrowserTool": {
-			"browser.goBack.invocation": "Probíhá přechod zpět v {0}",
-			"browser.goBack.past": "Proběhl přechod zpět v {0}",
-			"browser.goForward.invocation": "Probíhá přechod vpřed v {0}",
-			"browser.goForward.past": "Proběhl přechod vpřed v {0}",
-			"browser.navigate.confirmMessage": "Tímto přejdete v prohlížeči na {0} a umožníte agentovi přístup k jeho obsahu.",
-			"browser.navigate.confirmTitle": "Přejít do prohlížeče?",
-			"browser.navigate.invocation": "Probíhá přechod na {0} v {1}",
-			"browser.navigate.past": "Proběhl přechod na {0} v {1}",
-			"browser.reload.invocation": "Opětovné načítání {0}",
-			"browser.reload.past": "Znovu načteno {0}",
-			"navigateBrowserTool.displayName": "Přejít na stránku",
-			"navigateBrowserTool.userDescription": "Navigace nebo opětovné načtení stránky prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserTool": {
-			"browser.open.confirmMessage": "Tím se otevře {0} v integrovaném prohlížeči. Agent bude moct číst obsah a pracovat s ním.",
-			"browser.open.confirmTitle": "Otevřít stránku prohlížeče?",
-			"browser.open.invocation": "Otevírání stránky prohlížeče v {0}",
-			"browser.open.newPageOption": "Ne, otevřít novou stránku v {0}",
-			"browser.open.noPagesOption": "Ne - nesdílet s agentem žádné karty",
-			"browser.open.past": "Otevřela se stránka prohlížeče v {0}",
-			"browser.open.prompt.invocation": "Výzva uživateli ke sdílení karty prohlížeče",
-			"browser.open.prompt.past": "Uživatel byl vyzván ke sdílení karty prohlížeče",
-			"browser.open.result": "Otevřeno {0}",
-			"browser.open.shareExistingOption": "Ano, sdílet {0} - {1}",
-			"browser.open.shareQuestion.message": "Sdílet existující kartu prohlížeče?",
-			"browser.open.shareQuestion.title": "Sdílet kartu prohlížeče",
-			"browser.open.sharedResult": "Uživatel nasdílel {0}",
-			"openBrowserTool.displayName": "Otevřít stránku prohlížeče",
-			"openBrowserTool.userDescription": "Otevření adresy URL v integrovaném prohlížeči"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserToolNonAgentic": {
-			"browser.open.nonAgentic.confirmMessage": "Tím se otevře {0} v integrovaném prohlížeči. Agent nebude moci číst jeho obsah.",
-			"browser.open.nonAgentic.confirmTitle": "Otevřít stránku prohlížeče?",
-			"browser.open.nonAgentic.invocation": "Otevírání stránky prohlížeče v {0}",
-			"browser.open.nonAgentic.past": "Otevřela se stránka prohlížeče v {0}",
-			"browser.open.nonAgentic.result": "Otevřeno {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/readBrowserTool": {
-			"browser.read.invocation": "Čtení {0}",
-			"browser.read.past": "Číst {0}",
-			"readBrowserTool.displayName": "Přečíst stránku",
-			"readBrowserTool.userDescription": "Čtení obsahu stránky prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/runPlaywrightCodeTool": {
-			"browser.runCode.confirmDisclaimer": "Než budete pokračovat, ujistěte se, že kód považujete za důvěryhodný.",
-			"browser.runCode.confirmTitle": "Spustit kód Playwright?",
-			"browser.runCode.invocation": "Spouští se kód Playwright...",
-			"browser.runCode.past": "Spustil se kód Playwright",
-			"browser.runCode.waitInvocation": "Čeká se na dokončení kódu Playwright...",
-			"browser.runCode.waitPast": "Čekalo se na kód Playwright",
-			"runPlaywrightCodeTool.displayName": "Spuštění kódu Playwright",
-			"runPlaywrightCodeTool.userDescription": "Spuštění fragmentu kódu Playwright na stránce prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/screenshotBrowserTool": {
-			"browser.screenshot.invocation": "Zachytávání snímku obrazovky prohlížeče",
-			"browser.screenshot.invocation.element": "Pořizuje se snímek obrazovky {0}",
-			"browser.screenshot.past": "Zachycený snímek obrazovky prohlížeče",
-			"browser.screenshot.past.element": "Zachycen snímek obrazovky {0}",
-			"screenshotBrowserTool.displayName": "Stránka snímku obrazovky",
-			"screenshotBrowserTool.userDescription": "Zachycení snímku obrazovky stránky prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/typeBrowserTool": {
-			"browser.pressKey.invocation": "Stisknutí klávesy `{0}` v {1}",
-			"browser.pressKey.invocation.element": "Stisknutí klávesy `{0}` v {1} v {2}",
-			"browser.pressKey.past": "Stisknuta klávesa `{0}` v {1}",
-			"browser.pressKey.past.element": "Stisknuta klávesa `{0}` v {1} v {2}",
-			"browser.type.invocation": "Psaní textu v {0}",
-			"browser.type.invocation.element": "Psaní textu v {0} v {1}",
-			"browser.type.past": "Napsán text v {0}",
-			"browser.type.past.element": "Napsán text v {0} v {1}",
-			"typeBrowserTool.displayName": "Psaní na stránce",
-			"typeBrowserTool.userDescription": "Zadání textu nebo stisknutí kláves na stránce prohlížeče"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget": {
-			"browser.goTo": "Přejít na {0}",
-			"browser.urlPlaceholder": "Zadejte adresu URL"
-		},
 		"vs/workbench/contrib/bulkEdit/browser/bulkEditService": {
 			"areYouSureQuiteBulkEdit.detail": "Akce {0} probíhá.",
 			"changeWorkspace.message": "Opravdu chcete změnit pracovní prostor?",
@@ -8450,6 +7738,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatDeveloperActions": {
 			"workbench.action.chat.clearRecentlyUsedLanguageModels.label": "Vymazat naposledy použité jazykové modely",
+			"workbench.action.chat.inspectAgentHostSubscriptions.label": "Inspect Agent Host Subscriptions",
 			"workbench.action.chat.inspectChatModel.label": "Zkontrolovat model chatu",
 			"workbench.action.chat.inspectChatModelReferences.label": "Zkontrolovat odkazy na model chatu",
 			"workbench.action.chat.logChatIndex.label": "Protokolovat index chatu",
@@ -8729,12 +8018,12 @@
 			"noAgentPlugins": "Nenašly se žádné moduly plug-in agenta.",
 			"update": "Aktualizace"
 		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} – Hostitel agenta",
-			"agentHostHarnessLabel.local": "{0} (Místní)"
-		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
 			"agentHostChatInputPicker.ariaLabel": "{0}: výběr",
+			"agentHostChatInputPicker.boolean.false": "Off",
+			"agentHostChatInputPicker.boolean.offLabel": "Off",
+			"agentHostChatInputPicker.boolean.onLabel": "On",
+			"agentHostChatInputPicker.boolean.true": "On",
 			"agentHostChatInputPicker.filter": "Filtrovat...",
 			"agentHostChatInputPicker.learnMorePermissions": "Další informace o oprávněních",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
@@ -8743,8 +8032,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "Automaticky schválit",
-			"agentHost.branchPicker": "Větev",
-			"agentHost.isolationPicker": "Izolace",
 			"agentHost.modePicker": "Režim agenta",
 			"agentHost.permissionModePicker": "Schválení"
 		},
@@ -8756,23 +8043,6 @@
 			"agentHost.permission.oneMorePending": "Čeká ještě 1 požadavek",
 			"agentHost.permission.read": "Hostitel vzdáleného agenta {0} chce číst {1}",
 			"agentHost.permission.write": "Hostitel vzdáleného agenta {0} chce zapsat {1}"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
-			"agentHost.authRequired": "K zahájení relace se vyžaduje ověření. Přihlaste se prosím a zkuste to znovu.",
-			"agentHost.elicit.url.cancel": "Zrušit",
-			"agentHost.elicit.url.instruction": "Chcete otevřít tuto adresu URL?",
-			"agentHost.elicit.url.open": "Otevřít {0}",
-			"agentHost.elicit.url.title": "Vyžaduje se autorizace",
-			"agentHost.forkedSessionLabel": "Forkovaná relace",
-			"agentHost.responseDetails.credit": "Kredit {0}",
-			"agentHost.responseDetails.credits": "Kredity: {0}"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
-			"agentHostTerminal.channelLocal": "Terminál hostitele agenta (místní)",
-			"agentHostTerminal.local": "Místní"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
-			"ahp.running": "Spuštěno: {0}…"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "Dokončeno",
@@ -8793,6 +8063,7 @@
 			"chat.session.providerDescription.codex": "Otevře novou relaci Codexu v editoru. Relace Codexu lze spravovat ze zobrazení relací chatu.",
 			"chat.session.providerDescription.growth": "Přečtěte si o funkcích Copilota.",
 			"chat.session.providerDescription.local": "Umožňuje spouštět úlohy v chatu VS Code. Agent iteruje prostřednictvím chatu a interaktivně implementuje změny v hlavním pracovním prostoru.",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [Agent Host]",
 			"chat.session.providerLabel.background": "Rozhraní příkazového řádku Copilotu",
 			"chat.session.providerLabel.cloud": "Cloud",
 			"chat.session.providerLabel.local": "Místní"
@@ -9176,6 +8447,8 @@
 			"editorViewRawButtonTooltip": "Zobrazení nezpracovaného souboru Markdown",
 			"homeButton": "Přehled",
 			"homeButtonTooltip": "Zpět na přehled",
+			"homeButtonTooltipWithHarness": "Current harness: {0}. Click to go to overview",
+			"homeButtonWithHarness": "{0}, Back to overview",
 			"hooks": "Volání",
 			"hooksDesc": "Nakonfigurujte automatizované akce spouštěné událostmi, jako je ukládání souborů nebo spouštění úloh.",
 			"instructions": "Pokyny",
@@ -9381,6 +8654,10 @@
 			"chat.NotebookImageAttachment": "Výstup připojeného poznámkového bloku, {0}",
 			"chat.attachment": "Připojený kontext, {0}",
 			"chat.attachment.clearButton": "Odebrat z kontextu",
+			"chat.attachment.saveFileButton": "Save As...",
+			"chat.attachment.saveFileError": "Failed to save file: {0}",
+			"chat.attachment.saveImageButton": "Save Image As...",
+			"chat.attachment.saveImageError": "Failed to save image: {0}",
 			"chat.attachment.withDeleteHint": "{0} (Smazat)",
 			"chat.browserToolsDisabled": "Nástroje prohlížeče nejsou povolené.",
 			"chat.browserToolsDisabled.aria": "Nástroje prohlížeče nejsou povolené, {0}",
@@ -9476,7 +8753,7 @@
 			"chat.agentHost.ahpJsonlLogging": "Když je tato možnost povolená, protokoluje všechny přenosové zprávy AHP pro připojení hostitele agenta do souborů JSONL v adresáři protokolů okna.",
 			"chat.agentHost.clientTools": "Názvy odkazů na nástroje, které se mají v relacích hostitele agentů zpřístupnit jako nástroje poskytované klientem.",
 			"chat.agentHost.customTerminalTool.enabled": "Pokud je tato možnost povolená, relace sady Copilot SDK místo výchozího chování terminálu sady SDK používají přepsání nástroje terminálu Hostitele agenta.",
-			"chat.agentHost.ipcLogging": "Pokud je tato možnost povolená, zaznamená se veškerý provoz IPC pro každého hostitele agenta do vyhrazeného výstupního kanálu.",
+			"chat.agentHost.defaultChatProvider": "When enabled, the local agent host is used as the default provider in the VS Code chat session-target picker. Requires `#{0}#`.",
 			"chat.agentLocations.invalidPath": "Cesty musí být relativní nebo začínat znakem ~/. Absolutní cesty a oddělovače \\ nejsou podporovány.",
 			"chat.agentSessionProjection.enabled": "Určuje, jestli je pro kontrolu relací agentů v pracovním prostoru s fokusem povolený režim projekce relace agenta.",
 			"chat.agentSkillsLocations.description": "Zadejte umístění dovedností agenta (`{0}`), které lze použít v relacích chatu. [Přečtěte si další informace]({1}).\r\n\r\nKaždá cesta by měla obsahovat podsložky dovedností se soubory SKILL.md (například přidejte `my-skills`, pokud máte `my-skills/skillA/SKILL.md`). Relativní cesty se řeší z kořenových složek vašeho pracovního prostoru.",
@@ -9506,6 +8783,7 @@
 			"chat.artifacts.rules.groupName": "Zobrazovaný název skupiny artefaktů.",
 			"chat.artifacts.rules.onlyShowGroup": "Při hodnotě true se místo jednotlivých položek zobrazí jenom záhlaví skupiny.",
 			"chat.autoReply.description": "Automaticky přeskočte sérii otázek tím, že agentovi sdělíte, že uživatel není k dispozici, a požádejte ho, aby se rozhodl podle vlastního uvážení. Jedná se o pokročilé nastavení, které může vést k nezamýšleným volbám nebo akcím založeným na neúplném kontextu.",
+			"chat.autopilot.advanced.enabled": "Enables **Advanced Autopilot**, a single switch that turns on all advanced Autopilot behaviors that delegate more of the loop to the agent. Currently, after each Autopilot turn a small, fast model evaluates whether your original request is complete; if not, Autopilot keeps working using that evaluation as guidance for the next turn, instead of relying on the agent to signal completion itself.",
 			"chat.checkpoints.enabled": "Povolí kontrolní body v chatu. Kontrolní body umožňují obnovit chat do předchozího stavu.",
 			"chat.checkpoints.showFileChanges": "Určuje, jestli se mají zobrazit změny souboru kontrolního bodu chatu.",
 			"chat.codeBlock.showProgressAnimation.description": "Při použití úprav se animace průběhu zobrazí v pilulce bloku kódu. Pokud je tato možnost zakázaná, zobrazí se místo toho procento průběhu.",
@@ -10560,7 +9838,6 @@
 			"signIn": "Přihlásit se"
 		},
 		"vs/workbench/contrib/chat/browser/chatTipCatalog": {
-			"tip.agenticBrowser": "Povolte [{0}](příkaz:workbench.action.openSettings?%5B%22workbench.browser.enableChatTools%22%5D „Otevřít nastavení“), aby mohl agent otevírat stránky v integrovaném prohlížeči a pracovat s nimi.",
 			"tip.agentsWindow": "Pracujte napříč více projekty najednou v [okně Agenti](command:{0} \"Open Agents Window\").",
 			"tip.attachFiles": "Soubory nebo složky označte znakem #, aby měl agent k dispozici více informací o daném úkolu.",
 			"tip.autoAcceptDelay": "Nakonfigurujte příkaz [{0}](command:workbench.action.openSettings?%5B%22chat.editing.autoAcceptDelay%22%5D \"Otevřít nastavení\") tak, aby automaticky přijímal změny od agenta po krátkém odpočítávání.",
@@ -11287,6 +10564,7 @@
 			"chat.working.fun.1": "Podplácení křečka",
 			"chat.working.fun.2": "Síťování křivek",
 			"chat.working.fun.3": "Rozmotávání špaget",
+			"chat.working.fun.4": "Communing with the codebase",
 			"chat.working.fun.minecraft.1": "Dolování diamantů",
 			"chat.working.fun.ms.1": "Vyvolávání Clippy"
 		},
@@ -11536,6 +10814,11 @@
 		"vs/workbench/contrib/chat/browser/widget/input/chatFollowups": {
 			"followUpAriaLabel": "Následná otázka: {0}"
 		},
+		"vs/workbench/contrib/chat/browser/widget/input/chatGoalBannerWidget": {
+			"chat.goalBanner.dismiss": "Dismiss",
+			"chat.goalBanner.label": "Goal",
+			"chat.goalBanner.loading": "Determining goal…"
+		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationWidget": {
 			"dismissNotification": "Zavřít oznámení"
 		},
@@ -11666,7 +10949,7 @@
 			"permissions.autoApprove.policyDisabled": "Zablokováno podnikovou politikou",
 			"permissions.autoApprove.subtext": "Všechny žádosti o nástroje jsou automaticky schvalovány",
 			"permissions.autopilot": "Autopilot (Preview)",
-			"permissions.autopilot.description": "Automaticky schvalovat všechna volání nástrojů a pokračovat, dokud nebude úkol dokončen",
+			"permissions.autopilot.description": "Auto-approve all tool calls and continue until the task is done. Autopilot may increase costs.",
 			"permissions.autopilot.label": "Autopilot (Preview)",
 			"permissions.autopilot.policyDescription": "Zablokováno podnikovou politikou",
 			"permissions.autopilot.policyDisabled": "Zablokováno podnikovou politikou",
@@ -11681,7 +10964,9 @@
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "Další informace o typech agentů...",
 			"chat.sessionTarget.category.agent": "Typy agentů",
-			"chat.sessionTarget.category.other": "Jiné"
+			"chat.sessionTarget.category.other": "Jiné",
+			"chat.sessionTarget.upgradeHover": "[Upgrade to GitHub Copilot Pro](command:workbench.action.chat.upgradePlan) to delegate work to the cloud agent.",
+			"chat.sessionTarget.upgradeLink": "[Upgrade](command:workbench.action.chat.upgradePlan)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/workspacePickerActionItem": {
 			"openFolder": "Otevřít složku...",
@@ -12324,35 +11609,6 @@
 			"tool.askQuestions.displayName": "Položte vysvětlující otázky",
 			"tool.askQuestions.userDescription": "Než budete pokračovat, položte strukturované vysvětlující otázky pomocí vstupů s jedním výběrem, vícenásobným výběrem nebo ve volném formátu, abyste shromáždili požadavky na úkoly."
 		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatExternalPathConfirmation": {
-			"addPath": "Přidat cestu...",
-			"addPathDescription": "Povolit složku v tomto pracovním prostoru",
-			"allowFolderSession": "Povolit tuto složku v této relaci",
-			"allowFolderSessionDetail": "Povolit čtení souborů z této složky bez dalšího potvrzení v této relaci chatu",
-			"allowRepoSession": "Povolit všechny soubory v tomto úložišti pro tuto relaci",
-			"allowRepoSessionDetail": "Povolit čtení souborů z {0}",
-			"allowRepoSessionDetailLookup": "Vyhledá nadřazené úložiště Git pro tuto cestu.",
-			"sessionScope": "Relace",
-			"workspaceScope": "Pracovní prostor"
-		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatUrlFetchingConfirmation": {
-			"allowRequestsCheckbox": "Odesílat žádosti bez potvrzení",
-			"allowResponsesCheckbox": "Povolit odpovědi bez potvrzení",
-			"approveAll": "Schválit vše",
-			"approveRequestTo": "Povolit požadavky na {0}",
-			"approveResponseFrom": "Povolit odpovědi z {0}",
-			"approves": "Schvaluje {0}",
-			"delete": "Odstranit",
-			"denyAll": "Odmítnout vše",
-			"moreOptions": "Povolit požadavky na…",
-			"moreOptionsManage": "Další možnosti…",
-			"moreOptionsMultiple": "Konfigurovat schvalování adres URL…",
-			"noApprovals": "Žádná schválení",
-			"openSettings": "Otevřít nastavení",
-			"requests": "žádosti",
-			"responses": "odpovědi",
-			"selectApproval": "Vyberte vzor adresy URL ke schválení"
-		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/manageTodoListTool": {
 			"todo.added.multiple": "Přidané úkoly: {0}",
 			"todo.added.single": "Přidán 1 úkol",
@@ -12446,99 +11702,6 @@
 			"chat.slashCommandForeground": "Barva popředí příkazu s lomítkem chatu.",
 			"chat.thinkingShimmer": "Chvění zvýraznění pro štítky přemýšlení/práce",
 			"chatCheckpointSeparator": "Barva oddělovače kontrolního bodu chatu"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
-			"workbench.action.chat.openStorageFolder.label": "Otevřít složku úložiště chatu"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatExportZip": {
-			"chat.exportAsZip.label": "Exportovat chat jako soubor ZIP...",
-			"chatExportZip.error": "Nepodařilo se exportovat chat jako soubor ZIP: {0}",
-			"chatExportZip.noRepoData": "Exportoval se chat bez kontextu úložiště. Nebylo zjištěno žádné Git úložiště."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
-			"debugAgentHost.noInspectPort": "Nepovedlo se povolit inspektor Node.js pro proces hostitele agenta.",
-			"debugAgentHostInDevTools": "Ladit proces místního hostitele agenta v nástrojích pro vývojáře"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
-			"exportDebugLogs.saveDialogTitle": "Exportovat protokoly ladění hostitele agenta",
-			"exportDebugLogs.zipFilter": "Archiv ZIP"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
-			"exportAgentTracesDB.error": "Nepodařilo se exportovat databázi trasování hostitele agenta: {0}",
-			"exportAgentTracesDB.label": "Exportovat databázi trasování hostitele agenta...",
-			"exportAgentTracesDB.notFound": "Zatím se nenašla žádná databáze trasování hostitele agenta. Pokud ji chcete naplnit, spusťte relaci agenta se zapnutým `#chat.agentHost.otel.dbSpanExporter.enabled#`."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
-			"keywordActivation.status.active": "Naslouchání „Hey Code“…",
-			"keywordActivation.status.inactive": "Čeká se na ukončení hlasové konverzace…",
-			"keywordActivation.status.name": "Aktivace hlasovými klíčovými slovy",
-			"listening": "Poslouchám",
-			"scopedChatSynthesisInProgress": "Definováno jako umístění, kde probíhá záznam hlasu z mikrofonu pro hlasový chat. Tento klíč je definován pouze ve vymezeném oboru podle kontextu chatu.",
-			"scopedVoiceChatGettingReady": "Pravda, když se připravujete na příjem hlasového vstupu z mikrofonu pro hlasový chat. Tento klíč je definován pouze ve vymezeném oboru podle kontextu chatu.",
-			"scopedVoiceChatInProgress": "Definováno jako umístění, kde probíhá záznam hlasu z mikrofonu pro hlasový chat. Tento klíč je definován pouze ve vymezeném oboru podle kontextu chatu.",
-			"voice.keywordActivation": "Určuje, jestli se rozpozná fráze klíčového slova Hey Code, aby se spustila relace hlasové konverzace. Když se tato možnost povolí, spustí se nahrávání z mikrofonu, ale zvuk se zpracuje místně a nikdy se neodešle na server.",
-			"voice.keywordActivation.chatInContext": "Aktivace klíčovými slovy je povolená a naslouchá funkci Hey Code, aby se v aktivním editoru spustila relace hlasové konverzace nebo zobrazení v závislosti na fokusu klávesnice.",
-			"voice.keywordActivation.chatInView": "Aktivace klíčovými slovy je povolená a naslouchá funkci Hey Code, aby se v zobrazení chatu spustila relace hlasové konverzace.",
-			"voice.keywordActivation.inlineChat": "Aktivace klíčovými slovy je povolená a naslouchá funkci Hey Code, aby se v aktivním editoru spustila relace hlasové konverzace, pokud je to možné.",
-			"voice.keywordActivation.off": "Aktivace klíčovými slovy je zakázaná.",
-			"voice.keywordActivation.quickChat": "Aktivace klíčovými slovy je povolená a naslouchá funkci Hey Code, aby se v rychlém chatu spustila relace hlasové konverzace.",
-			"workbench.action.chat.holdToVoiceChatInChatView.label": "Podržením zobrazíte hlasový chat v zobrazení chatu",
-			"workbench.action.chat.inlineVoiceChat": "Vložená hlasová konverzace",
-			"workbench.action.chat.quickVoiceChat.label": "Rychlá hlasová konverzace",
-			"workbench.action.chat.readChatResponseAloud": "Číst nahlas",
-			"workbench.action.chat.startVoiceChat.label": "Zahájit hlasový chat",
-			"workbench.action.chat.stopListening.label": "Přestat poslouchat",
-			"workbench.action.chat.stopListeningAndSubmit.label": "Přestat poslouchat a odeslat",
-			"workbench.action.chat.stopReadChatItemAloud": "Zastavit čtení nahlas",
-			"workbench.action.chat.voiceChatInView.label": "Voice chat v zobrazení chatu",
-			"workbench.action.speech.stopReadAloud": "Zastavit čtení nahlas"
-		},
-		"vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions": {
-			"chat.agentsHandoff.tip.action": "Otevřít v okně Agenti",
-			"chat.agentsHandoff.tip.description": "Získejte vyhrazené zobrazení s více podokny společně s pracovním prostorem.",
-			"chat.agentsHandoff.tip.description.copilot": "Zdarma ve vašem plánu Copilota – získejte vyhrazené zobrazení s více podokny společně s pracovním prostorem.",
-			"chat.agentsHandoff.tip.emptyWorkspace.description": "Otevřete okno Agenti a spusťte relaci Copilot CLI.",
-			"chat.agentsHandoff.tip.emptyWorkspace.message": "Copilot CLI [místní] není k dispozici bez otevřené složky",
-			"chat.agentsHandoff.tip.message": "Pokračovat v této relaci v okně Agenti",
-			"openAgentsWindow": "Otevřít okno Agenti",
-			"openInAgentsHover": "Otevřít v okně Agenti",
-			"openSessionInAgentsWindow": "Otevřít v okně Agenti",
-			"openWorkspaceInAgentsWindow": "Otevřít v agentech",
-			"toggle.openInAgentsWindow": "Otevřít v okně Agenti",
-			"toggle.openInAgentsWindowDescription": "Přepnout viditelnost tlačítka Otevřít v okně agentů v záhlaví"
-		},
-		"vs/workbench/contrib/chat/electron-browser/builtInTools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binární soubory se v tuto chvíli nepodporují.",
-			"fetchWebPage.confirmationMessage.plural": "Webový obsah může obsahovat škodlivý kód nebo se pokusit o útoky prostřednictvím injektáže výzvy.",
-			"fetchWebPage.confirmationTitle.plural": "Načíst webové stránky?",
-			"fetchWebPage.confirmationTitle.singular": "Načíst webovou stránku?",
-			"fetchWebPage.fetchedFrom": "Načteno z: {0}",
-			"fetchWebPage.invalidUrl": "Neplatná adresa URL",
-			"fetchWebPage.invocationMessage.plural": "Načítají se prostředky ({0})",
-			"fetchWebPage.invocationMessage.singular": "Načítá se: {0}",
-			"fetchWebPage.invocationMessage.singularAsLink": "Načítá se [prostředek]({0})",
-			"fetchWebPage.noValidUrls": "Nejsou zadané žádné platné adresy URL.",
-			"fetchWebPage.pastTenseMessage.plural": "Načetly se prostředky ({0}), ale následující adresy URL byly neplatné:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Načetl se prostředek, ale následující adresa URL byla neplatná:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "Načetly se prostředky ({0}).",
-			"fetchWebPage.pastTenseMessageResult.singular": "Načteno: {0}",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "Načetl se [prostředek]({0})",
-			"fetchWebPage.urlMentionedInPrompt": "Automaticky schváleno, protože adresa URL byla v zadání",
-			"fetchWebPage.urlsDescription": "Pole adres URL, ze kterého se má načíst obsah"
-		},
-		"vs/workbench/contrib/chat/electron-browser/chat.contribution": {
-			"changeWorkspace.detail": "Pokud změníte pracovní prostor, relace se ukončí.",
-			"changeWorkspace.message": "Probíhá relace. Opravdu chcete změnit pracovní prostor?",
-			"chatRequestInProgress": "Probíhá relace.",
-			"closeTheWindow.detail": "Relace se ukončí, pokud zavřete okno.",
-			"closeTheWindow.message": "Probíhá relace. Opravdu chcete okno zavřít?",
-			"copilotWorkspaceTrust": "Funkce AI se v současné době podporují jenom v důvěryhodných pracovních prostorech.",
-			"exit.detail": "Pokud relaci ukončíte, dojde k jejímu zastavení.",
-			"exit.message": "Probíhá relace. Opravdu chcete skončit?",
-			"quit.detail": "Pokud relaci ukončíte, dojde k jejímu zastavení.",
-			"quit.message": "Probíhá relace. Opravdu chcete skončit?",
-			"reloadTheWindow.detail": "Pokud okno znovu načtete, relace se ukončí.",
-			"reloadTheWindow.message": "Probíhá relace. Opravdu chcete znovu načíst okno?"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "Aktivuje akce kódu pro explicitní ukládání a automatické ukládání aktivované změnami okna nebo fokusu.",
@@ -12821,7 +11984,13 @@
 			"schema.folding": "Nastavení pro sbalování kódu daného jazyka",
 			"schema.folding.markers": "Značky pro sbalování kódu specifické pro daný jazyk, například #region a #endregion. Počáteční a koncové regulární výrazy se budou testovat na obsahu všech řádků a musí být navrženy efektivně.",
 			"schema.folding.markers.end": "Vzor RegExp pro koncovou značku. RegExp musí začínat znakem ^.",
+			"schema.folding.markers.end.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.end.flags": "The RegExp flags for the end marker.",
+			"schema.folding.markers.end.pattern": "The RegExp pattern for the end marker.",
 			"schema.folding.markers.start": "Vzor RegExp pro počáteční značku. RegExp musí začínat znakem ^.",
+			"schema.folding.markers.start.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.start.flags": "The RegExp flags for the start marker.",
+			"schema.folding.markers.start.pattern": "The RegExp pattern for the start marker.",
 			"schema.folding.offSide": "Jazyk se řídí pravidlem odsazení, pokud jsou bloky v tomto jazyce odsazeny. Pokud je nastaveno, budou prázdné řádky patřit do následujícího bloku.",
 			"schema.indentationRules": "Nastavení odsazení daného jazyka",
 			"schema.indentationRules.decreaseIndentPattern": "Pokud řádek odpovídá tomuto vzoru, pak by pro všechny řádky po něm mělo být jednou zrušeno odsazení (až do shody s jiným pravidlem).",
@@ -12870,12 +12039,6 @@
 			"schema.wordPattern.flags": "Příznaky RegExp používané pro vyhledávání shodných slov",
 			"schema.wordPattern.flags.errorMessage": "Musí odpovídat vzoru /^([gimuy]+)$/.",
 			"schema.wordPattern.pattern": "Vzor RegExp používaný pro vyhledávání shodných slov"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "Paste Selection Clipboard"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/startDebugTextMate": {
-			"startDebugTextMate": "Spustit protokolování gramatiky syntaxe TextMate"
 		},
 		"vs/workbench/contrib/commands/common/commands.contribution": {
 			"runCommands": "Spouštěcí příkazy",
@@ -14373,6 +13536,9 @@
 			"workbench.extensions.uninstallExtension.description": "Odinstalovat dané rozšíření",
 			"workspace unsupported filter": "Nepodporovaný pracovní prostor"
 		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "Spuštěná rozšíření"
+		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "Toto rozšíření je zakázané, protože se nepodporuje v {0} pro Web.",
 			"Defined to run in desktop": "Toto rozšíření je zakázáno, protože má nadefinované spouštění pouze v rámci {0} pro Desktop.",
@@ -14711,8 +13877,8 @@
 			"enableExtensionMessage": "Chcete povolit rozšíření {0}?",
 			"enableExtensionTitle": "Povolit rozšíření",
 			"extension not found": "Rozšíření {0} nebylo nalezeno.",
-			"extensions need reload": "Rozšíření se projeví až po opětovném načtení okna.",
-			"extensions need restart": "Rozšíření se projeví až po restartování.",
+			"extensions need reload": "Extensions require a window reload to apply updates.",
+			"extensions need restart": "All extensions require a restart to apply updates.",
 			"extensionsAutoRestart": "Rozšíření se automaticky restartovala, aby se povolily aktualizace.",
 			"incompatible": "Rozšíření {0} nelze nainstalovat, protože není kompatibilní.",
 			"incompatibleExtensions": "Některá rozšíření jsou zakázána z důvodu nekompatibilní verze. Zkontrolujte je a aktualizujte.",
@@ -14803,72 +13969,10 @@
 			"searchExtensionsTool.noInput": "Zadejte kategorii, klíčová slova nebo ID, která chcete vyhledat.",
 			"searchExtensionsTool.userDescription": "Hledat rozšíření pro VS Code"
 		},
-		"vs/workbench/contrib/extensions/electron-browser/debugExtensionHostAction": {
-			"debugExtensionHost": "Debug Extension Host In New Window",
-			"debugExtensionHost.launch.name": "Attach Extension Host",
-			"debugExtensionHost.progress": "Attaching Debugger To Extension Host",
-			"debugExtensionHostAndRenderer": "Debug Extension Host and Renderer In New Window",
-			"debugRenderer": "Debug Renderer In New Window",
-			"debugRenderer.launch.name": "Attach Renderer",
-			"debugRenderer.progress": "Attaching Debugger To Renderer",
-			"openDevToolsForExtensionHost": "Debug Extension Host In Dev Tools",
-			"restart1": "Debug Extensions",
-			"restart2": "In order to debug extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectExtensionHost": "Pick extension host"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionProfileService": {
-			"profilingExtensionHost": "Profiling Extension Host",
-			"profilingExtensionHostTime": "Profiling Extension Host ({0} sec)",
-			"restart1": "Profile Extensions",
-			"restart2": "In order to profile extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectAndStartDebug": "Click to stop profiling.",
-			"status.profiler": "Extension Profiler"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensions.contribution": {
-			"runtimeExtension": "Running Extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsActions": {
-			"cleanUpExtensionsFolder": "Cleanup Extensions Folder",
-			"openExtensionsFolder": "Open Extensions Folder"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsAutoProfiler": {
-			"show": "Show Extensions",
-			"unresponsive-exthost": "The extension '{0}' took a very long time to complete its last operation and it has prevented other extensions from running."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
-			"attach.msg": "This is a reminder to make sure that you have not forgotten to attach '{0}' to the issue you have just created.",
-			"attach.msg2": "This is a reminder to make sure that you have not forgotten to attach '{0}' to an existing performance issue.",
-			"attach.title": "Did you attach the CPU-Profile?",
-			"cmd.report": "Report Issue",
-			"cmd.reportOrShow": "Performance Issue",
-			"cmd.show": "Show Issues"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "Start Extension Host Profile",
-			"openExtensionHostProfile": "Open Extension Host Profile",
-			"saveExtensionHostProfile": "Save Extension Host Profile",
-			"saveprofile.dialogTitle": "Save Extension Host Profile",
-			"stopExtensionHostProfileStart": "Stop Extension Host Profile"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction.Integrated": "Open in Integrated Terminal",
-			"scopedConsoleAction.external": "Open in External Terminal",
-			"scopedConsoleAction.wt": "Open in Windows Terminal"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "When opening a file from the Explorer in a terminal, determines what kind of terminal will be launched",
-			"globalConsoleAction": "Open New External Terminal",
-			"selectWorkspace": "Select workspace folder",
-			"sourceControlRepositories.openInTerminalKind": "When opening a repository from the Source Control Repositories view in a terminal, determines what kind of terminal will be launched",
-			"terminal.external.linuxExec": "Customizes which terminal to run on Linux.",
-			"terminal.external.osxExec": "Customizes which terminal application to run on macOS.",
-			"terminal.external.windowsExec": "Customizes which terminal to run on Windows.",
-			"terminal.kind.both": "Show both integrated and external terminal actions.",
-			"terminal.kind.external": "Show the external terminal action.",
-			"terminal.kind.integrated": "Show the integrated terminal action.",
-			"terminalConfigurationTitle": "External Terminal"
+			"scopedConsoleAction.Integrated": "Otevřít v integrovaném terminálu",
+			"scopedConsoleAction.external": "Otevřít v externím terminálu",
+			"scopedConsoleAction.wt": "Otevřít v terminálu Windows"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "Nakonfigurujte otevírací program tak, aby používal externí identifikátory URI (http, https).",
@@ -15324,13 +14428,6 @@
 			"openEditorsFocus": "True, když je fokus v zobrazení OTEVŘENÉ EDITORY",
 			"viewHasSomeCollapsibleItem": "True, pokud má pracovní prostor ve zobrazení EXPLORER nějaký sbalitelný kořenový podřízený prvek."
 		},
-		"vs/workbench/contrib/files/electron-browser/fileActions.contribution": {
-			"filesCategory": "Soubor",
-			"miShare": "Sdílet",
-			"openContainer": "Open Containing Folder",
-			"revealInMac": "Reveal in Finder",
-			"revealInWindows": "Reveal in File Explorer"
-		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
 			"formatter.default": "Definuje výchozího zprostředkovatele rozsahu sbalování, který má přednost před všemi ostatními zprostředkovateli rozsahu sbalování. Musí se jednat o identifikátor rozšíření, které přispívá k poskytovateli rozsahu sbalování.",
 			"null": "Vše",
@@ -15711,6 +14808,9 @@
 			"vscode": "Visual Studio Code",
 			"vscodePlaceholder": "Například: Workbench nemá panel problémů."
 		},
+		"vs/workbench/contrib/issue/browser/issue.contribution": {
+			"statusUnsupported": "Argument --status ještě není v prohlížečích podporovaný."
+		},
 		"vs/workbench/contrib/issue/browser/issueFormService": {
 			"additionalIssueData": "Další data problému",
 			"cancel": "Zrušit",
@@ -15722,133 +14822,6 @@
 			"ok": "&&OK",
 			"pasteData": "Požadovaná data jsme zkopírovali do schránky, protože byla příliš velká pro odeslání. Vložte prosím tato data ze schránky.",
 			"yes": "&&Ano"
-		},
-		"vs/workbench/contrib/issue/browser/issueQuickAccess": {
-			"contributedIssuePage": "Open Extension Page",
-			"extensions": "Extensions",
-			"reportExtensionMarketplace": "Extension Marketplace"
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorInput": {
-			"discard": "Discard",
-			"discardIssue": "Discard issue report?",
-			"discardIssueDetail": "Your issue report has unsaved changes that will be lost.",
-			"issueReporterEditorInputName": "Report Issue",
-			"issueReporterIcon": "Icon for the issue reporter editor."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
-			"abExperiments": "A/B Experiments",
-			"additionalInformation": "Additional Information",
-			"additionalPerformanceData": "Additional Performance Data",
-			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
-			"attachments": "Attachments ({0})",
-			"back": "Back",
-			"bug": "Bug",
-			"bugGuidance": "Describe what happened, the steps to reproduce, what you expected, and what you observed instead.",
-			"captureOptions": "Capture options",
-			"category": "Category",
-			"categoryRequired": "Select a category to continue.",
-			"closeTab": "Close",
-			"composeMessage": "Describe",
-			"defaultGuidance": "Select a category above, then describe your feedback in detail.",
-			"deleteRecording": "Remove recording",
-			"deleteScreenshot": "Delete screenshot",
-			"describeHeading": "Describe your feedback",
-			"description": "Description",
-			"descriptionPlaceholder": "Describe the issue in detail...",
-			"descriptionRequired": "Enter a description to continue.",
-			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
-			"extension": "Extension",
-			"extensionData": "Extension Data",
-			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
-			"extensionNoIssueUrl": "This extension does not provide an issue reporting URL.",
-			"extensionPlaceholder": "E.g. Missing alt text on extension readme image",
-			"extensionRequired": "Select an extension to continue.",
-			"extensionSource": "A VS Code extension",
-			"extensions": "Extensions ({0})",
-			"featureGuidance": "Describe the feature you'd like to see, what problem it would solve, and any alternatives you've considered.",
-			"featureRequest": "Feature Request",
-			"feedbackCategory": "Category",
-			"fiveSeconds": "5 seconds",
-			"generateTitle": "Generate title from description",
-			"generateTitleBtn": "Generate from description",
-			"generatingTitle": "Generating...",
-			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
-			"issueTargetRepo": "Issue will be created in {0}/{1}.",
-			"issueTitle": "Title",
-			"issueTitlePlaceholder": "Brief summary of the issue",
-			"loadingDiagnostics": "Loading diagnostics...",
-			"loadingExtensionData": "Loading extension issue data...",
-			"loadingProcessInfo": "Loading currently running processes...",
-			"loadingSystemInfo": "Loading system information...",
-			"loadingWorkspaceInfo": "Loading workspace metadata...",
-			"markdownSupported": "Markdown formatting is supported.",
-			"marketplace": "Extensions Marketplace",
-			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
-			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
-			"next": "Next",
-			"noDelay": "No delay",
-			"noDescription": "(no description)",
-			"noSimilarIssues": "No similar issues found.",
-			"noTitle": "(no title)",
-			"openExternalIssueReporter": "Open External Issue Reporter",
-			"or": "or",
-			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
-			"performanceIssue": "Performance Issue",
-			"previewOnGitHub": "Preview on GitHub",
-			"recordVideo": "Record video",
-			"recordingActive": "Recording active",
-			"recordingThumbnailAlt": "Recording {0}",
-			"refresh": "Refresh",
-			"refreshPerformanceData": "Reload running processes and workspace metadata",
-			"reportIssue": "Report Issue",
-			"reviewSubmit": "Review and submit",
-			"runningProcesses": "Running Processes",
-			"screenshot": "Screenshot",
-			"screenshotAlt": "Screenshot {0}",
-			"screenshots": "Attachments",
-			"screenshotsHeading": "Add attachments for better context",
-			"screenshotsSubtitle": "You can add up to {0} screenshots or videos. Navigate VS Code and choose when to capture.",
-			"searchingSimilarIssues": "Searching similar issues...",
-			"selectExtension": "Select extension",
-			"shortcutHintIntro": "Use the floating capture bar, or press",
-			"similarIssues": "Similar Issues",
-			"similarIssuesNeedsTitle": "Enter a title to search for similar issues.",
-			"similarIssuesSearchFailed": "Unable to search for similar issues.",
-			"skip": "Skip",
-			"stepOf": "Step {0} of {1}",
-			"stopRecording": "Stop recording",
-			"submit": "Review",
-			"systemInformation": "System Information",
-			"target": "Target",
-			"targetRequired": "Select a target to continue.",
-			"tenSeconds": "10 seconds",
-			"threeSeconds": "3 seconds",
-			"titleRequired": "Enter a title to continue.",
-			"toCapture": "to capture a screenshot",
-			"toRecord": "to start or stop recording",
-			"unknown": "Unknown",
-			"unknownSource": "Don't know",
-			"updateAvailable": "A new version of {0} is available.",
-			"uploading": "Uploading...",
-			"vscode": "Visual Studio Code",
-			"vscodePlaceholder": "E.g. Workbench is missing problems panel",
-			"waitingForDiagnostics": "Waiting for performance diagnostics to finish loading",
-			"workspaceMetadata": "Workspace Metadata"
 		},
 		"vs/workbench/contrib/issue/browser/issueReporterPage": {
 			"acknowledgements": "Potvrzuji, že moje verze VS Code není aktualizovaná a tento problém může být uzavřen.",
@@ -15904,59 +14877,9 @@
 			"troubleshootIssue": "Řešení potíží…",
 			"use insiders": "To pravděpodobně znamená, že problém už byl vyřešen a oprava bude k dispozici v nadcházející verzi. Dokud nebude k dispozici nová stabilní verze, můžete bezpečně používat {0} Insiders."
 		},
-		"vs/workbench/contrib/issue/browser/screenshotAnnotation": {
-			"annotationHint": "Edit screenshot to highlight the problem",
-			"apply": "Apply",
-			"arrow": "Arrow",
-			"cancel": "Cancel",
-			"colorValue": "{0}: {1}",
-			"crop": "Crop",
-			"discard": "Discard",
-			"ellipse": "Ellipse",
-			"eraser": "Eraser",
-			"fillColor": "Fill Color",
-			"freehand": "Draw",
-			"opacity": "Opacity",
-			"pan": "Pan",
-			"rectangle": "Rectangle",
-			"redo": "Redo",
-			"save": "Save",
-			"select": "Select / Move",
-			"setFillColor": "Set Fill Color",
-			"setOpacity": "Set Opacity",
-			"setStrokeColor": "Set Stroke Color",
-			"setStrokeWidth": "Set Stroke Width to {0}px",
-			"setTextSize": "Set Text Size to {0}px",
-			"strokeColor": "Stroke Color",
-			"strokeWidth": "Stroke Width",
-			"text": "Text",
-			"textBackgroundColor": "Background Color",
-			"textColor": "Text Color",
-			"textSize": "Text Size",
-			"toolOptions": "Tool Options",
-			"transparentColor": "{0}: Transparent",
-			"typeText": "Type text",
-			"undo": "Undo"
-		},
 		"vs/workbench/contrib/issue/common/issue.contribution": {
 			"miReportIssue": "&&Nahlásit problém",
 			"reportIssueInEnglish": "Nahlásit problém..."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issue.contribution": {
-			"issueReporter.wizard.enabled": "Enable the new issue reporter wizard instead of the classic issue reporter.",
-			"issueReporter.wizard.fullWorkspaceScan": "When auto-collecting performance diagnostics for the issue reporter wizard, walk the full workspace instead of stopping at the default 20,000-file cap. Set to false on very large workspaces if the scan slows the initial wizard render.",
-			"issueReporterConfigurationTitle": "Issue Reporter",
-			"issueReporterEditorPaneTitle": "Issue Reporter",
-			"openIssueReporter": "Open Issue Reporter",
-			"reportPerformanceIssue": "Report Performance Issue...",
-			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
-			"noCurrentExperiments": "No current experiments.",
-			"pasteData": "We have written the needed data into your clipboard because it was too large to send. Please paste.",
-			"saveExtensionData": "Save Extension Data",
-			"undefinedPlaceholder": "Please enter a title",
-			"updateAvailable": "A new version of {0} is available."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "Řešení potíží s přepínáním klávesových zkratek"
@@ -16041,11 +14964,6 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "Místní historie"
 		},
-		"vs/workbench/contrib/localHistory/electron-browser/localHistoryCommands": {
-			"openContainer": "Otevřít nadřazenou složku",
-			"revealInMac": "Zobrazit ve Finderu",
-			"revealInWindows": "Zobrazit v Průzkumníkovi souborů"
-		},
 		"vs/workbench/contrib/localization/common/localization.contribution": {
 			"language id": "ID jazyka",
 			"localizations": "Jazykové sady",
@@ -16069,17 +14987,6 @@
 			"installed": "Nainstalováno",
 			"moreInfo": "Další informace"
 		},
-		"vs/workbench/contrib/localization/electron-browser/localization.contribution": {
-			"changeAndRestart": "Změnit jazyk a restartovat",
-			"neverAgain": "Příště už nezobrazovat",
-			"updateLocale": "Chcete změnit jazyk zobrazení {0} na {1} a restartovat?"
-		},
-		"vs/workbench/contrib/localization/electron-browser/minimalTranslations": {
-			"installAndRestart": "Nainstalovat a restartovat",
-			"installAndRestartMessage": "Pokud chcete jazyk zobrazení změnit na {0}, nainstaluje jazykovou sadu.",
-			"searchMarketplace": "Hledat na Marketplace",
-			"showLanguagePackExtensions": "Pokud chcete jazyk zobrazení změnit na {0}, zkuste vyhledat jazykové sady na Marketplace."
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"remote name": "{0} (vzdálené)",
 			"setDefaultLogLevel": "Set Default Log Level (Nastavit výchozí úroveň protokolu)",
@@ -16099,10 +15006,6 @@
 			"selectlog": "Nastavit úroveň protokolu",
 			"sessions placeholder": "Vybrat relaci",
 			"setLogLevel": "Nastavit úroveň protokolu..."
-		},
-		"vs/workbench/contrib/logs/electron-browser/logsActions": {
-			"openExtensionLogsFolder": "Otevřít složku protokolů rozšíření",
-			"openLogsFolder": "Otevřít složku protokolů"
 		},
 		"vs/workbench/contrib/markdown/browser/markdownSettingRenderer": {
 			"alreadysetBoolFalse": "{0}: {1} – již zakázáno",
@@ -16935,12 +15838,6 @@
 			"showBase": "Pokud se v editoru sloučení zobrazí základní verze",
 			"showBaseAtTop": "Pokud se má báze zobrazit nahoře",
 			"showNonConflictingChanges": "Pokud se v editoru slučování zobrazí nekonfliktní změny"
-		},
-		"vs/workbench/contrib/mergeEditor/electron-browser/devCommands": {
-			"merge.dev.openSelectionInTemporaryMergeEditor": "Otevřít výběr v editoru dočasného sloučení",
-			"merge.dev.openState": "Otevřít stav editoru sloučení z JSON",
-			"mergeEditor": "Editor sloučení (vývojář)",
-			"mergeEditor.enterJSON": "Zadat JSON"
 		},
 		"vs/workbench/contrib/meteredConnection/browser/meteredConnection.contribution": {
 			"configureMeteredConnection": "Konfigurovat připojení účtované podle objemu dat",
@@ -17805,18 +16702,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "Výkon při spuštění"
 		},
-		"vs/workbench/contrib/performance/electron-browser/performance.contribution": {
-			"experimental.rendererProfiling": "Když je tato možnost povolená, pomalé renderery se automaticky profilují."
-		},
-		"vs/workbench/contrib/performance/electron-browser/startupProfiler": {
-			"prof.detail": "Vytvořte prosím problém a připojte ručně následující soubory:\r\n{0}",
-			"prof.detail.restart": "Aby bylo možné dál používat {0}, je nutné znovu provést restart. Ještě jednou vám děkujeme za váš příspěvek.",
-			"prof.message": "Profily se úspěšně vytvořily.",
-			"prof.restart": "Restartovat",
-			"prof.restart.button": "&&Restartovat",
-			"prof.restartAndFileIssue": "&&Vytvořit problém a restartovat",
-			"prof.thanks": "Děkujeme vám za pomoc."
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditor": {
 			"SearchKeybindings.FullTextSearchPlaceholder": "Napište, co chcete vyhledat v klávesových zkratkách.",
 			"SearchKeybindings.KeybindingsSearchPlaceholder": "Zaznamenávají se klávesové zkratky. Zaznamenávání ukončíte stisknutím klávesy Esc.",
@@ -17860,6 +16745,18 @@
 			"defineKeybinding.existing": "Tuto klávesovou zkratku má tento počet existujících příkazů: {0}.",
 			"defineKeybinding.initial": "Stiskněte požadovanou kombinaci kláves a pak stiskněte ENTER.",
 			"defineKeybinding.oneExists": "Tuto klávesovou zkratku má 1 existující příkaz."
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"clear": "Vymazat výsledky vyhledávání",
@@ -18201,6 +17098,9 @@
 			"openProcessExplorer": "Otevřít Průzkumníka procesů",
 			"promptOpenWith.processExplorer.displayName": "Průzkumník procesů"
 		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
 		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
 			"copy": "Kopírovat",
 			"copyAll": "Kopírovat vše",
@@ -18216,9 +17116,6 @@
 		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
 			"processExplorerEditorLabelIcon": "Ikona popisku editoru Průzkumníka procesů",
 			"processExplorerInputName": "Průzkumník procesů"
-		},
-		"vs/workbench/contrib/processExplorer/electron-browser/processExplorer.contribution": {
-			"processExplorer": "Průzkumník procesů"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "&&Vymazat",
@@ -18363,6 +17260,10 @@
 			"workspace.tooltip": "Úpravy v {0}",
 			"workspace.tooltip2": "Některé [funkce nejsou k dispozici]({0}) pro prostředky umístěné ve virtuálním systému souborů."
 		},
+		"vs/workbench/contrib/remote/browser/remoteStartEntry": {
+			"remote.category": "Vzdálené",
+			"remote.showWebStartEntryActions": "Zobrazit položku vzdáleného spuštění pro web"
+		},
 		"vs/workbench/contrib/remote/browser/tunnelFactory": {
 			"tunnelPrivacy.private": "Privátní",
 			"tunnelPrivacy.public": "Veřejné"
@@ -18465,13 +17366,6 @@
 			"triggerReconnect": "Připojení: Aktivovat opětovné připojení",
 			"ui": "Typ rozšíření uživatelského rozhraní. Ve vzdáleném okně jsou tato rozšíření povolena pouze v případě, že jsou k dispozici v místním počítači.",
 			"workspace": "Typ rozšíření pracovního prostoru. Ve vzdáleném okně jsou tato rozšíření povolena pouze v případě, že jsou k dispozici vzdáleně."
-		},
-		"vs/workbench/contrib/remote/electron-browser/remote.contribution": {
-			"remote": "Remote",
-			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
-			"remote.category": "Remote",
-			"remote.downloadExtensionsLocally": "When enabled extensions are downloaded locally and installed on remote.",
-			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution": {
 			"remoteCodingAgentsExtPoint": "Přidává do chatovacího widgetu integrace vzdáleného agenta pro psaní kódu.",
@@ -19576,6 +18470,9 @@
 			"taskQuickPick.showAll": "Zobrazit všechny úlohy...",
 			"taskType": "Všechny úlohy ({0})"
 		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "Procesový systém úloh není na webu podporován."
+		},
 		"vs/workbench/contrib/tasks/browser/tasksQuickAccess": {
 			"TaskService.pickRunTask": "Vyberte úlohu, která má být spuštěna.",
 			"noTaskResults": "Žádné odpovídající úlohy"
@@ -19854,12 +18751,6 @@
 			"dotnetCore": "Provede příkaz sestavení .NET Core.",
 			"externalCommand": "Příklad spuštění libovolného externího příkazu",
 			"msbuild": "Provede cíl sestavení."
-		},
-		"vs/workbench/contrib/tasks/electron-browser/taskService": {
-			"TaskSystem.exitAnyways": "&&Exit Anyways",
-			"TaskSystem.noProcess": "The launched task doesn't exist anymore. If the task spawned background processes exiting VS Code might result in orphaned processes. To avoid this start the last background process with a wait flag.",
-			"TaskSystem.runningTask": "There is a task running. Do you want to terminate it?",
-			"TaskSystem.terminateTask": "&&Terminate Task"
 		},
 		"vs/workbench/contrib/telemetry/browser/telemetry.contribution": {
 			"showTelemetry": "Zobrazit telemetrii"
@@ -20375,9 +19266,6 @@
 			"workbench.action.terminal.scrollToNextCommand": "Posunout na další příkaz",
 			"workbench.action.terminal.scrollToPreviousCommand": "Posunout na předchozí příkaz",
 			"workbench.action.terminal.sizeToContentWidthInstance": "Přepnout velikost na šířku obsahu"
-		},
-		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
-			"workbench.action.terminal.newLocal": "Vytvořit nový integrovaný terminál (místní)"
 		},
 		"vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
 			"workbench.action.terminal.accessibleBufferGoToNextCommand": "Přístupná vyrovnávací paměť – přechod na další příkaz",
@@ -22043,12 +20931,6 @@
 			"workbench.actions.sync.resolveResourceRef": "Zobrazit data synchronizace nezpracovaného JSON",
 			"workbench.actions.sync.turnOffSyncOnMachine": "Vypnout synchronizaci nastavení"
 		},
-		"vs/workbench/contrib/userDataSync/electron-browser/userDataSync.contribution": {
-			"Open Backup folder": "Otevřít složku místních záloh",
-			"download sync activity complete": "Aktivita synchronizace nastavení se úspěšně stáhla.",
-			"no backups": "Složka místních záloh neexistuje.",
-			"open": "Otevřít složku"
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "Pokud je povoleno, zobrazí v případě, že není otevřený žádný editor, tipy ve vodoznacích.",
 			"watermark.findInFiles": "Najít v souborech",
@@ -22103,11 +20985,6 @@
 			"webview.settingsHeader": "Nastavení, která můžete upravit ({0} otevře nastavení):",
 			"webview.statusDesc": "Prohledáváte webový obsah.",
 			"webview.statusHeader": "Aktuální stav vyhledávání:"
-		},
-		"vs/workbench/contrib/webview/electron-browser/webviewCommands": {
-			"iframeWebviewAlert": "Ladí se webové zobrazení založené na prvcích IFrame pomocí standardních vývojových nástrojů.",
-			"openToolsDescription": "Otevře Vývojářské nástroje pro aktivní webová zobrazení.",
-			"openToolsLabel": "Otevřít vývojářské nástroje webového zobrazení"
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "Najít další",
@@ -22916,14 +21793,11 @@
 			"authenticationExtensionPoint": "Přidává ověřování."
 		},
 		"vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService": {
-			"lifecycleVeto": "Změny, které jste provedli, se nemusí uložit. Zkontrolujte prosím, že jste stlačili Zrušit, a zkuste to znovu.",
-			"retry": "&&Zkusit znovu",
-			"unableToOpenWindow": "Prohlížeč zablokoval otevření nového okna. Zkuste to znovu výběrem možnosti Zkusit znovu.",
-			"unableToOpenWindowDetail": "Povolte prosím automaticky otevíraná okna pro tento web v [nastavení prohlížeče]({0}).",
-			"unableToOpenWindowError": "Nelze otevřít nové okno."
-		},
-		"vs/workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService": {
-			"backupErrorDetails": "Nejdříve zkuste editory uložit nebo vrátit zpět s neuloženými změnami a pak to zkuste znovu."
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again.",
+			"retry": "&&Retry",
+			"unableToOpenWindow": "The browser blocked opening a new window. Press 'Retry' to try again.",
+			"unableToOpenWindowDetail": "Please allow pop-ups for this website in your [browser settings]({0}).",
+			"unableToOpenWindowError": "Unable to open a new window."
 		},
 		"vs/workbench/services/chat/common/chatEntitlementService": {
 			"learnMore": "Další informace",
@@ -23065,12 +21939,22 @@
 			"saveChangesMessages": "Chcete uložit změny do následujících {0} souborů?",
 			"saveFileAs.title": "Uložit jako"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "&&Další informace",
+			"openFiles": "Otevřít &&soubory…",
+			"openRemote": "&&Otevřít vzdálené…",
+			"pickFolderAndOpen": "Složky nejde otevřít, zkuste místo toho přidat složku do pracovního prostoru.",
+			"pickWorkspaceAndOpen": "Pracovní prostory nejde otevřít, zkuste místo toho přidat složku do pracovního prostoru.",
+			"unsupportedBrowserDetail": "Váš prohlížeč nepodporuje otevírání místních složek.\r\nMůžete buď otevřít jednotlivé soubory, nebo otevřít vzdálené úložiště.",
+			"unsupportedBrowserMessage": "Otevírání místních složek není podporováno."
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "Otevřít místní soubor...",
 			"openLocalFileFolder": "Otevřít místní...",
 			"openLocalFolder": "Otevřít místní složku...",
 			"remoteFileDialog.badPath": "Cesta neexistuje. Pomocí ~ přejdete do svého domovského adresáře.",
 			"remoteFileDialog.cancel": "Zrušit",
+			"remoteFileDialog.createFolderFailed": "Could not create folder: {0}",
 			"remoteFileDialog.hideDotFiles": "Skrýt soubory s tečkami",
 			"remoteFileDialog.invalidPath": "Zadejte prosím platnou cestu.",
 			"remoteFileDialog.local": "Zobrazit místní",
@@ -23079,6 +21963,7 @@
 			"remoteFileDialog.showDotFiles": "Zobrazit soubory s tečkami",
 			"remoteFileDialog.validateBadFilename": "Zadejte prosím platný název souboru.",
 			"remoteFileDialog.validateCreateDirectory": "Složka {0} neexistuje. Chcete ji vytvořit?",
+			"remoteFileDialog.validateCreateDirectoryOpen": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "Soubor {0} již existuje. Opravdu jej chcete přepsat?",
 			"remoteFileDialog.validateFileOnly": "Vyberte soubor.",
 			"remoteFileDialog.validateFolder": "Složka již existuje. Použijte prosím nový název souboru.",
@@ -23143,11 +22028,19 @@
 			"extensionsDisabled": "Všechna nainstalovaná rozšíření jsou dočasně zakázaná.",
 			"noWorkspace": "Žádný pracovní prostor"
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "{0} nejde přidat, protože toto rozšíření není webové rozšíření.",
+			"openInstalledWebExtensionsResource": "Otevřít nainstalovaný prostředek webových rozšíření"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionFeaturesManagemetService": {
 			"accessExtensionFeature": "Přístup k funkci {0}",
 			"accessExtensionFeatureMessage": "Rozšíření {0} by chtělo získat přístup k funkci {1}.",
 			"allow": "Povolit",
 			"disallow": "Nepovolovat"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "Prohlížeč",
+			"remote": "Vzdálené"
 		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "Instalace rozšíření {0} selhala: Manifest nebyl nalezen.",
@@ -23197,19 +22090,6 @@
 			"extensionDefault": "Ikona použitá pro výchozí rozšíření v zobrazení rozšíření a editoru.",
 			"extensionIconVerifiedForeground": "Barva ikony pro ověřeného vydavatele rozšíření",
 			"verifiedPublisher": "Ikona používaná pro ověřeného vydavatele rozšíření v zobrazení a editoru rozšíření"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService": {
-			"extensionGalleryManifestService.accountChange": "{0} is now configured to a different Marketplace. Please restart to apply the changes.",
-			"restart": "&&Restart"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionManagementServerService": {
-			"local": "Local",
-			"remote": "Remote"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
-			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
-			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "Přidat doporučení rozšíření do",
@@ -23343,36 +22223,6 @@
 			"overwritingExtension": "Rozšíření {0} se přepisuje na {1}.",
 			"overwritingWithWorkspaceExtension": "Přepisování {0} pomocí rozšíření pracovního prostoru {1}."
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Rozšíření byla upravena na disku. Načtěte prosím okno znovu.",
-			"extensionUnderDevelopment.invalid": "Nepovedlo se načíst rozšíření {0} ve vývoji, protože je neplatné: {1}",
-			"extensionsUnderDevelopment.invalid": "Nepovedlo se načíst rozšíření {0} ve vývoji, protože jsou neplatná: {1}",
-			"reloadWindow": "Znovu načíst okno"
-		},
-		"vs/workbench/services/extensions/electron-browser/localProcessExtensionHost": {
-			"extensionHost.startupFail": "Hostitel rozšíření nebyl spuštěn do 10 sekund, což může být problém.",
-			"extensionHost.startupFailDebug": "Hostitel rozšíření se nespustil do 10 sekund. Může být zastavený na prvním řádku a může k pokračování potřebovat ladicí program.",
-			"join.extensionDevelopment": "Ukončuje se relace ladění rozšíření.",
-			"reloadWindow": "Znovu načíst okno"
-		},
-		"vs/workbench/services/extensions/electron-browser/nativeExtensionService": {
-			"devTools": "Otevřít Vývojářské nástroje",
-			"enable": "Povolit a znovu načíst",
-			"enableResolver": "K otevření vzdáleného okna je vyžadováno rozšíření {0}.\r\nChcete ho povolit?",
-			"extensionService.autoRestart": "Hostitel rozšíření se neočekávaně ukončil. Probíhá restartování…",
-			"extensionService.crash": "Hostitel rozšíření se během posledních 5 minut neočekávaně 3× ukončil.",
-			"extensionService.versionMismatchCrash": "Nelze spustit hostitele rozšíření: neshoda verzí.",
-			"getEnvironmentFailure": "Nepovedlo se načíst vzdálené prostředí.",
-			"install": "Nainstalovat a znovu načíst",
-			"installResolver": "K otevření vzdáleného okna je vyžadováno rozšíření {0}.\r\nChcete toto rozšíření nainstalovat?",
-			"learnMore": "Další informace",
-			"relaunch": "Znovu spustit VS Code",
-			"resolverExtensionNotFound": "Rozšíření {0} nebylo nalezeno na Marketplace.",
-			"restart": "Restartovat hostitele rozšíření",
-			"restartExtensionHost": "Restartovat hostitele rozšíření",
-			"restartExtensionHost.reason": "Explicitní žádost",
-			"startBisect": "Spustit bisekci rozšíření"
-		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"fileWatcher": "Sledovací proces souborů"
 		},
@@ -23457,6 +22307,10 @@
 			"vscode.extension.contributes.keybindings.when": "Podmínka, když je klávesa aktivní",
 			"vscode.extension.contributes.keybindings.win": "Klávesa nebo posloupnost kláves specifická pro Windows"
 		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Umožňuje řídit rozložení klávesnice používané na webu.",
+			"keyboardConfigurationTitle": "Klávesnice"
+		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "Pokud chcete přepsat výchozí hodnoty, umístěte do tohoto souboru své klávesové zkratky.",
 			"errorInvalidConfiguration": "Nelze zapisovat do konfiguračního souboru klávesových zkratek. Obsahuje objekt, který není typu Array. Otevřete prosím soubor, vyčistěte ho a zkuste to znovu.",
@@ -23511,13 +22365,12 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "Změny, které jste provedli, se nemusí uložit. Zkontrolujte prosím, že jste stlačili Zrušit, a zkuste to znovu."
 		},
-		"vs/workbench/services/localization/electron-browser/localeService": {
-			"argvInvalid": "Unable to write display language. Please open the runtime settings, correct errors/warnings in it and try again.",
-			"installing": "Installing {0} language support...",
-			"openArgv": "Open Runtime Settings",
-			"restart": "&&Restart",
-			"restartDisplayLanguageDetail1": "To change the display language to {0}, {1} needs to restart.",
-			"restartDisplayLanguageMessage1": "Restart {0} to switch to {1}?"
+		"vs/workbench/services/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "Stisknutím tlačítka Znovu načíst stránku aktualizujte a použijte jazyk prohlížeče.",
+			"clearDisplayLanguageMessage": "Pokud chcete změnit jazyk zobrazení, {0} se musí znovu načíst.",
+			"relaunchDisplayLanguageDetail": "Stisknutím tlačítka Znovu načíst stránku aktualizujte a nastavte jazyk zobrazení na {0}.",
+			"relaunchDisplayLanguageMessage": "Pokud chcete změnit jazyk zobrazení, {0} se musí znovu načíst.",
+			"reload": "&&Načíst znovu"
 		},
 		"vs/workbench/services/log/common/logConstants": {
 			"window": "Časové období"
@@ -23604,6 +22457,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "Zpráva o průběhu"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "Došlo k neočekávané chybě, která vyžaduje opětovné načtení této stránky.",
+			"connectionErrorDetail": "Workbench se nepodařilo připojit k serveru (chyba: {0})",
+			"reload": "&&Načíst znovu"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"RemoteHelpInformationExtPoint": "Přidává informace nápovědy pro vzdálené připojení.",
 			"RemoteHelpInformationExtPoint.documentation": "Adresa URL stránky dokumentace vašeho projektu (nebo příkaz, který vrátí tuto adresu URL)",
@@ -23621,16 +22479,15 @@
 			"tunnel.source.user": "Přesměrováno uživatelem",
 			"tunnel.staticallyForwarded": "Staticky přesměrováno"
 		},
-		"vs/workbench/services/remote/electron-browser/remoteAgentService": {
-			"connectionError": "Failed to connect to the remote extension host server (Error: {0})",
-			"devTools": "Open Developer Tools",
-			"directUrl": "Open in browser"
-		},
-		"vs/workbench/services/request/electron-browser/requestService": {
+		"vs/workbench/services/request/browser/requestService": {
 			"network": "Síť"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "Složka pracovního prostoru neexistuje: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/secrets/electron-browser/secretStorageService": {
 			"encryptionNotAvailableJustTroubleshootingGuide": "Nepodařilo se identifikovat klíčování operačního systému pro ukládání dat souvisejících se šifrováním ve vašem aktuálním desktopovém prostředí.",
@@ -23684,9 +22541,6 @@
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants1": "Spouští se akce kódu a formátovací moduly...",
 			"skip": "Přeskočit"
-		},
-		"vs/workbench/services/textfile/electron-browser/nativeTextFileService": {
-			"join.textFiles": "Ukládání textových souborů"
 		},
 		"vs/workbench/services/textMate/browser/textMateTokenizationFeatureImpl": {
 			"alreadyDebugging": "Protokolování už probíhá.",
@@ -23941,13 +22795,6 @@
 			"invalid.semanticTokenTypeConfiguration": "configuration.semanticTokenType musí být pole hodnot.",
 			"invalid.superType.format": "configuration.{0}.superType musí odpovídat vzoru písmenoNeboČíslice[-_písmenoNeboČíslice]*"
 		},
-		"vs/workbench/services/themes/electron-browser/themes.contribution": {
-			"window.systemColorTheme": "Umožňuje nastavit barevný motiv pro nativní prvky uživatelského rozhraní, jako jsou nativní dialogová okna, nabídky a záhlaví. I když je váš operační systém nakonfigurovaný na světlý barevný režim, můžete pro okno vybrat tmavý systémový barevný motiv. Můžete také nakonfigurovat automatické úpravy na základě nastavení {0}.\r\n\r\nPoznámka: Toto nastavení je ignorováno, pokud je povolené nastavení {1}.",
-			"window.systemColorTheme.auto": "Umožňuje pro světlé motivy používat světlé nativní barvy widgetů a pro tmavé barevné motivy tmavé barvy.",
-			"window.systemColorTheme.dark": "Umožňuje používat tmavé nativní barvy widgetů.",
-			"window.systemColorTheme.default": "Nativní barvy widgetů odpovídají systémovým barvám.",
-			"window.systemColorTheme.light": "Umožňuje používat světlé nativní barvy widgetů."
-		},
 		"vs/workbench/services/userDataProfile/browser/extensionsResource": {
 			"all profiles and disabled": "Všechny profily",
 			"exclude": "Vybrat rozšíření {0}",
@@ -24145,23 +22992,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "Zpět nebo Znovu"
 		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupService": {
-			"join.workingCopyBackups": "Záložní pracovní kopie"
-		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "Kliknutím na Zrušit zastavíte čekání a uložíte nebo vrátíte editory s neuloženými změnami.",
-			"backupBeforeShutdownMessage": "Zálohování editorů s neuloženými změnami trvá trochu déle…",
-			"backupErrorDetails": "Nejdříve zkuste editory uložit nebo vrátit zpět s neuloženými změnami a pak to zkuste znovu.",
-			"backupTrackerBackupFailed": "Následující editory s neuloženými změnami nebylo možné uložit do záložního umístění.",
-			"backupTrackerConfirmFailed": "Následující editory s neuloženými změnami nebylo možné uložit ani vrátit zpět.",
-			"discardBackupsBeforeShutdown": "Zahazování záloh trvá trochu déle…",
-			"ok": "&&OK",
-			"revertBeforeShutdown": "Vrácení editorů s neuloženými změnami trvá trochu déle…",
-			"saveBeforeShutdown": "Ukládání editorů s neuloženými změnami trvá trochu déle…",
-			"shutdownForceClose": "Přesto zavřít",
-			"shutdownForceQuit": "Přesto ukončit",
-			"shutdownForceReload": "Přesto znovu načíst"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "Do souboru konfigurace pracovního prostoru nelze zapisovat. Otevřete prosím soubor, opravte v něm chyby/upozornění a zkuste to znovu.",
 			"openWorkspaceConfigurationFile": "Otevřít konfiguraci pracovního prostoru",
@@ -24171,16 +23001,6 @@
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "Vztah důvěryhodnosti pracovního prostoru",
 			"workspaceTrustEditorLabelIcon": "Ikona popisku editoru vztahu důvěryhodnosti pracovního prostoru"
-		},
-		"vs/workbench/services/workspaces/electron-browser/workspaceEditingService": {
-			"doNotAskAgain": "Pracovní prostory bez názvu vždy zahodit bez dotazování",
-			"doNotSave": "Ne&&ukládat",
-			"restartExtensionHost.reason": "Otevírá se vícekořenový pracovní prostor.",
-			"save": "&&Uložit",
-			"saveWorkspaceDetail": "Pokud chcete pracovní prostor znovu otevřít, uložte ho.",
-			"saveWorkspaceMessage": "Chcete uložit konfiguraci pracovního prostoru jako soubor?",
-			"workspaceOpenedDetail": "Pracovní prostor je již otevřen v jiném okně. Nejdřív prosím toto okno zavřete a zkuste to znovu.",
-			"workspaceOpenedMessage": "Nepodařilo se uložit pracovní prostor {0}"
 		}
 	}
 }

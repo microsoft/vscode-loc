@@ -2175,8 +2175,10 @@
 			"agentHost.config.customizations.uri": "Plug-In-URI",
 			"agentHost.config.defaultShell.description": "Absoluter Pfad zur ausführbaren Shell-Datei, die von vom Host verwalteten Terminals verwendet wird. Wird normalerweise vom verbundenen VS Code-Client von `terminal.integrated.agentHostProfile.<os>` gepusht (Fallback auf `terminal.integrated.defaultProfile.<os>`). Wenn die Festlegung aufgehoben wird, greift der Agent-Host auf die System-Shell zurück. Nur der Pfad wird unterstützt. `args` und `env` aus dem Workbench-Profil werden noch nicht weitergeleitet. Die Workbench pusht dies nur für den lokalen Agent-Host. Remote-Agent-Hostoperatoren sollten dies direkt im `agent-host-config.json` des Remotecomputers festlegen.",
 			"agentHost.config.defaultShell.title": "Standardshell",
-			"agentHost.config.disableCustomTerminalTool.description": "Wenn diese Option aktiviert ist, verwenden Copilot SDK-Sitzungen das Standardterminalverhalten des SDK anstelle der Außerkraftsetzung des Terminaltools des Agent-Hosts.",
-			"agentHost.config.disableCustomTerminalTool.title": "Verwenden des SDK-Terminaltools"
+			"agentHost.config.enableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use Agent Host's terminal tool override instead of the SDK's default terminal behavior.",
+			"agentHost.config.enableCustomTerminalTool.title": "Use Agent Host Terminal Tool",
+			"agentHost.config.rubberDuck.description": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model.",
+			"agentHost.config.rubberDuck.title": "Rubber Duck Agent"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
 			"agentHost.config.sessionSyncEnabled.description": "Gibt an, ob die Remotesitzungssynchronisierung für die copilot-sdk-CLI aktiviert ist.",
@@ -2205,13 +2207,15 @@
 		},
 		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
 			"chat.agentHost.claudeAgent.path": "Experimentell, nur für lokale Tests. Absoluter Pfad zu einem lokal installierten Paket `@anthropic-ai/claude-agent-sdk`. Wenn diese Option festgelegt ist, wird der Anbieter des Claude-Agents im Agent-Host registriert, und das SDK wird aus diesem Pfad geladen. Erfordert `#chat.agentHost.enabled#`. Der Agent-Hostprozess muss neu gestartet werden, damit Änderungen wirksam werden. Diese Einstellung wird entfernt, sobald das SDK über den Erweiterungs-Marketplace bereitgestellt wurde.",
+			"chat.agentHost.codexAgent.binaryArgs": "Additional command-line arguments passed to `codex app-server`. Primarily useful for debugging (for example, `--log-level=debug`).",
+			"chat.agentHost.codexAgent.codexHome": "Optional override for `$CODEX_HOME`. Controls where the codex binary reads config and writes rollouts. When empty, codex uses its default (`~/.codex`).",
+			"chat.agentHost.codexAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `codex` binary. When set, the Codex agent provider is registered inside the agent host and `codex app-server` is spawned from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
 			"chat.agentHost.otel.captureContent": "Wenn diese Option aktiviert ist, werden Eingabeaufforderungs- und Antwortinhalte in OTel-Span-Attributen eingeschlossen. Legt `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` fest. Datenschutzabhängig: In Umgebungen, die sich über freigegebene Senken erstrecken, nicht aktivieren.",
 			"chat.agentHost.otel.dbSpanExporter.enabled": "Wenn diese Option aktiviert ist, speichert der Agent-Host jede ausgegebene OTel-Spanne in einer lokalen SQLite-Datenbank. Spans können mithilfe des Befehls `Export Agent Host Traces Database` überprüft werden. Kompatibel mit externen Exportern: Spans werden in SQLite geschrieben *und* an die vom Benutzer konfigurierte Senke weitergeleitet.",
 			"chat.agentHost.otel.enabled": "Wenn diese Option aktiviert ist, gibt der Agent-Host OpenTelemetry-Ablaufverfolgungen aus dem Copilot SDK aus. Erfordert `#chat.agentHost.enabled#`. Konfigurieren Sie entweder `#chat.agentHost.otel.otlpEndpoint#`, um Ablaufverfolgungen an einen externen Collector zu senden, oder aktivieren Sie `#chat.agentHost.otel.dbSpanExporter.enabled#`, um sie lokal zu erfassen.",
 			"chat.agentHost.otel.exporterType": "Das exporter-Back-End, das vom Copilot SDK verwendet wird, wenn `#chat.agentHost.otel.enabled#` aktiviert ist. `otlp-grpc` wird in der CLI-Runtime transparent auf `otlp-http` herabgestuft.",
 			"chat.agentHost.otel.otlpEndpoint": "OTLP-Endpunkt-URL, wenn der Exportertyp `otlp-http` oder `otlp-grpc` lautet. Legt `OTEL_EXPORTER_OTLP_ENDPOINT` innerhalb des Agent-Hostprozesses fest.",
 			"chat.agentHost.otel.outfile": "Ausgabepfad für JSON-Spannenzeilen, wenn der Exportertyp `file` ist. Legt `COPILOT_OTEL_FILE_EXPORTER_PATH` fest.",
-			"chat.agentHost.rubberDuck.enabled": "Wenn diese Option aktiviert ist, verwendet der Codieragent einen Rubber-Duck-Kritikunteragenten, um Codeänderungen mithilfe eines ergänzenden Modells zu überprüfen. Erfordert `#chat.agentHost.enabled#`.",
 			"chatAgentHostStarterConfigurationTitle": "Chat-Agent-Hoststarter"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2243,15 +2247,45 @@
 			"agentHost.config.sandbox.windowsEnabled.title": "Sandbox aktiviert (Windows)",
 			"agentHost.config.sandbox.windowsFileSystem.title": "Windows-Sandbox-Dateisystem"
 		},
-		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
-			"sshKbiDefaultPrompt": "Authentication required for {0}@{1}"
+		"vs/platform/agentHost/node/agentHostCommitOperationHandler": {
+			"agentHost.changeset.commit.authExpired": "Authentication is required to generate a commit message. Please sign in to GitHub Copilot and try again.",
+			"agentHost.changeset.commit.authRequired": "Sign in to GitHub Copilot to generate a commit message.",
+			"agentHost.changeset.commit.cancelled": "Commit operation was cancelled.",
+			"agentHost.changeset.commit.committed": "Committed changes with message: `{0}`",
+			"agentHost.changeset.commit.diffFailed": "Could not compute uncommitted changes to generate a commit message.",
+			"agentHost.changeset.commit.emptyMessage": "Generated commit message was empty.",
+			"agentHost.changeset.commit.noChanges": "No uncommitted changes to commit."
+		},
+		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
+			"agentHost.changeset.commit": "Commit"
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "Agent-Host"
 		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationHandler": {
+			"agentHost.changeset.pr.authRequired": "Sign in to GitHub with repository access to create a pull request.",
+			"agentHost.changeset.pr.body": "Created from `{0}` targeting `{1}`.",
+			"agentHost.changeset.pr.cancelled": "Pull request operation was cancelled.",
+			"agentHost.changeset.pr.commitMessage": "Agent Host changes for {0}",
+			"agentHost.changeset.pr.computeChangesFailed": "Could not compute branch changes to create a pull request.",
+			"agentHost.changeset.pr.created": "Created pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.createdDraft": "Created draft pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.existing": "Pull request [#{0}]({1}) already exists.",
+			"agentHost.changeset.pr.noChanges": "There are no branch changes to create a pull request for."
+		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationProvider": {
+			"agentHost.changeset.createDraftPR": "Create Draft Pull Request",
+			"agentHost.changeset.createPR": "Create Pull Request"
+		},
+		"vs/platform/agentHost/node/agentHostRenameCommand": {
+			"agentHostSlashCommand.rename.description": "Rename this chat"
+		},
 		"vs/platform/agentHost/node/agentService": {
 			"agentHost.forkedSessionFallback": "Geforkte Sitzung",
 			"agentHost.forkedTitlePrefix": "Geforkt: "
+		},
+		"vs/platform/agentHost/node/agentSideEffects": {
+			"agentHostRename.renamed": "Renamed: {0}"
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "Genehmigungen",
@@ -2341,6 +2375,50 @@
 		},
 		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
 			"claude.discovered.displayName": "Entdeckt in Claude"
+		},
+		"vs/platform/agentHost/node/codex/codexAgent": {
+			"codex.modelThinkingLevel.description": "Controls how much reasoning effort Codex uses.",
+			"codex.modelThinkingLevel.high": "High",
+			"codex.modelThinkingLevel.low": "Low",
+			"codex.modelThinkingLevel.medium": "Medium",
+			"codex.modelThinkingLevel.minimal": "Minimal",
+			"codex.modelThinkingLevel.title": "Thinking Level",
+			"codex.sessionConfig.additionalDirectories": "Additional Writable Directories",
+			"codex.sessionConfig.additionalDirectories.item": "Directory",
+			"codex.sessionConfig.additionalDirectoriesDescription": "Absolute paths the sandbox is allowed to write to, in addition to the workspace. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.approvalPolicy": "Approvals",
+			"codex.sessionConfig.approvalPolicy.never": "No Escalations",
+			"codex.sessionConfig.approvalPolicy.neverDescription": "Never ask for elevated permission; commands that cannot run in the sandbox are rejected.",
+			"codex.sessionConfig.approvalPolicy.onFailure": "Ask on Failure",
+			"codex.sessionConfig.approvalPolicy.onFailureDescription": "Try commands in the sandbox first, then ask to retry with elevated permission if the sandbox blocks them.",
+			"codex.sessionConfig.approvalPolicy.onRequest": "Ask When Needed",
+			"codex.sessionConfig.approvalPolicy.onRequestDescription": "Ask only when Codex determines a command needs elevated permission.",
+			"codex.sessionConfig.approvalPolicy.untrusted": "Ask More Often",
+			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Ask before more command categories so you can review actions more closely.",
+			"codex.sessionConfig.approvalPolicyDescription": "How Codex requests approval for tool calls.",
+			"codex.sessionConfig.modelReasoningEffort": "Reasoning Effort",
+			"codex.sessionConfig.modelReasoningEffort.high": "High",
+			"codex.sessionConfig.modelReasoningEffort.low": "Low",
+			"codex.sessionConfig.modelReasoningEffort.medium": "Medium",
+			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimal",
+			"codex.sessionConfig.modelReasoningEffortDescription": "Controls how much reasoning effort Codex uses.",
+			"codex.sessionConfig.networkAccessEnabled": "Network",
+			"codex.sessionConfig.networkAccessEnabledDescription": "Allow sandboxed tool calls to make outbound network requests. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.sandboxMode": "Sandbox",
+			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Full Access (Dangerous)",
+			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Tool calls have unrestricted disk and network access.",
+			"codex.sessionConfig.sandboxMode.readOnly": "Read-Only",
+			"codex.sessionConfig.sandboxMode.readOnlyDescription": "Tool calls can read the workspace but cannot modify files.",
+			"codex.sessionConfig.sandboxMode.workspaceWrite": "Workspace Write",
+			"codex.sessionConfig.sandboxMode.workspaceWriteDescription": "Tool calls can read and write within the workspace; network is controlled separately.",
+			"codex.sessionConfig.sandboxModeDescription": "Filesystem and network restrictions applied to tool calls.",
+			"codex.sessionConfig.webSearchMode": "Web Search",
+			"codex.sessionConfig.webSearchMode.cached": "Cached Only",
+			"codex.sessionConfig.webSearchMode.disabled": "Disabled",
+			"codex.sessionConfig.webSearchMode.live": "Live",
+			"codex.sessionConfig.webSearchModeDescription": "Web-search tool availability for the model.",
+			"codexAgent.description": "Codex agent backed by the OpenAI Codex app-server",
+			"codexAgent.displayName": "Codex"
 		},
 		"vs/platform/agentHost/node/copilot/copilotAgent": {
 			"agentHost.sessionConfig.branch": "Branch",
@@ -2507,37 +2585,9 @@
 			"sessionPermissions.allowSession": "In dieser Sitzung zulassen",
 			"sessionPermissions.skip": "Überspringen"
 		},
-		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
-			"ssh.failedToReadPrivateKey": "Failed to read private key file: {0}",
-			"ssh.keyFileAuthRequiresPath": "Key file authentication requires a private key path.",
-			"sshKeyPassphraseName": "SSH Key Passphrase",
-			"sshKeyPassphrasePrompt": "Enter passphrase for SSH key {0}.",
-			"sshProgressCheckingAgent": "Checking for existing agent host...",
-			"sshProgressConnecting": "Establishing SSH connection...",
-			"sshProgressDownloadingCLI": "Installing VS Code CLI on remote...",
-			"sshProgressForwarding": "Connecting to remote agent host...",
-			"sshProgressInstallingCLI": "Checking remote CLI installation...",
-			"sshProgressStartingAgent": "Starting remote agent host..."
-		},
-		"vs/platform/agentHost/node/tunnelHostMainService": {
-			"tunnelHost.log": "Remote Connections"
-		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "Seitenzoom: {0} %",
 			"browserZoomPercent": "{0}%"
-		},
-		"vs/platform/browserView/electron-main/browserViewMainService": {
-			"browser.contextMenu.addElementToChat": "Add Element to Chat",
-			"browser.contextMenu.back": "Back",
-			"browser.contextMenu.copyImage": "Copy Image",
-			"browser.contextMenu.copyImageUrl": "Copy Image URL",
-			"browser.contextMenu.copyLink": "Copy Link",
-			"browser.contextMenu.forward": "Forward",
-			"browser.contextMenu.inspect": "Inspect",
-			"browser.contextMenu.openImageInNewTab": "Open Image in New Tab",
-			"browser.contextMenu.openLinkInExternalBrowser": "Open Link in External Browser",
-			"browser.contextMenu.openLinkInNewTab": "Open Link in New Tab",
-			"browser.contextMenu.reload": "Reload"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
 			"config.policy.duplicate": "\"{0}\" kann nicht registriert werden. Die zugeordnete Richtlinie {1} ist bereits bei {2} registriert.",
@@ -2589,17 +2639,6 @@
 			"moreFiles": "...{0} weitere Dateien werden nicht angezeigt",
 			"okButton": "&&OK",
 			"yesButton": "&&Ja"
-		},
-		"vs/platform/dialogs/electron-browser/dialog": {
-			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDate: {2}\r\nElectron: {3}\r\nElectronBuildId: {4}\r\nChromium: {5}\r\nNode.js: {6}\r\nV8: {7}\r\nOS: {8}"
-		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "Open",
-			"openFile": "Open File",
-			"openFolder": "Open Folder",
-			"openWorkspace": "&&Open",
-			"openWorkspaceTitle": "Open Workspace from File",
-			"selectFolder": "&&Select folder"
 		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "Die Datei ist zu groß, um als unbenannter Editor geöffnet zu werden. Laden Sie sie zuerst in den Datei-Explorer hoch, und versuchen Sie es dann noch mal."
@@ -2811,6 +2850,14 @@
 			"fileSystemNotAllowedError": "Unzureichende Berechtigungen. Wiederholen Sie den Vorgang, und lassen Sie ihn zu.",
 			"fileSystemRenameError": "Das Umbenennen wird nur für Dateien unterstützt."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "Das Verzeichnis ist nicht leer.",
+			"fileExceedsStorageQuota": "Die Datei überschreitet das verfügbare Speicherkontingent.",
+			"fileIsDirectory": "Datei ist Verzeichnis",
+			"fileNotDirectory": "Datei ist kein Verzeichnis",
+			"fileNotExists": "Datei ist nicht vorhanden.",
+			"internal": "Interner Fehler beim IndexedDB-Dateisystemanbieter. ({0})"
+		},
 		"vs/platform/files/common/files": {
 			"sizeB": "{0} B",
 			"sizeGB": "{0} GB",
@@ -2850,10 +2897,6 @@
 		},
 		"vs/platform/files/common/io": {
 			"fileTooLargeError": "Datei zu groß zum Öffnen"
-		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "Failed to move '{0}' to the recycle bin ({1})",
-			"trashFailed": "Failed to move '{0}' to the trash ({1})"
 		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "Kopieren von '{0}' in '{1}' nicht möglich ({2}).",
@@ -2951,68 +2994,12 @@
 		"vs/platform/mcp/common/mcpManagementService": {
 			"not allowed to install": "Dieser MCP-Server kann nicht installiert werden, weil {0}"
 		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "Cancel",
-			"exit": "&&Exit",
-			"mAbout": "About {0}",
-			"mBringToFront": "Bring All to Front",
-			"mEdit": "&&Edit",
-			"mFile": "&&File",
-			"mGoto": "&&Go",
-			"mHelp": "&&Help",
-			"mHide": "Hide {0}",
-			"mHideOthers": "Hide Others",
-			"mMergeAllWindows": "Merge All Windows",
-			"mMinimize": "Minimize",
-			"mMoveTabToNewWindow": "Move Tab to New Window",
-			"mNewTab": "New Tab",
-			"mRun": "&&Run",
-			"mSelection": "&&Selection",
-			"mServices": "Services",
-			"mShowAll": "Show All",
-			"mShowNextTab": "Show Next Tab",
-			"mShowPreviousTab": "Show Previous Tab",
-			"mTerminal": "&&Terminal",
-			"mView": "&&View",
-			"mWindow": "Window",
-			"mZoom": "Zoom",
-			"miCheckForUpdates": "Check for &&Updates...",
-			"miCheckingForUpdates": "Checking for Updates...",
-			"miDownloadUpdate": "D&&ownload Available Update",
-			"miDownloadingUpdate": "Downloading Update...",
-			"miInstallUpdate": "Install &&Update...",
-			"miInstallingUpdate": "Installing Update...",
-			"miNewWindow": "New &&Window",
-			"miPreferences": "&&Preferences",
-			"miQuit": "Quit {0}",
-			"miRestartToUpdate": "Restart to &&Update",
-			"miSwitchWindow": "Switch &&Window...",
-			"quit": "&&Quit",
-			"quitMessage": "Are you sure you want to exit?",
-			"quitMessageMac": "Are you sure you want to quit?"
-		},
 		"vs/platform/meteredConnection/common/meteredConnection.config.contribution": {
 			"meteredConnection": "Steuert, ob die aktuelle Netzwerkverbindung als getaktet behandelt werden soll. Bei getakteten Verbindungen werden automatische Updates, Erweiterungsdownloads und andere im Hintergrund ausgeführte Netzwerkaktivitäten verschoben, um die Datennutzung zu reduzieren.",
 			"meteredConnection.auto": "Getaktete Verbindungen automatisch anhand des Netzwerkstatus des Betriebssystems erkennen.",
 			"meteredConnection.off": "Die Netzwerkverbindung niemals als getaktet behandeln.",
 			"meteredConnection.on": "Die Netzwerkverbindung immer als getaktet behandeln. Automatische Updates und Downloads werden verschoben.",
 			"networkConfigurationTitle": "Netzwerk"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "Cancel",
-			"cantCreateBinFolder": "Unable to install the shell command '{0}'.",
-			"cantUninstall": "Unable to uninstall the shell command '{0}'.",
-			"copyLink": "&&Copy Link",
-			"ok": "&&OK",
-			"openExternalErrorLinkMessage": "An error occurred opening a link in your default browser.",
-			"openExternalProgramErrorMessage": "An error occurred opening an external program.",
-			"sourceMissing": "Unable to find shell script in '{0}'",
-			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
-			"trace.message": "Successfully created the trace file",
-			"trace.ok": "&&OK",
-			"tracing.alreadyInProgress": "A tracing session is already in progress. Use command `\"{0}\"` to stop it first.",
-			"warnEscalation": "{0} will now prompt with 'osascript' for Administrator privileges to install the shell command.",
-			"warnEscalationUninstall": "{0} will now prompt with 'osascript' for Administrator privileges to uninstall the shell command."
 		},
 		"vs/platform/networkFilter/common/networkFilterService": {
 			"networkFilter.blockedByPolicy": "Der Zugriff auf {0} wird durch die Netzwerkdomänenrichtlinie blockiert (siehe Einstellungen für `{1}` und `{2}`)."
@@ -3021,9 +3008,6 @@
 			"severityPrefix.error": "Fehler: {0}",
 			"severityPrefix.info": "Info: {0}",
 			"severityPrefix.warning": "Warnung: {0}"
-		},
-		"vs/platform/process/electron-main/processMainService": {
-			"local": "Local"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "Der Befehl \"{0}\" hat zu einem Fehler geführt.",
@@ -3081,16 +3065,6 @@
 		},
 		"vs/platform/quickinput/browser/tree/quickTree": {
 			"quickInputBox.ariaLabel": "Nehmen Sie eine Eingabe vor, um die Ergebnisse einzugrenzen."
-		},
-		"vs/platform/remoteTunnel/common/remoteTunnel": {
-			"remoteTunnelLog": "Remote Tunnel Service"
-		},
-		"vs/platform/remoteTunnel/node/remoteTunnelService": {
-			"remoteTunnelService.authorizing": "Connecting as {0} ({1})",
-			"remoteTunnelService.building": "Building CLI from sources",
-			"remoteTunnelService.openTunnel": "Opening tunnel",
-			"remoteTunnelService.openTunnelWithName": "Opening tunnel {0}",
-			"remoteTunnelService.serviceInstallFailed": "Failed to install tunnel as a service, starting in session..."
 		},
 		"vs/platform/request/common/request": {
 			"electronFetch": "Steuert, ob die Verwendung der Fetch-Implementierung von Electron anstelle der von Node.js aktiviert werden soll. Alle lokalen Erweiterungen erhalten die Fetch-Implementierung von Electron für die globale Fetch-API.",
@@ -3495,6 +3469,20 @@
 			"cornerRadiusSmall": "Kleiner Eckenradius für kompakte UI-Elemente.",
 			"cornerRadiusXLarge": "Extra großer Eckenradius für besonders auffällige Benutzeroberflächenelemente.",
 			"cornerRadiusXSmall": "Extra kleiner Eckenradius für sehr kompakte Benutzeroberflächenelemente.",
+			"spacingNone": "No spacing (0px).",
+			"spacingSize100": "Spacing of 10px.",
+			"spacingSize120": "Spacing of 12px.",
+			"spacingSize160": "Spacing of 16px.",
+			"spacingSize20": "Spacing of 2px.",
+			"spacingSize200": "Spacing of 20px.",
+			"spacingSize240": "Spacing of 24px.",
+			"spacingSize280": "Spacing of 28px.",
+			"spacingSize320": "Spacing of 32px.",
+			"spacingSize360": "Spacing of 36px.",
+			"spacingSize40": "Spacing of 4px.",
+			"spacingSize400": "Spacing of 40px.",
+			"spacingSize60": "Spacing of 6px.",
+			"spacingSize80": "Spacing of 8px.",
 			"strokeThickness": "Grundstrichstärke für Rahmen und Konturen."
 		},
 		"vs/platform/theme/common/tokenClassificationRegistry": {
@@ -3575,9 +3563,6 @@
 			"updateMode": "Legen Sie fest, ob Sie automatische Updates erhalten möchten. Nach Änderungen ist ein Neustart erforderlich. Die Updates werden von einem Microsoft-Onlinedienst abgerufen.",
 			"updateTitleBar": "Aktualisierungsindikator in der Titelleiste anzeigen."
 		},
-		"vs/platform/update/electron-main/notAvailableUpdateDialog": {
-			"noUpdatesAvailable": "There are currently no updates available."
-		},
 		"vs/platform/userDataProfile/common/userDataProfile": {
 			"defaultProfile": "Standard"
 		},
@@ -3614,218 +3599,36 @@
 		"vs/platform/userDataSync/common/userDataSyncResourceProvider": {
 			"incompatible sync data": "Die Synchronisierungsdaten können nicht analysiert werden, weil sie nicht mit der aktuellen Version kompatibel sind."
 		},
-		"vs/platform/windows/electron-main/windowImpl": {
-			"appGone": "The window terminated unexpectedly",
-			"appGoneDetailEmptyWindow": "We are sorry for the inconvenience. You can open a new empty window to start again.",
-			"appGoneDetailWorkspace": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
-			"appGoneDetails": "The window terminated unexpectedly (reason: '{0}', code: '{1}')",
-			"appStalled": "The window is not responding",
-			"appStalledDetail": "You can reopen or close the window or keep waiting.",
-			"close": "&&Close",
-			"doNotRestoreEditors": "Don't restore editors",
-			"hiddenMenuBar": "You can still access the menu bar by pressing the Alt-key.",
-			"newWindow": "&&New Window",
-			"reopen": "&&Reopen",
-			"wait": "&&Keep Waiting"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"allow": "&&Allow",
-			"cancel": "&&Cancel",
-			"confirmOpenDetail": "The path '{0}' uses a host that is not allowed. Unless you trust the host, you should press 'Cancel'",
-			"confirmOpenMessage": "The host '{0}' was not found in the list of allowed hosts. Do you want to allow it anyway?",
-			"doNotAskAgain": "Permanently allow host '{0}'",
-			"learnMore": "&&Learn More",
-			"ok": "&&OK",
-			"pathNotExistDetail": "The path '{0}' does not exist on this computer.",
-			"pathNotExistTitle": "Path does not exist",
-			"uriInvalidDetail": "The URI '{0}' is not valid and can not be opened.",
-			"uriInvalidTitle": "URI can not be opened"
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "Codearbeitsbereich"
 		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"cancel": "&&Cancel",
-			"clearButtonLabel": "&&Clear",
-			"confirmClearDetail": "This action is irreversible!",
-			"confirmClearRecentsMessage": "Do you want to clear all recently opened files and workspaces?",
-			"newWindow": "New Window",
-			"newWindowDesc": "Opens a new window",
-			"recentFolders": "Recent Folders",
-			"recentFoldersAndWorkspaces": "Recent Folders & Workspaces",
-			"untitledWorkspace": "Untitled (Workspace)",
-			"workspaceName": "{0} (Workspace)"
+		"vs/server/node/remoteExtensionHostAgentCli": {
+			"remotecli": "Remote-CLI"
 		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "&&OK",
-			"workspaceOpenedDetail": "The workspace is already opened in another window. Please close that window first and then try again.",
-			"workspaceOpenedMessage": "Unable to save workspace '{0}'"
+		"vs/server/node/serverEnvironmentService": {
+			"acceptLicenseTerms": "Falls festgelegt, akzeptiert der Benutzer die Serverlizenzbedingungen, und der Server wird ohne Benutzeraufforderung gestartet.",
+			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
+			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
+			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
+			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
+			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
+			"agent-host-port": "The port the agent host WebSocket server should listen on.",
+			"connection-token": "Ein Geheimnis, das in allen Anforderungen enthalten sein muss.",
+			"connection-token-file": "Pfad zu einer Datei, die das Verbindungstoken enthält.",
+			"default-folder": "Der Arbeitsbereichsordner, der geöffnet werden soll, wenn in der Browser-URL keine Eingabe angegeben wird. Ein relativer oder absoluter Pfad, der für das aktuelle Arbeitsverzeichnis aufgelöst wurde.",
+			"default-workspace": "Der Arbeitsbereich, der geöffnet werden soll, wenn in der Browser-URL keine Eingabe angegeben wird. Ein relativer oder absoluter Pfad, der für das aktuelle Arbeitsverzeichnis aufgelöst wurde.",
+			"host": "Der Hostname oder die IP-Adresse, auf die der Server lauschen soll. Wenn nicht festgelegt, wird standardmäßig „localhost“ verwendet.",
+			"port": "Der Port, auf den der Server lauschen soll. Wenn „0“ übergeben wird, wird ein zufälliger freier Port ausgewählt. Wenn ein Bereich im Format „num-num“ übergeben wird, wird ein freier Port aus dem Bereich (einschließlich Ende) ausgewählt.",
+			"reconnection-grace-time": "Überschreiben Sie das Karenzzeitfenster für die Wiederherstellung der Verbindung in Sekunden. Der Standardwert ist 10800 (3 Stunden).",
+			"server-base-path": "Der Pfad, unter dem die Webbenutzeroberfläche und der Codeserver bereitgestellt werden. Wird standardmäßig auf „/“ festgelegt.",
+			"serverDataDir": "Gibt das Verzeichnis an, in dem die Serverdaten gespeichert werden.",
+			"socket-path": "Der Pfad zu einer Socketdatei, auf die der Server lauschen soll.",
+			"start-server": "Starten Sie den Server beim Installieren oder Deinstallieren von Erweiterungen. Wird in Kombination mit „install-extension“, „install-builtin-extension“ und „uninstall-extension“ verwendet.",
+			"telemetry-level": "Legt die anfängliche Telemetrieebene fest. Gültige Ebenen sind: „off“, „crash“, „error“ und „all“. Wenn keine Angabe erfolgt, sendet der Server Telemetriedaten, bis ein Client eine Verbindung herstellt. Anschließend wird die Telemetrieeinstellung für Clients verwendet. Das Festlegen auf „off“ entspricht „--disable-telemetry“.",
+			"without-connection-token": "Wird ohne Verbindungstoken ausgeführt. Verwenden Sie dies nur, wenn die Verbindung auf andere Weise gesichert ist."
 		},
-		"vs/sessions/browser/accountTitleBarState": {
-			"accountSignedInAria": "Als {0} bei {1} angemeldet",
-			"accountSignedInAriaNameOnly": "Angemeldet als \"{0}\"",
-			"agentsSignedOut": "Agenten abgemeldet",
-			"agentsSignedOutAria": "Agenten sind abgemeldet",
-			"copilotAllQuotaReachedAria": "GitHub Copilot-Chat und Inlinevorschlagskontingent erreicht",
-			"copilotChatQuotaReachedAria": "GitHub Copilot-Chatkontingent erreicht",
-			"copilotCompletionsQuotaReachedAria": "GitHub Copilot-Inlinevorschlagskontingent erreicht",
-			"copilotQuotaReached": "Kontingent erreicht",
-			"copilotTokensRemaining": "Verbleibende Token",
-			"copilotTokensRemainingAria": "{0} % verbleibende GitHub Copilot-Token",
-			"copilotUnavailable": "Copilot nicht verfügbar",
-			"copilotUnavailableDisabledAria": "GitHub Copilot ist deaktiviert",
-			"copilotUnavailableUntrustedAria": "GitHub Copilot ist in nicht vertrauenswürdigen Arbeitsbereichen nicht verfügbar",
-			"loadingAccount": "Konto wird geladen …",
-			"loadingAccountAria": "Konto wird geladen",
-			"signInAria": "Bei Ihrem Konto anmelden",
-			"signInLabel": "Anmelden"
-		},
-		"vs/sessions/browser/layoutActions": {
-			"agentPanelCloseIcon": "Symbol zum Schließen des Panels.",
-			"agentSidebarToggleClosedIcon": "Symbol für die Randleiste der Sitzungen, wenn sie geschlossen wird.",
-			"agentSidebarToggleOpenIcon": "Symbol für die Randleiste der Sitzungen beim Öffnen.",
-			"openAndCloseSecondarySidebar": "Sekundäre Seitenleiste öffnen/anzeigen und schließen/ausblenden",
-			"openAndCloseSidebar": "Seitenleiste öffnen/anzeigen und schließen/ausblenden",
-			"secondarySidebarHidden": "Sekundäre Seitenleiste ausgeblendet",
-			"secondarySidebarVisible": "Sekundäre Seitenleiste angezeigt",
-			"sidebarHidden": "Primäre Seitenleiste ausgeblendet",
-			"sidebarVisible": "Primäre Seitenleiste angezeigt",
-			"togglePanel": "Bereichssichtbarkeit umschalten",
-			"toggleSecondarySidebar": "Sichtbarkeit der sekundären Seitenleiste umschalten",
-			"toggleSidebar": "Sichtbarkeit der primären Seitenleiste umschalten",
-			"toggleWindowAlwaysOnTop": "„Immer im Vordergrund“ umschalten"
-		},
-		"vs/sessions/browser/parts/auxiliaryBarPart": {
-			"auxiliaryBarAriaLabel": "Sitzungsdetails"
-		},
-		"vs/sessions/browser/parts/chatCompositeBar": {
-			"closeChat": "Schließen",
-			"renameChat": "Umbenennen",
-			"renameChat.prompt": "Chat umbenennen"
-		},
-		"vs/sessions/browser/parts/menubar.contribution": {
-			"mEdit": "&&Bearbeiten",
-			"mFile": "&&Datei",
-			"mGo": "&&Gehe zu",
-			"mHelp": "&&Hilfe",
-			"mPreferences": "&&Einstellungen",
-			"mTerminal": "&&Terminal",
-			"mView": "&&Anzeigen"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileChangesView": {
-			"changesView.back": "Zurück",
-			"changesView.backLabel": "Zurück",
-			"changesView.changeAdded": "hinzugefügt",
-			"changesView.changeDeleted": "gelöscht",
-			"changesView.changeModified": "Geändert",
-			"changesView.empty": "In dieser Sitzung wurden noch keine Änderungen vorgenommen.",
-			"changesView.rowAria": "{0}, {1}, +{2} -{3}",
-			"changesView.subtitleFilePlural": "{0} Dateien",
-			"changesView.subtitleFileSingular": "1 Datei",
-			"changesView.title": "Sitzungsänderungen"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffColors": {
-			"agentsMobileDiff.addedForeground": "Vordergrundfarbe, die für hinzugefügte Dateien/Zeilen in der mobilen Änderungsliste und diff-Überlagerung im Agent-Sitzungsfenster verwendet wird.",
-			"agentsMobileDiff.deletedForeground": "Vordergrundfarbe, die für gelöschte Dateien/entfernte Zeilen in der mobilen Änderungsliste und diff-Überlagerung im Agent-Sitzungsfenster verwendet wird.",
-			"agentsMobileDiff.modifiedForeground": "Vordergrundfarbe, die für geänderte Dateien in der mobilen Änderungsliste im Agent-Sitzungsfenster verwendet wird."
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffView": {
-			"diffView.back": "Zurück",
-			"diffView.loading": "Wird geladen …",
-			"diffView.nextFile": "Nächste Datei",
-			"diffView.noChanges": "Keine Änderungen in dieser Datei.",
-			"diffView.position": "{0} / {1}",
-			"diffView.prevFile": "Vorherige Datei"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileMultiDiffView": {
-			"multiDiffView.back": "Zurück",
-			"multiDiffView.file": "Datei",
-			"multiDiffView.fileCount": "{0} {1}",
-			"multiDiffView.fileFallback": "Datei",
-			"multiDiffView.files": "Dateien",
-			"multiDiffView.loadError": "Die Änderungen in dieser Datei können nicht geladen werden.",
-			"multiDiffView.loading": "Wird geladen …",
-			"multiDiffView.noChanges": "Keine Änderungen in dieser Datei.",
-			"multiDiffView.toggleFile": "{0} umschalten"
-		},
-		"vs/sessions/browser/parts/mobile/mobilePickerSheet": {
-			"mobilePickerSheet.done": "Fertig",
-			"mobilePickerSheet.doneAriaLabel": "{0} schließen",
-			"mobilePickerSheet.noResults": "Keine Ergebnisse",
-			"mobilePickerSheet.searching": "Suchen..."
-		},
-		"vs/sessions/browser/parts/mobile/mobileSessionFilterChips": {
-			"chipCompleted": "Abgeschlossen",
-			"chipFailed": "Nicht bestanden",
-			"chipInProgress": "In Bearbeitung",
-			"filterChipsLabel": "Sitzungsstatusfilter",
-			"findAriaLabel": "Sitzung suchen",
-			"sortGroup": "Sortieren",
-			"sortGroupAriaLabel": "Sortier- und Gruppenoptionen"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSortGroupSheet": {
-			"sortGroupSheet.close": "Schließen"
-		},
-		"vs/sessions/browser/parts/mobile/mobileTitlebarPart": {
-			"mobileAccount.close": "Schließen",
-			"mobileAccount.loading": "Wird geladen …",
-			"mobileAccount.signedOut": "Nicht angemeldet",
-			"mobileAccount.title": "Konto",
-			"mobileTopBar.account": "Konto",
-			"mobileTopBar.changes": "Änderungen anzeigen",
-			"mobileTopBar.changesTooltip": "{0} Dateien geändert (+{1} -{2})",
-			"mobileTopBar.closeSessions": "Sitzungen schließen",
-			"mobileTopBar.filesChangedCount": "{0} Dateien",
-			"mobileTopBar.filesChangedTooltip": "{0} Dateien geändert",
-			"mobileTopBar.newSession": "Neue Sitzung",
-			"mobileTopBar.newSessionAria": "Neue Sitzung",
-			"mobileTopBar.openSessions": "Sitzungen öffnen",
-			"mobileTopBar.singleFileChanged": "1 Datei",
-			"mobileTopBar.singleFileChangedTooltip": "1 Datei geändert"
-		},
-		"vs/sessions/browser/sessionsSetUpService": {
-			"loading": "Wird geladen",
-			"sessions.aiDisabled.detail": "Aktivieren Sie KI-Features, um Agents weiterhin zu verwenden.",
-			"sessions.aiDisabled.enable": "KI-Funktionen aktivieren",
-			"sessions.signIn": "Melden Sie sich an, um Agents zu verwenden.",
-			"sessions.signingIn": "Anmelden …",
-			"sessions.signingIn.detail": "Schließen Sie die Anmeldung im Browser ab.",
-			"sessions.welcome.detail": "Ihre KI-gesteuerte Codierungserfahrung, die Sie mit Agents erkunden, erstellen und durchlaufen.",
-			"sessions.welcome.getStarted": "Erste Schritte",
-			"sessions.welcome.title": "Willkommen bei {0}",
-			"walkthrough.productName": "{0} – Agents",
-			"welcomeFooter": "Indem Sie fortfahren, stimmen Sie den [Nutzungsbedingungen]({1}) und [Datenschutzbestimmungen]({2}) von {0} zu. {3} Copilot kann [öffentlichen Code]({4}) Vorschläge anzeigen und Ihre Daten zur Verbesserung des Produkts verwenden. Sie können diese [Einstellungen]({5}) jederzeit ändern."
-		},
-		"vs/sessions/browser/widget/openInVSCodeWidget": {
-			"openInVSCodeHover": "In VS Code Editor-Fenster öffnen"
-		},
-		"vs/sessions/common/categories": {
-			"agents": "Agenten"
-		},
-		"vs/sessions/common/contextkeys": {
-			"activeSessionHasGitRepository": "Gibt an, ob der aktiven Sitzung ein Git-Repository zugeordnet ist",
-			"activeSessionHasGitSyncActionRunning": "Gibt an, ob für die aktive Sitzung derzeit eine Git-Synchronisierungsaktion ausgeführt wird.",
-			"activeSessionProviderId": "Die Anbieter-ID der aktiven Sitzung",
-			"activeSessionType": "Der Sitzungstyp der aktiven Sitzung",
-			"activeSessionWorkspaceIsVirtual": "Gibt an, ob der Arbeitsbereich der aktiven Sitzung virtuell ist",
-			"activeSessions": "Der Bezeichner des Bereichs „Aktive Sitzungen“",
-			"chatSessionProviderId": "Die Anbieter-ID einer Sitzung in Kontextmenüüberlagerungen",
-			"editorMaximized": "Gibt an, ob der Editor-Bereich maximiert ist.",
-			"isActiveSessionArchived": "Gibt an, ob die aktive Sitzung archiviert (als erledigt gekennzeichnet) ist.",
-			"multipleSessionsVisible": "Gibt an, ob mehr als eine Sitzung im Raster des Sitzungsteils sichtbar ist",
-			"sessionIsCreated": "Gibt an, ob die Sitzung der Sitzungsansicht erstellt wurde (Chatansicht angezeigt, nicht Neue-Sitzungsansicht)",
-			"sessionIsMaximized": "Gibt an, ob die Sitzungsansicht derzeit im Raster des Sitzungsteils maximiert ist",
-			"sessionIsSticky": "Gibt an, ob sich die Sitzung der Sitzungsansicht im Raster befindet",
-			"sessionSupportsMultipleChats": "Gibt an, ob die Sitzung der Sitzungsansicht mehrere Chats unterstützt",
-			"sessionWorkspacePickerGroup": "Die derzeit aktive Gruppenregisterkarte in der Sitzungsarbeitsbereichsauswahl",
-			"sessionsAquariumActive": "Gibt an, ob das Aquarium-Overlay für Sitzungen aktiv ist",
-			"sessionsCanGoBack": "Gibt an, ob im Navigationsverlauf eine vorherige Sitzung vorhanden ist.",
-			"sessionsCanGoForward": "Gibt an, ob im Navigationsverlauf eine nächste Sitzung vorhanden ist.",
-			"sessionsFocus": "Gibt an, ob der Sitzungsteil den Tastaturfokus besitzt",
-			"sessionsIsPhoneLayout": "Gibt an, ob das aktuelle Layout das Telefonlayout ist",
-			"sessionsKeyboardVisible": "Gibt an, ob die virtuelle Tastatur sichtbar ist",
-			"sessionsVisible": "Gibt an, ob der Sitzungsteil sichtbar ist",
-			"sessionsWelcomeVisible": "Gibt an, ob die Begrüßungsüberlagerung für Sitzungen sichtbar ist"
+		"vs/server/node/serverServices": {
+			"remoteExtensionLog": "Server"
 		},
 		"vs/sessions/common/sizes": {
 			"agents.fontSize.body1": "Primärer Schriftgrad des Textkörpers für das Agent-Fenster.",
@@ -3833,11 +3636,9 @@
 			"agents.fontSize.heading1": "Schriftgrad „Überschrift 1“ für das Agent-Fenster (Titel der Willkommensseite).",
 			"agents.fontSize.heading2": "Schriftgrad „Überschrift 2“ für das Agent-Fenster (Titel).",
 			"agents.fontSize.heading3": "Schriftgrad „Überschrift 3“ für das Agent-Fenster (Untertitel).",
-			"agents.fontSize.label1": "Schriftgrad „Bezeichnung 1“ für das Agent-Fenster (interaktive Registerkarten).",
-			"agents.fontSize.label2": "Schriftgrad „Bezeichnung 2“ für das Agent-Fenster (Hervorhebung der Metadaten).",
-			"agents.fontSize.label3": "Schriftgrad der „Bezeichnung 3“ für das Agent-Fenster (primäre Metadaten).",
-			"agents.fontSize.label4": "Schriftgrad „Bezeichnung 4“ für das Agent-Fenster (Badge).",
-			"agents.fontWeight.medium": "Mittlere Schriftbreite (500) für das Agent-Fenster.",
+			"agents.fontSize.label1": "Label 1 font size for the agents window (section title, tabs).",
+			"agents.fontSize.label2": "Label 2 font size for the agents window (metadata).",
+			"agents.fontSize.label3": "Label 3 font size for the agents window (badge).",
 			"agents.fontWeight.regular": "Normale Schriftbreite (400) für das Agent-Fenster.",
 			"agents.fontWeight.semiBold": "SemiBold-Schriftbreite (600) für das Agent-Fenster."
 		},
@@ -3867,26 +3668,6 @@
 			"agentsUpdateButton.downloadingBackground": "Hintergrundfarbe der Aktualisieren-Schaltfläche zur Anzeige des Downloadfortschritts im Fenster für Agentsitzungen.",
 			"inactiveSessionView.background": "Hintergrundfarbe einer inaktiven Sitzungsansicht im Fenster „Agentsitzungen“.",
 			"inactiveSessionView.foreground": "Vordergrundfarbe einer inaktiven Sitzungsansicht im Fenster „Agentsitzungen“."
-		},
-		"vs/sessions/electron-browser/actions/vscodeActions": {
-			"openInVSCode": "Im Editor öffnen",
-			"openVSCodeWindow": "VS Code-Fenster öffnen"
-		},
-		"vs/sessions/electron-browser/parts/titlebarPart": {
-			"agentsWindowTitle": "Agents"
-		},
-		"vs/sessions/electron-browser/sessions.main": {
-			"join.closeStorage": "Benutzeroberflächenstatus wird gespeichert"
-		},
-		"vs/sessions/services/sessions/common/session": {
-			"sessionWorkspaceGroup.local": "Lokal",
-			"sessionWorkspaceGroup.remote": "Remote"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "Gibt an, ob die aktive Sitzung mehrere Chats unterstützt."
-		},
-		"vs/sessions/services/workspace/browser/workspaceContextService": {
-			"agentsWindow": "Agents-Fenster"
 		},
 		"vs/sessions/contrib/accountMenu/browser/account.contribution": {
 			"accountAvatarAlt": "GitHub-Profilbild für „{0}“",
@@ -5143,34 +4924,6 @@
 		"vs/sessions/contrib/welcome/browser/welcome.contribution": {
 			"resetSessionsWelcome": "Agenten zurücksetzen-Willkommensnachricht"
 		},
-		"vs/server/node/remoteExtensionHostAgentCli": {
-			"remotecli": "Remote-CLI"
-		},
-		"vs/server/node/serverEnvironmentService": {
-			"acceptLicenseTerms": "Falls festgelegt, akzeptiert der Benutzer die Serverlizenzbedingungen, und der Server wird ohne Benutzeraufforderung gestartet.",
-			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
-			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
-			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
-			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
-			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
-			"agent-host-port": "The port the agent host WebSocket server should listen on.",
-			"connection-token": "Ein Geheimnis, das in allen Anforderungen enthalten sein muss.",
-			"connection-token-file": "Pfad zu einer Datei, die das Verbindungstoken enthält.",
-			"default-folder": "Der Arbeitsbereichsordner, der geöffnet werden soll, wenn in der Browser-URL keine Eingabe angegeben wird. Ein relativer oder absoluter Pfad, der für das aktuelle Arbeitsverzeichnis aufgelöst wurde.",
-			"default-workspace": "Der Arbeitsbereich, der geöffnet werden soll, wenn in der Browser-URL keine Eingabe angegeben wird. Ein relativer oder absoluter Pfad, der für das aktuelle Arbeitsverzeichnis aufgelöst wurde.",
-			"host": "Der Hostname oder die IP-Adresse, auf die der Server lauschen soll. Wenn nicht festgelegt, wird standardmäßig „localhost“ verwendet.",
-			"port": "Der Port, auf den der Server lauschen soll. Wenn „0“ übergeben wird, wird ein zufälliger freier Port ausgewählt. Wenn ein Bereich im Format „num-num“ übergeben wird, wird ein freier Port aus dem Bereich (einschließlich Ende) ausgewählt.",
-			"reconnection-grace-time": "Überschreiben Sie das Karenzzeitfenster für die Wiederherstellung der Verbindung in Sekunden. Der Standardwert ist 10800 (3 Stunden).",
-			"server-base-path": "Der Pfad, unter dem die Webbenutzeroberfläche und der Codeserver bereitgestellt werden. Wird standardmäßig auf „/“ festgelegt.",
-			"serverDataDir": "Gibt das Verzeichnis an, in dem die Serverdaten gespeichert werden.",
-			"socket-path": "Der Pfad zu einer Socketdatei, auf die der Server lauschen soll.",
-			"start-server": "Starten Sie den Server beim Installieren oder Deinstallieren von Erweiterungen. Wird in Kombination mit „install-extension“, „install-builtin-extension“ und „uninstall-extension“ verwendet.",
-			"telemetry-level": "Legt die anfängliche Telemetrieebene fest. Gültige Ebenen sind: „off“, „crash“, „error“ und „all“. Wenn keine Angabe erfolgt, sendet der Server Telemetriedaten, bis ein Client eine Verbindung herstellt. Anschließend wird die Telemetrieeinstellung für Clients verwendet. Das Festlegen auf „off“ entspricht „--disable-telemetry“.",
-			"without-connection-token": "Wird ohne Verbindungstoken ausgeführt. Verwenden Sie dies nur, wenn die Verbindung auf andere Weise gesichert ist."
-		},
-		"vs/server/node/serverServices": {
-			"remoteExtensionLog": "Server"
-		},
 		"vs/code/electron-main/app": {
 			"cancel": "&&Nein",
 			"confirmOpenDetail": "Wenn Sie diese Anforderung nicht initiiert haben, handelt es sich möglicherweise um einen Angriffsversuch auf Ihr System. Wenn Sie keine explizite Aktion zum Initiieren dieser Anforderung durchgeführt haben, drücken Sie \"Nein\".",
@@ -5975,6 +5728,7 @@
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbsControl": {
 			"breadcrumbsActive": "Gibt an, ob Breadcrumbs den Fokus besitzen.",
+			"breadcrumbsHasSymbols": "Whether breadcrumbs contain symbol items",
 			"breadcrumbsPossible": "Gibt an, ob der Editor Breadcrumbs anzeigen kann.",
 			"breadcrumbsVisible": "Gibt an, ob Breadcrumbs zurzeit sichtbar sind.",
 			"cmd.copyPath": "Breadcrumbspfad kopieren",
@@ -6718,6 +6472,10 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "Gibt an, ob sich der Tastaturfokus innerhalb des Quick Open-Steuerelements befindet."
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "Reset User Data",
+			"reset user data message": "Would you like to reset your data (settings, keybindings, extensions, snippets and UI State) and reload?"
+		},
 		"vs/workbench/browser/window": {
 			"closeWindowButtonLabel": "&&Fenster schließen",
 			"closeWindowMessage": "Möchten Sie den Assistenten wirklich schließen?",
@@ -7042,6 +6800,7 @@
 			"auxiliaryBarVisible": "Gibt an, ob der Hilfsleiste sichtbar ist.",
 			"bannerFocused": "Gibt an, ob das Banner über den Tastaturfokus verfügt.",
 			"dirtyWorkingCopies": "Gibt an, ob Arbeitskopien mit nicht gespeicherten Änderungen vorhanden sind.",
+			"editorAreaFocus": "Whether the editor area (any editor part) has keyboard focus",
 			"editorIsOpen": "Gibt an, ob ein Editor geöffnet ist.",
 			"editorPartEditorGroupMaximized": "Bearbeitungs-Webpart verfügt über eine maximierte Gruppe",
 			"editorPartModal": "Legt fest, ob der Fokus sich in einem Teil des Modal Editors befindet",
@@ -7283,183 +7042,6 @@
 			"duplicateId": "Eine Ansicht mit der ID {0} ist bereits registriert.",
 			"treeView.notRegistered": "Es wurde keine Strukturansicht mit der ID \"{0}\" registriert.",
 			"views log": "Ansichten"
-		},
-		"vs/workbench/electron-browser/actions/developerActions": {
-			"configureRuntimeArguments": "Laufzeitargumente konfigurieren",
-			"reloadWindowWithExtensionsDisabled": "Mit deaktivierten Erweiterungen neu laden",
-			"revealUserDataFolder": "Benutzerdatenordner einblenden",
-			"showContentTracing": "Inhaltsablaufverfolgung anzeigen",
-			"showGPUInfo": "GPU-Informationen anzeigen",
-			"startTracing": "Ablaufverfolgung starten",
-			"startTracing.ariaLabel": "Leistungsablaufverfolgung wird aufgezeichnet. Klicken Sie hier, um die Aufzeichnung zu beenden.",
-			"startTracing.name": "Leistungsablaufverfolgung",
-			"startTracing.recording": "Aufzeichnungsablaufverfolgung (zum Beenden klicken)",
-			"startTracing.tooltip": "Klicken Sie, um die Aufzeichnung zu beenden",
-			"stopTracing": "Ablaufverfolgung beenden",
-			"stopTracing.button": "&&Ablaufverfolgung neu starten und aktivieren",
-			"stopTracing.detail": "Dies kann bis zu einer Minute dauern.",
-			"stopTracing.message": "Es wird keine Ablaufverfolgungssitzung ausgeführt. Verwenden Sie „Developer: Ablaufverfolgung starten“ oder starten Sie mit einem Argument „--trace“, um die Ablaufverfolgung zu starten.",
-			"stopTracing.title": "Ablaufverfolgungsdatei wird erstellt …",
-			"toggleDevTools": "Entwicklungstools umschalten"
-		},
-		"vs/workbench/electron-browser/actions/installActions": {
-			"install": "Befehl \"{0}\" in \"PATH\" installieren",
-			"shellCommand": "Shellbefehl",
-			"successFrom": "Der Shellbefehl \"{0}\" wurde erfolgreich aus \"PATH\" deinstalliert.",
-			"successIn": "Der Shellbefehl \"{0}\" wurde erfolgreich in \"PATH\" installiert.",
-			"uninstall": "Befehl \"{0}\" aus \"PATH\" deinstallieren"
-		},
-		"vs/workbench/electron-browser/actions/windowActions": {
-			"close": "Fenster schließen",
-			"closeActive": "Aktives Fenster schließen",
-			"closeOtherWindows": "Andere Fenster schließen",
-			"closeWindow": "Fenster schließen",
-			"current": "Aktuelles Fenster",
-			"disableWindowAlwaysOnTop": "„Immer im Vordergrund“ deaktivieren",
-			"enableWindowAlwaysOnTop": "„Immer im Vordergrund“ aktivieren",
-			"miCloseWindow": "&&Fenster schließen",
-			"miZoomIn": "&&Vergrößern",
-			"miZoomOut": "&&Verkleinern",
-			"miZoomReset": "&&Zoom zurücksetzen",
-			"quickSwitchWindow": "Schneller Fensterwechsel ...",
-			"switchToMainWindow": "Zum Hauptfenster wechseln",
-			"switchWindow": "Fenster wechseln ...",
-			"switchWindowPlaceHolder": "Wählen Sie ein Fenster aus, zu dem gewechselt werden soll.",
-			"toggleWindowAlwaysOnTop": "„Fenster immer im Vordergrund“ umschalten",
-			"windowDirtyAriaLabel": "{0}, Fenster mit nicht gespeicherten Änderungen",
-			"windowGroup": "Fenstergruppe",
-			"zoomIn": "Vergrößern",
-			"zoomOut": "Verkleinern",
-			"zoomReset": "Zoom zurücksetzen"
-		},
-		"vs/workbench/electron-browser/desktop.contribution": {
-			"application.shellEnvironmentResolutionTimeout": "Steuert das Timeout in Sekunden, bevor der Auflösungsvorgang der Shell-Umgebung nicht wiederholt wird, wenn die Anwendung noch nicht über einen Terminal gestartet wurde. Weitere Informationen finden Sie in unserer [Dokumentation](https://go.microsoft.com/fwlink/?linkid=2149667).",
-			"argv.crashReporterId": "Eindeutige ID zum Korrelieren von Absturzberichten, die von dieser App-Instanz gesendet werden.",
-			"argv.disableChromiumSandbox": "Deaktiviert die Chromium-Sandbox. Dies ist nützlich, wenn VS Code unter Linux mit erhöhten Rechten und unter AppLocker auf Windows ausgeführt werden.",
-			"argv.disableHardwareAcceleration": "Deaktiviert die Hardwarebeschleunigung. Ändern Sie diese Option NUR bei Grafikproblemen.",
-			"argv.disableLcdText": "Deaktiviert das Antialiasing von LCD-Schriftarten.",
-			"argv.enableCrashReporter": "Ermöglicht das Deaktivieren der Absturzberichterstellung. Bei Änderung des Werts muss die App neu gestartet werden.",
-			"argv.enableRDPDisplayTracking": "Stellt sicher, dass maximierte Fenster bei einer RDP-Neuverbindung wieder richtig dargestellt werden",
-			"argv.enebleProposedApi": "Aktivieren Sie vorgeschlagene APIs für eine Liste mit Erweiterungs-IDs (z. B. \"vscode.git\"). Vorgeschlagene APIs sind instabil und können jederzeit ohne Warnung unterbrochen werden. Diese Option sollte nur zum Entwickeln und Testen von Erweiterungen festgelegt werden.",
-			"argv.force-renderer-accessibility": "Erzwingt, dass der Renderer zugänglich ist. Ändern Sie diese Einstellung NUR, wenn Sie eine Sprachausgabe unter Linux verwenden. Auf anderen Plattformen ist der Renderer automatisch zugänglich. Dieses Flag wird automatisch verwendet, wenn Sie „editor.accessibilitySupport: on“ festgelegt haben.",
-			"argv.forceColorProfile": "Ermöglicht das Überschreiben des zu verwendenden Farbprofils. Wenn Farben nicht richtig angezeigt werden, legen Sie diese Einstellung auf „srgb“ fest, und führen Sie einen Neustart durch.",
-			"argv.jsFlags": "Gibt zu übergebende V8-JavaScript-Engine-Flags an (z. B. \"--max-old-space-size=4096\"). Diese Flags werden auf den Hauptprozess, Renderer- und Hilfsprogrammprozesse angewendet.",
-			"argv.locale": "Die zu verwendende Anzeigesprache. Um eine andere Sprache auszuwählen, muss das zugehörige Sprachpaket installiert sein.",
-			"argv.logLevel": "Protokolliergrad zu verwenden. Standardwert ist \"Info\". Zulässige Werte sind \"Fehler\", \"warnen\", \"Info\", \"debug\", \"verfolgen\", \"aus\".",
-			"argv.passwordStore": "Konfiguriert das Back-End, das zum Speichern von Geheimnissen unter Linux verwendet wird. Dieses Argument wird unter Windows und macOS ignoriert.",
-			"argv.proxyBypassList": "Umgeht jeden angegebenen Proxy für die angegebene, durch Semikolon getrennte Liste von Hosts. Der Beispielwert „<local>;*.microsoft.com;*foo.com;1.2.3.4:5678“ verwendet den Proxyserver für alle Hosts mit Ausnahme von lokalen Adressen (localhost, 127.0.0.1 usw.), microsoft.com-Subdomains, Hosts, die das Suffix foo.com enthalten, und alles unter 1.2.3.4:5678",
-			"argv.remoteDebuggingPort": "Gibt den Port an, der für das Remotedebuggen verwendet werden soll.",
-			"argv.useInMemorySecretStorage": "Stellt sicher, dass als Geheimnisspeicher anstelle des Anmeldeinformationsspeichers des Betriebssystems ein In-Memory-Speicher verwendet wird. Dieser wird häufig beim Ausführen von VS Code-Erweiterungstests oder bei Schwierigkeiten mit dem Anmeldeinformationsspeicher eingesetzt.",
-			"closeWhenEmpty": "Steuert, ob beim Schließen des letzten Editors auch das Fenster geschlossen werden soll. Diese Einstellung wird nur auf Fenster angewendet, die keine Ordner anzeigen.",
-			"confirmSaveUntitledWorkspace": "Steuert, ob in einem Bestätigungsdialogfeld die Aufforderung angezeigt wird, einen geöffneten unbenannten Arbeitsbereich im Fenster zu speichern oder zu verwerfen, wenn Sie zu einem anderen Arbeitsbereich wechseln. Durch Deaktivieren des Bestätigungsdialogfelds, wird der unbenannte Arbeitsbereich immer verworfen.",
-			"controlsStyle": "Passen Sie die Darstellung der Fenstersteuerelemente so an, dass sie vom Betriebssystem nativ, benutzerdefiniert gezeichnet oder ausgeblendet werden. Änderungen werden erst nach einem Neustart angewendet.",
-			"dialogStyle": "Passen Sie das Erscheinungsbild von Dialogen so an – sie können wählen, ob sie das vom Betriebssystem vorgegebene oder ein benutzerdefiniertes Aussehen haben sollen.",
-			"enableCrashReporterDeprecated": "Wenn diese Einstellung FALSE ist, werden unabhängig vom Wert der neuen Einstellung keine Telemetriedaten gesendet. Veraltet, weil sie in der {0}-Einstellung kombiniert wird.",
-			"keyboardConfigurationTitle": "Tastatur",
-			"mergeAllWindowTabs": "Alle Fenster zusammenführen",
-			"miExit": "&&Beenden",
-			"moveWindowTabToNewWindow": "Fensterregisterkarte in neues Fenster verschieben",
-			"newTab": "Neue Fensterregisterkarte",
-			"newWindowDimensions": "Steuert die Abmessungen beim Öffnen eines neuen Fensters, wenn bereits mindestens ein Fenster geöffnet ist. Beachten Sie, dass sich diese Einstellung nicht auf das zuerst geöffnete Fenster auswirkt. Das erste Fenster wird immer mit der Größe und Position wiederhergestellt, mit der es geschlossen wurde.",
-			"openWithoutArgumentsInNewWindow": "Steuert, ob ein neues leeres Fenster geöffnet werden soll, wenn eine zweite Instanz ohne Argumente gestartet wird, oder ob die letzte ausgeführte Instanz den Fokus erhalten soll.\r\nBeachten Sie, dass diese Einstellung in manchen Fällen möglicherweise ignoriert wird (z.B. wenn die Befehlszeilenoption `--new-window` oder `--reuse-window` verwendet wird). ",
-			"restoreFullscreen": "Steuert, ob ein Fenster im Vollbildmodus wiederhergestellt wird, wenn es im Vollbildmodus beendet wurde.",
-			"restoreWindows": "Steuert, wie Fenster und Editoren darin beim Öffnen wiederhergestellt werden.",
-			"security.promptForLocalFileProtocolHandling": "Wenn diese Option aktiviert ist, fordert ein Dialogfeld immer eine Bestätigung an, wenn eine lokale Datei oder ein lokaler Arbeitsbereich über einen Protokollhandler geöffnet wird.",
-			"security.promptForRemoteFileProtocolHandling": "Wenn diese Option aktiviert ist, fordert ein Dialogfeld immer eine Bestätigung an, wenn eine Remotedatei oder ein Remotearbeitsbereich über einen Protokollhandler geöffnet wird.",
-			"showNextWindowTab": "Nächste Fensterregisterkarte anzeigen",
-			"showPreviousTab": "Vorherige Fensterregisterkarte anzeigen",
-			"telemetry.enableCrashReporting": "Aktivieren Sie die Erfassung von Absturzberichten. Dies hilft uns, die Stabilität zu verbessern. \r\nDiese Option erfordert einen Neustart, um wirksam zu werden.",
-			"telemetryConfigurationTitle": "Telemetrie",
-			"titleBarStyle": "Passen Sie die Darstellung der Titelleiste des Fensters so an, dass sie entweder dem Betriebssystem entspricht oder benutzerdefiniert ist. Änderungen werden erst nach einem Neustart angewendet.",
-			"toggleWindowTabsBar": "Leiste mit Fensterregisterkarten umschalten",
-			"touchbar.enabled": "Aktiviert die macOS-Touchbar-Schaltflächen der Tastatur, sofern verfügbar.",
-			"touchbar.ignored": "Eine Menge von Bezeichnern für Einträge in der Touchleiste, die nicht angezeigt werden sollen (Beispiel: workbench.action.navigateBack).",
-			"window.border.color": "{0}: spezifische Farbe im Hex-, RGB-, RGBA-, HSL-, HSLA-Format",
-			"window.border.default": "{0}: Farbdesigneinstellungen beachten, Fallback auf Windows-Einstellungen",
-			"window.border.off": "{0}: Rahmenfarben deaktivieren",
-			"window.border.prefix": "Steuert die Rahmenfarbe des Fensters:",
-			"window.border.suffix": "Verwenden Sie {0}, um verschiedene Farben für aktive und inaktive Fenster festzulegen. Diese Einstellung wird ignoriert, wenn {1} auf {2} festgelegt ist.",
-			"window.border.system": "{0}: Nur Windows-Einstellungen beachten",
-			"window.clickThroughInactive": "Sofern aktiviert, wird bei einem Klick auf ein inaktives Fenster sowohl das Fenster aktiviert als auch das Element unter der Maus ausgelöst, wenn es angeklickt werden kann. Ist diese Option deaktiviert, wird sie nur durch Klicken auf eine beliebige Stelle in einem inaktiven Fenster aktiviert, und es ist ein zweiter Klick auf das Element erforderlich.",
-			"window.customTitleBarVisibility": "Anpassen, wann die benutzerdefinierte Titelleiste angezeigt werden soll. Die benutzerdefinierte Titelleiste kann ausgeblendet werden, wenn sie sich im Vollbildmodus mit „windowed“ befindet. Die benutzerdefinierte Titelleiste kann nur im Nicht-Vollbildmodus mit „never“ ausgeblendet werden, wenn {0} auf „nativ“ eingestellt ist.",
-			"window.customTitleBarVisibility.auto": "Ändert automatisch die Sichtbarkeit der benutzerdefinierten Titelleiste.",
-			"window.customTitleBarVisibility.never": "Benutzerdefinierte Titelleiste ausblenden, wenn „{0}“ auf „nativ“ festgelegt ist.",
-			"window.customTitleBarVisibility.windowed": "Benutzerdefinierte Titelleiste im Vollbildmodus ausblenden. Wenn nicht im Vollbildmodus, die Sichtbarkeit der benutzerdefinierten Titelleiste automatisch ändern.",
-			"window.doubleClickIconToClose": "Wenn diese Einstellung aktiviert ist, wird das Fenster geschlossen, wenn auf das Anwendungssymbol in der Titelleiste doppelt geklickt wird. Das Fenster kann nicht vom Symbol gezogen werden. Diese Einstellung ist nur wirksam, wenn {0} auf \"benutzerdefiniert\" festgelegt ist.",
-			"window.menuStyle": "Passen Sie den Stil des Kontextmenüs so an, dass er entweder dem Betriebssystem entspricht, benutzerdefiniert ist oder der in {0} definierte Stil der Titelleiste übernommen wird. Dies wirkt sich auch auf das Erscheinungsbild des Kontextmenüs aus. Änderungen werden erst nach einem Neustart angewendet.",
-			"window.menuStyle.custom": "Verwenden Sie das benutzerdefinierte Menü.",
-			"window.menuStyle.custom.mac": "Verwenden Sie das benutzerdefinierte Kontextmenü.",
-			"window.menuStyle.inherit": "Passt den Menüstil an den in {0} definierten Stil der Titelleiste an.",
-			"window.menuStyle.inherit.mac": "Passt den Stil des Kontextmenüs an den in {0} definierten Stil der Titelleiste an.",
-			"window.menuStyle.mac": "Passen Sie das Erscheinungsbild des Kontextmenüs so an, dass es entweder dem Betriebssystem entspricht, benutzerdefiniert ist oder der in {0} definierte Stil der Titelleiste übernommen wird.",
-			"window.menuStyle.native": "Verwenden Sie das native Menü. Dies wird ignoriert, wenn {0} auf {1} festgelegt ist.",
-			"window.menuStyle.native.mac": "Verwenden Sie das native Kontextmenü.",
-			"window.nativeFullScreen": "Steuert, ob unter macOS der native Vollbildmodus verwendet werden soll. Deaktivieren Sie diese Option, um zu verhindern, dass macOS beim Übergang in den Vollbildmodus einen neuen Bereich erstellt.",
-			"window.nativeTabs": "Aktiviert macOS-native Fensterregisterkarten. Beachten Sie, dass zur Übernahme der Änderungen ein vollständiger Neustart erforderlich ist, und dass native Registerkarten einen benutzerdefinierten Titelleistenstil deaktivieren (sofern konfiguriert).",
-			"window.newWindowDimensions.default": "Hiermit werden neue Fenster in der Mitte des Bildschirms geöffnet.",
-			"window.newWindowDimensions.fullscreen": "Hiermit werden neue Fenster im Vollbildmodus geöffnet.",
-			"window.newWindowDimensions.inherit": "Hiermit werden neue Fenster mit denselben Abmessungen wie das zuletzt aktive Fenster geöffnet.",
-			"window.newWindowDimensions.maximized": "Hiermit werden Fenster maximiert geöffnet.",
-			"window.newWindowDimensions.offset": "Hiermit werden neue Fenster mit denselben Abmessungen wie das zuletzt aktive Fenster an versetzter Stelle geöffnet.",
-			"window.openWithoutArgumentsInNewWindow.off": "Hiermit erhält die letzte aktive (ausgeführte) Instanz den Fokus.",
-			"window.openWithoutArgumentsInNewWindow.on": "Hiermit wird ein neues leeres Fenster geöffnet.",
-			"window.reopenFolders.all": "Alle Fenster werden erneut geöffnet, sofern keine Ordner, Arbeitsbereiche oder Dateien geöffnet sind (z. B. über die Befehlszeile). Wenn eine Datei geöffnet wird, ersetzt sie alle Editoren, die zuvor in einem Fenster geöffnet wurden.",
-			"window.reopenFolders.folders": "Alle Fenster mit geöffneten Ordnern oder Arbeitsbereichen werden erneut geöffnet, sofern keine Ordner, Arbeitsbereiche oder Dateien geöffnet werden (z. B. über die Befehlszeile). Wenn eine Datei geöffnet wird, ersetzt sie alle Editoren, die zuvor in einem Fenster geöffnet wurden.",
-			"window.reopenFolders.none": "Fenster nie erneut öffnen: Sofern kein Ordner oder Arbeitsbereich geöffnet wird (z. B. über die Befehlszeile), wird ein leeres Fenster angezeigt.",
-			"window.reopenFolders.one": "Das zuletzt aktive Fenster wird erneut geöffnet, sofern keine Ordner, Arbeitsbereiche oder Dateien geöffnet werden (z. B. über die Befehlszeile). Wenn eine Datei geöffnet wird, ersetzt sie alle Editoren, die zuvor in einem Fenster geöffnet wurden.",
-			"window.reopenFolders.preserve": "Hiermit werden alle Fenster immer erneut geöffnet. Wenn ein Ordner oder Arbeitsbereich (z. B. über die Befehlszeile) geöffnet wird, erfolgt die Öffnung in einem neuen Fenster, sofern der Ordner oder Arbeitsbereich nicht bereits offen ist. Wenn Dateien geöffnet werden, werden sie in einem der wiederhergestellten Fenster zusammen mit Editoren geöffnet, die zuvor geöffnet wurden.",
-			"windowConfigurationTitle": "Fenster",
-			"zoomLevel": "Passen Sie den Standardzoomfaktor für alle Fenster an. Jedes Inkrement über „0“ (z. B. „1“) oder darunter (z. B. „-1“) steht für das Vergrößern oder Verkleinern von „20 %“. Sie können auch Dezimalstellen eingeben, um den Zoomfaktor mit einer feineren Granularität anzupassen. Informationen zum Konfigurieren, ob die Befehle „Vergrößern“ und „Verkleinern“ den Zoomfaktor auf alle Fenster oder nur auf das aktive Fenster anwenden, finden Sie unter {0}.",
-			"zoomPerWindow": "Steuert, ob die Befehle „Vergrößern“ und „Verkleinern“ den Zoomfaktor auf alle Fenster oder nur auf das aktive Fenster anwenden. Informationen zum Konfigurieren eines Standardzoomfaktors für alle Fenster finden Sie {0} unter."
-		},
-		"vs/workbench/electron-browser/desktop.main": {
-			"join.closeStorage": "Benutzeroberflächenstatus wird gespeichert"
-		},
-		"vs/workbench/electron-browser/parts/dialogs/dialogHandler": {
-			"copy": "&&Kopieren",
-			"okButton": "OK"
-		},
-		"vs/workbench/electron-browser/window": {
-			"appRootWarning.banner": "Dateien, die Sie im Installationsordner (\"{0}\") speichern, werden möglicherweise ohne Warnung zur Updatezeit ÜBERSCHRIEBEN oder IRREVERSIBEL GELÖSCHT.",
-			"configure": "Konfigurieren",
-			"downloadArmBuild": "Herunterladen",
-			"keychainWriteError": "Fehler beim Schreiben von Anmeldeinformationen in die Keychain. Fehler: „{0}“.",
-			"learnMore": "Weitere Informationen",
-			"loginButton": "&&Anmelden",
-			"macoseolmessage": "{0} auf {1} erhält bald keine Updates mehr. Erwägen Sie ein Upgrade Ihrer macOS-Version.",
-			"password": "Kennwort",
-			"proxyAuthRequired": "Proxyauthentifizierung erforderlich",
-			"proxyDetail": "Für den Proxy \"{0}\" sind ein Benutzername und ein Kennwort erforderlich.",
-			"rememberCredentials": "Anmeldeinformationen speichern",
-			"resolveShellEnvironment": "Shellumgebung wird aufgelöst ...",
-			"restart": "Neu starten",
-			"runningAsRoot": "Es wird nicht empfohlen, {0} als Root-Benutzer auszuführen.",
-			"runningTranslated": "Sie führen eine emulierte Version von \"{0}\" aus. Laden Sie die native arm64-Version von {0}-Build für Ihren Computer herunter, um eine bessere Leistung zu erzielen.",
-			"sharedProcessCrash": "Ein freigegebener Hintergrundprozess wurde unerwartet beendet. Starten Sie die Anwendung neu, um sie wiederherzustellen.",
-			"showArgvParseWarning": "Die Runtimeargumentdatei \"argv.json\" enthält Fehler. Korrigieren Sie sie, und führen Sie einen Neustart durch.",
-			"showArgvParseWarningAction": "Datei öffnen",
-			"shutdownErrorClose": "Ein unerwarteter Fehler hat das Schließen des Fensters verhindert.",
-			"shutdownErrorDetail": "Fehler: {0}",
-			"shutdownErrorLoad": "Unerwarteter Fehler beim Ändern des Arbeitsbereichs.",
-			"shutdownErrorQuit": "Aufgrund eines unerwarteten Fehlers wurde das Beenden der Anwendung verhindert.",
-			"shutdownErrorReload": "Ein unerwarteter Fehler hat das erneute Laden des Fensters verhindert.",
-			"shutdownForceClose": "Trotzdem schließen",
-			"shutdownForceLoad": "Trotzdem ändern",
-			"shutdownForceQuit": "Trotzdem beenden",
-			"shutdownForceReload": "Trotzdem erneut laden",
-			"shutdownTitleClose": "Das Schließen des Fensters dauert etwas länger...",
-			"shutdownTitleLoad": "Das Ändern des Arbeitsbereichs dauert etwas länger...",
-			"shutdownTitleQuit": "Das Beenden der Anwendung dauert etwas länger...",
-			"shutdownTitleReload": "Das erneute Laden des Fensters dauert etwas länger...",
-			"status.windowZoom": "Fensterzoom",
-			"troubleshooting": "Leitfaden zur Problembehandlung",
-			"username": "Benutzername",
-			"willShutdownDetail": "Die folgenden Vorgänge werden noch ausgeführt: \r\n{0}",
-			"zoomIn": "Vergrößern",
-			"zoomNumber": "Zoomfaktor: {0} ({1}%)",
-			"zoomOut": "Verkleinern",
-			"zoomReset": "Zurücksetzen",
-			"zoomSettings": "Einstellungen"
 		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
 			"accessibility.chat.showCheckmarks": "Steuert, ob Häkchensymbole bei abgeschlossenen Toolaufrufen und anderen einklappbaren Elementen in Chatantworten angezeigt werden.",
@@ -7839,300 +7421,6 @@
 			"browserView.shareWithAgent.message": "Diese Browserseite für den Agent freigeben?",
 			"browserView.shareWithAgent.title": "Für Agent freigeben?"
 		},
-		"vs/workbench/contrib/browserView/electron-browser/browserEditor": {
-			"browser.editorFocused": "Gibt an, ob der Browser-Editor fokussiert ist.",
-			"browser.hasError": "Gibt an, ob der Browser einen Ladefehler hat",
-			"browser.hasUrl": "Gibt an, ob der Browser eine URL geladen hat",
-			"browserCategory": "Browser"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserView.contribution": {
-			"browser.editorLabel": "Browser"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures": {
-			"browser.clearEphemeralStorageAction": "Speicher löschen (flüchtig)",
-			"browser.clearGlobalStorageAction": "Speicher löschen (global)",
-			"browser.clearWorkspaceStorageAction": "Speicher löschen (Arbeitsbereich)",
-			"browser.dataStorage": "Steuert, wie Browserdaten (Cookies, Cache, Speicher) zwischen Browseransichten geteilt werden.\r\n\r\n**Hinweis**: In nicht vertrauenswürdigen Arbeitsbereichen wird diese Einstellung ignoriert, und es wird immer der `ephemeral` Speicher verwendet.",
-			"browser.dataStorage.ephemeral": "Jede Browseransicht hat eine eigene Sitzung, die beim Schließen bereinigt wird.",
-			"browser.dataStorage.global": "Alle Browseransichten teilen sich eine einzige persistente Sitzung über alle Arbeitsbereiche hinweg.",
-			"browser.dataStorage.workspace": "Browseransichten innerhalb desselben Arbeitsbereichs teilen sich eine persistente Sitzung. Wenn kein Arbeitsbereich geöffnet ist, wird der `ephemeral` Speicher verwendet.",
-			"browser.storageScope": "Der Speicherbereich der aktuellen Browseransicht"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDevToolsFeature": {
-			"browser.devToolsOpen": "Gibt an, ob die Entwicklertools für die aktuelle Browseransicht geöffnet sind.",
-			"browser.toggleDevToolsAction": "Entwicklertools umschalten"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures": {
-			"browser.addAreaScreenshotToChatAction": "Screenshot des Bereichs zum Chat hinzufügen",
-			"browser.addConsoleLogsToChatAction": "Konsolenprotokolle zum Chat hinzufügen",
-			"browser.addElementToChatAction": "Element zum Chat hinzufügen",
-			"browser.addFullPageScreenshotToChatAction": "Ganzseitigen Screenshot zum Chat hinzufügen (experimentell)",
-			"browser.addScreenshotToChatAction": "Screenshot zum Chat hinzufügen",
-			"browser.agentSharingContentWarning.detail": "Seiten können versteckte Eingabeaufforderungen enthalten, die das Verhalten von Agents beeinflussen. Überprüfen Sie die angehängten Inhalte vor dem Senden sorgfältig.",
-			"browser.agentSharingContentWarning.dontShowAgain": "Nicht mehr anzeigen",
-			"browser.agentSharingContentWarning.message": "Seien Sie vorsichtig, wenn Sie Inhalte aus nicht vertrauenswürdigen Quellen anhängen.",
-			"browser.agentSharingContentWarning.ok": "&&OK",
-			"browser.areaSelectionActive": "Gibt an, ob die Bereichsauswahl derzeit aktiv ist",
-			"browser.chatActionsSubmenu": "Zum Chat hinzufügen",
-			"browser.elementSelectionActive": "Gibt an, ob die Elementauswahl aktuell aktiv ist.",
-			"browser.enableChatTools": "Wenn aktiviert, können Chatkräfte Browsertools verwenden, um Seiten im integrierten Browser zu öffnen und mit ihnen zu interagieren.",
-			"browser.experimentalUserTools.enabled": "Wenn diese Option aktiviert ist, stehen experimentelle Benutzertools im Menü „Zu Chat hinzufügen“ des integrierten Browsers zur Verfügung.",
-			"browser.shareWithAgent": "Für Agent freigeben",
-			"browser.sharingWithAgent": "Mit Agent teilen",
-			"browser.unshareWithAgent": "Nicht mehr für Agent freigeben",
-			"browserAreaScreenshot": "Screenshot des Browserbereichs",
-			"browserCategory": "Browser",
-			"browserFullPageScreenshot": "Screenshot der vollständigen Browserseite",
-			"browserScreenshot": "Screenshot des Browsers",
-			"consoleLogs": "Konsolenprotokolle",
-			"workbench.browser.agentHostChatToolsEnabled": "Wenn diese Option aktiviert ist, werden integrierte Browsertools als vom Client bereitgestellte Tools für Agenthostsitzungen im Sitzungsfenster verfügbar gemacht. Erfordert {0} und {1}."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures": {
-			"browser.device.dimensionsLabel": "Dimensionen:",
-			"browser.device.dprAriaLabel": "Gerätepixelverhältnis",
-			"browser.device.dprLabel": "DPR:",
-			"browser.device.dprTitle": "Gerätepixelverhältnis (leer = Systemstandard)",
-			"browser.device.heightAriaLabel": "Viewport-Höhe",
-			"browser.device.inputPlaceholderAuto": "automatisch",
-			"browser.device.scaleLabel": "Skalierung:",
-			"browser.device.swapDimensionsTitle": "Dimensionen makeln",
-			"browser.device.widthAriaLabel": "Viewport-Breite",
-			"browser.device.zoomAriaLabel": "Zoomfaktor",
-			"browser.device.zoomAuto": "Auto ({0} %)",
-			"browser.devicePresets.mobileTag": "Mobil",
-			"browser.devicePresets.placeholder": "Gerätevoreinstellung auswählen",
-			"browser.emulationHasUserAgent": "Gibt an, ob die Browseremulation über einen benutzerdefinierten Benutzer-Agent verfügt",
-			"browser.emulationIsMobile": "Gibt an, ob sich die Browseremulation im mobilen Modus befindet",
-			"browser.emulationToolbar.close": "Schließen",
-			"browser.emulationToolbar.mobile": "Mobile Emulation",
-			"browser.emulationToolbar.presets": "Voreinstellung anwenden …",
-			"browser.emulationToolbar.reset": "Zurücksetzen",
-			"browser.emulationToolbar.userAgent": "Benutzer-Agent festlegen …",
-			"browser.emulationToolbarVisible": "Gibt an, ob die Browseremulations-Symbolleiste sichtbar ist",
-			"browser.hideEmulationToolbar": "Emulations-Symbolleiste ausblenden",
-			"browser.pickDevicePreset": "Gerät emulieren …",
-			"browser.resetEmulation": "Emulation zurücksetzen",
-			"browser.setUserAgent": "Benutzer-Agent emulieren …",
-			"browser.showEmulationToolbar": "Emulations-Symbolleiste anzeigen",
-			"browser.toggleMobileEmulation": "Mobile Emulation umschalten",
-			"browser.userAgent.prompt": "Zeichenfolge des Benutzer-Agenten (für VS Code Standard leer lassen)"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures": {
-			"browser.certCloseTab": "Registerkarte schließen",
-			"browser.certDetailsHeading": "Zertifikatdetails",
-			"browser.certError": "Fehler",
-			"browser.certErrorDescription": "Das Sicherheitszertifikat dieser Website konnte nicht bestätigt werden.",
-			"browser.certErrorExtraWarning": " Die Verbindung ist nicht privat.",
-			"browser.certErrorLabel": "Zertifikatfehler",
-			"browser.certFingerprint": "Fingerabdruck",
-			"browser.certGoBack": "Zurück",
-			"browser.certHoverDetail1": "Ihre Verbindung zu dieser Website ist nicht sicher.",
-			"browser.certHoverDetail2": "Sie haben zuvor entschieden, mit „{0}“ fortzufahren, obwohl ein Zertifikatfehler ({1}) vorliegt.",
-			"browser.certHoverHeading": "Zertifikat nicht vertrauenswürdig",
-			"browser.certIssuer": "Aussteller",
-			"browser.certProceed": "Trotzdem fortfahren (unsicher)",
-			"browser.certRevoke": "Widerrufen und schließen",
-			"browser.certSubject": "Antragsteller",
-			"browser.certValid": "Gültig",
-			"browser.errorUrlLabel": "URL:",
-			"browser.loadErrorLabel": "Fehler beim Laden der Seite",
-			"browser.notSecure": "Nicht sicher"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
-			"browser.findNextAction": "Nächstes suchen",
-			"browser.findPreviousAction": "Vorheriges suchen",
-			"browser.findWidgetFocused": "Gibt an, ob der Fokus auf dem Such-Widget des Browsers liegt.",
-			"browser.findWidgetVisible": "Gibt an, ob das Such-Widget des Browsers sichtbar ist.",
-			"browser.hideFindAction": "Suchen-Widget schließen",
-			"browser.showFindAction": "Auf Seite suchen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorZoomFeature": {
-			"browser.canZoomIn": "Gibt an, ob der Browser weiter hereinzoomen kann",
-			"browser.canZoomOut": "Gibt an, ob der Browser weiter herauszoomen kann",
-			"browser.defaultZoomLevel.matchWindow": "Entspricht dem aktuellen Zoomfaktor der Anwendungsbenutzeroberfläche.",
-			"browser.pageZoom": "Standardzoomstufe für alle Websites im integrierten Browser.",
-			"browser.resetZoomAction": "Zoom zurücksetzen",
-			"browser.zoomInAction": "Vergrößern",
-			"browser.zoomOutAction": "Verkleinern"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserFavoritesFeature": {
-			"browser.addFavorite": "Zu Favoriten hinzufügen",
-			"browser.addFavoriteAction": "Zu Favoriten hinzufügen",
-			"browser.favorites": "Favoriten",
-			"browser.removeFavorite": "Aus Favoriten entfernen",
-			"browser.removeFavoriteAction": "Aus Favoriten entfernen",
-			"browser.removeFavoriteWithKb": "Aus Favoriten entfernen ({0})",
-			"browser.urlIsFavorited": "Gibt an, ob die aktuelle Browser-URL ein Favorit ist"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserNavigationFeatures": {
-			"browser.canGoBack": "Gibt an, ob der Browser zurück navigieren kann.",
-			"browser.canGoForward": "Gibt an, ob der Browser vorwärts navigieren kann.",
-			"browser.focusUrlInputAction": "URL-Eingabe fokussieren",
-			"browser.goBackAction": "Zurück",
-			"browser.goForwardAction": "Weiter",
-			"browser.hardReloadAction": "Neu laden erzwingen",
-			"browser.openExternalAction": "In externem Browser öffnen",
-			"browser.openSettingsAction": "Browsereinstellungen",
-			"browser.reloadAction": "Erneut laden"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
-			"browser.backgroundGroup": "Hintergrund",
-			"browser.closeAll": "Alle Browser-Registerkarten schließen",
-			"browser.closeAllInGroup": "Alle Browser-Registerkarten in der Gruppe schließen",
-			"browser.closeAllInGroupShort": "Alle Browser-Registerkarten schließen",
-			"browser.closeAllTabs": "Alle schließen",
-			"browser.closeTab": "Schließen",
-			"browser.editorOpen": "Gibt an, ob gerade ein Browser-Editor geöffnet ist.",
-			"browser.linkOpenedHint.ariaLabel": "Dieser Link wurde im integrierten Browser geöffnet",
-			"browser.linkOpenedHint.detail": "**Integrierter Browser**\r\n\r\nLocalhost-Links werden automatisch im integrierten Browser geöffnet.",
-			"browser.linkOpenedHint.dismiss": "Nicht mehr anzeigen",
-			"browser.linkOpenedHint.label": "Link wird hier geöffnet",
-			"browser.linkOpenedHint.openSettings": "Einstellungen öffnen",
-			"browser.newTabAction": "Neue Registerkarte",
-			"browser.openAction": "Integrierten Browser öffnen",
-			"browser.openFileAction": "Im integrierten Browser öffnen",
-			"browser.openLocalhostLinks": "Wenn diese Option aktiviert ist, öffnen sich localhost-Links (`localhost`, `127.0.0.1`, `[::1]`) und all-interfaces-Links (`0.0.0.0`, `[0:0:0:0:0:0:0:0]`, `[::]`) aus dem Terminal, Chat und anderen Quellen im integrierten Browser statt im Systembrowser.",
-			"browser.openNewTab": "Neue integrierte Browserregisterkarte",
-			"browser.openOrListAction": "Browser",
-			"browser.openTabs": "Registerkarten öffnen",
-			"browser.openTabsDescription": "Wählen Sie eine Registerkarte aus, um zu wechseln",
-			"browser.quickOpenAction": "Browserregisterkarte schnell öffnen …",
-			"browser.quickOpenPlaceholder": "Browserregisterkarte auswählen",
-			"browser.showInTitleBar": "Steuert, ob die Schaltfläche „Integrierter Browser“ in der Titelleiste angezeigt wird.",
-			"browser.showInTitleBar.false": "Die Schaltfläche wird in der Titelleiste nie angezeigt.",
-			"browser.showInTitleBar.true": "Die Schaltfläche wird in der Titelleiste immer angezeigt.",
-			"browser.showInTitleBar.whenOpen": "Die Schaltfläche wird in der Titelleiste angezeigt, wenn ein Browser-Editor geöffnet ist.",
-			"browserEntryAriaLabelWithGroup": "{0}, {1}",
-			"miOpenBrowser": "&&Browser",
-			"toggle.browser": "Integrierter Browser",
-			"toggle.browserDescription": "Sichtbarkeit der Schaltfläche „Integrierter Browser“ in der Titelleiste umschalten"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature": {
-			"browser.welcomeSubtitle": "Geben Sie oben eine URL ein, um zu starten.",
-			"browser.welcomeSubtitleChat": "Verwenden Sie „Element zum Chat hinzufügen”, um Benutzeroberflächenelemente in Chat-Prompts zu referenzieren.",
-			"browser.welcomeTitle": "Browser"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/webContentsViewRendererFeature": {
-			"browser.overlayPauseDetail.notification": "Schließen Sie die Benachrichtigung, um den Browser weiter zu nutzen.",
-			"browser.overlayPauseHeading.notification": "Wegen Benachrichtigung pausiert"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserToolHelpers": {
-			"browser.blockedByPolicy": "Durch Richtlinie der Netzwerkdomäne blockiert",
-			"browser.element": "Element",
-			"browser.open.alreadyOpen": "Bereits geöffnet: {0}"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserTools.contribution": {
-			"browserContext.label": "Browserseiten",
-			"browserToolSet.description": "Integrierte Browserseiten öffnen und bedienen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/clickBrowserTool": {
-			"browser.click.invocation": "Klickt {0} in {1}",
-			"browser.click.invocation.middle": "Klicken mit der mittleren Maustaste auf {0} in {1}",
-			"browser.click.invocation.right": "Rechtsklick auf {0} in {1}",
-			"browser.click.past": "Klickte {0} in {1}",
-			"browser.click.past.middle": "Klicken mit der mittleren Maustaste auf {0} in {1}",
-			"browser.click.past.right": "Rechtsklick auf {0} in {1}",
-			"browser.dblClick.invocation": "Doppelklicken auf {0} in {1}",
-			"browser.dblClick.past": "Doppelklicken auf {0} in {1}",
-			"clickBrowserTool.displayName": "Auf Element klicken",
-			"clickBrowserTool.userDescription": "Auf ein Element auf einer Browserseite klicken"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/dragElementTool": {
-			"browser.drag.invocation": "Zieht {0} nach {1} in {2}",
-			"browser.drag.past": "Zog {0} nach {1} in {2}",
-			"dragElementTool.displayName": "Element ziehen",
-			"dragElementTool.userDescription": "Element über ein anderes Element ziehen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/handleDialogBrowserTool": {
-			"browser.handleDialog.invocation": "Behandelt Dialogfeld in {0}",
-			"browser.handleDialog.past": "Behandelte Dialogfeld in {0}",
-			"handleDialogBrowserTool.displayName": "Dialogfeld verarbeiten",
-			"handleDialogBrowserTool.userDescription": "Auf ein Dialogfeld auf einer Browserseite reagieren"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/hoverElementTool": {
-			"browser.hover.invocation": "Bewegt den Mauszeiger {0} in {1}",
-			"browser.hover.past": "Bewegte den Mauszeiger über {0} in {1}",
-			"hoverElementTool.displayName": "Hoverelement",
-			"hoverElementTool.userDescription": "Zeiger über ein Element auf einer Browserseite bewegen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/navigateBrowserTool": {
-			"browser.goBack.invocation": "Navigiert rückwärts in {0}",
-			"browser.goBack.past": "Navigiert rückwärts in {0}",
-			"browser.goForward.invocation": "Navigiert vorwärts in {0}",
-			"browser.goForward.past": "Navigierte vorwärts in {0}",
-			"browser.navigate.confirmMessage": "Hiermit wird der Browser zu {0} navigiert und der Agent kann auf dessen Inhalte zugreifen.",
-			"browser.navigate.confirmTitle": "Browser navigieren?",
-			"browser.navigate.invocation": "Navigiert zu {0} in {1}",
-			"browser.navigate.past": "Navigiert zu {0} in {1}",
-			"browser.reload.invocation": "Lädt {0} neu",
-			"browser.reload.past": "Hat {0} neu geladen",
-			"navigateBrowserTool.displayName": "Seite navigieren",
-			"navigateBrowserTool.userDescription": "Zu einer Browserseite navigieren oder sie neu laden"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserTool": {
-			"browser.open.confirmMessage": "Hierdurch wird {0} im integrierten Browser geöffnet. Der Agent kann dessen Inhalt lesen und mit ihm interagieren.",
-			"browser.open.confirmTitle": "Browserseite öffnen?",
-			"browser.open.invocation": "Browserseite wird bei {0} geöffnet",
-			"browser.open.newPageOption": "Nein, eine neue Seite öffnen unter {0}",
-			"browser.open.noPagesOption": "Nein - Keine Registerkarten für den Agent freigeben",
-			"browser.open.past": "Browserseite bei {0} geöffnet",
-			"browser.open.prompt.invocation": "Benutzer wird aufgefordert, eine Browserregisterkarte freizugeben",
-			"browser.open.prompt.past": "Benutzer zur Freigabe einer Browserregisterkarte aufgefordert",
-			"browser.open.result": "{0} wurde geöffnet",
-			"browser.open.shareExistingOption": "Ja, „{0}“ freigeben - {1}",
-			"browser.open.shareQuestion.message": "Vorhandene Browserregisterkarte freigeben?",
-			"browser.open.shareQuestion.title": "Browser-Registerkarte freigeben",
-			"browser.open.sharedResult": "Benutzer hat {0} freigegeben",
-			"openBrowserTool.displayName": "Browserseite öffnen",
-			"openBrowserTool.userDescription": "Eine URL im integrierten Browser öffnen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserToolNonAgentic": {
-			"browser.open.nonAgentic.confirmMessage": "Hierdurch wird {0} im integrierten Browser geöffnet. Der Agent kann dessen Inhalt nicht lesen.",
-			"browser.open.nonAgentic.confirmTitle": "Browserseite öffnen?",
-			"browser.open.nonAgentic.invocation": "Browserseite wird bei {0} geöffnet",
-			"browser.open.nonAgentic.past": "Browserseite bei {0} geöffnet",
-			"browser.open.nonAgentic.result": "{0} wurde geöffnet"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/readBrowserTool": {
-			"browser.read.invocation": "{0} wird gelesen",
-			"browser.read.past": "{0} lesen",
-			"readBrowserTool.displayName": "Seite lesen",
-			"readBrowserTool.userDescription": "Inhalt einer Browserseite lesen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/runPlaywrightCodeTool": {
-			"browser.runCode.confirmDisclaimer": "Stellen Sie sicher, dass Sie dem Code vertrauen, bevor Sie fortfahren.",
-			"browser.runCode.confirmTitle": "Playwright-Code ausführen?",
-			"browser.runCode.invocation": "Playwright-Code wird ausgeführt...",
-			"browser.runCode.past": "Playwright-Code ausgeführt",
-			"browser.runCode.waitInvocation": "Es wird auf den Abschluss des Playwright-Codes gewartet …",
-			"browser.runCode.waitPast": "Auf Playwright-Code gewartet",
-			"runPlaywrightCodeTool.displayName": "Playwright-Code ausführen",
-			"runPlaywrightCodeTool.userDescription": "Führt einen Playwright-Codeausschnitt auf einer Browserseite aus."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/screenshotBrowserTool": {
-			"browser.screenshot.invocation": "Screenshot des Browsers aufnehmen",
-			"browser.screenshot.invocation.element": "Screenshot wird von {0} wird erstellt",
-			"browser.screenshot.past": "Browser-Screenshot erfasst",
-			"browser.screenshot.past.element": "Aufgenommener Screenshot von {0}",
-			"screenshotBrowserTool.displayName": "Screenshotseite",
-			"screenshotBrowserTool.userDescription": "Screenshot einer Browserseite erstellen"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/typeBrowserTool": {
-			"browser.pressKey.invocation": "Drückt die Taste `{0}` in {1}",
-			"browser.pressKey.invocation.element": "Drücken der Taste `{0}` in {1} in {2}",
-			"browser.pressKey.past": "Drückte Taste `{0}` in {1}",
-			"browser.pressKey.past.element": "Drückte Taste `{0}` in {1} in {2}",
-			"browser.type.invocation": "Gibt Text ein in {0}",
-			"browser.type.invocation.element": "Eingeben von Text in {0} in {1}",
-			"browser.type.past": "Texteingabe in {0}",
-			"browser.type.past.element": "Texteingabe in {0} in {1}",
-			"typeBrowserTool.displayName": "Text auf Seite eingeben",
-			"typeBrowserTool.userDescription": "Text eingeben oder Tasten auf einer Browserseite drücken"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget": {
-			"browser.goTo": "Zu {0} wechseln",
-			"browser.urlPlaceholder": "URL eingeben"
-		},
 		"vs/workbench/contrib/bulkEdit/browser/bulkEditService": {
 			"areYouSureQuiteBulkEdit.detail": "\"{0}\" wird ausgeführt.",
 			"changeWorkspace.message": "Möchten Sie den Arbeitsbereich wirklich ändern?",
@@ -8450,6 +7738,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatDeveloperActions": {
 			"workbench.action.chat.clearRecentlyUsedLanguageModels.label": "Zuletzt verwendete Sprachmodelle löschen",
+			"workbench.action.chat.inspectAgentHostSubscriptions.label": "Inspect Agent Host Subscriptions",
 			"workbench.action.chat.inspectChatModel.label": "Chatmodell untersuchen",
 			"workbench.action.chat.inspectChatModelReferences.label": "Inspizieren von Chatmodellverweisen",
 			"workbench.action.chat.logChatIndex.label": "Chatindex protokollieren",
@@ -8729,12 +8018,12 @@
 			"noAgentPlugins": "Keine Agenten-Plug-Ins gefunden.",
 			"update": "Update"
 		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} – Agent-Host",
-			"agentHostHarnessLabel.local": "{0} [Lokal]"
-		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
 			"agentHostChatInputPicker.ariaLabel": "{0} Auswahl",
+			"agentHostChatInputPicker.boolean.false": "Off",
+			"agentHostChatInputPicker.boolean.offLabel": "Off",
+			"agentHostChatInputPicker.boolean.onLabel": "On",
+			"agentHostChatInputPicker.boolean.true": "On",
 			"agentHostChatInputPicker.filter": "Filtern …",
 			"agentHostChatInputPicker.learnMorePermissions": "Weitere Informationen zu Berechtigungen",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
@@ -8743,8 +8032,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "Automatisch genehmigen",
-			"agentHost.branchPicker": "Branch",
-			"agentHost.isolationPicker": "Isolation",
 			"agentHost.modePicker": "Agent-Modus",
 			"agentHost.permissionModePicker": "Genehmigungen"
 		},
@@ -8756,23 +8043,6 @@
 			"agentHost.permission.oneMorePending": "+1 weitere Anforderung wartet",
 			"agentHost.permission.read": "Remote-Agent-Host „{0}“ möchte {1} lesen.",
 			"agentHost.permission.write": "Remote-Agent-Host „{0}“ möchte {1} schreiben"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
-			"agentHost.authRequired": "Zum Starten einer Sitzung ist eine Authentifizierung erforderlich. Melden Sie sich an und versuchen Sie es noch mal.",
-			"agentHost.elicit.url.cancel": "Abbrechen",
-			"agentHost.elicit.url.instruction": "Diese URL öffnen?",
-			"agentHost.elicit.url.open": "{0} öffnen",
-			"agentHost.elicit.url.title": "Autorisierung erforderlich",
-			"agentHost.forkedSessionLabel": "Geforkte Sitzung",
-			"agentHost.responseDetails.credit": "{0} Guthaben",
-			"agentHost.responseDetails.credits": "{0} Guthaben"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
-			"agentHostTerminal.channelLocal": "Agent-Hostterminal (lokal)",
-			"agentHostTerminal.local": "Lokal"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
-			"ahp.running": "{0} wird ausgeführt …"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "Abgeschlossen",
@@ -8793,6 +8063,7 @@
 			"chat.session.providerDescription.codex": "Öffnet eine neue Codex-Sitzung im Editor. Codex-Sitzungen können über die Ansicht „Chatsitzungen“ verwaltet werden.",
 			"chat.session.providerDescription.growth": "Weitere Informationen zu Copilot-Funktionen.",
 			"chat.session.providerDescription.local": "Führen Sie Aufgaben innerhalb des VS Code-Chats aus. Der Agent iteriert über den Chat und arbeitet interaktiv, um Änderungen in Ihrem Hauptarbeitsbereich umzusetzen.",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [Agent Host]",
 			"chat.session.providerLabel.background": "Copilot-CLI",
 			"chat.session.providerLabel.cloud": "Cloud",
 			"chat.session.providerLabel.local": "Lokal"
@@ -9176,6 +8447,8 @@
 			"editorViewRawButtonTooltip": "Unformatierte Markdowndatei anzeigen",
 			"homeButton": "Übersicht",
 			"homeButtonTooltip": "Zurück zur Übersicht",
+			"homeButtonTooltipWithHarness": "Current harness: {0}. Click to go to overview",
+			"homeButtonWithHarness": "{0}, Back to overview",
 			"hooks": "Hooks",
 			"hooksDesc": "Konfigurieren Sie automatisierte Aktionen, die durch Ereignisse wie das Speichern von Dateien oder die Ausführung von Aufgaben ausgelöst werden.",
 			"instructions": "Anweisungen",
@@ -9381,6 +8654,10 @@
 			"chat.NotebookImageAttachment": "Angefügte Notizbuchausgabe, {0}",
 			"chat.attachment": "Angefügter Kontext, {0}",
 			"chat.attachment.clearButton": "Aus Kontext entfernen",
+			"chat.attachment.saveFileButton": "Save As...",
+			"chat.attachment.saveFileError": "Failed to save file: {0}",
+			"chat.attachment.saveImageButton": "Save Image As...",
+			"chat.attachment.saveImageError": "Failed to save image: {0}",
 			"chat.attachment.withDeleteHint": "{0} (Löschen)",
 			"chat.browserToolsDisabled": "Browsertools sind nicht aktiviert.",
 			"chat.browserToolsDisabled.aria": "Browsertools sind nicht aktiviert, {0}",
@@ -9476,7 +8753,7 @@
 			"chat.agentHost.ahpJsonlLogging": "Wenn diese Option aktiviert ist, werden alle AHP-Transportmeldungen für Agent-Hostverbindungen mit JSONL-Dateien im Protokollverzeichnis des Fensters protokolliert.",
 			"chat.agentHost.clientTools": "Referenznamen von Tools, die als vom Client bereitgestellte Tools in Agent-Hostsitzungen verfügbar gemacht werden.",
 			"chat.agentHost.customTerminalTool.enabled": "Wenn diese Option aktiviert ist, verwenden Copilot SDK-Sitzungen die Außerkraftsetzung des Agent-Hostterminaltools anstelle des Standardterminalverhaltens des SDK.",
-			"chat.agentHost.ipcLogging": "Wenn diese Option aktiviert ist, wird der gesamte IPC-Datenverkehr für jeden Agent-Host in einem dedizierten Ausgabekanal protokolliert.",
+			"chat.agentHost.defaultChatProvider": "When enabled, the local agent host is used as the default provider in the VS Code chat session-target picker. Requires `#{0}#`.",
 			"chat.agentLocations.invalidPath": "Pfade müssen relativ sein oder mit „~/“ beginnen. Absolute Pfade und „\\“-Trennzeichen werden nicht unterstützt.",
 			"chat.agentSessionProjection.enabled": "Steuert, ob der Projektionsmodus der Agentsitzung zum Überprüfen von Agentsitzungen in einem fokussierten Arbeitsbereich aktiviert ist.",
 			"chat.agentSkillsLocations.description": "Geben Sie den Speicherort der Agentqualifikationen (`{0}`) an, die in Chatsitzungen verwendet werden können. [Weitere Informationen]({1}).\r\n\r\nJeder Pfad sollte QualIfikations-Unterordner mit SKILL.md-Dateien enthalten (z. B. fügen Sie `my-skills` hinzu, wenn Sie über `my-skills/skillA/SKILL.md` verfügen). Relative Pfade werden aus den Stammordnern Ihres Arbeitsbereichs aufgelöst.",
@@ -9506,6 +8783,7 @@
 			"chat.artifacts.rules.groupName": "Anzeigename für die Artefaktgruppe.",
 			"chat.artifacts.rules.onlyShowGroup": "Bei „true“ wird nur der Gruppenkopf anstelle einzelner Elemente angezeigt.",
 			"chat.autoReply.description": "Überspringen Sie Fragenkarussells automatisch, indem Sie dem Agent mitteilen, dass der Benutzer nicht verfügbar ist, und ihn bitten, nach eigenem Ermessen zu handeln. Diese erweiterte Einstellung kann zu unbeabsichtigten Entscheidungen oder Aktionen aufgrund unvollständigen Kontexts führen.",
+			"chat.autopilot.advanced.enabled": "Enables **Advanced Autopilot**, a single switch that turns on all advanced Autopilot behaviors that delegate more of the loop to the agent. Currently, after each Autopilot turn a small, fast model evaluates whether your original request is complete; if not, Autopilot keeps working using that evaluation as guidance for the next turn, instead of relying on the agent to signal completion itself.",
 			"chat.checkpoints.enabled": "Aktiviert Prüfpunkte im Chat. Mithilfe von Prüfpunkten können Sie den Chat in einem früheren Zustand wiederherstellen.",
 			"chat.checkpoints.showFileChanges": "Steuert, ob Änderungen an der Chatprüfpunktdatei angezeigt werden.",
 			"chat.codeBlock.showProgressAnimation.description": "Beim Anwenden von Bearbeitungen wird eine Statusanimation in der Codeblockanzeige gezeigt. Wenn deaktiviert, wird stattdessen der Fortschrittsprozentsatz angezeigt.",
@@ -10560,7 +9838,6 @@
 			"signIn": "Anmelden"
 		},
 		"vs/workbench/contrib/chat/browser/chatTipCatalog": {
-			"tip.agenticBrowser": "Aktivieren Sie [{0}](command:workbench.action.openSettings?%5B%22workbench.browser.enableChatTools%22%5D „Einstellungen öffnen“), damit der Agent Seiten im integrierten Browser öffnen und mit ihnen interagieren kann.",
 			"tip.agentsWindow": "Arbeiten Sie mehrere Projekte gleichzeitig im [Agenten-Fenster](Befehl:{0} „Agenten-Fenster öffnen“).",
 			"tip.attachFiles": "Verweisen Sie mit # auf Dateien oder Ordner, um dem Agent mehr Kontext zur Aufgabe zu geben.",
 			"tip.autoAcceptDelay": "Konfigurieren Sie [{0}](command:workbench.action.openSettings?%5B%22chat.editing.autoAcceptDelay%22%5D „Einstellungen öffnen“), um Änderungen vom Agenten nach einem kurzen Countdown automatisch zu akzeptieren.",
@@ -11287,6 +10564,7 @@
 			"chat.working.fun.1": "Hamster bestechen",
 			"chat.working.fun.2": "Splines werden vernetzt",
 			"chat.working.fun.3": "Spaghetti entwirren",
+			"chat.working.fun.4": "Communing with the codebase",
 			"chat.working.fun.minecraft.1": "Diamanten abbauen",
 			"chat.working.fun.ms.1": "Clippy wird herbeigerufen"
 		},
@@ -11536,6 +10814,11 @@
 		"vs/workbench/contrib/chat/browser/widget/input/chatFollowups": {
 			"followUpAriaLabel": "Anschlussfrage: {0}"
 		},
+		"vs/workbench/contrib/chat/browser/widget/input/chatGoalBannerWidget": {
+			"chat.goalBanner.dismiss": "Dismiss",
+			"chat.goalBanner.label": "Goal",
+			"chat.goalBanner.loading": "Determining goal…"
+		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationWidget": {
 			"dismissNotification": "Benachrichtigung schließen"
 		},
@@ -11666,7 +10949,7 @@
 			"permissions.autoApprove.policyDisabled": "Deaktiviert durch Unternehmensrichtlinie",
 			"permissions.autoApprove.subtext": "Alle Toolaufrufe werden automatisch genehmigt",
 			"permissions.autopilot": "Autopilot (Vorschau)",
-			"permissions.autopilot.description": "Alle Toolaufrufe automatisch genehmigen und fortfahren, bis die Aufgabe abgeschlossen ist",
+			"permissions.autopilot.description": "Auto-approve all tool calls and continue until the task is done. Autopilot may increase costs.",
 			"permissions.autopilot.label": "Autopilot (Vorschau)",
 			"permissions.autopilot.policyDescription": "Deaktiviert durch Unternehmensrichtlinie",
 			"permissions.autopilot.policyDisabled": "Deaktiviert durch Unternehmensrichtlinie",
@@ -11681,7 +10964,9 @@
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "Weitere Informationen zu Agenttypen ...",
 			"chat.sessionTarget.category.agent": "Agenttypen",
-			"chat.sessionTarget.category.other": "Sonstige"
+			"chat.sessionTarget.category.other": "Sonstige",
+			"chat.sessionTarget.upgradeHover": "[Upgrade to GitHub Copilot Pro](command:workbench.action.chat.upgradePlan) to delegate work to the cloud agent.",
+			"chat.sessionTarget.upgradeLink": "[Upgrade](command:workbench.action.chat.upgradePlan)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/workspacePickerActionItem": {
 			"openFolder": "Ordner öffnen ...",
@@ -12324,35 +11609,6 @@
 			"tool.askQuestions.displayName": "Klärende Fragen stellen",
 			"tool.askQuestions.userDescription": "Stellen Sie strukturierte klärende Fragen mit Einzel-, Mehrfachauswahl oder Freiform-Eingaben, um die Aufgabenanforderungen zu erfassen, bevor Sie fortfahren."
 		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatExternalPathConfirmation": {
-			"addPath": "Pfad hinzufügen …",
-			"addPathDescription": "Ordner in diesem Arbeitsbereich zulassen",
-			"allowFolderSession": "Diesen Ordner in dieser Sitzung zulassen",
-			"allowFolderSessionDetail": "Erlaube das Lesen von Dateien aus diesem Ordner ohne weitere Bestätigung in dieser Chatsitzung",
-			"allowRepoSession": "Alle Dateien in diesem Repository für diese Sitzung zulassen",
-			"allowRepoSessionDetail": "Lesen von Dateien aus {0} zulassen",
-			"allowRepoSessionDetailLookup": "Sucht das enthaltende Git-Repository für diesen Pfad",
-			"sessionScope": "Sitzung",
-			"workspaceScope": "Arbeitsbereich"
-		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatUrlFetchingConfirmation": {
-			"allowRequestsCheckbox": "Anforderungen ohne Bestätigung stellen",
-			"allowResponsesCheckbox": "Antworten ohne Bestätigung zulassen",
-			"approveAll": "Alle genehmigen",
-			"approveRequestTo": "Anforderungen zulassen für {0}",
-			"approveResponseFrom": "Antworten von {0} zulassen",
-			"approves": "Genehmigt {0}",
-			"delete": "Löschen",
-			"denyAll": "Alle verweigern",
-			"moreOptions": "Anforderungen zulassen an...",
-			"moreOptionsManage": "Weitere Optionen...",
-			"moreOptionsMultiple": "URL-Genehmigungen konfigurieren...",
-			"noApprovals": "Keine Genehmigungen",
-			"openSettings": "Einstellungen öffnen",
-			"requests": "Anforderungen",
-			"responses": "Antworten",
-			"selectApproval": "Zu genehmigende URL-Muster auswählen"
-		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/manageTodoListTool": {
 			"todo.added.multiple": "{0} Aufgaben hinzugefügt",
 			"todo.added.single": "1 Aufgabe hinzugefügt",
@@ -12446,99 +11702,6 @@
 			"chat.slashCommandForeground": "Vordergrundfarbe eines Schrägstrichbefehls für den Chat.",
 			"chat.thinkingShimmer": "Schimmernde Hervorhebung für Denk- und Arbeitsbezeichnungen.",
 			"chatCheckpointSeparator": "Farbe des Trennzeichens für Chatprüfpunkte."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
-			"workbench.action.chat.openStorageFolder.label": "Ordner für Chat-Speicher öffnen"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatExportZip": {
-			"chat.exportAsZip.label": "Chat als ZIP exportieren ...",
-			"chatExportZip.error": "Fehler beim Exportieren des Chats als ZIP: {0}",
-			"chatExportZip.noRepoData": "Der Chat wurde ohne Repositorykontext exportiert. Es wurde kein Git-Repository erkannt."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
-			"debugAgentHost.noInspectPort": "Der Node.js Inspektor für den Agenthostprozess konnte nicht aktiviert werden.",
-			"debugAgentHostInDevTools": "Debuggen des lokalen Agent-Hostprozesses in Entwicklungstools"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
-			"exportDebugLogs.saveDialogTitle": "Debugprotokolle des Agent-Hosts exportieren",
-			"exportDebugLogs.zipFilter": "ZIP-Archiv"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
-			"exportAgentTracesDB.error": "Fehler beim Exportieren der Datenbank für Agent-Hostablaufverfolgungen: {0}",
-			"exportAgentTracesDB.label": "Agent-Hostablaufverfolgungsdatenbank exportieren …",
-			"exportAgentTracesDB.notFound": "Es wurde noch keine Agenthost-Ablaufverfolgungsdatenbank gefunden. Führen Sie eine Agentsitzung mit `#chat.agentHost.otel.dbSpanExporter.enabled#` aktivierter Option aus, um sie aufzufüllen."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
-			"keywordActivation.status.active": "“Hey Code“ wird überwacht...",
-			"keywordActivation.status.inactive": "Es wird auf das Ende des Sprachchats gewartet...",
-			"keywordActivation.status.name": "Voice-Schlüsselwortaktivierung",
-			"listening": "Ich höre zu",
-			"scopedChatSynthesisInProgress": "Definiert als Ort, an dem die Sprachaufzeichnung vom Mikrofon für den Sprachchat ausgeführt wird. Dieser Schlüssel ist nur für den Bereich pro Chatkontext definiert.",
-			"scopedVoiceChatGettingReady": "\"True\", wenn Sie sich darauf vorbereiten, für den Sprachchat Spracheingaben über das Mikrofon zu empfangen. Dieser Schlüssel ist nur für den Bereich pro Chatkontext definiert.",
-			"scopedVoiceChatInProgress": "Definiert als Ort, an dem die Sprachaufzeichnung vom Mikrofon für den Sprachchat ausgeführt wird. Dieser Schlüssel ist nur für den Bereich pro Chatkontext definiert.",
-			"voice.keywordActivation": "Gibt an, ob der Schlüsselwortausdruck „Hey Code“ erkannt wird, um eine Sprachchatsitzung zu starten. Wenn Sie dies aktivieren, wird die Aufzeichnung über das Mikrofon gestartet, aber die Audiodaten werden lokal verarbeitet und nie an einen Server gesendet.",
-			"voice.keywordActivation.chatInContext": "Die Schlüsselwortaktivierung ist aktiviert und lauscht je nach Tastaturfokus auf „Hey Code“, um eine Sprachchatsitzung im aktiven Editor oder in der aktiven Ansicht zu starten.",
-			"voice.keywordActivation.chatInView": "Die Schlüsselwortaktivierung ist aktiviert und lauscht auf „Hey Code“, um eine Sprachchatsitzung in der Chatansicht zu starten.",
-			"voice.keywordActivation.inlineChat": "Die Schlüsselwortaktivierung ist aktiviert und hört auf \"Hey Code\", um nach Möglichkeit eine Sprachchatsitzung im aktiven Editor zu starten.",
-			"voice.keywordActivation.off": "Die Schlüsselwortaktivierung ist deaktiviert.",
-			"voice.keywordActivation.quickChat": "Die Schlüsselwortaktivierung ist aktiviert und lauscht auf „Hey Code“, um eine Sprachchatsitzung im Schnellchat zu starten.",
-			"workbench.action.chat.holdToVoiceChatInChatView.label": "Für Sprachchat in Chatansicht halten",
-			"workbench.action.chat.inlineVoiceChat": "Inline-Sprach-Chat",
-			"workbench.action.chat.quickVoiceChat.label": "Schneller Sprach-Chat",
-			"workbench.action.chat.readChatResponseAloud": "Laut vorlesen",
-			"workbench.action.chat.startVoiceChat.label": "Sprach-Chat starten",
-			"workbench.action.chat.stopListening.label": "Zuhören beenden",
-			"workbench.action.chat.stopListeningAndSubmit.label": "Zuhören beenden und absenden",
-			"workbench.action.chat.stopReadChatItemAloud": "Laut vorlesen beenden",
-			"workbench.action.chat.voiceChatInView.label": "Sprachchat in Chatansicht",
-			"workbench.action.speech.stopReadAloud": "Lautes Vorlesen beenden"
-		},
-		"vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions": {
-			"chat.agentsHandoff.tip.action": "Im Agent-Fenster öffnen",
-			"chat.agentsHandoff.tip.description": "Erhalten Sie neben Ihrem Arbeitsbereich eine dedizierte Ansicht mit mehreren Bereichen.",
-			"chat.agentsHandoff.tip.description.copilot": "Kostenlos mit Ihrem Copilot-Plan – erhalten Sie eine dedizierte Ansicht mit mehreren Bereichen neben Ihrem Arbeitsbereich.",
-			"chat.agentsHandoff.tip.emptyWorkspace.description": "Öffnen Sie das Fenster „Agenten“, um eine Copilot CLI-Sitzung zu starten.",
-			"chat.agentsHandoff.tip.emptyWorkspace.message": "Copilot CLI [Lokal] ist ohne geöffneten Ordner nicht verfügbar",
-			"chat.agentsHandoff.tip.message": "Diese Sitzung im Fenster „Agenten“ fortsetzen",
-			"openAgentsWindow": "Agent-Fenster öffnen",
-			"openInAgentsHover": "Im Agent-Fenster öffnen",
-			"openSessionInAgentsWindow": "Im Agent-Fenster öffnen",
-			"openWorkspaceInAgentsWindow": "In Agenten öffnen",
-			"toggle.openInAgentsWindow": "Im Agent-Fenster öffnen",
-			"toggle.openInAgentsWindowDescription": "Sichtbarkeit der Schaltfläche „In Agenten-Fenster öffnen“ in der Titelleiste umschalten"
-		},
-		"vs/workbench/contrib/chat/electron-browser/builtInTools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "Binärdateien werden derzeit nicht unterstützt.",
-			"fetchWebPage.confirmationMessage.plural": "Webinhalte können schädlichen Code enthalten oder versuchen, Promptinjektionsangriffe durchzuführen.",
-			"fetchWebPage.confirmationTitle.plural": "Webseiten abrufen?",
-			"fetchWebPage.confirmationTitle.singular": "Webseite abrufen?",
-			"fetchWebPage.fetchedFrom": "Abgerufen von {0}",
-			"fetchWebPage.invalidUrl": "Ungültige URL",
-			"fetchWebPage.invocationMessage.plural": "{0} Ressourcen abrufen",
-			"fetchWebPage.invocationMessage.singular": "{0} wird abgerufen",
-			"fetchWebPage.invocationMessage.singularAsLink": "[Ressource]({0}) wird abgerufen.",
-			"fetchWebPage.noValidUrls": "Es wurden keine gültigen URLs angegeben.",
-			"fetchWebPage.pastTenseMessage.plural": "{0} Ressourcen wurden abgerufen, aber die folgenden URLs waren ungültig:\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "Die Ressource wurde abgerufen, aber die folgende URL war ungültig:\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "{0} Ressourcen abgerufen",
-			"fetchWebPage.pastTenseMessageResult.singular": "{0} abgerufen",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "[Ressource]({0}) abgerufen",
-			"fetchWebPage.urlMentionedInPrompt": "Automatisch genehmigt, da die URL im Prompt enthalten war",
-			"fetchWebPage.urlsDescription": "Ein Array von URLs, aus denen Inhalt abgerufen werden soll."
-		},
-		"vs/workbench/contrib/chat/electron-browser/chat.contribution": {
-			"changeWorkspace.detail": "Die Sitzung wird beendet, wenn Sie den Arbeitsbereich ändern.",
-			"changeWorkspace.message": "Eine Sitzung wird ausgeführt. Möchten Sie den Arbeitsbereich wirklich ändern?",
-			"chatRequestInProgress": "Eine Sitzung wird ausgeführt.",
-			"closeTheWindow.detail": "Die Sitzung wird beendet, wenn Sie das Fenster schließen.",
-			"closeTheWindow.message": "Eine Sitzung wird ausgeführt. Möchten Sie den Assistenten wirklich schließen?",
-			"copilotWorkspaceTrust": "KI-Features werden derzeit nur in vertrauenswürdigen Arbeitsbereichen unterstützt.",
-			"exit.detail": "Die Sitzung wird beendet, wenn Sie den Vorgang beenden.",
-			"exit.message": "Eine Sitzung wird ausgeführt. Möchten Sie den Vorgang wirklich beenden?",
-			"quit.detail": "Die Sitzung wird beendet, wenn Sie den Vorgang beenden.",
-			"quit.message": "Eine Sitzung wird ausgeführt. Möchten Sie den Vorgang wirklich beenden?",
-			"reloadTheWindow.detail": "Die Sitzung wird beendet, wenn Sie das Fenster erneut laden.",
-			"reloadTheWindow.message": "Eine Sitzung wird ausgeführt. Möchten Sie das Fenster wirklich neu laden?"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "Löst Codeaktionen bei expliziten Speichern und automatischen Speichern aus, die durch Fenster- oder Fokusänderungen ausgelöst werden.",
@@ -12821,7 +11984,13 @@
 			"schema.folding": "Die Faltungseinstellungen der Sprache.",
 			"schema.folding.markers": "Sprachspezifische Faltungsmarkierungen wie \"#region\" und \"#endregion\". Die regulären Anfangs- und Endausdrücke werden im Hinblick auf den Inhalt aller Zeilen getestet und müssen effizient erstellt werden.",
 			"schema.folding.markers.end": "Das RegExp-Muster für die Endmarkierung. Das Regexp muss mit \"^\" beginnen.",
+			"schema.folding.markers.end.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.end.flags": "The RegExp flags for the end marker.",
+			"schema.folding.markers.end.pattern": "The RegExp pattern for the end marker.",
 			"schema.folding.markers.start": "Das RegExp-Muster für die Startmarkierung. Das Regexp muss mit \"^\" beginnen.",
+			"schema.folding.markers.start.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.start.flags": "The RegExp flags for the start marker.",
+			"schema.folding.markers.start.pattern": "The RegExp pattern for the start marker.",
 			"schema.folding.offSide": "Für eine Sprache gilt die Abseitsregel, wenn Blöcke in dieser Sprache durch die Einrücktiefe ausgedrückt werden. Wenn dies festgelegt ist, gehören leere Zeilen zum nächsten Block.",
 			"schema.indentationRules": "Die Einzugseinstellungen der Sprache.",
 			"schema.indentationRules.decreaseIndentPattern": "Wenn eine Zeile diesem Muster entspricht, sollten alle Zeilen nach dieser Zeile einmal ausgerückt werden (bis eine andere Regel übereinstimmt).",
@@ -12870,12 +12039,6 @@
 			"schema.wordPattern.flags": "RegExp Kennzeichen für Wortübereinstimmungen",
 			"schema.wordPattern.flags.errorMessage": "Muss mit dem Muster `/^([gimuy]+)$/` übereinstimmen.",
 			"schema.wordPattern.pattern": "RegExp Muster für Wortübereinstimmungen."
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "Auswahl aus Zwischenablage einfügen"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/startDebugTextMate": {
-			"startDebugTextMate": "TextMate-Syntaxgrammatikprotokollierung starten"
 		},
 		"vs/workbench/contrib/commands/common/commands.contribution": {
 			"runCommands": "Ausführungsbefehle",
@@ -14373,6 +13536,9 @@
 			"workbench.extensions.uninstallExtension.description": "Angegebene Erweiterung deinstallieren",
 			"workspace unsupported filter": "Nicht unterstützter Arbeitsbereich"
 		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "Ausgeführte Erweiterungen"
+		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "Diese Erweiterung ist deaktiviert, da sie in {0} für das Web nicht unterstützt wird.",
 			"Defined to run in desktop": "Diese Erweiterung ist deaktiviert, da sie so definiert ist, dass sie nur in {0} für den Desktop ausgeführt wird.",
@@ -14711,8 +13877,8 @@
 			"enableExtensionMessage": "Möchten Sie die Erweiterung „{0}“ aktivieren?",
 			"enableExtensionTitle": "Erweiterung aktivieren",
 			"extension not found": "Die Erweiterung '{0}' wurde nicht gefunden.",
-			"extensions need reload": "Erweiterungen erfordern ein erneutes Laden des Fensters, um wirksam zu werden.",
-			"extensions need restart": "Erweiterungen erfordern einen Neustart, um wirksam zu werden.",
+			"extensions need reload": "Extensions require a window reload to apply updates.",
+			"extensions need restart": "All extensions require a restart to apply updates.",
 			"extensionsAutoRestart": "Erweiterungen wurden automatisch neu gestartet, um Updates zu aktivieren.",
 			"incompatible": "Die Erweiterung \"{0}\" kann nicht installiert werden, da sie nicht kompatibel ist.",
 			"incompatibleExtensions": "Einige Erweiterungen sind aufgrund einer Versionsinkompatibilität deaktiviert. Überprüfen und Aktualisieren Sie sie.",
@@ -14803,72 +13969,10 @@
 			"searchExtensionsTool.noInput": "Geben Sie eine Kategorie, Stichwörter oder IDs für die Suche an.",
 			"searchExtensionsTool.userDescription": "Nach VS Code-Erweiterungen suchen"
 		},
-		"vs/workbench/contrib/extensions/electron-browser/debugExtensionHostAction": {
-			"debugExtensionHost": "Debug Extension Host In New Window",
-			"debugExtensionHost.launch.name": "Attach Extension Host",
-			"debugExtensionHost.progress": "Attaching Debugger To Extension Host",
-			"debugExtensionHostAndRenderer": "Debug Extension Host and Renderer In New Window",
-			"debugRenderer": "Debug Renderer In New Window",
-			"debugRenderer.launch.name": "Attach Renderer",
-			"debugRenderer.progress": "Attaching Debugger To Renderer",
-			"openDevToolsForExtensionHost": "Debug Extension Host In Dev Tools",
-			"restart1": "Debug Extensions",
-			"restart2": "In order to debug extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectExtensionHost": "Pick extension host"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionProfileService": {
-			"profilingExtensionHost": "Profiling Extension Host",
-			"profilingExtensionHostTime": "Profiling Extension Host ({0} sec)",
-			"restart1": "Profile Extensions",
-			"restart2": "In order to profile extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectAndStartDebug": "Click to stop profiling.",
-			"status.profiler": "Extension Profiler"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensions.contribution": {
-			"runtimeExtension": "Running Extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsActions": {
-			"cleanUpExtensionsFolder": "Cleanup Extensions Folder",
-			"openExtensionsFolder": "Open Extensions Folder"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsAutoProfiler": {
-			"show": "Show Extensions",
-			"unresponsive-exthost": "The extension '{0}' took a very long time to complete its last operation and it has prevented other extensions from running."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
-			"attach.msg": "This is a reminder to make sure that you have not forgotten to attach '{0}' to the issue you have just created.",
-			"attach.msg2": "This is a reminder to make sure that you have not forgotten to attach '{0}' to an existing performance issue.",
-			"attach.title": "Did you attach the CPU-Profile?",
-			"cmd.report": "Report Issue",
-			"cmd.reportOrShow": "Performance Issue",
-			"cmd.show": "Show Issues"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "Start Extension Host Profile",
-			"openExtensionHostProfile": "Open Extension Host Profile",
-			"saveExtensionHostProfile": "Save Extension Host Profile",
-			"saveprofile.dialogTitle": "Save Extension Host Profile",
-			"stopExtensionHostProfileStart": "Stop Extension Host Profile"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction.Integrated": "Open in Integrated Terminal",
-			"scopedConsoleAction.external": "Open in External Terminal",
-			"scopedConsoleAction.wt": "Open in Windows Terminal"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "When opening a file from the Explorer in a terminal, determines what kind of terminal will be launched",
-			"globalConsoleAction": "Open New External Terminal",
-			"selectWorkspace": "Select workspace folder",
-			"sourceControlRepositories.openInTerminalKind": "When opening a repository from the Source Control Repositories view in a terminal, determines what kind of terminal will be launched",
-			"terminal.external.linuxExec": "Customizes which terminal to run on Linux.",
-			"terminal.external.osxExec": "Customizes which terminal application to run on macOS.",
-			"terminal.external.windowsExec": "Customizes which terminal to run on Windows.",
-			"terminal.kind.both": "Show both integrated and external terminal actions.",
-			"terminal.kind.external": "Show the external terminal action.",
-			"terminal.kind.integrated": "Show the integrated terminal action.",
-			"terminalConfigurationTitle": "External Terminal"
+			"scopedConsoleAction.Integrated": "In integriertem Terminal öffnen",
+			"scopedConsoleAction.external": "In externem Terminal öffnen",
+			"scopedConsoleAction.wt": "In Windows-Terminal öffnen"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "Konfigurieren Sie den Opener, der für externe URIs verwendet werden soll (HTTP, HTTPS).",
@@ -15324,13 +14428,6 @@
 			"openEditorsFocus": "TRUE, wenn der Fokus innerhalb der Ansicht OPEN EDITORS liegt.",
 			"viewHasSomeCollapsibleItem": "True, wenn ein Arbeitsbereich in der EXPLORER-Ansicht über ein reduzierbares untergeordnetes Stammelement verfügt."
 		},
-		"vs/workbench/contrib/files/electron-browser/fileActions.contribution": {
-			"filesCategory": "Datei",
-			"miShare": "Freigeben",
-			"openContainer": "Übergeordneten Ordner öffnen",
-			"revealInMac": "Im Finder anzeigen",
-			"revealInWindows": "Im Datei-Explorer anzeigen"
-		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
 			"formatter.default": "Definiert einen standardmäßigen Faltungsbereichsanbieter, der Vorrang vor allen anderen Faltungsbereichsanbietern hat. Muss der Bezeichner einer Erweiterung sein, die einen Faltungsbereichsanbieter beiträgt.",
 			"null": "Alle",
@@ -15711,6 +14808,9 @@
 			"vscode": "Visual Studio Code",
 			"vscodePlaceholder": "Beispiel: In Workbench fehlt der Bereich \"Probleme\""
 		},
+		"vs/workbench/contrib/issue/browser/issue.contribution": {
+			"statusUnsupported": "Das Argument „--status“ wird in Browsern noch nicht unterstützt."
+		},
 		"vs/workbench/contrib/issue/browser/issueFormService": {
 			"additionalIssueData": "Zusätzliche Problemdaten",
 			"cancel": "Abbrechen",
@@ -15722,133 +14822,6 @@
 			"ok": "&&OK",
 			"pasteData": "Wir haben die erforderlichen Daten in die Zwischenablage geschrieben, da sie zu groß zum Senden waren. Fügen Sie sie ein.",
 			"yes": "&&Ja"
-		},
-		"vs/workbench/contrib/issue/browser/issueQuickAccess": {
-			"contributedIssuePage": "Open Extension Page",
-			"extensions": "Extensions",
-			"reportExtensionMarketplace": "Extension Marketplace"
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorInput": {
-			"discard": "Discard",
-			"discardIssue": "Discard issue report?",
-			"discardIssueDetail": "Your issue report has unsaved changes that will be lost.",
-			"issueReporterEditorInputName": "Report Issue",
-			"issueReporterIcon": "Icon for the issue reporter editor."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
-			"abExperiments": "A/B Experiments",
-			"additionalInformation": "Additional Information",
-			"additionalPerformanceData": "Additional Performance Data",
-			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
-			"attachments": "Attachments ({0})",
-			"back": "Back",
-			"bug": "Bug",
-			"bugGuidance": "Describe what happened, the steps to reproduce, what you expected, and what you observed instead.",
-			"captureOptions": "Capture options",
-			"category": "Category",
-			"categoryRequired": "Select a category to continue.",
-			"closeTab": "Close",
-			"composeMessage": "Describe",
-			"defaultGuidance": "Select a category above, then describe your feedback in detail.",
-			"deleteRecording": "Remove recording",
-			"deleteScreenshot": "Delete screenshot",
-			"describeHeading": "Describe your feedback",
-			"description": "Description",
-			"descriptionPlaceholder": "Describe the issue in detail...",
-			"descriptionRequired": "Enter a description to continue.",
-			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
-			"extension": "Extension",
-			"extensionData": "Extension Data",
-			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
-			"extensionNoIssueUrl": "This extension does not provide an issue reporting URL.",
-			"extensionPlaceholder": "E.g. Missing alt text on extension readme image",
-			"extensionRequired": "Select an extension to continue.",
-			"extensionSource": "A VS Code extension",
-			"extensions": "Extensions ({0})",
-			"featureGuidance": "Describe the feature you'd like to see, what problem it would solve, and any alternatives you've considered.",
-			"featureRequest": "Feature Request",
-			"feedbackCategory": "Category",
-			"fiveSeconds": "5 seconds",
-			"generateTitle": "Generate title from description",
-			"generateTitleBtn": "Generate from description",
-			"generatingTitle": "Generating...",
-			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
-			"issueTargetRepo": "Issue will be created in {0}/{1}.",
-			"issueTitle": "Title",
-			"issueTitlePlaceholder": "Brief summary of the issue",
-			"loadingDiagnostics": "Loading diagnostics...",
-			"loadingExtensionData": "Loading extension issue data...",
-			"loadingProcessInfo": "Loading currently running processes...",
-			"loadingSystemInfo": "Loading system information...",
-			"loadingWorkspaceInfo": "Loading workspace metadata...",
-			"markdownSupported": "Markdown formatting is supported.",
-			"marketplace": "Extensions Marketplace",
-			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
-			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
-			"next": "Next",
-			"noDelay": "No delay",
-			"noDescription": "(no description)",
-			"noSimilarIssues": "No similar issues found.",
-			"noTitle": "(no title)",
-			"openExternalIssueReporter": "Open External Issue Reporter",
-			"or": "or",
-			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
-			"performanceIssue": "Performance Issue",
-			"previewOnGitHub": "Preview on GitHub",
-			"recordVideo": "Record video",
-			"recordingActive": "Recording active",
-			"recordingThumbnailAlt": "Recording {0}",
-			"refresh": "Refresh",
-			"refreshPerformanceData": "Reload running processes and workspace metadata",
-			"reportIssue": "Report Issue",
-			"reviewSubmit": "Review and submit",
-			"runningProcesses": "Running Processes",
-			"screenshot": "Screenshot",
-			"screenshotAlt": "Screenshot {0}",
-			"screenshots": "Attachments",
-			"screenshotsHeading": "Add attachments for better context",
-			"screenshotsSubtitle": "You can add up to {0} screenshots or videos. Navigate VS Code and choose when to capture.",
-			"searchingSimilarIssues": "Searching similar issues...",
-			"selectExtension": "Select extension",
-			"shortcutHintIntro": "Use the floating capture bar, or press",
-			"similarIssues": "Similar Issues",
-			"similarIssuesNeedsTitle": "Enter a title to search for similar issues.",
-			"similarIssuesSearchFailed": "Unable to search for similar issues.",
-			"skip": "Skip",
-			"stepOf": "Step {0} of {1}",
-			"stopRecording": "Stop recording",
-			"submit": "Review",
-			"systemInformation": "System Information",
-			"target": "Target",
-			"targetRequired": "Select a target to continue.",
-			"tenSeconds": "10 seconds",
-			"threeSeconds": "3 seconds",
-			"titleRequired": "Enter a title to continue.",
-			"toCapture": "to capture a screenshot",
-			"toRecord": "to start or stop recording",
-			"unknown": "Unknown",
-			"unknownSource": "Don't know",
-			"updateAvailable": "A new version of {0} is available.",
-			"uploading": "Uploading...",
-			"vscode": "Visual Studio Code",
-			"vscodePlaceholder": "E.g. Workbench is missing problems panel",
-			"waitingForDiagnostics": "Waiting for performance diagnostics to finish loading",
-			"workspaceMetadata": "Workspace Metadata"
 		},
 		"vs/workbench/contrib/issue/browser/issueReporterPage": {
 			"acknowledgements": "Ich bestätige, dass meine VS Code-Version nicht aktualisiert ist und dieses Ticket möglicherweise geschlossen wird.",
@@ -15904,59 +14877,9 @@
 			"troubleshootIssue": "Problembehandlung...",
 			"use insiders": "Das bedeutet wahrscheinlich, dass das Problem bereits behoben wurde und die Lösung in einem bevorstehenden Release verfügbar sein wird. Sie können {0} Insiders sicher verwenden, bis die neue Stable-Version verfügbar ist."
 		},
-		"vs/workbench/contrib/issue/browser/screenshotAnnotation": {
-			"annotationHint": "Edit screenshot to highlight the problem",
-			"apply": "Apply",
-			"arrow": "Arrow",
-			"cancel": "Cancel",
-			"colorValue": "{0}: {1}",
-			"crop": "Crop",
-			"discard": "Discard",
-			"ellipse": "Ellipse",
-			"eraser": "Eraser",
-			"fillColor": "Fill Color",
-			"freehand": "Draw",
-			"opacity": "Opacity",
-			"pan": "Pan",
-			"rectangle": "Rectangle",
-			"redo": "Redo",
-			"save": "Save",
-			"select": "Select / Move",
-			"setFillColor": "Set Fill Color",
-			"setOpacity": "Set Opacity",
-			"setStrokeColor": "Set Stroke Color",
-			"setStrokeWidth": "Set Stroke Width to {0}px",
-			"setTextSize": "Set Text Size to {0}px",
-			"strokeColor": "Stroke Color",
-			"strokeWidth": "Stroke Width",
-			"text": "Text",
-			"textBackgroundColor": "Background Color",
-			"textColor": "Text Color",
-			"textSize": "Text Size",
-			"toolOptions": "Tool Options",
-			"transparentColor": "{0}: Transparent",
-			"typeText": "Type text",
-			"undo": "Undo"
-		},
 		"vs/workbench/contrib/issue/common/issue.contribution": {
 			"miReportIssue": "Problem &&melden",
 			"reportIssueInEnglish": "Problem melden..."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issue.contribution": {
-			"issueReporter.wizard.enabled": "Enable the new issue reporter wizard instead of the classic issue reporter.",
-			"issueReporter.wizard.fullWorkspaceScan": "When auto-collecting performance diagnostics for the issue reporter wizard, walk the full workspace instead of stopping at the default 20,000-file cap. Set to false on very large workspaces if the scan slows the initial wizard render.",
-			"issueReporterConfigurationTitle": "Issue Reporter",
-			"issueReporterEditorPaneTitle": "Issue Reporter",
-			"openIssueReporter": "Open Issue Reporter",
-			"reportPerformanceIssue": "Report Performance Issue...",
-			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
-			"noCurrentExperiments": "No current experiments.",
-			"pasteData": "We have written the needed data into your clipboard because it was too large to send. Please paste.",
-			"saveExtensionData": "Save Extension Data",
-			"undefinedPlaceholder": "Please enter a title",
-			"updateAvailable": "A new version of {0} is available."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "Problembehandlung für das Umschalten von Tastenkombinationen"
@@ -16041,11 +14964,6 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "Lokaler Verlauf"
 		},
-		"vs/workbench/contrib/localHistory/electron-browser/localHistoryCommands": {
-			"openContainer": "Übergeordneten Ordner öffnen",
-			"revealInMac": "Im Finder anzeigen",
-			"revealInWindows": "Im Datei-Explorer anzeigen"
-		},
 		"vs/workbench/contrib/localization/common/localization.contribution": {
 			"language id": "Sprach-ID",
 			"localizations": "Sprachpakete",
@@ -16069,17 +14987,6 @@
 			"installed": "Installiert",
 			"moreInfo": "Weitere Info"
 		},
-		"vs/workbench/contrib/localization/electron-browser/localization.contribution": {
-			"changeAndRestart": "Sprache ändern und neu starten",
-			"neverAgain": "Nicht mehr anzeigen",
-			"updateLocale": "Möchten Sie die Anzeigesprache von {0} in {1} ändern und neu starten?"
-		},
-		"vs/workbench/contrib/localization/electron-browser/minimalTranslations": {
-			"installAndRestart": "Installieren und neu starten",
-			"installAndRestartMessage": "Installieren Sie das Sprachpaket, um die Anzeigesprache in {0} zu ändern.",
-			"searchMarketplace": "Marketplace durchsuchen",
-			"showLanguagePackExtensions": "Suchen Sie im Marketplace nach Sprachpaketen, um die Anzeigesprache in {0} zu ändern."
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"remote name": "{0} (Remote)",
 			"setDefaultLogLevel": "Standardprotokollebene festlegen",
@@ -16099,10 +15006,6 @@
 			"selectlog": "Protokollebene festlegen",
 			"sessions placeholder": "Sitzung auswählen",
 			"setLogLevel": "Protokollstufe festlegen..."
-		},
-		"vs/workbench/contrib/logs/electron-browser/logsActions": {
-			"openExtensionLogsFolder": "Ordner mit den Erweiterungsprotokollen öffnen",
-			"openLogsFolder": "Protokollordner öffnen"
 		},
 		"vs/workbench/contrib/markdown/browser/markdownSettingRenderer": {
 			"alreadysetBoolFalse": "„{0}: {1}“ ist bereits deaktiviert.",
@@ -16935,12 +15838,6 @@
 			"showBase": "Wenn der Merge-Editor die Basisversion anzeigt",
 			"showBaseAtTop": "Falls die Basis oben angezeigt werden soll",
 			"showNonConflictingChanges": "Wenn der Merge-Editor nicht in Konflikt stehende Änderungen anzeigt"
-		},
-		"vs/workbench/contrib/mergeEditor/electron-browser/devCommands": {
-			"merge.dev.openSelectionInTemporaryMergeEditor": "Auswahl im temporären Merge-Editor öffnen",
-			"merge.dev.openState": "Merge-Editor-Status aus JSON öffnen",
-			"mergeEditor": "Merge-Editor (Entwicklung)",
-			"mergeEditor.enterJSON": "JSON eingeben"
 		},
 		"vs/workbench/contrib/meteredConnection/browser/meteredConnection.contribution": {
 			"configureMeteredConnection": "Getaktete Verbindung konfigurieren",
@@ -17805,18 +16702,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "Startleistung"
 		},
-		"vs/workbench/contrib/performance/electron-browser/performance.contribution": {
-			"experimental.rendererProfiling": "Wenn diese Option aktiviert ist, wird automatisch ein Profil für langsame Renderer erstellt."
-		},
-		"vs/workbench/contrib/performance/electron-browser/startupProfiler": {
-			"prof.detail": "Erstellen Sie ein Issue, und fügen Sie die folgenden Dateien manuell an:\r\n{0}",
-			"prof.detail.restart": "Ein abschließender Neustart ist erforderlich, um \"{0}\" verwenden zu können. Vielen Dank für Ihre Mithilfe!",
-			"prof.message": "Profile wurden erfolgreich erstellt.",
-			"prof.restart": "Neu starten",
-			"prof.restart.button": "&&Neu starten",
-			"prof.restartAndFileIssue": "&&Issue erstellen und neu starten",
-			"prof.thanks": "Vielen Dank für Ihre Mithilfe!"
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditor": {
 			"SearchKeybindings.FullTextSearchPlaceholder": "Nehmen Sie eine Eingabe vor, um die Tastenzuordnungen zu durchsuchen.",
 			"SearchKeybindings.KeybindingsSearchPlaceholder": "Tasten werden aufgezeichnet. Drücken Sie die ESC-TASTE, um den Vorgang zu beenden.",
@@ -17860,6 +16745,18 @@
 			"defineKeybinding.existing": "Diese Tastenzuordnung ist {0} vorhandenen Befehlen zugewiesen",
 			"defineKeybinding.initial": "Drücken Sie die gewünschte Tastenkombination, und betätigen Sie anschließend die EINGABETASTE.",
 			"defineKeybinding.oneExists": "Diese Tastenzuordnung ist 1 vorhandenen Befehl zugewiesen"
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"clear": "Suchergebnisse löschen",
@@ -18201,6 +17098,9 @@
 			"openProcessExplorer": "Prozess-Explorer öffnen",
 			"promptOpenWith.processExplorer.displayName": "Prozess-Explorer"
 		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
 		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
 			"copy": "Kopieren",
 			"copyAll": "Alles kopieren",
@@ -18216,9 +17116,6 @@
 		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
 			"processExplorerEditorLabelIcon": "Symbol der Beschriftung des Prozess-Explorer-Editors.",
 			"processExplorerInputName": "Prozess-Explorer"
-		},
-		"vs/workbench/contrib/processExplorer/electron-browser/processExplorer.contribution": {
-			"processExplorer": "Prozess-Explorer"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "&&Löschen",
@@ -18363,6 +17260,10 @@
 			"workspace.tooltip": "Bearbeitung auf \"{0}\"",
 			"workspace.tooltip2": "Einige [Features sind nicht verfügbar]({0}) für Ressourcen in einem virtuellen Dateisystem."
 		},
+		"vs/workbench/contrib/remote/browser/remoteStartEntry": {
+			"remote.category": "Remote",
+			"remote.showWebStartEntryActions": "Remotestarteintrag für Web anzeigen"
+		},
 		"vs/workbench/contrib/remote/browser/tunnelFactory": {
 			"tunnelPrivacy.private": "Privat",
 			"tunnelPrivacy.public": "Öffentlich"
@@ -18465,13 +17366,6 @@
 			"triggerReconnect": "Verbindung: Erneute Verbindung auslösen",
 			"ui": "Art der Benutzeroberflächenerweiterung. In einem Remotefenster werden solche Erweiterungen nur aktiviert, wenn sie auf dem lokalen Computer verfügbar sind.",
 			"workspace": "Art der Arbeitsbereichserweiterung. In einem Remotefenster werden solche Erweiterungen nur aktiviert, wenn sie auf dem Remotecomputer verfügbar sind."
-		},
-		"vs/workbench/contrib/remote/electron-browser/remote.contribution": {
-			"remote": "Remote",
-			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
-			"remote.category": "Remote",
-			"remote.downloadExtensionsLocally": "When enabled extensions are downloaded locally and installed on remote.",
-			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution": {
 			"remoteCodingAgentsExtPoint": "Stellt Integrationen für Remote-Codierungs-Agents im Chat-Widget bereit.",
@@ -19576,6 +18470,9 @@
 			"taskQuickPick.showAll": "Alle Tasks anzeigen...",
 			"taskType": "Alle {0} Aufgaben"
 		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "Das Prozessaufgabensystem wird im Web nicht unterstützt."
+		},
 		"vs/workbench/contrib/tasks/browser/tasksQuickAccess": {
 			"TaskService.pickRunTask": "Wählen Sie die auszuführende Aufgabe aus.",
 			"noTaskResults": "Keine übereinstimmenden Aufgaben."
@@ -19854,12 +18751,6 @@
 			"dotnetCore": "Führt den .NET Core-Buildbefehl aus.",
 			"externalCommand": "Ein Beispiel für das Ausführen eines beliebigen externen Befehls.",
 			"msbuild": "Führt das Buildziel aus."
-		},
-		"vs/workbench/contrib/tasks/electron-browser/taskService": {
-			"TaskSystem.exitAnyways": "&&Exit Anyways",
-			"TaskSystem.noProcess": "The launched task doesn't exist anymore. If the task spawned background processes exiting VS Code might result in orphaned processes. To avoid this start the last background process with a wait flag.",
-			"TaskSystem.runningTask": "There is a task running. Do you want to terminate it?",
-			"TaskSystem.terminateTask": "&&Terminate Task"
 		},
 		"vs/workbench/contrib/telemetry/browser/telemetry.contribution": {
 			"showTelemetry": "Telemetrie anzeigen"
@@ -20375,9 +19266,6 @@
 			"workbench.action.terminal.scrollToNextCommand": "Zu nächstem Befehl scrollen",
 			"workbench.action.terminal.scrollToPreviousCommand": "Zu vorherigem Befehl scrollen",
 			"workbench.action.terminal.sizeToContentWidthInstance": "Größe auf Inhaltsbreite umschalten"
-		},
-		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
-			"workbench.action.terminal.newLocal": "Neues integriertes Terminal erstellen (lokal)"
 		},
 		"vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
 			"workbench.action.terminal.accessibleBufferGoToNextCommand": "Zugänglicher Puffer: Befehl \"Weiter\"",
@@ -22043,12 +20931,6 @@
 			"workbench.actions.sync.resolveResourceRef": "Roh-JSON-Synchronisierungsdaten anzeigen",
 			"workbench.actions.sync.turnOffSyncOnMachine": "Einstellungssynchronisierung deaktivieren"
 		},
-		"vs/workbench/contrib/userDataSync/electron-browser/userDataSync.contribution": {
-			"Open Backup folder": "Lokalen Sicherungsordner öffnen",
-			"download sync activity complete": "Die Aktivität \"Einstellungssynchronisierung\" wurde erfolgreich heruntergeladen.",
-			"no backups": "Der Ordner für lokale Sicherungen ist nicht vorhanden.",
-			"open": "Ordner öffnen"
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "Wenn diese Option aktiviert ist, werden Tipps zu Grenzwerten angezeigt, wenn kein Editor geöffnet ist.",
 			"watermark.findInFiles": "In Dateien suchen",
@@ -22103,11 +20985,6 @@
 			"webview.settingsHeader": "Einstellungen, die Sie anpassen können ({0} öffnet Einstellungen):",
 			"webview.statusDesc": "Sie durchsuchen den Webinhalt.",
 			"webview.statusHeader": "Aktueller Suchstatus:"
-		},
-		"vs/workbench/contrib/webview/electron-browser/webviewCommands": {
-			"iframeWebviewAlert": "Zum Debuggen der iFrame-basierten Webansicht werden Standard-Dev-Tools verwendet.",
-			"openToolsDescription": "Öffnet Entwicklertools für aktive Webansichten",
-			"openToolsLabel": "Webview-Entwicklertools öffnen"
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "Weitersuchen",
@@ -22916,14 +21793,11 @@
 			"authenticationExtensionPoint": "Trägt die Authentifizierung bei."
 		},
 		"vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService": {
-			"lifecycleVeto": "Von Ihnen vorgenommene Änderungen werden möglicherweise nicht gespeichert. Klicken Sie auf „Abbrechen“, und versuchen Sie es noch einmal.",
-			"retry": "&&Wiederholen",
-			"unableToOpenWindow": "Der Browser hat das Öffnen eines neuen Fensters blockiert. Wählen Sie „Erneut versuchen“ aus, um es noch einmal zu versuchen.",
-			"unableToOpenWindowDetail": "Erlauben Sie Popups für diese Website in Ihren [Browsereinstellungen]({0}).",
-			"unableToOpenWindowError": "Ein neues Fenster kann nicht geöffnet werden."
-		},
-		"vs/workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService": {
-			"backupErrorDetails": "Versuchen Sie zuerst, die Editoren mit nicht gespeicherten Änderungen zu speichern oder zurückzusetzen, und versuchen Sie es dann noch einmal."
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again.",
+			"retry": "&&Retry",
+			"unableToOpenWindow": "The browser blocked opening a new window. Press 'Retry' to try again.",
+			"unableToOpenWindowDetail": "Please allow pop-ups for this website in your [browser settings]({0}).",
+			"unableToOpenWindowError": "Unable to open a new window."
 		},
 		"vs/workbench/services/chat/common/chatEntitlementService": {
 			"learnMore": "Weitere Informationen",
@@ -23065,12 +21939,22 @@
 			"saveChangesMessages": "Möchten Sie die an den folgenden {0}-Dateien vorgenommenen Änderungen speichern?",
 			"saveFileAs.title": "Speichern unter"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "&&Weitere Informationen",
+			"openFiles": "&&Dateien öffnen...",
+			"openRemote": "&&Remote öffnen...",
+			"pickFolderAndOpen": "Ordner können nicht geöffnet werden. Versuchen Sie stattdessen, dem Arbeitsbereich einen Ordner hinzuzufügen.",
+			"pickWorkspaceAndOpen": "Arbeitsbereiche können nicht geöffnet werden. Versuchen Sie stattdessen, dem Arbeitsbereich einen Ordner hinzuzufügen.",
+			"unsupportedBrowserDetail": "Das Öffnen lokaler Ordner wird von Ihrem Browser nicht unterstützt.\r\nSie können entweder einzelne Dateien öffnen oder ein Remote-Repository öffnen.",
+			"unsupportedBrowserMessage": "Das Öffnen lokaler Ordner wird nicht unterstützt."
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "Lokale Datei öffnen ...",
 			"openLocalFileFolder": "Lokal öffnen ...",
 			"openLocalFolder": "Lokalen Ordner öffnen ...",
 			"remoteFileDialog.badPath": "Der Pfad ist nicht vorhanden. Verwenden Sie ~, um zu Ihrem Basisverzeichnis zu wechseln.",
 			"remoteFileDialog.cancel": "Abbrechen",
+			"remoteFileDialog.createFolderFailed": "Could not create folder: {0}",
 			"remoteFileDialog.hideDotFiles": "Punktdateien ausblenden",
 			"remoteFileDialog.invalidPath": "Geben Sie einen gültigen Pfad ein.",
 			"remoteFileDialog.local": "Lokal anzeigen",
@@ -23079,6 +21963,7 @@
 			"remoteFileDialog.showDotFiles": "Punktdateien anzeigen",
 			"remoteFileDialog.validateBadFilename": "Geben Sie einen gültigen Dateinamen ein.",
 			"remoteFileDialog.validateCreateDirectory": "Der Ordner {0} ist nicht vorhanden. Möchten Sie ihn erstellen?",
+			"remoteFileDialog.validateCreateDirectoryOpen": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "Die Datei \"{0}\" ist bereits vorhanden. Möchten Sie sie wirklich überschreiben?",
 			"remoteFileDialog.validateFileOnly": "Wählen Sie eine Datei aus.",
 			"remoteFileDialog.validateFolder": "Der Ordner ist bereits vorhanden. Verwenden Sie einen neuen Dateinamen.",
@@ -23143,11 +22028,19 @@
 			"extensionsDisabled": "Alle installierten Erweiterungen sind vorübergehend deaktiviert.",
 			"noWorkspace": "Kein Arbeitsbereich."
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "\"{0}\" kann nicht hinzugefügt werden, weil es sich bei dieser Erweiterung nicht um eine Weberweiterung handelt.",
+			"openInstalledWebExtensionsResource": "Installierte Weberweiterungsressource öffnen"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionFeaturesManagemetService": {
 			"accessExtensionFeature": "Auf Funktion „{0}“ zugreifen",
 			"accessExtensionFeatureMessage": "Erweiterung „{0}“ möchte auf die Funktion „{1}“ zugreifen.",
 			"allow": "Zulassen",
 			"disallow": "Nicht zulassen"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "Browser",
+			"remote": "Remote"
 		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "Fehler beim Installieren der Erweiterung {0}: Manifest konnte nicht gefunden werden.",
@@ -23197,19 +22090,6 @@
 			"extensionDefault": "Symbol, das für die Standarderweiterung in der Erweiterungsansicht und im Editor verwendet wird.",
 			"extensionIconVerifiedForeground": "Die Symbolfarbe für den verifizierten Erweiterungsherausgeber.",
 			"verifiedPublisher": "Symbol, das für den verifizierten Erweiterungsherausgeber in der Erweiterungsansicht und im Editor verwendet wird."
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService": {
-			"extensionGalleryManifestService.accountChange": "{0} is now configured to a different Marketplace. Please restart to apply the changes.",
-			"restart": "&&Restart"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionManagementServerService": {
-			"local": "Local",
-			"remote": "Remote"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
-			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
-			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "Erweiterungsempfehlung hinzufügen zu",
@@ -23343,36 +22223,6 @@
 			"overwritingExtension": "Die Erweiterung \"{0}\" wird mit \"{1}\" überschrieben.",
 			"overwritingWithWorkspaceExtension": "{0} wird mit der Arbeitsbereichserweiterung {1} überschrieben."
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "Erweiterungen wurden auf der Festplatte geändert. Laden Sie das Fenster neu.",
-			"extensionUnderDevelopment.invalid": "Fehler beim Laden der Erweiterung „{0}“, die sich in der Entwicklung befindet, da sie ungültig ist: {1}",
-			"extensionsUnderDevelopment.invalid": "Fehler beim Laden von Erweiterungen „{0}“, die sich in der Entwicklung befinden, weil sie ungültig sind: {1}",
-			"reloadWindow": "Fenster neu laden"
-		},
-		"vs/workbench/services/extensions/electron-browser/localProcessExtensionHost": {
-			"extensionHost.startupFail": "Der Erweiterungshost wurde nicht innerhalb von 10 Sekunden gestartet. Dies stellt ggf. ein Problem dar.",
-			"extensionHost.startupFailDebug": "Der Erweiterungshost wurde nicht innerhalb von 10 Sekunden gestartet. Möglicherweise wurde er in der ersten Zeile beendet und benötigt einen Debugger, um die Ausführung fortzusetzen.",
-			"join.extensionDevelopment": "Erweiterungsdebugsitzung wird beendet",
-			"reloadWindow": "Fenster neu laden"
-		},
-		"vs/workbench/services/extensions/electron-browser/nativeExtensionService": {
-			"devTools": "Entwicklungstools öffnen",
-			"enable": "Aktivieren und erneut laden",
-			"enableResolver": "Die Erweiterung \"{0}\" ist erforderlich, um das Remotefenster zu öffnen.\r\nMöchte Sie sie aktivieren?",
-			"extensionService.autoRestart": "Der Erweiterungshost wurde unerwartet beendet. Wird neu gestartet...",
-			"extensionService.crash": "Der Erweiterungshost wurde innerhalb der letzten 5 Minuten unerwartet dreimal beendet.",
-			"extensionService.versionMismatchCrash": "Erweiterungshost kann nicht gestartet werden: Versionskonflikt.",
-			"getEnvironmentFailure": "Die Remoteumgebung konnte nicht abgerufen werden.",
-			"install": "Installieren und erneut laden",
-			"installResolver": "Die Erweiterung „{0}“ ist erforderlich, um das Remotefenster zu öffnen.\r\nMöchten Sie die Erweiterung installieren?",
-			"learnMore": "Weitere Informationen",
-			"relaunch": "VS Code neu starten",
-			"resolverExtensionNotFound": "\"{0}\" nicht im Marketplace gefunden",
-			"restart": "Erweiterungshost neu starten",
-			"restartExtensionHost": "Erweiterungshost neu starten",
-			"restartExtensionHost.reason": "Eine explizite Anforderung",
-			"startBisect": "Zweiteilung von Erweiterungen starten"
-		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"fileWatcher": "Datei-Watcher"
 		},
@@ -23457,6 +22307,10 @@
 			"vscode.extension.contributes.keybindings.when": "Die Bedingung, wann der Schlüssel aktiv ist.",
 			"vscode.extension.contributes.keybindings.win": "Der Windows-spezifische Schlüssel oder die Schlüsselsequenz."
 		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "Steuern Sie das im Web verwendete Tastaturlayout.",
+			"keyboardConfigurationTitle": "Tastatur"
+		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "Geben Sie Ihre Tastenzuordnungen in dieser Datei ein, um die Standardwerte außer Kraft zu setzen.",
 			"errorInvalidConfiguration": "In die Tastenbindungskonfigurationsdatei kann nicht geschrieben werden. Sie enthält ein Objekt, bei dem es sich nicht um ein Array handelt. Öffnen Sie die Datei, um das Problem zu beheben, und versuchen Sie es dann nochmal.",
@@ -23511,13 +22365,12 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "Von Ihnen vorgenommene Änderungen werden möglicherweise nicht gespeichert. Klicken Sie auf „Abbrechen“, und versuchen Sie es noch einmal."
 		},
-		"vs/workbench/services/localization/electron-browser/localeService": {
-			"argvInvalid": "Unable to write display language. Please open the runtime settings, correct errors/warnings in it and try again.",
-			"installing": "Installing {0} language support...",
-			"openArgv": "Open Runtime Settings",
-			"restart": "&&Restart",
-			"restartDisplayLanguageDetail1": "To change the display language to {0}, {1} needs to restart.",
-			"restartDisplayLanguageMessage1": "Restart {0} to switch to {1}?"
+		"vs/workbench/services/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "Drücken Sie die Schaltfläche „Neu laden“, um die Seite zu aktualisieren, und verwenden Sie die Sprache Ihres Browsers.",
+			"clearDisplayLanguageMessage": "Um die Anzeige-Sprache zu ändern, muss {0} neu geladen werden.",
+			"relaunchDisplayLanguageDetail": "Drücken Sie die Schaltfläche „Neu laden“, um die Seite zu aktualisieren, und legen Sie die Anzeigesprache auf {0} fest.",
+			"relaunchDisplayLanguageMessage": "Um die Anzeige-Sprache zu ändern, muss {0} neu geladen werden.",
+			"reload": "&&Erneut laden"
 		},
 		"vs/workbench/services/log/common/logConstants": {
 			"window": "Fenster"
@@ -23604,6 +22457,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "Fortschrittsmeldung"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "Unerwarteter Fehler, der ein erneutes Laden dieser Seite erfordert.",
+			"connectionErrorDetail": "Die Workbench konnte keine Verbindung mit dem Server herstellen (Fehler: {0}).",
+			"reload": "&&Neu laden"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"RemoteHelpInformationExtPoint": "Trägt Hilfeinformationen für Remoteelement bei.",
 			"RemoteHelpInformationExtPoint.documentation": "Die URL zur Dokumentationsseite Ihres Projekts bzw. ein Befehl, der diese URL zurückgibt.",
@@ -23621,16 +22479,15 @@
 			"tunnel.source.user": "Benutzerweiterleitung",
 			"tunnel.staticallyForwarded": "Statische Weiterleitung"
 		},
-		"vs/workbench/services/remote/electron-browser/remoteAgentService": {
-			"connectionError": "Failed to connect to the remote extension host server (Error: {0})",
-			"devTools": "Open Developer Tools",
-			"directUrl": "Open in browser"
-		},
-		"vs/workbench/services/request/electron-browser/requestService": {
+		"vs/workbench/services/request/browser/requestService": {
 			"network": "Netzwerk"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "Der Arbeitsbereichsordner ist nicht vorhanden: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/secrets/electron-browser/secretStorageService": {
 			"encryptionNotAvailableJustTroubleshootingGuide": "Es konnte kein Betriebssystemschlüsselbund zum Speichern der verschlüsselungsbezogenen Daten in Ihrer aktuellen Desktopumgebung identifiziert werden.",
@@ -23684,9 +22541,6 @@
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants1": "Codeaktionen und Formatierer werden ausgeführt...",
 			"skip": "Überspringen"
-		},
-		"vs/workbench/services/textfile/electron-browser/nativeTextFileService": {
-			"join.textFiles": "Textdateien werden gespeichert"
 		},
 		"vs/workbench/services/textMate/browser/textMateTokenizationFeatureImpl": {
 			"alreadyDebugging": "Es wird bereits eine Protokollierung durchgeführt.",
@@ -23941,13 +22795,6 @@
 			"invalid.semanticTokenTypeConfiguration": "\"configuration.semanticTokenType\" muss ein Array sein.",
 			"invalid.superType.format": "\"configuration.{0}.superType\" muss dem Muster BuchstabeOderZahl[-_BuchstabeOderZahl]* folgen."
 		},
-		"vs/workbench/services/themes/electron-browser/themes.contribution": {
-			"window.systemColorTheme": "Legen Sie den Farbodus für native Benutzeroberflächenelemente wie native Dialogfelder, Menüs und Titelleisten fest. Auch wenn Ihr Betriebssystem im hellen Farbmodus konfiguriert ist, können Sie ein dunkles Systemfarbdesign für das Fenster auswählen. Sie können auch die automatische Anpassung basierend auf der Einstellung {0} konfigurieren.\r\n\r\nHinweis: Diese Einstellung wird ignoriert, wenn {1} aktiviert ist.",
-			"window.systemColorTheme.auto": "Verwenden Sie helle native Widgetfarben für helle Farbdesigns und dunkle für dunkle Farbdesigns.",
-			"window.systemColorTheme.dark": "Verwenden Sie dunkle native Widgetfarben.",
-			"window.systemColorTheme.default": "Native Widgetfarben stimmen mit den Systemfarben überein.",
-			"window.systemColorTheme.light": "Verwenden Sie helle native Widgetfarben."
-		},
 		"vs/workbench/services/userDataProfile/browser/extensionsResource": {
 			"all profiles and disabled": "Alle Profile",
 			"exclude": "{0}-Erweiterung auswählen",
@@ -24145,23 +22992,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "Rückgängig/Wiederholen"
 		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupService": {
-			"join.workingCopyBackups": "Arbeitskopien sichern"
-		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "Klicken Sie auf „Abbrechen“, um das Warten zu beenden und die Editoren mit nicht gespeicherten Änderungen zu speichern oder zurückzusetzen.",
-			"backupBeforeShutdownMessage": "Das Sichern von Editoren mit nicht gespeicherten Änderungen dauert etwas länger...",
-			"backupErrorDetails": "Versuchen Sie zuerst, die Editoren mit nicht gespeicherten Änderungen zu speichern oder zurückzusetzen, und versuchen Sie es dann noch einmal.",
-			"backupTrackerBackupFailed": "Die folgenden Editoren mit nicht gespeicherten Änderungen konnten nicht am Sicherungsspeicherort gespeichert werden.",
-			"backupTrackerConfirmFailed": "Die folgenden Editoren mit nicht gespeicherten Änderungen konnten nicht am Sicherungsspeicherort gespeichert oder zurückgesetzt werden.",
-			"discardBackupsBeforeShutdown": "Das Verwerfen von Sicherungen dauert etwas länger...",
-			"ok": "&&OK",
-			"revertBeforeShutdown": "Das Wiederherstellen von Editoren mit nicht gespeicherten Änderungen dauert etwas länger...",
-			"saveBeforeShutdown": "Das Speichern von Editoren mit nicht gespeicherten Änderungen dauert etwas länger...",
-			"shutdownForceClose": "Trotzdem schließen",
-			"shutdownForceQuit": "Trotzdem beenden",
-			"shutdownForceReload": "Trotzdem neu laden"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "In die Konfigurationsdatei des Arbeitsbereichs kann nicht geschrieben werden. Öffnen Sie die Datei, um Fehler/Warnungen darin zu beheben, und versuchen Sie es noch mal.",
 			"openWorkspaceConfigurationFile": "Konfiguration des Arbeitsbereichs öffnen",
@@ -24171,16 +23001,6 @@
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "Arbeitsbereichsvertrauensstellung",
 			"workspaceTrustEditorLabelIcon": "Symbol der Bezeichnung des Editors für die Arbeitsbereichsvertrauensstellung."
-		},
-		"vs/workbench/services/workspaces/electron-browser/workspaceEditingService": {
-			"doNotAskAgain": "Unbenannte Arbeitsbereiche immer ohne Aufforderung verwerfen",
-			"doNotSave": "&&Nicht speichern",
-			"restartExtensionHost.reason": "Ein Arbeitsbereich mit mehreren Stämmen wird geöffnet",
-			"save": "&&Speichern",
-			"saveWorkspaceDetail": "Speichern Sie Ihren Arbeitsbereich, wenn Sie ihn erneut öffnen möchten.",
-			"saveWorkspaceMessage": "Möchten Sie Ihre Arbeitsbereichskonfiguration als Datei speichern?",
-			"workspaceOpenedDetail": "Der Arbeitsbereich ist bereits in einem anderen Fenster geöffnet. Schließen Sie zuerst das andere Fenster, und versuchen Sie anschließend noch mal.",
-			"workspaceOpenedMessage": "Der Arbeitsbereich \"{0}\" kann nicht gespeichert werden."
 		}
 	}
 }

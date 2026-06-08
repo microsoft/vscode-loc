@@ -2175,8 +2175,10 @@
 			"agentHost.config.customizations.uri": "플러그 인 URI",
 			"agentHost.config.defaultShell.description": "호스트에서 관리하는 터미널에서 사용할 셸 실행 파일의 절대 경로입니다. 일반적으로 연결된 VS Code 클라이언트가 `terminal.integrated.agentHostProfile.<os>`에서 푸시하며(`terminal.integrated.defaultProfile.<os>`로 대체), 설정 해제하면 에이전트 호스트는 시스템 셸로 대체됩니다. 현재는 경로만 지원되며, 워크벤치 프로필의 `args`와 `env`는 아직 전달되지 않습니다. 워크벤치는 이를 로컬 에이전트 호스트에 대해서만 푸시하므로, 원격 에이전트 호스트 운영자는 원격 컴퓨터의 `agent-host-config.json`에서 이 값을 직접 설정해야 합니다.",
 			"agentHost.config.defaultShell.title": "기본 셸",
-			"agentHost.config.disableCustomTerminalTool.description": "활성화하면 Copilot SDK 세션에서 에이전트 호스트의 터미널 도구 재정의 대신 SDK의 기본 터미널 동작을 사용합니다.",
-			"agentHost.config.disableCustomTerminalTool.title": "SDK 터미널 도구 사용"
+			"agentHost.config.enableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use Agent Host's terminal tool override instead of the SDK's default terminal behavior.",
+			"agentHost.config.enableCustomTerminalTool.title": "Use Agent Host Terminal Tool",
+			"agentHost.config.rubberDuck.description": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model.",
+			"agentHost.config.rubberDuck.title": "Rubber Duck Agent"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
 			"agentHost.config.sessionSyncEnabled.description": "copilot-sdk CLI에 대해 원격 세션 동기화가 활성화되어 있는지 여부입니다.",
@@ -2205,13 +2207,15 @@
 		},
 		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
 			"chat.agentHost.claudeAgent.path": "실험적인 기능이며 로컬 테스트 전용입니다. 로컬에 설치된 `@anthropic-ai/claude-agent-sdk` 패키지의 절대 경로입니다. 설정하면 Claude 에이전트 공급자가 에이전트 호스트에 등록되고 SDK가 이 경로에서 로드됩니다. `#chat.agentHost.enabled#`이(가) 필요합니다. 변경 내용을 적용하려면 에이전트 호스트 프로세스를 다시 시작해야 합니다. SDK가 확장 Marketplace를 통해 제공되면 이 설정은 제거됩니다.",
+			"chat.agentHost.codexAgent.binaryArgs": "Additional command-line arguments passed to `codex app-server`. Primarily useful for debugging (for example, `--log-level=debug`).",
+			"chat.agentHost.codexAgent.codexHome": "Optional override for `$CODEX_HOME`. Controls where the codex binary reads config and writes rollouts. When empty, codex uses its default (`~/.codex`).",
+			"chat.agentHost.codexAgent.path": "Experimental, for local testing only. Absolute path to a locally-installed `codex` binary. When set, the Codex agent provider is registered inside the agent host and `codex app-server` is spawned from this path. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
 			"chat.agentHost.otel.captureContent": "활성화하면 OTel 범위 특성에 프롬프트 및 응답 콘텐츠가 포함됩니다. `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`를 설정합니다. 개인 정보 구분: 범위를 공유 싱크에 보내는 환경에서는 활성화하지 마세요.",
 			"chat.agentHost.otel.dbSpanExporter.enabled": "활성화하면 에이전트 호스트는 내보내는 모든 OTel 범위를 로컬 SQLite 데이터베이스에 유지합니다. 범위는 `Export Agent Host Traces Database` 명령으로 검사할 수 있습니다. 외부 내보내기와 호환됨: 범위는 SQLite에 기록되고 사용자가 구성한 싱크로*도* 전달됩니다.",
 			"chat.agentHost.otel.enabled": "활성화하면 에이전트 호스트가 Copilot SDK에서 OpenTelemetry 추적을 내보냅니다. `#chat.agentHost.enabled#`이(가) 필요합니다. 추적을 외부 수집기로 보내려면 `#chat.agentHost.otel.otlpEndpoint#`을(를) 구성하고, 로컬에서 캡처하려면 `#chat.agentHost.otel.dbSpanExporter.enabled#`을(를) 활성화합니다.",
 			"chat.agentHost.otel.exporterType": "Copilot SDK에서 `#chat.agentHost.otel.enabled#`이(가) 켜져 있을 때 사용하는 내보내기 백 엔드입니다. `otlp-grpc`는 CLI 런타임에서 `otlp-http`로 자동으로 다운그레이드됩니다.",
 			"chat.agentHost.otel.otlpEndpoint": "내보내기 유형이 `otlp-http` 또는 `otlp-grpc`인 경우 OTLP 엔드포인트 URL입니다. 에이전트 호스트 프로세스에서 `OTEL_EXPORTER_OTLP_ENDPOINT`를 설정합니다.",
 			"chat.agentHost.otel.outfile": "내보내기 유형이 `file`인 경우 범위 JSON 줄의 출력 경로입니다. `COPILOT_OTEL_FILE_EXPORTER_PATH`를 설정합니다.",
-			"chat.agentHost.rubberDuck.enabled": "활성화하면 코딩 에이전트는 보완 모델을 사용해 코드 변경 내용을 검토하는 러버덕 비평 하위 에이전트를 사용합니다. `#chat.agentHost.enabled#`이(가) 필요합니다.",
 			"chatAgentHostStarterConfigurationTitle": "채팅 에이전트 호스트 스타터"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2243,15 +2247,45 @@
 			"agentHost.config.sandbox.windowsEnabled.title": "샌드박스 사용(Windows)",
 			"agentHost.config.sandbox.windowsFileSystem.title": "Windows 샌드박스 파일 시스템"
 		},
-		"vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl": {
-			"sshKbiDefaultPrompt": "Authentication required for {0}@{1}"
+		"vs/platform/agentHost/node/agentHostCommitOperationHandler": {
+			"agentHost.changeset.commit.authExpired": "Authentication is required to generate a commit message. Please sign in to GitHub Copilot and try again.",
+			"agentHost.changeset.commit.authRequired": "Sign in to GitHub Copilot to generate a commit message.",
+			"agentHost.changeset.commit.cancelled": "Commit operation was cancelled.",
+			"agentHost.changeset.commit.committed": "Committed changes with message: `{0}`",
+			"agentHost.changeset.commit.diffFailed": "Could not compute uncommitted changes to generate a commit message.",
+			"agentHost.changeset.commit.emptyMessage": "Generated commit message was empty.",
+			"agentHost.changeset.commit.noChanges": "No uncommitted changes to commit."
+		},
+		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
+			"agentHost.changeset.commit": "Commit"
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "에이전트 호스트"
 		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationHandler": {
+			"agentHost.changeset.pr.authRequired": "Sign in to GitHub with repository access to create a pull request.",
+			"agentHost.changeset.pr.body": "Created from `{0}` targeting `{1}`.",
+			"agentHost.changeset.pr.cancelled": "Pull request operation was cancelled.",
+			"agentHost.changeset.pr.commitMessage": "Agent Host changes for {0}",
+			"agentHost.changeset.pr.computeChangesFailed": "Could not compute branch changes to create a pull request.",
+			"agentHost.changeset.pr.created": "Created pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.createdDraft": "Created draft pull request [#{0}]({1}).",
+			"agentHost.changeset.pr.existing": "Pull request [#{0}]({1}) already exists.",
+			"agentHost.changeset.pr.noChanges": "There are no branch changes to create a pull request for."
+		},
+		"vs/platform/agentHost/node/agentHostPullRequestOperationProvider": {
+			"agentHost.changeset.createDraftPR": "Create Draft Pull Request",
+			"agentHost.changeset.createPR": "Create Pull Request"
+		},
+		"vs/platform/agentHost/node/agentHostRenameCommand": {
+			"agentHostSlashCommand.rename.description": "Rename this chat"
+		},
 		"vs/platform/agentHost/node/agentService": {
 			"agentHost.forkedSessionFallback": "분기된 세션",
 			"agentHost.forkedTitlePrefix": "분기됨: "
+		},
+		"vs/platform/agentHost/node/agentSideEffects": {
+			"agentHostRename.renamed": "Renamed: {0}"
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "승인",
@@ -2341,6 +2375,50 @@
 		},
 		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
 			"claude.discovered.displayName": "Claude에서 검색됨"
+		},
+		"vs/platform/agentHost/node/codex/codexAgent": {
+			"codex.modelThinkingLevel.description": "Controls how much reasoning effort Codex uses.",
+			"codex.modelThinkingLevel.high": "High",
+			"codex.modelThinkingLevel.low": "Low",
+			"codex.modelThinkingLevel.medium": "Medium",
+			"codex.modelThinkingLevel.minimal": "Minimal",
+			"codex.modelThinkingLevel.title": "Thinking Level",
+			"codex.sessionConfig.additionalDirectories": "Additional Writable Directories",
+			"codex.sessionConfig.additionalDirectories.item": "Directory",
+			"codex.sessionConfig.additionalDirectoriesDescription": "Absolute paths the sandbox is allowed to write to, in addition to the workspace. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.approvalPolicy": "Approvals",
+			"codex.sessionConfig.approvalPolicy.never": "No Escalations",
+			"codex.sessionConfig.approvalPolicy.neverDescription": "Never ask for elevated permission; commands that cannot run in the sandbox are rejected.",
+			"codex.sessionConfig.approvalPolicy.onFailure": "Ask on Failure",
+			"codex.sessionConfig.approvalPolicy.onFailureDescription": "Try commands in the sandbox first, then ask to retry with elevated permission if the sandbox blocks them.",
+			"codex.sessionConfig.approvalPolicy.onRequest": "Ask When Needed",
+			"codex.sessionConfig.approvalPolicy.onRequestDescription": "Ask only when Codex determines a command needs elevated permission.",
+			"codex.sessionConfig.approvalPolicy.untrusted": "Ask More Often",
+			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Ask before more command categories so you can review actions more closely.",
+			"codex.sessionConfig.approvalPolicyDescription": "How Codex requests approval for tool calls.",
+			"codex.sessionConfig.modelReasoningEffort": "Reasoning Effort",
+			"codex.sessionConfig.modelReasoningEffort.high": "High",
+			"codex.sessionConfig.modelReasoningEffort.low": "Low",
+			"codex.sessionConfig.modelReasoningEffort.medium": "Medium",
+			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimal",
+			"codex.sessionConfig.modelReasoningEffortDescription": "Controls how much reasoning effort Codex uses.",
+			"codex.sessionConfig.networkAccessEnabled": "Network",
+			"codex.sessionConfig.networkAccessEnabledDescription": "Allow sandboxed tool calls to make outbound network requests. Only applies when Sandbox is Workspace Write.",
+			"codex.sessionConfig.sandboxMode": "Sandbox",
+			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Full Access (Dangerous)",
+			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Tool calls have unrestricted disk and network access.",
+			"codex.sessionConfig.sandboxMode.readOnly": "Read-Only",
+			"codex.sessionConfig.sandboxMode.readOnlyDescription": "Tool calls can read the workspace but cannot modify files.",
+			"codex.sessionConfig.sandboxMode.workspaceWrite": "Workspace Write",
+			"codex.sessionConfig.sandboxMode.workspaceWriteDescription": "Tool calls can read and write within the workspace; network is controlled separately.",
+			"codex.sessionConfig.sandboxModeDescription": "Filesystem and network restrictions applied to tool calls.",
+			"codex.sessionConfig.webSearchMode": "Web Search",
+			"codex.sessionConfig.webSearchMode.cached": "Cached Only",
+			"codex.sessionConfig.webSearchMode.disabled": "Disabled",
+			"codex.sessionConfig.webSearchMode.live": "Live",
+			"codex.sessionConfig.webSearchModeDescription": "Web-search tool availability for the model.",
+			"codexAgent.description": "Codex agent backed by the OpenAI Codex app-server",
+			"codexAgent.displayName": "Codex"
 		},
 		"vs/platform/agentHost/node/copilot/copilotAgent": {
 			"agentHost.sessionConfig.branch": "분기",
@@ -2507,37 +2585,9 @@
 			"sessionPermissions.allowSession": "이 세션에서 허용",
 			"sessionPermissions.skip": "건너뛰기"
 		},
-		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
-			"ssh.failedToReadPrivateKey": "Failed to read private key file: {0}",
-			"ssh.keyFileAuthRequiresPath": "Key file authentication requires a private key path.",
-			"sshKeyPassphraseName": "SSH Key Passphrase",
-			"sshKeyPassphrasePrompt": "Enter passphrase for SSH key {0}.",
-			"sshProgressCheckingAgent": "Checking for existing agent host...",
-			"sshProgressConnecting": "Establishing SSH connection...",
-			"sshProgressDownloadingCLI": "Installing VS Code CLI on remote...",
-			"sshProgressForwarding": "Connecting to remote agent host...",
-			"sshProgressInstallingCLI": "Checking remote CLI installation...",
-			"sshProgressStartingAgent": "Starting remote agent host..."
-		},
-		"vs/platform/agentHost/node/tunnelHostMainService": {
-			"tunnelHost.log": "Remote Connections"
-		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "페이지 확대/축소: {0}%",
 			"browserZoomPercent": "{0}%"
-		},
-		"vs/platform/browserView/electron-main/browserViewMainService": {
-			"browser.contextMenu.addElementToChat": "Add Element to Chat",
-			"browser.contextMenu.back": "Back",
-			"browser.contextMenu.copyImage": "Copy Image",
-			"browser.contextMenu.copyImageUrl": "Copy Image URL",
-			"browser.contextMenu.copyLink": "Copy Link",
-			"browser.contextMenu.forward": "Forward",
-			"browser.contextMenu.inspect": "Inspect",
-			"browser.contextMenu.openImageInNewTab": "Open Image in New Tab",
-			"browser.contextMenu.openLinkInExternalBrowser": "Open Link in External Browser",
-			"browser.contextMenu.openLinkInNewTab": "Open Link in New Tab",
-			"browser.contextMenu.reload": "Reload"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
 			"config.policy.duplicate": "'{0}'을(를) 등록할 수 없습니다. 연결된 정책 {1}이(가) 이미 {2}에 등록되어 있습니다.",
@@ -2589,17 +2639,6 @@
 			"moreFiles": "...{0}개의 추가 파일이 표시되지 않음",
 			"okButton": "확인(&&O)",
 			"yesButton": "예(&&Y)"
-		},
-		"vs/platform/dialogs/electron-browser/dialog": {
-			"aboutDetail": "Version: {0}\r\nCommit: {1}\r\nDate: {2}\r\nElectron: {3}\r\nElectronBuildId: {4}\r\nChromium: {5}\r\nNode.js: {6}\r\nV8: {7}\r\nOS: {8}"
-		},
-		"vs/platform/dialogs/electron-main/dialogMainService": {
-			"open": "Open",
-			"openFile": "Open File",
-			"openFolder": "Open Folder",
-			"openWorkspace": "&&Open",
-			"openWorkspaceTitle": "Open Workspace from File",
-			"selectFolder": "&&Select folder"
 		},
 		"vs/platform/dnd/browser/dnd": {
 			"fileTooLarge": "파일이 너무 커서 제목 없는 편집기로 열 수 없습니다. 먼저 파일을 파일 탐색기에 업로드한 후 다시 시도하세요."
@@ -2811,6 +2850,14 @@
 			"fileSystemNotAllowedError": "권한이 부족합니다. 작업을 다시 시도하고 허용하세요.",
 			"fileSystemRenameError": "이름 바꾸기는 파일에 대해서만 지원됩니다."
 		},
+		"vs/platform/files/browser/indexedDBFileSystemProvider": {
+			"dirIsNotEmpty": "디렉터리가 비어 있지 않음",
+			"fileExceedsStorageQuota": "파일이 사용 가능한 스토리지 할당량을 초과합니다.",
+			"fileIsDirectory": "파일이 디렉터리임",
+			"fileNotDirectory": "파일이 디렉터리가 아님",
+			"fileNotExists": "파일이 없음",
+			"internal": "IndexedDB 파일 시스템 공급자에서 내부 오류가 발생했습니다. ({0})"
+		},
 		"vs/platform/files/common/files": {
 			"sizeB": "{0}B",
 			"sizeGB": "{0}GB",
@@ -2850,10 +2897,6 @@
 		},
 		"vs/platform/files/common/io": {
 			"fileTooLargeError": "파일이 너무 커서 열 수 없음"
-		},
-		"vs/platform/files/electron-main/diskFileSystemProviderServer": {
-			"binFailed": "Failed to move '{0}' to the recycle bin ({1})",
-			"trashFailed": "Failed to move '{0}' to the trash ({1})"
 		},
 		"vs/platform/files/node/diskFileSystemProvider": {
 			"copyError": "'{0}'을(를) '{1}'({2})(으)로 복사할 수 없습니다.",
@@ -2951,68 +2994,12 @@
 		"vs/platform/mcp/common/mcpManagementService": {
 			"not allowed to install": "이 MCP 서버는 {0} 때문에 설치할 수 없습니다."
 		},
-		"vs/platform/menubar/electron-main/menubar": {
-			"cancel": "Cancel",
-			"exit": "&&Exit",
-			"mAbout": "About {0}",
-			"mBringToFront": "Bring All to Front",
-			"mEdit": "&&Edit",
-			"mFile": "&&File",
-			"mGoto": "&&Go",
-			"mHelp": "&&Help",
-			"mHide": "Hide {0}",
-			"mHideOthers": "Hide Others",
-			"mMergeAllWindows": "Merge All Windows",
-			"mMinimize": "Minimize",
-			"mMoveTabToNewWindow": "Move Tab to New Window",
-			"mNewTab": "New Tab",
-			"mRun": "&&Run",
-			"mSelection": "&&Selection",
-			"mServices": "Services",
-			"mShowAll": "Show All",
-			"mShowNextTab": "Show Next Tab",
-			"mShowPreviousTab": "Show Previous Tab",
-			"mTerminal": "&&Terminal",
-			"mView": "&&View",
-			"mWindow": "Window",
-			"mZoom": "Zoom",
-			"miCheckForUpdates": "Check for &&Updates...",
-			"miCheckingForUpdates": "Checking for Updates...",
-			"miDownloadUpdate": "D&&ownload Available Update",
-			"miDownloadingUpdate": "Downloading Update...",
-			"miInstallUpdate": "Install &&Update...",
-			"miInstallingUpdate": "Installing Update...",
-			"miNewWindow": "New &&Window",
-			"miPreferences": "&&Preferences",
-			"miQuit": "Quit {0}",
-			"miRestartToUpdate": "Restart to &&Update",
-			"miSwitchWindow": "Switch &&Window...",
-			"quit": "&&Quit",
-			"quitMessage": "Are you sure you want to exit?",
-			"quitMessageMac": "Are you sure you want to quit?"
-		},
 		"vs/platform/meteredConnection/common/meteredConnection.config.contribution": {
 			"meteredConnection": "현재 네트워크 연결을 데이터 통신 연결로 처리할지 여부를 제어합니다. 데이터 통신 연결로 처리하면 데이터 사용량을 줄이기 위해 자동 업데이트, 확장 프로그램 다운로드 및 기타 백그라운드 네트워크 활동이 연기됩니다.",
 			"meteredConnection.auto": "운영 체제의 네트워크 상태를 사용하여 데이터 통신 연결을 자동으로 감지합니다.",
 			"meteredConnection.off": "네트워크 연결을 데이터 통신 연결로 처리하지 않습니다.",
 			"meteredConnection.on": "네트워크 연결을 항상 데이터 통신 연결로 처리합니다. 자동 업데이트 및 다운로드가 연기됩니다.",
 			"networkConfigurationTitle": "네트워크"
-		},
-		"vs/platform/native/electron-main/nativeHostMainService": {
-			"cancel": "Cancel",
-			"cantCreateBinFolder": "Unable to install the shell command '{0}'.",
-			"cantUninstall": "Unable to uninstall the shell command '{0}'.",
-			"copyLink": "&&Copy Link",
-			"ok": "&&OK",
-			"openExternalErrorLinkMessage": "An error occurred opening a link in your default browser.",
-			"openExternalProgramErrorMessage": "An error occurred opening an external program.",
-			"sourceMissing": "Unable to find shell script in '{0}'",
-			"trace.detail": "Please create an issue and manually attach the following file:\r\n{0}",
-			"trace.message": "Successfully created the trace file",
-			"trace.ok": "&&OK",
-			"tracing.alreadyInProgress": "A tracing session is already in progress. Use command `\"{0}\"` to stop it first.",
-			"warnEscalation": "{0} will now prompt with 'osascript' for Administrator privileges to install the shell command.",
-			"warnEscalationUninstall": "{0} will now prompt with 'osascript' for Administrator privileges to uninstall the shell command."
 		},
 		"vs/platform/networkFilter/common/networkFilterService": {
 			"networkFilter.blockedByPolicy": "네트워크 도메인 정책에 의해 {0}에 대한 액세스가 차단되었습니다(`{1}` 및 `{2}` 설정을 확인하세요)."
@@ -3021,9 +3008,6 @@
 			"severityPrefix.error": "오류: {0}",
 			"severityPrefix.info": "정보: {0}",
 			"severityPrefix.warning": "경고: {0}"
-		},
-		"vs/platform/process/electron-main/processMainService": {
-			"local": "Local"
 		},
 		"vs/platform/quickinput/browser/commandsQuickAccess": {
 			"canNotRun": "'{0}' 명령에서 오류가 발생했습니다.",
@@ -3081,16 +3065,6 @@
 		},
 		"vs/platform/quickinput/browser/tree/quickTree": {
 			"quickInputBox.ariaLabel": "결과의 범위를 축소하려면 입력하세요."
-		},
-		"vs/platform/remoteTunnel/common/remoteTunnel": {
-			"remoteTunnelLog": "Remote Tunnel Service"
-		},
-		"vs/platform/remoteTunnel/node/remoteTunnelService": {
-			"remoteTunnelService.authorizing": "Connecting as {0} ({1})",
-			"remoteTunnelService.building": "Building CLI from sources",
-			"remoteTunnelService.openTunnel": "Opening tunnel",
-			"remoteTunnelService.openTunnelWithName": "Opening tunnel {0}",
-			"remoteTunnelService.serviceInstallFailed": "Failed to install tunnel as a service, starting in session..."
 		},
 		"vs/platform/request/common/request": {
 			"electronFetch": "Node.js의 페치 구현 대신 Electron의 페치 구현을 사용할지 여부를 제어합니다. 모든 로컬 확장은 전역 페치 API에 대한 Electron의 페치 구현을 가져옵니다.",
@@ -3495,6 +3469,20 @@
 			"cornerRadiusSmall": "컴팩트한 UI 요소를 위한 작은 모서리 반경입니다.",
 			"cornerRadiusXLarge": "매우 눈에 띄는 UI 요소를 위한 매우 큰 모서리 반경입니다.",
 			"cornerRadiusXSmall": "매우 컴팩트한 UI 요소를 위한 매우 작은 모서리 반경입니다.",
+			"spacingNone": "No spacing (0px).",
+			"spacingSize100": "Spacing of 10px.",
+			"spacingSize120": "Spacing of 12px.",
+			"spacingSize160": "Spacing of 16px.",
+			"spacingSize20": "Spacing of 2px.",
+			"spacingSize200": "Spacing of 20px.",
+			"spacingSize240": "Spacing of 24px.",
+			"spacingSize280": "Spacing of 28px.",
+			"spacingSize320": "Spacing of 32px.",
+			"spacingSize360": "Spacing of 36px.",
+			"spacingSize40": "Spacing of 4px.",
+			"spacingSize400": "Spacing of 40px.",
+			"spacingSize60": "Spacing of 6px.",
+			"spacingSize80": "Spacing of 8px.",
 			"strokeThickness": "테두리와 윤곽선의 기본 스트로크 두께입니다."
 		},
 		"vs/platform/theme/common/tokenClassificationRegistry": {
@@ -3575,9 +3563,6 @@
 			"updateMode": "자동 업데이트를 받을지 여부를 구성합니다. 변경 후 다시 시작해야 합니다. 업데이트는 Microsoft 온라인 서비스에서 가져옵니다.",
 			"updateTitleBar": "제목 표시줄에 업데이트 표시기를 보여 주세요."
 		},
-		"vs/platform/update/electron-main/notAvailableUpdateDialog": {
-			"noUpdatesAvailable": "There are currently no updates available."
-		},
 		"vs/platform/userDataProfile/common/userDataProfile": {
 			"defaultProfile": "기본값"
 		},
@@ -3614,52 +3599,8 @@
 		"vs/platform/userDataSync/common/userDataSyncResourceProvider": {
 			"incompatible sync data": "현재 버전과 호환되지 않아 동기화 데이터를 구문 분석할 수 없습니다."
 		},
-		"vs/platform/windows/electron-main/windowImpl": {
-			"appGone": "The window terminated unexpectedly",
-			"appGoneDetailEmptyWindow": "We are sorry for the inconvenience. You can open a new empty window to start again.",
-			"appGoneDetailWorkspace": "We are sorry for the inconvenience. You can reopen the window to continue where you left off.",
-			"appGoneDetails": "The window terminated unexpectedly (reason: '{0}', code: '{1}')",
-			"appStalled": "The window is not responding",
-			"appStalledDetail": "You can reopen or close the window or keep waiting.",
-			"close": "&&Close",
-			"doNotRestoreEditors": "Don't restore editors",
-			"hiddenMenuBar": "You can still access the menu bar by pressing the Alt-key.",
-			"newWindow": "&&New Window",
-			"reopen": "&&Reopen",
-			"wait": "&&Keep Waiting"
-		},
-		"vs/platform/windows/electron-main/windowsMainService": {
-			"allow": "&&Allow",
-			"cancel": "&&Cancel",
-			"confirmOpenDetail": "The path '{0}' uses a host that is not allowed. Unless you trust the host, you should press 'Cancel'",
-			"confirmOpenMessage": "The host '{0}' was not found in the list of allowed hosts. Do you want to allow it anyway?",
-			"doNotAskAgain": "Permanently allow host '{0}'",
-			"learnMore": "&&Learn More",
-			"ok": "&&OK",
-			"pathNotExistDetail": "The path '{0}' does not exist on this computer.",
-			"pathNotExistTitle": "Path does not exist",
-			"uriInvalidDetail": "The URI '{0}' is not valid and can not be opened.",
-			"uriInvalidTitle": "URI can not be opened"
-		},
 		"vs/platform/workspace/common/workspace": {
 			"codeWorkspace": "코드 작업 영역"
-		},
-		"vs/platform/workspaces/electron-main/workspacesHistoryMainService": {
-			"cancel": "&&Cancel",
-			"clearButtonLabel": "&&Clear",
-			"confirmClearDetail": "This action is irreversible!",
-			"confirmClearRecentsMessage": "Do you want to clear all recently opened files and workspaces?",
-			"newWindow": "New Window",
-			"newWindowDesc": "Opens a new window",
-			"recentFolders": "Recent Folders",
-			"recentFoldersAndWorkspaces": "Recent Folders & Workspaces",
-			"untitledWorkspace": "Untitled (Workspace)",
-			"workspaceName": "{0} (Workspace)"
-		},
-		"vs/platform/workspaces/electron-main/workspacesManagementMainService": {
-			"ok": "&&OK",
-			"workspaceOpenedDetail": "The workspace is already opened in another window. Please close that window first and then try again.",
-			"workspaceOpenedMessage": "Unable to save workspace '{0}'"
 		},
 		"vs/server/node/remoteExtensionHostAgentCli": {
 			"remotecli": "원격 CLI"
@@ -3689,183 +3630,15 @@
 		"vs/server/node/serverServices": {
 			"remoteExtensionLog": "서버"
 		},
-		"vs/sessions/browser/accountTitleBarState": {
-			"accountSignedInAria": "{1}이(가) 있는 {0}(으)로 로그인함",
-			"accountSignedInAriaNameOnly": "{0}(으)로 로그인됨",
-			"agentsSignedOut": "에이전트 로그아웃됨",
-			"agentsSignedOutAria": "에이전트가 로그아웃됨",
-			"copilotAllQuotaReachedAria": "GitHub Copilot Chat 및 인라인 제안 할당량에 도달함",
-			"copilotChatQuotaReachedAria": "GitHub Copilot Chat 할당량에 도달함",
-			"copilotCompletionsQuotaReachedAria": "GitHub Copilot 인라인 제안 할당량에 도달함",
-			"copilotQuotaReached": "할당량에 도달함",
-			"copilotTokensRemaining": "남은 토큰",
-			"copilotTokensRemainingAria": "GitHub Copilot 토큰 {0}% 남음",
-			"copilotUnavailable": "Copilot 사용 불가",
-			"copilotUnavailableDisabledAria": "GitHub Copilot이 비활성화됨",
-			"copilotUnavailableUntrustedAria": "신뢰할 수 없는 작업 영역에서는 GitHub Copilot을 사용할 수 없음",
-			"loadingAccount": "계정 불러오는 중...",
-			"loadingAccountAria": "계정 불러오는 중",
-			"signInAria": "사용자 계정 로그인",
-			"signInLabel": "로그인"
-		},
-		"vs/sessions/browser/layoutActions": {
-			"agentPanelCloseIcon": "패널을 닫는 아이콘입니다.",
-			"agentSidebarToggleClosedIcon": "닫을 때 세션 사이드바의 아이콘입니다.",
-			"agentSidebarToggleOpenIcon": "열 때 세션 사이드바의 아이콘입니다.",
-			"openAndCloseSecondarySidebar": "보조 사이드바 열기/표시 및 닫기/숨기기",
-			"openAndCloseSidebar": "사이드바 열기/표시 및 닫기/숨기기",
-			"secondarySidebarHidden": "보조 사이드바 숨김",
-			"secondarySidebarVisible": "보조 사이드바 표시",
-			"sidebarHidden": "기본 사이드바 숨김",
-			"sidebarVisible": "기본 사이드바 표시",
-			"togglePanel": "패널 표시 설정/해제",
-			"toggleSecondarySidebar": "보조 사이드바 표시 설정/해제",
-			"toggleSidebar": "기본 사이드 바 가시성 전환",
-			"toggleWindowAlwaysOnTop": "항상 위로 표시 토글"
-		},
-		"vs/sessions/browser/parts/auxiliaryBarPart": {
-			"auxiliaryBarAriaLabel": "세션 세부 정보"
-		},
-		"vs/sessions/browser/parts/chatCompositeBar": {
-			"closeChat": "닫기",
-			"renameChat": "이름 바꾸기",
-			"renameChat.prompt": "채팅 이름 바꾸기"
-		},
-		"vs/sessions/browser/parts/menubar.contribution": {
-			"mEdit": "편집(&&E)",
-			"mFile": "파일(&&F)",
-			"mGo": "이동(&&G)",
-			"mHelp": "도움말(&&H)",
-			"mPreferences": "기본 설정(&&P)",
-			"mTerminal": "터미널(&&T)",
-			"mView": "보기(&&V)"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileChangesView": {
-			"changesView.back": "뒤로",
-			"changesView.backLabel": "뒤로",
-			"changesView.changeAdded": "추가됨",
-			"changesView.changeDeleted": "삭제됨",
-			"changesView.changeModified": "수정됨",
-			"changesView.empty": "이 세션에는 아직 변경 내용이 없습니다.",
-			"changesView.rowAria": "{0}, {1}, +{2} -{3}",
-			"changesView.subtitleFilePlural": "{0}개 파일",
-			"changesView.subtitleFileSingular": "파일 1개",
-			"changesView.title": "세션 변경 내용"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffColors": {
-			"agentsMobileDiff.addedForeground": "에이전트 세션 창의 모바일 변경 내용 목록과 diff 오버레이에서 추가된 파일/줄에 사용되는 전경색입니다.",
-			"agentsMobileDiff.deletedForeground": "에이전트 세션 창의 모바일 변경 내용 목록과 diff 오버레이에서 삭제된 파일/제거된 줄에 사용되는 전경색입니다.",
-			"agentsMobileDiff.modifiedForeground": "에이전트 세션 창의 모바일 변경 내용 목록에서 수정된 파일에 사용되는 전경색입니다."
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileDiffView": {
-			"diffView.back": "뒤로",
-			"diffView.loading": "로드 중...",
-			"diffView.nextFile": "다음 파일",
-			"diffView.noChanges": "이 파일에는 변경 사항이 없습니다.",
-			"diffView.position": "{0}/{1}",
-			"diffView.prevFile": "이전 파일"
-		},
-		"vs/sessions/browser/parts/mobile/contributions/mobileMultiDiffView": {
-			"multiDiffView.back": "뒤로",
-			"multiDiffView.file": "파일",
-			"multiDiffView.fileCount": "{0} {1}",
-			"multiDiffView.fileFallback": "파일",
-			"multiDiffView.files": "파일",
-			"multiDiffView.loadError": "이 파일의 변경 내용을 불러올 수 없습니다.",
-			"multiDiffView.loading": "로드하는 중...",
-			"multiDiffView.noChanges": "이 파일에는 변경 사항이 없습니다.",
-			"multiDiffView.toggleFile": "{0} 토글"
-		},
-		"vs/sessions/browser/parts/mobile/mobilePickerSheet": {
-			"mobilePickerSheet.done": "완료",
-			"mobilePickerSheet.doneAriaLabel": "{0} 닫기",
-			"mobilePickerSheet.noResults": "결과 없음",
-			"mobilePickerSheet.searching": "검색하는 중..."
-		},
-		"vs/sessions/browser/parts/mobile/mobileSessionFilterChips": {
-			"chipCompleted": "완료",
-			"chipFailed": "실패",
-			"chipInProgress": "진행 중",
-			"filterChipsLabel": "세션 상태 필터",
-			"findAriaLabel": "세션 찾기",
-			"sortGroup": "정렬",
-			"sortGroupAriaLabel": "정렬 및 그룹 옵션"
-		},
-		"vs/sessions/browser/parts/mobile/mobileSortGroupSheet": {
-			"sortGroupSheet.close": "닫기"
-		},
-		"vs/sessions/browser/parts/mobile/mobileTitlebarPart": {
-			"mobileAccount.close": "닫기",
-			"mobileAccount.loading": "로드하는 중...",
-			"mobileAccount.signedOut": "로그인되지 않음",
-			"mobileAccount.title": "계정",
-			"mobileTopBar.account": "계정",
-			"mobileTopBar.changes": "변경 내용 보기",
-			"mobileTopBar.changesTooltip": "{0}개 파일 변경됨 (+{1} -{2})",
-			"mobileTopBar.closeSessions": "세션 닫기",
-			"mobileTopBar.filesChangedCount": "{0}개 파일",
-			"mobileTopBar.filesChangedTooltip": "{0}개 파일 변경됨",
-			"mobileTopBar.newSession": "새 세션",
-			"mobileTopBar.newSessionAria": "새 세션",
-			"mobileTopBar.openSessions": "열린 세션 수",
-			"mobileTopBar.singleFileChanged": "파일 1개",
-			"mobileTopBar.singleFileChangedTooltip": "1개 파일 변경됨"
-		},
-		"vs/sessions/browser/sessionsSetUpService": {
-			"loading": "로드하는 중",
-			"sessions.aiDisabled.detail": "Agents를 계속 사용하려면 AI 기능을 활성화합니다.",
-			"sessions.aiDisabled.enable": "AI 기능 활성화",
-			"sessions.signIn": "Agents를 사용하려면 로그인",
-			"sessions.signingIn": "로그인하는 중…",
-			"sessions.signingIn.detail": "브라우저에서 로그인을 완료하세요.",
-			"sessions.welcome.detail": "에이전트가 탐색, 빌드, 반복 작업을 수행하는 AI 기반 코딩 환경입니다.",
-			"sessions.welcome.getStarted": "시작",
-			"sessions.welcome.title": "{0} 시작",
-			"walkthrough.productName": "{0} - Agents",
-			"welcomeFooter": "계속하면 {0}의 [사용 약관]({1}) 및 [개인정보처리방침]({2})에 동의하는 것입니다. {3} Copilot는 [공개 코드]({4}) 제안을 표시하고 데이터를 사용하여 제품을 개선할 수 있습니다. 언제든지 이러한 [설정]({5})을 변경할 수 있습니다."
-		},
-		"vs/sessions/browser/widget/openInVSCodeWidget": {
-			"openInVSCodeHover": "VS Code 편집기 창에서 열기"
-		},
-		"vs/sessions/common/categories": {
-			"agents": "에이전트"
-		},
-		"vs/sessions/common/contextkeys": {
-			"activeSessionHasGitRepository": "활성 세션에 연결된 git 리포지토리가 있는지 여부",
-			"activeSessionHasGitSyncActionRunning": "활성 세션에서 현재 git 동기화 작업이 실행 중인지 여부",
-			"activeSessionProviderId": "활성 세션의 공급자 ID",
-			"activeSessionType": "활성 세션의 세션 유형",
-			"activeSessionWorkspaceIsVirtual": "활성 세션의 작업 영역이 가상인지 여부",
-			"activeSessions": "활성 세션 패널의 식별자",
-			"chatSessionProviderId": "상황에 맞는 메뉴 오버레이에 있는 세션의 공급자 ID",
-			"editorMaximized": "편집기 영역이 최대화되는지 여부",
-			"isActiveSessionArchived": "활성 세션의 보관(완료로 표시) 여부",
-			"multipleSessionsVisible": "세션 부분의 그리드에 두 개 이상의 세션이 표시되는지 여부",
-			"sessionIsCreated": "세션 보기의 세션이 생성되었는지 여부(채팅 보기가 표시되고 새 세션 보기는 표시되지 않음)",
-			"sessionIsMaximized": "세션 보기가 현재 세션 부분의 그리드에서 최대화되어 있는지 여부",
-			"sessionIsSticky": "세션 보기가 그리드에서 고정되어 있는지 여부",
-			"sessionSupportsMultipleChats": "세션 보기에서 세션이 여러 채팅을 지원하는지 여부",
-			"sessionWorkspacePickerGroup": "세션 작업 영역 선택기의 현재 활성 그룹 탭",
-			"sessionsAquariumActive": "세션 아쿠아리움 오버레이가 활성화되어 있는지 여부",
-			"sessionsCanGoBack": "탐색 기록에 이전 세션이 있는지 여부",
-			"sessionsCanGoForward": "탐색 기록에 다음 세션이 있는지 여부",
-			"sessionsFocus": "세션 부분에 키보드 포커스가 있는지 여부",
-			"sessionsIsPhoneLayout": "현재 레이아웃이 휴대폰 레이아웃인지 여부",
-			"sessionsKeyboardVisible": "가상 키보드가 표시되는지 여부",
-			"sessionsVisible": "세션 부분이 보이는지 여부",
-			"sessionsWelcomeVisible": "세션 환영 오버레이가 보이는지 여부"
-		},
 		"vs/sessions/common/sizes": {
 			"agents.fontSize.body1": "에이전트 창의 기본 본문 글꼴 크기입니다.",
 			"agents.fontSize.body2": "에이전트 창의 보조 본문 글꼴 크기입니다.",
 			"agents.fontSize.heading1": "에이전트 창의 제목 1 글꼴 크기(시작 화면 제목)입니다.",
 			"agents.fontSize.heading2": "에이전트 창의 제목 2 글꼴 크기(제목)입니다.",
 			"agents.fontSize.heading3": "에이전트 창의 제목 3 글꼴 크기(부제)입니다.",
-			"agents.fontSize.label1": "에이전트 창의 레이블 1 글꼴 크기(대화형 탭)입니다.",
-			"agents.fontSize.label2": "에이전트 창의 레이블 2 글꼴 크기(메타데이터 강조)입니다.",
-			"agents.fontSize.label3": "에이전트 창의 레이블 3 글꼴 크기(메타데이터 기본)입니다.",
-			"agents.fontSize.label4": "에이전트 창의 레이블 4 글꼴 크기(배지)입니다.",
-			"agents.fontWeight.medium": "에이전트 창의 중간 글꼴 두께(500)입니다.",
+			"agents.fontSize.label1": "Label 1 font size for the agents window (section title, tabs).",
+			"agents.fontSize.label2": "Label 2 font size for the agents window (metadata).",
+			"agents.fontSize.label3": "Label 3 font size for the agents window (badge).",
 			"agents.fontWeight.regular": "에이전트 창의 일반 글꼴 두께(400)입니다.",
 			"agents.fontWeight.semiBold": "에이전트 창의 약간 굵게 글꼴 두께(600)입니다."
 		},
@@ -3895,26 +3668,6 @@
 			"agentsUpdateButton.downloadingBackground": "에이전트 세션 창에서 다운로드 진행 상황을 보여주는 업데이트 버튼의 배경색입니다.",
 			"inactiveSessionView.background": "에이전트 세션 창에서 비활성 세션 보기의 배경색입니다.",
 			"inactiveSessionView.foreground": "에이전트 세션 창에서 비활성 세션 보기의 전경색입니다."
-		},
-		"vs/sessions/electron-browser/actions/vscodeActions": {
-			"openInVSCode": "편집기에서 열기",
-			"openVSCodeWindow": "VS Code 창 열기"
-		},
-		"vs/sessions/electron-browser/parts/titlebarPart": {
-			"agentsWindowTitle": "Agents"
-		},
-		"vs/sessions/electron-browser/sessions.main": {
-			"join.closeStorage": "UI 상태 저장 중"
-		},
-		"vs/sessions/services/sessions/common/session": {
-			"sessionWorkspaceGroup.local": "로컬",
-			"sessionWorkspaceGroup.remote": "원격"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "활성 세션이 여러 채팅을 지원하는지 여부"
-		},
-		"vs/sessions/services/workspace/browser/workspaceContextService": {
-			"agentsWindow": "Agents 창"
 		},
 		"vs/sessions/contrib/accountMenu/browser/account.contribution": {
 			"accountAvatarAlt": "{0} GitHub 프로필 이미지",
@@ -5975,6 +5728,7 @@
 		},
 		"vs/workbench/browser/parts/editor/breadcrumbsControl": {
 			"breadcrumbsActive": "이동 경로에 포커스가 있는지 여부",
+			"breadcrumbsHasSymbols": "Whether breadcrumbs contain symbol items",
 			"breadcrumbsPossible": "편집기에서 이동 경로를 표시할 수 있는지 여부",
 			"breadcrumbsVisible": "이동 경로가 현재 표시되는지 여부",
 			"cmd.copyPath": "이동 경로 복사",
@@ -6718,6 +6472,10 @@
 		"vs/workbench/browser/quickaccess": {
 			"inQuickOpen": "키보드 포커스가 Quick Open 컨트롤 내에 있는지 여부"
 		},
+		"vs/workbench/browser/web.main": {
+			"reset": "사용자 데이터 초기화",
+			"reset user data message": "데이터(설정, 키 바인딩, 확장, 코드 조각 및 UI 상태)를 초기화한 후 다시 로드하시겠습니까?"
+		},
 		"vs/workbench/browser/window": {
 			"closeWindowButtonLabel": "창 닫기(&&C)",
 			"closeWindowMessage": "창을 닫으시겠습니까?",
@@ -7042,6 +6800,7 @@
 			"auxiliaryBarVisible": "보조 막대가 표시되는지 여부",
 			"bannerFocused": "배너에 키보드 포커스가 있는지 여부",
 			"dirtyWorkingCopies": "저장되지 않은 변경 내용이 있는 작업 복사본이 있는지 여부",
+			"editorAreaFocus": "Whether the editor area (any editor part) has keyboard focus",
 			"editorIsOpen": "편집기가 열려 있는지 여부",
 			"editorPartEditorGroupMaximized": "편집기 파트에 최대화된 그룹이 있습니다.",
 			"editorPartModal": "포커스가 모달 편집기 부분에 있는지 여부",
@@ -7283,183 +7042,6 @@
 			"duplicateId": "ID가 '{0}'인 뷰가 이미 등록되어 있습니다.",
 			"treeView.notRegistered": "ID가 '{0}'인 등록된 트리 뷰가 없습니다.",
 			"views log": "뷰"
-		},
-		"vs/workbench/electron-browser/actions/developerActions": {
-			"configureRuntimeArguments": "Configure Runtime Arguments",
-			"reloadWindowWithExtensionsDisabled": "Reload with Extensions Disabled",
-			"revealUserDataFolder": "Reveal User Data Folder",
-			"showContentTracing": "Show Content Tracing",
-			"showGPUInfo": "Show GPU Info",
-			"startTracing": "Start Tracing",
-			"startTracing.ariaLabel": "Recording performance trace. Click to stop recording.",
-			"startTracing.name": "Performance Trace",
-			"startTracing.recording": "Recording trace (click to stop)",
-			"startTracing.tooltip": "Click to stop recording",
-			"stopTracing": "Stop Tracing",
-			"stopTracing.button": "&&Relaunch and Enable Tracing",
-			"stopTracing.detail": "This can take up to one minute to complete.",
-			"stopTracing.message": "No tracing session is in progress. Use 'Developer: Start Tracing' or launch with a '--trace' argument to begin tracing.",
-			"stopTracing.title": "Creating trace file...",
-			"toggleDevTools": "Toggle Developer Tools"
-		},
-		"vs/workbench/electron-browser/actions/installActions": {
-			"install": "Install '{0}' command in PATH",
-			"shellCommand": "Shell Command",
-			"successFrom": "Shell command '{0}' successfully uninstalled from PATH.",
-			"successIn": "Shell command '{0}' successfully installed in PATH.",
-			"uninstall": "Uninstall '{0}' command from PATH"
-		},
-		"vs/workbench/electron-browser/actions/windowActions": {
-			"close": "Close Window",
-			"closeActive": "Close Active Window",
-			"closeOtherWindows": "Close Other Windows",
-			"closeWindow": "Close Window",
-			"current": "Current Window",
-			"disableWindowAlwaysOnTop": "Turn Off Always on Top",
-			"enableWindowAlwaysOnTop": "Turn On Always on Top",
-			"miCloseWindow": "Clos&&e Window",
-			"miZoomIn": "&&Zoom In",
-			"miZoomOut": "&&Zoom Out",
-			"miZoomReset": "&&Reset Zoom",
-			"quickSwitchWindow": "Quick Switch Window...",
-			"switchToMainWindow": "Switch to Main Window",
-			"switchWindow": "Switch Window...",
-			"switchWindowPlaceHolder": "Select a window to switch to",
-			"toggleWindowAlwaysOnTop": "Toggle Window Always on Top",
-			"windowDirtyAriaLabel": "{0}, window with unsaved changes",
-			"windowGroup": "window group",
-			"zoomIn": "Zoom In",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset Zoom"
-		},
-		"vs/workbench/electron-browser/desktop.contribution": {
-			"application.shellEnvironmentResolutionTimeout": "Controls the timeout in seconds before giving up resolving the shell environment when the application is not already launched from a terminal. See our [documentation](https://go.microsoft.com/fwlink/?linkid=2149667) for more information.",
-			"argv.crashReporterId": "Unique id used for correlating crash reports sent from this app instance.",
-			"argv.disableChromiumSandbox": "Disables the Chromium sandbox. This is useful when running VS Code as elevated on Linux and running under Applocker on Windows.",
-			"argv.disableHardwareAcceleration": "Disables hardware acceleration. ONLY change this option if you encounter graphic issues.",
-			"argv.disableLcdText": "Disables LCD font antialiasing.",
-			"argv.enableCrashReporter": "Allows to disable crash reporting, should restart the app if the value is changed.",
-			"argv.enableRDPDisplayTracking": "Ensures that maximized windows gets restored to correct display during RDP reconnection.",
-			"argv.enebleProposedApi": "Enable proposed APIs for a list of extension ids (such as `vscode.git`). Proposed APIs are unstable and subject to breaking without warning at any time. This should only be set for extension development and testing purposes.",
-			"argv.force-renderer-accessibility": "Forces the renderer to be accessible. ONLY change this if you are using a screen reader on Linux. On other platforms the renderer will automatically be accessible. This flag is automatically set if you have editor.accessibilitySupport: on.",
-			"argv.forceColorProfile": "Allows to override the color profile to use. If you experience colors appear badly, try to set this to `srgb` and restart.",
-			"argv.jsFlags": "Specifies V8 JavaScript engine flags to pass (e.g. \"--max-old-space-size=4096\"). These flags are applied to the main process, renderer and utility processes.",
-			"argv.locale": "The display Language to use. Picking a different language requires the associated language pack to be installed.",
-			"argv.logLevel": "Log level to use. Default is 'info'. Allowed values are 'error', 'warn', 'info', 'debug', 'trace', 'off'.",
-			"argv.passwordStore": "Configures the backend used to store secrets on Linux. This argument is ignored on Windows & macOS.",
-			"argv.proxyBypassList": "Bypass any specified proxy for the given semi-colon-separated list of hosts. Example value \"<local>;*.microsoft.com;*foo.com;1.2.3.4:5678\", will use the proxy server for all hosts except for local addresses (localhost, 127.0.0.1 etc.), microsoft.com subdomains, hosts that contain the suffix foo.com and anything at 1.2.3.4:5678",
-			"argv.remoteDebuggingPort": "Specifies the port to use for remote debugging.",
-			"argv.useInMemorySecretStorage": "Ensures that an in-memory store will be used for secret storage instead of using the OS's credential store. This is often used when running VS Code extension tests or when you're experiencing difficulties with the credential store.",
-			"closeWhenEmpty": "Controls whether closing the last editor should also close the window. This setting only applies for windows that do not show folders.",
-			"confirmSaveUntitledWorkspace": "Controls whether a confirmation dialog shows asking to save or discard an opened untitled workspace in the window when switching to another workspace. Disabling the confirmation dialog will always discard the untitled workspace.",
-			"controlsStyle": "Adjust the appearance of the window controls to be native by the OS, custom drawn or hidden. Changes require a full restart to apply.",
-			"dialogStyle": "Adjust the appearance of dialogs to be native by the OS or custom.",
-			"enableCrashReporterDeprecated": "If this setting is false, no telemetry will be sent regardless of the new setting's value. Deprecated due to being combined into the {0} setting.",
-			"keyboardConfigurationTitle": "Keyboard",
-			"mergeAllWindowTabs": "Merge All Windows",
-			"miExit": "E&&xit",
-			"moveWindowTabToNewWindow": "Move Window Tab to New Window",
-			"newTab": "New Window Tab",
-			"newWindowDimensions": "Controls the dimensions of opening a new window when at least one window is already opened. Note that this setting does not have an impact on the first window that is opened. The first window will always restore the size and location as you left it before closing.",
-			"openWithoutArgumentsInNewWindow": "Controls whether a new empty window should open when starting a second instance without arguments or if the last running instance should get focus.\r\nNote that there can still be cases where this setting is ignored (e.g. when using the `--new-window` or `--reuse-window` command line option).",
-			"restoreFullscreen": "Controls whether a window should restore to full screen mode if it was exited in full screen mode.",
-			"restoreWindows": "Controls how windows and editors within are being restored when opening.",
-			"security.promptForLocalFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a local file or workspace is about to open through a protocol handler.",
-			"security.promptForRemoteFileProtocolHandling": "If enabled, a dialog will ask for confirmation whenever a remote file or workspace is about to open through a protocol handler.",
-			"showNextWindowTab": "Show Next Window Tab",
-			"showPreviousTab": "Show Previous Window Tab",
-			"telemetry.enableCrashReporting": "Enable crash reports to be collected. This helps us improve stability. \r\nThis option requires restart to take effect.",
-			"telemetryConfigurationTitle": "Telemetry",
-			"titleBarStyle": "Adjust the appearance of the window title bar to be native by the OS or custom. Changes require a full restart to apply.",
-			"toggleWindowTabsBar": "Toggle Window Tabs Bar",
-			"touchbar.enabled": "Enables the macOS touchbar buttons on the keyboard if available.",
-			"touchbar.ignored": "A set of identifiers for entries in the touchbar that should not show up (for example `workbench.action.navigateBack`).",
-			"window.border.color": "{0}: specific color in Hex, RGB, RGBA, HSL, HSLA format",
-			"window.border.default": "{0}: respect color theme settings, fallback to Windows settings",
-			"window.border.off": "{0}: disable border colors",
-			"window.border.prefix": "Controls the border color of the window:",
-			"window.border.suffix": "Use {0} to set different colors for active and inactive windows. This setting is ignored when {1} is set to {2}.",
-			"window.border.system": "{0}: respect Windows settings only",
-			"window.clickThroughInactive": "If enabled, clicking on an inactive window will both activate the window and trigger the element under the mouse if it is clickable. If disabled, clicking anywhere on an inactive window will activate it only and a second click is required on the element.",
-			"window.customTitleBarVisibility": "Adjust when the custom title bar should be shown. The custom title bar can be hidden when in full screen mode with `windowed`. The custom title bar can only be hidden in non full screen mode with `never` when {0} is set to `native`.",
-			"window.customTitleBarVisibility.auto": "Automatically changes custom title bar visibility.",
-			"window.customTitleBarVisibility.never": "Hide custom titlebar when {0} is set to `native`.",
-			"window.customTitleBarVisibility.windowed": "Hide custom titlebar in full screen. When not in full screen, automatically change custom title bar visibility.",
-			"window.doubleClickIconToClose": "If enabled, this setting will close the window when the application icon in the title bar is double-clicked. The window will not be able to be dragged by the icon. This setting is effective only if {0} is set to `custom`.",
-			"window.menuStyle": "Adjust the menu style to either be native by the OS, custom, or inherited from the title bar style defined in {0}. This also affects the context menu appearance. Changes require a full restart to apply.",
-			"window.menuStyle.custom": "Use the custom menu.",
-			"window.menuStyle.custom.mac": "Use the custom context menu.",
-			"window.menuStyle.inherit": "Matches the menu style to the title bar style defined in {0}.",
-			"window.menuStyle.inherit.mac": "Matches the context menu style to the title bar style defined in {0}.",
-			"window.menuStyle.mac": "Adjust the context menu appearances to either be native by the OS, custom, or inherited from the title bar style defined in {0}.",
-			"window.menuStyle.native": "Use the native menu. This is ignored when {0} is set to {1}.",
-			"window.menuStyle.native.mac": "Use the native context menu.",
-			"window.nativeFullScreen": "Controls if native full-screen should be used on macOS. Disable this option to prevent macOS from creating a new space when going full-screen.",
-			"window.nativeTabs": "Enables macOS native window tabs. Note that changes require a full restart to apply and that native tabs will disable a custom title bar style if configured.",
-			"window.newWindowDimensions.default": "Open new windows in the center of the screen.",
-			"window.newWindowDimensions.fullscreen": "Open new windows in full screen mode.",
-			"window.newWindowDimensions.inherit": "Open new windows with same dimension as last active one.",
-			"window.newWindowDimensions.maximized": "Open new windows maximized.",
-			"window.newWindowDimensions.offset": "Open new windows with same dimension as last active one with an offset position.",
-			"window.openWithoutArgumentsInNewWindow.off": "Focus the last active running instance.",
-			"window.openWithoutArgumentsInNewWindow.on": "Open a new empty window.",
-			"window.reopenFolders.all": "Reopen all windows unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.folders": "Reopen all windows that had folders or workspaces opened unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.none": "Never reopen a window. Unless a folder or workspace is opened (e.g. from the command line), an empty window will appear.",
-			"window.reopenFolders.one": "Reopen the last active window unless a folder, workspace or file is opened (e.g. from the command line). If a file is opened, it will replace any of the editors that were previously opened in a window.",
-			"window.reopenFolders.preserve": "Always reopen all windows. If a folder or workspace is opened (e.g. from the command line) it opens as a new window unless it was opened before. If files are opened they will open in one of the restored windows together with editors that were previously opened.",
-			"windowConfigurationTitle": "Window",
-			"zoomLevel": "Adjust the default zoom level for all windows. Each increment above `0` (e.g. `1`) or below (e.g. `-1`) represents zooming `20%` larger or smaller. You can also enter decimals to adjust the zoom level with a finer granularity. See {0} for configuring if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window.",
-			"zoomPerWindow": "Controls if the 'Zoom In' and 'Zoom Out' commands apply the zoom level to all windows or only the active window. See {0} for configuring a default zoom level for all windows."
-		},
-		"vs/workbench/electron-browser/desktop.main": {
-			"join.closeStorage": "Saving UI state"
-		},
-		"vs/workbench/electron-browser/parts/dialogs/dialogHandler": {
-			"copy": "&&Copy",
-			"okButton": "OK"
-		},
-		"vs/workbench/electron-browser/window": {
-			"appRootWarning.banner": "Files you store within the installation folder ('{0}') may be OVERWRITTEN or DELETED IRREVERSIBLY without warning at update time.",
-			"configure": "Configure",
-			"downloadArmBuild": "Download",
-			"keychainWriteError": "Writing login information to the keychain failed with error '{0}'.",
-			"learnMore": "Learn More",
-			"loginButton": "&&Log In",
-			"macoseolmessage": "{0} on {1} will soon stop receiving updates. Consider upgrading your macOS version.",
-			"password": "Password",
-			"proxyAuthRequired": "Proxy Authentication Required",
-			"proxyDetail": "The proxy {0} requires a username and password.",
-			"rememberCredentials": "Remember my credentials",
-			"resolveShellEnvironment": "Resolving shell environment...",
-			"restart": "Restart",
-			"runningAsRoot": "It is not recommended to run {0} as root user.",
-			"runningTranslated": "You are running an emulated version of {0}. For better performance download the native arm64 version of {0} build for your machine.",
-			"sharedProcessCrash": "A shared background process terminated unexpectedly. Please restart the application to recover.",
-			"showArgvParseWarning": "The runtime arguments file 'argv.json' contains errors. Please correct them and restart.",
-			"showArgvParseWarningAction": "Open File",
-			"shutdownErrorClose": "An unexpected error prevented the window to close",
-			"shutdownErrorDetail": "Error: {0}",
-			"shutdownErrorLoad": "An unexpected error prevented to change the workspace",
-			"shutdownErrorQuit": "An unexpected error prevented the application to quit",
-			"shutdownErrorReload": "An unexpected error prevented the window to reload",
-			"shutdownForceClose": "Close Anyway",
-			"shutdownForceLoad": "Change Anyway",
-			"shutdownForceQuit": "Quit Anyway",
-			"shutdownForceReload": "Reload Anyway",
-			"shutdownTitleClose": "Closing the window is taking a bit longer...",
-			"shutdownTitleLoad": "Changing the workspace is taking a bit longer...",
-			"shutdownTitleQuit": "Quitting the application is taking a bit longer...",
-			"shutdownTitleReload": "Reloading the window is taking a bit longer...",
-			"status.windowZoom": "Window Zoom",
-			"troubleshooting": "Troubleshooting Guide",
-			"username": "Username",
-			"willShutdownDetail": "The following operations are still running: \r\n{0}",
-			"zoomIn": "Zoom In",
-			"zoomNumber": "Zoom Level: {0} ({1}%)",
-			"zoomOut": "Zoom Out",
-			"zoomReset": "Reset",
-			"zoomSettings": "Settings"
 		},
 		"vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
 			"accessibility.chat.showCheckmarks": "채팅 응답에서 완료된 도구 호출과 그 밖의 접을 수 있는 항목에 확인 표시 아이콘을 표시할지 여부를 제어합니다.",
@@ -7839,300 +7421,6 @@
 			"browserView.shareWithAgent.message": "에이전트와 이 브라우저 페이지를 공유하시겠어요?",
 			"browserView.shareWithAgent.title": "에이전트와 공유하시겠습니까?"
 		},
-		"vs/workbench/contrib/browserView/electron-browser/browserEditor": {
-			"browser.editorFocused": "브라우저 편집기의 포커스 여부",
-			"browser.hasError": "브라우저에 로드 오류가 있는지 여부",
-			"browser.hasUrl": "브라우저에 URL이 로드되어 있는지 여부",
-			"browserCategory": "브라우저"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/browserView.contribution": {
-			"browser.editorLabel": "브라우저"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures": {
-			"browser.clearEphemeralStorageAction": "스토리지 지우기(임시)",
-			"browser.clearGlobalStorageAction": "스토리지 지우기(전역)",
-			"browser.clearWorkspaceStorageAction": "스토리지 지우기(작업 영역)",
-			"browser.dataStorage": "브라우저 데이터(쿠키, 캐시, 스토리지)를 브라우저 보기 간에 공유하는 방법을 제어합니다.\r\n\r\n**참고**: 신뢰할 수 없는 작업 영역에서는 이 설정이 무시되며 항상 `ephemeral` 스토리지가 사용됩니다.",
-			"browser.dataStorage.ephemeral": "각 브라우저 보기에는 닫을 때 정리되는 자체 세션이 있습니다.",
-			"browser.dataStorage.global": "모든 브라우저 보기는 모든 작업 영역에서 하나의 영구 세션을 공유합니다.",
-			"browser.dataStorage.workspace": "같은 작업 영역 내 브라우저 보기는 영구 세션을 공유합니다. 작업 영역이 열려 있지 않으면 `ephemeral` 스토리지가 사용됩니다.",
-			"browser.storageScope": "현재 브라우저 보기의 스토리지 범위"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserDevToolsFeature": {
-			"browser.devToolsOpen": "현재 브라우저 보기에 개발자 도구가 열려 있는지 여부",
-			"browser.toggleDevToolsAction": "개발자 도구 토글"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures": {
-			"browser.addAreaScreenshotToChatAction": "채팅에 영역 스크린샷 추가",
-			"browser.addConsoleLogsToChatAction": "채팅에 콘솔 로그 추가",
-			"browser.addElementToChatAction": "채팅에 요소 추가",
-			"browser.addFullPageScreenshotToChatAction": "채팅에 전체 페이지 스크린샷 추가(실험적)",
-			"browser.addScreenshotToChatAction": "채팅에 스크린샷 추가",
-			"browser.agentSharingContentWarning.detail": "페이지에는 에이전트 동작에 영향을 줄 수 있는 숨겨진 프롬프트가 있을 수 있습니다. 보내기 전에 첨부된 내용을 다시 확인합니다.",
-			"browser.agentSharingContentWarning.dontShowAgain": "다시 표시 안 함",
-			"browser.agentSharingContentWarning.message": "신뢰할 수 없는 원본의 콘텐츠를 첨부할 때는 주의해야 합니다.",
-			"browser.agentSharingContentWarning.ok": "확인(&&O)",
-			"browser.areaSelectionActive": "영역 선택이 현재 활성 상태인지 여부",
-			"browser.chatActionsSubmenu": "채팅에 추가",
-			"browser.elementSelectionActive": "요소 선택이 현재 활성 상태인지 여부",
-			"browser.enableChatTools": "사용하도록 설정하면 채팅 에이전트가 브라우저 도구를 사용하여 통합 브라우저에서 페이지를 열고 상호 작용할 수 있습니다.",
-			"browser.experimentalUserTools.enabled": "사용하도록 설정하면 통합 브라우저의 [채팅에 추가] 메뉴에서 실험용 사용자용 도구를 사용할 수 있습니다.",
-			"browser.shareWithAgent": "에이전트와 공유",
-			"browser.sharingWithAgent": "에이전트와 공유하는 중",
-			"browser.unshareWithAgent": "에이전트와의 공유 중지",
-			"browserAreaScreenshot": "브라우저 영역 스크린샷",
-			"browserCategory": "브라우저",
-			"browserFullPageScreenshot": "브라우저 전체 페이지 스크린샷",
-			"browserScreenshot": "브라우저 스크린샷",
-			"consoleLogs": "콘솔 로그",
-			"workbench.browser.agentHostChatToolsEnabled": "사용하도록 설정하면 통합 브라우저 도구가 세션 창의 에이전트 호스트 세션에 클라이언트 제공 도구로 표시됩니다. {0} 및 {1}이(가) 필요합니다."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures": {
-			"browser.device.dimensionsLabel": "크기:",
-			"browser.device.dprAriaLabel": "디바이스 픽셀 비율",
-			"browser.device.dprLabel": "DPR:",
-			"browser.device.dprTitle": "디바이스 픽셀 비율(비어 있으면 시스템 기본값)",
-			"browser.device.heightAriaLabel": "뷰포트 높이",
-			"browser.device.inputPlaceholderAuto": "자동",
-			"browser.device.scaleLabel": "스케일링:",
-			"browser.device.swapDimensionsTitle": "크기 전환",
-			"browser.device.widthAriaLabel": "뷰포트 너비",
-			"browser.device.zoomAriaLabel": "확대/축소 비율",
-			"browser.device.zoomAuto": "자동({0}%)",
-			"browser.devicePresets.mobileTag": "모바일",
-			"browser.devicePresets.placeholder": "디바이스 사전 설정 선택",
-			"browser.emulationHasUserAgent": "브라우저 에뮬레이션에 사용자 지정 사용자 에이전트가 설정되어 있는지 여부",
-			"browser.emulationIsMobile": "브라우저 에뮬레이션이 모바일 모드인지 여부",
-			"browser.emulationToolbar.close": "닫기",
-			"browser.emulationToolbar.mobile": "모바일 에뮬레이션",
-			"browser.emulationToolbar.presets": "사전 설정 적용...",
-			"browser.emulationToolbar.reset": "다시 설정",
-			"browser.emulationToolbar.userAgent": "사용자 에이전트 설정...",
-			"browser.emulationToolbarVisible": "브라우저 에뮬레이션 도구 모음 표시 여부",
-			"browser.hideEmulationToolbar": "에뮬레이션 도구 모음 숨기기",
-			"browser.pickDevicePreset": "디바이스 에뮬레이트...",
-			"browser.resetEmulation": "에뮬레이션 다시 설정",
-			"browser.setUserAgent": "사용자 에이전트 에뮬레이트...",
-			"browser.showEmulationToolbar": "에뮬레이션 도구 모음 표시",
-			"browser.toggleMobileEmulation": "모바일 에뮬레이션 토글",
-			"browser.userAgent.prompt": "사용자 에이전트 문자열(VS Code의 기본값을 사용하려면 비워 두세요)"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures": {
-			"browser.certCloseTab": "탭 닫기",
-			"browser.certDetailsHeading": "인증서 세부 정보",
-			"browser.certError": "오류",
-			"browser.certErrorDescription": "이 사이트의 보안 인증서를 확인할 수 없습니다.",
-			"browser.certErrorExtraWarning": " 연결이 비공개가 아닙니다.",
-			"browser.certErrorLabel": "인증서 오류",
-			"browser.certFingerprint": "지문",
-			"browser.certGoBack": "돌아가기",
-			"browser.certHoverDetail1": "이 사이트와의 연결은 안전하지 않습니다.",
-			"browser.certHoverDetail2": "이전에 인증서 오류({1})가 있었지만 '{0}'(으)로 계속 진행하기로 선택했습니다.",
-			"browser.certHoverHeading": "인증서를 신뢰할 수 없음",
-			"browser.certIssuer": "발급자",
-			"browser.certProceed": "계속 진행(안전하지 않음)",
-			"browser.certRevoke": "철회 및 닫기",
-			"browser.certSubject": "주체",
-			"browser.certValid": "유효함",
-			"browser.errorUrlLabel": "URL:",
-			"browser.loadErrorLabel": "페이지를 로드하지 못함",
-			"browser.notSecure": "안전하지 않음"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
-			"browser.findNextAction": "다음 항목 찾기",
-			"browser.findPreviousAction": "이전 항목 찾기",
-			"browser.findWidgetFocused": "브라우저 찾기 위젯에 포커스가 있는지 여부",
-			"browser.findWidgetVisible": "브라우저 찾기 위젯 표시 여부",
-			"browser.hideFindAction": "찾기 위젯 닫기",
-			"browser.showFindAction": "페이지에서 찾기"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorZoomFeature": {
-			"browser.canZoomIn": "브라우저를 더 확대할 수 있는지 여부",
-			"browser.canZoomOut": "브라우저를 더 축소할 수 있는지 여부",
-			"browser.defaultZoomLevel.matchWindow": "응용 프로그램의 현재 UI 확대/축소 수준과 일치합니다.",
-			"browser.pageZoom": "통합 브라우저의 모든 사이트에 대한 기본 확대/축소 수준입니다.",
-			"browser.resetZoomAction": "확대/축소 초기화",
-			"browser.zoomInAction": "확대",
-			"browser.zoomOutAction": "축소"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserFavoritesFeature": {
-			"browser.addFavorite": "즐겨찾기에 추가",
-			"browser.addFavoriteAction": "즐겨찾기에 추가",
-			"browser.favorites": "즐겨찾기",
-			"browser.removeFavorite": "즐겨찾기에서 제거",
-			"browser.removeFavoriteAction": "즐겨찾기에서 제거",
-			"browser.removeFavoriteWithKb": "즐겨찾기에서 제거({0})",
-			"browser.urlIsFavorited": "현재 브라우저 URL이 즐겨찾기인지 여부"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserNavigationFeatures": {
-			"browser.canGoBack": "브라우저 뒤로 가기 가능 여부",
-			"browser.canGoForward": "브라우저의 앞으로 가기 가능 여부",
-			"browser.focusUrlInputAction": "URL 입력란에 포커스 맞추기",
-			"browser.goBackAction": "돌아가기",
-			"browser.goForwardAction": "앞으로 이동",
-			"browser.hardReloadAction": "하드 다시 로드",
-			"browser.openExternalAction": "외부 브라우저에서 열기",
-			"browser.openSettingsAction": "브라우저 설정",
-			"browser.reloadAction": "다시 로드"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
-			"browser.backgroundGroup": "배경",
-			"browser.closeAll": "모든 브라우저 탭 닫기",
-			"browser.closeAllInGroup": "그룹의 모든 브라우저 탭 닫기",
-			"browser.closeAllInGroupShort": "모든 브라우저 탭 닫기",
-			"browser.closeAllTabs": "모두 닫기",
-			"browser.closeTab": "닫기",
-			"browser.editorOpen": "브라우저 편집기가 현재 열려 있는지 여부",
-			"browser.linkOpenedHint.ariaLabel": "이 링크는 통합 브라우저에서 열렸습니다.",
-			"browser.linkOpenedHint.detail": "**통합 브라우저**\r\n\r\nLocalhost 링크는 통합 브라우저에서 자동으로 열립니다.",
-			"browser.linkOpenedHint.dismiss": "다시 표시 안 함",
-			"browser.linkOpenedHint.label": "링크가 여기에 열렸습니다.",
-			"browser.linkOpenedHint.openSettings": "설정 열기",
-			"browser.newTabAction": "새 탭",
-			"browser.openAction": "통합 브라우저 열기",
-			"browser.openFileAction": "통합 브라우저 열기",
-			"browser.openLocalhostLinks": "활성화하면 터미널, 채팅 및 기타 원본의 localhost 링크(`localhost`, `127.0.0.1`, `[::1]`) 및 모든 인퍼페이스 링크(`0.0.0.0`, `[0:0:0:0:0:0:0:0]`, `[::]`)가 시스템 브라우저 대신 통합 브라우저에서 열립니다.",
-			"browser.openNewTab": "새 통합 브라우저 탭",
-			"browser.openOrListAction": "브라우저",
-			"browser.openTabs": "열린 탭",
-			"browser.openTabsDescription": "전환할 탭을 선택하세요",
-			"browser.quickOpenAction": "Quick Open 브라우저 탭...",
-			"browser.quickOpenPlaceholder": "브라우저 탭 선택",
-			"browser.showInTitleBar": "통합 브라우저 단추가 제목 표시줄에 표시되는지 여부를 제어합니다.",
-			"browser.showInTitleBar.false": "단추가 제목 표시줄에 표시되지 않습니다.",
-			"browser.showInTitleBar.true": "단추가 제목 표시줄에 항상 표시됩니다.",
-			"browser.showInTitleBar.whenOpen": "브라우저 편집기가 열려 있을 때 제목 표시줄에 단추가 표시됩니다.",
-			"browserEntryAriaLabelWithGroup": "{0}, {1}",
-			"miOpenBrowser": "브라우저(&&B)",
-			"toggle.browser": "통합 브라우저",
-			"toggle.browserDescription": "제목 표시줄에서 통합 브라우저 버튼의 표시 여부 전환"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature": {
-			"browser.welcomeSubtitle": "시작하려면 위에 URL을 입력하세요.",
-			"browser.welcomeSubtitleChat": "채팅에 요소 추가를 사용하여 채팅 프롬프트에서 UI 요소를 참조합니다.",
-			"browser.welcomeTitle": "브라우저"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/features/webContentsViewRendererFeature": {
-			"browser.overlayPauseDetail.notification": "브라우저를 계속 사용하려면 알림을 해제합니다.",
-			"browser.overlayPauseHeading.notification": "알림으로 인해 일시 중지됨"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserToolHelpers": {
-			"browser.blockedByPolicy": "네트워크 도메인 정책에 의해 차단됨",
-			"browser.element": "요소",
-			"browser.open.alreadyOpen": "{0}이(가) 이미 열려 있음"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/browserTools.contribution": {
-			"browserContext.label": "브라우저 페이지",
-			"browserToolSet.description": "통합 브라우저 페이지 열기 및 상호 작용"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/clickBrowserTool": {
-			"browser.click.invocation": "{1}에서 {0} 클릭 중",
-			"browser.click.invocation.middle": "{1}에서 {0}을(를) 가운데 클릭 중",
-			"browser.click.invocation.right": "{1}에서 {0}을(를) 마우스 오른쪽 버튼 클릭 중",
-			"browser.click.past": "{1}에서 {0} 클릭함",
-			"browser.click.past.middle": "{1}에서 {0}을(를) 가운데 클릭함",
-			"browser.click.past.right": "{1}에서 {0}을(를) 마우스 오른쪽 버튼으로 클릭함",
-			"browser.dblClick.invocation": "{1}에서 {0}을(를) 두 번 클릭 중",
-			"browser.dblClick.past": "{1}에서 {0}을(를) 두 번 클릭함",
-			"clickBrowserTool.displayName": "요소 클릭",
-			"clickBrowserTool.userDescription": "브라우저 페이지에서 요소를 클릭하세요"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/dragElementTool": {
-			"browser.drag.invocation": "{2}에서 {0}을(를) {1}(으)로 끌기",
-			"browser.drag.past": "{2}에서 {0}을(를) {1}(으)로 끌었음",
-			"dragElementTool.displayName": "요소 끌기",
-			"dragElementTool.userDescription": "한 요소를 다른 요소 위로 끌기"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/handleDialogBrowserTool": {
-			"browser.handleDialog.invocation": "{0}에서 대화 상자 처리 중",
-			"browser.handleDialog.past": "{0}에서 대화 상자 처리됨",
-			"handleDialogBrowserTool.displayName": "대화 상자 처리",
-			"handleDialogBrowserTool.userDescription": "브라우저 페이지에서 대화 상자에 응답"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/hoverElementTool": {
-			"browser.hover.invocation": "{1}에서 {0} 위에 마우스를 올리고 있음",
-			"browser.hover.past": "{1}에서 {0} 위에 마우스 올림",
-			"hoverElementTool.displayName": "요소에 커서 올리기",
-			"hoverElementTool.userDescription": "브라우저 페이지의 요소 위로 마우스로 가리키기"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/navigateBrowserTool": {
-			"browser.goBack.invocation": "{0}에서 뒤로 이동 중",
-			"browser.goBack.past": "{0}에서 뒤로 이동함",
-			"browser.goForward.invocation": "{0}에서 앞으로 이동 중",
-			"browser.goForward.past": "{0}에서 앞으로 이동함",
-			"browser.navigate.confirmMessage": "이 항목은 브라우저를 {0} 로 이동시키고 에이전트가 해당 콘텐츠에 액세스할 수 있도록 합니다.",
-			"browser.navigate.confirmTitle": "브라우저를 탐색하시겠습니까?",
-			"browser.navigate.invocation": "{1}에서 {0}(으)로 이동 중",
-			"browser.navigate.past": "{1}에서 {0}(으)로 이동함",
-			"browser.reload.invocation": "{0}을(를) 다시 로드하는 중...",
-			"browser.reload.past": "{0}을(를) 다시 로드함",
-			"navigateBrowserTool.displayName": "페이지 이동",
-			"navigateBrowserTool.userDescription": "브라우저 페이지 탐색 또는 다시 로드"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserTool": {
-			"browser.open.confirmMessage": "그러면 통합 브라우저에서 {0} 열립니다. 에이전트가 콘텐츠를 읽고 상호 작용할 수 있습니다.",
-			"browser.open.confirmTitle": "브라우저 페이지를 여시겠습니까?",
-			"browser.open.invocation": "{0}에서 브라우저 페이지 열기",
-			"browser.open.newPageOption": "아니요, {0}에서 새 페이지를 여세요.",
-			"browser.open.noPagesOption": "아니요 - 에이전트와 탭을 공유하지 마세요.",
-			"browser.open.past": "{0}에서 열린 브라우저 페이지",
-			"browser.open.prompt.invocation": "사용자에게 브라우저 탭 공유를 요청하는 중",
-			"browser.open.prompt.past": "사용자에게 브라우저 탭 공유를 요청했습니다.",
-			"browser.open.result": "{0} 열림",
-			"browser.open.shareExistingOption": "예, \"{0}\"을(를) 공유하세요. - {1}",
-			"browser.open.shareQuestion.message": "기존 브라우저 탭을 공유할까요?",
-			"browser.open.shareQuestion.title": "브라우저 탭 공유",
-			"browser.open.sharedResult": "{0}명의 사용자가 공유함",
-			"openBrowserTool.displayName": "브라우저 페이지 열기",
-			"openBrowserTool.userDescription": "통합 브라우저에서 URL 열기"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/openBrowserToolNonAgentic": {
-			"browser.open.nonAgentic.confirmMessage": "그러면 통합 브라우저에서 {0} 열립니다. 에이전트는 해당 콘텐츠를 읽을 수 없습니다.",
-			"browser.open.nonAgentic.confirmTitle": "브라우저 페이지를 여시겠습니까?",
-			"browser.open.nonAgentic.invocation": "{0}에서 브라우저 페이지 열기",
-			"browser.open.nonAgentic.past": "{0}에서 열린 브라우저 페이지",
-			"browser.open.nonAgentic.result": "{0} 열림"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/readBrowserTool": {
-			"browser.read.invocation": "{0}을(를) 읽는 중",
-			"browser.read.past": "{0} 읽기",
-			"readBrowserTool.displayName": "페이지 읽기",
-			"readBrowserTool.userDescription": "브라우저 페이지의 내용을 읽기"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/runPlaywrightCodeTool": {
-			"browser.runCode.confirmDisclaimer": "계속하기 전에 코드를 신뢰하는지 꼭 확인하세요.",
-			"browser.runCode.confirmTitle": "Playwright 코드를 실행하시겠습니까?",
-			"browser.runCode.invocation": "Playwright 코드 실행 중...",
-			"browser.runCode.past": "Playwright 코드 실행함",
-			"browser.runCode.waitInvocation": "Playwright 코드 완료 대기 중...",
-			"browser.runCode.waitPast": "Playwright 코드 대기 중",
-			"runPlaywrightCodeTool.displayName": "Playwright 코드 실행",
-			"runPlaywrightCodeTool.userDescription": "Playwright 코드 조각을 브라우저 페이지에서 실행하세요."
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/screenshotBrowserTool": {
-			"browser.screenshot.invocation": "브라우저 스크린샷 캡처 중",
-			"browser.screenshot.invocation.element": "{0}의 스크린샷 캡처 중...",
-			"browser.screenshot.past": "캡처한 브라우저 스크린샷",
-			"browser.screenshot.past.element": "{0}의 스크린샷 캡처됨",
-			"screenshotBrowserTool.displayName": "스크린샷 페이지",
-			"screenshotBrowserTool.userDescription": "브라우저 페이지의 스크린샷을 캡처하세요"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/tools/typeBrowserTool": {
-			"browser.pressKey.invocation": "{1}에서 키 `{0}`을(를) 누르는 중",
-			"browser.pressKey.invocation.element": "{2}에서 {1}에 키 `{0}`을(를) 누르는 중",
-			"browser.pressKey.past": "{1}에서 `{0}` 키를 누름",
-			"browser.pressKey.past.element": "{2}에서 {1}에 키 `{0}`을(를) 누름",
-			"browser.type.invocation": "{0}에 텍스트 입력 중",
-			"browser.type.invocation.element": "{1}에서 {0}에 텍스트 입력 중",
-			"browser.type.past": "{0}에 텍스트 입력함",
-			"browser.type.past.element": "{1}에서 {0}에 텍스트 입력 완료",
-			"typeBrowserTool.displayName": "페이지에 입력하기",
-			"typeBrowserTool.userDescription": "브라우저 페이지에서 텍스트 입력 또는 키 누르기"
-		},
-		"vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget": {
-			"browser.goTo": "{0}(으)로 이동",
-			"browser.urlPlaceholder": "URL 입력"
-		},
 		"vs/workbench/contrib/bulkEdit/browser/bulkEditService": {
 			"areYouSureQuiteBulkEdit.detail": "'{0}' 이(가) 진행 중입니다.",
 			"changeWorkspace.message": "작업 영역을 변경하시겠습니까?",
@@ -8450,6 +7738,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatDeveloperActions": {
 			"workbench.action.chat.clearRecentlyUsedLanguageModels.label": "최근 사용한 언어 모델 지우기",
+			"workbench.action.chat.inspectAgentHostSubscriptions.label": "Inspect Agent Host Subscriptions",
 			"workbench.action.chat.inspectChatModel.label": "채팅 모델 검사",
 			"workbench.action.chat.inspectChatModelReferences.label": "채팅 모델 참조 검사",
 			"workbench.action.chat.logChatIndex.label": "채팅 로그 색인",
@@ -8729,12 +8018,12 @@
 			"noAgentPlugins": "에이전트 플러그인 을 찾을 수 없습니다.",
 			"update": "업데이트"
 		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} - 에이전트 호스트",
-			"agentHostHarnessLabel.local": "{0} [로컬]"
-		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
 			"agentHostChatInputPicker.ariaLabel": "{0} 선택기",
+			"agentHostChatInputPicker.boolean.false": "Off",
+			"agentHostChatInputPicker.boolean.offLabel": "Off",
+			"agentHostChatInputPicker.boolean.onLabel": "On",
+			"agentHostChatInputPicker.boolean.true": "On",
 			"agentHostChatInputPicker.filter": "필터...",
 			"agentHostChatInputPicker.learnMorePermissions": "권한에 대한 자세한 정보",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
@@ -8743,8 +8032,6 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "자동 승인",
-			"agentHost.branchPicker": "분기",
-			"agentHost.isolationPicker": "격리",
 			"agentHost.modePicker": "에이전트 모드",
 			"agentHost.permissionModePicker": "승인"
 		},
@@ -8756,23 +8043,6 @@
 			"agentHost.permission.oneMorePending": "1개의 요청이 더 대기 중",
 			"agentHost.permission.read": "원격 에이전트 호스트 \"{0}\"이(가) {1}을(를) 읽으려고 함",
 			"agentHost.permission.write": "원격 에이전트 호스트 \"{0}\"이(가) {1}을(를) 쓰려고 함"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSessionHandler": {
-			"agentHost.authRequired": "세션을 시작하려면 인증이 필요합니다. 로그인하고 다시 시도하세요.",
-			"agentHost.elicit.url.cancel": "취소",
-			"agentHost.elicit.url.instruction": "이 URL을 여시겠습니까?",
-			"agentHost.elicit.url.open": "{0} 열기",
-			"agentHost.elicit.url.title": "권한 부여 필요",
-			"agentHost.forkedSessionLabel": "분기된 세션",
-			"agentHost.responseDetails.credit": "{0} 크레딧",
-			"agentHost.responseDetails.credits": "{0} 크레딧"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
-			"agentHostTerminal.channelLocal": "에이전트 호스트 터미널(로컬)",
-			"agentHostTerminal.local": "로컬"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
-			"ahp.running": "{0} 실행 중..."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "완료",
@@ -8793,6 +8063,7 @@
 			"chat.session.providerDescription.codex": "편집기에서 새 Codex 세션을 엽니다. Codex 세션은 채팅 세션 보기에서 관리할 수 있습니다.",
 			"chat.session.providerDescription.growth": "Copilot 기능에 대해 알아봅니다.",
 			"chat.session.providerDescription.local": "VS Code 채팅 내에서 작업을 실행합니다. 에이전트는 채팅을 통해 반복하고 대화형으로 작동하여 주 작업 영역에서 변경 내용을 구현합니다.",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [Agent Host]",
 			"chat.session.providerLabel.background": "Copilot CLI",
 			"chat.session.providerLabel.cloud": "클라우드",
 			"chat.session.providerLabel.local": "로컬"
@@ -9176,6 +8447,8 @@
 			"editorViewRawButtonTooltip": "원시 markdown 파일 보기",
 			"homeButton": "개요",
 			"homeButtonTooltip": "개요로 이동",
+			"homeButtonTooltipWithHarness": "Current harness: {0}. Click to go to overview",
+			"homeButtonWithHarness": "{0}, Back to overview",
 			"hooks": "후크",
 			"hooksDesc": "파일 저장 또는 작업 실행과 같은 이벤트에 의해 트리거되는 자동화된 작업을 구성합니다.",
 			"instructions": "지침",
@@ -9381,6 +8654,10 @@
 			"chat.NotebookImageAttachment": "첨부된 전자 필기장 출력, {0}",
 			"chat.attachment": "연결된 컨텍스트, {0}",
 			"chat.attachment.clearButton": "컨텍스트에서 제거",
+			"chat.attachment.saveFileButton": "Save As...",
+			"chat.attachment.saveFileError": "Failed to save file: {0}",
+			"chat.attachment.saveImageButton": "Save Image As...",
+			"chat.attachment.saveImageError": "Failed to save image: {0}",
 			"chat.attachment.withDeleteHint": "{0}(삭제)",
 			"chat.browserToolsDisabled": "브라우저 도구를 사용할 수 없습니다.",
 			"chat.browserToolsDisabled.aria": "브라우저 도구를 사용할 수 없습니다. {0}",
@@ -9476,7 +8753,7 @@
 			"chat.agentHost.ahpJsonlLogging": "활성화하면 에이전트 호스트 연결에 대한 모든 AHP 전송 메시지를 창의 로그 디렉터리 아래에 있는 JSONL 파일에 기록합니다.",
 			"chat.agentHost.clientTools": "에이전트 호스트 세션에서 클라이언트가 제공한 도구로 노출할 도구 참조 이름입니다.",
 			"chat.agentHost.customTerminalTool.enabled": "활성화하면 Copilot SDK 세션에서 SDK의 기본 터미널 동작 대신 에이전트 호스트 터미널 도구 재정의를 사용합니다.",
-			"chat.agentHost.ipcLogging": "사용하도록 설정하면 각 에이전트 호스트의 모든 IPC 트래픽을 전용 출력 채널에 기록합니다.",
+			"chat.agentHost.defaultChatProvider": "When enabled, the local agent host is used as the default provider in the VS Code chat session-target picker. Requires `#{0}#`.",
 			"chat.agentLocations.invalidPath": "경로는 상대 경로이거나 '~/'로 시작해야 합니다. 절대 경로 및 '\\' 구분 기호는 지원되지 않습니다.",
 			"chat.agentSessionProjection.enabled": "집중된 작업 영역에서 에이전트 세션을 검토하기 위해 에이전트 세션 프로젝션 모드를 사용하도록 설정할지 여부를 제어합니다.",
 			"chat.agentSkillsLocations.description": "채팅 세션에서 사용할 수 있는 에이전트 기술(`{0}`)의 위치를 지정하세요. [자세한 정보]({1}).\r\n\r\n각 경로에는 SKILL.md 파일이 있는 기술 하위 폴더가 포함되어야 합니다(예: `my-skills/skillA/SKILL.md`가 있는 경우 `my-skills` 추가). 상대 경로는 작업 영역의 루트 폴더에서 확인됩니다.",
@@ -9506,6 +8783,7 @@
 			"chat.artifacts.rules.groupName": "아티팩트 그룹의 표시 이름입니다.",
 			"chat.artifacts.rules.onlyShowGroup": "true이면 개별 항목 대신 그룹 헤더만 표시합니다.",
 			"chat.autoReply.description": "사용자가 사용할 수 없다고 에이전트에 알리고 최선의 판단으로 질문 캐러셀을 자동으로 건너뛰게 합니다. 이 설정은 고급 설정이며 불완전한 컨텍스트에 따라 의도하지 않은 선택 또는 작업으로 이어질 수 있습니다.",
+			"chat.autopilot.advanced.enabled": "Enables **Advanced Autopilot**, a single switch that turns on all advanced Autopilot behaviors that delegate more of the loop to the agent. Currently, after each Autopilot turn a small, fast model evaluates whether your original request is complete; if not, Autopilot keeps working using that evaluation as guidance for the next turn, instead of relying on the agent to signal completion itself.",
 			"chat.checkpoints.enabled": "채팅에서 검사점을 사용하도록 설정합니다. 검사점을 사용하면 채팅을 이전 상태로 복원할 수 있습니다.",
 			"chat.checkpoints.showFileChanges": "채팅 검사점 파일 변경 내용을 표시할지 여부를 제어합니다.",
 			"chat.codeBlock.showProgressAnimation.description": "편집 내용을 적용할 때 코드 블록 블로에 진행률 애니메이션을 표시합니다. 사용하지 않도록 설정된 경우 진행률 백분율을 대신 표시합니다.",
@@ -10560,7 +9838,6 @@
 			"signIn": "로그인"
 		},
 		"vs/workbench/contrib/chat/browser/chatTipCatalog": {
-			"tip.agenticBrowser": "에이전트가 통합 브라우저에서 페이지를 열고 상호 작용할 수 있도록 [{0}](command:workbench.action.openSettings?%5B%22workbench.browser.enableChatTools%22%5D \"설정 열기\")을 활성화합니다.",
 			"tip.agentsWindow": "[에이전트 창](command: {0} \"Open Agents Window\")에서 여러 프로젝트를 동시에 작업합니다.",
 			"tip.attachFiles": "#을 사용하여 파일 또는 폴더를 참조하면 에이전트에 작업에 대한 자세한 컨텍스트를 제공합니다.",
 			"tip.autoAcceptDelay": "짧은 카운트다운 후 에이전트의 변경 내용을 자동으로 수락하도록 [{0}](command:workbench.action.openSettings?%5B%22chat.editing.autoAcceptDelay%22%5D \"설정 열기\")을(를) 구성합니다.",
@@ -11287,6 +10564,7 @@
 			"chat.working.fun.1": "햄스터에게 뇌물 주기",
 			"chat.working.fun.2": "Reticulating splines",
 			"chat.working.fun.3": "얽힌 스파게티 풀기",
+			"chat.working.fun.4": "Communing with the codebase",
 			"chat.working.fun.minecraft.1": "다이아몬드 채굴 중",
 			"chat.working.fun.ms.1": "클리피 소환 중"
 		},
@@ -11536,6 +10814,11 @@
 		"vs/workbench/contrib/chat/browser/widget/input/chatFollowups": {
 			"followUpAriaLabel": "후속 질문: {0}"
 		},
+		"vs/workbench/contrib/chat/browser/widget/input/chatGoalBannerWidget": {
+			"chat.goalBanner.dismiss": "Dismiss",
+			"chat.goalBanner.label": "Goal",
+			"chat.goalBanner.loading": "Determining goal…"
+		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationWidget": {
 			"dismissNotification": "알림 해제"
 		},
@@ -11666,7 +10949,7 @@
 			"permissions.autoApprove.policyDisabled": "엔터프라이즈 정책으로 비활성화됨",
 			"permissions.autoApprove.subtext": "모든 도구 호출이 자동 승인됨",
 			"permissions.autopilot": "Autopilot(미리 보기)",
-			"permissions.autopilot.description": "모든 도구 호출을 자동 승인하고 작업이 완료될 때까지 계속 진행합니다.",
+			"permissions.autopilot.description": "Auto-approve all tool calls and continue until the task is done. Autopilot may increase costs.",
 			"permissions.autopilot.label": "Autopilot(미리 보기)",
 			"permissions.autopilot.policyDescription": "엔터프라이즈 정책으로 비활성화됨",
 			"permissions.autopilot.policyDisabled": "엔터프라이즈 정책으로 비활성화됨",
@@ -11681,7 +10964,9 @@
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "에이전트 유형에 대해 알아보기...",
 			"chat.sessionTarget.category.agent": "에이전트 유형",
-			"chat.sessionTarget.category.other": "기타"
+			"chat.sessionTarget.category.other": "기타",
+			"chat.sessionTarget.upgradeHover": "[Upgrade to GitHub Copilot Pro](command:workbench.action.chat.upgradePlan) to delegate work to the cloud agent.",
+			"chat.sessionTarget.upgradeLink": "[Upgrade](command:workbench.action.chat.upgradePlan)"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/workspacePickerActionItem": {
 			"openFolder": "폴더 열기...",
@@ -12324,35 +11609,6 @@
 			"tool.askQuestions.displayName": "명확한 질문하기",
 			"tool.askQuestions.userDescription": "작업 요구 사항을 수집하기 위해 단일 선택, 다중 선택, 자유 입력을 사용하여 구조화된 명확한 질문을 한 후 진행합니다."
 		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatExternalPathConfirmation": {
-			"addPath": "경로 추가...",
-			"addPathDescription": "이 작업 영역에 폴더를 허용합니다.",
-			"allowFolderSession": "이 세션에서 이 폴더 허용",
-			"allowFolderSessionDetail": "이 채팅 세션에서 추가 확인 없이 이 폴더에서 파일 읽기 허용",
-			"allowRepoSession": "이 세션 동안 이 리포지토리의 모든 파일을 허용합니다.",
-			"allowRepoSessionDetail": "{0}에서 파일 읽기 허용",
-			"allowRepoSessionDetailLookup": "이 경로가 포함된 Git 리포지토리를 찾습니다.",
-			"sessionScope": "세션",
-			"workspaceScope": "작업 영역"
-		},
-		"vs/workbench/contrib/chat/common/tools/builtinTools/chatUrlFetchingConfirmation": {
-			"allowRequestsCheckbox": "확인 없이 요청",
-			"allowResponsesCheckbox": "확인 없이 응답 허용",
-			"approveAll": "모두 승인",
-			"approveRequestTo": "{0}(으)로 요청 허용",
-			"approveResponseFrom": "{0}의 응답 허용",
-			"approves": "{0} 승인",
-			"delete": "삭제",
-			"denyAll": "모두 거부",
-			"moreOptions": "다음으로 요청 허용...",
-			"moreOptionsManage": "기타 옵션:",
-			"moreOptionsMultiple": "URL 승인 구성...",
-			"noApprovals": "승인 없음",
-			"openSettings": "설정 열기",
-			"requests": "요청",
-			"responses": "응답",
-			"selectApproval": "승인할 URL 패턴 선택"
-		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/manageTodoListTool": {
 			"todo.added.multiple": "할 일 {0}개 추가됨",
 			"todo.added.single": "할 일 1개 추가됨",
@@ -12446,99 +11702,6 @@
 			"chat.slashCommandForeground": "채팅 슬래시 명령의 전경색입니다.",
 			"chat.thinkingShimmer": "생각/작업 레이블을 반짝임으로 강조 표시합니다.",
 			"chatCheckpointSeparator": "채팅 검사점 구분 기호 색상입니다."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatDeveloperActions": {
-			"workbench.action.chat.openStorageFolder.label": "채팅 저장소 폴더 열기"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/chatExportZip": {
-			"chat.exportAsZip.label": "채팅을 Zip으로 내보내기...",
-			"chatExportZip.error": "채팅을 zip으로 내보내지 못했습니다. {0}",
-			"chatExportZip.noRepoData": "리포지토리 컨텍스트 없이 채팅을 내보냈습니다. Git 리포지토리가 감지되지 않았습니다."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/debugAgentHostAction": {
-			"debugAgentHost.noInspectPort": "에이전트 호스트 프로세스에 대해 Node.js 검사기를 사용하도록 설정할 수 없습니다.",
-			"debugAgentHostInDevTools": "개발 도구에서 로컬 에이전트 호스트 프로세스 디버그"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentHostDebugLogsService": {
-			"exportDebugLogs.saveDialogTitle": "에이전트 호스트 디버그 로그 내보내기",
-			"exportDebugLogs.zipFilter": "Zip 압축 파일"
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/exportAgentTracesDb": {
-			"exportAgentTracesDB.error": "에이전트 호스트 추적 데이터베이스를 내보내지 못함: {0}",
-			"exportAgentTracesDB.label": "에이전트 호스트 추적 데이터베이스 내보내기...",
-			"exportAgentTracesDB.notFound": "아직 에이전트 호스트 추적 데이터베이스를 찾을 수 없습니다. `#chat.agentHost.otel.dbSpanExporter.enabled#`을(를) 켠 상태로 에이전트 세션을 실행하여 채웁니다."
-		},
-		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
-			"keywordActivation.status.active": "'Hey Code'를 듣고 있습니다...",
-			"keywordActivation.status.inactive": "음성 채팅이 종료되기를 기다리는 중...",
-			"keywordActivation.status.name": "음성 키워드 활성화",
-			"listening": "듣고 있습니다",
-			"scopedChatSynthesisInProgress": "음성 채팅을 위해 마이크로부터 음성 녹음이 진행되는 위치로 정의됩니다. 이 키는 채팅 컨텍스트별로 범위 지정으로만 정의됩니다.",
-			"scopedVoiceChatGettingReady": "음성 채팅을 위해 마이크에서 음성 입력을 받을 준비가 되면 True입니다. 이 키는 채팅 컨텍스트별로 범위 지정으로만 정의됩니다.",
-			"scopedVoiceChatInProgress": "음성 채팅을 위해 마이크로부터 음성 녹음이 진행되는 위치로 정의됩니다. 이 키는 채팅 컨텍스트별로 범위 지정으로만 정의됩니다.",
-			"voice.keywordActivation": "키워드 구 'Hey Code'를 인식하여 음성 채팅 세션을 시작할지 여부를 제어합니다. 이를 사용하도록 설정하면 마이크에서 녹음이 시작되지만 오디오는 로컬로 처리되고 서버로 전송되지 않습니다.",
-			"voice.keywordActivation.chatInContext": "키워드 활성화를 사용하도록 설정하고 키보드 포커스에 따라 활성 편집기 또는 보기에서 음성 채팅 세션을 시작하기 위해 'Hey Code'를 수신 대기합니다.",
-			"voice.keywordActivation.chatInView": "키워드 활성화를 사용하도록 설정하고 채팅 보기에서 음성 채팅 세션을 시작하기 위해 'Hey Code'를 수신 대기합니다.",
-			"voice.keywordActivation.inlineChat": "키워드 활성화를 사용하도록 설정하고 가능하다면 활성 편집기에서 음성 채팅 세션을 시작하기 위해 'Hey Code'를 수신 대기합니다.",
-			"voice.keywordActivation.off": "키워드 활성화를 사용할 수 없습니다.",
-			"voice.keywordActivation.quickChat": "키워드 활성화를 사용하도록 설정하고 빠른 채팅에서 음성 채팅 세션을 시작하기 위해 'Hey Code'를 수신 대기합니다.",
-			"workbench.action.chat.holdToVoiceChatInChatView.label": "채팅 보기에서 눌러서 음성 채팅하기",
-			"workbench.action.chat.inlineVoiceChat": "인라인 음성 채팅",
-			"workbench.action.chat.quickVoiceChat.label": "빠른 음성 채팅",
-			"workbench.action.chat.readChatResponseAloud": "소리 내어 읽기",
-			"workbench.action.chat.startVoiceChat.label": "음성 채팅 시작",
-			"workbench.action.chat.stopListening.label": "듣기 중지",
-			"workbench.action.chat.stopListeningAndSubmit.label": "수신 중지 및 제출",
-			"workbench.action.chat.stopReadChatItemAloud": "소리 내어 읽기 중지",
-			"workbench.action.chat.voiceChatInView.label": "채팅 보기의 음성 채팅",
-			"workbench.action.speech.stopReadAloud": "소리 내어 읽기 중지"
-		},
-		"vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions": {
-			"chat.agentsHandoff.tip.action": "Agents 창에서 열기",
-			"chat.agentsHandoff.tip.description": "작업 영역 옆에 배치되는 전용 다중 창 보기를 사용하세요.",
-			"chat.agentsHandoff.tip.description.copilot": "Copilot 플랜에 포함된 무료 기능 — 작업 영역 옆에 배치되는 전용 다중 창 보기를 사용하세요.",
-			"chat.agentsHandoff.tip.emptyWorkspace.description": "Copilot CLI 세션을 시작하려면 에이전트 창을 여세요.",
-			"chat.agentsHandoff.tip.emptyWorkspace.message": "열려 있는 폴더가 없으면 Copilot CLI [Local]을 사용할 수 없음",
-			"chat.agentsHandoff.tip.message": "에이전트 창에서 이 세션 계속하기",
-			"openAgentsWindow": "Agents 창 열기",
-			"openInAgentsHover": "Agents 창에서 열기",
-			"openSessionInAgentsWindow": "Agents 창에서 열기",
-			"openWorkspaceInAgentsWindow": "Agents에서 열기",
-			"toggle.openInAgentsWindow": "Agents 창에서 열기",
-			"toggle.openInAgentsWindowDescription": "제목 표시줄의 에이전트 창에서 열기 단추 표시 여부 전환"
-		},
-		"vs/workbench/contrib/chat/electron-browser/builtInTools/fetchPageTool": {
-			"fetchWebPage.binaryNotSupported": "현재 이진 파일은 지원되지 않습니다.",
-			"fetchWebPage.confirmationMessage.plural": "웹 콘텐츠는 악성 코드를 포함하거나 프롬프트 삽입 공격을 시도할 수 있습니다.",
-			"fetchWebPage.confirmationTitle.plural": "웹 페이지를 가져올까요?",
-			"fetchWebPage.confirmationTitle.singular": "웹 페이지를 가져오시겠어요?",
-			"fetchWebPage.fetchedFrom": "{0}에서 가져옴",
-			"fetchWebPage.invalidUrl": "잘못된 URL",
-			"fetchWebPage.invocationMessage.plural": "{0} 리소스 가져오는 중",
-			"fetchWebPage.invocationMessage.singular": "{0} 가져오는 중",
-			"fetchWebPage.invocationMessage.singularAsLink": "[리소스]({0}) 가져오는 중",
-			"fetchWebPage.noValidUrls": "유효한 URL이 제공되지 않았습니다.",
-			"fetchWebPage.pastTenseMessage.plural": "{0} 리소스를 가져왔지만 다음 URL이 잘못되었습니다.\r\n\r\n{1}\r\n\r\n",
-			"fetchWebPage.pastTenseMessage.singular": "리소스를 가져왔지만 다음 URL이 잘못되었습니다.\r\n\r\n{0}\r\n\r\n",
-			"fetchWebPage.pastTenseMessageResult.plural": "{0} 리소스 가져옴",
-			"fetchWebPage.pastTenseMessageResult.singular": "{0} 가져옴",
-			"fetchWebPage.pastTenseMessageResult.singularAsLink": "[리소스]({0}) 가져옴",
-			"fetchWebPage.urlMentionedInPrompt": "프롬프트에 URL이 포함되어 자동 승인됨",
-			"fetchWebPage.urlsDescription": "콘텐츠를 가져올 URL의 배열입니다."
-		},
-		"vs/workbench/contrib/chat/electron-browser/chat.contribution": {
-			"changeWorkspace.detail": "작업 영역을 변경하면 세션이 중지됩니다.",
-			"changeWorkspace.message": "채팅 세션이 진행 중입니다. 작업 영역을 변경하시겠습니까?",
-			"chatRequestInProgress": "채팅 세션이 진행 중입니다.",
-			"closeTheWindow.detail": "창을 닫으면 세션이 중지됩니다.",
-			"closeTheWindow.message": "채팅 세션이 진행 중입니다. 창을 닫으시겠습니까?",
-			"copilotWorkspaceTrust": "AI 기능은 현재 신뢰할 수 있는 작업 영역에서만 지원됩니다.",
-			"exit.detail": "종료하면 세션이 중지됩니다.",
-			"exit.message": "채팅 세션이 진행 중입니다. 종료하시겠습니까?",
-			"quit.detail": "종료하면 세션이 중지됩니다.",
-			"quit.message": "채팅 세션이 진행 중입니다. 종료하시겠습니까?",
-			"reloadTheWindow.detail": "창을 다시 로드하면 세션이 중지됩니다.",
-			"reloadTheWindow.message": "채팅 세션이 진행 중입니다. 창을 다시 로드하시겠습니까?"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "명시적 저장 시 코드 작업을 트리거하고 창 또는 포커스 변경에 의해 트리거되는 자동 저장을 트리거합니다.",
@@ -12821,7 +11984,13 @@
 			"schema.folding": "해당 언어의 접기 설정입니다.",
 			"schema.folding.markers": "'#region' 및 '#endregion'처럼 언어별 접기 표식입니다. 시작 및 종료 regex는 모든 줄의 콘텐츠에 대해 테스트되며 효율적으로 설계되어야 합니다.",
 			"schema.folding.markers.end": "끝 표식에 대한 RegExp 패턴입니다. regexp는 '^'으로 시작해야 합니다.",
+			"schema.folding.markers.end.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.end.flags": "The RegExp flags for the end marker.",
+			"schema.folding.markers.end.pattern": "The RegExp pattern for the end marker.",
 			"schema.folding.markers.start": "시작 표식에 대한 RegExp 패턴입니다. regexp는 '^'으로 시작해야 합니다.",
+			"schema.folding.markers.start.errorMessage": "Must match the pattern `/^([gimuy]+)$/`.",
+			"schema.folding.markers.start.flags": "The RegExp flags for the start marker.",
+			"schema.folding.markers.start.pattern": "The RegExp pattern for the start marker.",
 			"schema.folding.offSide": "해당 언어의 블록이 들여쓰기로 표현되는 경우 언어는 오프사이드 규칙을 준수합니다. 설정하는 경우 빈 줄은 후속 블록에 속합니다.",
 			"schema.indentationRules": "해당 언어의 들여쓰기 설정입니다.",
 			"schema.indentationRules.decreaseIndentPattern": "행이 이 패턴과 일치하면 이후의 모든 행은 한 번 들여쓰지 않습니다(다른 규칙이 일치할 때까지).",
@@ -12870,12 +12039,6 @@
 			"schema.wordPattern.flags": "단어 일치에 사용하는 RegExp 플래그입니다.",
 			"schema.wordPattern.flags.errorMessage": "`/^([gimuy]+)$/` 패턴과 일치해야 합니다.",
 			"schema.wordPattern.pattern": "단어 일치에 사용하는 RegEXP 패턴입니다."
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/selectionClipboard": {
-			"actions.pasteSelectionClipboard": "선택 영역을 클립보드에 붙여넣기"
-		},
-		"vs/workbench/contrib/codeEditor/electron-browser/startDebugTextMate": {
-			"startDebugTextMate": "TextMate 구문 문법 기록 시작"
 		},
 		"vs/workbench/contrib/commands/common/commands.contribution": {
 			"runCommands": "실행 명령",
@@ -14373,6 +13536,9 @@
 			"workbench.extensions.uninstallExtension.description": "지정한 확장 제거",
 			"workspace unsupported filter": "작업 영역이 지원되지 않음"
 		},
+		"vs/workbench/contrib/extensions/browser/extensions.web.contribution": {
+			"runtimeExtension": "실행 중인 확장"
+		},
 		"vs/workbench/contrib/extensions/browser/extensionsActions": {
 			"Cannot be enabled": "이 확장은 웹용 {0}에서 지원되지 않으므로 사용할 수 없습니다.",
 			"Defined to run in desktop": "이 확장은 데스크톱에 대해 {0}에서만 실행되도록 정의되어 있으므로 사용할 수 없습니다.",
@@ -14711,8 +13877,8 @@
 			"enableExtensionMessage": "'{0}' 확장을 사용하도록 설정하시겠습니까?",
 			"enableExtensionTitle": "확장 사용",
 			"extension not found": "'{0}' 확장을 찾을 수 없습니다.",
-			"extensions need reload": "확장을 적용하려면 창을 다시 로드해야 합니다.",
-			"extensions need restart": "확장을 적용하려면 다시 시작해야 합니다.",
+			"extensions need reload": "Extensions require a window reload to apply updates.",
+			"extensions need restart": "All extensions require a restart to apply updates.",
 			"extensionsAutoRestart": "업데이트를 사용하도록 확장이 자동으로 다시 시작되었습니다.",
 			"incompatible": "'{0}' 확장은 호환되지 않으므로 설치할 수 없습니다.",
 			"incompatibleExtensions": "버전 비호환성으로 인해 일부 확장을 사용할 수 없습니다. 검토하고 업데이트합니다.",
@@ -14803,72 +13969,10 @@
 			"searchExtensionsTool.noInput": "검색할 범주, 키워드 또는 ID를 제공하세요.",
 			"searchExtensionsTool.userDescription": "VS Code 확장 검색"
 		},
-		"vs/workbench/contrib/extensions/electron-browser/debugExtensionHostAction": {
-			"debugExtensionHost": "Debug Extension Host In New Window",
-			"debugExtensionHost.launch.name": "Attach Extension Host",
-			"debugExtensionHost.progress": "Attaching Debugger To Extension Host",
-			"debugExtensionHostAndRenderer": "Debug Extension Host and Renderer In New Window",
-			"debugRenderer": "Debug Renderer In New Window",
-			"debugRenderer.launch.name": "Attach Renderer",
-			"debugRenderer.progress": "Attaching Debugger To Renderer",
-			"openDevToolsForExtensionHost": "Debug Extension Host In Dev Tools",
-			"restart1": "Debug Extensions",
-			"restart2": "In order to debug extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectExtensionHost": "Pick extension host"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionProfileService": {
-			"profilingExtensionHost": "Profiling Extension Host",
-			"profilingExtensionHostTime": "Profiling Extension Host ({0} sec)",
-			"restart1": "Profile Extensions",
-			"restart2": "In order to profile extensions a restart is required. Do you want to restart '{0}' now?",
-			"restart3": "&&Restart",
-			"selectAndStartDebug": "Click to stop profiling.",
-			"status.profiler": "Extension Profiler"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensions.contribution": {
-			"runtimeExtension": "Running Extensions"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsActions": {
-			"cleanUpExtensionsFolder": "Cleanup Extensions Folder",
-			"openExtensionsFolder": "Open Extensions Folder"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsAutoProfiler": {
-			"show": "Show Extensions",
-			"unresponsive-exthost": "The extension '{0}' took a very long time to complete its last operation and it has prevented other extensions from running."
-		},
-		"vs/workbench/contrib/extensions/electron-browser/extensionsSlowActions": {
-			"attach.msg": "This is a reminder to make sure that you have not forgotten to attach '{0}' to the issue you have just created.",
-			"attach.msg2": "This is a reminder to make sure that you have not forgotten to attach '{0}' to an existing performance issue.",
-			"attach.title": "Did you attach the CPU-Profile?",
-			"cmd.report": "Report Issue",
-			"cmd.reportOrShow": "Performance Issue",
-			"cmd.show": "Show Issues"
-		},
-		"vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor": {
-			"extensionHostProfileStart": "Start Extension Host Profile",
-			"openExtensionHostProfile": "Open Extension Host Profile",
-			"saveExtensionHostProfile": "Save Extension Host Profile",
-			"saveprofile.dialogTitle": "Save Extension Host Profile",
-			"stopExtensionHostProfileStart": "Stop Extension Host Profile"
-		},
 		"vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution": {
-			"scopedConsoleAction.Integrated": "Open in Integrated Terminal",
-			"scopedConsoleAction.external": "Open in External Terminal",
-			"scopedConsoleAction.wt": "Open in Windows Terminal"
-		},
-		"vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution": {
-			"explorer.openInTerminalKind": "When opening a file from the Explorer in a terminal, determines what kind of terminal will be launched",
-			"globalConsoleAction": "Open New External Terminal",
-			"selectWorkspace": "Select workspace folder",
-			"sourceControlRepositories.openInTerminalKind": "When opening a repository from the Source Control Repositories view in a terminal, determines what kind of terminal will be launched",
-			"terminal.external.linuxExec": "Customizes which terminal to run on Linux.",
-			"terminal.external.osxExec": "Customizes which terminal application to run on macOS.",
-			"terminal.external.windowsExec": "Customizes which terminal to run on Windows.",
-			"terminal.kind.both": "Show both integrated and external terminal actions.",
-			"terminal.kind.external": "Show the external terminal action.",
-			"terminal.kind.integrated": "Show the integrated terminal action.",
-			"terminalConfigurationTitle": "External Terminal"
+			"scopedConsoleAction.Integrated": "통합 터미널에서 열기",
+			"scopedConsoleAction.external": "외부 터미널에서 열기",
+			"scopedConsoleAction.wt": "Windows 터미널에서 열기"
 		},
 		"vs/workbench/contrib/externalUriOpener/common/configuration": {
 			"externalUriOpeners": "외부 URI(http, https)에 사용할 opener를 구성합니다.",
@@ -15324,13 +14428,6 @@
 			"openEditorsFocus": "포커스가 OPEN EDITORS 뷰 내에 있는 경우 true입니다.",
 			"viewHasSomeCollapsibleItem": "탐색기 보기의 작업 영역에 축소 가능한 루트 자식이 있는 경우 True입니다."
 		},
-		"vs/workbench/contrib/files/electron-browser/fileActions.contribution": {
-			"filesCategory": "파일",
-			"miShare": "공유",
-			"openContainer": "상위 폴더 열기",
-			"revealInMac": "Finder에 표시",
-			"revealInWindows": "파일 탐색기에 표시"
-		},
 		"vs/workbench/contrib/folding/browser/folding.contribution": {
 			"formatter.default": "다른 모든 접기 범위 공급자보다 우선하는 기본 접기 범위 공급자를 정의합니다. 접기 범위 공급자에 기여하는 확장의 식별자여야 합니다.",
 			"null": "모두",
@@ -15711,6 +14808,9 @@
 			"vscode": "Visual Studio Code",
 			"vscodePlaceholder": "예를 들어 Workbench에 문제 패널이 없음"
 		},
+		"vs/workbench/contrib/issue/browser/issue.contribution": {
+			"statusUnsupported": "--status 인수는 브라우저에서 아직 지원되지 않습니다."
+		},
 		"vs/workbench/contrib/issue/browser/issueFormService": {
 			"additionalIssueData": "추가 문제 데이터",
 			"cancel": "취소",
@@ -15722,133 +14822,6 @@
 			"ok": "확인(&&O)",
 			"pasteData": "너무 커서 보낼 수 없었기 때문에 필요한 데이터를 클립보드에 썼습니다. 붙여 넣으세요.",
 			"yes": "예(&&Y)"
-		},
-		"vs/workbench/contrib/issue/browser/issueQuickAccess": {
-			"contributedIssuePage": "Open Extension Page",
-			"extensions": "Extensions",
-			"reportExtensionMarketplace": "Extension Marketplace"
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorInput": {
-			"discard": "Discard",
-			"discardIssue": "Discard issue report?",
-			"discardIssueDetail": "Your issue report has unsaved changes that will be lost.",
-			"issueReporterEditorInputName": "Report Issue",
-			"issueReporterIcon": "Icon for the issue reporter editor."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
-		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
-			"abExperiments": "A/B Experiments",
-			"additionalInformation": "Additional Information",
-			"additionalPerformanceData": "Additional Performance Data",
-			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
-			"attachments": "Attachments ({0})",
-			"back": "Back",
-			"bug": "Bug",
-			"bugGuidance": "Describe what happened, the steps to reproduce, what you expected, and what you observed instead.",
-			"captureOptions": "Capture options",
-			"category": "Category",
-			"categoryRequired": "Select a category to continue.",
-			"closeTab": "Close",
-			"composeMessage": "Describe",
-			"defaultGuidance": "Select a category above, then describe your feedback in detail.",
-			"deleteRecording": "Remove recording",
-			"deleteScreenshot": "Delete screenshot",
-			"describeHeading": "Describe your feedback",
-			"description": "Description",
-			"descriptionPlaceholder": "Describe the issue in detail...",
-			"descriptionRequired": "Enter a description to continue.",
-			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
-			"extension": "Extension",
-			"extensionData": "Extension Data",
-			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
-			"extensionNoIssueUrl": "This extension does not provide an issue reporting URL.",
-			"extensionPlaceholder": "E.g. Missing alt text on extension readme image",
-			"extensionRequired": "Select an extension to continue.",
-			"extensionSource": "A VS Code extension",
-			"extensions": "Extensions ({0})",
-			"featureGuidance": "Describe the feature you'd like to see, what problem it would solve, and any alternatives you've considered.",
-			"featureRequest": "Feature Request",
-			"feedbackCategory": "Category",
-			"fiveSeconds": "5 seconds",
-			"generateTitle": "Generate title from description",
-			"generateTitleBtn": "Generate from description",
-			"generatingTitle": "Generating...",
-			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
-			"issueTargetRepo": "Issue will be created in {0}/{1}.",
-			"issueTitle": "Title",
-			"issueTitlePlaceholder": "Brief summary of the issue",
-			"loadingDiagnostics": "Loading diagnostics...",
-			"loadingExtensionData": "Loading extension issue data...",
-			"loadingProcessInfo": "Loading currently running processes...",
-			"loadingSystemInfo": "Loading system information...",
-			"loadingWorkspaceInfo": "Loading workspace metadata...",
-			"markdownSupported": "Markdown formatting is supported.",
-			"marketplace": "Extensions Marketplace",
-			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
-			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
-			"next": "Next",
-			"noDelay": "No delay",
-			"noDescription": "(no description)",
-			"noSimilarIssues": "No similar issues found.",
-			"noTitle": "(no title)",
-			"openExternalIssueReporter": "Open External Issue Reporter",
-			"or": "or",
-			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
-			"performanceIssue": "Performance Issue",
-			"previewOnGitHub": "Preview on GitHub",
-			"recordVideo": "Record video",
-			"recordingActive": "Recording active",
-			"recordingThumbnailAlt": "Recording {0}",
-			"refresh": "Refresh",
-			"refreshPerformanceData": "Reload running processes and workspace metadata",
-			"reportIssue": "Report Issue",
-			"reviewSubmit": "Review and submit",
-			"runningProcesses": "Running Processes",
-			"screenshot": "Screenshot",
-			"screenshotAlt": "Screenshot {0}",
-			"screenshots": "Attachments",
-			"screenshotsHeading": "Add attachments for better context",
-			"screenshotsSubtitle": "You can add up to {0} screenshots or videos. Navigate VS Code and choose when to capture.",
-			"searchingSimilarIssues": "Searching similar issues...",
-			"selectExtension": "Select extension",
-			"shortcutHintIntro": "Use the floating capture bar, or press",
-			"similarIssues": "Similar Issues",
-			"similarIssuesNeedsTitle": "Enter a title to search for similar issues.",
-			"similarIssuesSearchFailed": "Unable to search for similar issues.",
-			"skip": "Skip",
-			"stepOf": "Step {0} of {1}",
-			"stopRecording": "Stop recording",
-			"submit": "Review",
-			"systemInformation": "System Information",
-			"target": "Target",
-			"targetRequired": "Select a target to continue.",
-			"tenSeconds": "10 seconds",
-			"threeSeconds": "3 seconds",
-			"titleRequired": "Enter a title to continue.",
-			"toCapture": "to capture a screenshot",
-			"toRecord": "to start or stop recording",
-			"unknown": "Unknown",
-			"unknownSource": "Don't know",
-			"updateAvailable": "A new version of {0} is available.",
-			"uploading": "Uploading...",
-			"vscode": "Visual Studio Code",
-			"vscodePlaceholder": "E.g. Workbench is missing problems panel",
-			"waitingForDiagnostics": "Waiting for performance diagnostics to finish loading",
-			"workspaceMetadata": "Workspace Metadata"
 		},
 		"vs/workbench/contrib/issue/browser/issueReporterPage": {
 			"acknowledgements": "내 VS Code 버전이 업데이트되지 않았으며 이 문제가 종결될 수 있음을 인정합니다.",
@@ -15904,59 +14877,9 @@
 			"troubleshootIssue": "문제 해결...",
 			"use insiders": "이는 문제가 이미 해결되었으며 향후 릴리스에서 제공될 것임을 의미합니다. 안정적인 새 버전을 사용할 수 있게 될 때까지 {0} Insiders를 안전하게 사용할 수 있습니다."
 		},
-		"vs/workbench/contrib/issue/browser/screenshotAnnotation": {
-			"annotationHint": "Edit screenshot to highlight the problem",
-			"apply": "Apply",
-			"arrow": "Arrow",
-			"cancel": "Cancel",
-			"colorValue": "{0}: {1}",
-			"crop": "Crop",
-			"discard": "Discard",
-			"ellipse": "Ellipse",
-			"eraser": "Eraser",
-			"fillColor": "Fill Color",
-			"freehand": "Draw",
-			"opacity": "Opacity",
-			"pan": "Pan",
-			"rectangle": "Rectangle",
-			"redo": "Redo",
-			"save": "Save",
-			"select": "Select / Move",
-			"setFillColor": "Set Fill Color",
-			"setOpacity": "Set Opacity",
-			"setStrokeColor": "Set Stroke Color",
-			"setStrokeWidth": "Set Stroke Width to {0}px",
-			"setTextSize": "Set Text Size to {0}px",
-			"strokeColor": "Stroke Color",
-			"strokeWidth": "Stroke Width",
-			"text": "Text",
-			"textBackgroundColor": "Background Color",
-			"textColor": "Text Color",
-			"textSize": "Text Size",
-			"toolOptions": "Tool Options",
-			"transparentColor": "{0}: Transparent",
-			"typeText": "Type text",
-			"undo": "Undo"
-		},
 		"vs/workbench/contrib/issue/common/issue.contribution": {
 			"miReportIssue": "문제 보고(&&I)",
 			"reportIssueInEnglish": "영어로 문제 보고..."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issue.contribution": {
-			"issueReporter.wizard.enabled": "Enable the new issue reporter wizard instead of the classic issue reporter.",
-			"issueReporter.wizard.fullWorkspaceScan": "When auto-collecting performance diagnostics for the issue reporter wizard, walk the full workspace instead of stopping at the default 20,000-file cap. Set to false on very large workspaces if the scan slows the initial wizard render.",
-			"issueReporterConfigurationTitle": "Issue Reporter",
-			"issueReporterEditorPaneTitle": "Issue Reporter",
-			"openIssueReporter": "Open Issue Reporter",
-			"reportPerformanceIssue": "Report Performance Issue...",
-			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
-		},
-		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
-			"noCurrentExperiments": "No current experiments.",
-			"pasteData": "We have written the needed data into your clipboard because it was too large to send. Please paste.",
-			"saveExtensionData": "Save Extension Data",
-			"undefinedPlaceholder": "Please enter a title",
-			"updateAvailable": "A new version of {0} is available."
 		},
 		"vs/workbench/contrib/keybindings/browser/keybindings.contribution": {
 			"toggleKeybindingsLog": "바로 가기 키 문제 해결 토글"
@@ -16041,11 +14964,6 @@
 		"vs/workbench/contrib/localHistory/browser/localHistoryTimeline": {
 			"localHistory": "로컬 기록"
 		},
-		"vs/workbench/contrib/localHistory/electron-browser/localHistoryCommands": {
-			"openContainer": "상위 폴더 열기",
-			"revealInMac": "Finder에 표시",
-			"revealInWindows": "파일 탐색기에 표시"
-		},
 		"vs/workbench/contrib/localization/common/localization.contribution": {
 			"language id": "언어 ID",
 			"localizations": "언어 팩",
@@ -16069,17 +14987,6 @@
 			"installed": "설치됨",
 			"moreInfo": "더 많은 정보"
 		},
-		"vs/workbench/contrib/localization/electron-browser/localization.contribution": {
-			"changeAndRestart": "언어 변경 후 다시 시작",
-			"neverAgain": "다시 표시 안 함",
-			"updateLocale": "{0}의 표시 언어를 {1}(으)로 변경하고 다시 시작하시겠습니까?"
-		},
-		"vs/workbench/contrib/localization/electron-browser/minimalTranslations": {
-			"installAndRestart": "설치 및 다시 시작",
-			"installAndRestartMessage": "언어 팩을 설치하여 표시 언어를 {0}(으)로 변경합니다.",
-			"searchMarketplace": "Marketplace 검색",
-			"showLanguagePackExtensions": "Marketplace에서 언어 팩을 검색하여 표시 언어를 {0}(으)로 변경합니다."
-		},
 		"vs/workbench/contrib/logs/common/logs.contribution": {
 			"remote name": "{0}(원격)",
 			"setDefaultLogLevel": "기본 로그 수준 설정",
@@ -16099,10 +15006,6 @@
 			"selectlog": "로그 수준 설정",
 			"sessions placeholder": "세션 선택",
 			"setLogLevel": "로그 수준 설정..."
-		},
-		"vs/workbench/contrib/logs/electron-browser/logsActions": {
-			"openExtensionLogsFolder": "확장 로그 폴더 열기",
-			"openLogsFolder": "로그 폴더 열기"
 		},
 		"vs/workbench/contrib/markdown/browser/markdownSettingRenderer": {
 			"alreadysetBoolFalse": "\"{0}: {1}\"이(가) 이미 사용하지 않도록 설정되어 있습니다.",
@@ -16935,12 +15838,6 @@
 			"showBase": "병합 편집기에 기본 버전이 표시되는 경우",
 			"showBaseAtTop": "기준이 맨 위에 표시되어야 하는 경우",
 			"showNonConflictingChanges": "병합 편집기에 충돌하지 않는 변경 내용이 표시되는 경우"
-		},
-		"vs/workbench/contrib/mergeEditor/electron-browser/devCommands": {
-			"merge.dev.openSelectionInTemporaryMergeEditor": "임시 병합 편집기에서 선택 영역 열기",
-			"merge.dev.openState": "JSON에서 병합 편집기 상태 열기",
-			"mergeEditor": "병합 편집기(개발)",
-			"mergeEditor.enterJSON": "JSON 입력"
 		},
 		"vs/workbench/contrib/meteredConnection/browser/meteredConnection.contribution": {
 			"configureMeteredConnection": "데이터 통신 연결 구성",
@@ -17805,18 +16702,6 @@
 		"vs/workbench/contrib/performance/browser/perfviewEditor": {
 			"name": "시작 성능"
 		},
-		"vs/workbench/contrib/performance/electron-browser/performance.contribution": {
-			"experimental.rendererProfiling": "활성화된 경우 느린 렌더러가 자동으로 프로파일링됩니다."
-		},
-		"vs/workbench/contrib/performance/electron-browser/startupProfiler": {
-			"prof.detail": "문제를 만들고 다음 파일을 수동으로 연결하세요.\r\n{0}",
-			"prof.detail.restart": "계속 '{0}'을(를) 사용하려면 마지막으로 다시 시작해야 합니다. 기여해 주셔서 다시 한번 감사드립니다.",
-			"prof.message": "프로필을 만들었습니다.",
-			"prof.restart": "다시 시작",
-			"prof.restart.button": "다시 시작(&&R)",
-			"prof.restartAndFileIssue": "문제 만들기 및 다시 시작(&&C)",
-			"prof.thanks": "도움을 주셔서 감사합니다."
-		},
 		"vs/workbench/contrib/preferences/browser/keybindingsEditor": {
 			"SearchKeybindings.FullTextSearchPlaceholder": "키 바인딩에서 검색하려면 입력",
 			"SearchKeybindings.KeybindingsSearchPlaceholder": "키를 기록하는 중입니다. 종료하려면 <Esc> 키를 누르세요.",
@@ -17860,6 +16745,18 @@
 			"defineKeybinding.existing": "{0}개의 기존 명령에 이 키 바인딩이 있습니다.",
 			"defineKeybinding.initial": "원하는 키 조합을 누르고 <Enter> 키를 누르세요.",
 			"defineKeybinding.oneExists": "1개의 기존 명령에 이 키 바인딩이 있습니다."
+		},
+		"vs/workbench/contrib/preferences/browser/keyboardLayoutPicker": {
+			"autoDetect": "Auto Detect",
+			"configureKeyboardLayout": "Configure Keyboard Layout",
+			"displayLanguage": "Defines the keyboard layout used in VS Code in the browser environment.",
+			"doc": "Open VS Code and run \"Developer: Inspect Key Mappings (JSON)\" from Command Palette.",
+			"fail.createSettings": "Unable to create '{0}' ({1}).",
+			"keyboard.chooseLayout": "Change Keyboard Layout",
+			"keyboardLayout": "Layout: {0}",
+			"layoutPicks": "Keyboard Layouts ({0})",
+			"pickKeyboardLayout": "Select Keyboard Layout",
+			"status.workbench.keyboardLayout": "Keyboard Layout"
 		},
 		"vs/workbench/contrib/preferences/browser/preferences.contribution": {
 			"clear": "검색 결과 지우기",
@@ -18201,6 +17098,9 @@
 			"openProcessExplorer": "프로세스 탐색기 열기",
 			"promptOpenWith.processExplorer.displayName": "프로세스 탐색기"
 		},
+		"vs/workbench/contrib/processExplorer/browser/processExplorer.web.contribution": {
+			"processExplorer": "Process Explorer"
+		},
 		"vs/workbench/contrib/processExplorer/browser/processExplorerControl": {
 			"copy": "복사",
 			"copyAll": "모두 복사",
@@ -18216,9 +17116,6 @@
 		"vs/workbench/contrib/processExplorer/browser/processExplorerEditorInput": {
 			"processExplorerEditorLabelIcon": "프로세스 탐색기 편집기 레이블의 아이콘입니다.",
 			"processExplorerInputName": "프로세스 탐색기"
-		},
-		"vs/workbench/contrib/processExplorer/electron-browser/processExplorer.contribution": {
-			"processExplorer": "프로세스 탐색기"
 		},
 		"vs/workbench/contrib/quickaccess/browser/commandsQuickAccess": {
 			"clearButtonLabel": "지우기(&&C)",
@@ -18363,6 +17260,10 @@
 			"workspace.tooltip": "{0}에서 편집하는 중",
 			"workspace.tooltip2": "가상 파일 시스템에 있는 리소스에 대한 일부 [기능을 사용할 수 없습니다.]({0})."
 		},
+		"vs/workbench/contrib/remote/browser/remoteStartEntry": {
+			"remote.category": "원격",
+			"remote.showWebStartEntryActions": "웹용 원격 시작 항목 표시"
+		},
 		"vs/workbench/contrib/remote/browser/tunnelFactory": {
 			"tunnelPrivacy.private": "프라이빗",
 			"tunnelPrivacy.public": "퍼블릭"
@@ -18465,13 +17366,6 @@
 			"triggerReconnect": "연결: 트리거 다시 연결",
 			"ui": "UI 확장 종류입니다. 원격 창에서, 이러한 확장은 로컬 머신에서 사용 가능한 경우에만 사용할 수 있습니다.",
 			"workspace": "작업 영역 확장 종류입니다. 원격 창에서, 이러한 확장은 원격에서 사용 가능한 경우에만 사용할 수 있습니다."
-		},
-		"vs/workbench/contrib/remote/electron-browser/remote.contribution": {
-			"remote": "Remote",
-			"remote.actions.closeUnusedPorts": "Close Unused Forwarded Ports",
-			"remote.category": "Remote",
-			"remote.downloadExtensionsLocally": "When enabled extensions are downloaded locally and installed on remote.",
-			"wslFeatureInstalled": "Whether the platform has the WSL feature installed"
 		},
 		"vs/workbench/contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution": {
 			"remoteCodingAgentsExtPoint": "채팅 위젯에 원격 코딩 에이전트 통합을 제공합니다.",
@@ -19576,6 +18470,9 @@
 			"taskQuickPick.showAll": "작업 모두 표시...",
 			"taskType": "모든 {0} 작업"
 		},
+		"vs/workbench/contrib/tasks/browser/taskService": {
+			"taskService.processTaskSystem": "프로세스 작업 시스템은 웹에서 지원되지 않습니다."
+		},
 		"vs/workbench/contrib/tasks/browser/tasksQuickAccess": {
 			"TaskService.pickRunTask": "실행할 작업 선택",
 			"noTaskResults": "일치하는 작업 없음"
@@ -19854,12 +18751,6 @@
 			"dotnetCore": ".NET Core 빌드 명령을 실행합니다.",
 			"externalCommand": "임의의 외부 명령을 실행하는 예",
 			"msbuild": "빌드 대상을 실행합니다."
-		},
-		"vs/workbench/contrib/tasks/electron-browser/taskService": {
-			"TaskSystem.exitAnyways": "&&Exit Anyways",
-			"TaskSystem.noProcess": "The launched task doesn't exist anymore. If the task spawned background processes exiting VS Code might result in orphaned processes. To avoid this start the last background process with a wait flag.",
-			"TaskSystem.runningTask": "There is a task running. Do you want to terminate it?",
-			"TaskSystem.terminateTask": "&&Terminate Task"
 		},
 		"vs/workbench/contrib/telemetry/browser/telemetry.contribution": {
 			"showTelemetry": "원격 분석 표시"
@@ -20375,9 +19266,6 @@
 			"workbench.action.terminal.scrollToNextCommand": "다음 명령으로 스크롤",
 			"workbench.action.terminal.scrollToPreviousCommand": "이전 명령으로 스크롤",
 			"workbench.action.terminal.sizeToContentWidthInstance": "크기를 콘텐츠 너비로 전환"
-		},
-		"vs/workbench/contrib/terminal/electron-browser/terminalRemote": {
-			"workbench.action.terminal.newLocal": "새 통합 터미널 만들기(로컬)"
 		},
 		"vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
 			"workbench.action.terminal.accessibleBufferGoToNextCommand": "액세스 가능한 버퍼 다음 명령으로 이동",
@@ -22043,12 +20931,6 @@
 			"workbench.actions.sync.resolveResourceRef": "원시 JSON 동기화 데이터 표시",
 			"workbench.actions.sync.turnOffSyncOnMachine": "설정 동기화 끄기"
 		},
-		"vs/workbench/contrib/userDataSync/electron-browser/userDataSync.contribution": {
-			"Open Backup folder": "로컬 백업 폴더 열기",
-			"download sync activity complete": "설정 동기화 작업을 다운로드했습니다.",
-			"no backups": "로컬 백업 폴더가 없습니다.",
-			"open": "폴더 열기"
-		},
 		"vs/workbench/contrib/watermark/browser/watermark": {
 			"tips.enabled": "사용하도록 설정되면 편집기가 열리지 않았을 때 워터마크 팁이 표시됩니다.",
 			"watermark.findInFiles": "파일에서 찾기",
@@ -22103,11 +20985,6 @@
 			"webview.settingsHeader": "조정할 수 있는 설정({0}은(는) 설정을 엽니다.):",
 			"webview.statusDesc": "웹 콘텐츠를 검색하고 있습니다.",
 			"webview.statusHeader": "현재 검색 상태:"
-		},
-		"vs/workbench/contrib/webview/electron-browser/webviewCommands": {
-			"iframeWebviewAlert": "표준 개발 도구를 사용하여 iframe 기반 웹 보기 디버그",
-			"openToolsDescription": "활성 웹 보기에 대한 개발자 도구를 엽니다.",
-			"openToolsLabel": "Webview 개발자 도구 열기"
 		},
 		"vs/workbench/contrib/webviewPanel/browser/webviewCommands": {
 			"editor.action.webvieweditor.findNext": "다음 찾기",
@@ -22916,14 +21793,11 @@
 			"authenticationExtensionPoint": "인증 제공"
 		},
 		"vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService": {
-			"lifecycleVeto": "변경한 내용이 저장되지 않을 수 있습니다. 확인 후 '취소'를 누르고 다시 시도하세요.",
-			"retry": "다시 시도(&&R)",
-			"unableToOpenWindow": "브라우저에서 새 창 열기가 차단되었습니다. '다시 시도'를 눌러 다시 시도하세요.",
-			"unableToOpenWindowDetail": "[브라우저 설정]({0})에서 이 웹사이트의 팝업을 허용하세요.",
-			"unableToOpenWindowError": "새 창을 열 수 없습니다."
-		},
-		"vs/workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService": {
-			"backupErrorDetails": "저장되지 않은 변경 내용이 있는 편집기를 저장하거나 되돌려본 후 다시 시도하세요."
+			"lifecycleVeto": "Changes that you made may not be saved. Please check press 'Cancel' and try again.",
+			"retry": "&&Retry",
+			"unableToOpenWindow": "The browser blocked opening a new window. Press 'Retry' to try again.",
+			"unableToOpenWindowDetail": "Please allow pop-ups for this website in your [browser settings]({0}).",
+			"unableToOpenWindowError": "Unable to open a new window."
 		},
 		"vs/workbench/services/chat/common/chatEntitlementService": {
 			"learnMore": "자세한 정보",
@@ -23065,12 +21939,22 @@
 			"saveChangesMessages": "다음 {0}개 파일에 대한 변경 내용을 저장할까요?",
 			"saveFileAs.title": "다른 이름으로 저장"
 		},
+		"vs/workbench/services/dialogs/browser/fileDialogService": {
+			"learnMore": "자세히 알아보기(&&L)",
+			"openFiles": "파일 열기...(&&F)",
+			"openRemote": "원격 열기...(&&O)",
+			"pickFolderAndOpen": "폴더를 열 수 없습니다. 대신 작업 영역에 폴더를 추가해 보세요.",
+			"pickWorkspaceAndOpen": "작업 영역을 열 수 없습니다. 대신 작업 영역에 폴더를 추가해 보세요.",
+			"unsupportedBrowserDetail": "브라우저가 로컬 폴더 열기를 지원하지 않습니다.\r\n단일 파일을 열거나 원격 리포지토리를 열 수 있습니다.",
+			"unsupportedBrowserMessage": "로컬 폴더 열기가 지원되지 않습니다."
+		},
 		"vs/workbench/services/dialogs/browser/simpleFileDialog": {
 			"openLocalFile": "로컬 파일 열기...",
 			"openLocalFileFolder": "로컬 열기...",
 			"openLocalFolder": "로컬 폴더 열기...",
 			"remoteFileDialog.badPath": "경로가 없습니다. 홈 디렉터리로 이동하려면 ~를 사용하세요.",
 			"remoteFileDialog.cancel": "취소",
+			"remoteFileDialog.createFolderFailed": "Could not create folder: {0}",
 			"remoteFileDialog.hideDotFiles": "점 파일 숨기기",
 			"remoteFileDialog.invalidPath": "유효한 경로를 입력하세요.",
 			"remoteFileDialog.local": "로컬 표시",
@@ -23079,6 +21963,7 @@
 			"remoteFileDialog.showDotFiles": "점 파일 표시",
 			"remoteFileDialog.validateBadFilename": "올바른 파일 이름을 입력하세요.",
 			"remoteFileDialog.validateCreateDirectory": "{0} 폴더가 존재하지 않습니다. 생성하시겠습니까?",
+			"remoteFileDialog.validateCreateDirectoryOpen": "The folder {0} does not exist. Would you like to create it?",
 			"remoteFileDialog.validateExisting": "{0}이(가) 이미 있습니다. 덮어쓰시겠습니까?",
 			"remoteFileDialog.validateFileOnly": "파일을 선택하세요.",
 			"remoteFileDialog.validateFolder": "폴더가 이미 존재합니다. 새 파일 이름을 사용하세요.",
@@ -23143,11 +22028,19 @@
 			"extensionsDisabled": "설치된 모든 확장을 일시적으로 사용할 수 없습니다.",
 			"noWorkspace": "작업 영역이 없습니다."
 		},
+		"vs/workbench/services/extensionManagement/browser/webExtensionsScannerService": {
+			"not a web extension": "이 확장은 웹 확장이 아니므로 '{0}'을(를) 추가할 수 없습니다.",
+			"openInstalledWebExtensionsResource": "설치된 웹 확장 리소스 열기"
+		},
 		"vs/workbench/services/extensionManagement/common/extensionFeaturesManagemetService": {
 			"accessExtensionFeature": "액세스 '{0}' 기능",
 			"accessExtensionFeatureMessage": "'{0}' 확장이 '{1}' 기능에 액세스하려고 합니다.",
 			"allow": "허용",
 			"disallow": "허용 안 함"
+		},
+		"vs/workbench/services/extensionManagement/common/extensionManagementServerService": {
+			"browser": "브라우저",
+			"remote": "원격"
 		},
 		"vs/workbench/services/extensionManagement/common/extensionManagementService": {
 			"Manifest is not found": "{0} 확장을 설치하지 못함: 매니페스트를 찾을 수 없습니다.",
@@ -23197,19 +22090,6 @@
 			"extensionDefault": "확장 보기 및 편집기에서 기본 확장에 사용되는 아이콘입니다.",
 			"extensionIconVerifiedForeground": "확장 확인 게시자의 아이콘 색입니다.",
 			"verifiedPublisher": "확장 보기 및 편집기에서 확인된 확장 게시자에 사용되는 아이콘입니다."
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService": {
-			"extensionGalleryManifestService.accountChange": "{0} is now configured to a different Marketplace. Please restart to apply the changes.",
-			"restart": "&&Restart"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/extensionManagementServerService": {
-			"local": "Local",
-			"remote": "Remote"
-		},
-		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
-			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
-			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
 		"vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig": {
 			"select for add": "다음에 확장 권장 사항 추가",
@@ -23343,36 +22223,6 @@
 			"overwritingExtension": "확장 {0}을(를) {1}(으)로 덮어쓰는 중입니다.",
 			"overwritingWithWorkspaceExtension": "작업 영역 확장 {1}을(를) 사용하여 {0}을(를) 덮어씁니다."
 		},
-		"vs/workbench/services/extensions/electron-browser/cachedExtensionScanner": {
-			"extensionCache.invalid": "확장이 디스크에서 수정되었습니다. 창을 다시 로드하세요.",
-			"extensionUnderDevelopment.invalid": "확장이 잘못되어 개발 중인 '{0}' 확장을 로드하지 못함: {1}",
-			"extensionsUnderDevelopment.invalid": "확장이 잘못되어 개발 중인 {0} 확장을 로드하지 못함: {1}",
-			"reloadWindow": "창 다시 로드"
-		},
-		"vs/workbench/services/extensions/electron-browser/localProcessExtensionHost": {
-			"extensionHost.startupFail": "확장 호스트가 10초 이내에 시작되지 않았습니다. 문제가 발생했을 수 있습니다.",
-			"extensionHost.startupFailDebug": "확장 호스트가 10초 내에 시작되지 않았습니다. 첫 번째 줄에서 중지되었을 수 있습니다. 계속하려면 디버거가 필요합니다.",
-			"join.extensionDevelopment": "확장 디버그 세션을 종료하는 중",
-			"reloadWindow": "창 다시 로드"
-		},
-		"vs/workbench/services/extensions/electron-browser/nativeExtensionService": {
-			"devTools": "개발자 도구 열기",
-			"enable": "활성화 및 다시 로드",
-			"enableResolver": "원격 창을 열려면 '{0}' 확장이 필요합니다.\r\n사용하도록 설정하시겠습니까?",
-			"extensionService.autoRestart": "확장 호스트가 예기치 않게 종료되었습니다. 다시 시작 중...",
-			"extensionService.crash": "확장 호스트가 지난 5분 동안 3번 예기치 않게 종료되었습니다.",
-			"extensionService.versionMismatchCrash": "확장 호스트를 시작할 수 없습니다. 버전이 일치하지 않습니다.",
-			"getEnvironmentFailure": "원격 환경을 페치할 수 없습니다.",
-			"install": "설치 및 다시 로드",
-			"installResolver": "원격 창을 열려면 확장 '{0}'이(가) 필요합니다.\r\n확장을 설치하시겠습니까?",
-			"learnMore": "자세히 알아보기",
-			"relaunch": "VS Code 다시 시작",
-			"resolverExtensionNotFound": "마켓플레이스에서 '{0}'을(를) 찾을 수 없음",
-			"restart": "확장 호스트 다시 시작",
-			"restartExtensionHost": "확장 호스트 다시 시작",
-			"restartExtensionHost.reason": "명확한 요청",
-			"startBisect": "확장 이등분 시작"
-		},
 		"vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
 			"fileWatcher": "파일 감시자"
 		},
@@ -23457,6 +22307,10 @@
 			"vscode.extension.contributes.keybindings.when": "키가 활성화되는 조건입니다.",
 			"vscode.extension.contributes.keybindings.win": "Windows 특정 키 또는 키 시퀀스"
 		},
+		"vs/workbench/services/keybinding/browser/keyboardLayoutService": {
+			"keyboard.layout.config": "웹에서 사용되는 키보드 레이아웃을 제어합니다.",
+			"keyboardConfigurationTitle": "키보드"
+		},
 		"vs/workbench/services/keybinding/common/keybindingEditing": {
 			"emptyKeybindingsHeader": "키 바인딩을 이 파일에 넣어서 기본값 재정의",
 			"errorInvalidConfiguration": "키 바인딩 구성 파일에 쓸 수 없습니다. 이 파일에 배열 형식이 아닌 개체가 있습니다. 파일을 열어 정리하고 다시 시도하세요.",
@@ -23511,13 +22365,12 @@
 		"vs/workbench/services/lifecycle/browser/lifecycleService": {
 			"lifecycleVeto": "변경한 내용이 저장되지 않을 수 있습니다. 확인 후 '취소'를 누르고 다시 시도하세요."
 		},
-		"vs/workbench/services/localization/electron-browser/localeService": {
-			"argvInvalid": "Unable to write display language. Please open the runtime settings, correct errors/warnings in it and try again.",
-			"installing": "Installing {0} language support...",
-			"openArgv": "Open Runtime Settings",
-			"restart": "&&Restart",
-			"restartDisplayLanguageDetail1": "To change the display language to {0}, {1} needs to restart.",
-			"restartDisplayLanguageMessage1": "Restart {0} to switch to {1}?"
+		"vs/workbench/services/localization/browser/localeService": {
+			"clearDisplayLanguageDetail": "다시 로드 버튼을 눌러 페이지를 새로 고치고 브라우저의 언어를 사용하세요.",
+			"clearDisplayLanguageMessage": "표시 언어를 변경하려면 {0}을(를) 다시 로드해야 합니다.",
+			"relaunchDisplayLanguageDetail": "다시 로드 버튼을 눌러 페이지를 새로 고침하고 표시 언어를 {0}(으)로 설정하세요.",
+			"relaunchDisplayLanguageMessage": "표시 언어를 변경하려면 {0}을(를) 다시 로드해야 합니다.",
+			"reload": "다시 로드(&&R)"
 		},
 		"vs/workbench/services/log/common/logConstants": {
 			"window": "창"
@@ -23604,6 +22457,11 @@
 			"progress.title3": "[{0}] {1}: {2}",
 			"status.progress": "진행 메시지"
 		},
+		"vs/workbench/services/remote/browser/remoteAgentService": {
+			"connectionError": "예기치 않은 오류가 발생하여 이 페이지를 다시 로드해야 합니다.",
+			"connectionErrorDetail": "워크벤치에서 서버에 연결하지 못함(오류: {0})",
+			"reload": "다시 로드(&&R)"
+		},
 		"vs/workbench/services/remote/common/remoteExplorerService": {
 			"RemoteHelpInformationExtPoint": "원격에 대한 도움말 정보 제공",
 			"RemoteHelpInformationExtPoint.documentation": "프로젝트 설명서 페이지의 URL 또는 URL을 반환하는 명령",
@@ -23621,16 +22479,15 @@
 			"tunnel.source.user": "사용자가 전달함",
 			"tunnel.staticallyForwarded": "정적으로 전달됨"
 		},
-		"vs/workbench/services/remote/electron-browser/remoteAgentService": {
-			"connectionError": "Failed to connect to the remote extension host server (Error: {0})",
-			"devTools": "Open Developer Tools",
-			"directUrl": "Open in browser"
-		},
-		"vs/workbench/services/request/electron-browser/requestService": {
+		"vs/workbench/services/request/browser/requestService": {
 			"network": "네트워크"
 		},
+		"vs/workbench/services/search/browser/searchService": {
+			"errorSearchFile": "Unable to search with Web Worker file searcher",
+			"errorSearchText": "Unable to search with Web Worker text searcher"
+		},
 		"vs/workbench/services/search/common/queryBuilder": {
-			"search.noWorkspaceWithName": "작업 영역 폴더가 없음: {0}"
+			"search.noWorkspaceWithName": "Workspace folder does not exist: {0}"
 		},
 		"vs/workbench/services/secrets/electron-browser/secretStorageService": {
 			"encryptionNotAvailableJustTroubleshootingGuide": "현재 데스크톱 환경에 암호화 관련 데이터를 저장하는 데 필요한 OS 키링을 식별할 수 없습니다.",
@@ -23684,9 +22541,6 @@
 		"vs/workbench/services/textfile/common/textFileSaveParticipant": {
 			"saveParticipants1": "코드 작업 및 포맷터를 실행하는 중...",
 			"skip": "건너뛰기"
-		},
-		"vs/workbench/services/textfile/electron-browser/nativeTextFileService": {
-			"join.textFiles": "텍스트 파일 저장 중"
 		},
 		"vs/workbench/services/textMate/browser/textMateTokenizationFeatureImpl": {
 			"alreadyDebugging": "이미 로깅 중입니다.",
@@ -23941,13 +22795,6 @@
 			"invalid.semanticTokenTypeConfiguration": "'configuration.semanticTokenType'은 배열이어야 함",
 			"invalid.superType.format": "'configuration.{0}.superType'은 letterOrDigit[-_letterOrDigit]* 패턴을 따라야 합니다."
 		},
-		"vs/workbench/services/themes/electron-browser/themes.contribution": {
-			"window.systemColorTheme": "네이티브 대화 상자, 메뉴 및 제목 표시줄과 같은 네이티브 UI 요소의 색 모드를 설정합니다. OS가 밝은 색 모드로 구성된 경우에도 창에 어두운 시스템 색 테마를 사용하도록 선택할 수 있습니다. {0} 설정에 따라 자동으로 조정되도록 구성할 수도 있습니다.\r\n\r\n참고: {1}이(가) 활성화된 경우 이 설정은 무시됩니다.",
-			"window.systemColorTheme.auto": "밝은 색 테마에는 밝은 네이티브 위젯 색을 사용하고 어두운 색 테마에는 어두운 색을 사용합니다.",
-			"window.systemColorTheme.dark": "어두운 네이티브 위젯 색을 사용합니다.",
-			"window.systemColorTheme.default": "네이티브 위젯 색은 시스템 색과 일치합니다.",
-			"window.systemColorTheme.light": "밝은 네이티브 위젯 색을 사용합니다."
-		},
 		"vs/workbench/services/userDataProfile/browser/extensionsResource": {
 			"all profiles and disabled": "모든 프로필",
 			"exclude": "{0} 확장 선택",
@@ -24145,23 +22992,6 @@
 		"vs/workbench/services/workingCopy/common/workingCopyHistoryTracker": {
 			"undoRedo.source": "실행 취소/다시 실행"
 		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupService": {
-			"join.workingCopyBackups": "백업 작업 복사본"
-		},
-		"vs/workbench/services/workingCopy/electron-browser/workingCopyBackupTracker": {
-			"backupBeforeShutdownDetail": "대기를 중지하고 저장되지 않은 변경 내용으로 편집기를 저장하거나 되돌리려면 '취소'를 클릭합니다.",
-			"backupBeforeShutdownMessage": "저장되지 않은 변경 내용이 있는 편집기를 백업하는 데 시간이 조금 더 걸리고 있습니다.",
-			"backupErrorDetails": "저장되지 않은 변경 내용이 있는 편집기를 저장하거나 되돌려본 후 다시 시도하세요.",
-			"backupTrackerBackupFailed": "저장되지 않은 변경 내용이 있는 다음 편집기를 백업 위치에 저장할 수 없습니다.",
-			"backupTrackerConfirmFailed": "저장되지 않은 변경 내용이 있는 다음 편집기를 저장하거나 되돌릴 수 없습니다.",
-			"discardBackupsBeforeShutdown": "백업을 삭제하는 데 시간이 조금 더 걸리고 있습니다.",
-			"ok": "확인(&&O)",
-			"revertBeforeShutdown": "저장되지 않은 변경 내용이 있는 편집기를 되돌리는 데 시간이 조금 더 걸리고 있습니다.",
-			"saveBeforeShutdown": "저장되지 않은 변경 내용이 있는 편집기를 저장하는 데 시간이 조금 더 걸리고 있습니다.",
-			"shutdownForceClose": "닫기",
-			"shutdownForceQuit": "그래도 종료",
-			"shutdownForceReload": "그래도 다시 로드"
-		},
 		"vs/workbench/services/workspaces/browser/abstractWorkspaceEditingService": {
 			"errorInvalidTaskConfiguration": "작업 영역 구성 파일에 쓸 수 없습니다. 파일을 열고 오류/경고를 수정한 다음 다시 시도하세요.",
 			"openWorkspaceConfigurationFile": "작업 영역 구성 열기",
@@ -24171,16 +23001,6 @@
 		"vs/workbench/services/workspaces/browser/workspaceTrustEditorInput": {
 			"workspaceTrustEditorInputName": "작업 영역 신뢰",
 			"workspaceTrustEditorLabelIcon": "작업 영역 신뢰 편집기 레이블의 아이콘입니다."
-		},
-		"vs/workbench/services/workspaces/electron-browser/workspaceEditingService": {
-			"doNotAskAgain": "제목 없는 작업 영역을 묻지 않고 항상 삭제",
-			"doNotSave": "저장 안 함(&&N)",
-			"restartExtensionHost.reason": "다중 루트 작업 영역 열기",
-			"save": "저장(&&S)",
-			"saveWorkspaceDetail": "작업 영역을 다시 열려면 작업 영역을 저장하세요.",
-			"saveWorkspaceMessage": "작업 영역 구성을 파일로 저장하시겠습니까?",
-			"workspaceOpenedDetail": "작업 영역이 이미 다른 창에 열렸습니다. 먼저 해당 창을 닫은 후 다시 시도하세요.",
-			"workspaceOpenedMessage": "'{0}' 작업 영역을 저장할 수 없음"
 		}
 	}
 }
