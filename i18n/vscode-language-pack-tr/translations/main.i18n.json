@@ -2162,6 +2162,12 @@
 			"selectPrevCodeAction.title": "Önceki eylemi seçin",
 			"toggleSectionCodeAction.title": "Bölümü değiştir"
 		},
+		"vs/platform/agentHost/browser/agentHost.config.contribution": {
+			"chat.agentHost.enabled": "When enabled, some agents run in a separate agent host process."
+		},
+		"vs/platform/agentHost/browser/agentHostConnectionsService": {
+			"agentHost.connection.ambient": "Local"
+		},
 		"vs/platform/agentHost/common/agentHost.config.contribution": {
 			"chat.agentHost.enabled": "Etkinleştirildiğinde, bazı aracılar ayrı bir aracı konak işleminde çalışır.",
 			"chat.agents.copilotCli.hideExtensionHost": "When enabled, hides the Extension Host Copilot CLI entry from the Agents window picker.",
@@ -2170,6 +2176,7 @@
 			"chat.editor.defaultProvider.copilotAh": "Use the Agent Host Copilot CLI",
 			"chat.editor.defaultProvider.copilotEh": "Use the Extension Host Copilot CLI",
 			"chat.editor.defaultProvider.local": "Use the built-in VS Code local chat harness",
+			"chat.editor.localAgent.enabled": "When enabled, shows the VS Code local chat harness in the chat picker.",
 			"chatAgentHostConfigurationTitle": "Sohbet Aracı Ana Makinesi"
 		},
 		"vs/platform/agentHost/common/agentHostCustomizationConfig": {
@@ -2183,23 +2190,44 @@
 			"agentHost.config.defaultShell.title": "Varsayılan Kabuk",
 			"agentHost.config.enableCustomTerminalTool.description": "Etkinleştirildiğinde, Copilot SDK oturumları SDK'nın varsayılan terminal davranışı yerine Aracı Ana Bilgisayarı terminal aracı geçersiz kılmasını kullanır.",
 			"agentHost.config.enableCustomTerminalTool.title": "Aracı ana bilgisayar terminal aracını kullanın",
+			"agentHost.config.opus48Prompt.description": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
+			"agentHost.config.opus48Prompt.title": "Opus 4.8 Agent Prompt",
 			"agentHost.config.rubberDuck.description": "Etkinleştirildiğinde kodlama aracısı kod değişikliklerini tamamlayıcı bir model kullanarak gözden geçirmek için bir lastik ördek inceleme alt aracısı kullanır.",
 			"agentHost.config.rubberDuck.title": "Rubber Duck Aracısı"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
+			"agentHost.config.mcpServers.arg.title": "Argument",
+			"agentHost.config.mcpServers.args.description": "For `stdio` servers, the arguments passed to the command.",
+			"agentHost.config.mcpServers.args.title": "Arguments",
+			"agentHost.config.mcpServers.command.description": "For `stdio` servers, the executable to spawn.",
+			"agentHost.config.mcpServers.command.title": "Command",
+			"agentHost.config.mcpServers.cwd.description": "For `stdio` servers, the working directory the command runs in.",
+			"agentHost.config.mcpServers.cwd.title": "Working Directory",
+			"agentHost.config.mcpServers.description": "Agent-host-level MCP servers exposed to every session, keyed by server name. Each value is a server configuration (see `<serverName>`).",
+			"agentHost.config.mcpServers.entry.description": "A single MCP server entry. The property key is the server name.",
+			"agentHost.config.mcpServers.entry.title": "MCP Server",
+			"agentHost.config.mcpServers.env.description": "For `stdio` servers, environment variables set on the spawned process.",
+			"agentHost.config.mcpServers.env.title": "Environment",
+			"agentHost.config.mcpServers.headers.description": "For `http` servers, HTTP headers sent with every request.",
+			"agentHost.config.mcpServers.headers.title": "Headers",
+			"agentHost.config.mcpServers.title": "MCP Servers",
+			"agentHost.config.mcpServers.type.description": "The transport used to reach the server: `stdio` for a local command, `http` for a remote endpoint.",
+			"agentHost.config.mcpServers.type.title": "Server Type",
+			"agentHost.config.mcpServers.url.description": "For `http` servers, the endpoint URL of the MCP server.",
+			"agentHost.config.mcpServers.url.title": "URL",
 			"agentHost.config.sessionSyncEnabled.description": "copilot-sdk CLI'ı için uzak oturum eşitlemenin etkin olup olmadığını belirtir.",
 			"agentHost.config.sessionSyncEnabled.title": "Oturum Eşitleme",
 			"agentHost.config.telemetryLevel.description": "Bağlı istemcilerin istediği en kısıtlayıcı telemetri düzeyi.",
 			"agentHost.config.telemetryLevel.title": "Telemetri Düzeyi",
 			"agentHost.sessionConfig.autoApprove": "Onaylar",
-			"agentHost.sessionConfig.autoApprove.autopilot": "Otomatik Pilot (Önizleme)",
-			"agentHost.sessionConfig.autoApprove.autopilotDescription": "Başlangıçtan bitişe kadar kendi kendine yineleme yapar",
 			"agentHost.sessionConfig.autoApprove.bypass": "Onayları Atla",
 			"agentHost.sessionConfig.autoApprove.bypassDescription": "Tüm araç çağrıları otomatik olarak onaylanır",
 			"agentHost.sessionConfig.autoApprove.default": "Varsayılan Onaylar",
 			"agentHost.sessionConfig.autoApprove.defaultDescription": "Copilot yapılandırılan ayarlarınızı kullanıyor",
 			"agentHost.sessionConfig.autoApproveDescription": "Bu oturum için araç onaylama davranışı",
 			"agentHost.sessionConfig.mode": "Aracı Modu",
+			"agentHost.sessionConfig.mode.autopilot": "Autopilot",
+			"agentHost.sessionConfig.mode.autopilotDescription": "Autonomously iterates from start to finish",
 			"agentHost.sessionConfig.mode.interactive": "Etkileşimli",
 			"agentHost.sessionConfig.mode.interactiveDescription": "Step-by-step collaboration",
 			"agentHost.sessionConfig.mode.plan": "Plan",
@@ -2216,13 +2244,14 @@
 			"chat.agentHost.codexAgent.binaryArgs": "`codex app-server` öğesine geçirilen ek komut satırı bağımsız değişkenleri. Öncelikle hata ayıklama için kullanışlıdır (örneğin, `--log-level=debug`).",
 			"chat.agentHost.codexAgent.codexHome": "`$CODEX_HOME` için isteğe bağlı geçersiz kılma. Codex ikilisinin yapılandırmayı nereden okuduğunu ve piyasaya çıkma işlemlerini nereye yazdığını denetler. Boş bırakıldığında Codex varsayılan değeri (`~/.codex`) kullanır.",
 			"chat.agentHost.codexAgent.enabled": "When enabled, the agent host registers the Codex provider (subject to the Codex SDK being reachable). Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
+			"chat.agentHost.codexAgent.enabled.policy": "Enable Codex Agent sessions in VS Code. Start and resume agentic coding sessions powered by OpenAI Codex SDK. Uses your existing Copilot subscription.",
 			"chat.agentHost.codexAgent.sdkRoot": "Experimental, for local SDK development only. Absolute path to a directory containing `node_modules/@openai/codex`. When set, the agent host spawns the Codex binary from this tree instead of downloading the SDK. Empty (the default) falls through to the SDK distribution shipped with this build. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
-			"chat.agentHost.otel.captureContent": "Etkinleştirildiğinde, OTel yayılım özniteliklerine istem ve yanıt içeriğini ekler. `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` değerini ayarlar. Gizlilik açısından hassastır: Yayılımları paylaşılan hedeflere gönderen ortamlarda etkinleştirmeyin.",
-			"chat.agentHost.otel.dbSpanExporter.enabled": "Etkinleştirildiğinde, aracı ana bilgisayarı yerel bir SQLite veritabanına yayılan her OTel yayılmasını kalıcı hale getirmektedir. Yayılmalar (span), `Export Agent Host Traces Database` komutu aracılığıyla incelenebilir. Dış aktarıcılarla uyumludur: yayılmalar (span) SQLite’a yazılır ve kullanıcı tarafından yapılandırılan hedefe iletilir.",
-			"chat.agentHost.otel.enabled": "Etkinleştirildiğinde, aracı ana bilgisayarı Copilot SDK'sından OpenTelemetry izleri oluşturur. `#chat.agentHost.enabled#` gerektirir. İzleri harici bir toplayıcıya göndermek için `#chat.agentHost.otel.otlpEndpoint#` yapılandırın veya bunları yerel olarak toplamak için `#chat.agentHost.otel.dbSpanExporter.enabled#` etkinleştirin.",
-			"chat.agentHost.otel.exporterType": "`#chat.agentHost.otel.enabled#` açık olduğunda Copilot SDK tarafından kullanılan dışarı aktarıcı arka ucu. `otlp-grpc`, CLI çalışma zamanında şeffaf biçimde `otlp-http` olarak düşürülür.",
-			"chat.agentHost.otel.otlpEndpoint": "Dışarı aktarıcı türü `otlp-http` veya `otlp-grpc` olduğunda OTLP uç nokta URL'si. `OTEL_EXPORTER_OTLP_ENDPOINT` değerini aracı ana bilgisayarı işlemi içinde ayarlar.",
-			"chat.agentHost.otel.outfile": "Dışarı aktarıcı türü `file` olduğunda yayılma JSON satırları için çıkış yolu. `COPILOT_OTEL_FILE_EXPORTER_PATH` ayarlar.",
+			"chat.agentHost.otel.captureContent": "When enabled, includes prompt and response content in OTel span attributes. Configurable in user settings only. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Privacy-sensitive: do not enable in environments that ship spans to shared sinks.",
+			"chat.agentHost.otel.dbSpanExporter.enabled": "When enabled, the agent host persists every emitted OTel span to a local SQLite database. Configurable in user settings only. Spans can be inspected via the `Export Agent Host Traces Database` command. Compatible with external exporters: spans are written to SQLite *and* forwarded to the user-configured sink.",
+			"chat.agentHost.otel.enabled": "When enabled, the agent host emits OpenTelemetry traces from the Copilot SDK. Configurable in user settings only. Requires `#chat.agentHost.enabled#`. Either configure `#chat.agentHost.otel.otlpEndpoint#` to ship traces to an external collector or enable `#chat.agentHost.otel.dbSpanExporter.enabled#` to capture them locally.",
+			"chat.agentHost.otel.exporterType": "Exporter backend used by the Copilot SDK when `#chat.agentHost.otel.enabled#` is on. Configurable in user settings only. `otlp-grpc` is downgraded to `otlp-http` transparently in the CLI runtime.",
+			"chat.agentHost.otel.otlpEndpoint": "OTLP endpoint URL when exporter type is `otlp-http` or `otlp-grpc`. Configurable in user settings only. Sets `OTEL_EXPORTER_OTLP_ENDPOINT` inside the agent host process.",
+			"chat.agentHost.otel.outfile": "Output path for span JSON lines when exporter type is `file`. Configurable in user settings only. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
 			"chatAgentHostStarterConfigurationTitle": "Sohbet Aracı Ana Makinesi Başlatıcısı"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2238,19 +2267,29 @@
 		},
 		"vs/platform/agentHost/common/claudeModelConfig": {
 			"claude.modelThinkingLevel.description": "Claude'un ne kadar akıl yürütme çabası kullandığını denetler.",
-			"claude.modelThinkingLevel.high": "Yüksek",
-			"claude.modelThinkingLevel.low": "Düşük",
-			"claude.modelThinkingLevel.max": "Mak",
-			"claude.modelThinkingLevel.medium": "Orta",
-			"claude.modelThinkingLevel.title": "Düşünme Düzeyi",
-			"claude.modelThinkingLevel.xhigh": "Çok Yüksek"
+			"claude.modelThinkingLevel.title": "Düşünme Düzeyi"
+		},
+		"vs/platform/agentHost/common/reasoningEffort": {
+			"reasoningEffort.high": "High",
+			"reasoningEffort.highDescription": "Greater reasoning depth but slower",
+			"reasoningEffort.low": "Low",
+			"reasoningEffort.lowDescription": "Faster responses with less reasoning",
+			"reasoningEffort.max": "Max",
+			"reasoningEffort.maxDescription": "Absolute maximum capability with no constraints",
+			"reasoningEffort.medium": "Medium",
+			"reasoningEffort.mediumDescription": "Balanced reasoning and speed",
+			"reasoningEffort.minimal": "Minimal",
+			"reasoningEffort.minimalDescription": "Minimal reasoning for fastest responses",
+			"reasoningEffort.none": "None",
+			"reasoningEffort.noneDescription": "No reasoning applied",
+			"reasoningEffort.xhigh": "Extra High",
+			"reasoningEffort.xhighDescription": "Highest reasoning depth but slowest"
 		},
 		"vs/platform/agentHost/common/sandboxConfigSchema": {
 			"agentHost.config.sandbox.advancedRuntime.title": "Gelişmiş Korumalı Alan Çalışma Zamanı",
 			"agentHost.config.sandbox.allowUnsandboxedCommands.title": "Korumalı Alan Dışındaki Komutlara İzin Ver",
 			"agentHost.config.sandbox.allowedDomains.item.title": "Etki Alanı",
 			"agentHost.config.sandbox.allowedDomains.title": "Ağ Etki Alanlarına İzin Verildi",
-			"agentHost.config.sandbox.autoApproveUnsandboxedCommands.title": "Korumalı Alan Dışı Komutları Otomatik Olarak Onayla",
 			"agentHost.config.sandbox.deniedDomains.item.title": "Etki Alanı",
 			"agentHost.config.sandbox.deniedDomains.title": "Ağ Etki Alanları Reddedildi",
 			"agentHost.config.sandbox.enabled.title": "Korumalı Alan Etkin",
@@ -2277,7 +2316,15 @@
 			"agentHost.changeset.commit.noChanges": "İşlenecek kaydedilmemiş değişiklik yok."
 		},
 		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
-			"agentHost.changeset.commit": "İşle"
+			"agentHost.changeset.commit": "Commit Changes"
+		},
+		"vs/platform/agentHost/node/agentHostDiscardChangesOperationHandler": {
+			"agentHost.changeset.discardChanges.cancelled": "Discard changes operation was cancelled.",
+			"agentHost.changeset.discardChanges.discarded": "Discarded changes to `{0}`."
+		},
+		"vs/platform/agentHost/node/agentHostDiscardChangesOperationProvider": {
+			"agentHost.changeset.discardChanges": "Discard Changes",
+			"agentHost.changeset.discardChanges.confirmation": "Are you sure you want to discard the changes in '{0}'? This action cannot be undone."
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "Aracı Ana Bilgisayarı"
@@ -2309,18 +2356,16 @@
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "Onaylar",
-			"claude.sessionConfig.permissionMode.acceptEdits": "Düzenlemeleri otomatik olarak onayla",
-			"claude.sessionConfig.permissionMode.acceptEditsDescription": "Dosya düzenlemelerini otomatik onayla; kabuk ve diğer araçlar için istem göster.",
-			"claude.sessionConfig.permissionMode.auto": "Otomatik",
-			"claude.sessionConfig.permissionMode.autoDescription": "Model sınıflandırıcısının her çağrıda onayla ile istem göster arasında seçim yapmasına izin verin.",
-			"claude.sessionConfig.permissionMode.bypassPermissions": "Onayları Atla",
-			"claude.sessionConfig.permissionMode.bypassPermissionsDescription": "Her araç çağrısını otomatik olarak onayla.",
-			"claude.sessionConfig.permissionMode.default": "Her Seferinde Sor",
-			"claude.sessionConfig.permissionMode.defaultDescription": "Her araç çağrısı için sor.",
-			"claude.sessionConfig.permissionMode.dontAsk": "Sorma",
-			"claude.sessionConfig.permissionMode.dontAskDescription": "Her araç çağrısını sormadan otomatik olarak onayla.",
-			"claude.sessionConfig.permissionMode.plan": "Yalnızca Planla (Salt Okunur)",
-			"claude.sessionConfig.permissionMode.planDescription": "Salt okunur araştırma modu; araç çağrısı yürütülmedi.",
+			"claude.sessionConfig.permissionMode.acceptEdits": "Edit Automatically",
+			"claude.sessionConfig.permissionMode.acceptEditsDescription": "Claude edits files without asking, and asks before using other tools.",
+			"claude.sessionConfig.permissionMode.auto": "Auto Mode",
+			"claude.sessionConfig.permissionMode.autoDescription": "Claude decides whether to ask for each tool operation.",
+			"claude.sessionConfig.permissionMode.bypassPermissions": "Bypass Permissions",
+			"claude.sessionConfig.permissionMode.bypassPermissionsDescription": "Claude runs all tools without asking.",
+			"claude.sessionConfig.permissionMode.default": "Ask Before Edits",
+			"claude.sessionConfig.permissionMode.defaultDescription": "Claude asks before editing files.",
+			"claude.sessionConfig.permissionMode.plan": "Plan Mode",
+			"claude.sessionConfig.permissionMode.planDescription": "Claude creates a plan before making changes.",
 			"claude.sessionConfig.permissionModeDescription": "Claude araç onaylarını nasıl işler.",
 			"claudeAgent.description": "Anthropic Claude Aracısı yazılım geliştirme seti tarafından desteklenen Claude aracısı",
 			"claudeAgent.displayName": "Claude"
@@ -2398,10 +2443,6 @@
 		},
 		"vs/platform/agentHost/node/codex/codexAgent": {
 			"codex.modelThinkingLevel.description": "Codex'in ne kadar akıl yürütme çabası kullandığını denetler.",
-			"codex.modelThinkingLevel.high": "Yüksek",
-			"codex.modelThinkingLevel.low": "Düşük",
-			"codex.modelThinkingLevel.medium": "Orta",
-			"codex.modelThinkingLevel.minimal": "Minimal",
 			"codex.modelThinkingLevel.title": "Düşünme Düzeyi",
 			"codex.sessionConfig.additionalDirectories": "Ek Yazılabilir Dizinler",
 			"codex.sessionConfig.additionalDirectories.item": "Dizin",
@@ -2417,13 +2458,23 @@
 			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Daha fazla komut kategorisi için önce sorun. Böylece eylemleri daha yakından gözden geçirebilirsiniz.",
 			"codex.sessionConfig.approvalPolicyDescription": "Codex'in araç çağrıları için onay isteme yöntemi.",
 			"codex.sessionConfig.modelReasoningEffort": "Mantık Yürütme Denemesi",
-			"codex.sessionConfig.modelReasoningEffort.high": "Yüksek",
-			"codex.sessionConfig.modelReasoningEffort.low": "Düşük",
-			"codex.sessionConfig.modelReasoningEffort.medium": "Orta",
-			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimal",
 			"codex.sessionConfig.modelReasoningEffortDescription": "Codex'in ne kadar akıl yürütme çabası kullandığını denetler.",
 			"codex.sessionConfig.networkAccessEnabled": "Ağ",
 			"codex.sessionConfig.networkAccessEnabledDescription": "Korumalı araç çağrılarının giden ağ istekleri yapmasına izin verin. Yalnızca Korumalı Alan Çalışma Alanına Yazma olduğunda geçerlidir.",
+			"codex.sessionConfig.personality": "Personality",
+			"codex.sessionConfig.personality.friendly": "Friendly",
+			"codex.sessionConfig.personality.friendlyDescription": "Warmer, more conversational tone.",
+			"codex.sessionConfig.personality.none": "Default",
+			"codex.sessionConfig.personality.noneDescription": "Use Codex's built-in default tone.",
+			"codex.sessionConfig.personality.pragmatic": "Pragmatic",
+			"codex.sessionConfig.personality.pragmaticDescription": "Terse, no-nonsense tone focused on actions.",
+			"codex.sessionConfig.personalityDescription": "Tone Codex uses when communicating.",
+			"codex.sessionConfig.reasoningSummary": "Reasoning Summary",
+			"codex.sessionConfig.reasoningSummary.auto": "Auto",
+			"codex.sessionConfig.reasoningSummary.concise": "Concise",
+			"codex.sessionConfig.reasoningSummary.detailed": "Detailed",
+			"codex.sessionConfig.reasoningSummary.none": "None",
+			"codex.sessionConfig.reasoningSummaryDescription": "How Codex summarizes its reasoning in the response stream.",
 			"codex.sessionConfig.sandboxMode": "Korumalı Alan",
 			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Tam erişim (tehlikeli)",
 			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Araç çağrılarının disk ve ağ erişimi üzerinde hiçbir kısıtlama yoktur.",
@@ -2455,11 +2506,7 @@
 			"copilot.modelContextTier.longerSessionsNoCompaction": "Longer sessions without compaction",
 			"copilot.modelContextTier.title": "Context Size",
 			"copilot.modelThinkingLevel.description": "Modelin ne kadar akıl yürütme çabası harcadığını kontrol eder.",
-			"copilot.modelThinkingLevel.high": "Yüksek",
-			"copilot.modelThinkingLevel.low": "Düşük",
-			"copilot.modelThinkingLevel.medium": "Orta",
 			"copilot.modelThinkingLevel.title": "Düşünme Düzeyi",
-			"copilot.modelThinkingLevel.xhigh": "Çok Yüksek",
 			"copilotAgent.pluginParseError": "Eklenti ayrıştırılırken hata oluştu.",
 			"copilotAgent.worktreeCreated": "{0} dalı için yalıtılmış iş ağacı oluşturuldu"
 		},
@@ -2480,13 +2527,18 @@
 			"agentHost.unsandboxedCommandConfirmation.generic": "Bu komutun korumalı alanın dışında çalışması gerekiyor.",
 			"agentHost.unsandboxedCommandConfirmation.reason": "Korumalı alandan çıkma nedeni: {0}",
 			"agentHost.unsandboxedCommandConfirmation.title.blockedDomains": "{0} Öğesine Erişmek için Komut Korumalı Alanın Dışında Çalıştırılsın mı?",
-			"agentHost.unsandboxedCommandConfirmation.title.generic": "Komut Korumalı Alanın Dışında Çalıştırılsın mı?"
+			"agentHost.unsandboxedCommandConfirmation.title.generic": "Komut Korumalı Alanın Dışında Çalıştırılsın mı?",
+			"copilotAgent.compactionCompleted": "Compaction completed",
+			"copilotSlashCommand.unsupportedRuntimeResult": "The /{0} command returned an unsupported result."
 		},
 		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
 			"copilotSlashCommand.compact.description": "Konuşma geçmişini sıkıştırarak bağlamı boşalt",
+			"copilotSlashCommand.env.description": "Show loaded environment details",
 			"copilotSlashCommand.plan.description": "Kodlamadan önce bir uygulama planı oluşturun",
 			"copilotSlashCommand.research.description": "Arama ve web kaynaklarını kullanarak bir konuda detaylı araştırma yapın",
-			"copilotSlashCommand.rubberDuck.description": "Mevcut yaklaşımın bağımsız bir incelemesini alın"
+			"copilotSlashCommand.review.description": "Run code review agent to analyze changes",
+			"copilotSlashCommand.rubberDuck.description": "Mevcut yaklaşımın bağımsız bir incelemesini alın",
+			"copilotSlashCommand.securityReview.description": "Analyze staged and unstaged changes for security vulnerabilities"
 		},
 		"vs/platform/agentHost/node/copilot/copilotSystemNotification": {
 			"agentHost.copilot.systemNotification.agentCompleted": "Arka plan aracısı tamamlandı",
@@ -2499,7 +2551,7 @@
 			"copilot.permission.default.title": "Araç çağrısına izin verilsin mi?",
 			"copilot.permission.mcp.defaultTool": "MCP Aracı",
 			"copilot.permission.mcp.title": "{0}'den araca izin verilsin mi?",
-			"copilot.permission.read.title": "Dosya okunsun mu?",
+			"copilot.permission.read.title": "Allow reading file outside of workspace?",
 			"copilot.permission.shell.title": "Terminal içinde çalıştırılsın mı?",
 			"copilot.permission.url.message": "Web içeriğinin getirilmesine izin verilsin mi?",
 			"copilot.permission.url.title": "URL getirilsin mi?",
@@ -2561,6 +2613,7 @@
 			"toolInvoke.webFetchGeneric": "URL getiriliyor",
 			"toolInvoke.writeShell": "Kabuğa giriş gönderiliyor",
 			"toolInvoke.writeShellCmd": "Kabuğa {0} gönderiliyor",
+			"toolMarkdown.taskComplete": "**Task completed:** {0}",
 			"toolName.applyPatch": "Yama Uygula",
 			"toolName.askUser": "Kullanıcıya Sor",
 			"toolName.codeReview": "Kod İncelemesi",
@@ -2652,7 +2705,8 @@
 			"browser.contextMenu.reload": "Yeniden yükle"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
-			"config.policy.duplicate": "'{0}' kaydedilemiyor. İlişkili ilke {1}, zaten {2} ile kaydedilmiş.",
+			"config.policy.bothPolicyAndReference": "Cannot register '{0}'. A setting must not declare both 'policy' and 'policyReference'.",
+			"config.policy.duplicate": "Cannot register '{0}'. The associated policy {1} is already registered with {2}. To attach another setting to the same policy, use 'policyReference'.",
 			"config.property.duplicate": "'{0}' kaydedilemiyor. Bu özellik zaten kayıtlı.",
 			"config.property.empty": "Boş bir özellik kaydedilemez",
 			"config.property.languageDefault": "'{0}' kaydedilemiyor. Bu, dile özgü düzenleyici ayarlarını açıklayan '\\\\[.* \\\\]$' özellik deseniyle eşleşiyor. 'configurationDefaults' katkısını kullanın.",
@@ -2788,7 +2842,6 @@
 		"vs/platform/extensionManagement/common/abstractExtensionManagementService": {
 			"MarketPlaceDisabled": "Market etkin değil",
 			"incompatible platform": "'{0}' uzantısı {1} tarayıcısında {2} platformu için kullanılamıyor.",
-			"incompatibleAPI": "'{0}' uzantısı yüklenemiyor. {1}",
 			"learn why": "Nedenini Öğrenin",
 			"malicious extension": "Sorunlu olduğu bildirildiğinden '{0}' uzantısı yüklenemiyor.",
 			"multipleDependentsError": "'{0}' uzantısı kaldırılamıyor. '{1}' ve '{2}' uzantıları ve başka uzantılar bu uzantıya bağımlı.",
@@ -2890,8 +2943,6 @@
 			"invalidManifest": "VSIX geçersiz: package.json bir JSON dosyası değil."
 		},
 		"vs/platform/extensions/common/extensionValidator": {
-			"apiProposalMismatch1": "Bu uzantı, geçerli VS Code sürümüyle uyumlu olmayan '{0}' API teklifini kullanıyor.",
-			"apiProposalMismatch2": "Bu uzantı, geçerli VS Code sürümüyle uyumlu olmayan {0} ve '{1}' API tekliflerini kullanıyor.",
 			"extensionDescription.activationEvents1": "`{0}` özelliği atlanamaz veya `string[]` türünde olmalıdır",
 			"extensionDescription.activationEvents2": "Uzantıda `{1}` veya `{2}` özelliği yoksa `{0}` özelliği atlanmalıdır.",
 			"extensionDescription.browser1": "`{0}` özelliği atlanabilir veya `string` türünde olması gerekir",
@@ -3787,6 +3838,34 @@
 			"workspaceOpenedDetail": "Çalışma alanı başka bir pencerede zaten açık. Lütfen önce bu pencereyi kapatın ve yeniden deneyin.",
 			"workspaceOpenedMessage": "'{0}' çalışma alanı kaydedilemiyor"
 		},
+		"vs/server/node/remoteExtensionHostAgentCli": {
+			"remotecli": "Uzak CLI"
+		},
+		"vs/server/node/serverEnvironmentService": {
+			"acceptLicenseTerms": "Ayarlanırsa, kullanıcı sunucu lisansı koşullarını kabul etmiş olur ve sunucu bir kullanıcı istemi olmadan başlatılır.",
+			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
+			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
+			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
+			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
+			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
+			"agent-host-port": "The port the agent host WebSocket server should listen on.",
+			"connection-token": "Tüm isteklere dahil olması gereken gizli dizi.",
+			"connection-token-file": "Bağlantı belirtecini içeren bir dosyanın yolu.",
+			"default-folder": "Tarayıcı URL'sinde herhangi bir giriş belirtilmediğinde açılacak çalışma alanı klasörü. Geçerli çalışma dizinine karşı çözümlenen göreli veya mutlak bir yol.",
+			"default-workspace": "Tarayıcı URL'sinde herhangi bir giriş belirtilmediğinde açılacak çalışma alanı. Geçerli çalışma dizinine karşı çözümlenen göreli veya mutlak bir yol.",
+			"host": "Sunucunun dinlemesi gereken ana bilgisayar adı veya IP adresi. Ayarlanmamışsa, varsayılan olarak 'localhost' değerine ayarlanır.",
+			"port": "Sunucunun dinlemesi gereken bağlantı noktası. 0 geçirilirse rastgele bir serbest bağlantı noktası seçilir. Sayı-sayı biçiminde bir aralık geçirilirse, aralıktan (bitiş dahil) boş bir bağlantı noktası seçilir.",
+			"reconnection-grace-time": "Yeniden bağlanma süresi aralığını saniye cinsinden geçersiz kılın. Varsayılan değer 10800'dür (3 saat).",
+			"server-base-path": "Web kullanıcı arayüzünün ve kod sunucusunun sağlandığı yol. Varsayılan olarak '/'.`",
+			"serverDataDir": "Sunucu verilerinin tutulduğu dizini belirtir.",
+			"socket-path": "Sunucunun dinlemesi için bir yuva dosyasının yolu.",
+			"start-server": "Uzantılar yüklenirken veya kaldırılırken sunucuyu başlat. 'install-extension', 'install-builtin-extension' ve 'uninstall-extension' ile birlikte kullanılacak.",
+			"telemetry-level": "İlk telemetri düzeyini ayarlar. Geçerli düzeyler: 'off', 'crash', 'error' ve 'all'. Belirtilmezse, sunucu bir istemci bağlanana kadar telemetri gönderir, ardından istemci telemetri ayarını kullanır. Bunu 'kapalı' olarak ayarlamak şuna eşdeğerdir: --disable-telemetry",
+			"without-connection-token": "Bağlantı belirteci olmadan çalıştır. Bunu yalnızca bağlantı başka bir şekilde güvenli hale getirilmişse kullanın."
+		},
+		"vs/server/node/serverServices": {
+			"remoteExtensionLog": "Sunucu"
+		},
 		"vs/sessions/browser/accountTitleBarState": {
 			"accountSignedInAria": "{1} ile {0} olarak oturum açıldı",
 			"accountSignedInAriaNameOnly": "{0} olarak oturum açıldı",
@@ -3808,17 +3887,19 @@
 		},
 		"vs/sessions/browser/layoutActions": {
 			"agentPanelCloseIcon": "Paneli kapatma simgesi.",
+			"agentSecondarySidebarToggleClosedIcon": "Icon for the sessions secondary sidebar when closed.",
+			"agentSecondarySidebarToggleOpenIcon": "Icon for the sessions secondary sidebar when open.",
 			"agentSidebarToggleClosedIcon": "Kapalıyken oturumlar kenar çubuğunun simgesi.",
 			"agentSidebarToggleOpenIcon": "Açıkken oturumlar kenar çubuğunun simgesi.",
-			"openAndCloseSecondarySidebar": "İkincil Kenar Çubuğunu Aç veya Göster ve Kapat veya Gizle",
+			"closePanel": "Hide Panel",
+			"openAndCloseSidePanel": "Open/Show and Close/Hide the Side Panel (editor area and auxiliary bar)",
 			"openAndCloseSidebar": "Kenar Çubuğunu Aç veya Göster ve Kapat veya Gizle",
-			"secondarySidebarHidden": "İkincil Kenar Çubuğu gizlendi",
-			"secondarySidebarVisible": "İkincil Kenar Çubuğu gösterildi",
+			"sidePanelHidden": "Side Panel hidden",
+			"sidePanelVisible": "Side Panel shown",
 			"sidebarHidden": "Birincil Kenar Çubuğu gizlendi",
 			"sidebarVisible": "Birincil Kenar Çubuğu gösterildi",
-			"togglePanel": "Panel Görünürlüğünü Aç/Kapat",
-			"toggleSecondarySidebar": "İkincil Kenar Çubuğunu Görünürlüğünü Aç/Kapat",
-			"toggleSidebar": "Birincil Kenar Çubuğu Görünürlüğünü Aç/Kapat",
+			"toggleSecondarySidebar": "Toggle Side Panel",
+			"toggleSidebar": "Toggle Side Bar",
 			"toggleWindowAlwaysOnTop": "Her Zaman Üstte Tut Ayarını Aç/Kapat"
 		},
 		"vs/sessions/browser/parts/auxiliaryBarPart": {
@@ -3828,7 +3909,7 @@
 			"chatTabsAriaLabel": "Sohbetler",
 			"closeChat": "Kapat",
 			"renameChat": "Yeniden adlandır",
-			"renameChat.prompt": "Sohbeti Yeniden Adlandır"
+			"renameChat.aria": "Rename chat"
 		},
 		"vs/sessions/browser/parts/menubar.contribution": {
 			"mEdit": "&&Düzenle",
@@ -3942,10 +4023,13 @@
 			"activeSessionWorkspaceIsVirtual": "Etkin oturumun çalışma alanının sanal olup olmadığı",
 			"activeSessions": "Etkin oturumlar panelinin tanımlayıcısı",
 			"chatSessionProviderId": "Bağlam menüsü katmanındaki bir oturumun sağlayıcı kimliği",
+			"chatSessionSupportsDelete": "Whether a session in context menu overlays can be deleted",
+			"chatSessionSupportsRename": "Whether a session in context menu overlays can be renamed",
 			"chatSessionType": "Bağlam menüsü katmanlarındaki bir oturumun oturum türü",
 			"editorMaximized": "Düzenleyici alanının ekranı kaplayıp kaplamadığını belirtir",
 			"isActiveSessionArchived": "Etkin oturumun arşivlenip arşivlenmediğini (tamamlandı olarak işaretlenip işaretlenmediğini) belirtir",
 			"multipleSessionsVisible": "Oturumlar bölümünün kılavuzunda birden fazla oturumun görünür olup olmadığını belirtir",
+			"sessionHasChanges": "Whether the session view's session has pending changes (insertions or deletions)",
 			"sessionIsArchived": "Oturumun arşivlenip arşivlenmediği (tamamlandı olarak işaretlenip işaretlenmediğini)",
 			"sessionIsCreated": "Oturum görünümündeki oturumun oluşturulup oluşturulmadığını belirtir (sohbet görünümü gösterilir, yeni oturum görünümü gösterilmez)",
 			"sessionIsMaximized": "Oturum görünümünün şu anda oturumlar bölümünün kılavuzunda büyütülmüş olup olmadığını belirtir",
@@ -4038,9 +4122,9 @@
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedback.contribution": {
 			"agentFeedback.submitFeedbackCount": "Geri Bildirim Gönder ({0})"
 		},
-		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachment": {
-			"agentFeedback.many": "{0} açıklama",
-			"agentFeedback.one": "1 açıklama"
+		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachmentEntry": {
+			"agentFeedback.many": "{0} comments",
+			"agentFeedback.one": "1 comment"
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachmentWidget": {
 			"chat.agentFeedback": "Ekli aracı geri bildirimi, {0}",
@@ -4074,7 +4158,7 @@
 			"addToComment": "Yoruma Ekle",
 			"agentReviewComment": "Agent Review",
 			"collapse": "Daralt",
-			"convertComment": "Aracı Geri Bildirimine Dönüştür",
+			"convertComment": "Accept",
 			"editComment": "Düzenle",
 			"expand": "Genişlet",
 			"lineNumber": "Satır {0}",
@@ -4092,6 +4176,10 @@
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackOverviewRulerContribution": {
 			"editorOverviewRuler.agentFeedbackForeground": "Aracı geri bildirimi için düzenleyici genel bakış cetveli dekorasyon rengi. Bu rengin donuk olması gerekir."
+		},
+		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackReviewCommands": {
+			"agentFeedbackReview.agentReview": "Agent Review",
+			"agentFeedbackReview.prReview": "PR Review"
 		},
 		"vs/sessions/contrib/agentHost/browser/agentHostSessionBranchActions": {
 			"copySessionBranchName": "Oturum Dalı Adını Kopyala"
@@ -4198,12 +4286,10 @@
 			"miChanges": "Değişi&&klikler",
 			"sessions.changes.openSingleFileDiff": "Değişiklikler görünümünde bir dosyaya tıklandığında, çoklu dosya karşılaştırma düzenleyicisi yerine tek dosya karşılaştırma düzenleyicisinin açılıp açılmayacağını denetler."
 		},
-		"vs/sessions/contrib/changes/browser/changesTitleBarWidget": {
-			"agentSecondarySidebarToggleClosedIcon": "Kapalıyken oturumlar ikincil kenar çubuğunun simgesi.",
-			"agentSecondarySidebarToggleOpenIcon": "Açıkken oturumlar ikincil kenar çubuğunun simgesi.",
-			"hideChanges": "Değişiklikleri Gizle",
-			"showChanges": "Değişiklikleri Göster",
-			"toggleSecondarySidebarTooltip": "İkincil Kenar Çubuğunu Görünürlüğünü Aç/Kapat"
+		"vs/sessions/contrib/changes/browser/changesActions": {
+			"agentSessions.viewChanges": "View All Changes",
+			"agentSessions.viewChanges.tooltip": "View All Changes",
+			"sessions.changes.title": "Session Changes"
 		},
 		"vs/sessions/contrib/changes/browser/changesView": {
 			"changes": "Değişiklikler",
@@ -4247,6 +4333,7 @@
 			"skillUI.commit": "Değişiklikler araç çubuğundaki İşle düğmesi tarafından kullanılır",
 			"skillUI.createDraftPr": "Değişiklikler araç çubuğundaki Çekme İsteği Taslağı Oluştur düğmesi tarafından kullanılır",
 			"skillUI.createPr": "Değişiklikler araç çubuğundaki Çekme İsteği Oluştur düğmesi tarafından kullanılır",
+			"skillUI.fixCi": "Used by the Fix Checks button in the Changes toolbar",
 			"skillUI.generateRunCommands": "Başlık çubuğundaki Çalıştır düğmesi tarafından kullanılır",
 			"skillUI.mergeChanges": "Değişiklikler araç çubuğundaki Birleştir düğmesi tarafından kullanılır",
 			"skillUI.updatePr": "Değişiklikler araç çubuğundaki Çekme İsteğini Güncelleştir düğmesi tarafından kullanılır"
@@ -4288,6 +4375,9 @@
 			"chatInput.accessibilityHelp": "Sohbet girişi. İstek göndermek için Enter tuşuna basın. Sohbet Erişilebilirliği Yardımı için {0} kullanın.",
 			"chatInput.accessibilityHelpNoKb": "Sohbet girişi. İstek göndermek için Enter tuşuna basın. Daha fazla bilgi için Sohbet Erişilebilirlik Yardımı komutunu kullanın.",
 			"loading": "Yükleniyor...",
+			"newChatInput.status.otel.learnMore": "Learn More",
+			"newChatInput.status.otel.manage": "Manage",
+			"newChatInput.status.otel.title": "Monitoring with OpenTelemetry enabled",
 			"send": "Gönder",
 			"sendWithBackgroundHint": "Gönder (arka planda başlatmak için Alt tuşuna basıp tıklayın)",
 			"sessionsChatInput.placeholder.describeTheOutcome": "İstediğiniz sonucu açıklayın",
@@ -4308,9 +4398,9 @@
 		},
 		"vs/sessions/contrib/chat/browser/newChatInSessionWidget": {
 			"newChatInSessionPlaceholder": "Bu oturumda bir takip sorusu sorun ya da yeni bir konu başlatın...",
-			"subSessionTip.ariaLabel": "Alt oturum ipucu",
+			"subSessionTip.ariaLabel": "New chat tip",
 			"subSessionTip.dismiss": "İpucunu kapat",
-			"subSessionTip.message": "Bu bir alt oturum, aynı çalışma alanında yeni bir sohbet. Bunu sorular sormak, görevleri çalıştırmak veya fikirleri yeni bir bağlamla keşfetmek için kullanın."
+			"subSessionTip.message": "Start a parallel conversation to build on all the changes made in this session."
 		},
 		"vs/sessions/contrib/chat/browser/newChatWidget": {
 			"newSessionChooseWorkspace": "Şunu seçerek başlayın:",
@@ -4409,10 +4499,13 @@
 			"sessionsChat.navigatePreviousSession": "Listede bir önceki oturuma gidin{0}.",
 			"sessionsChat.overview": "Aracılar penceresindesiniz. Aracılar penceresi, yapay zeka aracılarıyla çalışmak için ayrılmış bir çalışma alanıdır. Sohbet arabirimi, aracı tarafından oluşturulan değişiklikleri gözden geçirmek için değişiklik görünümü, dosya gezgini ve özelleştirme seçenekleri sunar.",
 			"sessionsChat.sessionsView": "Sohbet Oturumları görünümüne{0} odaklanın.",
+			"sessionsChat.toggleSidePanel": "Toggle the side panel (the editor area together with the auxiliary bar) open or closed{0}.",
+			"sessionsChat.viewAllChanges": "The session header shows the diff stats (lines added and removed) as a button. Activate it to open the multi-file diff editor for all of the session's changes{0}.",
 			"sessionsChat.workspace": "Shift+Tab tuşlarına basarak çalışma alanı seçiciye gidin ve oturumunuz için bir çalışma alanı seçin."
 		},
 		"vs/sessions/contrib/chat/browser/sessionTypePicker": {
 			"sessionTypePicker.ariaLabel": "Oturum Türü",
+			"sessionTypePicker.itemAriaLabel": "{0}, {1}",
 			"sessionTypePicker.triggerAriaLabel": "Oturum Türünü Seç, {0}"
 		},
 		"vs/sessions/contrib/chat/browser/sessionWorkspacePicker": {
@@ -4615,15 +4708,9 @@
 			"lastTurnChangesDescription": "Yalnızca son dönüşte yapılan değişiklikleri göster"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionConfigPicker": {
-			"agentHostAutoApprove.autopilot.warning.detail": "Otomatik Pilot, tüm araç çağrılarını otomatik olarak onaylayacak ve görev tamamlanana kadar kendi kendine çalışmaya devam edecektir. Bu terminal komutlarını, dosya düzenlemelerini ve dış araç çağrılarını içerir. Aracı, onayınızı istemeden sizin adınıza kararlar verecektir.\r\n\r\nAracıyı dilediğiniz zaman durdur düğmesine tıklayarak durdurabilirsiniz. Bu yalnızca geçerli oturum için uygulanır.",
-			"agentHostAutoApprove.autopilot.warning.title": "Autopilot etkinleştirilsin mi?",
-			"agentHostAutoApprove.bypass.warning.detail": "Onayları Atla, onay istemeden tüm araç çağrılarını otomatik olarak onaylar. Bu dosya düzenlemelerini, terminal komutlarını ve dış araç çağrılarını içerir.",
-			"agentHostAutoApprove.bypass.warning.title": "Onayları Atla etkinleştirilsin mi?",
-			"agentHostAutoApprove.warning.cancel": "İptal",
-			"agentHostAutoApprove.warning.confirm": "Etkinleştir",
-			"agentHostAutoApprove.warning.detailWithDefaultSetting": "{0}\r\n\r\nBunu yeni sohbet oturumları için başlangıç izin düzeyi yapmak isterseniz, [{1}](command:workbench.action.openSettings?%5B%22{1}%22%5D) ayarını değiştirin.",
 			"agentHostNewSessionApprovePicker": "Oturum Onayları",
 			"agentHostNewSessionModePicker": "Aracı Modu",
+			"agentHostNewSessionPermissionModePicker": "Approvals",
 			"agentHostRunningSessionConfigPicker": "Oturum Onayları",
 			"agentHostRunningSessionModePicker": "Aracı Modu",
 			"agentHostRunningSessionPermissionModePicker": "Onaylar",
@@ -4641,8 +4728,7 @@
 			"mobileAgentHostSessionConfig.repoSheet.branchSearchPlaceholder": "Dalları ara",
 			"mobileAgentHostSessionConfig.repoSheet.branchSection": "Temel Dal",
 			"mobileAgentHostSessionConfig.repoSheet.isolationSection": "Yalıtım",
-			"mobileAgentHostSessionConfig.repoSheet.title": "Çalışma ağacı",
-			"selected": "(Seçildi)"
+			"mobileAgentHostSessionConfig.repoSheet.title": "Çalışma ağacı"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSettings.contribution": {
 			"agentHostSettings.label": "Ana Bilgisayar Ayarları",
@@ -4671,8 +4757,12 @@
 			"agentSessionSettings.saveHint": "Aşağıdaki değerleri düzenleyin ve uygulamak için kaydedin. Bilinmeyen veya değiştirilemeyen özellikler yoksayılır."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/baseAgentHostSessionsProvider": {
-			"copilotCLI": "Copilot CLI",
+			"copilotCLI": "Copilot",
+			"deleteChat.confirm": "Are you sure you want to delete this chat?",
+			"deleteChat.delete": "Delete",
+			"deleteChat.detail": "This action cannot be undone.",
 			"new session": "Yeni Oturum",
+			"newChatTab": "New Chat",
 			"noAgents": "Aracı konağı henüz herhangi bir aracı tanıtmadı.",
 			"notConnectedSend": "İstek gönderilemiyor: aracı konağına bağlı değil."
 		},
@@ -4715,7 +4805,6 @@
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessionsActions": {
 			"branchPicker": "Dal",
 			"claudePermissionModePicker": "İzin Modu",
-			"deleteSession": "Sil...",
 			"isolationPicker": "Yalıtım Modu",
 			"modePicker": "Mod",
 			"permissionPicker": "İzinler"
@@ -4738,10 +4827,6 @@
 			"deleteChat.confirm": "Bu sohbeti silmek istediğinizden emin misiniz?",
 			"deleteChat.delete": "Sil",
 			"deleteChat.detail": "Bu eylem geri alınamaz.",
-			"deleteSession.confirm": "Bu oturumu silmek istediğinizden emin misiniz?",
-			"deleteSession.delete": "Sil",
-			"deleteSession.detail": "Bu eylem geri alınamaz.",
-			"deleteSession.detailMultiple": "Bu işlem, bu oturumdaki tüm {0} sohbeti siler. Bu eylem geri alınamaz.",
 			"new chat": "Yeni Sohbet",
 			"new session": "Yeni Oturum",
 			"repositories": "Depolar",
@@ -4755,12 +4840,6 @@
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/mobilePermissionPicker": {
 			"permissionPicker.title": "Onaylar",
-			"permissions.autoApprove": "Onayları Atla",
-			"permissions.autoApprove.subtext": "Tüm araç çağrıları otomatik olarak onaylanır",
-			"permissions.autopilot": "Otomatik Pilot (Önizleme)",
-			"permissions.autopilot.subtext": "Başlangıçtan bitişe kadar kendi kendine yineleme yapar",
-			"permissions.default": "Varsayılan Onaylar",
-			"permissions.default.subtext": "Copilot yapılandırılan ayarlarınızı kullanıyor",
 			"permissions.learnMore": "İzinler hakkında daha fazla bilgi edinin"
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/modePicker": {
@@ -4772,14 +4851,11 @@
 			"permissionPicker.ariaLabel": "İzin Seçici",
 			"permissionPicker.triggerAriaLabel": "İzin Düzeyini Seçin, {0}",
 			"permissions.autoApprove": "Onayları Atla",
-			"permissions.autoApprove.label": "Onayları Atla",
 			"permissions.autoApprove.subtext": "Tüm araç çağrıları otomatik olarak onaylanır",
 			"permissions.autopilot": "Otomatik Pilot (Önizleme)",
 			"permissions.autopilot.description": "Tüm araç çağrılarını otomatik onayla ve görev tamamlanana kadar devam et. Otomatik Pilot maliyetleri artırabilir.",
-			"permissions.autopilot.label": "Otomatik Pilot (Önizleme)",
 			"permissions.autopilot.subtext": "Başlangıçtan bitişe kadar kendi kendine yineleme yapar",
 			"permissions.default": "Varsayılan Onaylar",
-			"permissions.default.label": "Varsayılan Onaylar",
 			"permissions.default.subtext": "Copilot yapılandırılan ayarlarınızı kullanıyor",
 			"permissions.learnMore": "İzinler hakkında daha fazla bilgi edinin"
 		},
@@ -4790,7 +4866,7 @@
 			"deleteChat.confirm": "Bu sohbeti silmek istediğinizden emin misiniz?",
 			"deleteChat.delete": "Sil",
 			"deleteChat.detail": "Bu eylem geri alınamaz.",
-			"localChatSessionsProvider": "Yerel Sohbet",
+			"localChatSessionsProvider": "Copilot Chat",
 			"localSession": "Yerel",
 			"newChat": "Yeni Sohbet",
 			"newSession": "Yeni Oturum"
@@ -4882,6 +4958,10 @@
 			"tunnelNoneFound": "Aracı konak desteği olan geliştirme tüneli bulunamadı. Başka bir makinede 'code tunnel' ile bir tünel başlatın.",
 			"tunnelPickPlaceholder": "Bağlanılacak bir geliştirme tüneli seçin",
 			"tunnelPickTitle": "Geliştirme Tüneli Üzerinden Bağlan",
+			"updateRemoteAgentHost": "Update Remote Agent Host Server...",
+			"updateRemoteAgentHost.none": "No remote agent hosts need updating.",
+			"updateRemoteAgentHost.noneUpgradable": "No remote agent hosts can be updated from here. Incompatible hosts must be updated manually, then reconnected.",
+			"updateRemoteAgentHost.pick": "Select a remote agent host to update",
 			"wslConnectFailed": "'{0}' WSL dağıtımı ile bağlantı kurulamadı: {1}",
 			"wslConnecting": "'{0}' WSL dağıtımına bağlanılıyor...",
 			"wslDistroDefault": "Varsayılan dağıtım",
@@ -5211,8 +5291,14 @@
 			"archiveSession": "Tamamlandı Olarak İşaretle",
 			"closeSession": "Oturumu Kapat",
 			"collapseAllGroups": "Tüm Grupları Daralt",
+			"deleteSession": "Delete...",
+			"deleteSession.confirm": "Are you sure you want to delete this session?",
+			"deleteSession.delete": "Delete",
+			"deleteSession.detail": "This action cannot be undone.",
+			"deleteSession.error": "Failed to delete the session: {0}",
+			"deleteSessions.confirm": "Are you sure you want to delete {0} sessions?",
+			"deleteSessions.error": "Failed to delete the sessions: {0}",
 			"doNotAskAgain": "Bir daha sorma",
-			"doNotAskAgain2": "Bir daha sorma",
 			"filter": "Filtrele",
 			"filterSessions": "Oturumları Filtrele",
 			"find": "Oturum Bul",
@@ -5238,9 +5324,6 @@
 			"showRecentSessions": "Son Oturumları Göster",
 			"sortByCreated": "Oluşturma tarihine göre sırala",
 			"sortByUpdated": "Güncelleştirme Tarihine Göre Sırala",
-			"unarchiveSection": "Tümünü Geri Yükle",
-			"unarchiveSectionSessions.confirm": "{0} sürümü geri yüklemek istediğinizden emin misiniz?",
-			"unarchiveSectionSessions.unarchive": "Tümünü Geri Yükle",
 			"unarchiveSession": "Geri Yükle",
 			"unpinSession": "Sabitlemeyi kaldır"
 		},
@@ -5307,34 +5390,6 @@
 		},
 		"vs/sessions/contrib/welcome/browser/welcome.contribution": {
 			"resetSessionsWelcome": "Aracıları Sıfırlamaya Hoş Geldiniz"
-		},
-		"vs/server/node/remoteExtensionHostAgentCli": {
-			"remotecli": "Uzak CLI"
-		},
-		"vs/server/node/serverEnvironmentService": {
-			"acceptLicenseTerms": "Ayarlanırsa, kullanıcı sunucu lisansı koşullarını kabul etmiş olur ve sunucu bir kullanıcı istemi olmadan başlatılır.",
-			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
-			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
-			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
-			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
-			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
-			"agent-host-port": "The port the agent host WebSocket server should listen on.",
-			"connection-token": "Tüm isteklere dahil olması gereken gizli dizi.",
-			"connection-token-file": "Bağlantı belirtecini içeren bir dosyanın yolu.",
-			"default-folder": "Tarayıcı URL'sinde herhangi bir giriş belirtilmediğinde açılacak çalışma alanı klasörü. Geçerli çalışma dizinine karşı çözümlenen göreli veya mutlak bir yol.",
-			"default-workspace": "Tarayıcı URL'sinde herhangi bir giriş belirtilmediğinde açılacak çalışma alanı. Geçerli çalışma dizinine karşı çözümlenen göreli veya mutlak bir yol.",
-			"host": "Sunucunun dinlemesi gereken ana bilgisayar adı veya IP adresi. Ayarlanmamışsa, varsayılan olarak 'localhost' değerine ayarlanır.",
-			"port": "Sunucunun dinlemesi gereken bağlantı noktası. 0 geçirilirse rastgele bir serbest bağlantı noktası seçilir. Sayı-sayı biçiminde bir aralık geçirilirse, aralıktan (bitiş dahil) boş bir bağlantı noktası seçilir.",
-			"reconnection-grace-time": "Yeniden bağlanma süresi aralığını saniye cinsinden geçersiz kılın. Varsayılan değer 10800'dür (3 saat).",
-			"server-base-path": "Web kullanıcı arayüzünün ve kod sunucusunun sağlandığı yol. Varsayılan olarak '/'.`",
-			"serverDataDir": "Sunucu verilerinin tutulduğu dizini belirtir.",
-			"socket-path": "Sunucunun dinlemesi için bir yuva dosyasının yolu.",
-			"start-server": "Uzantılar yüklenirken veya kaldırılırken sunucuyu başlat. 'install-extension', 'install-builtin-extension' ve 'uninstall-extension' ile birlikte kullanılacak.",
-			"telemetry-level": "İlk telemetri düzeyini ayarlar. Geçerli düzeyler: 'off', 'crash', 'error' ve 'all'. Belirtilmezse, sunucu bir istemci bağlanana kadar telemetri gönderir, ardından istemci telemetri ayarını kullanır. Bunu 'kapalı' olarak ayarlamak şuna eşdeğerdir: --disable-telemetry",
-			"without-connection-token": "Bağlantı belirteci olmadan çalıştır. Bunu yalnızca bağlantı başka bir şekilde güvenli hale getirilmişse kullanın."
-		},
-		"vs/server/node/serverServices": {
-			"remoteExtensionLog": "Sunucu"
 		},
 		"vs/code/electron-main/app": {
 			"cancel": "&&Hayır",
@@ -6975,6 +7030,7 @@
 			"menuBarVisibility": "Menü çubuğunun görünürlüğünü denetleyin. 'toggle' ayarı, menü çubuğunun gizlendiği ve Alt tuşuna bir kez basıldığında gösterileceği anlamına gelir. 'compact' ayarı menüyü kenar çubuğuna taşır.",
 			"menuBarVisibility.mac": "Menü çubuğunun görünürlüğünü denetleyin. 'toggle' ayarı, menü çubuğunun gizlendiği ve 'Uygulama Menüsüne Odaklan' komutu yürütüldüğünde gösterileceği anlamına gelir. 'compact' ayarı menüyü kenar çubuğuna taşır.",
 			"mergeWindow": "Yerel dosya geçmişindeki son girdinin eklenmekte olan girdiyle değiştirildiği aralığı saniye cinsinden yapılandırın. Bu, eklenen girdilerin toplam sayısını azaltmaya yardımcı olabilir (örneğin otomatik kaydetme etkinleştirildiğinde). Bu ayar yalnızca aynı kaynağa sahip girdilere uygulanır. Bu ayarı değiştirmenin mevcut yerel dosya geçmişi girdileri üzerinde hiçbir etkisi yoktur.",
+			"modernUI": "Controls whether the experimental Modern UI Update is enabled. When on, the side bars and bottom panel are shown as floating cards with rounded corners and gaps, and a set of refreshed workbench styles is applied, matching the Agents window design.",
 			"mouseBackForwardToNavigate": "'Geri Git' ve 'İleri Git' komutları için dört ve beş fare düğmesinin kullanımına olanak sağlar.",
 			"navigationControlEnabled": "Gezinti denetiminin özel başlık çubuğunda gösterilip gösterilmediğini denetler. Bu ayar yalnızca {0}, {1} olarak ayarlanmadığında geçerlidir.",
 			"navigationControlEnabledWeb": "Başlık çubuğundaki gezinti denetiminin gösterilip gösterilmediğini denetler.",
@@ -7462,6 +7518,7 @@
 			"revealUserDataFolder": "Kullanıcı Verileri Klasörünü Göster",
 			"showContentTracing": "İçerik İzlemeyi Göster",
 			"showGPUInfo": "GPU Bilgilerini Göster",
+			"startHeapTracing": "Start Heap Tracing",
 			"startTracing": "İzlemeyi Başlat",
 			"startTracing.ariaLabel": "Performans izleme kaydediliyor. Kaydı durdurmak için tıklayın.",
 			"startTracing.name": "Performans İzleme",
@@ -7789,6 +7846,7 @@
 			"verbosity.replEditor.description": "REPL düzenleyicisine odaklanıldığında REPL düzenleyicisi erişilebilirlik yardımı menüsüne nasıl erişileceği hakkında bilgi sağlayın.",
 			"verbosity.scm": "Girişe odaklanıldığında kaynak denetimi erişilebilirlik yardım menüsüne nasıl erişileceği hakkında bilgi sağlayın.",
 			"verbosity.sessionsChat": "Sohbet girişine odaklanıldığında Aracılar penceresi erişilebilirlik yardımı menüsüne nasıl erişileceği hakkında bilgi sağlayın.",
+			"verbosity.survey": "Provide information about how to navigate and interact with the survey editor pane.",
 			"verbosity.terminal.description": "Terminale odaklanıldığında terminal erişilebilirlik yardım menüsüne erişme hakkında bilgi sağla.",
 			"verbosity.terminalChatOutput.description": "Erişilebilir Görünümde sohbet terminali çıkışının nasıl açılacağı hakkında bilgi sağlayın.",
 			"verbosity.walkthrough": "Gidiş yolunun Erişilebilir Görünümde nasıl açılacağı hakkında bilgi sağlayın.",
@@ -7870,14 +7928,36 @@
 			"agents.voice.alwaysOnTop": "Keep the Voice Mode window always on top of other windows.",
 			"agents.voice.backendUrl": "Voice backend WebSocket URL. Leave empty to use the default hosted backend. Set to e.g. `ws://localhost:8000/api/v1/realtime/voice` to point at a backend running on your machine.",
 			"agents.voice.enabled": "Enable the Voice Mode panel in the chat view for voice-driven coding conversations.",
+			"agents.voice.showTranscript": "Show the voice transcript overlay in the chat input area while voice mode is active.",
 			"agents.voice.textToSpeech": "When enabled, the assistant reads responses aloud. When disabled, responses appear as text transcripts only.",
+			"agentsVoice.connecting": "Connecting...",
+			"agentsVoice.disconnect": "Disconnect Voice Mode",
+			"agentsVoice.pttStopInChat": "Voice Mode: Stop Recording",
+			"agentsVoice.simulateConnection": "Voice: Simulate Connection (Dev)",
+			"agentsVoice.startVoiceInChat": "Voice Mode",
 			"agentsVoiceConfigurationTitle": "Voice Mode",
 			"agentsVoicePushToTalk": "Voice Mode: Push to Talk",
 			"resetAgentsVoiceOnboarding": "Voice: Reset Onboarding",
 			"toggleAgentsVoiceWindow": "Voice Mode"
 		},
+		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceSessionsPicker": {
+			"voiceSessions.placeholder": "Select a session for voice input",
+			"voiceSessions.setTarget": "Set as voice target"
+		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidget": {
-			"agentsVoice.feedbackError": "Failed to submit"
+			"agentsVoice.clickMicToTalk": "Click mic to talk",
+			"agentsVoice.collapseSessions": "Collapse sessions",
+			"agentsVoice.configureKeybinding": "Configure keybinding",
+			"agentsVoice.disconnect": "Disconnect",
+			"agentsVoice.feedbackError": "Failed to submit",
+			"agentsVoice.holdToTalk": "Hold {0} to talk",
+			"agentsVoice.listening": "Listening",
+			"agentsVoice.minimize": "Minimize",
+			"agentsVoice.pushToTalk": "Push to talk",
+			"agentsVoice.pushToTalkKey": "Push to talk ({0})",
+			"agentsVoice.pushToTalkSpace": "Push to talk (Space)",
+			"agentsVoice.sendFeedback": "Send feedback",
+			"agentsVoice.sessions": "Sessions"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidgetBinding": {
 			"agentsVoice.chat": "Chat",
@@ -7900,8 +7980,10 @@
 			"agentsVoice.submitting": "Submitting..."
 		},
 		"vs/workbench/contrib/agentsVoice/browser/components/headerComponent": {
+			"agentsVoice.clickMicToTalk": "Click mic to talk",
 			"agentsVoice.configureKeybinding": "Configure keybinding",
 			"agentsVoice.disconnect": "Disconnect",
+			"agentsVoice.holdToTalk": "Hold {0} to talk",
 			"agentsVoice.minimize": "Minimize",
 			"agentsVoice.openMiniView": "Open mini-view",
 			"agentsVoice.pushToTalkSpace": "Push to talk (Space)",
@@ -7927,7 +8009,6 @@
 			"agentsVoice.newSession": "New session",
 			"agentsVoice.noActiveSessions": "No active sessions",
 			"agentsVoice.openInVSCode": "Open in VS Code",
-			"agentsVoice.openSessionAction": "Open session",
 			"agentsVoice.sendTo": "Send to",
 			"agentsVoice.sendToActive": "Send to (active)",
 			"agentsVoice.stop": "Stop",
@@ -7935,9 +8016,15 @@
 		},
 		"vs/workbench/contrib/agentsVoice/browser/components/statusRowsComponent": {
 			"agentsVoice.done": "done",
+			"agentsVoice.jumpToSession": "Jump to session",
 			"agentsVoice.needsInput": "needs input",
 			"agentsVoice.noActiveSessions": "No active sessions",
 			"agentsVoice.working": "working"
+		},
+		"vs/workbench/contrib/agentsVoice/browser/components/voiceBarComponent": {
+			"agentsVoice.listening": "Listening",
+			"agentsVoice.speaking": "Speaking...",
+			"agentsVoice.stopSpeech": "Stop speech"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/transcriptsView/voiceTranscripts.contribution": {
 			"agentsVoice.showTranscripts": "Show Voice Transcripts",
@@ -8219,7 +8306,7 @@
 			"browser.errorUrlLabel": "URL:",
 			"browser.loadErrorLabel": "Sayfa Yüklenemedi",
 			"browser.notSecure": "Güvenli Değil",
-			"browser.remoteErrorExtraWarning": "This usually means the host is not available or could not be reached from the remote."
+			"browser.remoteErrorExtraWarning": "This usually means the host could not be found.\r\nEnsure the URL is correct and the server is accessible from the remote machine."
 		},
 		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
 			"browser.findNextAction": "Sonrakini Bul",
@@ -8678,6 +8765,7 @@
 			"insertTroubleshootSlashCommand": "Troubleshoot Komutu ekle",
 			"insertTroubleshootSlashCommand.short": "/troubleshoot ekle",
 			"interactiveSession.clearHistory.label": "Giriş Geçmişini Temizle",
+			"interactiveSession.compactAgentHostConversation.label": "Compact Conversation",
 			"interactiveSession.focusInput.label": "Odak Sohbet Girişi",
 			"interactiveSession.focusQuestionCarousel.label": "Sohbet: Soru ve Giriş Arasında Odağı Aç/Kapat",
 			"interactiveSession.focusQuestionCarouselTerminal.label": "Sohbet: Soru Döngüsünden Terminale odaklan",
@@ -8746,6 +8834,9 @@
 			"workbench.action.chat.attachSelection.label": "Seçimi Sohbete Ekle"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatContinueInAction": {
+			"chat.delegation.inlinePrompt": "The following is the conversation history from a previous {0} session. Continue working on it.\r\n\r\n{1}\r\n\r\nUser: {2}",
+			"chat.delegation.transcriptContent": "The following is the conversation history from a previous {0} session. Continue working on it.\r\n\r\n{1}",
+			"chat.delegation.transcriptName": "Previous conversation",
 			"chat.learnMore": "Daha Fazla Bilgi Edinin",
 			"continueChatInSession": "Sohbeti devam ettir...",
 			"continueIn": "Şurada Devam Et:",
@@ -8944,6 +9035,11 @@
 			"configToolSets": "Araç Kümelerini Yapılandır...",
 			"configureTools": "Araçları Yapılandır",
 			"defaultBucketLabel": "Yerleşik",
+			"deleteToolSet.confirm.detail": "This removes the tool set definition from {0}.",
+			"deleteToolSet.confirm.message": "Delete tool set '{0}'?",
+			"deleteToolSet.confirm.primary": "Delete",
+			"deleteToolSet.error": "Failed to delete tool set '{0}': {1}",
+			"deleteUserBucket": "Delete Tool Set",
 			"editUserBucket": "Araç Kümesini Düzenle",
 			"manageToolApproval": "Onayı Yönet",
 			"mcpShowOutput": "Çıkışı Göster",
@@ -8995,6 +9091,8 @@
 			"exportDebugLogs.folderDialogTitle": "Aracı Konak Hata Ayıklama Günlükleri için Klasör Seçin",
 			"exportDebugLogs.noFiles.activeSession": "Etkin Aracı Konağı oturumu için günlük dosyaları bulunamadı.",
 			"exportDebugLogs.noFiles.currentWindow": "Geçerli pencere için herhangi bir Aracı Konağı günlük dosyası bulunamadı.",
+			"exportDebugLogs.privacyWarning": "Note: This log may contain personal information such as auth tokens, file contents, or terminal output. Please consider sharing privately or reviewing the contents carefully before sharing.",
+			"exportDebugLogs.privacyWarning.internal": "Note: This log may contain personal information such as auth tokens, file contents, or terminal output. It MUST be shared privately via Slack or in an issue filed on the microsoft/vscode-internalbacklog repo.",
 			"exportDebugLogs.saveError": "Hata ayıklama günlükleri kaydedilemedi: {0}"
 		},
 		"vs/workbench/contrib/chat/browser/actions/openCopilotCliStateFileAction": {
@@ -9045,7 +9143,6 @@
 			"update": "Güncelleştir"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} - Aracı Ana Bilgisayarı",
 			"agentHostHarnessLabel.local": "{0} [Aracı Konağı]"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
@@ -9057,8 +9154,7 @@
 			"agentHostChatInputPicker.filter": "Filtrele...",
 			"agentHostChatInputPicker.learnMorePermissions": "İzinler hakkında daha fazla bilgi edinin",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
-			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, Salt Okunur",
-			"selected": "(Seçildi)"
+			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, Salt Okunur"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "Otomatik Onayla",
@@ -9087,12 +9183,18 @@
 			"agentHost.forkedSessionLabel": "Çatallı Oturum",
 			"agentHost.responseDetails.credit": "{0} kredi",
 			"agentHost.responseDetails.credits": "{0} kredi",
-			"agentHost.turnError": "Error: ({0}) {1}"
+			"agentHost.turnError": "Error: ({0}) {1}",
+			"agentHost.workspaceTrust": "AI features are currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
 			"agentHostTerminal.local": "Yerel"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
+			"agentFeedback.many": "{0} comments",
+			"agentFeedback.one": "1 comment",
+			"agentFeedback.reveal": "Reveal Selected",
+			"agentFeedback.reviewMessage": "Choose which comments to reveal to the agent. Unchecked comments stay hidden.",
+			"agentFeedback.reviewTitle": "Reveal unreviewed comments?",
 			"ahp.running": "{0} çalıştırılıyor..."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
@@ -9114,7 +9216,7 @@
 			"chat.session.providerDescription.codex": "Düzenleyicide yeni bir Codex oturumu açar. Codex oturumları sohbet oturumları görünümünden yönetilebilir.",
 			"chat.session.providerDescription.growth": "Copilot özellikleri hakkında bilgi edinin.",
 			"chat.session.providerDescription.local": "Görevleri VS Code sohbetinde çalıştırın. Aracı sohbet yoluyla ilerler ve değişiklikleri ana çalışma alanınıza uygulamak için etkileşimli çalışır.",
-			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [Aracı Konağı]",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot",
 			"chat.session.providerLabel.background": "Copilot CLI",
 			"chat.session.providerLabel.cloud": "Bulut",
 			"chat.session.providerLabel.local": "Yerel"
@@ -9322,6 +9424,11 @@
 			"showAgentSessionsQuickAccess": "Aracı Oturumlarını Göster",
 			"showCommandsQuickAccess": "Komutları Göster (Birleştirilmiş)",
 			"showFilesQuickAccess": "Dosyaları Göster (Birleştirilmiş)"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/localAgentDisabledInputTipContribution": {
+			"chat.localAgentDisabled.continueInAgentHostCopilot.action": "Continue In Agent Host",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.description": "You can bring your local harness history into a new chat with the agent host. To keep using the local harness instead and hide this notification, set \"chat.editor.localAgent.enabled\" to true.",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.message": "Continue using the agent host."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/sessionTypeAvailability": {
 			"chat.sessionType.noModels": "No models available",
@@ -9812,6 +9919,7 @@
 			"chat.agentHost.ahpJsonlLogging": "Etkinleştirildiğinde, aracı konağı bağlantıları için tüm AHP taşıma iletilerini pencerenin günlük dizini altındaki JSONL dosyalarına kaydeder.",
 			"chat.agentHost.clientTools": "Aracı konak oturumlarında istemci tarafından sağlanan araçlar olarak kullanıma sunulacak araç başvuru adları.",
 			"chat.agentHost.customTerminalTool.enabled": "Etkinleştirildiğinde, Copilot SDK oturumları SDK'nın varsayılan terminal davranışı yerine Aracı Ana Bilgisayarı terminal aracı geçersiz kılmasını kullanır.",
+			"chat.agentHost.opus48Prompt.enabled": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
 			"chat.agentHost.sdkSandbox.enabled": "Sandbox mode for the Copilot SDK's built-in shell tool. Only takes effect when `#chat.agentHost.customTerminalTool.enabled#` is `false`; when the Agent Host's own terminal tool is enabled, the engine sandbox is controlled by `#chat.agent.sandbox.enabled#`.",
 			"chat.agentHost.sdkSandbox.enabled.allowNetwork": "The SDK's built-in shell tool runs inside a sandbox with unrestricted outbound network access.",
 			"chat.agentHost.sdkSandbox.enabled.off": "No sandbox policy is forwarded for the SDK's built-in shell tool — commands run unsandboxed.",
@@ -9853,9 +9961,16 @@
 			"chat.contextUsage.enabled": "Sohbet girişinde bağlam penceresi kullanım göstergesini gösterin.",
 			"chat.customizations.harnessSelector.enabled": "Kuluçka seçicisinin Sohbet Özelleştirmeleri düzenleyicisi kenar çubuğunda gösterilip gösterilmediğini denetler. Devre dışı bırakıldığında, düzenleyici her zaman tüm özelleştirmeleri filtrelemeden gösterir.",
 			"chat.customizations.structuredPreview.enabled": "Sohbet Özelleştirmeleri düzenleyicisinin markdown özelleştirme dosyaları (aracılar, beceriler, yönergeler ve istemler) için yapılandırılmış bir önizleme gösterip göstermeyeceğini denetler. Devre dışı bırakıldığında, düzenleyici ham markdown'ı her zaman gömülü kod düzenleyicisinde açar.",
+			"chat.defaultConfiguration.approvals.autoApprove": "Bypass Approvals — all tool calls are auto-approved.",
+			"chat.defaultConfiguration.approvals.default": "Default Approvals — Copilot uses your configured settings.",
+			"chat.defaultConfiguration.approvals.description": "The starting approval behavior for new agent sessions. If enterprise policy disables auto approval, new sessions use Default Approvals.",
+			"chat.defaultConfiguration.mode.autopilot": "Autopilot — autonomously iterate from start to finish.",
+			"chat.defaultConfiguration.mode.description": "The starting mode for new agent sessions.",
+			"chat.defaultConfiguration.mode.interactive": "Interactive — step-by-step collaboration.",
+			"chat.defaultConfiguration.mode.plan": "Plan — plan first, execute when ready.",
+			"chat.defaultConfiguration.settingDescription": "Controls the default configuration (mode and approval behavior) for new agent sessions (such as Copilot CLI). You can still change the mode and approval level per session, and each session remembers what was used.",
 			"chat.detectParticipant.enabled": "Panel sohbeti için sohbet katılımcısını otomatik algılamayı etkinleştirir.",
 			"chat.disableAIFeatures": "GitHub Copilot tarafından sağlanan sohbet ve satır içi öneriler dahil olmak üzere yerleşik yapay zeka özelliklerini devre dışı bırakın ve gizleyin.",
-			"chat.editMode.hidden": "Etkinleştirildiğinde, Düzenleme modu sohbet modu seçicisinden gizlenir.",
 			"chat.editRequests": "Sohbette istekleri düzenlemeyi sağlar. Bu, istek içeriğini değiştirmenize ve modele yeniden göndermenize olanak tanır.",
 			"chat.editing.autoAcceptDelay": "Sohbet tarafından yapılan değişikliklerden sonra otomatik olarak kabul edilmeden önceki gecikme süresi. Değerler saniye cinsindedir, `0` devre dışı ve `100` saniye en yüksek değer anlamına gelir.",
 			"chat.editing.confirmEditRequestRemoval": "Bir isteği ve ilişkili düzenlemelerini kaldırmadan önce onayın gösterilip gösterilmeyeceğini belirler.",
@@ -9866,6 +9981,7 @@
 			"chat.editor.claude.preferAgentHost": "When enabled, Claude sessions opened from the regular workbench (sidebar chat) run inside the agent host process instead of the GitHub Copilot Chat extension. Only one Claude implementation surfaces per window.",
 			"chat.editorAssociations": "Sohbetten dosya açmak için düzenleyicilere [glob desenleri](https://aka.ms/vscode-glob-patterns) yapılandırın (örneğin `\"*.md\": \"vscode.markdown.preview.editor\"`).",
 			"chat.exitAfterDelegation": "Bir isteği başka bir oturuma devrettikten sonra sohbet panelinin otomatik olarak kapanıp kapanmayacağını kontrol eder.",
+			"chat.experimental.collectInstructionsInExtension": "When enabled, automatic instruction collection (.instructions.md, agent instructions, customizations index) is performed by the GitHub Copilot Chat extension instead of the core workbench.",
 			"chat.experimental.detectParticipant.enabled": "Panel sohbeti için sohbet katılımcısını otomatik algılamayı etkinleştirir.",
 			"chat.experimental.detectParticipant.enabled.deprecated": "Bu ayar kullanım dışıdır. Lütfen bunun yerine `chat.detectParticipant.enabled` ayarını kullanın.",
 			"chat.experimental.incrementalRendering.animationStyle": "Artımlı işleme için animasyon stilini denetler.",
@@ -9945,19 +10061,19 @@
 			"chat.permissions.default.autopilot.label": "Otomatik Pilot (Önizleme)",
 			"chat.permissions.default.default.description": "Varsayılan Onaylar ile yeni sohbet oturumları başlatın.",
 			"chat.permissions.default.default.label": "Varsayılan Onaylar",
-			"chat.permissions.default.settingDescription": "Yeni sohbet oturumları için varsayılan izin seçici modunu denetler. Her oturum için izin modunu değiştirmeye devam edebilirsiniz ve her oturum kullanılan izin modunu hatırlar. Kurumsal ilke otomatik onayı devre dışı bırakırsa, yeni oturumlar Varsayılan Onayları kullanır.",
+			"chat.permissions.default.settingDescription": "Controls the default permissions picker mode for new local chat sessions. You can still change the permission mode per session, and each session remembers the permission mode that was used. If enterprise policy disables auto approval, new sessions use Default Approvals.",
 			"chat.persistentProgress.enabled": "İlerlemeyi her zaman sohbette gösterin.",
 			"chat.planAgent.defaultModel.description": "Plan aracı için kullanılacak varsayılan dil modelini mevcut sağlayıcılar arasından seçin.",
 			"chat.planReview.inlineEditor.enabled": "Etkinleştirildiğinde, plan inceleme pencere öğesi düzenleyiciyi ayrı bir düzenleyici sekmesi yerine satır içinde bağlar.",
 			"chat.pluginLocations": "Keşfedilecek eklenti dizinleri. Her anahtar doğrudan bir eklenti klasörüne işaret eden bir yoldur ve değer bunu etkinleştirir (`true`) veya devre dışı bırakır (`false`). Yollar mutlak olabilir, çalışma alanı köküne göre göreli olabilir veya kullanıcının ana dizini için `~/` ile başlayabilir.",
 			"chat.plugins.enabled": "Sohbette aracı eklentisi tümleştirmesini etkinleştir.",
-			"chat.plugins.enabledPlugins": "Kurumsal olarak yönetilen eklenti etkinleştirme. Anahtarlar `<plugin>@<marketplace>` biçimindeki eklenti kimlikleridir (Copilot CLI yükleme yollarına çözümlenir); değerler eklentiyi etkinleştirir (`true`) veya devre dışı bırakır (`false`). {0} içindeki yol anahtarlı girdilerle birlikte bulunur. İlke tarafından ayarlandığında, markette keşfedilen hangi eklentilerin yüklenmesine izin verileceğini de kısıtlar (yalnızca burada `true` ile eşlenen kimlikler bu denetimi geçer).",
-			"chat.plugins.enabledPlugins.policy": "Eklenti etkinleştirme. Anahtarlar `<plugin>@<marketplace>` biçimindeki eklenti kimlikleridir; değerler eklentiyi etkinleştirir veya devre dışı bırakır.",
+			"chat.plugins.enabledPlugins": "Controls which [agent plugins](https://aka.ms/vscode-agent-plugins) are enabled or disabled. Keys are plugin IDs in `<plugin>@<marketplace>` form (where marketplace is defined in {1}); values enable (`true`) or disable (`false`) the plugin. Discovered alongside the path-keyed entries in {0}. When set by policy, only plugins mapped to `true` here are allowed to load.",
+			"chat.plugins.enabledPlugins.policy": "Plugin enablement. Keys are plugin IDs in `{plugin}@{marketplace}` form; values enable or disable the plugin.",
 			"chat.plugins.extraMarketplaces": "Kurumsal olarak yönetilen ek eklenti marketleri. {0} ile birleştirilir.",
-			"chat.plugins.extraMarketplaces.policy": "Sorgulanacak ek eklenti marketleri. Anahtarlar market adlarıdır; değerler GitHub kısaltması (`owner/repo[#ref]`) veya Git URI'leri (`<url>[#ref]`) olur.",
+			"chat.plugins.extraMarketplaces.policy": "Additional plugin marketplaces to query. Keys are marketplace names; values are GitHub shorthand (`owner/repo[#ref]`) or Git URIs (`{url}[#ref]`).",
 			"chat.plugins.marketplaces": "Sorgulanacak eklenti marketleri. Girdiler GitHub kısaltması (`owner/repo` veya `owner/repo#ref`), doğrudan Git deposu URI'leri (`https://...git`, `ssh://...git` ya da `git@host:path.git`, her biri isteğe bağlı olarak `#ref` ile sonlandırılabilir) ya da yerel depo URI'leri (`file:///...`) olabilir. Eşdeğer GitHub kısaltmaları ve URI girdilerinin yinelenenleri kaldırılır.",
-			"chat.plugins.strictMarketplaces": "Etkinleştirildiğinde, yalnızca kurumsal ilke üzerinden sağlanan marketlere güvenilir. Diğer marketlerdeki eklentiler yüklenmez.",
-			"chat.plugins.strictMarketplaces.policy": "Yalnızca kurumsal ilke üzerinden sağlanan marketlere güvenin; başka marketlerdeki eklentiler yüklenmez.",
+			"chat.plugins.strictMarketplaces": "Enterprise-managed allowlist of plugin marketplace sources. When set, only marketplaces matching one of these entries can be installed; an empty array blocks all marketplaces. This does not retroactively disable already-installed plugins. Each entry is an object with a `source` discriminator (`github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`, or `pathPattern`) and the corresponding fields. Typically delivered via enterprise policy.",
+			"chat.plugins.strictMarketplaces.policy": "Allowlist of plugin marketplace sources. When set, only marketplaces matching an entry are trusted; an empty array blocks all marketplaces.",
 			"chat.progressBorder.enabled": "Aracı çalışırken veya düşünürken sohbet girişinin etrafında animasyonlu bir gradyan kenarlık gösterin. Etkinleştirildiğinde ve azaltılmış hareket etkin değilse bu {0} öğesini kapalı olması için geçersiz kılar. Azaltılmış hareket etkinse etkisi olmaz.",
 			"chat.promptFileLocations.invalidPath": "Yollar göreli olmalıdır veya '~/' ile başlamalıdır. Mutlak yollar ve '\\' ayırıcıları desteklenmez. Glob desenleri kullanım dışıdır ve gelecekteki sürümlerde kaldırılacaktır.",
 			"chat.promptFilesRecommendations.description": "Sohbet karşılama görünümünde hangi istem dosyalarının önerileceğini yapılandırın. Her anahtar bir istem dosyası adıdır ve değer, her zaman önermek için `true`, asla önermemek için `false` veya `resourceExtname == .js` veya `resourceLangId == markdown` gibi bir [when cümlesi](https://aka.ms/vscode-when-clause) ifadesi olabilir.",
@@ -10034,6 +10150,16 @@
 			"mcp.enterpriseManagedAuth.idp.policy": "Kurumsal olarak yönetilen Model Bağlam Protokolü (MCP) sunucusu kimlik doğrulaması için kullanılan OAuth/OIDC IdP yapılandırması. Kurumsal ilke aracılığıyla sunulur (Windows Grup İlkesi, macOS tarafından yönetilen tercihler, Linux `/etc/vscode/policy.json`).",
 			"mcp.gallery.serviceUrl": "MCP Galeri hizmeti URL'sini şuna bağlanacak şekilde yapılandır",
 			"mcp.list": "Sunucuları Listele"
+		},
+		"vs/workbench/contrib/chat/browser/chatDebug/agentHostChatDebugProvider": {
+			"agentHost.debug.fullPrompt": "Full Prompt",
+			"agentHost.debug.reasoning": "Reasoning",
+			"agentHost.debug.response": "Response",
+			"agentHost.debug.sessionStarted": "Session Started",
+			"agentHost.debug.sessionStartedDetails": "model={0}, reasoningEffort={1}",
+			"agentHost.debug.sessionStartedModel": "model={0}",
+			"agentHost.debug.untitledSession": "Copilot CLI Session {0}",
+			"agentHost.debug.userRequest": "User Request"
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/chatCustomizationDiscoveryRenderer": {
 			"chatDebug.configureLocations": "Konumları yapılandır",
@@ -10619,8 +10745,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatManagement/chatModelsWidget": {
 			"Search.FullTextSearchPlaceholder": "Aramak için yazın...",
-			"cacheCost.ariaLabel.plural": "Önbellek maliyeti: 1 milyon belirteç başına {0} kredi",
-			"cacheCost.ariaLabel.singular": "Önbellek maliyeti: 1 milyon belirteç başına {0} kredi",
+			"cacheCost.ariaLabel.plural": "Cache read cost: {0} credits per 1M tokens",
+			"cacheCost.ariaLabel.singular": "Cache read cost: {0} credit per 1M tokens",
+			"cacheWriteCost.ariaLabel.plural": "Cache write cost: {0} credits per 1M tokens",
+			"cacheWriteCost.ariaLabel.singular": "Cache write cost: {0} credit per 1M tokens",
 			"capabilities": "Özellikler",
 			"capability.agent": "Aracı Modu",
 			"capability.tools": "Araçlar",
@@ -10629,9 +10757,12 @@
 			"collapse": "Daralt",
 			"collapseAll": "Tümünü Daralt",
 			"cost": "Maliyet (1 Milyon Belirteç Başına Kredi)",
-			"cost.cache": "Önbellek: {0}",
-			"cost.cacheHover.plural": "Önbellek: 1 milyon belirteç başına {0} kredi",
-			"cost.cacheHover.singular": "Önbellek: 1 milyon belirteç başına {0} kredi",
+			"cost.cacheHover.plural": "Cache Read: {0} credits per 1M tokens",
+			"cost.cacheHover.singular": "Cache Read: {0} credit per 1M tokens",
+			"cost.cacheRead": "Cache Read: {0}",
+			"cost.cacheWrite": "Cache Write: {0}",
+			"cost.cacheWriteHover.plural": "Cache Write: {0} credits per 1M tokens",
+			"cost.cacheWriteHover.singular": "Cache Write: {0} credit per 1M tokens",
 			"cost.input": "Şurada: {0}",
 			"cost.inputHover.plural": "Giriş: 1 milyon belirteç başına {0} kredi",
 			"cost.inputHover.singular": "Giriş: 1 milyon belirteç başına {0} kredi",
@@ -10652,8 +10783,10 @@
 			"modelName": "Ad",
 			"models.addModel": "Model Ekle",
 			"models.agentMode": "Aracı Modu",
-			"models.cacheCost.plural": "Önbellek Maliyeti: 1 milyon belirteç başına {0} kredi",
-			"models.cacheCost.singular": "Önbellek Maliyeti: 1 milyon belirteç başına {0} kredi",
+			"models.cacheCost.plural": "Cache Read Cost: {0} credits per 1M tokens",
+			"models.cacheCost.singular": "Cache Read Cost: {0} credit per 1M tokens",
+			"models.cacheWriteCost.plural": "Cache Write Cost: {0} credits per 1M tokens",
+			"models.cacheWriteCost.singular": "Cache Write Cost: {0} credit per 1M tokens",
 			"models.capabilities": "Özellikler",
 			"models.configureModel": "Yapılandır...",
 			"models.contextSize": "Bağlam Boyutu",
@@ -10667,8 +10800,10 @@
 			"models.inputCost.plural": "Giriş Maliyeti: 1 milyon belirteç başına {0} kredi",
 			"models.inputCost.singular": "Giriş Maliyeti: 1 milyon belirteç başına {0} kredi",
 			"models.installProviderExtensions": "Install Model Providers",
-			"models.longContextCacheCost.plural": "Önbellek Maliyeti: 1 milyon belirteç başına {0} kredi",
-			"models.longContextCacheCost.singular": "Önbellek Maliyeti: 1 milyon belirteç başına {0} kredi",
+			"models.longContextCacheCost.plural": "Cache Read Cost: {0} credits per 1M tokens",
+			"models.longContextCacheCost.singular": "Cache Read Cost: {0} credit per 1M tokens",
+			"models.longContextCacheWriteCost.plural": "Cache Write Cost: {0} credits per 1M tokens",
+			"models.longContextCacheWriteCost.singular": "Cache Write Cost: {0} credit per 1M tokens",
 			"models.longContextInputCost.plural": "Giriş Maliyeti: 1 milyon belirteç başına {0} kredi",
 			"models.longContextInputCost.singular": "Giriş Maliyeti: 1 milyon belirteç başına {0} kredi",
 			"models.longContextOutputCost.plural": "Çıkış Maliyeti: 1 milyon belirteç başına {0} kredi",
@@ -10986,14 +11121,13 @@
 			"upgrade": "Yükselt"
 		},
 		"vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry": {
-			"chatAndCompletionsQuotaExceededStatus": "Kotaya ulaşıldı",
-			"chatQuotaExceededStatus": "Sohbet kotasına ulaşıldı",
+			"chatQuotaExceededStatus": "Quota reached",
+			"chatResumedStatus": "Copilot Resumed",
 			"chatSessionInProgressStatus": "1 aracı oturumu devam ediyor",
 			"chatSessionsInProgressStatus": "{0} aracı oturumu devam ediyor",
 			"chatStatus": "Copilot Durumu",
 			"chatStatusAria": "Copilot durumu",
 			"completionsDisabledStatus": "Satır içi öneriler devre dışı bırakıldı",
-			"completionsQuotaExceededStatus": "Satır içi öneri sınırına ulaşıldı",
 			"completionsSnoozedStatus": "Satır içi öneriler ertelendi",
 			"copilotDisabledStatus": "Copilot devre dışı",
 			"signIn": "Oturum Aç"
@@ -11095,12 +11229,14 @@
 			"pluginSourceNotFound": "Eklenti kaynağı '{0}' kopyalandıktan sonra bulunamadı.",
 			"selectPlugin": "'{0}' kaynağından yüklemek için bir eklenti seçin",
 			"showOutput": "Çıktıyı Göster",
+			"strictMarketplaceBlockedInstall": "Plugins from '{0}' are blocked by your organization's policy.",
 			"trustAndInstall": "&&Güven",
 			"trustMarketplace": "'{0}' eklentilerine güvenilsin mi?",
 			"trustMarketplaceDetail": "Eklentiler makinenizde kod çalıştırabilir. Yalnızca güvendiğiniz kaynaklardan eklenti yükleyin.\r\n\r\nKaynak: {0}",
 			"updateAllFailed": "{0} güncelleştirilemedi",
 			"updateAllSuccess": "Güncellenen eklentiler: {0}",
-			"updatingAllPlugins": "Eklentiler güncelleştiriliyor..."
+			"updatingAllPlugins": "Eklentiler güncelleştiriliyor...",
+			"viewPolicySettings": "View Policy Settings"
 		},
 		"vs/workbench/contrib/chat/browser/pluginSources": {
 			"checkoutPluginSourceFailed": "'{0}' eklentisinin istenen {1} sürümüne aktarılması başarısız oldu",
@@ -11297,6 +11433,10 @@
 			"configure-tools.capitalized.ellipsis": "Araçları Yapılandır...",
 			"placeholder": "Araç seçin"
 		},
+		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolSetsCodeLensProvider": {
+			"configure-tools.capitalized.ellipsis": "Configure Tools...",
+			"placeholder": "Select tools"
+		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptUrlHandler": {
 			"confirmInstallAgent": "Dış bir uygulama, bir URL'den alınan içerikle özel bir aracı oluşturmak istiyor. Hedef klasör ve adını seçerek devam etmek istiyor musunuz?",
 			"confirmInstallInstructions": "Dış uygulama, URL'deki içerikle bir yönerge dosyası oluşturmak istiyor. Hedef klasör ve adını seçerek devam etmek istiyor musunuz?",
@@ -11413,6 +11553,8 @@
 			"bad_name2": "'{0}' geçerli bir dosya adı değil",
 			"chat.configureToolSets": "Araç Kümelerini Yapılandır...",
 			"chat.configureToolSets.add": "Yeni araç kümeleri dosyası oluştur...",
+			"chat.configureToolSets.createFromCurrentSelection": "Create from current selection...",
+			"chat.configureToolSets.fileAlreadyExists": "A file with this name already exists",
 			"chat.configureToolSets.placeholder": "Yapılandırmak için bir araç kümesi seçin",
 			"chat.configureToolSets.short": "Araç Kümeleri",
 			"input.placeholder": "Araç kümeleri dosya adını yazın",
@@ -11421,6 +11563,8 @@
 			"schema.icon": "Kullanıcı arabiriminde bu araç kümesi için kullanılacak simge. \"\\$(zap)\" gibi \"\\$(name)\" söz dizimini kullanır",
 			"schema.tools": "Bu araç kümesine eklenecek araçları veya araç kümelerini içeren bir liste. Boş olamaz ve araçlara istemler içinde başvurulan şekilde başvurulmalıdır.",
 			"tool.description": "{1} ({0})\r\n\r\n{2}",
+			"toolSetName.bad_name": "Tool set name cannot be empty",
+			"toolSetName.placeholder": "Type new tool set name",
 			"toolsetSchema.json": "Kullanıcı aracı kümeleri yapılandırması"
 		},
 		"vs/workbench/contrib/chat/browser/tools/usagesTool": {
@@ -11646,10 +11790,8 @@
 			"submit": "Submit"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatQuotaExceededPart": {
-			"clickToContinue": "Yeniden Denemek için Tıklayın",
 			"manageBudget": "Bütçeyi Yönet",
-			"upgradeToCopilotPro": "GitHub Copilot Pro'ya Yükselt",
-			"waitWarning": "Değişikliklerin etkili olması birkaç dakika sürebilir."
+			"upgradeToCopilotPro": "GitHub Copilot Pro'ya Yükselt"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatReferencesContentPart": {
 			"addToChat": "Dosyayı Sohbete Ekle",
@@ -11794,6 +11936,16 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/abstractToolConfirmationSubPart": {
 			"skip": "Atla"
+		},
+		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatAgentFeedbackReviewConfirmationSubPart": {
+			"agentFeedback.cancel": "Cancel",
+			"agentFeedback.collapseComment": "Show Less",
+			"agentFeedback.delete": "Delete Comment",
+			"agentFeedback.expandComment": "Show More",
+			"agentFeedback.none": "No unreviewed comments.",
+			"agentFeedback.openFile": "Open File and Reveal Comment",
+			"agentFeedback.reveal": "Reveal Selected",
+			"agentFeedback.revealComment": "Reveal this comment to the agent"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatExtensionsInstallToolSubPart": {
 			"allow": "İzin ver",
@@ -12008,12 +12160,11 @@
 			"chatInput.mode.edit": "(Düzenle), çalışma alanınızdaki dosyaları düzenleyin.",
 			"chatInput.model": ", {0}. "
 		},
-		"vs/workbench/contrib/chat/browser/widget/input/chatInputStatusActionViewItem": {
-			"chat.inputStatus.otel.manageSettings": "Ayarları Yönet",
-			"chat.inputStatus.otel.title": "Aracı [OpenTelemetry]({0}) aracılığıyla izleniyor"
-		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatModelPicker": {
-			"chat.effort.costHint": "Daha yüksek düşünme düzeyleri maliyetleri artırabilir",
+			"chat.category.lightweight": "Lightweight",
+			"chat.category.powerful": "Powerful",
+			"chat.category.versatile": "Versatile",
+			"chat.config.costHint": "Non-default options may increase cost",
 			"chat.effort.header": "Düşünme Çabası",
 			"chat.manageModels": "Modelleri Yönet...",
 			"chat.manageModels.tooltip": "Dil Modellerini Yönet",
@@ -12023,9 +12174,9 @@
 			"chat.modelPicker.ariaLabel": "Model Seç, {0}",
 			"chat.modelPicker.auto": "Otomatik",
 			"chat.modelPicker.checkUpdateHover": "Bu model VS Code'un daha yeni bir sürümünü gerektiriyor. Erişmek için: [Update VS Code](command:update.checkForUpdate).",
+			"chat.modelPicker.configTooltip": "Configure Model",
 			"chat.modelPicker.downloadUpdateHover": "Bu model VS Code'un daha yeni bir sürümünü gerektiriyor. Erişmek için: [Download Update](command:update.downloadUpdate).",
 			"chat.modelPicker.effortAriaLabel": "Düşünme Çabası: {0}",
-			"chat.modelPicker.effortTooltip": "Düşünme Çabasını Ayarla",
 			"chat.modelPicker.noModels": "No models available",
 			"chat.modelPicker.otherModels": "Diğer Modeller",
 			"chat.modelPicker.pin": "Modeli sabitle",
@@ -12033,7 +12184,6 @@
 			"chat.modelPicker.restartUpdateHover": "Bu model VS Code'un daha yeni bir sürümünü gerektiriyor. Erişmek için: [Restart to Update](command:update.restartToUpdate).",
 			"chat.modelPicker.search": "Model ara",
 			"chat.modelPicker.tokensAriaLabel": "Bağlam Boyutu: {0}",
-			"chat.modelPicker.tokensTooltip": "Bağlam Boyutunu Ayarla",
 			"chat.modelPicker.unpin": "Model Sabitlemeyi Kaldır",
 			"chat.modelPicker.updateDescription": "VS Code'u Güncelleştir",
 			"chat.modelPicker.upgradeHover": "En iyi modelleri kullanmak için [GitHub Copilot Pro'ya yükseltin](command:workbench.action.chat.upgradePlan \" \").",
@@ -12044,20 +12194,18 @@
 			"chat.priceCategory.medium": "Orta maliyet",
 			"chat.priceCategory.unknown": "{0} maliyet",
 			"chat.priceCategory.veryHigh": "Çok yüksek maliyet",
-			"chat.tokens.costHint": "Daha geniş bağlam maliyeti artırabilir",
 			"chat.tokens.header": "Bağlam Boyutu",
-			"models.cacheCostLabel": "Önbelleğe alınan giriş",
-			"models.configurable": "Yapılandırılabilir:",
+			"models.cacheCostLabel": "Cache Read",
+			"models.cacheWriteCostLabel": "Cache Write",
+			"models.configDefault": "Default",
+			"models.configurable": "Configurable",
 			"models.contextSize": "Maksimum bağlam",
 			"models.cost": "Maliyet: {0}",
-			"models.costValuePlural": "{0} kredi",
-			"models.costValueSingular": "{0} kredi",
-			"models.effortDefault": "{0} (varsayılan)",
+			"models.creditsPerMillionTokens": "Credits Per 1M Tokens",
+			"models.defaultContext": "Default",
 			"models.inputCostLabel": "Giriş",
-			"models.longContextPriceTitle": "Uzun bağlam maliyeti (1 milyon belirteç başına)",
-			"models.outputCostLabel": "Çıktı",
-			"models.priceCategoryTitle": "Maliyet",
-			"models.priceTitle": "Maliyet (1 milyon belirteç başına)"
+			"models.longContext": "Long Context",
+			"models.outputCostLabel": "Çıktı"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter": {
 			"chatPhoneInput.autoLabel": "Otomatik",
@@ -12122,21 +12270,19 @@
 			"permissions.autoApprove": "Onayları Atla",
 			"permissions.autoApprove.description": "Tüm araç çağrılarını otomatik onayla ve hatalarda yeniden dene",
 			"permissions.autoApprove.label": "Onayları Atla",
-			"permissions.autoApprove.policyDescription": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
-			"permissions.autoApprove.policyDisabled": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
 			"permissions.autoApprove.subtext": "Tüm araç çağrıları otomatik olarak onaylanır",
 			"permissions.autopilot": "Otomatik Pilot (Önizleme)",
 			"permissions.autopilot.description": "Tüm araç çağrılarını otomatik onayla ve görev tamamlanana kadar devam et. Otomatik Pilot maliyetleri artırabilir.",
 			"permissions.autopilot.label": "Otomatik Pilot (Önizleme)",
-			"permissions.autopilot.policyDescription": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
-			"permissions.autopilot.policyDisabled": "Kuruluş ilkesi tarafından devre dışı bırakıldı",
 			"permissions.autopilot.subtext": "Başlangıçtan bitişe kadar kendi kendine yineleme yapar",
 			"permissions.default": "Varsayılan Onaylar",
 			"permissions.default.description": "Yapılandırılan onay ayarlarını kullan",
 			"permissions.default.label": "Varsayılan Onaylar",
 			"permissions.default.subtext": "Copilot yapılandırılan ayarlarınızı kullanıyor",
 			"permissions.ext.locked": "Bu seçenek kilitli",
-			"permissions.learnMore": "İzinler hakkında daha fazla bilgi edinin"
+			"permissions.learnMore": "İzinler hakkında daha fazla bilgi edinin",
+			"permissions.policyDescription": "Disabled by enterprise policy",
+			"permissions.policyDisabled": "Disabled by enterprise policy"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "Aracı türleri hakkında bilgi edinin...",
@@ -12171,6 +12317,10 @@
 			"outputReserved": "Yanıt için ayrıldı",
 			"qualityWarning": "Sınır yaklaştıkça kalite düşebilir.",
 			"quotaDisplay": "%{0}",
+			"sessionCost": "Session Cost",
+			"sessionCostCredit": "{0} credit",
+			"sessionCostCredits": "{0} credits",
+			"sessionInfo": "Session Info",
 			"tokenCount": "{0} / {1} belirteç",
 			"uncategorized": "Kategorilendirilmemiş"
 		},
@@ -12179,11 +12329,12 @@
 			"contextUsagePercentageLabel": "Bağlam penceresi kullanımı: %{0}"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewPane": {
-			"agentsVoice.voiceChatTitle": "Voice Mode",
 			"chat.loadSessionFailed": "Sohbet oturumu açılamadı: {0}",
 			"newSession": "Yeni Oturum",
 			"sessionInProgress": "Aracı Oturumu Sürüyor",
-			"sessions": "Oturumlar"
+			"sessions": "Oturumlar",
+			"voiceMode.clickMicHint": "Click mic to talk",
+			"voiceMode.pttHint": "Press {0} to talk"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewTitleControl": {
 			"chat": "Sohbet",
@@ -12203,6 +12354,7 @@
 			"agentSessionsViewerPosition": "Sohbet görünümünde aracı oturumları görünümünün konumu.",
 			"agentSessionsViewerVisible": "Sohbet görünümünde aracı oturumları görünümünün görünürlüğü.",
 			"agentSupportsAttachments": "Sohbet aracıları ekleri destekliyorsa doğrudur.",
+			"chatAgentHostProviderId": "The Agent Host provider ID when the chat widget is locked to an Agent Host session.",
 			"chatAgentModeDisabledByPolicy": "Kurum ilkesi tarafından aracı modu devre dışı bırakıldığında geçerlidir.",
 			"chatContextUsageHasBeenOpened": "Kullanıcı bağlam penceresi kullanım ayrıntılarını açtığında true olur.",
 			"chatEditApplied": "Sohbet metni düzenlemeleri uygulandığında true olur.",
@@ -12218,8 +12370,10 @@
 			"chatHasAgents": "Sohbette özel aracılar mevcut olduğunda geçerlidir.",
 			"chatHasCanDelegateProviders": "Temsilci desteği olan sohbet oturumu sağlayıcıları varsa true olur.",
 			"chatHasFileAttachments": "Sohbette dosya ekleri olduğunda true olur.",
+			"chatHasPendingDelegationTarget": "True when a delegation (continue in) target is selected but the request has not been submitted yet.",
 			"chatHasPendingRequests": "Kuyrukta bekleyen istekler varsa true olur.",
 			"chatHasUsedCreateSlashCommands": "Kullanıcı /create-* eğik çizgi komutlarından herhangi birini kullandığında değer True olur.",
+			"chatIsAgentHostSession": "True when the chat widget is locked to an Agent Host session.",
 			"chatIsEnabled": "Bir uygulama ile varsayılan bir sohbet katılımcısı etkinleştirildiği için sohbet etkinleştirildiğinde true.",
 			"chatIsKatexMathElement": "KaTeX matematik öğesine odaklanırken doğrudur.",
 			"chatItemId": "Sohbet öğesinin kimliği.",
@@ -12310,7 +12464,7 @@
 			"chatError.offTopic": "Sorry, but I can only assist with programming related questions.",
 			"chatError.quota.additionalSpend": "You've reached your additional usage limit for your plan. Upgrade your plan to keep going.",
 			"chatError.quota.business": "You've exhausted your credits. To continue working, please contact your organization's Copilot admin or wait for your allowance to renew.",
-			"chatError.quota.default": "You've exhausted your premium model quota. To continue working, switch to Auto. For additional paid premium requests, please reach out to your organization's Copilot admin or wait for your allowance to renew.",
+			"chatError.quota.default": "You've exhausted your premium model quota. For additional paid premium requests, please reach out to your organization's Copilot admin or wait for your allowance to renew.",
 			"chatError.quota.free": "You've reached your monthly chat messages quota. Upgrade to Copilot Pro or wait for your allowance to renew.",
 			"chatError.quota.generic": "Quota Exceeded",
 			"chatError.quota.individual": "You've exhausted your premium model quota. Please enable additional paid premium requests, upgrade to Copilot Pro+, or wait for your allowance to renew.",
@@ -12319,8 +12473,8 @@
 			"chatError.quota.server": "Quota Exceeded\r\n\r\nServer Error: {0}\r\nError Code: {1}",
 			"chatError.quota.ubb.business": "You've reached your credit limit. To continue working, please contact your organization's Copilot admin or wait for your credits to reset.",
 			"chatError.quota.ubb.businessDate": "You've reached your credit limit. To continue working, please contact your organization's Copilot admin or wait until your credits reset on {0}.",
-			"chatError.quota.ubb.default": "You've reached your credit limit. To continue working, switch to Auto. For additional paid credits, please reach out to your organization's Copilot admin or wait for your credits to reset.",
-			"chatError.quota.ubb.defaultDate": "You've reached your credit limit. To continue working, switch to Auto. For additional paid credits, please reach out to your organization's Copilot admin or wait until your credits reset on {0}.",
+			"chatError.quota.ubb.default": "You've reached your credit limit. For additional paid credits, please reach out to your organization's Copilot admin or wait for your credits to reset.",
+			"chatError.quota.ubb.defaultDate": "You've reached your credit limit. For additional paid credits, please reach out to your organization's Copilot admin or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.free": "You've reached your monthly credit limit. Upgrade to Copilot Pro or wait for your credits to reset.",
 			"chatError.quota.ubb.freeDate": "You've reached your monthly credit limit. Upgrade to Copilot Pro or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.individual": "You've reached your monthly credit limit. Please enable additional paid credits, upgrade to Copilot Pro+, or wait for your credits to reset.",
@@ -12359,14 +12513,13 @@
 			"editsDescription": "Seçilen kodu düzenleyin veya yeniden düzenleyin"
 		},
 		"vs/workbench/contrib/chat/common/chatPermissionWarnings": {
-			"permissions.autoApprove.warning.cancel": "İptal",
 			"permissions.autoApprove.warning.confirm": "Etkinleştir",
-			"permissions.autoApprove.warning.detail": "Onayları Atla, onay istemeden tüm araç çağrılarını otomatik olarak onaylar. Bu dosya düzenlemelerini, terminal komutlarını ve dış araç çağrılarını içerir.\r\n\r\nBunu yeni sohbet oturumları için başlangıç izin düzeyi yapmak isterseniz, [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) ayarını değiştirin.",
+			"permissions.autoApprove.warning.detail": "Bypass Approvals will auto-approve all tool calls without asking for confirmation. This includes file edits, terminal commands, and external tool calls.\r\n\r\nTo make this the starting permission level for new sessions, change the [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) setting.",
 			"permissions.autoApprove.warning.title": "Onayları Atla etkinleştirilsin mi?",
-			"permissions.autopilot.warning.cancel": "İptal",
 			"permissions.autopilot.warning.confirm": "Etkinleştir",
-			"permissions.autopilot.warning.detail": "Otomatik Pilot, tüm araç çağrılarını otomatik olarak onaylayacak ve görev tamamlanana kadar kendi kendine çalışmaya devam edecektir. Bu terminal komutlarını, dosya düzenlemelerini ve dış araç çağrılarını içerir. Aracı, onayınızı istemeden sizin adınıza kararlar verecektir.\r\n\r\nAracıyı dilediğiniz zaman durdur düğmesine tıklayarak durdurabilirsiniz. Bu yalnızca geçerli oturum için uygulanır.\r\n\r\nBunu yeni sohbet oturumları için başlangıç izin düzeyi yapmak isterseniz, [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) ayarını değiştirin.",
+			"permissions.autopilot.warning.detail": "Autopilot will auto-approve all tool calls and continue working autonomously until the task is complete. This includes terminal commands, file edits, and external tool calls. The agent will make decisions on your behalf without asking for confirmation.\r\n\r\nYou can stop the agent at any time by clicking the stop button. This applies to the current session only.\r\n\r\nTo make this the starting permission level for new sessions, change the [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) setting.",
 			"permissions.autopilot.warning.title": "Autopilot etkinleştirilsin mi?",
+			"permissions.warning.cancel": "Cancel",
 			"permissions.warning.dontShowAgain": "Bir daha gösterme"
 		},
 		"vs/workbench/contrib/chat/common/chatService/chatServiceImpl": {
@@ -12834,7 +12987,7 @@
 			"promptsUserDataFolder": "Kullanıcı Verileri"
 		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/askQuestionsTool": {
-			"askQuestionsTool.invalidOptions": "\"{0}\" sorusunun en az iki seçeneği olmalı veya serbest metin girişi için hiç seçeneği olmamalı.",
+			"askQuestionsTool.invalidOptions": "Question \"{0}\" must have at least two options, or set allowFreeformInput when providing a single option, or omit options for free text input.",
 			"askQuestionsTool.invocation.multiple": "{0} soru soruluyor ({1})",
 			"askQuestionsTool.invocation.multiple.past": "{0} soru soruldu ({1})",
 			"askQuestionsTool.invocation.single": "Bir soru soruluyor ({0})",
@@ -13616,10 +13769,10 @@
 			"contributes.displayName": "Özel düzenleyicinin kullanıcı tarafından okunabilen adı. Kullanılacak düzenleyiciyi seçerken kullanıcılara gösterilir.",
 			"contributes.priority": "Kullanıcı bir dosya, fark veya birleştirme düzenleyicisi açtığında özel düzenleyicinin otomatik olarak etkinleştirilip etkinleştirilmeyeceğini denetler. Kullanıcılar bunu `workbench.editorAssociations` veya `workbench.diffEditorAssociations` ayarını kullanarak geçersiz kılabilir.",
 			"contributes.priority.default": "Bir kaynak için başka bir varsayılan özel düzenleyici kayıtlı olmadığı sürece kullanıcı kaynağı açtığında düzenleyici otomatik olarak kullanılır.",
-			"contributes.priority.diff": "Kullanıcı bir farkı açtığında özel düzenleyicinin otomatik olarak etkinleştirilip etkinleştirilmeyeceğini denetler. Belirtilmediğinde `editor` değeri kullanılır.",
-			"contributes.priority.editor": "Kullanıcı bir dosyayı açtığında özel düzenleyicinin otomatik olarak etkinleştirilip etkinleştirilmeyeceğini denetler.",
-			"contributes.priority.merge": "Kullanıcı bir birleştirme düzenleyicisi açtığında özel düzenleyicinin otomatik olarak etkinleştirilip etkinleştirilmeyeceğini denetler. Belirtilmediğinde `editor` değeri kullanılır.",
+			"contributes.priority.diffEditor": "Controls if the custom editor is enabled automatically when the user opens a diff. When not specified, the value of `textEditor` is used.",
+			"contributes.priority.mergeEditor": "Controls if the custom editor is enabled automatically when the user opens a merge editor. When not specified, the value of `textEditor` is used.",
 			"contributes.priority.option": "Kullanıcı bir kaynağı açtığında düzenleyici otomatik olarak kullanılmaz, ancak kullanıcı 'Birlikte Aç' komutunu kullanarak düzenleyiciye geçebilir.",
+			"contributes.priority.textEditor": "Controls if the custom editor is enabled automatically when the user opens a file. This is the base value: when `diffEditor` or `mergeEditor` are not specified, they fall back to this value.",
 			"contributes.selector": "Özel düzenleyicinin kendisi için etkinleştirildiği glob kümesi.",
 			"contributes.selector.filenamePattern": "Özel düzenleyicinin kendisi için etkinleştirildiği glob.",
 			"contributes.viewType": "Özel düzenleyici için tanımlayıcı. Tüm özel düzenleyicilerde benzersiz olmalıdır, bu nedenle uzantı kimliğinizi 'viewType' öğesinin bir parçası olarak dahil etmeniz önerilir. 'viewType', özel düzenleyiciler 'vscode.registerCustomEditorProvider' ve 'onCustomEditor:${id}' [etkinleştirme olayı](https://code.visualstudio.com/api/references/activation-events) ile kaydedilirken kullanılır.",
@@ -14913,7 +15066,7 @@
 			"Uninstalling": "Kaldırılıyor",
 			"VS Code for Web": "Web için {0}",
 			"auto update message": "Lütfen [uzantıyı gözden geçirin]({0}) ve el ile güncelleştirin.",
-			"autoUpdateDelayed": "Yeni sürümler yayımlandıktan 2 saat sonra otomatik olarak güncelleştirildiğinden bu uzantı henüz güncelleştirilmedi. Otomatik olarak güncelleştirilecek {0}.",
+			"autoUpdateDelayed": "This extension is not updated yet because new versions are auto updated {0} after they are published. It will be auto updated {1}.",
 			"cancel": "İptal",
 			"cannot be installed": "'{0}' uzantısı {1} içinde kullanılamıyor. Daha fazla bilgi için 'Daha fazla bilgi' seçeneğine tıklayın.",
 			"check logs": "Daha fazla ayrıntı için lütfen [günlükleri]({0}) denetleyin.",
@@ -16268,19 +16421,13 @@
 			"issueReporterEditorInputName": "Report Issue",
 			"issueReporterIcon": "Icon for the issue reporter editor."
 		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
 		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
 			"abExperiments": "A/B Experiments",
 			"additionalInformation": "Additional Information",
 			"additionalPerformanceData": "Additional Performance Data",
 			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
+			"agentsWindow": "Agents Window",
+			"agentsWindowPlaceholder": "E.g. Sessions list does not refresh after creating a new session",
 			"attachments": "Attachments ({0})",
 			"back": "Back",
 			"bug": "Bug",
@@ -16298,9 +16445,6 @@
 			"descriptionPlaceholder": "Describe the issue in detail...",
 			"descriptionRequired": "Enter a description to continue.",
 			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
 			"extension": "Extension",
 			"extensionData": "Extension Data",
 			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
@@ -16317,9 +16461,6 @@
 			"generateTitleBtn": "Generate from description",
 			"generatingTitle": "Generating...",
 			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
 			"issueTargetRepo": "Issue will be created in {0}/{1}.",
 			"issueTitle": "Title",
 			"issueTitlePlaceholder": "Brief summary of the issue",
@@ -16332,7 +16473,6 @@
 			"marketplace": "Extensions Marketplace",
 			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
 			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
 			"next": "Next",
 			"noDelay": "No delay",
 			"noDescription": "(no description)",
@@ -16341,6 +16481,7 @@
 			"openExternalIssueReporter": "Open External Issue Reporter",
 			"or": "or",
 			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
+			"perfWikiLink": "See the performance issue reporting guide.",
 			"performanceIssue": "Performance Issue",
 			"previewOnGitHub": "Preview on GitHub",
 			"recordVideo": "Record video",
@@ -16349,6 +16490,7 @@
 			"refresh": "Refresh",
 			"refreshPerformanceData": "Reload running processes and workspace metadata",
 			"reportIssue": "Report Issue",
+			"reviewGuidanceLabelWizard": "Before you report an issue here please [review the guidance we provide](https://github.com/microsoft/vscode/wiki/Submitting-Bugs-and-Suggestions). Please complete the form in English.",
 			"reviewSubmit": "Review and submit",
 			"runningProcesses": "Running Processes",
 			"screenshot": "Screenshot",
@@ -16483,6 +16625,14 @@
 			"openIssueReporter": "Open Issue Reporter",
 			"reportPerformanceIssue": "Report Performance Issue...",
 			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
+		},
+		"vs/workbench/contrib/issue/electron-browser/issueReporterEditorPane": {
+			"noData": "No issue reporter data available.",
+			"noExperiments": "No current experiments.",
+			"openSystemSettings": "Open System Settings",
+			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
+			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
+			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
 		},
 		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
 			"noCurrentExperiments": "No current experiments.",
@@ -16963,6 +17113,8 @@
 			"mcp.servers.browse": "MCP Sunucularına göz at...",
 			"mcp.servers.discovery": "Başka bir uygulamadan ekle...",
 			"mcp.target..remote.description": "Bu uzak makinede kullanılabilir, {0} üzerinde çalışır",
+			"mcp.target.agentHost": "Add to Current Agent Session",
+			"mcp.target.local": "Install Server Locally...",
 			"mcp.target.placeholder": "Yapılandırma hedefini seçin",
 			"mcp.target.remote": "Uzak",
 			"mcp.target.title": "MCP Sunucusu Ekle",
@@ -18440,10 +18592,13 @@
 			"settings.focusFile": "Ayarlar dosyasını odakla",
 			"settings.focusLevelUp": "Odağı Bir Düzey Yukarı Taşı",
 			"settings.focusSearch": "Ayar Aramayı Odakla",
+			"settings.focusSearchFromSettings": "Focus Settings Search from Settings",
 			"settings.focusSettingControl": "Ayar Denetimini Odakla",
+			"settings.focusSettingsFromSearchOnEnter": "Focus First Setting from Search",
 			"settings.focusSettingsList": "Ayarlar listesini odakla",
 			"settings.focusSettingsTOC": "Ayarlar İçindekiler Tablosunu Odakla",
 			"settings.showContextMenu": "Ayar Bağlam Menüsünü Göster",
+			"settings.showPreviousSearch": "Show Previous Search in Settings",
 			"settings.toggleAiSearch": "Yapay Zeka Ayarları Arama Geçişi",
 			"settingsEditor2": "Ayar Düzenleyicisi 2",
 			"showDefaultKeybindings": "Sistem Tuş Bağlamalarını Göster",
@@ -18505,6 +18660,7 @@
 		},
 		"vs/workbench/contrib/preferences/browser/settingsEditor2": {
 			"SearchSettings.AriaLabel": "Ayarları ara",
+			"SearchSettings.PlaceholderWithHistory": "Search settings ({0} for history)",
 			"clearInput": "Ayarları Arama Girişini Temizle",
 			"clearSearchFilters": "Filtreleri Temizle",
 			"filterInput": "Ayarları filtrele",
@@ -19931,6 +20087,60 @@
 			"surveyQuestion": "Hızlı bir geri bildirim anketini yanıtlayabilir misiniz?",
 			"takeSurvey": "Ankete Katılın"
 		},
+		"vs/workbench/contrib/surveys/browser/survey.contribution": {
+			"openSurvey": "Open Survey",
+			"survey.help.overview": "You are in a survey form. Use Tab to move between questions and options.",
+			"survey.help.select": "Use arrow keys within a question to navigate between options, and Space or Enter to select.",
+			"survey.help.submit": "Tab to the Submit button and press Enter once all questions are answered.",
+			"surveyEditorPaneTitle": "Survey"
+		},
+		"vs/workbench/contrib/surveys/browser/surveyEditorInput": {
+			"surveyIcon": "Icon for the survey editor."
+		},
+		"vs/workbench/contrib/surveys/browser/surveyEditorPane": {
+			"survey.pane.ariaLabel": "Survey",
+			"survey.submitFeedback": "Submit feedback",
+			"survey.submitHint": "Answer all questions to submit",
+			"survey.success.detail": "Your answer helps us understand who needs this most. Thank you.",
+			"survey.success.message": "Response sent"
+		},
+		"vs/workbench/contrib/surveys/browser/surveyQuestions": {
+			"survey.copilotPmf.description": "This short survey helps us understand how well Copilot fits into your workflow.",
+			"survey.copilotPmf.q1": "How disappointed would you be if you could no longer use Copilot?",
+			"survey.copilotPmf.q1.extremely": "Extremely",
+			"survey.copilotPmf.q1.notAtAll": "Not at all",
+			"survey.copilotPmf.q1.slightly": "Slightly",
+			"survey.copilotPmf.q1.somewhat": "Somewhat",
+			"survey.copilotPmf.q1.very": "Very",
+			"survey.copilotPmf.q2": "What has Copilot helped you with most recently?",
+			"survey.copilotPmf.q2.automating": "Automating repetitive work",
+			"survey.copilotPmf.q2.gettingUnstuck": "Getting unstuck on bugs",
+			"survey.copilotPmf.q2.multiFile": "Making multi-file changes",
+			"survey.copilotPmf.q2.noClearValue": "I haven't gotten clear value yet",
+			"survey.copilotPmf.q2.other": "Something else",
+			"survey.copilotPmf.q2.planning": "Planning an approach",
+			"survey.copilotPmf.q2.reviewing": "Improving or reviewing code",
+			"survey.copilotPmf.q2.shippingFaster": "Shipping changes faster",
+			"survey.copilotPmf.q2.understanding": "Understanding the codebase",
+			"survey.copilotPmf.q3": "What most gets in your way?",
+			"survey.copilotPmf.q3.biggerTasks": "Struggles with bigger tasks",
+			"survey.copilotPmf.q3.context": "Missing repo or project context",
+			"survey.copilotPmf.q3.cost": "Limits, cost, or billing",
+			"survey.copilotPmf.q3.other": "Something else",
+			"survey.copilotPmf.q3.reviewingTime": "Too much time reviewing",
+			"survey.copilotPmf.q3.security": "Security or permissions friction",
+			"survey.copilotPmf.q3.setup": "Setup or integrations are hard",
+			"survey.copilotPmf.q3.slow": "Too slow / breaks flow",
+			"survey.copilotPmf.q3.steering": "Too much steering needed",
+			"survey.copilotPmf.q3.trust": "Output is hard to trust",
+			"survey.copilotPmf.q4": "How long have you been programming?",
+			"survey.copilotPmf.q4.10to19": "10-19 yr",
+			"survey.copilotPmf.q4.20plus": "20+ yr",
+			"survey.copilotPmf.q4.3to5": "3-5 yr",
+			"survey.copilotPmf.q4.6to9": "6-9 yr",
+			"survey.copilotPmf.q4.lessThan3": "<3 yr",
+			"survey.copilotPmf.title": "Help Us Improve GitHub Copilot"
+		},
 		"vs/workbench/contrib/tasks/browser/abstractTaskService": {
 			"ConfigureTaskRunnerAction.label": "Görevi Yapılandır",
 			"TaskServer.folderIgnored": "{0} klasörü, 0.1.0 görev sürümünü kullandığından yoksayıldı",
@@ -21089,6 +21299,7 @@
 			"runInTerminal.allowNetwork.autoRetry.reason": "Korumalı yürütme çıktısı, korumalı alanın gerekli ağ erişimini engellediğini gösterdi.",
 			"runInTerminal.allowNetwork.confirmationMessage": "Açıklama: {0}\r\n\r\nHedef: {1}\r\n\r\nKorumalı alanda sınırsız ağ erişimine izin verme nedeni: {2}",
 			"runInTerminal.allowNetwork.confirmationMessage.defaultReason": "Model, bu korumalı komutun sınırsız ağ erişimi gerektirdiğini gösterdi.",
+			"runInTerminal.allowNetwork.deferredRetry.reason": "The model requested unrestricted network access in the sandbox.",
 			"runInTerminal.allowNetwork.disabled.invocation": "Korumalı alanda sınırsız ağ erişimi devre dışı bırakıldığından `{0}` çalıştırılmıyor",
 			"runInTerminal.allowNetwork.disabled.result": "Komut yürütülmedi çünkü terminal korumalı alanında sınırsız ağ erişimi isteğinde bulundu, ancak komut başına ağ erişimi chat.agent.sandbox.retryWithAllowNetworkRequests tarafından devre dışı bırakıldı. Bunun yerine komutu kısıtlı ağ erişimiyle çalıştırın veya ağ erişim isteklerine izin vermek için ayarı etkinleştirin.",
 			"runInTerminal.bubblewrap.applyFix": "Apply Fix and Retry",
@@ -21120,6 +21331,7 @@
 			"runInTerminal.presentationOverride.inDirectory": "`{0}` komutu `{1}` içinde `{2}` içinde çalıştırılsın mı?",
 			"runInTerminal.presentationOverride.inDirectory.withoutLanguage": "Komut `{1}` içinde `{0}` konumunda çalıştırılsın mı?",
 			"runInTerminal.presentationOverride.withoutLanguage": "Komut `{0}` içinde çalıştırılsın mı?",
+			"runInTerminal.sandbox.fileAccessDenied": "Access Denied: The command was not executed because the terminal sandbox does not allow access to the requested file paths:\r\n{0}",
 			"runInTerminal.sensitiveInput.autoCancelMessage": "Terminal komutu bir parola veya başka bir gizli değer istiyor gibiydi. Otomatik onay / autopilot modu gizli değerleri güvenli bir şekilde sağlayamadığından komut iptal edildi. Gizli değeri sağlamak istiyorsanız komutu etkileşimli olarak çalıştırın.",
 			"runInTerminal.sensitiveInput.autoCancelTitle": "Terminal komutu iptal edildi — hassas giriş gerekli",
 			"runInTerminal.sensitiveInput.cancel": "Komutu İptal Et",
@@ -21137,6 +21349,7 @@
 			"runInTerminal.unsandboxed.autoRetry.reason": "Korumalı yürütme çıktısı, korumalı alanın komutu engellediğini gösterdi.",
 			"runInTerminal.unsandboxed.confirmationMessage": "Açıklama: {0}\r\n\r\nHedef: {1}\r\n\r\nKorumalı alandan çıkma nedeni: {2}",
 			"runInTerminal.unsandboxed.confirmationMessage.defaultReason": "Model, bu komutun korumalı alan dışı erişime ihtiyaç duyduğunu gösteriyor.",
+			"runInTerminal.unsandboxed.deferredRetry.reason": "The model requested unsandboxed execution.",
 			"runInTerminal.unsandboxed.disabled.invocation": "Korumasız yürütme devre dışı bırakıldığından `{0}` çalıştırılmıyor",
 			"runInTerminal.unsandboxed.disabled.result": "Komut yürütülmedi çünkü terminal korumalı alanının dışında çalıştırılması istendi; ancak korumalı alan dışında komut çalıştırma, chat.agent.sandbox.allowUnsandboxedCommands tarafından devre dışı bırakıldı. Bunun yerine komutu korumalı alanda çalıştırın ya da korumasız yürütmeye izin vermek için ayarı etkinleştirin.",
 			"runInTerminal.unsandboxed.domain": "{2} öğesine erişmek için `{0}` komutu [korumalı alanın]({1}) dışında çalıştırılsın mı?",
@@ -21211,7 +21424,6 @@
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalChatAgentToolsConfiguration": {
 			"agentSandbox.allowAutoApprove": "Korumalı alan içinde çalışan aracı modu terminal komutlarının otomatik olarak onaylanıp onaylanmayacağını denetler. Devre dışı bırakıldığında terminalde çalıştır aracı mevcut onay akışını kullanır. Bu, yalnızca {0} etkinleştirildiğinde geçerlidir.",
 			"agentSandbox.allowUnsandboxedCommands": "Korumalı bir komut başarısız olduğunda veya korumalı alan kısıtlamaları komutu engellediğinde, kullanıcı onayından sonra aracı modu terminal komutlarının korumalı alan dışında çalışıp çalışamayacağını denetler. Bu, yalnızca {0} etkinleştirildiğinde geçerlidir.",
-			"agentSandbox.autoApproveUnsandboxedCommands": "Korumalı alan dışında çalışan aracı modu terminal komutlarının otomatik olarak onaylanıp onaylanmayacağını denetler. Bu, yalnızca hem {0} hem de {1} etkinleştirildiğinde geçerlidir.",
 			"agentSandbox.enabled.deprecated": "Bunun yerine {0} kullanın",
 			"agentSandbox.enabledSetting": "Aracı modunun, araçların yapabileceklerini kısıtlamak için korumalı alan kullanıp kullanmayacağını denetler. Etkinleştirildiğinde, terminal gibi araçlar sistem erişimini sınırlamak için korumalı bir ortamda çalıştırılır.",
 			"agentSandbox.enabledSetting.allowNetworkDescription": "Aracı mod araçları için korumalı alanı etkinleştirin ve tüm ağ etki alanlarına izin verin.",
@@ -21219,6 +21431,7 @@
 			"agentSandbox.enabledSetting.onDescription": "Aracı modu araçları için korumalı alanı etkinleştirin.",
 			"agentSandbox.fileSystemLinux.deprecated": "Bunun yerine {0} kullanın",
 			"agentSandbox.fileSystemMac.deprecated": "Bunun yerine {0} kullanın",
+			"agentSandbox.forceFirstExecutionInSandbox": "Controls whether agent mode terminal commands first run with the sandbox's configured restrictions before honoring a request for execution outside the sandbox or unrestricted network access. The user is prompted to approve the requested additional access only if that sandboxed command fails. This applies only when {0} is enabled.",
 			"agentSandbox.linuxFileSystemSetting": "Not: Bu ayar yalnızca {0} etkin olduğunda geçerlidir. Linux'ta korumalı alanda dosya sistemi erişimini kontrol eder. Yollar glob desenlerini desteklemez, yalnızca değişmez yolları kabul eder (örneğin ./src/, ~/.ssh, .env). Bu ayarın çalışması için **bubblewrap** ve **socat** yüklü olmalıdır.",
 			"agentSandbox.linuxFileSystemSetting.allowRead": "Reddedilen bölgeler içinde okuma yetkisine yeniden izin vermeye yönelik yol dizisi. denyRead seçeneğinden önceliklidir.",
 			"agentSandbox.linuxFileSystemSetting.allowWrite": "Array of additional paths to allow write access. Leave empty to disallow writes outside the workspace folders, workspace storage folder, and sandbox temp directory.",
@@ -23234,9 +23447,7 @@
 			"shieldIcon": "Başlıktaki çalışma alanı güveni simgesinin simgesi.",
 			"trustAll": "{0} üzerindeki tüm depolara güveneceksiniz.",
 			"trustButton": "Güven",
-			"trustMessage": "Geçerli klasördeki veya '{0}' üst klasöründeki tüm dosyaları oluşturanlara güven.",
 			"trustOrg": "{1} üzerindeki '{0}' altında bulunan tüm depolara ve çatallara güveneceksiniz.",
-			"trustParentButton": "Üst Öğeye Güven",
 			"trustUri": "Güven Klasörü",
 			"trustedDebugging": "Hata ayıklama etkin",
 			"trustedDescription": "Çalışma alanına güvenildiğinden tüm özellikler etkin.",
@@ -23767,7 +23978,6 @@
 			"remote": "Remote"
 		},
 		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
 			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
 			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},

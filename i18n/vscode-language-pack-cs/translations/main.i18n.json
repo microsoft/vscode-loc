@@ -2162,6 +2162,12 @@
 			"selectPrevCodeAction.title": "Vybrat předchozí akci",
 			"toggleSectionCodeAction.title": "Přepnout oddíl"
 		},
+		"vs/platform/agentHost/browser/agentHost.config.contribution": {
+			"chat.agentHost.enabled": "When enabled, some agents run in a separate agent host process."
+		},
+		"vs/platform/agentHost/browser/agentHostConnectionsService": {
+			"agentHost.connection.ambient": "Local"
+		},
 		"vs/platform/agentHost/common/agentHost.config.contribution": {
 			"chat.agentHost.enabled": "Pokud je tato možnost povolená, někteří agenti běží v samostatném hostitelském procesu agenta.",
 			"chat.agents.copilotCli.hideExtensionHost": "When enabled, hides the Extension Host Copilot CLI entry from the Agents window picker.",
@@ -2170,6 +2176,7 @@
 			"chat.editor.defaultProvider.copilotAh": "Use the Agent Host Copilot CLI",
 			"chat.editor.defaultProvider.copilotEh": "Use the Extension Host Copilot CLI",
 			"chat.editor.defaultProvider.local": "Use the built-in VS Code local chat harness",
+			"chat.editor.localAgent.enabled": "When enabled, shows the VS Code local chat harness in the chat picker.",
 			"chatAgentHostConfigurationTitle": "Hostitel agenta chatu"
 		},
 		"vs/platform/agentHost/common/agentHostCustomizationConfig": {
@@ -2183,23 +2190,44 @@
 			"agentHost.config.defaultShell.title": "Výchozí prostředí",
 			"agentHost.config.enableCustomTerminalTool.description": "Když je tato možnost povolená, relace Copilot SDK používají místo výchozího chování terminálu SDK přepsání terminálového nástroje Agent Host.",
 			"agentHost.config.enableCustomTerminalTool.title": "Použít terminálový nástroj Agent Host",
+			"agentHost.config.opus48Prompt.description": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
+			"agentHost.config.opus48Prompt.title": "Opus 4.8 Agent Prompt",
 			"agentHost.config.rubberDuck.description": "Když je to povoleno, agent pro psaní kódu používá subagenta „rubber duck critic“ k posouzení změn kódu pomocí doplňkového modelu.",
 			"agentHost.config.rubberDuck.title": "Agent Rubber Duck"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
+			"agentHost.config.mcpServers.arg.title": "Argument",
+			"agentHost.config.mcpServers.args.description": "For `stdio` servers, the arguments passed to the command.",
+			"agentHost.config.mcpServers.args.title": "Arguments",
+			"agentHost.config.mcpServers.command.description": "For `stdio` servers, the executable to spawn.",
+			"agentHost.config.mcpServers.command.title": "Command",
+			"agentHost.config.mcpServers.cwd.description": "For `stdio` servers, the working directory the command runs in.",
+			"agentHost.config.mcpServers.cwd.title": "Working Directory",
+			"agentHost.config.mcpServers.description": "Agent-host-level MCP servers exposed to every session, keyed by server name. Each value is a server configuration (see `<serverName>`).",
+			"agentHost.config.mcpServers.entry.description": "A single MCP server entry. The property key is the server name.",
+			"agentHost.config.mcpServers.entry.title": "MCP Server",
+			"agentHost.config.mcpServers.env.description": "For `stdio` servers, environment variables set on the spawned process.",
+			"agentHost.config.mcpServers.env.title": "Environment",
+			"agentHost.config.mcpServers.headers.description": "For `http` servers, HTTP headers sent with every request.",
+			"agentHost.config.mcpServers.headers.title": "Headers",
+			"agentHost.config.mcpServers.title": "MCP Servers",
+			"agentHost.config.mcpServers.type.description": "The transport used to reach the server: `stdio` for a local command, `http` for a remote endpoint.",
+			"agentHost.config.mcpServers.type.title": "Server Type",
+			"agentHost.config.mcpServers.url.description": "For `http` servers, the endpoint URL of the MCP server.",
+			"agentHost.config.mcpServers.url.title": "URL",
 			"agentHost.config.sessionSyncEnabled.description": "Určuje, jestli je pro rozhraní příkazového řádku copilot-sdk povolená synchronizace vzdálené relace.",
 			"agentHost.config.sessionSyncEnabled.title": "Synchronizace relace",
 			"agentHost.config.telemetryLevel.description": "Nejvíce omezující úroveň telemetrie požadovaná připojenými klienty.",
 			"agentHost.config.telemetryLevel.title": "Úroveň telemetrie",
 			"agentHost.sessionConfig.autoApprove": "Schválení",
-			"agentHost.sessionConfig.autoApprove.autopilot": "Autopilot (Preview)",
-			"agentHost.sessionConfig.autoApprove.autopilotDescription": "Samostatně provádí cyklus od začátku do konce",
 			"agentHost.sessionConfig.autoApprove.bypass": "Schválení obcházení",
 			"agentHost.sessionConfig.autoApprove.bypassDescription": "Všechny žádosti o nástroje jsou automaticky schvalovány",
 			"agentHost.sessionConfig.autoApprove.default": "Výchozí schválení",
 			"agentHost.sessionConfig.autoApprove.defaultDescription": "Copilot využívá vaše nastavené parametry",
 			"agentHost.sessionConfig.autoApproveDescription": "Chování schvalování nástrojů pro tuto relaci",
 			"agentHost.sessionConfig.mode": "Režim agenta",
+			"agentHost.sessionConfig.mode.autopilot": "Autopilot",
+			"agentHost.sessionConfig.mode.autopilotDescription": "Autonomously iterates from start to finish",
 			"agentHost.sessionConfig.mode.interactive": "Interaktivní",
 			"agentHost.sessionConfig.mode.interactiveDescription": "Step-by-step collaboration",
 			"agentHost.sessionConfig.mode.plan": "Plán",
@@ -2216,13 +2244,14 @@
 			"chat.agentHost.codexAgent.binaryArgs": "Další argumenty příkazového řádku předané do `codex app-server`. Užitečné hlavně pro ladění (například `--log-level=debug`).",
 			"chat.agentHost.codexAgent.codexHome": "Volitelné přepsání pro `$CODEX_HOME`. Určuje, odkud binární soubor codex čte konfiguraci a kam zapisuje rollouty. Pokud je prázdné, codex použije výchozí nastavení (`~/.codex`).",
 			"chat.agentHost.codexAgent.enabled": "When enabled, the agent host registers the Codex provider (subject to the Codex SDK being reachable). Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
+			"chat.agentHost.codexAgent.enabled.policy": "Enable Codex Agent sessions in VS Code. Start and resume agentic coding sessions powered by OpenAI Codex SDK. Uses your existing Copilot subscription.",
 			"chat.agentHost.codexAgent.sdkRoot": "Experimental, for local SDK development only. Absolute path to a directory containing `node_modules/@openai/codex`. When set, the agent host spawns the Codex binary from this tree instead of downloading the SDK. Empty (the default) falls through to the SDK distribution shipped with this build. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
-			"chat.agentHost.otel.captureContent": "Pokud je tato možnost povolená, zahrnuje obsah výzvy a odpovědi v atributech rozsahu OTel. Nastaví `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Citlivé na ochranu osobních údajů: Nepovolujte v prostředích, která se dodávají do sdílených jímek.",
-			"chat.agentHost.otel.dbSpanExporter.enabled": "Pokud je tato možnost povolená, hostitel agenta zachová každý vygenerovaný rozsah OTel do místní databáze SQLite. Rozsahy lze zkontrolovat pomocí příkazu `Export Agent Host Traces Database`. Kompatibilní s externími exportéry: rozsahy se zapisují do SQLite *a* se předávají do jímky nakonfigurované uživatelem.",
-			"chat.agentHost.otel.enabled": "Pokud je tato možnost povolená, hostitel agenta generuje trasování OpenTelemetry ze sady Copilot SDK. Vyžaduje `#chat.agentHost.enabled#`. Buď nakonfigurujte `#chat.agentHost.otel.otlpEndpoint#` tak, aby se odesílala trasování do externího kolektoru, nebo povolte `#chat.agentHost.otel.dbSpanExporter.enabled#`, aby se trasování zachytávala místně.",
-			"chat.agentHost.otel.exporterType": "Back-end exportéru používaný sadou Copilot SDK, když `#chat.agentHost.otel.enabled#` je zapnuto. `otlp-grpc` se v modulu runtime rozhraní příkazového řádku transparentně downgraduje na `otlp-http`.",
-			"chat.agentHost.otel.otlpEndpoint": "Adresa URL koncového bodu OTLP, pokud je typ exportéru `otlp-http` nebo `otlp-grpc`. Nastaví `OTEL_EXPORTER_OTLP_ENDPOINT` uvnitř hostitelského procesu agenta.",
-			"chat.agentHost.otel.outfile": "Výstupní cesta pro řádky SPAN JSON, pokud je typ exportéru `file`. Nastaví `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
+			"chat.agentHost.otel.captureContent": "When enabled, includes prompt and response content in OTel span attributes. Configurable in user settings only. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Privacy-sensitive: do not enable in environments that ship spans to shared sinks.",
+			"chat.agentHost.otel.dbSpanExporter.enabled": "When enabled, the agent host persists every emitted OTel span to a local SQLite database. Configurable in user settings only. Spans can be inspected via the `Export Agent Host Traces Database` command. Compatible with external exporters: spans are written to SQLite *and* forwarded to the user-configured sink.",
+			"chat.agentHost.otel.enabled": "When enabled, the agent host emits OpenTelemetry traces from the Copilot SDK. Configurable in user settings only. Requires `#chat.agentHost.enabled#`. Either configure `#chat.agentHost.otel.otlpEndpoint#` to ship traces to an external collector or enable `#chat.agentHost.otel.dbSpanExporter.enabled#` to capture them locally.",
+			"chat.agentHost.otel.exporterType": "Exporter backend used by the Copilot SDK when `#chat.agentHost.otel.enabled#` is on. Configurable in user settings only. `otlp-grpc` is downgraded to `otlp-http` transparently in the CLI runtime.",
+			"chat.agentHost.otel.otlpEndpoint": "OTLP endpoint URL when exporter type is `otlp-http` or `otlp-grpc`. Configurable in user settings only. Sets `OTEL_EXPORTER_OTLP_ENDPOINT` inside the agent host process.",
+			"chat.agentHost.otel.outfile": "Output path for span JSON lines when exporter type is `file`. Configurable in user settings only. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
 			"chatAgentHostStarterConfigurationTitle": "Úvodní sada hostitele agenta chatu"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2238,19 +2267,29 @@
 		},
 		"vs/platform/agentHost/common/claudeModelConfig": {
 			"claude.modelThinkingLevel.description": "Určuje, kolik úsilí při uvažování Claude používá.",
-			"claude.modelThinkingLevel.high": "Vysoká",
-			"claude.modelThinkingLevel.low": "Nízká",
-			"claude.modelThinkingLevel.max": "Max.",
-			"claude.modelThinkingLevel.medium": "Střední",
-			"claude.modelThinkingLevel.title": "Úroveň uvažování",
-			"claude.modelThinkingLevel.xhigh": "Velmi vysoká"
+			"claude.modelThinkingLevel.title": "Úroveň uvažování"
+		},
+		"vs/platform/agentHost/common/reasoningEffort": {
+			"reasoningEffort.high": "High",
+			"reasoningEffort.highDescription": "Greater reasoning depth but slower",
+			"reasoningEffort.low": "Low",
+			"reasoningEffort.lowDescription": "Faster responses with less reasoning",
+			"reasoningEffort.max": "Max",
+			"reasoningEffort.maxDescription": "Absolute maximum capability with no constraints",
+			"reasoningEffort.medium": "Medium",
+			"reasoningEffort.mediumDescription": "Balanced reasoning and speed",
+			"reasoningEffort.minimal": "Minimal",
+			"reasoningEffort.minimalDescription": "Minimal reasoning for fastest responses",
+			"reasoningEffort.none": "None",
+			"reasoningEffort.noneDescription": "No reasoning applied",
+			"reasoningEffort.xhigh": "Extra High",
+			"reasoningEffort.xhighDescription": "Highest reasoning depth but slowest"
 		},
 		"vs/platform/agentHost/common/sandboxConfigSchema": {
 			"agentHost.config.sandbox.advancedRuntime.title": "Modul runtime rozšířeného sandboxu",
 			"agentHost.config.sandbox.allowUnsandboxedCommands.title": "Povolit příkazy mimo sandbox",
 			"agentHost.config.sandbox.allowedDomains.item.title": "Doména",
 			"agentHost.config.sandbox.allowedDomains.title": "Povolené síťové domény",
-			"agentHost.config.sandbox.autoApproveUnsandboxedCommands.title": "Automaticky schvalovat příkazy mimo sandbox",
 			"agentHost.config.sandbox.deniedDomains.item.title": "Doména",
 			"agentHost.config.sandbox.deniedDomains.title": "Zamítnuté síťové domény",
 			"agentHost.config.sandbox.enabled.title": "Sandbox povolen",
@@ -2277,7 +2316,15 @@
 			"agentHost.changeset.commit.noChanges": "Žádné nepotvrzené změny k commitu."
 		},
 		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
-			"agentHost.changeset.commit": "Potvrdit"
+			"agentHost.changeset.commit": "Commit Changes"
+		},
+		"vs/platform/agentHost/node/agentHostDiscardChangesOperationHandler": {
+			"agentHost.changeset.discardChanges.cancelled": "Discard changes operation was cancelled.",
+			"agentHost.changeset.discardChanges.discarded": "Discarded changes to `{0}`."
+		},
+		"vs/platform/agentHost/node/agentHostDiscardChangesOperationProvider": {
+			"agentHost.changeset.discardChanges": "Discard Changes",
+			"agentHost.changeset.discardChanges.confirmation": "Are you sure you want to discard the changes in '{0}'? This action cannot be undone."
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "Hostitel agenta"
@@ -2309,18 +2356,16 @@
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "Schválení",
-			"claude.sessionConfig.permissionMode.acceptEdits": "Automaticky schvalovat úpravy",
-			"claude.sessionConfig.permissionMode.acceptEditsDescription": "Automaticky schvalovat úpravy souborů. Na prostředí a další nástroje se dotázat.",
-			"claude.sessionConfig.permissionMode.auto": "Automaticky",
-			"claude.sessionConfig.permissionMode.autoDescription": "Nechat klasifikátor modelu vybrat mezi schválením a výzvou pro každé volání.",
-			"claude.sessionConfig.permissionMode.bypassPermissions": "Schválení obcházení",
-			"claude.sessionConfig.permissionMode.bypassPermissionsDescription": "Automaticky schvalovat každé volání nástroje.",
-			"claude.sessionConfig.permissionMode.default": "Pokaždé se zeptat",
-			"claude.sessionConfig.permissionMode.defaultDescription": "Dotázat se na každé volání nástroje.",
-			"claude.sessionConfig.permissionMode.dontAsk": "Neptat se",
-			"claude.sessionConfig.permissionMode.dontAskDescription": "Automaticky schvalovat každé volání nástroje bez dotazování.",
-			"claude.sessionConfig.permissionMode.plan": "Jen plán (jen pro čtení)",
-			"claude.sessionConfig.permissionMode.planDescription": "Režim výzkumu jen pro čtení. Nebyla provedena žádná volání nástrojů.",
+			"claude.sessionConfig.permissionMode.acceptEdits": "Edit Automatically",
+			"claude.sessionConfig.permissionMode.acceptEditsDescription": "Claude edits files without asking, and asks before using other tools.",
+			"claude.sessionConfig.permissionMode.auto": "Auto Mode",
+			"claude.sessionConfig.permissionMode.autoDescription": "Claude decides whether to ask for each tool operation.",
+			"claude.sessionConfig.permissionMode.bypassPermissions": "Bypass Permissions",
+			"claude.sessionConfig.permissionMode.bypassPermissionsDescription": "Claude runs all tools without asking.",
+			"claude.sessionConfig.permissionMode.default": "Ask Before Edits",
+			"claude.sessionConfig.permissionMode.defaultDescription": "Claude asks before editing files.",
+			"claude.sessionConfig.permissionMode.plan": "Plan Mode",
+			"claude.sessionConfig.permissionMode.planDescription": "Claude creates a plan before making changes.",
 			"claude.sessionConfig.permissionModeDescription": "Jak Claude zpracovává schvalování nástrojů.",
 			"claudeAgent.description": "Agent Claude podporovaný sadou Anthropic Claude Agent SDK",
 			"claudeAgent.displayName": "Claude"
@@ -2398,10 +2443,6 @@
 		},
 		"vs/platform/agentHost/node/codex/codexAgent": {
 			"codex.modelThinkingLevel.description": "Určuje, kolik úsilí při uvažování Codex použije.",
-			"codex.modelThinkingLevel.high": "Vysoká",
-			"codex.modelThinkingLevel.low": "Nízká",
-			"codex.modelThinkingLevel.medium": "Střední",
-			"codex.modelThinkingLevel.minimal": "Minimální",
 			"codex.modelThinkingLevel.title": "Úroveň uvažování",
 			"codex.sessionConfig.additionalDirectories": "Další zapisovatelné adresáře",
 			"codex.sessionConfig.additionalDirectories.item": "Adresář",
@@ -2417,13 +2458,23 @@
 			"codex.sessionConfig.approvalPolicy.untrustedDescription": "Ptát se před více kategoriemi příkazů, abyste mohli akce podrobněji zkontrolovat.",
 			"codex.sessionConfig.approvalPolicyDescription": "Jak Codex žádá o schválení volání nástrojů.",
 			"codex.sessionConfig.modelReasoningEffort": "Úsilí při uvažování",
-			"codex.sessionConfig.modelReasoningEffort.high": "Vysoká",
-			"codex.sessionConfig.modelReasoningEffort.low": "Nízká",
-			"codex.sessionConfig.modelReasoningEffort.medium": "Střední",
-			"codex.sessionConfig.modelReasoningEffort.minimal": "Minimální",
 			"codex.sessionConfig.modelReasoningEffortDescription": "Určuje, kolik úsilí při uvažování Codex použije.",
 			"codex.sessionConfig.networkAccessEnabled": "Síť",
 			"codex.sessionConfig.networkAccessEnabledDescription": "Povolit voláním nástrojů v sandboxu odchozí síťové požadavky. Platí jen v případě, že Sandbox je Zápis do pracovního prostoru.",
+			"codex.sessionConfig.personality": "Personality",
+			"codex.sessionConfig.personality.friendly": "Friendly",
+			"codex.sessionConfig.personality.friendlyDescription": "Warmer, more conversational tone.",
+			"codex.sessionConfig.personality.none": "Default",
+			"codex.sessionConfig.personality.noneDescription": "Use Codex's built-in default tone.",
+			"codex.sessionConfig.personality.pragmatic": "Pragmatic",
+			"codex.sessionConfig.personality.pragmaticDescription": "Terse, no-nonsense tone focused on actions.",
+			"codex.sessionConfig.personalityDescription": "Tone Codex uses when communicating.",
+			"codex.sessionConfig.reasoningSummary": "Reasoning Summary",
+			"codex.sessionConfig.reasoningSummary.auto": "Auto",
+			"codex.sessionConfig.reasoningSummary.concise": "Concise",
+			"codex.sessionConfig.reasoningSummary.detailed": "Detailed",
+			"codex.sessionConfig.reasoningSummary.none": "None",
+			"codex.sessionConfig.reasoningSummaryDescription": "How Codex summarizes its reasoning in the response stream.",
 			"codex.sessionConfig.sandboxMode": "Sandbox",
 			"codex.sessionConfig.sandboxMode.dangerFullAccess": "Úplný přístup (nebezpečné)",
 			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "Volání nástrojů mají neomezený přístup k disku a síti.",
@@ -2455,11 +2506,7 @@
 			"copilot.modelContextTier.longerSessionsNoCompaction": "Longer sessions without compaction",
 			"copilot.modelContextTier.title": "Context Size",
 			"copilot.modelThinkingLevel.description": "Určuje, kolik úsilí model věnuje uvažování.",
-			"copilot.modelThinkingLevel.high": "Vysoké",
-			"copilot.modelThinkingLevel.low": "Nízké",
-			"copilot.modelThinkingLevel.medium": "Střední",
 			"copilot.modelThinkingLevel.title": "Úroveň uvažování",
-			"copilot.modelThinkingLevel.xhigh": "Velmi vysoká",
 			"copilotAgent.pluginParseError": "Při analýze modulu plug-in došlo k chybě.",
 			"copilotAgent.worktreeCreated": "Vytvořen izolovaný pracovní strom pro větev {0}"
 		},
@@ -2480,13 +2527,18 @@
 			"agentHost.unsandboxedCommandConfirmation.generic": "Tento příkaz se musí spustit mimo sandbox.",
 			"agentHost.unsandboxedCommandConfirmation.reason": "Důvod opuštění sandboxu: {0}",
 			"agentHost.unsandboxedCommandConfirmation.title.blockedDomains": "Chcete spustit příkaz mimo sandbox pro přístup k {0}?",
-			"agentHost.unsandboxedCommandConfirmation.title.generic": "Spustit příkaz mimo sandbox?"
+			"agentHost.unsandboxedCommandConfirmation.title.generic": "Spustit příkaz mimo sandbox?",
+			"copilotAgent.compactionCompleted": "Compaction completed",
+			"copilotSlashCommand.unsupportedRuntimeResult": "The /{0} command returned an unsupported result."
 		},
 		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
 			"copilotSlashCommand.compact.description": "Uvolněte kontext komprimací historie konverzací.",
+			"copilotSlashCommand.env.description": "Show loaded environment details",
 			"copilotSlashCommand.plan.description": "Vytvořit plán implementace před psaním kódu",
 			"copilotSlashCommand.research.description": "Projděte si podrobné informace o tématu pomocí vyhledávání a webových zdrojů",
-			"copilotSlashCommand.rubberDuck.description": "Získat nezávislé hodnocení aktuálního přístupu"
+			"copilotSlashCommand.review.description": "Run code review agent to analyze changes",
+			"copilotSlashCommand.rubberDuck.description": "Získat nezávislé hodnocení aktuálního přístupu",
+			"copilotSlashCommand.securityReview.description": "Analyze staged and unstaged changes for security vulnerabilities"
 		},
 		"vs/platform/agentHost/node/copilot/copilotSystemNotification": {
 			"agentHost.copilot.systemNotification.agentCompleted": "Agent na pozadí dokončen",
@@ -2499,7 +2551,7 @@
 			"copilot.permission.default.title": "Povolit volání nástroje?",
 			"copilot.permission.mcp.defaultTool": "Nástroj MCP",
 			"copilot.permission.mcp.title": "Povolit volání z {0}?",
-			"copilot.permission.read.title": "Číst soubor?",
+			"copilot.permission.read.title": "Allow reading file outside of workspace?",
 			"copilot.permission.shell.title": "Spustit v terminálu?",
 			"copilot.permission.url.message": "Povolit načítání webového obsahu?",
 			"copilot.permission.url.title": "Načíst adresu URL?",
@@ -2561,6 +2613,7 @@
 			"toolInvoke.webFetchGeneric": "Načítá se adresa URL",
 			"toolInvoke.writeShell": "Odesílá se vstup do prostředí",
 			"toolInvoke.writeShellCmd": "Odesílá se {0} do prostředí",
+			"toolMarkdown.taskComplete": "**Task completed:** {0}",
 			"toolName.applyPatch": "Použít opravu",
 			"toolName.askUser": "Zeptat se uživatele",
 			"toolName.codeReview": "Revize kódu",
@@ -2652,7 +2705,8 @@
 			"browser.contextMenu.reload": "Načíst znovu"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
-			"config.policy.duplicate": "Nelze zaregistrovat {0}. Přidružená zásada {1} je už zaregistrovaná v {2}.",
+			"config.policy.bothPolicyAndReference": "Cannot register '{0}'. A setting must not declare both 'policy' and 'policyReference'.",
+			"config.policy.duplicate": "Cannot register '{0}'. The associated policy {1} is already registered with {2}. To attach another setting to the same policy, use 'policyReference'.",
 			"config.property.duplicate": "Nelze zaregistrovat {0}. Tato vlastnost už je zaregistrovaná.",
 			"config.property.empty": "Nejde zaregistrovat prázdnou vlastnost.",
 			"config.property.languageDefault": "Nelze zaregistrovat {0}. Odpovídá to vzoru vlastnosti \\\\ [. * \\\\]$ pro popis nastavení editoru specifického pro daný jazyk. Použijte příspěvek configurationDefaults.",
@@ -2788,7 +2842,6 @@
 		"vs/platform/extensionManagement/common/abstractExtensionManagementService": {
 			"MarketPlaceDisabled": "Marketplace není povolen.",
 			"incompatible platform": "Rozšíření {0} není pro platformu {2} k dispozici v: {1}.",
-			"incompatibleAPI": "Rozšíření {0} nejde nainstalovat. {1}",
 			"learn why": "Zjistěte proč",
 			"malicious extension": "Rozšíření nelze nainstalovat, protože bylo nahlášeno jako problematické.",
 			"multipleDependentsError": "Rozšíření {0} není možné odinstalovat. Závisí na něm rozšíření {1}, {2} a jedno další.",
@@ -2890,8 +2943,6 @@
 			"invalidManifest": "Neplatný balíček VSIX: package.json není soubor JSON."
 		},
 		"vs/platform/extensions/common/extensionValidator": {
-			"apiProposalMismatch1": "Toto rozšíření používá návrh rozhraní API {0}, který není kompatibilní s aktuální verzí VS Code.",
-			"apiProposalMismatch2": "Toto rozšíření používá návrhy rozhraní API {0} a {1}, které nejsou kompatibilní s aktuální verzí VS Code.",
 			"extensionDescription.activationEvents1": "Vlastnost {0} může být vynechána nebo musí být typu string[].",
 			"extensionDescription.activationEvents2": "Vlastnost {0} by měla být vynechána, pokud rozšíření nemá vlastnost {1} nebo {2}.",
 			"extensionDescription.browser1": "Vlastnost {0} může být vynechána nebo musí být typu string.",
@@ -3836,17 +3887,19 @@
 		},
 		"vs/sessions/browser/layoutActions": {
 			"agentPanelCloseIcon": "Ikona pro zavření panelu",
+			"agentSecondarySidebarToggleClosedIcon": "Icon for the sessions secondary sidebar when closed.",
+			"agentSecondarySidebarToggleOpenIcon": "Icon for the sessions secondary sidebar when open.",
 			"agentSidebarToggleClosedIcon": "Ikona pro boční panel relací při zavření.",
 			"agentSidebarToggleOpenIcon": "Ikona pro boční panel relací při otevření.",
-			"openAndCloseSecondarySidebar": "Otevřít/zobrazit a zavřít/skrýt sekundární boční panel",
+			"closePanel": "Hide Panel",
+			"openAndCloseSidePanel": "Open/Show and Close/Hide the Side Panel (editor area and auxiliary bar)",
 			"openAndCloseSidebar": "Otevřít/zobrazit a zavřít/skrýt boční panel",
-			"secondarySidebarHidden": "Skryt sekundární postranní panel",
-			"secondarySidebarVisible": "Zobrazen sekundární postranní panel",
+			"sidePanelHidden": "Side Panel hidden",
+			"sidePanelVisible": "Side Panel shown",
 			"sidebarHidden": "Skryt primární postranní panel",
 			"sidebarVisible": "Zobrazen primární postranní panel",
-			"togglePanel": "Přepnout viditelnost panelu",
-			"toggleSecondarySidebar": "Přepnout viditelnost sekundárního postranního panelu",
-			"toggleSidebar": "Přepnout viditelnost primárního postranního panelu",
+			"toggleSecondarySidebar": "Toggle Side Panel",
+			"toggleSidebar": "Toggle Side Bar",
 			"toggleWindowAlwaysOnTop": "Přepnout Vždy navrchu"
 		},
 		"vs/sessions/browser/parts/auxiliaryBarPart": {
@@ -3856,7 +3909,7 @@
 			"chatTabsAriaLabel": "Chaty",
 			"closeChat": "Zavřít",
 			"renameChat": "Přejmenovat",
-			"renameChat.prompt": "Přejmenovat chat"
+			"renameChat.aria": "Rename chat"
 		},
 		"vs/sessions/browser/parts/menubar.contribution": {
 			"mEdit": "&&Upravit",
@@ -3970,10 +4023,13 @@
 			"activeSessionWorkspaceIsVirtual": "Určuje, jestli je pracovní prostor aktivní relace virtuální",
 			"activeSessions": "Identifikátor panelu aktivních relací",
 			"chatSessionProviderId": "ID poskytovatele relace v překryvech místní nabídky",
+			"chatSessionSupportsDelete": "Whether a session in context menu overlays can be deleted",
+			"chatSessionSupportsRename": "Whether a session in context menu overlays can be renamed",
 			"chatSessionType": "Typ relace v překryvných nabídkách místní nabídky",
 			"editorMaximized": "Jestli je oblast editoru maximalizovaná",
 			"isActiveSessionArchived": "Určuje, jestli je aktivní relace archivovaná (označená jako dokončená).",
 			"multipleSessionsVisible": "Určuje, jestli je v mřížce části relací viditelná více než jedna relace",
+			"sessionHasChanges": "Whether the session view's session has pending changes (insertions or deletions)",
 			"sessionIsArchived": "Určuje, jestli je relace archivovaná (označená jako dokončená).",
 			"sessionIsCreated": "Určuje, jestli se vytvořila relace zobrazení relace (zobrazené zobrazení chatu, ne zobrazení nové relace)",
 			"sessionIsMaximized": "Určuje, jestli je zobrazení relace aktuálně maximalizované v mřížce části relací",
@@ -4066,9 +4122,9 @@
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedback.contribution": {
 			"agentFeedback.submitFeedbackCount": "Odeslat zpětnou vazbu ({0})"
 		},
-		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachment": {
-			"agentFeedback.many": "Počet komentářů: {0}",
-			"agentFeedback.one": "1 komentář"
+		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachmentEntry": {
+			"agentFeedback.many": "{0} comments",
+			"agentFeedback.one": "1 comment"
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachmentWidget": {
 			"chat.agentFeedback": "Připojená zpětná vazba agenta, {0}",
@@ -4102,7 +4158,7 @@
 			"addToComment": "Přidat do komentáře",
 			"agentReviewComment": "Agent Review",
 			"collapse": "Sbalit",
-			"convertComment": "Převést na zpětnou vazbu agenta",
+			"convertComment": "Accept",
 			"editComment": "Upravit",
 			"expand": "Rozbalit",
 			"lineNumber": "Řádek {0}",
@@ -4120,6 +4176,10 @@
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackOverviewRulerContribution": {
 			"editorOverviewRuler.agentFeedbackForeground": "Barva dekorace přehledového pravítka v editoru pro zpětnou vazbu agenta. Tato barva by měla být neprůhledná."
+		},
+		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackReviewCommands": {
+			"agentFeedbackReview.agentReview": "Agent Review",
+			"agentFeedbackReview.prReview": "PR Review"
 		},
 		"vs/sessions/contrib/agentHost/browser/agentHostSessionBranchActions": {
 			"copySessionBranchName": "Kopírovat název větve relace"
@@ -4226,12 +4286,10 @@
 			"miChanges": "Změ&&ny",
 			"sessions.changes.openSingleFileDiff": "Určuje, jestli kliknutí na soubor v zobrazení Změny otevře editor rozdílů pro jeden soubor místo editoru rozdílů pro více souborů."
 		},
-		"vs/sessions/contrib/changes/browser/changesTitleBarWidget": {
-			"agentSecondarySidebarToggleClosedIcon": "Ikona pro sekundární boční panel relací při zavření",
-			"agentSecondarySidebarToggleOpenIcon": "Ikona pro sekundární boční panel relací při otevření",
-			"hideChanges": "Skrýt změny",
-			"showChanges": "Zobrazit změny",
-			"toggleSecondarySidebarTooltip": "Přepnout viditelnost sekundárního postranního panelu"
+		"vs/sessions/contrib/changes/browser/changesActions": {
+			"agentSessions.viewChanges": "View All Changes",
+			"agentSessions.viewChanges.tooltip": "View All Changes",
+			"sessions.changes.title": "Session Changes"
 		},
 		"vs/sessions/contrib/changes/browser/changesView": {
 			"changes": "Změny",
@@ -4275,6 +4333,7 @@
 			"skillUI.commit": "Používá se tlačítkem Potvrdit na panelu nástrojů Změny",
 			"skillUI.createDraftPr": "Používá se tlačítkem Vytvořit koncept žádosti o přijetí změn na panelu nástrojů Změny",
 			"skillUI.createPr": "Používá se tlačítkem Vytvořit žádost o přijetí změn na panelu nástrojů Změny",
+			"skillUI.fixCi": "Used by the Fix Checks button in the Changes toolbar",
 			"skillUI.generateRunCommands": "Používá se tlačítkem Spustit v záhlaví",
 			"skillUI.mergeChanges": "Používá se tlačítkem Sloučit na panelu nástrojů Změny",
 			"skillUI.updatePr": "Používá se tlačítkem Aktualizovat žádost o přijetí změn na panelu nástrojů Změny"
@@ -4316,6 +4375,9 @@
 			"chatInput.accessibilityHelp": "Vstup chatu Stisknutím klávesy Enter odešlete žádost. Nápovědu k funkcím přístupnosti chatu zobrazíte pomocí {0}.",
 			"chatInput.accessibilityHelpNoKb": "Vstup chatu Stisknutím klávesy Enter odešlete žádost. Další informace získáte pomocí příkazu Nápověda k funkcím přístupnosti chatu.",
 			"loading": "Načítání...",
+			"newChatInput.status.otel.learnMore": "Learn More",
+			"newChatInput.status.otel.manage": "Manage",
+			"newChatInput.status.otel.title": "Monitoring with OpenTelemetry enabled",
 			"send": "Odeslat",
 			"sendWithBackgroundHint": "Odeslat (stisknutím klávesy Alt spustíte na pozadí)",
 			"sessionsChatInput.placeholder.describeTheOutcome": "Popište požadovaný výsledek",
@@ -4336,9 +4398,9 @@
 		},
 		"vs/sessions/contrib/chat/browser/newChatInSessionWidget": {
 			"newChatInSessionPlaceholder": "Zeptejte se na doplňující otázku nebo začněte nové téma v rámci této relace...",
-			"subSessionTip.ariaLabel": "Tip k dílčí relaci",
+			"subSessionTip.ariaLabel": "New chat tip",
 			"subSessionTip.dismiss": "Zavřít tip",
-			"subSessionTip.message": "Toto je dílčí relace, nový chat ve stejném pracovním prostoru. Použijte ji k pokládání otázek, spouštění úloh nebo zkoumání nápadů s novým kontextem."
+			"subSessionTip.message": "Start a parallel conversation to build on all the changes made in this session."
 		},
 		"vs/sessions/contrib/chat/browser/newChatWidget": {
 			"newSessionChooseWorkspace": "Začněte tím, že vyberete",
@@ -4437,10 +4499,13 @@
 			"sessionsChat.navigatePreviousSession": "Přejít na předchozí relaci v seznamu {0}",
 			"sessionsChat.overview": "Nacházíte se v okně Agenti. Okno Agenti je vyhrazený pracovní prostor pro práci s agenty AI. Poskytuje rozhraní chatu, zobrazení změn pro kontrolu změn generovaných agenty, průzkumníka souborů a možnosti přizpůsobení.",
 			"sessionsChat.sessionsView": "Přepněte fokus na zobrazení Relace chatu{0}.",
+			"sessionsChat.toggleSidePanel": "Toggle the side panel (the editor area together with the auxiliary bar) open or closed{0}.",
+			"sessionsChat.viewAllChanges": "The session header shows the diff stats (lines added and removed) as a button. Activate it to open the multi-file diff editor for all of the session's changes{0}.",
 			"sessionsChat.workspace": "Stisknutím kombinace kláves Shift+Tabulátor přejděte na výběr pracovního prostoru a zvolte pracovní prostor pro svou relaci."
 		},
 		"vs/sessions/contrib/chat/browser/sessionTypePicker": {
 			"sessionTypePicker.ariaLabel": "Typ relace",
+			"sessionTypePicker.itemAriaLabel": "{0}, {1}",
 			"sessionTypePicker.triggerAriaLabel": "Vybrat typ relace, {0}"
 		},
 		"vs/sessions/contrib/chat/browser/sessionWorkspacePicker": {
@@ -4643,15 +4708,9 @@
 			"lastTurnChangesDescription": "Zobrazit pouze změny provedené v posledním kroku"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionConfigPicker": {
-			"agentHostAutoApprove.autopilot.warning.detail": "Autopilot automaticky schválí všechny volání nástrojů a bude pokračovat v práci samostatně, dokud nebude úkol dokončen. To zahrnuje příkazy terminálu, úpravy souborů a volání externích nástrojů. Zástupce bude ve vašem jménu činit rozhodnutí, aniž by vás o to žádal o souhlas.\r\n\r\nAgent můžete kdykoli zastavit kliknutím na tlačítko „Zastavit“. To platí pouze pro aktuální relaci.",
-			"agentHostAutoApprove.autopilot.warning.title": "Povolit Autopilota?",
-			"agentHostAutoApprove.bypass.warning.detail": "Funkce „Bypass Approvals“ automaticky schválí všechna volání nástrojů bez žádosti o potvrzení. To zahrnuje úpravy souborů, příkazy v terminálu a volání externích nástrojů.",
-			"agentHostAutoApprove.bypass.warning.title": "Povolit obejití schvalování?",
-			"agentHostAutoApprove.warning.cancel": "Zrušit",
-			"agentHostAutoApprove.warning.confirm": "Povolit",
-			"agentHostAutoApprove.warning.detailWithDefaultSetting": "{0}\r\n\r\nChcete-li tuto úroveň oprávnění nastavit jako výchozí pro nové relace chatu, změňte nastavení [{1}](command:workbench.action.openSettings?%5B%22{1}%22%5D).",
 			"agentHostNewSessionApprovePicker": "Schválení relací",
 			"agentHostNewSessionModePicker": "Režim agenta",
+			"agentHostNewSessionPermissionModePicker": "Approvals",
 			"agentHostRunningSessionConfigPicker": "Schválení relací",
 			"agentHostRunningSessionModePicker": "Režim agenta",
 			"agentHostRunningSessionPermissionModePicker": "Schválení",
@@ -4669,8 +4728,7 @@
 			"mobileAgentHostSessionConfig.repoSheet.branchSearchPlaceholder": "Hledat větve",
 			"mobileAgentHostSessionConfig.repoSheet.branchSection": "Základní větev",
 			"mobileAgentHostSessionConfig.repoSheet.isolationSection": "Izolace",
-			"mobileAgentHostSessionConfig.repoSheet.title": "Pracovní strom",
-			"selected": "(vybráno)"
+			"mobileAgentHostSessionConfig.repoSheet.title": "Pracovní strom"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSettings.contribution": {
 			"agentHostSettings.label": "Nastavení hostitele",
@@ -4699,8 +4757,12 @@
 			"agentSessionSettings.saveHint": "Upravte níže uvedené hodnoty a uložte je, aby se tyto změny projevily. Neznámé nebo neměnné vlastnosti se ignorují."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/baseAgentHostSessionsProvider": {
-			"copilotCLI": "Rozhraní příkazového řádku Copilota",
+			"copilotCLI": "Copilot",
+			"deleteChat.confirm": "Are you sure you want to delete this chat?",
+			"deleteChat.delete": "Delete",
+			"deleteChat.detail": "This action cannot be undone.",
 			"new session": "Nová relace",
+			"newChatTab": "New Chat",
 			"noAgents": "Hostitel agenta zatím neinzeroval žádné agenty.",
 			"notConnectedSend": "Nelze odeslat žádost: Nepřipojeno k hostiteli agenta."
 		},
@@ -4743,7 +4805,6 @@
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessionsActions": {
 			"branchPicker": "Větev",
 			"claudePermissionModePicker": "Režim oprávnění",
-			"deleteSession": "Odstranit...",
 			"isolationPicker": "Režim izolace",
 			"modePicker": "Režim",
 			"permissionPicker": "Oprávnění"
@@ -4766,10 +4827,6 @@
 			"deleteChat.confirm": "Opravdu chcete odstranit tento chat?",
 			"deleteChat.delete": "Odstranit",
 			"deleteChat.detail": "Tato akce je nevratná",
-			"deleteSession.confirm": "Opravdu chcete tuto relaci odstranit?",
-			"deleteSession.delete": "Odstranit",
-			"deleteSession.detail": "Tato akce je nevratná",
-			"deleteSession.detailMultiple": "Tato operace odstraní všechny chaty (celkem {0}) v této relaci. Tato akce je nevratná.",
 			"new chat": "Nový chat",
 			"new session": "Nová relace",
 			"repositories": "Úložiště",
@@ -4783,12 +4840,6 @@
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/mobilePermissionPicker": {
 			"permissionPicker.title": "Schválení",
-			"permissions.autoApprove": "Obejít schválení",
-			"permissions.autoApprove.subtext": "Všechny žádosti o nástroje jsou automaticky schvalovány",
-			"permissions.autopilot": "Autopilot (Preview)",
-			"permissions.autopilot.subtext": "Samostatně provádí cyklus od začátku do konce",
-			"permissions.default": "Výchozí schválení",
-			"permissions.default.subtext": "Copilot využívá vaše nastavené parametry",
 			"permissions.learnMore": "Další informace o oprávněních"
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/modePicker": {
@@ -4800,14 +4851,11 @@
 			"permissionPicker.ariaLabel": "Výběr oprávnění",
 			"permissionPicker.triggerAriaLabel": "Vybrat úroveň oprávnění, {0}",
 			"permissions.autoApprove": "Obejít schválení",
-			"permissions.autoApprove.label": "Obejít schválení",
 			"permissions.autoApprove.subtext": "Všechny žádosti o nástroje jsou automaticky schvalovány",
 			"permissions.autopilot": "Autopilot (Preview)",
 			"permissions.autopilot.description": "Umožňuje automaticky schvalovat všechna volání nástrojů a pokračovat, dokud nebude úloha dokončena. Při použití funkce Autopilot může dojít ke zvýšení nákladů.",
-			"permissions.autopilot.label": "Autopilot (Preview)",
 			"permissions.autopilot.subtext": "Samostatně provádí cyklus od začátku do konce",
 			"permissions.default": "Výchozí schválení",
-			"permissions.default.label": "Výchozí schválení",
 			"permissions.default.subtext": "Copilot využívá vaše nastavené parametry",
 			"permissions.learnMore": "Další informace o oprávněních"
 		},
@@ -4818,7 +4866,7 @@
 			"deleteChat.confirm": "Opravdu chcete odstranit tento chat?",
 			"deleteChat.delete": "Odstranit",
 			"deleteChat.detail": "Tato akce je nevratná",
-			"localChatSessionsProvider": "Místní chat",
+			"localChatSessionsProvider": "Copilot Chat",
 			"localSession": "Místní",
 			"newChat": "Nový chat",
 			"newSession": "Nová relace"
@@ -4910,6 +4958,10 @@
 			"tunnelNoneFound": "Nenašly se žádné vývojové tunely s podporou hostitele agenta. Spusťte tunel pomocí příkazu „code tunnel“ na jiném počítači.",
 			"tunnelPickPlaceholder": "Vyberte vývojový tunel, ke kterému se chcete připojit",
 			"tunnelPickTitle": "Připojit přes vývojový tunel",
+			"updateRemoteAgentHost": "Update Remote Agent Host Server...",
+			"updateRemoteAgentHost.none": "No remote agent hosts need updating.",
+			"updateRemoteAgentHost.noneUpgradable": "No remote agent hosts can be updated from here. Incompatible hosts must be updated manually, then reconnected.",
+			"updateRemoteAgentHost.pick": "Select a remote agent host to update",
 			"wslConnectFailed": "Nepovedlo se připojit k distribuci WSL {0}: {1}",
 			"wslConnecting": "Připojování k distribuci WSL {0}...",
 			"wslDistroDefault": "Výchozí distribuce",
@@ -5239,8 +5291,14 @@
 			"archiveSession": "Označit jako dokončené",
 			"closeSession": "Zavřít relaci",
 			"collapseAllGroups": "Sbalit všechny skupiny",
+			"deleteSession": "Delete...",
+			"deleteSession.confirm": "Are you sure you want to delete this session?",
+			"deleteSession.delete": "Delete",
+			"deleteSession.detail": "This action cannot be undone.",
+			"deleteSession.error": "Failed to delete the session: {0}",
+			"deleteSessions.confirm": "Are you sure you want to delete {0} sessions?",
+			"deleteSessions.error": "Failed to delete the sessions: {0}",
 			"doNotAskAgain": "Tento dotaz příště nezobrazovat",
-			"doNotAskAgain2": "Tento dotaz příště nezobrazovat",
 			"filter": "Filtr",
 			"filterSessions": "Filtrovat relace",
 			"find": "Najít relaci",
@@ -5266,9 +5324,6 @@
 			"showRecentSessions": "Zobrazit poslední relace",
 			"sortByCreated": "Seřadit podle vytvoření",
 			"sortByUpdated": "Seřadit podle aktualizace",
-			"unarchiveSection": "Obnovit vše",
-			"unarchiveSectionSessions.confirm": "Opravdu chcete obnovit {0} relace/relací?",
-			"unarchiveSectionSessions.unarchive": "Obnovit vše",
 			"unarchiveSession": "Obnovit",
 			"unpinSession": "Odepnout"
 		},
@@ -6975,6 +7030,7 @@
 			"menuBarVisibility": "Určuje viditelnost řádku nabídek. Nastavení toggle znamená, že řádek nabídek je skrytý a zobrazí se jedním stisknutím klávesy Alt. Nastavení compact přesune nabídku na boční panel.",
 			"menuBarVisibility.mac": "Určuje viditelnost řádku nabídek. Nastavení toggle znamená, že řádek nabídek je skrytý a zobrazí se spuštěním příkazu Nastavit fokus na nabídku aplikace. Nastavení compact přesune nabídku na boční panel.",
 			"mergeWindow": "Nakonfigurujte interval v sekundách, během něhož se poslední zadaná položka v místní historii souboru nahradí položkou, která se přidává. To pomáhá snížit celkový počet přidávaných položek, když je například povolené automatické ukládání. Toto nastavení se použije jen u položek, který mají totožný zdrojový původ. Změna tohoto nastavení nemá žádný vliv na existující položky místní historie souboru.",
+			"modernUI": "Controls whether the experimental Modern UI Update is enabled. When on, the side bars and bottom panel are shown as floating cards with rounded corners and gaps, and a set of refreshed workbench styles is applied, matching the Agents window design.",
 			"mouseBackForwardToNavigate": "Povolí použití čtvrtého a pátého tlačítka na myši pro příkazy Přejít zpět a přejít vpřed",
 			"navigationControlEnabled": "Určuje, jestli se ovládací prvek navigace zobrazí ve vlastním záhlaví. Toto nastavení má efekt pouze v případě, že vlastnost {0} není nastavena na hodnotu {1}.",
 			"navigationControlEnabledWeb": "Určuje, jestli je ovládací prvek navigace zobrazený v záhlaví.",
@@ -7462,6 +7518,7 @@
 			"revealUserDataFolder": "Zobrazit složku uživatelských dat",
 			"showContentTracing": "Zobrazit trasování obsahu",
 			"showGPUInfo": "Zobrazit informace o GPU",
+			"startHeapTracing": "Start Heap Tracing",
 			"startTracing": "Spustit trasování",
 			"startTracing.ariaLabel": "Zaznamenává se trasování výkonu. Kliknutím zastavíte nahrávání.",
 			"startTracing.name": "Trasování výkonu",
@@ -7789,6 +7846,7 @@
 			"verbosity.replEditor.description": "Zadejte informace o tom, jak získat přístup k nabídce nápovědy pro usnadnění přístupu k editoru REPL, když je fokus na editoru REPL.",
 			"verbosity.scm": "Zadejte informace o tom, jak získat přístup k nabídce nápovědy pro usnadnění přístupu ke správě zdrojového kódu, když je fokus na vstupu.",
 			"verbosity.sessionsChat": "Umožňuje zadat informace o tom, jak získat přístup k nabídce nápovědy pro přístupnost okna Agenti, když je fokus na vstupu chatu.",
+			"verbosity.survey": "Provide information about how to navigate and interact with the survey editor pane.",
 			"verbosity.terminal.description": "Zadejte informace o tom, jak přistupovat k nabídce nápovědy k funkcím terminálu, když je fokus na terminálu.",
 			"verbosity.terminalChatOutput.description": "Zadejte informace o tom, jak otevřít výstup terminálu chatu v zobrazení s podporou přístupnosti.",
 			"verbosity.walkthrough": "Zadejte informace o tom, jak otevřít podrobný návod v zobrazení s podporou přístupnosti.",
@@ -7870,14 +7928,36 @@
 			"agents.voice.alwaysOnTop": "Keep the Voice Mode window always on top of other windows.",
 			"agents.voice.backendUrl": "Voice backend WebSocket URL. Leave empty to use the default hosted backend. Set to e.g. `ws://localhost:8000/api/v1/realtime/voice` to point at a backend running on your machine.",
 			"agents.voice.enabled": "Enable the Voice Mode panel in the chat view for voice-driven coding conversations.",
+			"agents.voice.showTranscript": "Show the voice transcript overlay in the chat input area while voice mode is active.",
 			"agents.voice.textToSpeech": "When enabled, the assistant reads responses aloud. When disabled, responses appear as text transcripts only.",
+			"agentsVoice.connecting": "Connecting...",
+			"agentsVoice.disconnect": "Disconnect Voice Mode",
+			"agentsVoice.pttStopInChat": "Voice Mode: Stop Recording",
+			"agentsVoice.simulateConnection": "Voice: Simulate Connection (Dev)",
+			"agentsVoice.startVoiceInChat": "Voice Mode",
 			"agentsVoiceConfigurationTitle": "Voice Mode",
 			"agentsVoicePushToTalk": "Voice Mode: Push to Talk",
 			"resetAgentsVoiceOnboarding": "Voice: Reset Onboarding",
 			"toggleAgentsVoiceWindow": "Voice Mode"
 		},
+		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceSessionsPicker": {
+			"voiceSessions.placeholder": "Select a session for voice input",
+			"voiceSessions.setTarget": "Set as voice target"
+		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidget": {
-			"agentsVoice.feedbackError": "Failed to submit"
+			"agentsVoice.clickMicToTalk": "Click mic to talk",
+			"agentsVoice.collapseSessions": "Collapse sessions",
+			"agentsVoice.configureKeybinding": "Configure keybinding",
+			"agentsVoice.disconnect": "Disconnect",
+			"agentsVoice.feedbackError": "Failed to submit",
+			"agentsVoice.holdToTalk": "Hold {0} to talk",
+			"agentsVoice.listening": "Listening",
+			"agentsVoice.minimize": "Minimize",
+			"agentsVoice.pushToTalk": "Push to talk",
+			"agentsVoice.pushToTalkKey": "Push to talk ({0})",
+			"agentsVoice.pushToTalkSpace": "Push to talk (Space)",
+			"agentsVoice.sendFeedback": "Send feedback",
+			"agentsVoice.sessions": "Sessions"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidgetBinding": {
 			"agentsVoice.chat": "Chat",
@@ -7900,8 +7980,10 @@
 			"agentsVoice.submitting": "Submitting..."
 		},
 		"vs/workbench/contrib/agentsVoice/browser/components/headerComponent": {
+			"agentsVoice.clickMicToTalk": "Click mic to talk",
 			"agentsVoice.configureKeybinding": "Configure keybinding",
 			"agentsVoice.disconnect": "Disconnect",
+			"agentsVoice.holdToTalk": "Hold {0} to talk",
 			"agentsVoice.minimize": "Minimize",
 			"agentsVoice.openMiniView": "Open mini-view",
 			"agentsVoice.pushToTalkSpace": "Push to talk (Space)",
@@ -7927,7 +8009,6 @@
 			"agentsVoice.newSession": "New session",
 			"agentsVoice.noActiveSessions": "No active sessions",
 			"agentsVoice.openInVSCode": "Open in VS Code",
-			"agentsVoice.openSessionAction": "Open session",
 			"agentsVoice.sendTo": "Send to",
 			"agentsVoice.sendToActive": "Send to (active)",
 			"agentsVoice.stop": "Stop",
@@ -7935,9 +8016,15 @@
 		},
 		"vs/workbench/contrib/agentsVoice/browser/components/statusRowsComponent": {
 			"agentsVoice.done": "done",
+			"agentsVoice.jumpToSession": "Jump to session",
 			"agentsVoice.needsInput": "needs input",
 			"agentsVoice.noActiveSessions": "No active sessions",
 			"agentsVoice.working": "working"
+		},
+		"vs/workbench/contrib/agentsVoice/browser/components/voiceBarComponent": {
+			"agentsVoice.listening": "Listening",
+			"agentsVoice.speaking": "Speaking...",
+			"agentsVoice.stopSpeech": "Stop speech"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/transcriptsView/voiceTranscripts.contribution": {
 			"agentsVoice.showTranscripts": "Show Voice Transcripts",
@@ -8219,7 +8306,7 @@
 			"browser.errorUrlLabel": "Adresa URL:",
 			"browser.loadErrorLabel": "Nepovedlo se načíst stránku",
 			"browser.notSecure": "Není zabezpečeno",
-			"browser.remoteErrorExtraWarning": "This usually means the host is not available or could not be reached from the remote."
+			"browser.remoteErrorExtraWarning": "This usually means the host could not be found.\r\nEnsure the URL is correct and the server is accessible from the remote machine."
 		},
 		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
 			"browser.findNextAction": "Najít další",
@@ -8678,6 +8765,7 @@
 			"insertTroubleshootSlashCommand": "Vložit příkaz pro řešení problémů",
 			"insertTroubleshootSlashCommand.short": "Vložit /řešení problémů",
 			"interactiveSession.clearHistory.label": "Vymazat historii vstupu",
+			"interactiveSession.compactAgentHostConversation.label": "Compact Conversation",
 			"interactiveSession.focusInput.label": "Vstup chatu na intenzivní práci",
 			"interactiveSession.focusQuestionCarousel.label": "Chat: Přepnutí fokusu mezi otázkou a vstupem",
 			"interactiveSession.focusQuestionCarouselTerminal.label": "Chat: Přepnout fokus na terminál z karuselu otázek",
@@ -8746,6 +8834,9 @@
 			"workbench.action.chat.attachSelection.label": "Přidat výběr do chatu"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatContinueInAction": {
+			"chat.delegation.inlinePrompt": "The following is the conversation history from a previous {0} session. Continue working on it.\r\n\r\n{1}\r\n\r\nUser: {2}",
+			"chat.delegation.transcriptContent": "The following is the conversation history from a previous {0} session. Continue working on it.\r\n\r\n{1}",
+			"chat.delegation.transcriptName": "Previous conversation",
 			"chat.learnMore": "Další informace",
 			"continueChatInSession": "Pokračovat v chatu za...",
 			"continueIn": "Pokračovat za",
@@ -8944,6 +9035,11 @@
 			"configToolSets": "Konfigurovat sady nástrojů...",
 			"configureTools": "Konfigurovat nástroje",
 			"defaultBucketLabel": "Předdefinované",
+			"deleteToolSet.confirm.detail": "This removes the tool set definition from {0}.",
+			"deleteToolSet.confirm.message": "Delete tool set '{0}'?",
+			"deleteToolSet.confirm.primary": "Delete",
+			"deleteToolSet.error": "Failed to delete tool set '{0}': {1}",
+			"deleteUserBucket": "Delete Tool Set",
 			"editUserBucket": "Upravit sadu nástrojů",
 			"manageToolApproval": "Správa schvalování",
 			"mcpShowOutput": "Zobrazit výstup",
@@ -8995,6 +9091,8 @@
 			"exportDebugLogs.folderDialogTitle": "Vybrat složku pro protokoly ladění hostitele agenta",
 			"exportDebugLogs.noFiles.activeSession": "Pro aktivní relaci hostitele agenta nebyly nalezeny žádné soubory protokolu.",
 			"exportDebugLogs.noFiles.currentWindow": "Pro aktuální okno nebyly nalezeny žádné soubory protokolu hostitele agenta.",
+			"exportDebugLogs.privacyWarning": "Note: This log may contain personal information such as auth tokens, file contents, or terminal output. Please consider sharing privately or reviewing the contents carefully before sharing.",
+			"exportDebugLogs.privacyWarning.internal": "Note: This log may contain personal information such as auth tokens, file contents, or terminal output. It MUST be shared privately via Slack or in an issue filed on the microsoft/vscode-internalbacklog repo.",
 			"exportDebugLogs.saveError": "Nepovedlo se uložit protokoly ladění: {0}"
 		},
 		"vs/workbench/contrib/chat/browser/actions/openCopilotCliStateFileAction": {
@@ -9045,7 +9143,6 @@
 			"update": "Aktualizace"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} – Hostitel agenta",
 			"agentHostHarnessLabel.local": "{0} [hostitel agenta]"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
@@ -9057,8 +9154,7 @@
 			"agentHostChatInputPicker.filter": "Filtrovat...",
 			"agentHostChatInputPicker.learnMorePermissions": "Další informace o oprávněních",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
-			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, jen pro čtení",
-			"selected": "(vybráno)"
+			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, jen pro čtení"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "Automaticky schválit",
@@ -9087,12 +9183,18 @@
 			"agentHost.forkedSessionLabel": "Forkovaná relace",
 			"agentHost.responseDetails.credit": "Kredit {0}",
 			"agentHost.responseDetails.credits": "Kredity: {0}",
-			"agentHost.turnError": "Error: ({0}) {1}"
+			"agentHost.turnError": "Error: ({0}) {1}",
+			"agentHost.workspaceTrust": "AI features are currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
 			"agentHostTerminal.local": "Místní"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
+			"agentFeedback.many": "{0} comments",
+			"agentFeedback.one": "1 comment",
+			"agentFeedback.reveal": "Reveal Selected",
+			"agentFeedback.reviewMessage": "Choose which comments to reveal to the agent. Unchecked comments stay hidden.",
+			"agentFeedback.reviewTitle": "Reveal unreviewed comments?",
 			"ahp.running": "Spuštěno: {0}…"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
@@ -9114,7 +9216,7 @@
 			"chat.session.providerDescription.codex": "Otevře novou relaci Codexu v editoru. Relace Codexu lze spravovat ze zobrazení relací chatu.",
 			"chat.session.providerDescription.growth": "Přečtěte si o funkcích Copilota.",
 			"chat.session.providerDescription.local": "Umožňuje spouštět úlohy v chatu VS Code. Agent iteruje prostřednictvím chatu a interaktivně implementuje změny v hlavním pracovním prostoru.",
-			"chat.session.providerLabel.agentHostCopilot": "Rozhraní příkazového řádku Copilota [hostitel agenta]",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot",
 			"chat.session.providerLabel.background": "Rozhraní příkazového řádku Copilotu",
 			"chat.session.providerLabel.cloud": "Cloud",
 			"chat.session.providerLabel.local": "Místní"
@@ -9322,6 +9424,11 @@
 			"showAgentSessionsQuickAccess": "Zobrazit relace agenta",
 			"showCommandsQuickAccess": "Zobrazit příkazy (sjednocené)",
 			"showFilesQuickAccess": "Zobrazit soubory (sjednocené)"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/localAgentDisabledInputTipContribution": {
+			"chat.localAgentDisabled.continueInAgentHostCopilot.action": "Continue In Agent Host",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.description": "You can bring your local harness history into a new chat with the agent host. To keep using the local harness instead and hide this notification, set \"chat.editor.localAgent.enabled\" to true.",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.message": "Continue using the agent host."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/sessionTypeAvailability": {
 			"chat.sessionType.noModels": "No models available",
@@ -9812,6 +9919,7 @@
 			"chat.agentHost.ahpJsonlLogging": "Když je tato možnost povolená, protokoluje všechny přenosové zprávy AHP pro připojení hostitele agenta do souborů JSONL v adresáři protokolů okna.",
 			"chat.agentHost.clientTools": "Názvy odkazů na nástroje, které se mají v relacích hostitele agentů zpřístupnit jako nástroje poskytované klientem.",
 			"chat.agentHost.customTerminalTool.enabled": "Pokud je tato možnost povolená, relace sady Copilot SDK místo výchozího chování terminálu sady SDK používají přepsání nástroje terminálu Hostitele agenta.",
+			"chat.agentHost.opus48Prompt.enabled": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
 			"chat.agentHost.sdkSandbox.enabled": "Sandbox mode for the Copilot SDK's built-in shell tool. Only takes effect when `#chat.agentHost.customTerminalTool.enabled#` is `false`; when the Agent Host's own terminal tool is enabled, the engine sandbox is controlled by `#chat.agent.sandbox.enabled#`.",
 			"chat.agentHost.sdkSandbox.enabled.allowNetwork": "The SDK's built-in shell tool runs inside a sandbox with unrestricted outbound network access.",
 			"chat.agentHost.sdkSandbox.enabled.off": "No sandbox policy is forwarded for the SDK's built-in shell tool — commands run unsandboxed.",
@@ -9853,9 +9961,16 @@
 			"chat.contextUsage.enabled": "Umožňuje zobrazit indikátor využití kontextového okna ve vstupu chatu.",
 			"chat.customizations.harnessSelector.enabled": "Určuje, jestli se na postranním panelu editoru Přizpůsobení chatu zobrazí selektor harness. Pokud je tato možnost zakázaná, editor vždy zobrazí všechna vlastní nastavení bez filtrování.",
 			"chat.customizations.structuredPreview.enabled": "Určuje, jestli editor Přizpůsobení chatu zobrazuje strukturovaný náhled pro soubory přizpůsobení ve formátu markdown (agenti, dovednosti, instrukce, výzvy). Když je tato možnost vypnutá, editor vždy otevře nezpracovaný markdown ve vloženém editoru kódu.",
+			"chat.defaultConfiguration.approvals.autoApprove": "Bypass Approvals — all tool calls are auto-approved.",
+			"chat.defaultConfiguration.approvals.default": "Default Approvals — Copilot uses your configured settings.",
+			"chat.defaultConfiguration.approvals.description": "The starting approval behavior for new agent sessions. If enterprise policy disables auto approval, new sessions use Default Approvals.",
+			"chat.defaultConfiguration.mode.autopilot": "Autopilot — autonomously iterate from start to finish.",
+			"chat.defaultConfiguration.mode.description": "The starting mode for new agent sessions.",
+			"chat.defaultConfiguration.mode.interactive": "Interactive — step-by-step collaboration.",
+			"chat.defaultConfiguration.mode.plan": "Plan — plan first, execute when ready.",
+			"chat.defaultConfiguration.settingDescription": "Controls the default configuration (mode and approval behavior) for new agent sessions (such as Copilot CLI). You can still change the mode and approval level per session, and each session remembers what was used.",
 			"chat.detectParticipant.enabled": "Povolí automatickou detekci účastníka chatu pro panelový chat.",
 			"chat.disableAIFeatures": "Zakažte a skryjte integrované funkce AI poskytované GitHub Copilotem, včetně chatu a vložených návrhů.",
-			"chat.editMode.hidden": "Pokud je tato možnost povolená, skryje režim úprav v nabídce výběru režimu chatu.",
 			"chat.editRequests": "Umožňuje upravovat žádosti v chatu. To vám umožní změnit obsah žádosti a znovu ji odeslat do modelu.",
 			"chat.editing.autoAcceptDelay": "Prodleva, po které se změny provedené v chatu automaticky přijmou. Hodnoty jsou v sekundách, `0` znamená zakázáno a `100` sekund je maximum.",
 			"chat.editing.confirmEditRequestRemoval": "Určuje, jestli se má před odebráním žádosti a přidružených úprav zobrazit potvrzení.",
@@ -9866,6 +9981,7 @@
 			"chat.editor.claude.preferAgentHost": "When enabled, Claude sessions opened from the regular workbench (sidebar chat) run inside the agent host process instead of the GitHub Copilot Chat extension. Only one Claude implementation surfaces per window.",
 			"chat.editorAssociations": "Nakonfigurujte [glob patterns](https://aka.ms/vscode-glob-patterns) pro editory k otevírání souborů z chatu (například `\"*.md\": \"vscode.markdown.preview.editor\"`).",
 			"chat.exitAfterDelegation": "Určuje, jestli se panel chatu po delegování žádosti do jiné relace automaticky ukončí.",
+			"chat.experimental.collectInstructionsInExtension": "When enabled, automatic instruction collection (.instructions.md, agent instructions, customizations index) is performed by the GitHub Copilot Chat extension instead of the core workbench.",
 			"chat.experimental.detectParticipant.enabled": "Povolí automatickou detekci účastníka chatu pro panelový chat.",
 			"chat.experimental.detectParticipant.enabled.deprecated": "Toto nastavení je zastaralé. Místo toho prosím použijte nastavení chat.detectParticipant.enabled.",
 			"chat.experimental.incrementalRendering.animationStyle": "Určuje styl animace pro postupné vykreslování.",
@@ -9945,19 +10061,19 @@
 			"chat.permissions.default.autopilot.label": "Autopilot (Preview)",
 			"chat.permissions.default.default.description": "Nové relace chatu spouští s režimem Výchozí schválení.",
 			"chat.permissions.default.default.label": "Výchozí schválení",
-			"chat.permissions.default.settingDescription": "Určuje výchozí režim výběru oprávnění pro nové relace chatu. Režim oprávnění můžete u každé relace pořád změnit a každá relace si pamatuje naposledy použitý režim oprávnění. Když podniková zásada zakáže automatické schvalování, nové relace používají režim Výchozí schválení.",
+			"chat.permissions.default.settingDescription": "Controls the default permissions picker mode for new local chat sessions. You can still change the permission mode per session, and each session remembers the permission mode that was used. If enterprise policy disables auto approval, new sessions use Default Approvals.",
 			"chat.persistentProgress.enabled": "Vždy zobrazovat průběh v chatu.",
 			"chat.planAgent.defaultModel.description": "Vyberte výchozí jazykový model, který se má použít pro agenta plánu od dostupných poskytovatelů.",
 			"chat.planReview.inlineEditor.enabled": "Když je tato možnost povolená, widget kontroly plánu připojí editor vloženě, a ne na samostatné kartě editoru.",
 			"chat.pluginLocations": "Adresáře modulů plug-in, které se mají zjistit. Každý klíč je cesta, která odkazuje přímo na složku modulu plug-in, a hodnota ji povolí (`true`) nebo zakáže (`false`). Cesty mohou být absolutní, relativní vůči kořenovému adresáři pracovního prostoru nebo začínat znakem `~/`, který označuje domovský adresář uživatele.",
 			"chat.plugins.enabled": "Povolte integraci modulu plug-in agenta v chatu.",
-			"chat.plugins.enabledPlugins": "Povolení modulu plug-in spravovaného podnikem. Klíče jsou ID modulů plug-in ve formátu `<plugin>@<marketplace>` (přeložené na instalační cesty Copilot CLI); hodnoty modul plug-in povolí (`true`) nebo zakážou (`false`). Zjišťuje se spolu s položkami s klíčem cesty v {0}. Když se to nastaví pomocí zásad, také to omezí, které moduly plug-in zjištěné v marketplace se můžou načíst (kontrolou projdou jen ID namapovaná zde na `true`).",
-			"chat.plugins.enabledPlugins.policy": "Povolení modulu plug-in. Klíče jsou ID modulů plug-in ve formátu `<plugin>@<marketplace>`; hodnoty modul povolí nebo zakážou.",
+			"chat.plugins.enabledPlugins": "Controls which [agent plugins](https://aka.ms/vscode-agent-plugins) are enabled or disabled. Keys are plugin IDs in `<plugin>@<marketplace>` form (where marketplace is defined in {1}); values enable (`true`) or disable (`false`) the plugin. Discovered alongside the path-keyed entries in {0}. When set by policy, only plugins mapped to `true` here are allowed to load.",
+			"chat.plugins.enabledPlugins.policy": "Plugin enablement. Keys are plugin IDs in `{plugin}@{marketplace}` form; values enable or disable the plugin.",
 			"chat.plugins.extraMarketplaces": "Další marketplace modulů plug-in spravované podnikem. Sjednoceno s {0}.",
-			"chat.plugins.extraMarketplaces.policy": "Další marketplace modulů plug-in pro dotazování. Klíče jsou názvy marketplace. hodnoty jsou zkratka GitHubu (`owner/repo[#ref]`) nebo identifikátory URI Gitu (`<url>[#ref]`).",
+			"chat.plugins.extraMarketplaces.policy": "Additional plugin marketplaces to query. Keys are marketplace names; values are GitHub shorthand (`owner/repo[#ref]`) or Git URIs (`{url}[#ref]`).",
 			"chat.plugins.marketplaces": "Marketplace modulů plug-in pro dotazování. Položky mohou být zkratkou GitHubu (`owner/repo` nebo `owner/repo#ref`), přímými identifikátory URI úložiště Git (`https://...git`, `ssh://...git` nebo `git@host:path.git`, každý volitelně s příponou `#ref`), nebo identifikátory URI místního úložiště (`file:///...`). Ekvivalentní zkratka GitHubu a položky identifikátoru URI se deduplikují.",
-			"chat.plugins.strictMarketplaces": "Pokud je tato možnost povolená, jsou důvěryhodné jenom marketplace dodané prostřednictvím podnikových zásad. Moduly plug-in z jiného marketplace se nenačtou.",
-			"chat.plugins.strictMarketplaces.policy": "Pouze důvěryhodné marketplace poskytnuté prostřednictvím podnikových zásad; moduly plug-in z jiného marketplace se nenačtou.",
+			"chat.plugins.strictMarketplaces": "Enterprise-managed allowlist of plugin marketplace sources. When set, only marketplaces matching one of these entries can be installed; an empty array blocks all marketplaces. This does not retroactively disable already-installed plugins. Each entry is an object with a `source` discriminator (`github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`, or `pathPattern`) and the corresponding fields. Typically delivered via enterprise policy.",
+			"chat.plugins.strictMarketplaces.policy": "Allowlist of plugin marketplace sources. When set, only marketplaces matching an entry are trusted; an empty array blocks all marketplaces.",
 			"chat.progressBorder.enabled": "Zobrazovat kolem vstupu chatu animované ohraničení s přechodem, když agent pracuje nebo přemýšlí. Pokud je tato možnost povolená a není povolený omezený pohyb, přepíše funkci {0} tak, aby byla vypnutá. Nemá žádný efekt, pokud je povolený omezený pohyb.",
 			"chat.promptFileLocations.invalidPath": "Cesty musí být relativní nebo začínat znakem ~/. Absolutní cesty a oddělovače \\ nejsou podporovány. Vzory glob jsou zastaralé a budou odstraněny v budoucích verzích.",
 			"chat.promptFilesRecommendations.description": "V uvítacím zobrazení chatu nakonfigurujte, které soubory výzev se mají doporučit. Každý klíč je název souboru výzvy a hodnota může být true, aby se vždy doporučovala, false, aby se nikdy nedoporučovala, nebo výraz [when clause](https://aka.ms/vscode-when-clause), jako je resourceExtname == .js nebo resourceLangId == markdown.",
@@ -10034,6 +10150,16 @@
 			"mcp.enterpriseManagedAuth.idp.policy": "Konfigurace zprostředkovatele identity OAuth/OIDC použitá k ověřování serveru MCP (Model Context Protocol) spravovaného podnikem. Dodává se prostřednictvím podnikových zásad (Windows: zásady skupiny, macOS: spravované předvolby, Linux: `/etc/vscode/policy.json`).",
 			"mcp.gallery.serviceUrl": "Nakonfigurovat adresu URL služby Galerie MCP pro připojení k",
 			"mcp.list": "Vypsat servery"
+		},
+		"vs/workbench/contrib/chat/browser/chatDebug/agentHostChatDebugProvider": {
+			"agentHost.debug.fullPrompt": "Full Prompt",
+			"agentHost.debug.reasoning": "Reasoning",
+			"agentHost.debug.response": "Response",
+			"agentHost.debug.sessionStarted": "Session Started",
+			"agentHost.debug.sessionStartedDetails": "model={0}, reasoningEffort={1}",
+			"agentHost.debug.sessionStartedModel": "model={0}",
+			"agentHost.debug.untitledSession": "Copilot CLI Session {0}",
+			"agentHost.debug.userRequest": "User Request"
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/chatCustomizationDiscoveryRenderer": {
 			"chatDebug.configureLocations": "Konfigurovat místa",
@@ -10619,8 +10745,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatManagement/chatModelsWidget": {
 			"Search.FullTextSearchPlaceholder": "Zadejte hledaný text...",
-			"cacheCost.ariaLabel.plural": "Náklady na mezipaměť: {0} kredity/ů na 1 milion tokenů",
-			"cacheCost.ariaLabel.singular": "Náklady na mezipaměť: {0} kredit na 1 milion tokenů",
+			"cacheCost.ariaLabel.plural": "Cache read cost: {0} credits per 1M tokens",
+			"cacheCost.ariaLabel.singular": "Cache read cost: {0} credit per 1M tokens",
+			"cacheWriteCost.ariaLabel.plural": "Cache write cost: {0} credits per 1M tokens",
+			"cacheWriteCost.ariaLabel.singular": "Cache write cost: {0} credit per 1M tokens",
 			"capabilities": "Funkce",
 			"capability.agent": "Režim agenta",
 			"capability.tools": "Nástroje",
@@ -10629,9 +10757,12 @@
 			"collapse": "Sbalit",
 			"collapseAll": "Sbalit vše",
 			"cost": "Náklady (kredity na 1 milion tokenů)",
-			"cost.cache": "Mezipaměť: {0}",
-			"cost.cacheHover.plural": "Mezipaměť: {0} kred. na 1 milion tokenů",
-			"cost.cacheHover.singular": "Mezipaměť: {0} kredit na 1 milion tokenů",
+			"cost.cacheHover.plural": "Cache Read: {0} credits per 1M tokens",
+			"cost.cacheHover.singular": "Cache Read: {0} credit per 1M tokens",
+			"cost.cacheRead": "Cache Read: {0}",
+			"cost.cacheWrite": "Cache Write: {0}",
+			"cost.cacheWriteHover.plural": "Cache Write: {0} credits per 1M tokens",
+			"cost.cacheWriteHover.singular": "Cache Write: {0} credit per 1M tokens",
 			"cost.input": "V: {0}",
 			"cost.inputHover.plural": "Vstup: {0} kred. na 1 milion tokenů",
 			"cost.inputHover.singular": "Vstup: {0} kredit na 1 milion tokenů",
@@ -10652,8 +10783,10 @@
 			"modelName": "Název",
 			"models.addModel": "Přidat model",
 			"models.agentMode": "Režim agenta",
-			"models.cacheCost.plural": "Náklady na mezipaměť: {0} kred. na 1 milion tokenů",
-			"models.cacheCost.singular": "Náklady na mezipaměť: {0} kredit na 1 milion tokenů",
+			"models.cacheCost.plural": "Cache Read Cost: {0} credits per 1M tokens",
+			"models.cacheCost.singular": "Cache Read Cost: {0} credit per 1M tokens",
+			"models.cacheWriteCost.plural": "Cache Write Cost: {0} credits per 1M tokens",
+			"models.cacheWriteCost.singular": "Cache Write Cost: {0} credit per 1M tokens",
 			"models.capabilities": "Funkce",
 			"models.configureModel": "Konfigurovat...",
 			"models.contextSize": "Velikost kontextu",
@@ -10667,8 +10800,10 @@
 			"models.inputCost.plural": "Náklady na vstup: {0} kred. na 1 milion tokenů",
 			"models.inputCost.singular": "Náklady na vstup: {0} kredit na 1 milion tokenů",
 			"models.installProviderExtensions": "Install Model Providers",
-			"models.longContextCacheCost.plural": "Náklady na mezipaměť: {0} kred. na 1 milion tokenů",
-			"models.longContextCacheCost.singular": "Náklady na mezipaměť: {0} kredit na 1 milion tokenů",
+			"models.longContextCacheCost.plural": "Cache Read Cost: {0} credits per 1M tokens",
+			"models.longContextCacheCost.singular": "Cache Read Cost: {0} credit per 1M tokens",
+			"models.longContextCacheWriteCost.plural": "Cache Write Cost: {0} credits per 1M tokens",
+			"models.longContextCacheWriteCost.singular": "Cache Write Cost: {0} credit per 1M tokens",
 			"models.longContextInputCost.plural": "Náklady na vstup: {0} kred. na 1 milion tokenů",
 			"models.longContextInputCost.singular": "Náklady na vstup: {0} kredit na 1 milion tokenů",
 			"models.longContextOutputCost.plural": "Náklady na výstup: {0} kred. na 1 milion tokenů",
@@ -10986,14 +11121,13 @@
 			"upgrade": "Upgradovat"
 		},
 		"vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry": {
-			"chatAndCompletionsQuotaExceededStatus": "Dosáhli jste kvóty",
-			"chatQuotaExceededStatus": "Bylo dosaženo kvóty chatu",
+			"chatQuotaExceededStatus": "Quota reached",
+			"chatResumedStatus": "Copilot Resumed",
 			"chatSessionInProgressStatus": "Probíhá 1 relace agenta",
 			"chatSessionsInProgressStatus": "{0} probíhajících relací agenta",
 			"chatStatus": "Stav Copilotu",
 			"chatStatusAria": "Stav Copilotu",
 			"completionsDisabledStatus": "Vložené návrhy jsou zakázané",
-			"completionsQuotaExceededStatus": "Dosáhlo se limitu pro vložené návrhy",
 			"completionsSnoozedStatus": "Vložené návrhy odloženy",
 			"copilotDisabledStatus": "Copilot zakázán",
 			"signIn": "Přihlásit se"
@@ -11095,12 +11229,14 @@
 			"pluginSourceNotFound": "Po naklonování nebyl nalezen zdroj pluginu {0}.",
 			"selectPlugin": "Vyberte plugin, který chcete nainstalovat, z {0}",
 			"showOutput": "Zobrazit výstup",
+			"strictMarketplaceBlockedInstall": "Plugins from '{0}' are blocked by your organization's policy.",
 			"trustAndInstall": "&&Důvěra",
 			"trustMarketplace": "Důvěřovat pluginům z {0}?",
 			"trustMarketplaceDetail": "Pluginy mohou na vašem počítači spouštět kód. Instalujte pouze pluginy z důvěryhodných zdrojů.\r\n\r\nZdroj: {0}",
 			"updateAllFailed": "Aktualizace se nezdařila: {0}",
 			"updateAllSuccess": "Aktualizované pluginy: {0}",
-			"updatingAllPlugins": "Aktualizace pluginů..."
+			"updatingAllPlugins": "Aktualizace pluginů...",
+			"viewPolicySettings": "View Policy Settings"
 		},
 		"vs/workbench/contrib/chat/browser/pluginSources": {
 			"checkoutPluginSourceFailed": "Nepodařilo se zkontrolovat plugin {0} podle požadované revize: {1}",
@@ -11297,6 +11433,10 @@
 			"configure-tools.capitalized.ellipsis": "Konfigurovat nástroje...",
 			"placeholder": "Vybrat nástroje"
 		},
+		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolSetsCodeLensProvider": {
+			"configure-tools.capitalized.ellipsis": "Configure Tools...",
+			"placeholder": "Select tools"
+		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptUrlHandler": {
 			"confirmInstallAgent": "Externí aplikace chce vytvořit vlastního agenta s obsahem z adresy URL. Chcete pokračovat výběrem cílové složky a názvu?",
 			"confirmInstallInstructions": "Externí aplikace chce vytvořit soubor s pokyny s obsahem z adresy URL. Chcete pokračovat výběrem cílové složky a názvu?",
@@ -11413,6 +11553,8 @@
 			"bad_name2": "{0} není platný název souboru.",
 			"chat.configureToolSets": "Konfigurovat sady nástrojů...",
 			"chat.configureToolSets.add": "Vytvořit nový soubor sad nástrojů...",
+			"chat.configureToolSets.createFromCurrentSelection": "Create from current selection...",
+			"chat.configureToolSets.fileAlreadyExists": "A file with this name already exists",
 			"chat.configureToolSets.placeholder": "Vyberte sadu nástrojů, která se má nakonfigurovat",
 			"chat.configureToolSets.short": "Sady nástrojů",
 			"input.placeholder": "Zadejte název souboru sad nástrojů",
@@ -11421,6 +11563,8 @@
 			"schema.icon": "Ikona, která se má použít pro tuto sadu nástrojů v uživatelském rozhraní Používá syntaxi \\$(name), například \\$(zap).",
 			"schema.tools": "Seznam nástrojů nebo sad nástrojů, které se mají zahrnout do této sady nástrojů Nemůže být prázdné a musí odkazovat na nástroje způsobem, na který se ve výzvách odkazuje.",
 			"tool.description": "{1} ({0})\r\n\r\n{2}",
+			"toolSetName.bad_name": "Tool set name cannot be empty",
+			"toolSetName.placeholder": "Type new tool set name",
 			"toolsetSchema.json": "Konfigurace uživatelských sad nástrojů"
 		},
 		"vs/workbench/contrib/chat/browser/tools/usagesTool": {
@@ -11646,10 +11790,8 @@
 			"submit": "Odeslat"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatQuotaExceededPart": {
-			"clickToContinue": "Kliknutím to můžete zkusit znovu.",
 			"manageBudget": "Spravovat rozpočet",
-			"upgradeToCopilotPro": "Upgradovat na plán GitHub Copilot Pro",
-			"waitWarning": "Změny se můžou projevit až za několik minut."
+			"upgradeToCopilotPro": "Upgradovat na plán GitHub Copilot Pro"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatReferencesContentPart": {
 			"addToChat": "Přidat soubor do chatu",
@@ -11794,6 +11936,16 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/abstractToolConfirmationSubPart": {
 			"skip": "Přeskočit"
+		},
+		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatAgentFeedbackReviewConfirmationSubPart": {
+			"agentFeedback.cancel": "Cancel",
+			"agentFeedback.collapseComment": "Show Less",
+			"agentFeedback.delete": "Delete Comment",
+			"agentFeedback.expandComment": "Show More",
+			"agentFeedback.none": "No unreviewed comments.",
+			"agentFeedback.openFile": "Open File and Reveal Comment",
+			"agentFeedback.reveal": "Reveal Selected",
+			"agentFeedback.revealComment": "Reveal this comment to the agent"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatExtensionsInstallToolSubPart": {
 			"allow": "Povolit",
@@ -12008,12 +12160,11 @@
 			"chatInput.mode.edit": "(Upravit), upravit soubory ve vašem pracovním prostoru.",
 			"chatInput.model": ", {0}. "
 		},
-		"vs/workbench/contrib/chat/browser/widget/input/chatInputStatusActionViewItem": {
-			"chat.inputStatus.otel.manageSettings": "Spravovat nastavení",
-			"chat.inputStatus.otel.title": "Agent monitorovaný prostřednictvím [OpenTelemetry]({0})"
-		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatModelPicker": {
-			"chat.effort.costHint": "Vyšší úrovně uvažování můžou zvýšit náklady",
+			"chat.category.lightweight": "Lightweight",
+			"chat.category.powerful": "Powerful",
+			"chat.category.versatile": "Versatile",
+			"chat.config.costHint": "Non-default options may increase cost",
 			"chat.effort.header": "Úroveň uvažování",
 			"chat.manageModels": "Spravovat modely…",
 			"chat.manageModels.tooltip": "Spravovat jazykové modely",
@@ -12023,9 +12174,9 @@
 			"chat.modelPicker.ariaLabel": "Vybrat model, {0}",
 			"chat.modelPicker.auto": "Automaticky",
 			"chat.modelPicker.checkUpdateHover": "Tento model vyžaduje novější verzi VS Code. [Aktualizujte VS Code](command:update.checkForUpdate), abyste k němu získali přístup.",
+			"chat.modelPicker.configTooltip": "Configure Model",
 			"chat.modelPicker.downloadUpdateHover": "Tento model vyžaduje novější verzi VS Code. [Stáhněte si aktualizaci](command:update.downloadUpdate), abyste k němu získali přístup.",
 			"chat.modelPicker.effortAriaLabel": "Úroveň uvažování: {0}",
-			"chat.modelPicker.effortTooltip": "Nastavit úroveň uvažování",
 			"chat.modelPicker.noModels": "No models available",
 			"chat.modelPicker.otherModels": "Ostatní modely",
 			"chat.modelPicker.pin": "Připnout model",
@@ -12033,7 +12184,6 @@
 			"chat.modelPicker.restartUpdateHover": "Tento model vyžaduje novější verzi VS Code. [Proveďte restart, abyste nainstalovali aktualizaci](command:update.restartToUpdate) a získali k němu přístup.",
 			"chat.modelPicker.search": "Hledat modely",
 			"chat.modelPicker.tokensAriaLabel": "Velikost kontextu: {0}",
-			"chat.modelPicker.tokensTooltip": "Nastavit velikost kontextu",
 			"chat.modelPicker.unpin": "Odepnout model",
 			"chat.modelPicker.updateDescription": "Aktualizovat VS Code",
 			"chat.modelPicker.upgradeHover": "Pokud chcete používat nejlepší modely, [přejděte na GitHub Copilot Pro](command:workbench.action.chat.upgradePlan \" \").",
@@ -12044,20 +12194,18 @@
 			"chat.priceCategory.medium": "Střední náklady",
 			"chat.priceCategory.unknown": "{0} – náklady",
 			"chat.priceCategory.veryHigh": "Velmi vysoké náklady",
-			"chat.tokens.costHint": "Větší kontext může zvýšit náklady",
 			"chat.tokens.header": "Velikost kontextu",
-			"models.cacheCostLabel": "Vstup v mezipaměti",
-			"models.configurable": "Konfigurovatelné:",
+			"models.cacheCostLabel": "Cache Read",
+			"models.cacheWriteCostLabel": "Cache Write",
+			"models.configDefault": "Default",
+			"models.configurable": "Configurable",
 			"models.contextSize": "Maximální kontext",
 			"models.cost": "Náklady: {0}",
-			"models.costValuePlural": "{0} kreditů",
-			"models.costValueSingular": "Kredit {0}",
-			"models.effortDefault": "{0} (výchozí)",
+			"models.creditsPerMillionTokens": "Credits Per 1M Tokens",
+			"models.defaultContext": "Default",
 			"models.inputCostLabel": "Vstup",
-			"models.longContextPriceTitle": "Náklady na dlouhý kontext (za 1 milion tokenů)",
-			"models.outputCostLabel": "Výstup",
-			"models.priceCategoryTitle": "Náklady",
-			"models.priceTitle": "Náklady (za 1M tokenů)"
+			"models.longContext": "Long Context",
+			"models.outputCostLabel": "Výstup"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter": {
 			"chatPhoneInput.autoLabel": "Automaticky",
@@ -12122,21 +12270,19 @@
 			"permissions.autoApprove": "Schválení obcházení",
 			"permissions.autoApprove.description": "Automaticky schvalovat všechna volání nástrojů a v případě chyby provést opakovaný pokus",
 			"permissions.autoApprove.label": "Schválení obcházení",
-			"permissions.autoApprove.policyDescription": "Zablokováno podnikovou politikou",
-			"permissions.autoApprove.policyDisabled": "Zablokováno podnikovou politikou",
 			"permissions.autoApprove.subtext": "Všechny žádosti o nástroje jsou automaticky schvalovány",
 			"permissions.autopilot": "Autopilot (Preview)",
 			"permissions.autopilot.description": "Umožňuje automaticky schvalovat všechna volání nástrojů a pokračovat, dokud nebude úloha dokončena. Při použití funkce Autopilot může dojít ke zvýšení nákladů.",
 			"permissions.autopilot.label": "Autopilot (Preview)",
-			"permissions.autopilot.policyDescription": "Zablokováno podnikovou politikou",
-			"permissions.autopilot.policyDisabled": "Zablokováno podnikovou politikou",
 			"permissions.autopilot.subtext": "Samostatně provádí cyklus od začátku do konce",
 			"permissions.default": "Výchozí schválení",
 			"permissions.default.description": "Použít nakonfigurovaná nastavení schvalování",
 			"permissions.default.label": "Výchozí schválení",
 			"permissions.default.subtext": "Copilot využívá vaše nastavené parametry",
 			"permissions.ext.locked": "Tato možnost je uzamčená",
-			"permissions.learnMore": "Další informace o oprávněních"
+			"permissions.learnMore": "Další informace o oprávněních",
+			"permissions.policyDescription": "Disabled by enterprise policy",
+			"permissions.policyDisabled": "Disabled by enterprise policy"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "Další informace o typech agentů...",
@@ -12171,6 +12317,10 @@
 			"outputReserved": "Vyhrazeno pro odpověď",
 			"qualityWarning": "Kvalita se může snížit při blížícím se limitu.",
 			"quotaDisplay": "{0} %",
+			"sessionCost": "Session Cost",
+			"sessionCostCredit": "{0} credit",
+			"sessionCostCredits": "{0} credits",
+			"sessionInfo": "Session Info",
 			"tokenCount": "{0} / {1} tokeny/ů",
 			"uncategorized": "Nezařazené do kategorie"
 		},
@@ -12179,11 +12329,12 @@
 			"contextUsagePercentageLabel": "Využití kontextového okna: {0}%"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewPane": {
-			"agentsVoice.voiceChatTitle": "Voice Mode",
 			"chat.loadSessionFailed": "Nepodařilo se otevřít relaci chatu: {0}",
 			"newSession": "Nová relace",
 			"sessionInProgress": "Probíhá 1 relace agenta",
-			"sessions": "Relace"
+			"sessions": "Relace",
+			"voiceMode.clickMicHint": "Click mic to talk",
+			"voiceMode.pttHint": "Press {0} to talk"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewTitleControl": {
 			"chat": "Chat",
@@ -12203,6 +12354,7 @@
 			"agentSessionsViewerPosition": "Pozice zobrazení relací agenta v zobrazení chatu",
 			"agentSessionsViewerVisible": "Viditelnost zobrazení relací agenta v zobrazení chatu.",
 			"agentSupportsAttachments": "True, pokud chatovací agent podporuje přílohy.",
+			"chatAgentHostProviderId": "The Agent Host provider ID when the chat widget is locked to an Agent Host session.",
 			"chatAgentModeDisabledByPolicy": "True, pokud zásady organizace zakazují režim agenta.",
 			"chatContextUsageHasBeenOpened": "True, pokud uživatel otevřel podrobnosti o použití okna kontextu.",
 			"chatEditApplied": "True, pokud se použily úpravy textu chatu.",
@@ -12218,8 +12370,10 @@
 			"chatHasAgents": "True, pokud má chat k dispozici vlastní agenty.",
 			"chatHasCanDelegateProviders": "True, pokud jsou k dispozici poskytovatelé relací chatu s podporou delegování.",
 			"chatHasFileAttachments": "True, pokud má chat přiložené soubory.",
+			"chatHasPendingDelegationTarget": "True when a delegation (continue in) target is selected but the request has not been submitted yet.",
 			"chatHasPendingRequests": "True, pokud ve frontě existují čekající požadavky.",
 			"chatHasUsedCreateSlashCommands": "True, pokud uživatel použil některý z příkazů s lomítkem /create-*.",
+			"chatIsAgentHostSession": "True when the chat widget is locked to an Agent Host session.",
 			"chatIsEnabled": "True, pokud je chat povolen, protože je aktivován výchozí účastník chatu s implementací.",
 			"chatIsKatexMathElement": "True, pokud je fokus na matematickém elementu KaTeX.",
 			"chatItemId": "ID položky chatu",
@@ -12310,7 +12464,7 @@
 			"chatError.offTopic": "Sorry, but I can only assist with programming related questions.",
 			"chatError.quota.additionalSpend": "You've reached your additional usage limit for your plan. Upgrade your plan to keep going.",
 			"chatError.quota.business": "You've exhausted your credits. To continue working, please contact your organization's Copilot admin or wait for your allowance to renew.",
-			"chatError.quota.default": "You've exhausted your premium model quota. To continue working, switch to Auto. For additional paid premium requests, please reach out to your organization's Copilot admin or wait for your allowance to renew.",
+			"chatError.quota.default": "You've exhausted your premium model quota. For additional paid premium requests, please reach out to your organization's Copilot admin or wait for your allowance to renew.",
 			"chatError.quota.free": "You've reached your monthly chat messages quota. Upgrade to Copilot Pro or wait for your allowance to renew.",
 			"chatError.quota.generic": "Quota Exceeded",
 			"chatError.quota.individual": "You've exhausted your premium model quota. Please enable additional paid premium requests, upgrade to Copilot Pro+, or wait for your allowance to renew.",
@@ -12319,8 +12473,8 @@
 			"chatError.quota.server": "Quota Exceeded\r\n\r\nServer Error: {0}\r\nError Code: {1}",
 			"chatError.quota.ubb.business": "You've reached your credit limit. To continue working, please contact your organization's Copilot admin or wait for your credits to reset.",
 			"chatError.quota.ubb.businessDate": "You've reached your credit limit. To continue working, please contact your organization's Copilot admin or wait until your credits reset on {0}.",
-			"chatError.quota.ubb.default": "You've reached your credit limit. To continue working, switch to Auto. For additional paid credits, please reach out to your organization's Copilot admin or wait for your credits to reset.",
-			"chatError.quota.ubb.defaultDate": "You've reached your credit limit. To continue working, switch to Auto. For additional paid credits, please reach out to your organization's Copilot admin or wait until your credits reset on {0}.",
+			"chatError.quota.ubb.default": "You've reached your credit limit. For additional paid credits, please reach out to your organization's Copilot admin or wait for your credits to reset.",
+			"chatError.quota.ubb.defaultDate": "You've reached your credit limit. For additional paid credits, please reach out to your organization's Copilot admin or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.free": "You've reached your monthly credit limit. Upgrade to Copilot Pro or wait for your credits to reset.",
 			"chatError.quota.ubb.freeDate": "You've reached your monthly credit limit. Upgrade to Copilot Pro or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.individual": "You've reached your monthly credit limit. Please enable additional paid credits, upgrade to Copilot Pro+, or wait for your credits to reset.",
@@ -12359,14 +12513,13 @@
 			"editsDescription": "Upravit nebo refaktorovat vybraný kód"
 		},
 		"vs/workbench/contrib/chat/common/chatPermissionWarnings": {
-			"permissions.autoApprove.warning.cancel": "Zrušit",
 			"permissions.autoApprove.warning.confirm": "Povolit",
-			"permissions.autoApprove.warning.detail": "Funkce Schválení obcházení automaticky schválí všechna volání nástrojů bez žádosti o potvrzení. To zahrnuje úpravy souborů, příkazy v terminálu a volání externích nástrojů.\r\n\r\nChcete-li tuto úroveň oprávnění nastavit jako výchozí pro nové relace chatu, změňte nastavení [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D).",
+			"permissions.autoApprove.warning.detail": "Bypass Approvals will auto-approve all tool calls without asking for confirmation. This includes file edits, terminal commands, and external tool calls.\r\n\r\nTo make this the starting permission level for new sessions, change the [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) setting.",
 			"permissions.autoApprove.warning.title": "Povolit obejití schvalování?",
-			"permissions.autopilot.warning.cancel": "Zrušit",
 			"permissions.autopilot.warning.confirm": "Povolit",
-			"permissions.autopilot.warning.detail": "Autopilot automaticky schválí všechny volání nástrojů a bude pokračovat v práci samostatně, dokud nebude úkol dokončen. To zahrnuje příkazy terminálu, úpravy souborů a volání externích nástrojů. Agent bude za vás činit rozhodnutí, aniž by vás žádal o souhlas.\r\n\r\nAgenta můžete kdykoli zastavit kliknutím na tlačítko Zastavit. Platí to pouze pro aktuální relaci.\r\n\r\nChcete-li tuto úroveň oprávnění nastavit jako výchozí pro nové relace chatu, změňte nastavení [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D).",
+			"permissions.autopilot.warning.detail": "Autopilot will auto-approve all tool calls and continue working autonomously until the task is complete. This includes terminal commands, file edits, and external tool calls. The agent will make decisions on your behalf without asking for confirmation.\r\n\r\nYou can stop the agent at any time by clicking the stop button. This applies to the current session only.\r\n\r\nTo make this the starting permission level for new sessions, change the [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) setting.",
 			"permissions.autopilot.warning.title": "Povolit autopilota?",
+			"permissions.warning.cancel": "Cancel",
 			"permissions.warning.dontShowAgain": "Příště už nezobrazovat"
 		},
 		"vs/workbench/contrib/chat/common/chatService/chatServiceImpl": {
@@ -12834,7 +12987,7 @@
 			"promptsUserDataFolder": "Uživatelská data"
 		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/askQuestionsTool": {
-			"askQuestionsTool.invalidOptions": "Otázka {0} musí mít alespoň dvě možnosti, nebo žádné v případě vstupu ve formě volného textu.",
+			"askQuestionsTool.invalidOptions": "Question \"{0}\" must have at least two options, or set allowFreeformInput when providing a single option, or omit options for free text input.",
 			"askQuestionsTool.invocation.multiple": "Pokládání otázek: {0} ({1})",
 			"askQuestionsTool.invocation.multiple.past": "Položené otázky: {0} ({1})",
 			"askQuestionsTool.invocation.single": "Pokládání otázky ({0})",
@@ -13616,10 +13769,10 @@
 			"contributes.displayName": "Lidsky čitelný název vlastního editoru. Zobrazí se uživatelům při výběru editoru, který se má použít.",
 			"contributes.priority": "Určuje, jestli je vlastní editor povolený automaticky, když uživatel otevře editor souborů, rozdílů nebo sloučení. Tuto možnost můžou přepsat uživatelé pomocí nastavení `workbench.editorAssociations` nebo `workbench.diffEditorAssociations`.",
 			"contributes.priority.default": "Editor se použije automaticky, když uživatel otevře prostředek, za předpokladu, že pro tento prostředek nejsou zaregistrovány žádné jiné výchozí vlastní editory.",
-			"contributes.priority.diff": "Určuje, jestli se vlastní editor automaticky povolí, když uživatel otevře rozdíl. Pokud není zadáno, použije se hodnota `editor`.",
-			"contributes.priority.editor": "Určuje, jestli je vlastní editor povolen automaticky, když uživatel otevře soubor.",
-			"contributes.priority.merge": "Určuje, jestli se vlastní editor automaticky povolí, když uživatel otevře editor sloučení. Pokud není zadáno, použije se hodnota `editor`.",
+			"contributes.priority.diffEditor": "Controls if the custom editor is enabled automatically when the user opens a diff. When not specified, the value of `textEditor` is used.",
+			"contributes.priority.mergeEditor": "Controls if the custom editor is enabled automatically when the user opens a merge editor. When not specified, the value of `textEditor` is used.",
 			"contributes.priority.option": "Editor se nepoužije automaticky, když uživatel otevře daný prostředek, uživatel ale může přepnout do editoru pomocí příkazu Znovu otevřít pomocí.",
+			"contributes.priority.textEditor": "Controls if the custom editor is enabled automatically when the user opens a file. This is the base value: when `diffEditor` or `mergeEditor` are not specified, they fall back to this value.",
 			"contributes.selector": "Sada vzorů glob, pro kterou je vlastní editor povolen",
 			"contributes.selector.filenamePattern": "Vzor glob, pro který je vlastní editor povolen",
 			"contributes.viewType": "Identifikátor vlastního editoru. Tato hodnota musí být jedinečná napříč všemi vlastními editory, proto doporučujeme zahrnout ID rozšíření do hodnoty nastavení viewType. Nastavení viewType se používá při registraci vlastních editorů pomocí nastavení vscode.registerCustomEditorProvider a v [aktivační události](https://code.visualstudio.com/api/references/activation-events) onCustomEditor:${id}.",
@@ -14913,7 +15066,7 @@
 			"Uninstalling": "Probíhá odinstalace.",
 			"VS Code for Web": "{0} pro Web",
 			"auto update message": "[Zkontrolujte rozšíření]({0}) a aktualizujte ho ručně.",
-			"autoUpdateDelayed": "Toto rozšíření se ještě neaktualizovalo, protože nové verze se automaticky instalují 2 hodiny po jejich publikování. Bude automaticky aktualizováno {0}.",
+			"autoUpdateDelayed": "This extension is not updated yet because new versions are auto updated {0} after they are published. It will be auto updated {1}.",
 			"cancel": "Zrušit",
 			"cannot be installed": "Rozšíření {0} není v {1} k dispozici. Další informace získáte kliknutím na Další informace.",
 			"check logs": "Další podrobnosti najdete v [protokolu]({0}).",
@@ -16268,19 +16421,13 @@
 			"issueReporterEditorInputName": "Report Issue",
 			"issueReporterIcon": "Icon for the issue reporter editor."
 		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
 		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
 			"abExperiments": "A/B Experiments",
 			"additionalInformation": "Additional Information",
 			"additionalPerformanceData": "Additional Performance Data",
 			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
+			"agentsWindow": "Agents Window",
+			"agentsWindowPlaceholder": "E.g. Sessions list does not refresh after creating a new session",
 			"attachments": "Attachments ({0})",
 			"back": "Back",
 			"bug": "Bug",
@@ -16298,9 +16445,6 @@
 			"descriptionPlaceholder": "Describe the issue in detail...",
 			"descriptionRequired": "Enter a description to continue.",
 			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
 			"extension": "Extension",
 			"extensionData": "Extension Data",
 			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
@@ -16317,9 +16461,6 @@
 			"generateTitleBtn": "Generate from description",
 			"generatingTitle": "Generating...",
 			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
 			"issueTargetRepo": "Issue will be created in {0}/{1}.",
 			"issueTitle": "Title",
 			"issueTitlePlaceholder": "Brief summary of the issue",
@@ -16332,7 +16473,6 @@
 			"marketplace": "Extensions Marketplace",
 			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
 			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
 			"next": "Next",
 			"noDelay": "No delay",
 			"noDescription": "(no description)",
@@ -16341,6 +16481,7 @@
 			"openExternalIssueReporter": "Open External Issue Reporter",
 			"or": "or",
 			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
+			"perfWikiLink": "See the performance issue reporting guide.",
 			"performanceIssue": "Performance Issue",
 			"previewOnGitHub": "Preview on GitHub",
 			"recordVideo": "Record video",
@@ -16349,6 +16490,7 @@
 			"refresh": "Refresh",
 			"refreshPerformanceData": "Reload running processes and workspace metadata",
 			"reportIssue": "Report Issue",
+			"reviewGuidanceLabelWizard": "Before you report an issue here please [review the guidance we provide](https://github.com/microsoft/vscode/wiki/Submitting-Bugs-and-Suggestions). Please complete the form in English.",
 			"reviewSubmit": "Review and submit",
 			"runningProcesses": "Running Processes",
 			"screenshot": "Screenshot",
@@ -16483,6 +16625,14 @@
 			"openIssueReporter": "Open Issue Reporter",
 			"reportPerformanceIssue": "Report Performance Issue...",
 			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
+		},
+		"vs/workbench/contrib/issue/electron-browser/issueReporterEditorPane": {
+			"noData": "No issue reporter data available.",
+			"noExperiments": "No current experiments.",
+			"openSystemSettings": "Open System Settings",
+			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
+			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
+			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
 		},
 		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
 			"noCurrentExperiments": "No current experiments.",
@@ -16963,6 +17113,8 @@
 			"mcp.servers.browse": "Procházet servery MCP...",
 			"mcp.servers.discovery": "Přidat z jiné aplikace...",
 			"mcp.target..remote.description": "K dispozici na tomto vzdáleném počítači, běží na {0}",
+			"mcp.target.agentHost": "Add to Current Agent Session",
+			"mcp.target.local": "Install Server Locally...",
 			"mcp.target.placeholder": "Vyberte cíl konfigurace",
 			"mcp.target.remote": "Vzdálené",
 			"mcp.target.title": "Přidat server MCP",
@@ -18440,10 +18592,13 @@
 			"settings.focusFile": "Přepnout fokus na soubor nastavení",
 			"settings.focusLevelUp": "Přesunout fokus o jednu úroveň výš",
 			"settings.focusSearch": "Přesunout fokus na hledání v nastavení",
+			"settings.focusSearchFromSettings": "Focus Settings Search from Settings",
 			"settings.focusSettingControl": "Přesunout fokus na ovládací prvek nastavení",
+			"settings.focusSettingsFromSearchOnEnter": "Focus First Setting from Search",
 			"settings.focusSettingsList": "Přepnout fokus na seznam nastavení",
 			"settings.focusSettingsTOC": "Přesunout fokus na obsah nastavení",
 			"settings.showContextMenu": "Zobrazit místní nabídku nastavení",
+			"settings.showPreviousSearch": "Show Previous Search in Settings",
 			"settings.toggleAiSearch": "Přepnout vyhledávání nastavení AI",
 			"settingsEditor2": "Editor nastavení 2",
 			"showDefaultKeybindings": "Zobrazit klávesové zkratky systému",
@@ -18505,6 +18660,7 @@
 		},
 		"vs/workbench/contrib/preferences/browser/settingsEditor2": {
 			"SearchSettings.AriaLabel": "Nastavení vyhledávání",
+			"SearchSettings.PlaceholderWithHistory": "Search settings ({0} for history)",
 			"clearInput": "Vymazat vstup pro vyhledávání nastavení",
 			"clearSearchFilters": "Vymazat filtry",
 			"filterInput": "Nastavení filtru",
@@ -19931,6 +20087,60 @@
 			"surveyQuestion": "Máte chvilku na rychlý průzkum názorů?",
 			"takeSurvey": "Vyplnit průzkum"
 		},
+		"vs/workbench/contrib/surveys/browser/survey.contribution": {
+			"openSurvey": "Open Survey",
+			"survey.help.overview": "You are in a survey form. Use Tab to move between questions and options.",
+			"survey.help.select": "Use arrow keys within a question to navigate between options, and Space or Enter to select.",
+			"survey.help.submit": "Tab to the Submit button and press Enter once all questions are answered.",
+			"surveyEditorPaneTitle": "Survey"
+		},
+		"vs/workbench/contrib/surveys/browser/surveyEditorInput": {
+			"surveyIcon": "Icon for the survey editor."
+		},
+		"vs/workbench/contrib/surveys/browser/surveyEditorPane": {
+			"survey.pane.ariaLabel": "Survey",
+			"survey.submitFeedback": "Submit feedback",
+			"survey.submitHint": "Answer all questions to submit",
+			"survey.success.detail": "Your answer helps us understand who needs this most. Thank you.",
+			"survey.success.message": "Response sent"
+		},
+		"vs/workbench/contrib/surveys/browser/surveyQuestions": {
+			"survey.copilotPmf.description": "This short survey helps us understand how well Copilot fits into your workflow.",
+			"survey.copilotPmf.q1": "How disappointed would you be if you could no longer use Copilot?",
+			"survey.copilotPmf.q1.extremely": "Extremely",
+			"survey.copilotPmf.q1.notAtAll": "Not at all",
+			"survey.copilotPmf.q1.slightly": "Slightly",
+			"survey.copilotPmf.q1.somewhat": "Somewhat",
+			"survey.copilotPmf.q1.very": "Very",
+			"survey.copilotPmf.q2": "What has Copilot helped you with most recently?",
+			"survey.copilotPmf.q2.automating": "Automating repetitive work",
+			"survey.copilotPmf.q2.gettingUnstuck": "Getting unstuck on bugs",
+			"survey.copilotPmf.q2.multiFile": "Making multi-file changes",
+			"survey.copilotPmf.q2.noClearValue": "I haven't gotten clear value yet",
+			"survey.copilotPmf.q2.other": "Something else",
+			"survey.copilotPmf.q2.planning": "Planning an approach",
+			"survey.copilotPmf.q2.reviewing": "Improving or reviewing code",
+			"survey.copilotPmf.q2.shippingFaster": "Shipping changes faster",
+			"survey.copilotPmf.q2.understanding": "Understanding the codebase",
+			"survey.copilotPmf.q3": "What most gets in your way?",
+			"survey.copilotPmf.q3.biggerTasks": "Struggles with bigger tasks",
+			"survey.copilotPmf.q3.context": "Missing repo or project context",
+			"survey.copilotPmf.q3.cost": "Limits, cost, or billing",
+			"survey.copilotPmf.q3.other": "Something else",
+			"survey.copilotPmf.q3.reviewingTime": "Too much time reviewing",
+			"survey.copilotPmf.q3.security": "Security or permissions friction",
+			"survey.copilotPmf.q3.setup": "Setup or integrations are hard",
+			"survey.copilotPmf.q3.slow": "Too slow / breaks flow",
+			"survey.copilotPmf.q3.steering": "Too much steering needed",
+			"survey.copilotPmf.q3.trust": "Output is hard to trust",
+			"survey.copilotPmf.q4": "How long have you been programming?",
+			"survey.copilotPmf.q4.10to19": "10-19 yr",
+			"survey.copilotPmf.q4.20plus": "20+ yr",
+			"survey.copilotPmf.q4.3to5": "3-5 yr",
+			"survey.copilotPmf.q4.6to9": "6-9 yr",
+			"survey.copilotPmf.q4.lessThan3": "<3 yr",
+			"survey.copilotPmf.title": "Help Us Improve GitHub Copilot"
+		},
 		"vs/workbench/contrib/tasks/browser/abstractTaskService": {
 			"ConfigureTaskRunnerAction.label": "Konfigurovat úlohu",
 			"TaskServer.folderIgnored": "Složka {0} je ignorována, protože používá úlohu verze 0.1.0.",
@@ -21089,6 +21299,7 @@
 			"runInTerminal.allowNetwork.autoRetry.reason": "Výstup provádění v sandboxu indikoval, že sandbox zablokoval požadovaný přístup k síti.",
 			"runInTerminal.allowNetwork.confirmationMessage": "Vysvětlení: {0}\r\n\r\nCíl: {1}\r\n\r\nDůvod povolení neomezeného síťového přístupu v sandboxu: {2}",
 			"runInTerminal.allowNetwork.confirmationMessage.defaultReason": "Model uvedl, že tento příkaz v sandboxu potřebuje neomezený přístup k síti.",
+			"runInTerminal.allowNetwork.deferredRetry.reason": "The model requested unrestricted network access in the sandbox.",
 			"runInTerminal.allowNetwork.disabled.invocation": "`{0}` se nespouští, protože neomezený síťový přístup v sandboxu je zakázaný",
 			"runInTerminal.allowNetwork.disabled.result": "Příkaz nebyl spuštěn, protože požadoval neomezený síťový přístup v terminálovém sandboxu, ale síťový přístup podle příkazu je zakázán chat.agent.sandbox.retryWithAllowNetworkRequests. Místo toho spusťte příkaz s omezeným přístupem k síti nebo povolte nastavení pro povolení žádostí o přístup k síti.",
 			"runInTerminal.bubblewrap.applyFix": "Apply Fix and Retry",
@@ -21120,6 +21331,7 @@
 			"runInTerminal.presentationOverride.inDirectory": "Chcete spustit příkaz `{0}` v `{1}` v rámci `{2}`?",
 			"runInTerminal.presentationOverride.inDirectory.withoutLanguage": "Chcete spustit příkaz v `{0}` v rámci `{1}`?",
 			"runInTerminal.presentationOverride.withoutLanguage": "Chcete spustit příkaz `{0}`?",
+			"runInTerminal.sandbox.fileAccessDenied": "Access Denied: The command was not executed because the terminal sandbox does not allow access to the requested file paths:\r\n{0}",
 			"runInTerminal.sensitiveInput.autoCancelMessage": "Příkaz terminálu vyžadoval heslo nebo jiné tajné informace. Režim automatického schvalování / autopilota nedokáže bezpečně zadávat tajné informace, takže příkaz byl zrušen. Spusťte příkaz interaktivně, jestli chcete tajné informace zadat.",
 			"runInTerminal.sensitiveInput.autoCancelTitle": "Příkaz terminálu byl zrušen – vyžaduje se citlivý vstup",
 			"runInTerminal.sensitiveInput.cancel": "Zrušit příkaz",
@@ -21137,6 +21349,7 @@
 			"runInTerminal.unsandboxed.autoRetry.reason": "Výstup provádění v sandboxu indikoval, že sandbox zablokoval příkaz.",
 			"runInTerminal.unsandboxed.confirmationMessage": "Vysvětlení: {0}\r\n\r\nCíl: {1}\r\n\r\nDůvod opuštění sandboxu: {2}",
 			"runInTerminal.unsandboxed.confirmationMessage.defaultReason": "Model uvedl, že tento příkaz potřebuje přístup mimo sandbox.",
+			"runInTerminal.unsandboxed.deferredRetry.reason": "The model requested unsandboxed execution.",
 			"runInTerminal.unsandboxed.disabled.invocation": "`{0}` se nespouští, protože spuštění mimo sandbox je zakázané",
 			"runInTerminal.unsandboxed.disabled.result": "Příkaz nebyl spuštěn, protože požádal o spuštění mimo sandbox terminálu, ale spouštění příkazů mimo sandbox je zakázané nastavením chat.agent.sandbox.allowUnsandboxedCommands. Spusťte příkaz v sandboxu, nebo povolte nastavení, které umožňuje spuštění mimo sandbox.",
 			"runInTerminal.unsandboxed.domain": "Chcete spustit příkaz `{0}` mimo [sandbox]({1}) pro přístup k {2}?",
@@ -21211,7 +21424,6 @@
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalChatAgentToolsConfiguration": {
 			"agentSandbox.allowAutoApprove": "Určuje, jestli se mají automaticky schvalovat terminálové příkazy v režimu agenta, které běží v sandboxu. Když je tato možnost vypnutá, nástroj pro spuštění v terminálu používá stávající tok schvalování. Platí jen v případě, že je povolená možnost {0}.",
 			"agentSandbox.allowUnsandboxedCommands": "Určuje, jestli se příkazy v režimu agenta můžou po potvrzení uživatelem spouštět mimo sandbox, když selže příkaz v sandboxu nebo když by omezení sandboxu příkaz zablokovala. Platí jen v případě, že je povolená možnost {0}.",
-			"agentSandbox.autoApproveUnsandboxedCommands": "Určuje, jestli se mají automaticky schvalovat terminálové příkazy v režimu agenta, které běží mimo sandbox. Platí jen v případě, že jsou povolené možnosti {0} i {1}.",
 			"agentSandbox.enabled.deprecated": "Místo toho použijte {0}",
 			"agentSandbox.enabledSetting": "Určuje, zda režim agenta používá sandboxing k omezení toho, co mohou nástroje provádět. Pokud je povoleno, nástroje, jako je terminál, běží v prostředí sandboxu, které omezuje přístup k systému.",
 			"agentSandbox.enabledSetting.allowNetworkDescription": "Povolte sandboxing pro nástroje režimu agenta a povolte všechny síťové domény.",
@@ -21219,6 +21431,7 @@
 			"agentSandbox.enabledSetting.onDescription": "Povolte sandboxing pro nástroje režimu agenta.",
 			"agentSandbox.fileSystemLinux.deprecated": "Místo toho použijte {0}",
 			"agentSandbox.fileSystemMac.deprecated": "Místo toho použijte {0}",
+			"agentSandbox.forceFirstExecutionInSandbox": "Controls whether agent mode terminal commands first run with the sandbox's configured restrictions before honoring a request for execution outside the sandbox or unrestricted network access. The user is prompted to approve the requested additional access only if that sandboxed command fails. This applies only when {0} is enabled.",
 			"agentSandbox.linuxFileSystemSetting": "Poznámka: Toto nastavení platí pouze v případě povolení funkce {0}. Řídí přístup k systému souborů v sandboxu v Linuxu. Cesty nepodporují vzory glob, pouze doslovné cesty (např. ./src/, ~/.ssh, .env). Aby toto nastavení fungovalo, musí být nainstalovány nástroje **bubblewrap** a **socat**.",
 			"agentSandbox.linuxFileSystemSetting.allowRead": "Pole cest na opětovné povolení přístupu ke čtení v zakázaných oblastech. Má přednost před denyRead.",
 			"agentSandbox.linuxFileSystemSetting.allowWrite": "Array of additional paths to allow write access. Leave empty to disallow writes outside the workspace folders, workspace storage folder, and sandbox temp directory.",
@@ -23234,9 +23447,7 @@
 			"shieldIcon": "Ikona pro banner vztahu důvěryhodnosti pracovního prostoru",
 			"trustAll": "Budete důvěřovat všem úložištím na {0}.",
 			"trustButton": "Důvěřovat",
-			"trustMessage": "Důvěřovat autorům všech souborů v aktuální složce nebo jejího nadřazeného objektu “{0}“.",
 			"trustOrg": "Budete důvěřovat všem úložištím a větvím v části {0} v {1}.",
-			"trustParentButton": "Důvěřovat nadřazenému objektu",
 			"trustUri": "Důvěřovat složce",
 			"trustedDebugging": "Ladění je povoleno.",
 			"trustedDescription": "Všechny funkce jsou povolené, protože pracovnímu prostoru byl udělen vztah důvěryhodnosti.",
@@ -23767,7 +23978,6 @@
 			"remote": "Remote"
 		},
 		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
 			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
 			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
