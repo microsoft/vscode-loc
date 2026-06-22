@@ -2162,6 +2162,12 @@
 			"selectPrevCodeAction.title": "이전 작업 선택",
 			"toggleSectionCodeAction.title": "섹션 토글"
 		},
+		"vs/platform/agentHost/browser/agentHost.config.contribution": {
+			"chat.agentHost.enabled": "When enabled, some agents run in a separate agent host process."
+		},
+		"vs/platform/agentHost/browser/agentHostConnectionsService": {
+			"agentHost.connection.ambient": "Local"
+		},
 		"vs/platform/agentHost/common/agentHost.config.contribution": {
 			"chat.agentHost.enabled": "사용하도록 설정하면 일부 에이전트는 별도의 에이전트 호스트 프로세스에서 실행됩니다.",
 			"chat.agents.copilotCli.hideExtensionHost": "When enabled, hides the Extension Host Copilot CLI entry from the Agents window picker.",
@@ -2170,6 +2176,7 @@
 			"chat.editor.defaultProvider.copilotAh": "Use the Agent Host Copilot CLI",
 			"chat.editor.defaultProvider.copilotEh": "Use the Extension Host Copilot CLI",
 			"chat.editor.defaultProvider.local": "Use the built-in VS Code local chat harness",
+			"chat.editor.localAgent.enabled": "When enabled, shows the VS Code local chat harness in the chat picker.",
 			"chatAgentHostConfigurationTitle": "채팅 에이전트 호스트"
 		},
 		"vs/platform/agentHost/common/agentHostCustomizationConfig": {
@@ -2183,23 +2190,44 @@
 			"agentHost.config.defaultShell.title": "기본 셸",
 			"agentHost.config.enableCustomTerminalTool.description": "사용하도록 설정하면 Copilot SDK 세션이 SDK의 기본 터미널 동작 대신 에이전트 호스트의 터미널 도구 재정의를 사용합니다.",
 			"agentHost.config.enableCustomTerminalTool.title": "에이전트 호스트 터미널 도구 사용",
+			"agentHost.config.opus48Prompt.description": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
+			"agentHost.config.opus48Prompt.title": "Opus 4.8 Agent Prompt",
 			"agentHost.config.rubberDuck.description": "활성화하면 코딩 에이전트는 보완 모델을 사용해 코드 변경 내용을 검토하는 러버덕 비평 하위 에이전트를 사용합니다.",
 			"agentHost.config.rubberDuck.title": "Rubber Duck 에이전트"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
+			"agentHost.config.mcpServers.arg.title": "Argument",
+			"agentHost.config.mcpServers.args.description": "For `stdio` servers, the arguments passed to the command.",
+			"agentHost.config.mcpServers.args.title": "Arguments",
+			"agentHost.config.mcpServers.command.description": "For `stdio` servers, the executable to spawn.",
+			"agentHost.config.mcpServers.command.title": "Command",
+			"agentHost.config.mcpServers.cwd.description": "For `stdio` servers, the working directory the command runs in.",
+			"agentHost.config.mcpServers.cwd.title": "Working Directory",
+			"agentHost.config.mcpServers.description": "Agent-host-level MCP servers exposed to every session, keyed by server name. Each value is a server configuration (see `<serverName>`).",
+			"agentHost.config.mcpServers.entry.description": "A single MCP server entry. The property key is the server name.",
+			"agentHost.config.mcpServers.entry.title": "MCP Server",
+			"agentHost.config.mcpServers.env.description": "For `stdio` servers, environment variables set on the spawned process.",
+			"agentHost.config.mcpServers.env.title": "Environment",
+			"agentHost.config.mcpServers.headers.description": "For `http` servers, HTTP headers sent with every request.",
+			"agentHost.config.mcpServers.headers.title": "Headers",
+			"agentHost.config.mcpServers.title": "MCP Servers",
+			"agentHost.config.mcpServers.type.description": "The transport used to reach the server: `stdio` for a local command, `http` for a remote endpoint.",
+			"agentHost.config.mcpServers.type.title": "Server Type",
+			"agentHost.config.mcpServers.url.description": "For `http` servers, the endpoint URL of the MCP server.",
+			"agentHost.config.mcpServers.url.title": "URL",
 			"agentHost.config.sessionSyncEnabled.description": "copilot-sdk CLI에 대해 원격 세션 동기화가 활성화되어 있는지 여부입니다.",
 			"agentHost.config.sessionSyncEnabled.title": "세션 동기화",
 			"agentHost.config.telemetryLevel.description": "연결된 클라이언트가 요청한 가장 제한적인 원격 분석 수준입니다.",
 			"agentHost.config.telemetryLevel.title": "원격 분석 수준",
 			"agentHost.sessionConfig.autoApprove": "승인",
-			"agentHost.sessionConfig.autoApprove.autopilot": "Autopilot(미리 보기)",
-			"agentHost.sessionConfig.autoApprove.autopilotDescription": "처음부터 끝까지 자율적으로 반복합니다.",
 			"agentHost.sessionConfig.autoApprove.bypass": "승인 무시",
 			"agentHost.sessionConfig.autoApprove.bypassDescription": "모든 도구 호출이 자동 승인됨",
 			"agentHost.sessionConfig.autoApprove.default": "기본 승인",
 			"agentHost.sessionConfig.autoApprove.defaultDescription": "Copilot가 구성된 설정을 사용합니다.",
 			"agentHost.sessionConfig.autoApproveDescription": "이번 세션의 도구 승인 동작",
 			"agentHost.sessionConfig.mode": "에이전트 모드",
+			"agentHost.sessionConfig.mode.autopilot": "Autopilot",
+			"agentHost.sessionConfig.mode.autopilotDescription": "Autonomously iterates from start to finish",
 			"agentHost.sessionConfig.mode.interactive": "대화형",
 			"agentHost.sessionConfig.mode.interactiveDescription": "Step-by-step collaboration",
 			"agentHost.sessionConfig.mode.plan": "계획",
@@ -2216,13 +2244,14 @@
 			"chat.agentHost.codexAgent.binaryArgs": "`codex app-server`에 전달된 추가 명령줄 인수입니다. 디버깅에 주로 유용합니다(예: `--log-level=debug`).",
 			"chat.agentHost.codexAgent.codexHome": "`$CODEX_HOME`에 대한 선택적 재정의입니다. codex 바이너리가 구성을 읽고 롤아웃을 쓰는 위치를 제어합니다. 비어 있으면 codex가 기본값(`~/.codex`)을 사용합니다.",
 			"chat.agentHost.codexAgent.enabled": "When enabled, the agent host registers the Codex provider (subject to the Codex SDK being reachable). Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
+			"chat.agentHost.codexAgent.enabled.policy": "Enable Codex Agent sessions in VS Code. Start and resume agentic coding sessions powered by OpenAI Codex SDK. Uses your existing Copilot subscription.",
 			"chat.agentHost.codexAgent.sdkRoot": "Experimental, for local SDK development only. Absolute path to a directory containing `node_modules/@openai/codex`. When set, the agent host spawns the Codex binary from this tree instead of downloading the SDK. Empty (the default) falls through to the SDK distribution shipped with this build. Requires `#chat.agentHost.enabled#`. The agent host process must be restarted for changes to take effect.",
-			"chat.agentHost.otel.captureContent": "활성화하면 OTel 범위 특성에 프롬프트 및 응답 콘텐츠가 포함됩니다. `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`를 설정합니다. 개인 정보 구분: 범위를 공유 싱크에 보내는 환경에서는 활성화하지 마세요.",
-			"chat.agentHost.otel.dbSpanExporter.enabled": "활성화하면 에이전트 호스트는 내보내는 모든 OTel 범위를 로컬 SQLite 데이터베이스에 유지합니다. 범위는 `Export Agent Host Traces Database` 명령으로 검사할 수 있습니다. 외부 내보내기와 호환됨: 범위는 SQLite에 기록되고 사용자가 구성한 싱크로*도* 전달됩니다.",
-			"chat.agentHost.otel.enabled": "활성화하면 에이전트 호스트가 Copilot SDK에서 OpenTelemetry 추적을 내보냅니다. `#chat.agentHost.enabled#`이(가) 필요합니다. 추적을 외부 수집기로 보내려면 `#chat.agentHost.otel.otlpEndpoint#`을(를) 구성하고, 로컬에서 캡처하려면 `#chat.agentHost.otel.dbSpanExporter.enabled#`을(를) 활성화합니다.",
-			"chat.agentHost.otel.exporterType": "Copilot SDK에서 `#chat.agentHost.otel.enabled#`이(가) 켜져 있을 때 사용하는 내보내기 백 엔드입니다. `otlp-grpc`는 CLI 런타임에서 `otlp-http`로 자동으로 다운그레이드됩니다.",
-			"chat.agentHost.otel.otlpEndpoint": "내보내기 유형이 `otlp-http` 또는 `otlp-grpc`인 경우 OTLP 엔드포인트 URL입니다. 에이전트 호스트 프로세스에서 `OTEL_EXPORTER_OTLP_ENDPOINT`를 설정합니다.",
-			"chat.agentHost.otel.outfile": "내보내기 유형이 `file`인 경우 범위 JSON 줄의 출력 경로입니다. `COPILOT_OTEL_FILE_EXPORTER_PATH`를 설정합니다.",
+			"chat.agentHost.otel.captureContent": "When enabled, includes prompt and response content in OTel span attributes. Configurable in user settings only. Sets `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`. Privacy-sensitive: do not enable in environments that ship spans to shared sinks.",
+			"chat.agentHost.otel.dbSpanExporter.enabled": "When enabled, the agent host persists every emitted OTel span to a local SQLite database. Configurable in user settings only. Spans can be inspected via the `Export Agent Host Traces Database` command. Compatible with external exporters: spans are written to SQLite *and* forwarded to the user-configured sink.",
+			"chat.agentHost.otel.enabled": "When enabled, the agent host emits OpenTelemetry traces from the Copilot SDK. Configurable in user settings only. Requires `#chat.agentHost.enabled#`. Either configure `#chat.agentHost.otel.otlpEndpoint#` to ship traces to an external collector or enable `#chat.agentHost.otel.dbSpanExporter.enabled#` to capture them locally.",
+			"chat.agentHost.otel.exporterType": "Exporter backend used by the Copilot SDK when `#chat.agentHost.otel.enabled#` is on. Configurable in user settings only. `otlp-grpc` is downgraded to `otlp-http` transparently in the CLI runtime.",
+			"chat.agentHost.otel.otlpEndpoint": "OTLP endpoint URL when exporter type is `otlp-http` or `otlp-grpc`. Configurable in user settings only. Sets `OTEL_EXPORTER_OTLP_ENDPOINT` inside the agent host process.",
+			"chat.agentHost.otel.outfile": "Output path for span JSON lines when exporter type is `file`. Configurable in user settings only. Sets `COPILOT_OTEL_FILE_EXPORTER_PATH`.",
 			"chatAgentHostStarterConfigurationTitle": "채팅 에이전트 호스트 스타터"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2238,19 +2267,29 @@
 		},
 		"vs/platform/agentHost/common/claudeModelConfig": {
 			"claude.modelThinkingLevel.description": "Claude가 사용하는 추론 노력의 정도를 제어합니다.",
-			"claude.modelThinkingLevel.high": "높음",
-			"claude.modelThinkingLevel.low": "낮음",
-			"claude.modelThinkingLevel.max": "최대",
-			"claude.modelThinkingLevel.medium": "중간",
-			"claude.modelThinkingLevel.title": "사고 수준",
-			"claude.modelThinkingLevel.xhigh": "매우 높음"
+			"claude.modelThinkingLevel.title": "사고 수준"
+		},
+		"vs/platform/agentHost/common/reasoningEffort": {
+			"reasoningEffort.high": "High",
+			"reasoningEffort.highDescription": "Greater reasoning depth but slower",
+			"reasoningEffort.low": "Low",
+			"reasoningEffort.lowDescription": "Faster responses with less reasoning",
+			"reasoningEffort.max": "Max",
+			"reasoningEffort.maxDescription": "Absolute maximum capability with no constraints",
+			"reasoningEffort.medium": "Medium",
+			"reasoningEffort.mediumDescription": "Balanced reasoning and speed",
+			"reasoningEffort.minimal": "Minimal",
+			"reasoningEffort.minimalDescription": "Minimal reasoning for fastest responses",
+			"reasoningEffort.none": "None",
+			"reasoningEffort.noneDescription": "No reasoning applied",
+			"reasoningEffort.xhigh": "Extra High",
+			"reasoningEffort.xhighDescription": "Highest reasoning depth but slowest"
 		},
 		"vs/platform/agentHost/common/sandboxConfigSchema": {
 			"agentHost.config.sandbox.advancedRuntime.title": "고급 샌드박스 런타임",
 			"agentHost.config.sandbox.allowUnsandboxedCommands.title": "샌드박스 외부 명령 허용",
 			"agentHost.config.sandbox.allowedDomains.item.title": "도메인",
 			"agentHost.config.sandbox.allowedDomains.title": "허용된 네트워크 도메인",
-			"agentHost.config.sandbox.autoApproveUnsandboxedCommands.title": "샌드박스 외부 명령 자동 승인",
 			"agentHost.config.sandbox.deniedDomains.item.title": "도메인",
 			"agentHost.config.sandbox.deniedDomains.title": "거부된 네트워크 도메인",
 			"agentHost.config.sandbox.enabled.title": "샌드박스 사용",
@@ -2277,7 +2316,15 @@
 			"agentHost.changeset.commit.noChanges": "커밋할 커밋되지 않은 변경 내용이 없습니다."
 		},
 		"vs/platform/agentHost/node/agentHostCommitOperationProvider": {
-			"agentHost.changeset.commit": "커밋"
+			"agentHost.changeset.commit": "Commit Changes"
+		},
+		"vs/platform/agentHost/node/agentHostDiscardChangesOperationHandler": {
+			"agentHost.changeset.discardChanges.cancelled": "Discard changes operation was cancelled.",
+			"agentHost.changeset.discardChanges.discarded": "Discarded changes to `{0}`."
+		},
+		"vs/platform/agentHost/node/agentHostDiscardChangesOperationProvider": {
+			"agentHost.changeset.discardChanges": "Discard Changes",
+			"agentHost.changeset.discardChanges.confirmation": "Are you sure you want to discard the changes in '{0}'? This action cannot be undone."
 		},
 		"vs/platform/agentHost/node/agentHostMain": {
 			"agentHost": "에이전트 호스트"
@@ -2309,18 +2356,16 @@
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "승인",
-			"claude.sessionConfig.permissionMode.acceptEdits": "편집 내용 자동 승인",
-			"claude.sessionConfig.permissionMode.acceptEditsDescription": "파일 편집은 자동으로 승인하고. 셸 및 기타 도구는 프롬프트를 표시합니다.",
-			"claude.sessionConfig.permissionMode.auto": "자동",
-			"claude.sessionConfig.permissionMode.autoDescription": "호출마다 모델 분류자가 승인과 프롬프트 중에서 선택하도록 합니다.",
-			"claude.sessionConfig.permissionMode.bypassPermissions": "승인 무시",
-			"claude.sessionConfig.permissionMode.bypassPermissionsDescription": "모든 도구 호출을 자동으로 승인합니다.",
-			"claude.sessionConfig.permissionMode.default": "매번 묻기",
-			"claude.sessionConfig.permissionMode.defaultDescription": "모든 도구 호출에 대해 프롬프트를 표시합니다.",
-			"claude.sessionConfig.permissionMode.dontAsk": "묻지 않음",
-			"claude.sessionConfig.permissionMode.dontAskDescription": "프롬프트 없이 모든 도구 호출을 자동으로 승인합니다.",
-			"claude.sessionConfig.permissionMode.plan": "계획만(읽기 전용)",
-			"claude.sessionConfig.permissionMode.planDescription": "읽기 전용 리서치 모드입니다. 도구 호출은 실행되지 않았습니다.",
+			"claude.sessionConfig.permissionMode.acceptEdits": "Edit Automatically",
+			"claude.sessionConfig.permissionMode.acceptEditsDescription": "Claude edits files without asking, and asks before using other tools.",
+			"claude.sessionConfig.permissionMode.auto": "Auto Mode",
+			"claude.sessionConfig.permissionMode.autoDescription": "Claude decides whether to ask for each tool operation.",
+			"claude.sessionConfig.permissionMode.bypassPermissions": "Bypass Permissions",
+			"claude.sessionConfig.permissionMode.bypassPermissionsDescription": "Claude runs all tools without asking.",
+			"claude.sessionConfig.permissionMode.default": "Ask Before Edits",
+			"claude.sessionConfig.permissionMode.defaultDescription": "Claude asks before editing files.",
+			"claude.sessionConfig.permissionMode.plan": "Plan Mode",
+			"claude.sessionConfig.permissionMode.planDescription": "Claude creates a plan before making changes.",
 			"claude.sessionConfig.permissionModeDescription": "Claude가 도구 승인을 처리하는 방법입니다.",
 			"claudeAgent.description": "Anthropic Claude 에이전트 SDK를 기반으로 하는 Claude 에이전트",
 			"claudeAgent.displayName": "Claude"
@@ -2398,10 +2443,6 @@
 		},
 		"vs/platform/agentHost/node/codex/codexAgent": {
 			"codex.modelThinkingLevel.description": "Codex가 사용하는 추론 수준을 제어합니다.",
-			"codex.modelThinkingLevel.high": "높음",
-			"codex.modelThinkingLevel.low": "낮음",
-			"codex.modelThinkingLevel.medium": "중간",
-			"codex.modelThinkingLevel.minimal": "최소",
 			"codex.modelThinkingLevel.title": "사고 수준",
 			"codex.sessionConfig.additionalDirectories": "추가 쓰기 가능한 디렉터리",
 			"codex.sessionConfig.additionalDirectories.item": "디렉터리",
@@ -2417,13 +2458,23 @@
 			"codex.sessionConfig.approvalPolicy.untrustedDescription": "더 많은 명령 범주에 대해 미리 확인하여 작업을 더 자세히 검토할 수 있습니다.",
 			"codex.sessionConfig.approvalPolicyDescription": "Codex가 도구 호출에 대한 승인을 요청하는 방법입니다.",
 			"codex.sessionConfig.modelReasoningEffort": "추론 활동",
-			"codex.sessionConfig.modelReasoningEffort.high": "높음",
-			"codex.sessionConfig.modelReasoningEffort.low": "낮음",
-			"codex.sessionConfig.modelReasoningEffort.medium": "중간",
-			"codex.sessionConfig.modelReasoningEffort.minimal": "최소",
 			"codex.sessionConfig.modelReasoningEffortDescription": "Codex가 사용하는 추론 수준을 제어합니다.",
 			"codex.sessionConfig.networkAccessEnabled": "네트워크",
 			"codex.sessionConfig.networkAccessEnabledDescription": "샌드박스 도구 호출이 아웃바운드 네트워크 요청을 할 수 있도록 허용합니다. 샌드박스가 작업 영역 쓰기인 경우에만 적용됩니다.",
+			"codex.sessionConfig.personality": "Personality",
+			"codex.sessionConfig.personality.friendly": "Friendly",
+			"codex.sessionConfig.personality.friendlyDescription": "Warmer, more conversational tone.",
+			"codex.sessionConfig.personality.none": "Default",
+			"codex.sessionConfig.personality.noneDescription": "Use Codex's built-in default tone.",
+			"codex.sessionConfig.personality.pragmatic": "Pragmatic",
+			"codex.sessionConfig.personality.pragmaticDescription": "Terse, no-nonsense tone focused on actions.",
+			"codex.sessionConfig.personalityDescription": "Tone Codex uses when communicating.",
+			"codex.sessionConfig.reasoningSummary": "Reasoning Summary",
+			"codex.sessionConfig.reasoningSummary.auto": "Auto",
+			"codex.sessionConfig.reasoningSummary.concise": "Concise",
+			"codex.sessionConfig.reasoningSummary.detailed": "Detailed",
+			"codex.sessionConfig.reasoningSummary.none": "None",
+			"codex.sessionConfig.reasoningSummaryDescription": "How Codex summarizes its reasoning in the response stream.",
 			"codex.sessionConfig.sandboxMode": "샌드박스",
 			"codex.sessionConfig.sandboxMode.dangerFullAccess": "모든 권한(위험)",
 			"codex.sessionConfig.sandboxMode.dangerFullAccessDescription": "도구 호출에는 무제한 디스크 및 네트워크 액세스 권한이 있습니다.",
@@ -2455,11 +2506,7 @@
 			"copilot.modelContextTier.longerSessionsNoCompaction": "Longer sessions without compaction",
 			"copilot.modelContextTier.title": "Context Size",
 			"copilot.modelThinkingLevel.description": "모델이 사용하는 추론 노력의 정도를 조절합니다.",
-			"copilot.modelThinkingLevel.high": "높음",
-			"copilot.modelThinkingLevel.low": "낮음",
-			"copilot.modelThinkingLevel.medium": "중간",
 			"copilot.modelThinkingLevel.title": "사고 수준",
-			"copilot.modelThinkingLevel.xhigh": "매우 높음",
 			"copilotAgent.pluginParseError": "플러그인을 구문 분석하는 중 오류가 발생했습니다.",
 			"copilotAgent.worktreeCreated": "분기 {0}의 격리된 작업 트리를 만들었습니다."
 		},
@@ -2480,13 +2527,18 @@
 			"agentHost.unsandboxedCommandConfirmation.generic": "이 명령은 샌드박스 외부에서 실행해야 합니다.",
 			"agentHost.unsandboxedCommandConfirmation.reason": "샌드박스를 벗어나는 이유: {0}",
 			"agentHost.unsandboxedCommandConfirmation.title.blockedDomains": "{0}에 액세스하기 위해 샌드박스 외부에서 명령을 실행하시겠습니까?",
-			"agentHost.unsandboxedCommandConfirmation.title.generic": "샌드박스 외부에서 명령을 실행하시겠습니까?"
+			"agentHost.unsandboxedCommandConfirmation.title.generic": "샌드박스 외부에서 명령을 실행하시겠습니까?",
+			"copilotAgent.compactionCompleted": "Compaction completed",
+			"copilotSlashCommand.unsupportedRuntimeResult": "The /{0} command returned an unsupported result."
 		},
 		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
 			"copilotSlashCommand.compact.description": "대화 기록을 압축하여 컨텍스트를 확보합니다.",
+			"copilotSlashCommand.env.description": "Show loaded environment details",
 			"copilotSlashCommand.plan.description": "코딩 전 구현 계획 만들기",
 			"copilotSlashCommand.research.description": "검색과 웹 소스를 사용하여 주제에 대한 심층 연구 실행",
-			"copilotSlashCommand.rubberDuck.description": "현재 접근 방식에 대한 독립적인 비평 받기"
+			"copilotSlashCommand.review.description": "Run code review agent to analyze changes",
+			"copilotSlashCommand.rubberDuck.description": "현재 접근 방식에 대한 독립적인 비평 받기",
+			"copilotSlashCommand.securityReview.description": "Analyze staged and unstaged changes for security vulnerabilities"
 		},
 		"vs/platform/agentHost/node/copilot/copilotSystemNotification": {
 			"agentHost.copilot.systemNotification.agentCompleted": "백그라운드 에이전트가 완료됨",
@@ -2499,7 +2551,7 @@
 			"copilot.permission.default.title": "도구 호출을 허용하시겠습니까?",
 			"copilot.permission.mcp.defaultTool": "MCP 도구",
 			"copilot.permission.mcp.title": "{0}의 도구를 허용하시겠습니까?",
-			"copilot.permission.read.title": "파일을 읽으시겠습니까?",
+			"copilot.permission.read.title": "Allow reading file outside of workspace?",
 			"copilot.permission.shell.title": "터미널에서 실행하시겠습니까?",
 			"copilot.permission.url.message": "웹 콘텐츠 가져오기를 허용하시겠습니까?",
 			"copilot.permission.url.title": "URL을 가져오시겠습니까?",
@@ -2561,6 +2613,7 @@
 			"toolInvoke.webFetchGeneric": "URL을 가져오는 중",
 			"toolInvoke.writeShell": "셸에 입력을 보내는 중",
 			"toolInvoke.writeShellCmd": "셸에 {0}을(를) 보내는 중",
+			"toolMarkdown.taskComplete": "**Task completed:** {0}",
 			"toolName.applyPatch": "패치 적용",
 			"toolName.askUser": "사용자에게 질문",
 			"toolName.codeReview": "검토",
@@ -2652,7 +2705,8 @@
 			"browser.contextMenu.reload": "다시 로드"
 		},
 		"vs/platform/configuration/common/configurationRegistry": {
-			"config.policy.duplicate": "'{0}'을(를) 등록할 수 없습니다. 연결된 정책 {1}이(가) 이미 {2}에 등록되어 있습니다.",
+			"config.policy.bothPolicyAndReference": "Cannot register '{0}'. A setting must not declare both 'policy' and 'policyReference'.",
+			"config.policy.duplicate": "Cannot register '{0}'. The associated policy {1} is already registered with {2}. To attach another setting to the same policy, use 'policyReference'.",
 			"config.property.duplicate": "'{0}'을(를) 등록할 수 없습니다. 이 속성은 이미 등록되어 있습니다.",
 			"config.property.empty": "빈 속성을 등록할 수 없음",
 			"config.property.languageDefault": "'{0}'을(를) 등록할 수 없습니다. 이는 언어별 편집기 설정을 설명하는 속성 패턴인 '\\\\[.*\\\\]$'과(와) 일치합니다. 'configurationDefaults' 기여를 사용하세요.",
@@ -2788,7 +2842,6 @@
 		"vs/platform/extensionManagement/common/abstractExtensionManagementService": {
 			"MarketPlaceDisabled": "Marketplace를 사용할 수 없습니다.",
 			"incompatible platform": "'{0}' 확장자는 {2} 플랫폼에 대해 {1}에서 사용할 수 없습니다.",
-			"incompatibleAPI": "'{0}' 확장을 설치할 수 없습니다. {1}",
 			"learn why": "이유 확인",
 			"malicious extension": "문제가 있다고 보고되었으므로 '{0}' 확장을 설치할 수 없습니다.",
 			"multipleDependentsError": "'{0}' 확장을 제거할 수 없습니다. '{1}', '{2}' 및 기타 확장이 이 확장에 종속됩니다.",
@@ -2890,8 +2943,6 @@
 			"invalidManifest": "잘못된 VSIX: package.json이 JSON 파일이 아닙니다."
 		},
 		"vs/platform/extensions/common/extensionValidator": {
-			"apiProposalMismatch1": "이 확장은 현재 버전의 VS Code 호환되지 않는 API 제안 '{0}'을 사용하고 있습니다.",
-			"apiProposalMismatch2": "이 확장은 현재 버전의 VS Code 호환되지 않는 API 제안 '{0}' 및 ‘{1}’을(를) 사용하고 있습니다.",
 			"extensionDescription.activationEvents1": "속성 `{0}`은(는) 생략할 수 있으며 `string[]` 형식이어야 합니다.",
 			"extensionDescription.activationEvents2": "확장에 '{1}' 또는 '{2}' 속성이 없는 경우 '{0}' 속성을 생략해야 합니다.",
 			"extensionDescription.browser1": "속성 '{0}'은(는) 생략할 수 있으며 'string' 형식이어야 합니다.",
@@ -3787,6 +3838,34 @@
 			"workspaceOpenedDetail": "작업 영역이 이미 다른 창에 열렸습니다. 먼저 해당 창을 닫은 후 다시 시도하세요.",
 			"workspaceOpenedMessage": "'{0}' 작업 영역을 저장할 수 없음"
 		},
+		"vs/server/node/remoteExtensionHostAgentCli": {
+			"remotecli": "원격 CLI"
+		},
+		"vs/server/node/serverEnvironmentService": {
+			"acceptLicenseTerms": "설정하면 사용자가 서버 사용 조건에 동의하는 것으로 간주되며 사용자 프롬프트 없이 서버가 시작됩니다.",
+			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
+			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
+			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
+			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
+			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
+			"agent-host-port": "The port the agent host WebSocket server should listen on.",
+			"connection-token": "모든 요청에 포함해야 하는 암호입니다.",
+			"connection-token-file": "연결 토큰이 포함된 파일의 경로입니다.",
+			"default-folder": "브라우저 URL에 입력이 지정되지 않은 경우에 열 작업 영역 폴더입니다. 현재 작업 디렉터리에 대해 확인된 상대 경로 또는 절대 경로입니다.",
+			"default-workspace": "브라우저 URL에 입력이 지정되지 않은 경우에 열 작업 영역입니다. 현재 작업 디렉터리에 대해 확인된 상대 경로 또는 절대 경로입니다.",
+			"host": "서버가 수신 대기해야 하는 호스트 이름 또는 IP 주소입니다. 설정되지 않은 경우 기본값은 'localhost'입니다.",
+			"port": "서버가 수신 대기해야 하는 포트입니다. 0이 전달되면 임의의 사용 가능한 포트가 선택됩니다. '숫자-숫자' 형식의 범위가 전달되는 경우 해당 범위(끝 포함)에서 사용 가능한 포트가 선택됩니다.",
+			"reconnection-grace-time": "재연결 유예 기간 창을 초단위로 재정의합니다. 기본값은 10,800(3시간)입니다.",
+			"server-base-path": "웹 UI 및 코드 서버가 제공되는 경로입니다. 기본값은 '/'입니다.",
+			"serverDataDir": "서버 데이터가 보관되는 디렉터리를 지정합니다.",
+			"socket-path": "서버가 수신 대기할 소켓 파일의 경로입니다.",
+			"start-server": "확장을 설치하거나 제거할 때 서버를 시작합니다. 'install-extension', 'install-builtin-extension' 및 'uninstall-extension'과 함께 사용합니다.",
+			"telemetry-level": "초기 원격 분석 수준을 설정합니다. 유효한 수준은 'off', 'crash', 'error' 및 'all'입니다. 지정하지 않으면 서버에서 계속 원격 분석을 보내다가 클라이언트가 연결하면 그때 클라이언트 원격 분석 설정을 사용합니다. 이 항목을 'off'로 설정하는 것은 --disable-telemetry와 동일합니다.",
+			"without-connection-token": "연결 토큰 없이 실행합니다. 연결이 다른 수단으로 보호되는 경우에만 사용합니다."
+		},
+		"vs/server/node/serverServices": {
+			"remoteExtensionLog": "서버"
+		},
 		"vs/sessions/browser/accountTitleBarState": {
 			"accountSignedInAria": "{1}이(가) 있는 {0}(으)로 로그인함",
 			"accountSignedInAriaNameOnly": "{0}(으)로 로그인됨",
@@ -3808,17 +3887,19 @@
 		},
 		"vs/sessions/browser/layoutActions": {
 			"agentPanelCloseIcon": "패널을 닫는 아이콘입니다.",
+			"agentSecondarySidebarToggleClosedIcon": "Icon for the sessions secondary sidebar when closed.",
+			"agentSecondarySidebarToggleOpenIcon": "Icon for the sessions secondary sidebar when open.",
 			"agentSidebarToggleClosedIcon": "닫을 때 세션 사이드바의 아이콘입니다.",
 			"agentSidebarToggleOpenIcon": "열 때 세션 사이드바의 아이콘입니다.",
-			"openAndCloseSecondarySidebar": "보조 사이드바 열기/표시 및 닫기/숨기기",
+			"closePanel": "Hide Panel",
+			"openAndCloseSidePanel": "Open/Show and Close/Hide the Side Panel (editor area and auxiliary bar)",
 			"openAndCloseSidebar": "사이드바 열기/표시 및 닫기/숨기기",
-			"secondarySidebarHidden": "보조 사이드바 숨김",
-			"secondarySidebarVisible": "보조 사이드바 표시",
+			"sidePanelHidden": "Side Panel hidden",
+			"sidePanelVisible": "Side Panel shown",
 			"sidebarHidden": "기본 사이드바 숨김",
 			"sidebarVisible": "기본 사이드바 표시",
-			"togglePanel": "패널 표시 설정/해제",
-			"toggleSecondarySidebar": "보조 사이드바 표시 설정/해제",
-			"toggleSidebar": "기본 사이드 바 가시성 전환",
+			"toggleSecondarySidebar": "Toggle Side Panel",
+			"toggleSidebar": "Toggle Side Bar",
 			"toggleWindowAlwaysOnTop": "항상 위로 표시 토글"
 		},
 		"vs/sessions/browser/parts/auxiliaryBarPart": {
@@ -3828,7 +3909,7 @@
 			"chatTabsAriaLabel": "채팅",
 			"closeChat": "닫기",
 			"renameChat": "이름 바꾸기",
-			"renameChat.prompt": "채팅 이름 바꾸기"
+			"renameChat.aria": "Rename chat"
 		},
 		"vs/sessions/browser/parts/menubar.contribution": {
 			"mEdit": "편집(&&E)",
@@ -3942,10 +4023,13 @@
 			"activeSessionWorkspaceIsVirtual": "활성 세션의 작업 영역이 가상인지 여부",
 			"activeSessions": "활성 세션 패널의 식별자",
 			"chatSessionProviderId": "상황에 맞는 메뉴 오버레이에 있는 세션의 공급자 ID",
+			"chatSessionSupportsDelete": "Whether a session in context menu overlays can be deleted",
+			"chatSessionSupportsRename": "Whether a session in context menu overlays can be renamed",
 			"chatSessionType": "상황에 맞는 메뉴 오버레이에 있는 세션의 세션 유형",
 			"editorMaximized": "편집기 영역이 최대화되는지 여부",
 			"isActiveSessionArchived": "활성 세션의 보관(완료로 표시) 여부",
 			"multipleSessionsVisible": "세션 부분의 그리드에 두 개 이상의 세션이 표시되는지 여부",
+			"sessionHasChanges": "Whether the session view's session has pending changes (insertions or deletions)",
 			"sessionIsArchived": "세션의 보관 여부(완료로 표시)",
 			"sessionIsCreated": "세션 보기의 세션이 생성되었는지 여부(채팅 보기가 표시되고 새 세션 보기는 표시되지 않음)",
 			"sessionIsMaximized": "세션 보기가 현재 세션 부분의 그리드에서 최대화되어 있는지 여부",
@@ -4038,9 +4122,9 @@
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedback.contribution": {
 			"agentFeedback.submitFeedbackCount": "피드백 제출({0})"
 		},
-		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachment": {
-			"agentFeedback.many": "{0}개 주석",
-			"agentFeedback.one": "1개 주석"
+		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachmentEntry": {
+			"agentFeedback.many": "{0} comments",
+			"agentFeedback.one": "1 comment"
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackAttachmentWidget": {
 			"chat.agentFeedback": "첨부된 에이전트 피드백, {0}",
@@ -4074,7 +4158,7 @@
 			"addToComment": "메모에 추가",
 			"agentReviewComment": "Agent Review",
 			"collapse": "축소",
-			"convertComment": "에이전트 피드백으로 변환",
+			"convertComment": "Accept",
 			"editComment": "편집",
 			"expand": "확장",
 			"lineNumber": "줄 {0}",
@@ -4092,6 +4176,10 @@
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackOverviewRulerContribution": {
 			"editorOverviewRuler.agentFeedbackForeground": "에이전트 피드백에 대한 편집기 개요 눈금자 장식 색입니다. 이 색은 불투명해야 합니다."
+		},
+		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackReviewCommands": {
+			"agentFeedbackReview.agentReview": "Agent Review",
+			"agentFeedbackReview.prReview": "PR Review"
 		},
 		"vs/sessions/contrib/agentHost/browser/agentHostSessionBranchActions": {
 			"copySessionBranchName": "세션 분기 이름 복사"
@@ -4198,12 +4286,10 @@
 			"miChanges": "변경(&&G)",
 			"sessions.changes.openSingleFileDiff": "변경 내용 보기에서 파일을 클릭할 때 다중 파일 diff 편집기 대신 단일 파일 diff 편집기가 열리는지 여부를 제어합니다."
 		},
-		"vs/sessions/contrib/changes/browser/changesTitleBarWidget": {
-			"agentSecondarySidebarToggleClosedIcon": "닫을 때 세션 보조 사이드바의 아이콘입니다.",
-			"agentSecondarySidebarToggleOpenIcon": "열 때 세션 보조 사이드바의 아이콘입니다.",
-			"hideChanges": "변경 내용 숨기기",
-			"showChanges": "변경 내용 표시",
-			"toggleSecondarySidebarTooltip": "보조 사이드바 표시 설정/해제"
+		"vs/sessions/contrib/changes/browser/changesActions": {
+			"agentSessions.viewChanges": "View All Changes",
+			"agentSessions.viewChanges.tooltip": "View All Changes",
+			"sessions.changes.title": "Session Changes"
 		},
 		"vs/sessions/contrib/changes/browser/changesView": {
 			"changes": "변경 내용",
@@ -4247,6 +4333,7 @@
 			"skillUI.commit": "변경 도구 모음의 커밋 단추에서 사용됨",
 			"skillUI.createDraftPr": "변경 도구 모음의 끌어오기 요청 초안 만들기 단추에서 사용됨",
 			"skillUI.createPr": "변경 도구 모음의 끌어오기 요청 만들기 단추에서 사용됨",
+			"skillUI.fixCi": "Used by the Fix Checks button in the Changes toolbar",
 			"skillUI.generateRunCommands": "제목 표시줄의 실행 단추에서 사용됨",
 			"skillUI.mergeChanges": "변경 도구 모음의 병합 단추에서 사용됨",
 			"skillUI.updatePr": "변경 도구 모음의 끌어오기 요청 업데이트 단추에서 사용됨"
@@ -4288,6 +4375,9 @@
 			"chatInput.accessibilityHelp": "채팅 입력. Enter 키를 눌러 요청을 보냅니다. 채팅 접근성 도움말에 {0}을(를) 사용합니다.",
 			"chatInput.accessibilityHelpNoKb": "채팅 입력. Enter 키를 눌러 요청을 보냅니다. 자세한 내용은 채팅 접근성 도움말 명령을 사용합니다.",
 			"loading": "로드하는 중...",
+			"newChatInput.status.otel.learnMore": "Learn More",
+			"newChatInput.status.otel.manage": "Manage",
+			"newChatInput.status.otel.title": "Monitoring with OpenTelemetry enabled",
 			"send": "보내기",
 			"sendWithBackgroundHint": "보내기(백그라운드에서 시작하려면 Alt+클릭)",
 			"sessionsChatInput.placeholder.describeTheOutcome": "원하는 결과 설명",
@@ -4308,9 +4398,9 @@
 		},
 		"vs/sessions/contrib/chat/browser/newChatInSessionWidget": {
 			"newChatInSessionPlaceholder": "이 세션 내에서 후속 질문을 하거나 새 주제 시작...",
-			"subSessionTip.ariaLabel": "하위 세션 팁",
+			"subSessionTip.ariaLabel": "New chat tip",
 			"subSessionTip.dismiss": "팁 해제",
-			"subSessionTip.message": "동일한 작업 영역의 새 채팅인 하위 세션입니다. 사용하여 질문을 하거나, 작업을 실행하거나, 새로운 컨텍스트로 아이디어를 탐색할 수 있습니다."
+			"subSessionTip.message": "Start a parallel conversation to build on all the changes made in this session."
 		},
 		"vs/sessions/contrib/chat/browser/newChatWidget": {
 			"newSessionChooseWorkspace": "시작하려면 선택",
@@ -4409,10 +4499,13 @@
 			"sessionsChat.navigatePreviousSession": "목록 {0}에서 이전 세션으로 이동합니다.",
 			"sessionsChat.overview": "Agents 창에 있습니다. Agents 창은 AI 에이전트와 작업하기 위한 전용 작업 영역입니다. 채팅 인터페이스, 에이전트에서 생성된 변경 내용을 검토하기 위한 변경 내용 보기, 파일 탐색기 및 사용자 지정 옵션을 제공합니다.",
 			"sessionsChat.sessionsView": "채팅 세션 보기에 포커스를 맞춥니다{0}.",
+			"sessionsChat.toggleSidePanel": "Toggle the side panel (the editor area together with the auxiliary bar) open or closed{0}.",
+			"sessionsChat.viewAllChanges": "The session header shows the diff stats (lines added and removed) as a button. Activate it to open the multi-file diff editor for all of the session's changes{0}.",
 			"sessionsChat.workspace": "Shift+Tab을 사용하여 작업 영역 선택기로 이동하고 세션에 사용할 작업 영역을 선택합니다."
 		},
 		"vs/sessions/contrib/chat/browser/sessionTypePicker": {
 			"sessionTypePicker.ariaLabel": "세션 유형",
+			"sessionTypePicker.itemAriaLabel": "{0}, {1}",
 			"sessionTypePicker.triggerAriaLabel": "선택기 세션 유형, {0}"
 		},
 		"vs/sessions/contrib/chat/browser/sessionWorkspacePicker": {
@@ -4615,15 +4708,9 @@
 			"lastTurnChangesDescription": "마지막 턴에서 변경된 내용만 표시"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionConfigPicker": {
-			"agentHostAutoApprove.autopilot.warning.detail": "Autopilot은 모든 도구 호출을 자동으로 승인하고 작업이 완료될 때까지 자율적으로 계속 작동합니다. 여기에는 터미널 명령, 파일 편집 및 외부 도구 호출이 포함됩니다. 에이전트는 확인을 요청하지 않고 사용자 대신 의사 결정을 내립니다.\r\n\r\n언제든지 중지 단추를 클릭하여 에이전트를 중지할 수 있습니다. 현재 세션에만 적용됩니다.",
-			"agentHostAutoApprove.autopilot.warning.title": "Autopilot을 활성화하시겠습니까?",
-			"agentHostAutoApprove.bypass.warning.detail": "바이패스 승인은 확인을 요청하지 않고 모든 도구 호출을 자동으로 승인합니다. 여기에는 파일 편집, 터미널 명령 및 외부 도구 호출이 포함됩니다.",
-			"agentHostAutoApprove.bypass.warning.title": "승인 우회를 활성화하시겠습니까?",
-			"agentHostAutoApprove.warning.cancel": "취소",
-			"agentHostAutoApprove.warning.confirm": "사용",
-			"agentHostAutoApprove.warning.detailWithDefaultSetting": "{0}\r\n\r\n새 채팅 세션의 시작 권한 수준으로 설정하려면 [{1}](command:workbench.action.openSettings?%5B%22{1}%22%5D) 설정을 변경합니다.",
 			"agentHostNewSessionApprovePicker": "세션 승인",
 			"agentHostNewSessionModePicker": "에이전트 모드",
+			"agentHostNewSessionPermissionModePicker": "Approvals",
 			"agentHostRunningSessionConfigPicker": "세션 승인",
 			"agentHostRunningSessionModePicker": "에이전트 모드",
 			"agentHostRunningSessionPermissionModePicker": "승인",
@@ -4641,8 +4728,7 @@
 			"mobileAgentHostSessionConfig.repoSheet.branchSearchPlaceholder": "분기 검색",
 			"mobileAgentHostSessionConfig.repoSheet.branchSection": "베이스 분기",
 			"mobileAgentHostSessionConfig.repoSheet.isolationSection": "격리",
-			"mobileAgentHostSessionConfig.repoSheet.title": "작업 트리",
-			"selected": "(선택됨)"
+			"mobileAgentHostSessionConfig.repoSheet.title": "작업 트리"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSettings.contribution": {
 			"agentHostSettings.label": "호스트 설정",
@@ -4671,8 +4757,12 @@
 			"agentSessionSettings.saveHint": "아래 값을 편집하고 저장하여 적용합니다. 알 수 없거나 변경할 수 없는 속성은 무시됩니다."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/baseAgentHostSessionsProvider": {
-			"copilotCLI": "Copilot CLI",
+			"copilotCLI": "Copilot",
+			"deleteChat.confirm": "Are you sure you want to delete this chat?",
+			"deleteChat.delete": "Delete",
+			"deleteChat.detail": "This action cannot be undone.",
 			"new session": "새 세션",
+			"newChatTab": "New Chat",
 			"noAgents": "에이전트 호스트가 아직 에이전트를 보급하지 않았습니다.",
 			"notConnectedSend": "요청을 보낼 수 없습니다. 에이전트 호스트에 연결되지 않았습니다."
 		},
@@ -4715,7 +4805,6 @@
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/copilotChatSessionsActions": {
 			"branchPicker": "분기",
 			"claudePermissionModePicker": "권한 모드",
-			"deleteSession": "삭제...",
 			"isolationPicker": "격리 모드",
 			"modePicker": "모드",
 			"permissionPicker": "사용 권한"
@@ -4738,10 +4827,6 @@
 			"deleteChat.confirm": "이 채팅을 삭제하시겠습니까?",
 			"deleteChat.delete": "삭제",
 			"deleteChat.detail": "이 작업은 실행 취소할 수 없습니다.",
-			"deleteSession.confirm": "이 세션을 삭제하시겠습니까?",
-			"deleteSession.delete": "삭제",
-			"deleteSession.detail": "이 작업은 실행 취소할 수 없습니다.",
-			"deleteSession.detailMultiple": "이 작업을 실행하면 이 세션의 채팅 {0}개가 모두 삭제됩니다. 이 작업은 취소할 수 없습니다.",
 			"new chat": "새 채팅",
 			"new session": "새 세션",
 			"repositories": "리포지토리",
@@ -4755,12 +4840,6 @@
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/mobilePermissionPicker": {
 			"permissionPicker.title": "승인",
-			"permissions.autoApprove": "승인 우회",
-			"permissions.autoApprove.subtext": "모든 도구 호출이 자동 승인됨",
-			"permissions.autopilot": "Autopilot(미리 보기)",
-			"permissions.autopilot.subtext": "처음부터 끝까지 자율적으로 반복합니다.",
-			"permissions.default": "기본 승인",
-			"permissions.default.subtext": "Copilot가 구성된 설정을 사용합니다.",
 			"permissions.learnMore": "권한에 대한 자세한 정보"
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/modePicker": {
@@ -4772,14 +4851,11 @@
 			"permissionPicker.ariaLabel": "권한 선택기",
 			"permissionPicker.triggerAriaLabel": "권한 수준 선택({0})",
 			"permissions.autoApprove": "승인 우회",
-			"permissions.autoApprove.label": "승인 우회",
 			"permissions.autoApprove.subtext": "모든 도구 호출이 자동 승인됨",
 			"permissions.autopilot": "Autopilot(미리 보기)",
 			"permissions.autopilot.description": "모든 도구 호출을 자동 승인하고 작업이 완료될 때까지 계속 진행합니다. Autopilot으로 인해 비용이 증가할 수 있습니다.",
-			"permissions.autopilot.label": "Autopilot(미리 보기)",
 			"permissions.autopilot.subtext": "처음부터 끝까지 자율적으로 반복합니다.",
 			"permissions.default": "기본 승인",
-			"permissions.default.label": "기본 승인",
 			"permissions.default.subtext": "Copilot가 구성된 설정을 사용합니다.",
 			"permissions.learnMore": "권한에 대한 자세한 정보"
 		},
@@ -4790,7 +4866,7 @@
 			"deleteChat.confirm": "이 채팅을 삭제하시겠습니까?",
 			"deleteChat.delete": "삭제",
 			"deleteChat.detail": "이 작업은 실행 취소할 수 없습니다.",
-			"localChatSessionsProvider": "로컬 채팅",
+			"localChatSessionsProvider": "Copilot Chat",
 			"localSession": "로컬",
 			"newChat": "새 채팅",
 			"newSession": "새 세션"
@@ -4882,6 +4958,10 @@
 			"tunnelNoneFound": "에이전트 호스트 지원이 있는 개발 터널을 찾을 수 없습니다. 다른 컴퓨터에서 '코드 터널'을 사용하여 터널을 시작합니다.",
 			"tunnelPickPlaceholder": "연결할 개발 터널 선택",
 			"tunnelPickTitle": "개발자 터널을 통해 연결",
+			"updateRemoteAgentHost": "Update Remote Agent Host Server...",
+			"updateRemoteAgentHost.none": "No remote agent hosts need updating.",
+			"updateRemoteAgentHost.noneUpgradable": "No remote agent hosts can be updated from here. Incompatible hosts must be updated manually, then reconnected.",
+			"updateRemoteAgentHost.pick": "Select a remote agent host to update",
 			"wslConnectFailed": "WSL 배포 '{0}'에 연결하지 못함: {1}",
 			"wslConnecting": "WSL 배포 '{0}'에 연결하는 중...",
 			"wslDistroDefault": "기본 배포",
@@ -5211,8 +5291,14 @@
 			"archiveSession": "완료로 표시",
 			"closeSession": "세션 닫기",
 			"collapseAllGroups": "모든 그룹 축소",
+			"deleteSession": "Delete...",
+			"deleteSession.confirm": "Are you sure you want to delete this session?",
+			"deleteSession.delete": "Delete",
+			"deleteSession.detail": "This action cannot be undone.",
+			"deleteSession.error": "Failed to delete the session: {0}",
+			"deleteSessions.confirm": "Are you sure you want to delete {0} sessions?",
+			"deleteSessions.error": "Failed to delete the sessions: {0}",
 			"doNotAskAgain": "이 메시지를 다시 표시 안 함",
-			"doNotAskAgain2": "이 메시지를 다시 표시 안 함",
 			"filter": "필터",
 			"filterSessions": "세션 필터링",
 			"find": "세션 찾기",
@@ -5238,9 +5324,6 @@
 			"showRecentSessions": "최근 세션 표시",
 			"sortByCreated": "만든 날짜별로 정렬",
 			"sortByUpdated": "업데이트된 날짜별로 정렬",
-			"unarchiveSection": "모두 복원",
-			"unarchiveSectionSessions.confirm": "{0} 세션을 복원하시겠습니까?",
-			"unarchiveSectionSessions.unarchive": "모두 복원",
 			"unarchiveSession": "복원",
 			"unpinSession": "고정 해제"
 		},
@@ -5307,34 +5390,6 @@
 		},
 		"vs/sessions/contrib/welcome/browser/welcome.contribution": {
 			"resetSessionsWelcome": "에이전트 초기화 환영합니다"
-		},
-		"vs/server/node/remoteExtensionHostAgentCli": {
-			"remotecli": "원격 CLI"
-		},
-		"vs/server/node/serverEnvironmentService": {
-			"acceptLicenseTerms": "설정하면 사용자가 서버 사용 조건에 동의하는 것으로 간주되며 사용자 프롬프트 없이 서버가 시작됩니다.",
-			"agent-host-bridge-connection-token": "Connection token required by the externally-running agent host when used with --agent-host-bridge-port.",
-			"agent-host-bridge-host": "Host the externally-running agent host is reachable at when used with --agent-host-bridge-port. Defaults to localhost.",
-			"agent-host-bridge-path": "Bridge renderer agent-host traffic to an already-running agent host listening on this socket path. Does not spawn an agent host.",
-			"agent-host-bridge-port": "Bridge renderer agent-host traffic to an already-running agent host listening on this port. Does not spawn an agent host.",
-			"agent-host-path": "The path to a socket file for the agent host WebSocket server to listen on.",
-			"agent-host-port": "The port the agent host WebSocket server should listen on.",
-			"connection-token": "모든 요청에 포함해야 하는 암호입니다.",
-			"connection-token-file": "연결 토큰이 포함된 파일의 경로입니다.",
-			"default-folder": "브라우저 URL에 입력이 지정되지 않은 경우에 열 작업 영역 폴더입니다. 현재 작업 디렉터리에 대해 확인된 상대 경로 또는 절대 경로입니다.",
-			"default-workspace": "브라우저 URL에 입력이 지정되지 않은 경우에 열 작업 영역입니다. 현재 작업 디렉터리에 대해 확인된 상대 경로 또는 절대 경로입니다.",
-			"host": "서버가 수신 대기해야 하는 호스트 이름 또는 IP 주소입니다. 설정되지 않은 경우 기본값은 'localhost'입니다.",
-			"port": "서버가 수신 대기해야 하는 포트입니다. 0이 전달되면 임의의 사용 가능한 포트가 선택됩니다. '숫자-숫자' 형식의 범위가 전달되는 경우 해당 범위(끝 포함)에서 사용 가능한 포트가 선택됩니다.",
-			"reconnection-grace-time": "재연결 유예 기간 창을 초단위로 재정의합니다. 기본값은 10,800(3시간)입니다.",
-			"server-base-path": "웹 UI 및 코드 서버가 제공되는 경로입니다. 기본값은 '/'입니다.",
-			"serverDataDir": "서버 데이터가 보관되는 디렉터리를 지정합니다.",
-			"socket-path": "서버가 수신 대기할 소켓 파일의 경로입니다.",
-			"start-server": "확장을 설치하거나 제거할 때 서버를 시작합니다. 'install-extension', 'install-builtin-extension' 및 'uninstall-extension'과 함께 사용합니다.",
-			"telemetry-level": "초기 원격 분석 수준을 설정합니다. 유효한 수준은 'off', 'crash', 'error' 및 'all'입니다. 지정하지 않으면 서버에서 계속 원격 분석을 보내다가 클라이언트가 연결하면 그때 클라이언트 원격 분석 설정을 사용합니다. 이 항목을 'off'로 설정하는 것은 --disable-telemetry와 동일합니다.",
-			"without-connection-token": "연결 토큰 없이 실행합니다. 연결이 다른 수단으로 보호되는 경우에만 사용합니다."
-		},
-		"vs/server/node/serverServices": {
-			"remoteExtensionLog": "서버"
 		},
 		"vs/code/electron-main/app": {
 			"cancel": "아니요(&&N)",
@@ -6975,6 +7030,7 @@
 			"menuBarVisibility": "메뉴 모음의 표시 여부를 제어합니다. '토글' 설정은 메뉴 모음이 숨겨지고 'Alt' 키를 한 번 누르면 메뉴 모음이 표시됨을 의미합니다. '컴팩트' 설정은 메뉴를 사이드바로 이동시킵니다.",
 			"menuBarVisibility.mac": "메뉴 모음의 표시 여부를 제어합니다. '토글' 설정은 메뉴 모음이 숨겨지고 `애플리케이션 메뉴에 포커스`를 실행하면 메뉴 모음이 표시됨을 의미합니다. '컴팩트' 설정은 메뉴를 사이드바로 이동시킵니다.",
 			"mergeWindow": "로컬 파일 기록의 마지막 항목이 추가되는 항목으로 대체되는 간격(초)을 구성합니다. 이렇게 하면 자동 저장이 활성화된 경우와 같이 추가되는 전체 항목 수를 줄이는 데 도움이 됩니다. 이 설정은 출처가 동일한 항목에만 적용됩니다. 이 설정을 변경해도 기존 로컬 파일 기록 항목에는 영향을 미치지 않습니다.",
+			"modernUI": "Controls whether the experimental Modern UI Update is enabled. When on, the side bars and bottom panel are shown as floating cards with rounded corners and gaps, and a set of refreshed workbench styles is applied, matching the Agents window design.",
 			"mouseBackForwardToNavigate": "'돌아가기' 및 '앞으로 이동' 명령에 마우스 단추 4와 5를 사용할 수 있습니다.",
 			"navigationControlEnabled": "탐색 컨트롤이 사용자 지정 제목 표시줄에 표시되는지 여부를 제어합니다. 이 설정은{0}이(가) {1}(으)로 설정되지 않은 경우에만 적용됩니다.",
 			"navigationControlEnabledWeb": "제목 표시줄에 탐색 컨트롤이 표시되는지 여부를 제어합니다.",
@@ -7462,6 +7518,7 @@
 			"revealUserDataFolder": "사용자 데이터 폴더 표시",
 			"showContentTracing": "콘텐츠 추적 표시",
 			"showGPUInfo": "GPU 정보 표시",
+			"startHeapTracing": "Start Heap Tracing",
 			"startTracing": "추적 시작",
 			"startTracing.ariaLabel": "성능 추적을 기록하는 중입니다. 기록을 중지하려면 클릭하세요.",
 			"startTracing.name": "성능 추적",
@@ -7789,6 +7846,7 @@
 			"verbosity.replEditor.description": "REPL 편집기에 포커스가 있을 때 REPL 편집기 접근성 도움말 메뉴에 액세스하는 방법에 대한 정보를 제공합니다.",
 			"verbosity.scm": "입력에 초점이 맞춰져 있을 때 소스 컨트롤 접근성 도움말 메뉴에 액세스하는 방법에 대한 정보를 제공합니다.",
 			"verbosity.sessionsChat": "채팅 입력에 포커스가 있을 때 Agents 창 접근성 도움말 메뉴에 액세스하는 방법에 대한 정보를 제공합니다.",
+			"verbosity.survey": "Provide information about how to navigate and interact with the survey editor pane.",
 			"verbosity.terminal.description": "터미널이 포커스 상태일 때 터미널 접근성 도움말 메뉴에 액세스하는 방법에 대한 정보를 제공합니다.",
 			"verbosity.terminalChatOutput.description": "접근 가능한 보기에서 채팅 터미널 출력을 여는 방법에 대한 정보를 제공합니다.",
 			"verbosity.walkthrough": "접근 가능한 보기에서 연습을 여는 방법에 대한 정보를 제공합니다.",
@@ -7870,14 +7928,36 @@
 			"agents.voice.alwaysOnTop": "Keep the Voice Mode window always on top of other windows.",
 			"agents.voice.backendUrl": "Voice backend WebSocket URL. Leave empty to use the default hosted backend. Set to e.g. `ws://localhost:8000/api/v1/realtime/voice` to point at a backend running on your machine.",
 			"agents.voice.enabled": "Enable the Voice Mode panel in the chat view for voice-driven coding conversations.",
+			"agents.voice.showTranscript": "Show the voice transcript overlay in the chat input area while voice mode is active.",
 			"agents.voice.textToSpeech": "When enabled, the assistant reads responses aloud. When disabled, responses appear as text transcripts only.",
+			"agentsVoice.connecting": "Connecting...",
+			"agentsVoice.disconnect": "Disconnect Voice Mode",
+			"agentsVoice.pttStopInChat": "Voice Mode: Stop Recording",
+			"agentsVoice.simulateConnection": "Voice: Simulate Connection (Dev)",
+			"agentsVoice.startVoiceInChat": "Voice Mode",
 			"agentsVoiceConfigurationTitle": "Voice Mode",
 			"agentsVoicePushToTalk": "Voice Mode: Push to Talk",
 			"resetAgentsVoiceOnboarding": "Voice: Reset Onboarding",
 			"toggleAgentsVoiceWindow": "Voice Mode"
 		},
+		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceSessionsPicker": {
+			"voiceSessions.placeholder": "Select a session for voice input",
+			"voiceSessions.setTarget": "Set as voice target"
+		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidget": {
-			"agentsVoice.feedbackError": "Failed to submit"
+			"agentsVoice.clickMicToTalk": "Click mic to talk",
+			"agentsVoice.collapseSessions": "Collapse sessions",
+			"agentsVoice.configureKeybinding": "Configure keybinding",
+			"agentsVoice.disconnect": "Disconnect",
+			"agentsVoice.feedbackError": "Failed to submit",
+			"agentsVoice.holdToTalk": "Hold {0} to talk",
+			"agentsVoice.listening": "Listening",
+			"agentsVoice.minimize": "Minimize",
+			"agentsVoice.pushToTalk": "Push to talk",
+			"agentsVoice.pushToTalkKey": "Push to talk ({0})",
+			"agentsVoice.pushToTalkSpace": "Push to talk (Space)",
+			"agentsVoice.sendFeedback": "Send feedback",
+			"agentsVoice.sessions": "Sessions"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidgetBinding": {
 			"agentsVoice.chat": "Chat",
@@ -7900,8 +7980,10 @@
 			"agentsVoice.submitting": "Submitting..."
 		},
 		"vs/workbench/contrib/agentsVoice/browser/components/headerComponent": {
+			"agentsVoice.clickMicToTalk": "Click mic to talk",
 			"agentsVoice.configureKeybinding": "Configure keybinding",
 			"agentsVoice.disconnect": "Disconnect",
+			"agentsVoice.holdToTalk": "Hold {0} to talk",
 			"agentsVoice.minimize": "Minimize",
 			"agentsVoice.openMiniView": "Open mini-view",
 			"agentsVoice.pushToTalkSpace": "Push to talk (Space)",
@@ -7927,7 +8009,6 @@
 			"agentsVoice.newSession": "New session",
 			"agentsVoice.noActiveSessions": "No active sessions",
 			"agentsVoice.openInVSCode": "Open in VS Code",
-			"agentsVoice.openSessionAction": "Open session",
 			"agentsVoice.sendTo": "Send to",
 			"agentsVoice.sendToActive": "Send to (active)",
 			"agentsVoice.stop": "Stop",
@@ -7935,9 +8016,15 @@
 		},
 		"vs/workbench/contrib/agentsVoice/browser/components/statusRowsComponent": {
 			"agentsVoice.done": "done",
+			"agentsVoice.jumpToSession": "Jump to session",
 			"agentsVoice.needsInput": "needs input",
 			"agentsVoice.noActiveSessions": "No active sessions",
 			"agentsVoice.working": "working"
+		},
+		"vs/workbench/contrib/agentsVoice/browser/components/voiceBarComponent": {
+			"agentsVoice.listening": "Listening",
+			"agentsVoice.speaking": "Speaking...",
+			"agentsVoice.stopSpeech": "Stop speech"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/transcriptsView/voiceTranscripts.contribution": {
 			"agentsVoice.showTranscripts": "Show Voice Transcripts",
@@ -8219,7 +8306,7 @@
 			"browser.errorUrlLabel": "URL:",
 			"browser.loadErrorLabel": "페이지를 로드하지 못함",
 			"browser.notSecure": "안전하지 않음",
-			"browser.remoteErrorExtraWarning": "This usually means the host is not available or could not be reached from the remote."
+			"browser.remoteErrorExtraWarning": "This usually means the host could not be found.\r\nEnsure the URL is correct and the server is accessible from the remote machine."
 		},
 		"vs/workbench/contrib/browserView/electron-browser/features/browserEditorFindFeature": {
 			"browser.findNextAction": "다음 항목 찾기",
@@ -8678,6 +8765,7 @@
 			"insertTroubleshootSlashCommand": "문제 해결 명령 삽입",
 			"insertTroubleshootSlashCommand.short": "/troubleshoot 삽입",
 			"interactiveSession.clearHistory.label": "입력 기록 지우기",
+			"interactiveSession.compactAgentHostConversation.label": "Compact Conversation",
 			"interactiveSession.focusInput.label": "포커스 채팅 입력",
 			"interactiveSession.focusQuestionCarousel.label": "채팅: 질문과 입력 간 포커스 전환",
 			"interactiveSession.focusQuestionCarouselTerminal.label": "채팅: 질문 캐러셀의 포커스 터미널",
@@ -8746,6 +8834,9 @@
 			"workbench.action.chat.attachSelection.label": "채팅에 선택 영역 추가"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatContinueInAction": {
+			"chat.delegation.inlinePrompt": "The following is the conversation history from a previous {0} session. Continue working on it.\r\n\r\n{1}\r\n\r\nUser: {2}",
+			"chat.delegation.transcriptContent": "The following is the conversation history from a previous {0} session. Continue working on it.\r\n\r\n{1}",
+			"chat.delegation.transcriptName": "Previous conversation",
 			"chat.learnMore": "자세한 정보",
 			"continueChatInSession": "채팅 계속하기...",
 			"continueIn": "에 계속",
@@ -8944,6 +9035,11 @@
 			"configToolSets": "도구 집합 구성...",
 			"configureTools": "도구 구성",
 			"defaultBucketLabel": "기본 제공",
+			"deleteToolSet.confirm.detail": "This removes the tool set definition from {0}.",
+			"deleteToolSet.confirm.message": "Delete tool set '{0}'?",
+			"deleteToolSet.confirm.primary": "Delete",
+			"deleteToolSet.error": "Failed to delete tool set '{0}': {1}",
+			"deleteUserBucket": "Delete Tool Set",
 			"editUserBucket": "도구 집합 편집",
 			"manageToolApproval": "승인 관리",
 			"mcpShowOutput": "출력 표시",
@@ -8995,6 +9091,8 @@
 			"exportDebugLogs.folderDialogTitle": "에이전트 호스트 디버그 로그 폴더 선택",
 			"exportDebugLogs.noFiles.activeSession": "활성 에이전트 세션에 대한 로그 파일을 찾을 수 없습니다.",
 			"exportDebugLogs.noFiles.currentWindow": "현재 창에 대한 에이전트 호스트 로그 파일을 찾을 수 없습니다.",
+			"exportDebugLogs.privacyWarning": "Note: This log may contain personal information such as auth tokens, file contents, or terminal output. Please consider sharing privately or reviewing the contents carefully before sharing.",
+			"exportDebugLogs.privacyWarning.internal": "Note: This log may contain personal information such as auth tokens, file contents, or terminal output. It MUST be shared privately via Slack or in an issue filed on the microsoft/vscode-internalbacklog repo.",
 			"exportDebugLogs.saveError": "디버그 로그를 저장하지 못함: {0}"
 		},
 		"vs/workbench/contrib/chat/browser/actions/openCopilotCliStateFileAction": {
@@ -9045,7 +9143,6 @@
 			"update": "업데이트"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatContribution": {
-			"agentHost.displayName": "{0} - 에이전트 호스트",
 			"agentHostHarnessLabel.local": "{0} [에이전트 호스트]"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
@@ -9057,8 +9154,7 @@
 			"agentHostChatInputPicker.filter": "필터...",
 			"agentHostChatInputPicker.learnMorePermissions": "권한에 대한 자세한 정보",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
-			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, 읽기 전용",
-			"selected": "(선택됨)"
+			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}, 읽기 전용"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker.contribution": {
 			"agentHost.autoApprovePicker": "자동 승인",
@@ -9087,12 +9183,18 @@
 			"agentHost.forkedSessionLabel": "분기된 세션",
 			"agentHost.responseDetails.credit": "{0} 크레딧",
 			"agentHost.responseDetails.credits": "{0} 크레딧",
-			"agentHost.turnError": "Error: ({0}) {1}"
+			"agentHost.turnError": "Error: ({0}) {1}",
+			"agentHost.workspaceTrust": "AI features are currently only supported in trusted workspaces."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
 			"agentHostTerminal.local": "로컬"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
+			"agentFeedback.many": "{0} comments",
+			"agentFeedback.one": "1 comment",
+			"agentFeedback.reveal": "Reveal Selected",
+			"agentFeedback.reviewMessage": "Choose which comments to reveal to the agent. Unchecked comments stay hidden.",
+			"agentFeedback.reviewTitle": "Reveal unreviewed comments?",
 			"ahp.running": "{0} 실행 중..."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
@@ -9114,7 +9216,7 @@
 			"chat.session.providerDescription.codex": "편집기에서 새 Codex 세션을 엽니다. Codex 세션은 채팅 세션 보기에서 관리할 수 있습니다.",
 			"chat.session.providerDescription.growth": "Copilot 기능에 대해 알아봅니다.",
 			"chat.session.providerDescription.local": "VS Code 채팅 내에서 작업을 실행합니다. 에이전트는 채팅을 통해 반복하고 대화형으로 작동하여 주 작업 영역에서 변경 내용을 구현합니다.",
-			"chat.session.providerLabel.agentHostCopilot": "Copilot CLI [에이전트 호스트]",
+			"chat.session.providerLabel.agentHostCopilot": "Copilot",
 			"chat.session.providerLabel.background": "Copilot CLI",
 			"chat.session.providerLabel.cloud": "클라우드",
 			"chat.session.providerLabel.local": "로컬"
@@ -9322,6 +9424,11 @@
 			"showAgentSessionsQuickAccess": "에이전트 세션 표시",
 			"showCommandsQuickAccess": "명령 표시(통합)",
 			"showFilesQuickAccess": "파일 표시(통합)"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/localAgentDisabledInputTipContribution": {
+			"chat.localAgentDisabled.continueInAgentHostCopilot.action": "Continue In Agent Host",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.description": "You can bring your local harness history into a new chat with the agent host. To keep using the local harness instead and hide this notification, set \"chat.editor.localAgent.enabled\" to true.",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.message": "Continue using the agent host."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/sessionTypeAvailability": {
 			"chat.sessionType.noModels": "No models available",
@@ -9812,6 +9919,7 @@
 			"chat.agentHost.ahpJsonlLogging": "활성화하면 에이전트 호스트 연결에 대한 모든 AHP 전송 메시지를 창의 로그 디렉터리 아래에 있는 JSONL 파일에 기록합니다.",
 			"chat.agentHost.clientTools": "에이전트 호스트 세션에서 클라이언트가 제공한 도구로 노출할 도구 참조 이름입니다.",
 			"chat.agentHost.customTerminalTool.enabled": "활성화하면 Copilot SDK 세션에서 SDK의 기본 터미널 동작 대신 에이전트 호스트 터미널 도구 재정의를 사용합니다.",
+			"chat.agentHost.opus48Prompt.enabled": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
 			"chat.agentHost.sdkSandbox.enabled": "Sandbox mode for the Copilot SDK's built-in shell tool. Only takes effect when `#chat.agentHost.customTerminalTool.enabled#` is `false`; when the Agent Host's own terminal tool is enabled, the engine sandbox is controlled by `#chat.agent.sandbox.enabled#`.",
 			"chat.agentHost.sdkSandbox.enabled.allowNetwork": "The SDK's built-in shell tool runs inside a sandbox with unrestricted outbound network access.",
 			"chat.agentHost.sdkSandbox.enabled.off": "No sandbox policy is forwarded for the SDK's built-in shell tool — commands run unsandboxed.",
@@ -9853,9 +9961,16 @@
 			"chat.contextUsage.enabled": "채팅 입력란에 컨텍스트 창 사용량 표시기를 보여 주세요.",
 			"chat.customizations.harnessSelector.enabled": "채팅 사용자 지정 편집기 사이드바에 도구 선택기가 표시되는지 여부를 제어합니다. 사용하지 않도록 설정하면 편집기는 항상 필터링하지 않고 모든 사용자 지정을 표시합니다.",
 			"chat.customizations.structuredPreview.enabled": "채팅 사용자 지정 편집기에서 Markdown 사용자 지정 파일(에이전트, 기술, 지침, 프롬프트)의 구조화된 미리 보기를 표시할지 여부를 제어합니다. 비활성화하면 편집기는 항상 포함된 코드 편집기에서 원시 Markdown을 엽니다.",
+			"chat.defaultConfiguration.approvals.autoApprove": "Bypass Approvals — all tool calls are auto-approved.",
+			"chat.defaultConfiguration.approvals.default": "Default Approvals — Copilot uses your configured settings.",
+			"chat.defaultConfiguration.approvals.description": "The starting approval behavior for new agent sessions. If enterprise policy disables auto approval, new sessions use Default Approvals.",
+			"chat.defaultConfiguration.mode.autopilot": "Autopilot — autonomously iterate from start to finish.",
+			"chat.defaultConfiguration.mode.description": "The starting mode for new agent sessions.",
+			"chat.defaultConfiguration.mode.interactive": "Interactive — step-by-step collaboration.",
+			"chat.defaultConfiguration.mode.plan": "Plan — plan first, execute when ready.",
+			"chat.defaultConfiguration.settingDescription": "Controls the default configuration (mode and approval behavior) for new agent sessions (such as Copilot CLI). You can still change the mode and approval level per session, and each session remembers what was used.",
 			"chat.detectParticipant.enabled": "패널 채팅에서 채팅 참가자 자동 감지를 사용합니다.",
 			"chat.disableAIFeatures": "채팅 및 인라인 제안을 포함하여 GitHub Copilot에서 제공하는 기본 제공 AI 기능을 사용하지 않도록 설정하고 숨깁니다.",
-			"chat.editMode.hidden": "사용하도록 설정하면 채팅 모드 선택기에서 편집 모드를 숨깁니다.",
 			"chat.editRequests": "채팅에서 요청을 편집할 수 있습니다. 이를 통해 요청 내용을 변경하고 모델에 다시 제출할 수 있습니다.",
 			"chat.editing.autoAcceptDelay": "채팅에서 변경한 내용이 자동으로 수락되기까지의 지연 시간 값은 초 단위이며, `0`은 비활성화를 의미하고 `100`초가 최대값입니다.",
 			"chat.editing.confirmEditRequestRemoval": "요청 및 관련 편집을 제거하기 전에 확인을 표시할지 여부입니다.",
@@ -9866,6 +9981,7 @@
 			"chat.editor.claude.preferAgentHost": "When enabled, Claude sessions opened from the regular workbench (sidebar chat) run inside the agent host process instead of the GitHub Copilot Chat extension. Only one Claude implementation surfaces per window.",
 			"chat.editorAssociations": "채팅에서 파일을 열기 위해 편집기에 [glob 패턴](https://aka.ms/vscode-glob-patterns)을 구성합니다(예: `\"*.md\": \"vscode.markdown.preview.editor\"`).",
 			"chat.exitAfterDelegation": "다른 세션에 요청을 위임한 후 채팅 패널이 자동으로 종료되는지 여부를 제어합니다.",
+			"chat.experimental.collectInstructionsInExtension": "When enabled, automatic instruction collection (.instructions.md, agent instructions, customizations index) is performed by the GitHub Copilot Chat extension instead of the core workbench.",
 			"chat.experimental.detectParticipant.enabled": "패널 채팅에서 채팅 참가자 자동 감지를 사용합니다.",
 			"chat.experimental.detectParticipant.enabled.deprecated": "이 설정은 사용되지 않습니다. Please use `chat.detectParticipant.enabled` instead.",
 			"chat.experimental.incrementalRendering.animationStyle": "증분 렌더링의 애니메이션 스타일을 제어합니다.",
@@ -9945,19 +10061,19 @@
 			"chat.permissions.default.autopilot.label": "Autopilot(미리 보기)",
 			"chat.permissions.default.default.description": "기본 승인을 사용해 새 채팅 세션을 시작하세요.",
 			"chat.permissions.default.default.label": "기본 승인",
-			"chat.permissions.default.settingDescription": "새 채팅 세션의 기본 권한 선택기 모드를 제어합니다. 세션별로 권한 모드를 변경할 수 있으며, 각 세션은 사용된 권한 모드를 기억합니다. 엔터프라이즈 정책에서 자동 승인을 비활성화하면 새 세션은 기본 승인을 사용합니다.",
+			"chat.permissions.default.settingDescription": "Controls the default permissions picker mode for new local chat sessions. You can still change the permission mode per session, and each session remembers the permission mode that was used. If enterprise policy disables auto approval, new sessions use Default Approvals.",
 			"chat.persistentProgress.enabled": "채팅에서 항상 진행률을 표시합니다.",
 			"chat.planAgent.defaultModel.description": "사용 가능한 공급자의 계획 에이전트에 사용할 기본 언어 모델을 선택합니다.",
 			"chat.planReview.inlineEditor.enabled": "활성화하면 계획 검토 위젯이 별도의 편집기 탭이 아니라 편집기를 인라인으로 탑재합니다.",
 			"chat.pluginLocations": "검색할 플러그 인 디렉터리입니다. 각 키는 플러그 인 폴더를 직접 가리키는 경로이며 값에 따라 활성화(`true`) 또는 비활성화(`false`)됩니다. 경로는 절대 경로, 작업 영역 루트에 대한 상대 경로, 또는 사용자 홈 디렉터리를 나타내는 `~/`로 시작할 수 있습니다.",
 			"chat.plugins.enabled": "채팅에서 에이전트 플러그 인 통합을 활성화합니다.",
-			"chat.plugins.enabledPlugins": "엔터프라이즈 관리 플러그 인 활성화입니다. 키는 `<plugin>@<marketplace>` 형식의 플러그 인 ID입니다(Copilot CLI 설치 경로로 확인됨). 값은 플러그 인을 활성화(`true`)하거나 비활성화(`false`)합니다. 경로 키 항목과 함께 {0}에서 검색됩니다. 정책에 따라 설정되면, 마켓플레이스에서 검색된 플러그 인 중 로드가 허용되는 항목도 제한합니다(여기서는 `true`에 매핑된 ID만 통과할 수 있음).",
-			"chat.plugins.enabledPlugins.policy": "플러그 인 활성화입니다. 키는 `<plugin>@<marketplace>` 형식의 플러그 인 ID입니다. 값은 플러그 인을 활성화하거나 비활성화합니다.",
+			"chat.plugins.enabledPlugins": "Controls which [agent plugins](https://aka.ms/vscode-agent-plugins) are enabled or disabled. Keys are plugin IDs in `<plugin>@<marketplace>` form (where marketplace is defined in {1}); values enable (`true`) or disable (`false`) the plugin. Discovered alongside the path-keyed entries in {0}. When set by policy, only plugins mapped to `true` here are allowed to load.",
+			"chat.plugins.enabledPlugins.policy": "Plugin enablement. Keys are plugin IDs in `{plugin}@{marketplace}` form; values enable or disable the plugin.",
 			"chat.plugins.extraMarketplaces": "엔터프라이즈 관리 추가 플러그 인 마켓플레이스입니다. {0}과(와) 함께 사용됩니다.",
-			"chat.plugins.extraMarketplaces.policy": "쿼리할 추가 플러그 인 마켓플레이스입니다. 키는 마켓플레이스 이름입니다. 값은 GitHub 약식 표기(`owner/repo[#ref]`) 또는 Git URI(`<url>[#ref]`)입니다.",
+			"chat.plugins.extraMarketplaces.policy": "Additional plugin marketplaces to query. Keys are marketplace names; values are GitHub shorthand (`owner/repo[#ref]`) or Git URIs (`{url}[#ref]`).",
 			"chat.plugins.marketplaces": "쿼리할 플러그 인 마켓플레이스입니다. 항목은 GitHub 약식(`owner/repo` 또는 `owner/repo#ref`), 직접 Git 리포지토리 URI(`https://...git`, `ssh://...git` 또는 `git@host:path.git`이며 각각 `#ref`를 추가할 수 있음) 또는 로컬 리포지토리 URI(`file:///...`)일 수 있습니다. 동일한 GitHub 약식과 URI 항목은 중복 제거됩니다.",
-			"chat.plugins.strictMarketplaces": "활성화하면 엔터프라이즈 정책을 통해 제공된 마켓플레이스만 신뢰합니다. 다른 마켓플레이스의 플러그 인은 로드되지 않습니다.",
-			"chat.plugins.strictMarketplaces.policy": "엔터프라이즈 정책을 통해 제공된 마켓플레이스만 신뢰하세요. 다른 마켓플레이스의 플러그 인은 로드되지 않습니다.",
+			"chat.plugins.strictMarketplaces": "Enterprise-managed allowlist of plugin marketplace sources. When set, only marketplaces matching one of these entries can be installed; an empty array blocks all marketplaces. This does not retroactively disable already-installed plugins. Each entry is an object with a `source` discriminator (`github`, `git`, `url`, `npm`, `file`, `directory`, `hostPattern`, or `pathPattern`) and the corresponding fields. Typically delivered via enterprise policy.",
+			"chat.plugins.strictMarketplaces.policy": "Allowlist of plugin marketplace sources. When set, only marketplaces matching an entry are trusted; an empty array blocks all marketplaces.",
 			"chat.progressBorder.enabled": "에이전트가 작업하거나 생각하는 동안 채팅 입력 주위에 애니메이션 그라데이션 테두리를 표시합니다. 활성화되고 축소된 동작을 사용하도록 설정하지 않으면 {0}을(를) 재정의합니다. 동작 감소가 활성화된 경우에는 효과가 없습니다.",
 			"chat.promptFileLocations.invalidPath": "경로는 상대 경로이거나 '~/'로 시작해야 합니다. 절대 경로 및 '\\' 구분 기호는 지원되지 않습니다. Glob 패턴은 더 이상 사용되지 않으며 이후 버전에서 제거될 예정입니다.",
 			"chat.promptFilesRecommendations.description": "채팅 시작 보기에서 추천할 프롬프트 파일을 구성합니다. 각 키는 프롬프트 파일 이름이며 항상 추천하려면 값이 'true'이고, 추천하지 않으려면 'false' 또는 `resourceLangId == markdown`와(과) 같은 [when 절](https://aka.ms/vscode-when-clause) 표현식일 수 있습니다.",
@@ -10034,6 +10150,16 @@
 			"mcp.enterpriseManagedAuth.idp.policy": "엔터프라이즈 관리 MCP(모델 컨텍스트 프로토콜) 서버 인증에 사용되는 OAuth/OIDC IdP 구성입니다. 엔터프라이즈 정책(Windows 그룹 정책, macOS 관리 기본 설정, Linux `/etc/vscode/policy.json`)을 통해 제공됩니다.",
 			"mcp.gallery.serviceUrl": "MCP 갤러리 서비스 URL을 연결할 수 있도록 구성하세요.",
 			"mcp.list": "서버 나열"
+		},
+		"vs/workbench/contrib/chat/browser/chatDebug/agentHostChatDebugProvider": {
+			"agentHost.debug.fullPrompt": "Full Prompt",
+			"agentHost.debug.reasoning": "Reasoning",
+			"agentHost.debug.response": "Response",
+			"agentHost.debug.sessionStarted": "Session Started",
+			"agentHost.debug.sessionStartedDetails": "model={0}, reasoningEffort={1}",
+			"agentHost.debug.sessionStartedModel": "model={0}",
+			"agentHost.debug.untitledSession": "Copilot CLI Session {0}",
+			"agentHost.debug.userRequest": "User Request"
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/chatCustomizationDiscoveryRenderer": {
 			"chatDebug.configureLocations": "위치 구성",
@@ -10619,8 +10745,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatManagement/chatModelsWidget": {
 			"Search.FullTextSearchPlaceholder": "입력하여 검색...",
-			"cacheCost.ariaLabel.plural": "캐시 비용: 1M 토큰당 {0} 크레딧",
-			"cacheCost.ariaLabel.singular": "캐시 비용: 1M 토큰당 {0} 크레딧",
+			"cacheCost.ariaLabel.plural": "Cache read cost: {0} credits per 1M tokens",
+			"cacheCost.ariaLabel.singular": "Cache read cost: {0} credit per 1M tokens",
+			"cacheWriteCost.ariaLabel.plural": "Cache write cost: {0} credits per 1M tokens",
+			"cacheWriteCost.ariaLabel.singular": "Cache write cost: {0} credit per 1M tokens",
 			"capabilities": "기능",
 			"capability.agent": "에이전트 모드",
 			"capability.tools": "도구",
@@ -10629,9 +10757,12 @@
 			"collapse": "축소",
 			"collapseAll": "모두 축소",
 			"cost": "비용(1M 토큰당 크레딧)",
-			"cost.cache": "캐시: {0}",
-			"cost.cacheHover.plural": "캐시: 1M 토큰당 {0} 크레딧",
-			"cost.cacheHover.singular": "캐시: 1M 토큰당 {0} 크레딧",
+			"cost.cacheHover.plural": "Cache Read: {0} credits per 1M tokens",
+			"cost.cacheHover.singular": "Cache Read: {0} credit per 1M tokens",
+			"cost.cacheRead": "Cache Read: {0}",
+			"cost.cacheWrite": "Cache Write: {0}",
+			"cost.cacheWriteHover.plural": "Cache Write: {0} credits per 1M tokens",
+			"cost.cacheWriteHover.singular": "Cache Write: {0} credit per 1M tokens",
 			"cost.input": "In: {0}",
 			"cost.inputHover.plural": "입력: 1M 토큰당 {0} 크레딧",
 			"cost.inputHover.singular": "입력: 1M 토큰당 {0} 크레딧",
@@ -10652,8 +10783,10 @@
 			"modelName": "이름",
 			"models.addModel": "모델 추가",
 			"models.agentMode": "에이전트 모드",
-			"models.cacheCost.plural": "캐시 비용: 1M 토큰당 {0} 크레딧",
-			"models.cacheCost.singular": "캐시 비용: 1M 토큰당 {0} 크레딧",
+			"models.cacheCost.plural": "Cache Read Cost: {0} credits per 1M tokens",
+			"models.cacheCost.singular": "Cache Read Cost: {0} credit per 1M tokens",
+			"models.cacheWriteCost.plural": "Cache Write Cost: {0} credits per 1M tokens",
+			"models.cacheWriteCost.singular": "Cache Write Cost: {0} credit per 1M tokens",
 			"models.capabilities": "기능",
 			"models.configureModel": "구성...",
 			"models.contextSize": "컨텍스트 크기",
@@ -10667,8 +10800,10 @@
 			"models.inputCost.plural": "입력 비용: 1M 토큰당 {0} 크레딧",
 			"models.inputCost.singular": "입력 비용: 1M 토큰당 {0} 크레딧",
 			"models.installProviderExtensions": "Install Model Providers",
-			"models.longContextCacheCost.plural": "캐시 비용: 1M 토큰당 {0} 크레딧",
-			"models.longContextCacheCost.singular": "캐시 비용: 1M 토큰당 {0} 크레딧",
+			"models.longContextCacheCost.plural": "Cache Read Cost: {0} credits per 1M tokens",
+			"models.longContextCacheCost.singular": "Cache Read Cost: {0} credit per 1M tokens",
+			"models.longContextCacheWriteCost.plural": "Cache Write Cost: {0} credits per 1M tokens",
+			"models.longContextCacheWriteCost.singular": "Cache Write Cost: {0} credit per 1M tokens",
 			"models.longContextInputCost.plural": "입력 비용: 1M 토큰당 {0} 크레딧",
 			"models.longContextInputCost.singular": "입력 비용: 1M 토큰당 {0} 크레딧",
 			"models.longContextOutputCost.plural": "출력 비용: 1M 토큰당 {0} 크레딧",
@@ -10986,14 +11121,13 @@
 			"upgrade": "업그레이드"
 		},
 		"vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry": {
-			"chatAndCompletionsQuotaExceededStatus": "할당량에 도달했습니다.",
-			"chatQuotaExceededStatus": "채팅 할당량에 도달했습니다.",
+			"chatQuotaExceededStatus": "Quota reached",
+			"chatResumedStatus": "Copilot Resumed",
 			"chatSessionInProgressStatus": "1 에이전트 세션 진행 중",
 			"chatSessionsInProgressStatus": "{0} 에이전트 세션 진행 중",
 			"chatStatus": "Copilot 상태",
 			"chatStatusAria": "Copilot 상태",
 			"completionsDisabledStatus": "인라인 제안 사용 안 함",
-			"completionsQuotaExceededStatus": "인라인 제안 한도에 도달함",
 			"completionsSnoozedStatus": "인라인 제안 다시 알림",
 			"copilotDisabledStatus": "Copilot 사용 안 함",
 			"signIn": "로그인"
@@ -11095,12 +11229,14 @@
 			"pluginSourceNotFound": "복제 후 플러그 인 소스 '{0}'을(를) 찾을 수 없습니다.",
 			"selectPlugin": "'{0}'에서 설치할 플러그 인을 선택하세요.",
 			"showOutput": "출력 표시",
+			"strictMarketplaceBlockedInstall": "Plugins from '{0}' are blocked by your organization's policy.",
 			"trustAndInstall": "신뢰(&&T)",
 			"trustMarketplace": "'{0}' 플러그 인을 신뢰하시겠어요?",
 			"trustMarketplaceDetail": "플러그 인은 여러분 컴퓨터에서 코드를 실행할 수 있습니다. 신뢰하는 출처의 플러그 인만 설치하세요.\r\n\r\n원본: {0}",
 			"updateAllFailed": "업데이트 실패: {0}",
 			"updateAllSuccess": "업데이트된 플러그인: {0}",
-			"updatingAllPlugins": "플러그 인 업데이트 중..."
+			"updatingAllPlugins": "플러그 인 업데이트 중...",
+			"viewPolicySettings": "View Policy Settings"
 		},
 		"vs/workbench/contrib/chat/browser/pluginSources": {
 			"checkoutPluginSourceFailed": "플러그 인 '{0}'을(를) 요청한 수정 버전 {1}(으)로 체크아웃하지 못했습니다.",
@@ -11297,6 +11433,10 @@
 			"configure-tools.capitalized.ellipsis": "도구 구성...",
 			"placeholder": "도구 선택"
 		},
+		"vs/workbench/contrib/chat/browser/promptSyntax/promptToolSetsCodeLensProvider": {
+			"configure-tools.capitalized.ellipsis": "Configure Tools...",
+			"placeholder": "Select tools"
+		},
 		"vs/workbench/contrib/chat/browser/promptSyntax/promptUrlHandler": {
 			"confirmInstallAgent": "외부 애플리케이션은 URL의 콘텐츠를 사용하여 사용자 지정 에이전트를 만들려고 합니다. 대상 폴더와 이름을 선택하여 계속하시겠습니까?",
 			"confirmInstallInstructions": "외부 애플리케이션이 URL의 콘텐츠로 지침 파일을 만들려고 합니다. 대상 폴더와 이름을 선택하여 계속하시겠습니까?",
@@ -11413,6 +11553,8 @@
 			"bad_name2": "'{0}'은(는) 유효한 파일 이름이 아닙니다.",
 			"chat.configureToolSets": "도구 집합 구성...",
 			"chat.configureToolSets.add": "새 도구 집합 파일 만들기...",
+			"chat.configureToolSets.createFromCurrentSelection": "Create from current selection...",
+			"chat.configureToolSets.fileAlreadyExists": "A file with this name already exists",
 			"chat.configureToolSets.placeholder": "구성할 도구 집합 선택",
 			"chat.configureToolSets.short": "도구 세트",
 			"input.placeholder": "형식 도구 집합 파일 이름",
@@ -11421,6 +11563,8 @@
 			"schema.icon": "UI에서 이 도구 집합에 사용할 아이콘입니다. \"\\$(name)\"-구문(예: \"\\$(zap)\")을 사용합니다.",
 			"schema.tools": "이 도구 집합에 포함할 도구 또는 도구 집합의 목록입니다. 비워 둘 수 없으며 프롬프트에서 참조되는 방식으로 도구를 참조해야 합니다.",
 			"tool.description": "{1}({0})\r\n\r\n{2}",
+			"toolSetName.bad_name": "Tool set name cannot be empty",
+			"toolSetName.placeholder": "Type new tool set name",
 			"toolsetSchema.json": "사용자 도구 집합 구성"
 		},
 		"vs/workbench/contrib/chat/browser/tools/usagesTool": {
@@ -11646,10 +11790,8 @@
 			"submit": "제출"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatQuotaExceededPart": {
-			"clickToContinue": "클릭하여 다시 시도",
 			"manageBudget": "예산 관리",
-			"upgradeToCopilotPro": "GitHub Copilot Pro (프로)로 업그레이드",
-			"waitWarning": "변경 내용을 적용하는 데 몇 분 정도 걸릴 수 있습니다."
+			"upgradeToCopilotPro": "GitHub Copilot Pro (프로)로 업그레이드"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatReferencesContentPart": {
 			"addToChat": "채팅에 파일 추가",
@@ -11794,6 +11936,16 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/abstractToolConfirmationSubPart": {
 			"skip": "건너뛰기"
+		},
+		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatAgentFeedbackReviewConfirmationSubPart": {
+			"agentFeedback.cancel": "Cancel",
+			"agentFeedback.collapseComment": "Show Less",
+			"agentFeedback.delete": "Delete Comment",
+			"agentFeedback.expandComment": "Show More",
+			"agentFeedback.none": "No unreviewed comments.",
+			"agentFeedback.openFile": "Open File and Reveal Comment",
+			"agentFeedback.reveal": "Reveal Selected",
+			"agentFeedback.revealComment": "Reveal this comment to the agent"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatExtensionsInstallToolSubPart": {
 			"allow": "허용",
@@ -12008,12 +12160,11 @@
 			"chatInput.mode.edit": "(편집) 작업 영역에서 파일을 편집합니다.",
 			"chatInput.model": ", {0}. "
 		},
-		"vs/workbench/contrib/chat/browser/widget/input/chatInputStatusActionViewItem": {
-			"chat.inputStatus.otel.manageSettings": "설정 관리",
-			"chat.inputStatus.otel.title": "[OpenTelemetry]({0})를 통해 모니터링되는 에이전트"
-		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatModelPicker": {
-			"chat.effort.costHint": "사고 수준이 높을수록 비용이 증가할 수 있음",
+			"chat.category.lightweight": "Lightweight",
+			"chat.category.powerful": "Powerful",
+			"chat.category.versatile": "Versatile",
+			"chat.config.costHint": "Non-default options may increase cost",
 			"chat.effort.header": "사고 노력",
 			"chat.manageModels": "모델 관리...",
 			"chat.manageModels.tooltip": "언어 모델 관리",
@@ -12023,9 +12174,9 @@
 			"chat.modelPicker.ariaLabel": "모델 선택, {0}",
 			"chat.modelPicker.auto": "자동",
 			"chat.modelPicker.checkUpdateHover": "이 모델에는 최신 버전의 VS Code가 필요합니다. 액세스하려면 [VS Code 업데이트](command:update.checkForUpdate)를 수행합니다.",
+			"chat.modelPicker.configTooltip": "Configure Model",
 			"chat.modelPicker.downloadUpdateHover": "이 모델에는 최신 버전의 VS Code가 필요합니다. 액세스하려면 [업데이트 다운로드](command:update.downloadUpdate)를 수행합니다.",
 			"chat.modelPicker.effortAriaLabel": "생각하는 노력: {0}",
-			"chat.modelPicker.effortTooltip": "사고 노력 설정",
 			"chat.modelPicker.noModels": "No models available",
 			"chat.modelPicker.otherModels": "기타 모델",
 			"chat.modelPicker.pin": "모델 고정",
@@ -12033,7 +12184,6 @@
 			"chat.modelPicker.restartUpdateHover": "이 모델에는 최신 버전의 VS Code가 필요합니다. 액세스하려면 [업데이트 후 다시 시작](command:update.restartToUpdate)을 수행합니다.",
 			"chat.modelPicker.search": "모델 검색",
 			"chat.modelPicker.tokensAriaLabel": "컨텍스트 크기: {0}",
-			"chat.modelPicker.tokensTooltip": "컨텍스트 크기 설정",
 			"chat.modelPicker.unpin": "모델 고정 해제",
 			"chat.modelPicker.updateDescription": "VS Code 업데이트",
 			"chat.modelPicker.upgradeHover": "최상의 모델을 사용하려면 [GitHub Copilot Pro(프로)로 업그레이드](command:workbench.action.chat.upgradePlan \" \")하세요.",
@@ -12044,20 +12194,18 @@
 			"chat.priceCategory.medium": "중간 비용",
 			"chat.priceCategory.unknown": "{0} 비용",
 			"chat.priceCategory.veryHigh": "매우 높은 비용",
-			"chat.tokens.costHint": "더 큰 컨텍스트는 비용을 늘릴 수 있음",
 			"chat.tokens.header": "컨텍스트 크기",
-			"models.cacheCostLabel": "캐시된 입력",
-			"models.configurable": "구성 가능:",
+			"models.cacheCostLabel": "Cache Read",
+			"models.cacheWriteCostLabel": "Cache Write",
+			"models.configDefault": "Default",
+			"models.configurable": "Configurable",
 			"models.contextSize": "최대 컨텍스트",
 			"models.cost": "비용: {0}",
-			"models.costValuePlural": "{0} 크레딧",
-			"models.costValueSingular": "{0} 크레딧",
-			"models.effortDefault": "{0}(기본값)",
+			"models.creditsPerMillionTokens": "Credits Per 1M Tokens",
+			"models.defaultContext": "Default",
 			"models.inputCostLabel": "입력",
-			"models.longContextPriceTitle": "긴 컨텍스트 비용(토큰 100만 개당)",
-			"models.outputCostLabel": "출력",
-			"models.priceCategoryTitle": "비용",
-			"models.priceTitle": "비용(토큰 1백만 개당)"
+			"models.longContext": "Long Context",
+			"models.outputCostLabel": "출력"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter": {
 			"chatPhoneInput.autoLabel": "자동",
@@ -12122,21 +12270,19 @@
 			"permissions.autoApprove": "승인 건너뛰기",
 			"permissions.autoApprove.description": "모든 도구 호출을 자동 승인하고 오류 시 재시도",
 			"permissions.autoApprove.label": "승인 건너뛰기",
-			"permissions.autoApprove.policyDescription": "엔터프라이즈 정책으로 비활성화됨",
-			"permissions.autoApprove.policyDisabled": "엔터프라이즈 정책으로 비활성화됨",
 			"permissions.autoApprove.subtext": "모든 도구 호출이 자동 승인됨",
 			"permissions.autopilot": "Autopilot(미리 보기)",
 			"permissions.autopilot.description": "모든 도구 호출을 자동 승인하고 작업이 완료될 때까지 계속 진행합니다. Autopilot으로 인해 비용이 증가할 수 있습니다.",
 			"permissions.autopilot.label": "Autopilot(미리 보기)",
-			"permissions.autopilot.policyDescription": "엔터프라이즈 정책으로 비활성화됨",
-			"permissions.autopilot.policyDisabled": "엔터프라이즈 정책으로 비활성화됨",
 			"permissions.autopilot.subtext": "처음부터 끝까지 자율적으로 반복합니다.",
 			"permissions.default": "기본 승인",
 			"permissions.default.description": "구성된 승인 설정 사용",
 			"permissions.default.label": "기본 승인",
 			"permissions.default.subtext": "Copilot가 구성된 설정을 사용합니다.",
 			"permissions.ext.locked": "이 옵션은 잠겨 있습니다.",
-			"permissions.learnMore": "권한에 대한 자세한 정보"
+			"permissions.learnMore": "권한에 대한 자세한 정보",
+			"permissions.policyDescription": "Disabled by enterprise policy",
+			"permissions.policyDisabled": "Disabled by enterprise policy"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/sessionTargetPickerActionItem": {
 			"chat.learnMoreAgentTypes": "에이전트 유형에 대해 알아보기...",
@@ -12171,6 +12317,10 @@
 			"outputReserved": "응답용으로 예약됨",
 			"qualityWarning": "한도에 가까워질수록 품질이 저하될 수 있습니다.",
 			"quotaDisplay": "{0}%",
+			"sessionCost": "Session Cost",
+			"sessionCostCredit": "{0} credit",
+			"sessionCostCredits": "{0} credits",
+			"sessionInfo": "Session Info",
 			"tokenCount": "{0}/{1} 토큰",
 			"uncategorized": "분류되지 않음"
 		},
@@ -12179,11 +12329,12 @@
 			"contextUsagePercentageLabel": "컨텍스트 창 사용: {0}%"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewPane": {
-			"agentsVoice.voiceChatTitle": "Voice Mode",
 			"chat.loadSessionFailed": "채팅 세션을 열지 못했습니다. {0}",
 			"newSession": "새 세션",
 			"sessionInProgress": "에이전트 세션 진행 중",
-			"sessions": "세션"
+			"sessions": "세션",
+			"voiceMode.clickMicHint": "Click mic to talk",
+			"voiceMode.pttHint": "Press {0} to talk"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewTitleControl": {
 			"chat": "채팅",
@@ -12203,6 +12354,7 @@
 			"agentSessionsViewerPosition": "채팅 보기에서 에이전트 세션 보기의 위치입니다.",
 			"agentSessionsViewerVisible": "채팅 보기에서 에이전트 세션 보기의 표시 여부입니다.",
 			"agentSupportsAttachments": "채팅 에이전트가 첨부 파일을 지원하는 경우 True입니다.",
+			"chatAgentHostProviderId": "The Agent Host provider ID when the chat widget is locked to an Agent Host session.",
 			"chatAgentModeDisabledByPolicy": "에이전트 모드가 조직 정책에 의해 비활성화된 경우 true입니다.",
 			"chatContextUsageHasBeenOpened": "사용자가 컨텍스트 창 사용 세부 정보를 열었을 때 true입니다.",
 			"chatEditApplied": "채팅 텍스트 편집이 적용된 경우 True입니다.",
@@ -12218,8 +12370,10 @@
 			"chatHasAgents": "채팅에 사용자 지정 에이전트를 사용할 수 있는 경우 True입니다.",
 			"chatHasCanDelegateProviders": "위임 지원이 가능한 채팅 세션 공급자가 있으면 True입니다.",
 			"chatHasFileAttachments": "채팅에 첨부 파일이 있는 경우 True입니다.",
+			"chatHasPendingDelegationTarget": "True when a delegation (continue in) target is selected but the request has not been submitted yet.",
 			"chatHasPendingRequests": "큐에 보류 중인 요청이 있는 경우 True입니다.",
 			"chatHasUsedCreateSlashCommands": "사용자가 /create-* 슬래시 명령을 사용한 경우 True입니다.",
+			"chatIsAgentHostSession": "True when the chat widget is locked to an Agent Host session.",
 			"chatIsEnabled": "채팅이 활성화된 경우 기본 채팅 참가자가 실행에 따라 활성화되므로 True입니다.",
 			"chatIsKatexMathElement": "KaTeX 수학 요소에 집중할 때 True입니다.",
 			"chatItemId": "채팅 항목의 ID입니다.",
@@ -12310,7 +12464,7 @@
 			"chatError.offTopic": "Sorry, but I can only assist with programming related questions.",
 			"chatError.quota.additionalSpend": "You've reached your additional usage limit for your plan. Upgrade your plan to keep going.",
 			"chatError.quota.business": "You've exhausted your credits. To continue working, please contact your organization's Copilot admin or wait for your allowance to renew.",
-			"chatError.quota.default": "You've exhausted your premium model quota. To continue working, switch to Auto. For additional paid premium requests, please reach out to your organization's Copilot admin or wait for your allowance to renew.",
+			"chatError.quota.default": "You've exhausted your premium model quota. For additional paid premium requests, please reach out to your organization's Copilot admin or wait for your allowance to renew.",
 			"chatError.quota.free": "You've reached your monthly chat messages quota. Upgrade to Copilot Pro or wait for your allowance to renew.",
 			"chatError.quota.generic": "Quota Exceeded",
 			"chatError.quota.individual": "You've exhausted your premium model quota. Please enable additional paid premium requests, upgrade to Copilot Pro+, or wait for your allowance to renew.",
@@ -12319,8 +12473,8 @@
 			"chatError.quota.server": "Quota Exceeded\r\n\r\nServer Error: {0}\r\nError Code: {1}",
 			"chatError.quota.ubb.business": "You've reached your credit limit. To continue working, please contact your organization's Copilot admin or wait for your credits to reset.",
 			"chatError.quota.ubb.businessDate": "You've reached your credit limit. To continue working, please contact your organization's Copilot admin or wait until your credits reset on {0}.",
-			"chatError.quota.ubb.default": "You've reached your credit limit. To continue working, switch to Auto. For additional paid credits, please reach out to your organization's Copilot admin or wait for your credits to reset.",
-			"chatError.quota.ubb.defaultDate": "You've reached your credit limit. To continue working, switch to Auto. For additional paid credits, please reach out to your organization's Copilot admin or wait until your credits reset on {0}.",
+			"chatError.quota.ubb.default": "You've reached your credit limit. For additional paid credits, please reach out to your organization's Copilot admin or wait for your credits to reset.",
+			"chatError.quota.ubb.defaultDate": "You've reached your credit limit. For additional paid credits, please reach out to your organization's Copilot admin or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.free": "You've reached your monthly credit limit. Upgrade to Copilot Pro or wait for your credits to reset.",
 			"chatError.quota.ubb.freeDate": "You've reached your monthly credit limit. Upgrade to Copilot Pro or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.individual": "You've reached your monthly credit limit. Please enable additional paid credits, upgrade to Copilot Pro+, or wait for your credits to reset.",
@@ -12359,14 +12513,13 @@
 			"editsDescription": "선택한 코드 편집 또는 리팩터링"
 		},
 		"vs/workbench/contrib/chat/common/chatPermissionWarnings": {
-			"permissions.autoApprove.warning.cancel": "취소",
 			"permissions.autoApprove.warning.confirm": "활성화",
-			"permissions.autoApprove.warning.detail": "바이패스 승인은 확인을 요청하지 않고 모든 도구 호출을 자동으로 승인합니다. 여기에는 파일 편집, 터미널 명령 및 외부 도구 호출이 포함됩니다.\r\n\r\n새 채팅 세션의 시작 권한 수준으로 설정하려면 [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) 설정을 변경합니다.",
+			"permissions.autoApprove.warning.detail": "Bypass Approvals will auto-approve all tool calls without asking for confirmation. This includes file edits, terminal commands, and external tool calls.\r\n\r\nTo make this the starting permission level for new sessions, change the [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) setting.",
 			"permissions.autoApprove.warning.title": "승인 우회를 활성화하시겠습니까?",
-			"permissions.autopilot.warning.cancel": "취소",
 			"permissions.autopilot.warning.confirm": "활성화",
-			"permissions.autopilot.warning.detail": "Autopilot은 모든 도구 호출을 자동으로 승인하고 작업이 완료될 때까지 자율적으로 계속 작동합니다. 여기에는 터미널 명령, 파일 편집 및 외부 도구 호출이 포함됩니다. 에이전트는 확인을 요청하지 않고 사용자 대신 의사 결정을 내립니다.\r\n\r\n언제든지 중지 단추를 클릭하여 에이전트를 중지할 수 있습니다. 현재 세션에만 적용됩니다.\r\n\r\n새 채팅 세션의 시작 권한 수준으로 설정하려면 [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) 설정을 변경합니다.",
+			"permissions.autopilot.warning.detail": "Autopilot will auto-approve all tool calls and continue working autonomously until the task is complete. This includes terminal commands, file edits, and external tool calls. The agent will make decisions on your behalf without asking for confirmation.\r\n\r\nYou can stop the agent at any time by clicking the stop button. This applies to the current session only.\r\n\r\nTo make this the starting permission level for new sessions, change the [{0}](command:workbench.action.openSettings?%5B%22{0}%22%5D) setting.",
 			"permissions.autopilot.warning.title": "Autopilot을 활성화하시겠습니까?",
+			"permissions.warning.cancel": "Cancel",
 			"permissions.warning.dontShowAgain": "다시 표시 안 함"
 		},
 		"vs/workbench/contrib/chat/common/chatService/chatServiceImpl": {
@@ -12834,7 +12987,7 @@
 			"promptsUserDataFolder": "사용자 데이터"
 		},
 		"vs/workbench/contrib/chat/common/tools/builtinTools/askQuestionsTool": {
-			"askQuestionsTool.invalidOptions": "질문 \"{0}\"에는 최소 두 개의 선택지가 있어야 하며, 자유 텍스트 입력용이라면 선택지가 없어야 합니다.",
+			"askQuestionsTool.invalidOptions": "Question \"{0}\" must have at least two options, or set allowFreeformInput when providing a single option, or omit options for free text input.",
 			"askQuestionsTool.invocation.multiple": "{0}개의 질문을 하는 중({1})",
 			"askQuestionsTool.invocation.multiple.past": "{0}개의 질문을 함({1})",
 			"askQuestionsTool.invocation.single": "질문하기({0})",
@@ -13616,10 +13769,10 @@
 			"contributes.displayName": "사람이 읽을 수 있는 사용자 지정 편집기 이름입니다. 사용할 편집기를 선택할 때 사용자에게 표시됩니다.",
 			"contributes.priority": "사용자가 파일, diff 또는 병합 편집기를 열 때 사용자 지정 편집기를 자동으로 활성화할지 여부를 제어합니다. 이 설정은 `workbench.editorAssociations` 또는 `workbench.diffEditorAssociations` 설정으로 사용자가 재정의할 수 있습니다.",
 			"contributes.priority.default": "이 편집기는 사용자가 리소스를 열 때 해당 리소스에 대해 다른 기본 사용자 지정 편집기가 등록되지 않은 경우 자동으로 사용됩니다.",
-			"contributes.priority.diff": "사용자가 Diff를 열 때 사용자 지정 편집기를 자동으로 활성화할지 여부를 제어합니다. 지정하지 않으면 `editor` 값이 사용됩니다.",
-			"contributes.priority.editor": "사용자가 파일을 열 때 사용자 지정 편집기를 자동으로 활성화할지를 제어합니다.",
-			"contributes.priority.merge": "사용자가 병합 편집기를 열 때 사용자 지정 편집기를 자동으로 활성화할지 여부를 제어합니다. 지정하지 않으면 `editor` 값이 사용됩니다.",
+			"contributes.priority.diffEditor": "Controls if the custom editor is enabled automatically when the user opens a diff. When not specified, the value of `textEditor` is used.",
+			"contributes.priority.mergeEditor": "Controls if the custom editor is enabled automatically when the user opens a merge editor. When not specified, the value of `textEditor` is used.",
 			"contributes.priority.option": "이 편집기는 사용자가 리소스를 열 때 자동으로 사용되지 않지만, 사용자가 '다음으로 다시 열기' 명령을 사용하여 이 편집기로 전환할 수 있습니다.",
+			"contributes.priority.textEditor": "Controls if the custom editor is enabled automatically when the user opens a file. This is the base value: when `diffEditor` or `mergeEditor` are not specified, they fall back to this value.",
 			"contributes.selector": "사용자 지정 편집기가 사용되는 glob 집합입니다.",
 			"contributes.selector.filenamePattern": "사용자 지정 편집기가 사용되는 glob입니다.",
 			"contributes.viewType": "사용자 지정 편집기의 식별자입니다. 이 식별자는 모든 사용자 지정 편집기에서 고유해야 하므로 `viewType`의 일부로 확장 ID를 포함하는 것이 좋습니다. `viewType`은 `vscode.registerCustomEditorProvider`를 사용하여 사용자 지정 편집기를 등록할 때와 `onCustomEditor:${id}` [활성화 이벤트](https://code.visualstudio.com/api/references/activation-events)에서 사용됩니다.",
@@ -14913,7 +15066,7 @@
 			"Uninstalling": "제거하는 중",
 			"VS Code for Web": "웹용 {0}",
 			"auto update message": "[확장을 검토]({0})하고 수동으로 업데이트하세요.",
-			"autoUpdateDelayed": "새 버전은 게시된 후 2시간이 지나면 자동으로 업데이트되므로 이 확장은 아직 업데이트되지 않습니다. {0}에 자동으로 업데이트됩니다.",
+			"autoUpdateDelayed": "This extension is not updated yet because new versions are auto updated {0} after they are published. It will be auto updated {1}.",
 			"cancel": "취소",
 			"cannot be installed": "{1}에서 '{0}' 확장을 사용할 수 없습니다. 자세히 알아보려면 '추가 정보'를 클릭하세요.",
 			"check logs": "자세한 내용은 [로그]({0})를 확인하세요.",
@@ -16268,19 +16421,13 @@
 			"issueReporterEditorInputName": "Report Issue",
 			"issueReporterIcon": "Icon for the issue reporter editor."
 		},
-		"vs/workbench/contrib/issue/browser/issueReporterEditorPane": {
-			"noData": "No issue reporter data available.",
-			"noExperiments": "No current experiments.",
-			"openSystemSettings": "Open System Settings",
-			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
-			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
-			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
-		},
 		"vs/workbench/contrib/issue/browser/issueReporterOverlay": {
 			"abExperiments": "A/B Experiments",
 			"additionalInformation": "Additional Information",
 			"additionalPerformanceData": "Additional Performance Data",
 			"additionalPerformanceDataDescription": "Optionally include currently running processes and workspace metadata to help diagnose performance issues.",
+			"agentsWindow": "Agents Window",
+			"agentsWindowPlaceholder": "E.g. Sessions list does not refresh after creating a new session",
 			"attachments": "Attachments ({0})",
 			"back": "Back",
 			"bug": "Bug",
@@ -16298,9 +16445,6 @@
 			"descriptionPlaceholder": "Describe the issue in detail...",
 			"descriptionRequired": "Enter a description to continue.",
 			"editScreenshot": "Click to edit screenshot",
-			"excludeAllExtraAttachments": "Exclude All",
-			"excludeAllExtraAttachmentsAria": "Exclude all additional issue data from this issue",
-			"expand": "Expand",
 			"extension": "Extension",
 			"extensionData": "Extension Data",
 			"extensionExternalIssueUrl": "This extension uses an external issue reporter. Preview will open that issue reporter.",
@@ -16317,9 +16461,6 @@
 			"generateTitleBtn": "Generate from description",
 			"generatingTitle": "Generating...",
 			"hideToolbarInScreenshots": "Hide Toolbar in Screenshots",
-			"includeAllExtraAttachments": "Include All",
-			"includeAllExtraAttachmentsAria": "Include all additional issue data in this issue",
-			"includeInIssue": "Include in issue",
 			"issueTargetRepo": "Issue will be created in {0}/{1}.",
 			"issueTitle": "Title",
 			"issueTitlePlaceholder": "Brief summary of the issue",
@@ -16332,7 +16473,6 @@
 			"marketplace": "Extensions Marketplace",
 			"marketplacePlaceholder": "E.g. Cannot disable installed extension",
 			"maxAttachmentsReached": "Max attachments reached",
-			"minimize": "Minimize",
 			"next": "Next",
 			"noDelay": "No delay",
 			"noDescription": "(no description)",
@@ -16341,6 +16481,7 @@
 			"openExternalIssueReporter": "Open External Issue Reporter",
 			"or": "or",
 			"perfGuidance": "Describe what is slow, when it happens, whether it's consistent or intermittent, and any patterns you've noticed.",
+			"perfWikiLink": "See the performance issue reporting guide.",
 			"performanceIssue": "Performance Issue",
 			"previewOnGitHub": "Preview on GitHub",
 			"recordVideo": "Record video",
@@ -16349,6 +16490,7 @@
 			"refresh": "Refresh",
 			"refreshPerformanceData": "Reload running processes and workspace metadata",
 			"reportIssue": "Report Issue",
+			"reviewGuidanceLabelWizard": "Before you report an issue here please [review the guidance we provide](https://github.com/microsoft/vscode/wiki/Submitting-Bugs-and-Suggestions). Please complete the form in English.",
 			"reviewSubmit": "Review and submit",
 			"runningProcesses": "Running Processes",
 			"screenshot": "Screenshot",
@@ -16483,6 +16625,14 @@
 			"openIssueReporter": "Open Issue Reporter",
 			"reportPerformanceIssue": "Report Performance Issue...",
 			"tasksQuickAccessPlaceholder": "Type the name of an extension to report on."
+		},
+		"vs/workbench/contrib/issue/electron-browser/issueReporterEditorPane": {
+			"noData": "No issue reporter data available.",
+			"noExperiments": "No current experiments.",
+			"openSystemSettings": "Open System Settings",
+			"recordingTooLarge": "Recording stopped automatically: the 100 MB upload limit was reached.",
+			"screenRecordingPermissionDenied": "{0} needs Screen Recording permission to record videos. Grant access in System Settings, then click Record again.",
+			"screenRecordingPermissionDeniedGeneric": "Screen recording permission was denied. Allow {0} to record the screen and try again."
 		},
 		"vs/workbench/contrib/issue/electron-browser/issueReporterService": {
 			"noCurrentExperiments": "No current experiments.",
@@ -16963,6 +17113,8 @@
 			"mcp.servers.browse": "MCP 서버 찾아보기...",
 			"mcp.servers.discovery": "다른 애플리케이션에서 추가...",
 			"mcp.target..remote.description": "이 원격 컴퓨터에서 사용 가능, {0}에서 실행",
+			"mcp.target.agentHost": "Add to Current Agent Session",
+			"mcp.target.local": "Install Server Locally...",
 			"mcp.target.placeholder": "구성 대상 선택",
 			"mcp.target.remote": "원격",
 			"mcp.target.title": "MCP 서버 추가",
@@ -18440,10 +18592,13 @@
 			"settings.focusFile": "포커스 설정 파일",
 			"settings.focusLevelUp": "포커스를 한 수준 위로 이동",
 			"settings.focusSearch": "설정 검색에 포커스",
+			"settings.focusSearchFromSettings": "Focus Settings Search from Settings",
 			"settings.focusSettingControl": "설정 제어에 포커스",
+			"settings.focusSettingsFromSearchOnEnter": "Focus First Setting from Search",
 			"settings.focusSettingsList": "포커스 설정 목록",
 			"settings.focusSettingsTOC": "설정 목차에 포커스",
 			"settings.showContextMenu": "설정 상황에 맞는 메뉴 표시",
+			"settings.showPreviousSearch": "Show Previous Search in Settings",
 			"settings.toggleAiSearch": "AI 설정 검색 토글",
 			"settingsEditor2": "설정 편집기 2",
 			"showDefaultKeybindings": "시스템 키 바인딩 표시",
@@ -18505,6 +18660,7 @@
 		},
 		"vs/workbench/contrib/preferences/browser/settingsEditor2": {
 			"SearchSettings.AriaLabel": "설정 검색",
+			"SearchSettings.PlaceholderWithHistory": "Search settings ({0} for history)",
 			"clearInput": "설정 검색 입력 지우기",
 			"clearSearchFilters": "필터 지우기",
 			"filterInput": "필터 설정",
@@ -19931,6 +20087,60 @@
 			"surveyQuestion": "간단한 피드백 설문 조사에 참여하시겠어요?",
 			"takeSurvey": "설문 조사 참여"
 		},
+		"vs/workbench/contrib/surveys/browser/survey.contribution": {
+			"openSurvey": "Open Survey",
+			"survey.help.overview": "You are in a survey form. Use Tab to move between questions and options.",
+			"survey.help.select": "Use arrow keys within a question to navigate between options, and Space or Enter to select.",
+			"survey.help.submit": "Tab to the Submit button and press Enter once all questions are answered.",
+			"surveyEditorPaneTitle": "Survey"
+		},
+		"vs/workbench/contrib/surveys/browser/surveyEditorInput": {
+			"surveyIcon": "Icon for the survey editor."
+		},
+		"vs/workbench/contrib/surveys/browser/surveyEditorPane": {
+			"survey.pane.ariaLabel": "Survey",
+			"survey.submitFeedback": "Submit feedback",
+			"survey.submitHint": "Answer all questions to submit",
+			"survey.success.detail": "Your answer helps us understand who needs this most. Thank you.",
+			"survey.success.message": "Response sent"
+		},
+		"vs/workbench/contrib/surveys/browser/surveyQuestions": {
+			"survey.copilotPmf.description": "This short survey helps us understand how well Copilot fits into your workflow.",
+			"survey.copilotPmf.q1": "How disappointed would you be if you could no longer use Copilot?",
+			"survey.copilotPmf.q1.extremely": "Extremely",
+			"survey.copilotPmf.q1.notAtAll": "Not at all",
+			"survey.copilotPmf.q1.slightly": "Slightly",
+			"survey.copilotPmf.q1.somewhat": "Somewhat",
+			"survey.copilotPmf.q1.very": "Very",
+			"survey.copilotPmf.q2": "What has Copilot helped you with most recently?",
+			"survey.copilotPmf.q2.automating": "Automating repetitive work",
+			"survey.copilotPmf.q2.gettingUnstuck": "Getting unstuck on bugs",
+			"survey.copilotPmf.q2.multiFile": "Making multi-file changes",
+			"survey.copilotPmf.q2.noClearValue": "I haven't gotten clear value yet",
+			"survey.copilotPmf.q2.other": "Something else",
+			"survey.copilotPmf.q2.planning": "Planning an approach",
+			"survey.copilotPmf.q2.reviewing": "Improving or reviewing code",
+			"survey.copilotPmf.q2.shippingFaster": "Shipping changes faster",
+			"survey.copilotPmf.q2.understanding": "Understanding the codebase",
+			"survey.copilotPmf.q3": "What most gets in your way?",
+			"survey.copilotPmf.q3.biggerTasks": "Struggles with bigger tasks",
+			"survey.copilotPmf.q3.context": "Missing repo or project context",
+			"survey.copilotPmf.q3.cost": "Limits, cost, or billing",
+			"survey.copilotPmf.q3.other": "Something else",
+			"survey.copilotPmf.q3.reviewingTime": "Too much time reviewing",
+			"survey.copilotPmf.q3.security": "Security or permissions friction",
+			"survey.copilotPmf.q3.setup": "Setup or integrations are hard",
+			"survey.copilotPmf.q3.slow": "Too slow / breaks flow",
+			"survey.copilotPmf.q3.steering": "Too much steering needed",
+			"survey.copilotPmf.q3.trust": "Output is hard to trust",
+			"survey.copilotPmf.q4": "How long have you been programming?",
+			"survey.copilotPmf.q4.10to19": "10-19 yr",
+			"survey.copilotPmf.q4.20plus": "20+ yr",
+			"survey.copilotPmf.q4.3to5": "3-5 yr",
+			"survey.copilotPmf.q4.6to9": "6-9 yr",
+			"survey.copilotPmf.q4.lessThan3": "<3 yr",
+			"survey.copilotPmf.title": "Help Us Improve GitHub Copilot"
+		},
 		"vs/workbench/contrib/tasks/browser/abstractTaskService": {
 			"ConfigureTaskRunnerAction.label": "작업 구성",
 			"TaskServer.folderIgnored": "작업 버전 0.1.0을 사용하므로 {0} 폴더가 무시됩니다.",
@@ -21089,6 +21299,7 @@
 			"runInTerminal.allowNetwork.autoRetry.reason": "샌드박스화된 실행 결과는 샌드박스가 필요한 액세스 권한을 차단했음을 나타냅니다.",
 			"runInTerminal.allowNetwork.confirmationMessage": "설명: {0}\r\n\r\n목표: {1}\r\n\r\n샌드박스에서 제한 없는 네트워크 액세스 권한을 허용하는 이유: {2}",
 			"runInTerminal.allowNetwork.confirmationMessage.defaultReason": "모델에서 이 샌드박스화된 명령에 제한 없는 네트워크 액세스 권한이 필요하다고 표시했습니다.",
+			"runInTerminal.allowNetwork.deferredRetry.reason": "The model requested unrestricted network access in the sandbox.",
 			"runInTerminal.allowNetwork.disabled.invocation": "샌드박스에서 제한 없는 네트워크 액세스 권한이 비활성화되어 있으므로 `{0}`을(를) 실행하지 않습니다.",
 			"runInTerminal.allowNetwork.disabled.result": "터미널 샌드박스에서 무제한 네트워크 액세스를 요청했기 때문에 명령이 실행되지 않았습니다. 하지만 chat.agent.sandbox.retryWithAllowNetworkRequests에 따라 명령별 네트워크 액세스는 비활성화되었습니다. 대신 제한된 네트워크 액세스 권한으로 명령을 실행하거나, 네트워크 액세스 요청을 허용하도록 설정을 활성화하세요.",
 			"runInTerminal.bubblewrap.applyFix": "Apply Fix and Retry",
@@ -21120,6 +21331,7 @@
 			"runInTerminal.presentationOverride.inDirectory": "`{2}` 내에서 `{1}`의 `{0}` 명령을 실행하시겠습니까?",
 			"runInTerminal.presentationOverride.inDirectory.withoutLanguage": "`{1}` 내에서 `{0}`에서 명령을 실행하시겠습니까?",
 			"runInTerminal.presentationOverride.withoutLanguage": "`{0}`에서 명령을 실행하시겠습니까?",
+			"runInTerminal.sandbox.fileAccessDenied": "Access Denied: The command was not executed because the terminal sandbox does not allow access to the requested file paths:\r\n{0}",
 			"runInTerminal.sensitiveInput.autoCancelMessage": "터미널 명령에서 암호 또는 기타 비밀을 묻는 메시지를 표시했습니다. 자동 승인/Autopilot 모드에서는 비밀을 안전하게 제공할 수 없으므로 명령이 취소되었습니다. 비밀을 직접 입력하려면 명령을 대화형으로 실행합니다.",
 			"runInTerminal.sensitiveInput.autoCancelTitle": "터미널 명령이 취소됨 - 중요한 입력이 필요함",
 			"runInTerminal.sensitiveInput.cancel": "취소 명령",
@@ -21137,6 +21349,7 @@
 			"runInTerminal.unsandboxed.autoRetry.reason": "샌드박스 실행 결과는 샌드박스가 명령을 차단했음을 나타냅니다.",
 			"runInTerminal.unsandboxed.confirmationMessage": "설명: {0}\r\n\r\n목표: {1}\r\n\r\n샌드박스를 종료하는 이유: {2}",
 			"runInTerminal.unsandboxed.confirmationMessage.defaultReason": "모델에서 이 명령을 실행하려면 샌드박스 외부 액세스 권한이 필요하다고 표시했습니다.",
+			"runInTerminal.unsandboxed.deferredRetry.reason": "The model requested unsandboxed execution.",
 			"runInTerminal.unsandboxed.disabled.invocation": "샌드박스 외부 실행이 비활성화되어 있으므로 `{0}`을 실행하지 않습니다.",
 			"runInTerminal.unsandboxed.disabled.result": "터미널 샌드박스 외부에서 실행하도록 요청했기 때문에 명령이 실행되지 않았습니다. 하지만 chat.agent.sandbox.allowUnsandboxedCommands로 인해 샌드박스 외부에서 명령을 실행할 수 없습니다. 대신 샌드박스에서 명령을 실행하거나, 샌드박스 외부 실행을 허용하도록 설정을 활성화하세요.",
 			"runInTerminal.unsandboxed.domain": "[sandbox]({1}) 외부에서 `{0}` 명령을 실행하여 {2}에 액세스하시겠어요?",
@@ -21211,7 +21424,6 @@
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalChatAgentToolsConfiguration": {
 			"agentSandbox.allowAutoApprove": "샌드박스 안에서 실행되는 에이전트 모드 터미널 명령을 자동 승인할지 여부를 제어합니다. 비활성화하면 터미널 도구의 실행은 기존 승인 흐름을 사용합니다. 이는 {0}이(가) 활성화된 경우에만 적용됩니다.",
 			"agentSandbox.allowUnsandboxedCommands": "샌드박스 명령이 실패하거나 샌드박스 제한 때문에 명령이 차단되는 경우, 사용자 확인 후 샌드박스 밖에서 에이전트 모드 터미널 명령을 실행할 수 있는지 여부를 제어합니다. 이는 {0}이(가) 활성화된 경우에만 적용됩니다.",
-			"agentSandbox.autoApproveUnsandboxedCommands": "샌드박스 밖에서 실행되는 에이전트 모드 터미널 명령을 자동 승인할지 여부를 제어합니다. 이는 {0} 및 {1}이(가) 모두 활성화된 경우에만 적용됩니다.",
 			"agentSandbox.enabled.deprecated": "대신 {0} 사용",
 			"agentSandbox.enabledSetting": "에이전트 모드에서 샌드박싱을 사용하여 도구가 수행할 수 있는 작업을 제한하는지 여부를 제어합니다. 사용하도록 설정하면 터미널과 같은 도구가 샌드박스 환경에서 실행되어 시스템에 대한 액세스를 제한합니다.",
 			"agentSandbox.enabledSetting.allowNetworkDescription": "에이전트 모드 도구에 대해 샌드박싱을 활성화하고 모든 네트워크 도메인을 허용하세요.",
@@ -21219,6 +21431,7 @@
 			"agentSandbox.enabledSetting.onDescription": "에이전트 모드 도구에 대해 샌드박싱을 사용으로 설정하세요.",
 			"agentSandbox.fileSystemLinux.deprecated": "대신 {0} 사용",
 			"agentSandbox.fileSystemMac.deprecated": "대신 {0} 사용",
+			"agentSandbox.forceFirstExecutionInSandbox": "Controls whether agent mode terminal commands first run with the sandbox's configured restrictions before honoring a request for execution outside the sandbox or unrestricted network access. The user is prompted to approve the requested additional access only if that sandboxed command fails. This applies only when {0} is enabled.",
 			"agentSandbox.linuxFileSystemSetting": "참고: 이 설정은 {0}이(가) 활성화된 경우에만 적용됩니다. Linux의 샌드박스에서 파일 시스템 액세스를 제어합니다. 경로는 glob 패턴을 지원하지 않고 리터럴 경로만 허용됩니다(예: ./src/, ~/.ssh, .env). **bubblewrap**과 **socat**가 설치되어 있어야 합니다.",
 			"agentSandbox.linuxFileSystemSetting.allowRead": "거부된 지역 내에서 읽기 권한을 다시 허용할 경로 배열입니다. denyRead보다 우선합니다.",
 			"agentSandbox.linuxFileSystemSetting.allowWrite": "Array of additional paths to allow write access. Leave empty to disallow writes outside the workspace folders, workspace storage folder, and sandbox temp directory.",
@@ -23234,9 +23447,7 @@
 			"shieldIcon": "배너의 작업 영역 신뢰 아이콘입니다.",
 			"trustAll": "{0}에 대한 모든 리포지토리를 신뢰합니다.",
 			"trustButton": "신뢰",
-			"trustMessage": "현재 폴더나 상위 '{0}'에 있는 모든 파일의 작성자를 신뢰합니다.",
 			"trustOrg": "{1}에서 '{0}' 아래의 모든 리포지토리 및 포크를 신뢰합니다.",
-			"trustParentButton": "상위 항목 신뢰",
 			"trustUri": "신뢰 폴더",
 			"trustedDebugging": "디버깅이 사용 설정됨",
 			"trustedDescription": "작업 영역에 신뢰가 부여되었으므로 모든 기능을 사용할 수 있습니다.",
@@ -23767,7 +23978,6 @@
 			"remote": "Remote"
 		},
 		"vs/workbench/services/extensionManagement/electron-browser/remoteExtensionManagementService": {
-			"incompatibleAPI": "Can't install '{0}' extension. {1}",
 			"notFoundCompatibleDependency": "Can't install '{0}' extension because it is not compatible with the current version of {1} (version {2}).",
 			"notFoundReleaseExtension": "Can't install release version of '{0}' extension because it has no release version."
 		},
