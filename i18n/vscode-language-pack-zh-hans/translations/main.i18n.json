@@ -2141,6 +2141,8 @@
 		"vs/platform/actionWidget/browser/actionList": {
 			"actionList.filter.ariaLabel": "筛选项目",
 			"actionList.filter.placeholder": "搜索...",
+			"actionList.inlineToggle.off": "{0}, off",
+			"actionList.inlineToggle.on": "{0}, on",
 			"actionList.remove": "移除",
 			"actionList.submenuHint": "{0}，按向右键访问选项",
 			"customQuickFixWidget": "操作小组件",
@@ -2180,6 +2182,8 @@
 			"chatAgentHostConfigurationTitle": "SMS 智能体主机"
 		},
 		"vs/platform/agentHost/common/agentHostCustomizationConfig": {
+			"agentHost.config.claudeUseCopilotProxy.description": "When enabled (the default), the Claude agent routes all requests through GitHub Copilot. When disabled, Claude talks to Anthropic directly using your own credentials (API key or Claude subscription).",
+			"agentHost.config.claudeUseCopilotProxy.title": "Route Claude Through Copilot",
 			"agentHost.config.customizations.description": "在此智能体主机上配置并可供远程会话使用的插件。",
 			"agentHost.config.customizations.descriptionField": "描述",
 			"agentHost.config.customizations.displayName": "名称",
@@ -2196,6 +2200,12 @@
 			"agentHost.config.rubberDuck.title": "Rubber Duck 智能体"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
+			"agentHost.config.autoReplyEnabled.description": "Whether VS Code's auto-reply setting is enabled. When `true`, `ask_user` questions are auto-answered instead of blocking on the user, mirroring autopilot mode.",
+			"agentHost.config.autoReplyEnabled.title": "Auto Reply",
+			"agentHost.config.codexAgentEnabled.description": "Whether the Codex provider is enabled.",
+			"agentHost.config.codexAgentEnabled.title": "Codex Agent",
+			"agentHost.config.globalAutoApproveEnabled.description": "Whether VS Code's global auto-approve setting is enabled. When `true`, every tool call is auto-approved, equivalent to a session using Bypass Approvals.",
+			"agentHost.config.globalAutoApproveEnabled.title": "Global Auto Approve",
 			"agentHost.config.mcpServers.arg.title": "参数",
 			"agentHost.config.mcpServers.args.description": "对于 `stdio` 服务器，为传递给命令的参数。",
 			"agentHost.config.mcpServers.args.title": "参数",
@@ -2219,6 +2229,10 @@
 			"agentHost.config.sessionSyncEnabled.title": "会话同步",
 			"agentHost.config.telemetryLevel.description": "已连接客户端请求的最严格遥测级别。",
 			"agentHost.config.telemetryLevel.title": "遥测级别",
+			"agentHost.config.terminalAutoApproveEnabled.description": "Whether terminal auto-approve rules forwarded by the connected client are allowed to apply to agent-host shell permission requests.",
+			"agentHost.config.terminalAutoApproveEnabled.title": "Terminal Auto Approve",
+			"agentHost.config.terminalAutoApproveRules.description": "Terminal auto-approve rules forwarded by the connected client for agent-host shell permission checks.",
+			"agentHost.config.terminalAutoApproveRules.title": "Terminal Auto Approve Rules",
 			"agentHost.sessionConfig.autoApprove": "审批",
 			"agentHost.sessionConfig.autoApprove.bypass": "绕过审批",
 			"agentHost.sessionConfig.autoApprove.bypassDescription": "所有工具调用均自动批准",
@@ -2241,17 +2255,35 @@
 		},
 		"vs/platform/agentHost/common/agentHostStarter.config.contribution": {
 			"chat.agentHost.claudeAgent.enabled": "启用后，智能体主机将注册 Claude 提供程序(前提是可以访问 Claude SDK)。此设置与 `#chat.agents.claude.preferAgentHost#` 和 `#chat.editor.claude.preferAgentHost#` 无关，这两个设置用于选择 Claude 的集成曲面。需要 `#chat.agentHost.enabled#`。必须重启智能体主机进程，更改才能生效。",
+			"chat.agentHost.claudeAgent.enabled.policy": "Enable Claude Agent sessions in VS Code. Start and resume agentic coding sessions powered by Anthropic Claude Agent SDK directly in the editor. Uses your existing Copilot subscription.",
 			"chat.agentHost.codexAgent.binaryArgs": "传递给 `codex app-server` 的其他命令行参数。主要用于调试(例如，`--log-level=debug`)。",
 			"chat.agentHost.codexAgent.codexHome": "`$CODEX_HOME` 的可选替代。控制 codex 二进制文件读取配置和写入回滚的位置。为空时，codex 使用默认值(`~/.codex`)。",
 			"chat.agentHost.codexAgent.enabled": "启用后，智能体主机将注册 Codex 提供程序(前提是可以访问 Codex SDK)。需要 `#chat.agentHost.enabled#`。必须重启智能体主机进程，更改才能生效。",
 			"chat.agentHost.codexAgent.enabled.policy": "在 VS Code 中启用 Claude 智能体会话。开始并恢复由 OpenAI Codex SDK 提供支持的智能体编码会话。使用你现有的 Copilot 订阅。",
 			"chat.agentHost.codexAgent.sdkRoot": "实验性，仅用于本地 SDK 开发。包含 `node_modules/@openai/codex` 的目录的绝对路径。设置后，智能体主机会从此目录生成 Codex 二进制文件，而不是下载 SDK。留空(默认值)则会使用随此版本提供的 SDK 分发包。需要 `#chat.agentHost.enabled#`。必须重启智能体主机进程，更改才能生效。",
 			"chat.agentHost.otel.captureContent": "启用后，将提示和响应内容包含在 OTel 跨度属性中。仅可在用户设置中配置。设置 `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`。隐私敏感: 请勿在将跨度发送到共享接收器的环境中启用。",
+			"chat.agentHost.otel.captureContent.policy": "Controls whether Copilot OpenTelemetry export captures prompt, response, and tool content.",
 			"chat.agentHost.otel.dbSpanExporter.enabled": "启用后，智能体主机将每个发出的 OTel 跨度持久化到本地 SQLite 数据库。仅可在用户设置中配置。可通过 `Export Agent Host Traces Database` 命令查看跨度。与外部导出器兼容: 跨度写入 SQLite *并*转发到用户配置的接收器。",
 			"chat.agentHost.otel.enabled": "启用后，智能体主机会从 Copilot SDK 发出 OpenTelemetry 跟踪。仅可在用户设置中配置。需要 `#chat.agentHost.enabled#`。配置 `#chat.agentHost.otel.otlpEndpoint#` 将跟踪发送到外部收集器，或启用 `#chat.agentHost.otel.dbSpanExporter.enabled#` 在本地捕获跟踪。",
+			"chat.agentHost.otel.enabled.policy": "Controls whether Copilot OpenTelemetry export is enabled. When managed, users cannot override the enterprise value.",
 			"chat.agentHost.otel.exporterType": "开启 `#chat.agentHost.otel.enabled#` 时，Copilot SDK 使用的导出程序后端。仅可在用户设置中配置。`otlp-grpc` 会在 CLI 运行时以透明方式降级为 `otlp-http`。",
+			"chat.agentHost.otel.headers": "Enterprise-managed OTLP exporter headers (e.g. auth tokens) for Copilot OpenTelemetry export. Policy-only and extension-only: applied directly to the Copilot Chat extension's OTLP exporter, never delivered to the agent host process.",
+			"chat.agentHost.otel.headers.policy": "Controls the enterprise-managed OTLP exporter headers for Copilot OpenTelemetry export.",
 			"chat.agentHost.otel.otlpEndpoint": "导出程序类型为 `otlp-http` 或 `otlp-grpc` 时的 OTLP 终结点 URL。仅可在用户设置中配置。在智能体主机进程内设置 `OTEL_EXPORTER_OTLP_ENDPOINT`。",
+			"chat.agentHost.otel.otlpEndpoint.policy": "Controls the enterprise-managed OTLP collector endpoint for Copilot OpenTelemetry export.",
+			"chat.agentHost.otel.otlpProtocol": "Enterprise-managed OTLP wire protocol (`http/json`, `http/protobuf`, or `grpc`) for Copilot OpenTelemetry export. Policy-only: there is no user-facing setting; it carries the managed `telemetry.protocol` so the agent host's `OTEL_EXPORTER_OTLP_PROTOCOL` distinguishes protobuf from json.",
+			"chat.agentHost.otel.otlpProtocol.policy": "Controls the enterprise-managed OTLP wire protocol (protobuf vs JSON) for Copilot OpenTelemetry export.",
 			"chat.agentHost.otel.outfile": "导出程序类型为 `file` 时跨度 JSON 行的输出路径。仅可在用户设置中配置。设置 `COPILOT_OTEL_FILE_EXPORTER_PATH`。",
+			"chat.agentHost.otel.outfile.policy": "Prevents local file export when enterprise-managed Copilot OpenTelemetry export is configured.",
+			"chat.agentHost.otel.protocol.policy": "Controls the enterprise-managed OTLP protocol for Copilot OpenTelemetry export.",
+			"chat.agentHost.otel.protocol.policy.console": "Console exporter is not selected by enterprise managed settings.",
+			"chat.agentHost.otel.protocol.policy.file": "File exporter is not selected by enterprise managed settings.",
+			"chat.agentHost.otel.protocol.policy.otlpGrpc": "Use OTLP over gRPC.",
+			"chat.agentHost.otel.protocol.policy.otlpHttp": "Use OTLP over HTTP.",
+			"chat.agentHost.otel.resourceAttributes": "Enterprise-managed OTel resource attributes for Copilot OpenTelemetry export. Policy-only: there is no user-facing setting; it carries the managed `telemetry.resourceAttributes` map so the agent host's `OTEL_RESOURCE_ATTRIBUTES` includes the deployment's attributes.",
+			"chat.agentHost.otel.resourceAttributes.policy": "Controls the enterprise-managed OTel resource attributes for Copilot OpenTelemetry export.",
+			"chat.agentHost.otel.serviceName": "Enterprise-managed OTel `service.name` resource attribute for Copilot OpenTelemetry export. Policy-only: there is no user-facing setting; it carries the managed `telemetry.serviceName` so the agent host's `OTEL_SERVICE_NAME` identifies spans from this deployment.",
+			"chat.agentHost.otel.serviceName.policy": "Controls the enterprise-managed OTel `service.name` resource attribute for Copilot OpenTelemetry export.",
 			"chatAgentHostStarterConfigurationTitle": "聊天智能体主机启动程序"
 		},
 		"vs/platform/agentHost/common/changesetUri": {
@@ -2287,6 +2319,7 @@
 		},
 		"vs/platform/agentHost/common/sandboxConfigSchema": {
 			"agentHost.config.sandbox.advancedRuntime.title": "高级沙盒运行时",
+			"agentHost.config.sandbox.allowNetwork.title": "Allow Network",
 			"agentHost.config.sandbox.allowUnsandboxedCommands.title": "允许未沙盒化的命令",
 			"agentHost.config.sandbox.allowedDomains.item.title": "域",
 			"agentHost.config.sandbox.allowedDomains.title": "允许的网络域",
@@ -2331,23 +2364,42 @@
 		},
 		"vs/platform/agentHost/node/agentHostPullRequestOperationHandler": {
 			"agentHost.changeset.pr.authRequired": "使用仓库访问权限登录 GitHub，以创建拉取请求。",
+			"agentHost.changeset.pr.autoMerge.merge": "merge",
+			"agentHost.changeset.pr.autoMerge.noNodeId": "the pull request identifier was not returned by GitHub.",
+			"agentHost.changeset.pr.autoMerge.rebase": "rebase",
+			"agentHost.changeset.pr.autoMerge.squash": "squash",
 			"agentHost.changeset.pr.body": "从 `{0}` 创建，目标为 `{1}`。",
 			"agentHost.changeset.pr.cancelled": "拉取请求操作已取消。",
 			"agentHost.changeset.pr.commitMessage": "针对 {0} 的智能体主机更改",
 			"agentHost.changeset.pr.computeChangesFailed": "无法计算分支更改，因而无法创建拉取请求。",
 			"agentHost.changeset.pr.created": "已创建拉取请求[#{0}]({1})。",
+			"agentHost.changeset.pr.created.autoMerge": "Created pull request [#{0}]({1}) with auto-merge ({2}) enabled.",
+			"agentHost.changeset.pr.created.autoMergeFailed": "Created pull request [#{0}]({1}), but auto-merge could not be enabled: {2}",
 			"agentHost.changeset.pr.createdDraft": "创建了草稿拉取请求[#{0}]({1})。",
 			"agentHost.changeset.pr.existing": "拉取请求[#{0}]({1})已存在。",
+			"agentHost.changeset.pr.existing.autoMerge": "Pull request [#{0}]({1}) already exists; enabled auto-merge ({2}).",
+			"agentHost.changeset.pr.existing.autoMergeFailed": "Pull request [#{0}]({1}) already exists, but auto-merge could not be enabled: {2}",
 			"agentHost.changeset.pr.noChanges": "没有可为其创建拉取请求的分支更改。"
 		},
 		"vs/platform/agentHost/node/agentHostPullRequestOperationProvider": {
 			"agentHost.changeset.createDraftPR": "创建草稿拉取请求",
-			"agentHost.changeset.createPR": "创建拉取请求"
+			"agentHost.changeset.createPR": "创建拉取请求",
+			"agentHost.changeset.createPRAutoMerge": "Create Pull Request (Auto-Merge)",
+			"agentHost.changeset.createPRAutoRebase": "Create Pull Request (Auto-Rebase)",
+			"agentHost.changeset.createPRAutoSquash": "Create Pull Request (Auto-Squash)"
 		},
 		"vs/platform/agentHost/node/agentHostRenameCommand": {
 			"agentHostSlashCommand.rename.description": "重命名此聊天"
 		},
+		"vs/platform/agentHost/node/agentHostSyncOperationHandler": {
+			"agentHost.changeset.sync.cancelled": "Sync operation was cancelled.",
+			"agentHost.changeset.sync.synced": "Synced changes."
+		},
+		"vs/platform/agentHost/node/agentHostSyncOperationProvider": {
+			"agentHost.changeset.sync": "Sync Changes {0}↑"
+		},
 		"vs/platform/agentHost/node/agentService": {
+			"agentHost.forkedChatFallback": "Forked Chat",
 			"agentHost.forkedSessionFallback": "派生会话",
 			"agentHost.forkedTitlePrefix": "已派生:"
 		},
@@ -2438,8 +2490,25 @@
 			"claude.toolInvoke.webFetch": "正在提取 {0}",
 			"claude.toolInvoke.webFetchGeneric": "正在提取 URL"
 		},
-		"vs/platform/agentHost/node/claude/customizations/claudeSdkCustomizationBundler": {
-			"claude.discovered.displayName": "在 Claude 中发现"
+		"vs/platform/agentHost/node/claude/customizations/claudeBuiltinCommands": {
+			"claude.builtin.claudeApi": "(Built-In) Reference for the Claude API / Anthropic SDK: model IDs, pricing, params, streaming, tool use, MCP, agents, caching, token counting, migration.",
+			"claude.builtin.codeReview": "(Built-In) Review the current diff for correctness bugs and reuse/simplification/efficiency cleanups at a chosen effort level (low→max). Pass `--comment` to post findings as inline PR comments, or `--fix` to apply them to the working tree.",
+			"claude.builtin.fewerPermissionPrompts": "(Built-In) Scan transcripts for common read-only Bash/MCP calls and add a prioritized allowlist to project `.claude/settings.json` to reduce permission prompts.",
+			"claude.builtin.init": "(Built-In) Scan the codebase and generate a `CLAUDE.md` file with project structure, conventions, and instructions for future sessions.",
+			"claude.builtin.keybindingsHelp": "(Built-In) Customize keyboard shortcuts, rebind keys, add chord bindings, or modify `~/.claude/keybindings.json`.",
+			"claude.builtin.loop": "(Built-In) Run a prompt or slash command on a recurring interval (e.g. `/loop 5m /foo`, defaults to 10m). For recurring tasks or polling status — not one-off work.",
+			"claude.builtin.review": "(Built-In) Review a pull request or set of changes.",
+			"claude.builtin.run": "(Built-In) Launch and drive the project's app to see a change working — run, start, or screenshot the app, or confirm a change works in the real app (not just tests).",
+			"claude.builtin.securityReview": "(Built-In) Complete a security review of the pending changes on the current branch.",
+			"claude.builtin.simplify": "(Built-In) Review changed code for reuse, simplification, efficiency, and altitude cleanups, then apply the fixes. Quality only — it doesn't hunt for bugs (use `/code-review` for that).",
+			"claude.builtin.updateConfig": "(Built-In) Configure the Claude Code harness via `settings.json`: hooks for automated behaviors, permissions, env vars, and hook troubleshooting.",
+			"claude.builtin.verify": "(Built-In) Run the app and observe behavior to confirm a code change actually does what it's supposed to. Use to verify a PR, confirm a fix, or validate local changes before pushing.",
+			"claude.builtin.writeASkill": "(Built-In) Author a new skill.",
+			"claude.builtinAgent.claude": "(Built-In) Catch-all for any task that doesn't fit a more specific agent — the default when no agent name is typed.",
+			"claude.builtinAgent.claudeCodeGuide": "(Built-In) Answers questions about the Claude Agent SDK, and the Claude/Anthropic API — features, hooks, slash commands, MCP servers, settings, IDE integrations, SDK agent-building, and API usage. Model: Haiku.",
+			"claude.builtinAgent.explore": "(Built-In) Read-only search agent for broad fan-out searches across many files when you only need the conclusion; it locates code rather than reviewing it. Model: Haiku.",
+			"claude.builtinAgent.generalPurpose": "(Built-In) General-purpose agent for researching complex questions, searching for code, and executing multi-step tasks.",
+			"claude.builtinAgent.plan": "(Built-In) Software architect agent for designing implementation plans — step-by-step plans, critical files, and architectural trade-offs."
 		},
 		"vs/platform/agentHost/node/codex/codexAgent": {
 			"codex.modelThinkingLevel.description": "控制 Codex 使用的推理强度。",
@@ -2500,11 +2569,10 @@
 			"agentHost.sessionConfig.isolation.worktree": "工作树",
 			"agentHost.sessionConfig.isolation.worktreeDescription": "创建 Git 工作树以实现隔离",
 			"agentHost.sessionConfig.isolationDescription": "智能体应执行更改的位置",
-			"copilot.modelContextTier.default": "默认",
-			"copilot.modelContextTier.description": "选择此模型的上下文窗口大小。",
-			"copilot.modelContextTier.longerSessions": "会话更长",
-			"copilot.modelContextTier.longerSessionsNoCompaction": "会话更长，未经压缩",
-			"copilot.modelContextTier.title": "上下文大小",
+			"copilot.modelContextSize.default": "Default",
+			"copilot.modelContextSize.description": "Selects the context window size for this model.",
+			"copilot.modelContextSize.longerSessions": "Longer sessions",
+			"copilot.modelContextSize.title": "Context Size",
 			"copilot.modelThinkingLevel.description": "控制模型使用的推理强度。",
 			"copilot.modelThinkingLevel.title": "思考层级",
 			"copilotAgent.pluginParseError": "解析插件时出错。",
@@ -2522,26 +2590,28 @@
 			"agentHost.planReview.interactive.label": "实现计划",
 			"agentHost.planReview.questionMessage": "你希望如何继续?",
 			"agentHost.planReview.title": "审阅计划",
-			"agentHost.planReview.viewPlanLink": "查看完整计划",
 			"agentHost.unsandboxedCommandConfirmation.blockedDomains": "此命令需要访问被阻止的网络域: {0}。",
 			"agentHost.unsandboxedCommandConfirmation.generic": "此命令需要在沙盒外部运行。",
 			"agentHost.unsandboxedCommandConfirmation.reason": "退出沙盒的原因: {0}",
 			"agentHost.unsandboxedCommandConfirmation.title.blockedDomains": "是否在沙盒外运行命令以访问 {0}?",
 			"agentHost.unsandboxedCommandConfirmation.title.generic": "在沙盒外部运行命令?",
 			"copilotAgent.compactionCompleted": "已完成压缩",
-			"copilotSlashCommand.unsupportedRuntimeResult": "/{0} 命令返回了不受支持的结果。"
+			"copilotSlashCommand.selectSubcommandResult": "The /{0} command requires selecting a subcommand. Available options: {1}"
 		},
 		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
-			"copilotSlashCommand.compact.description": "通过压缩对话历史记录释放上下文",
-			"copilotSlashCommand.env.description": "显示已加载的环境详细信息",
-			"copilotSlashCommand.plan.description": "在编码前创建实现计划",
-			"copilotSlashCommand.research.description": "使用搜索和 Web 源对某个主题运行深度研究",
-			"copilotSlashCommand.review.description": "运行代码评审智能体以分析更改",
-			"copilotSlashCommand.rubberDuck.description": "获取对当前方法的独立批判",
-			"copilotSlashCommand.securityReview.description": "分析暂存和未暂存的更改，以查找安全漏洞"
+			"copilot.command.chronicle.cost.tips": "Get personalized tips to reduce token usage and Copilot cost",
+			"copilot.command.chronicle.improve": "Get personalized tips to improve your chat session usage",
+			"copilot.command.chronicle.reindex": "Rebuild the local session index and sync to cloud",
+			"copilot.command.chronicle.search": "Search recent chat sessions by keyword, file path, or PR/issue ref",
+			"copilot.command.chronicle.standup": "Generate a standup report from recent chat sessions",
+			"copilot.command.chronicle.tips": "Get personalized tips based on your chat session usage patterns"
 		},
 		"vs/platform/agentHost/node/copilot/copilotSystemNotification": {
-			"agentHost.copilot.systemNotification.agentCompleted": "后台智能体已完成",
+			"agentHost.copilot.systemNotification.agentCompleted": "Background agent {0} completed",
+			"agentHost.copilot.systemNotification.agentFailed": "Background agent {0} failed",
+			"agentHost.copilot.systemNotification.agentIdle": "Background agent {0} is idle",
+			"agentHost.copilot.systemNotification.instructionDiscovered": "Instruction discovered: {0}",
+			"agentHost.copilot.systemNotification.newInboxMessage": "New inbox message from {0}",
 			"agentHost.copilot.systemNotification.shellCompleted": "Shell 已完成",
 			"agentHost.copilot.systemNotification.shellDescriptionCompleted": "`{0}` 已完成",
 			"agentHost.copilot.systemNotification.shellIdCompleted": "Shell `{0}` 已完成"
@@ -2552,6 +2622,7 @@
 			"copilot.permission.mcp.defaultTool": "MCP 工具",
 			"copilot.permission.mcp.title": "是否允许来自 {0} 的工具?",
 			"copilot.permission.read.title": "是否允许在工作区外部读取文件?",
+			"copilot.permission.shell.bypass.title": "Run in terminal outside the sandbox?",
 			"copilot.permission.shell.title": "是否在终端中运行?",
 			"copilot.permission.url.message": "是否允许提取 Web 内容?",
 			"copilot.permission.url.title": "是否提取 URL?",
@@ -2663,6 +2734,25 @@
 			"sessionPermissions.allowSession": "在此会话中允许",
 			"sessionPermissions.skip": "跳过"
 		},
+		"vs/platform/agentHost/node/shared/agentFeedbackServerTools": {
+			"toolComplete.addComment": "Added comment",
+			"toolComplete.deleteComments": "Deleted comments",
+			"toolComplete.listComments": "Checked comments",
+			"toolComplete.listComments.many": "Checked {0} comments",
+			"toolComplete.listComments.one": "Checked 1 comment",
+			"toolComplete.resolveComments": "Resolved comments",
+			"toolComplete.viewUnreviewedComments": "Viewed comments",
+			"toolInvoke.addComment": "Adding comment",
+			"toolInvoke.deleteComments": "Deleting comments",
+			"toolInvoke.listComments": "Checking comments",
+			"toolInvoke.resolveComments": "Resolving comments",
+			"toolInvoke.viewUnreviewedComments": "Viewing comments",
+			"toolName.addComment": "Add Comment",
+			"toolName.deleteComments": "Delete Comments",
+			"toolName.listComments": "List Comments",
+			"toolName.resolveComments": "Resolve Comments",
+			"toolName.viewUnreviewedComments": "View Comments"
+		},
 		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
 			"ssh.failedToReadPrivateKey": "读取私钥文件失败: {0}",
 			"ssh.keyFileAuthRequiresPath": "密钥文件身份验证需要私钥路径。",
@@ -2684,12 +2774,32 @@
 			"wslProgressPreparingCLI": "正在 {0} 中准备 CLI...",
 			"wslUnsupportedPlatform": "不支持的 WSL 发行版平台: {0}"
 		},
+		"vs/platform/browserView/common/browserPermissions": {
+			"browserPermission.camera.description": "Capture video from cameras",
+			"browserPermission.camera.label": "Camera",
+			"browserPermission.clipboard.description": "Read from and write to the system clipboard",
+			"browserPermission.clipboard.label": "Clipboard",
+			"browserPermission.devices.description": "Request access to USB, serial, HID, and Bluetooth devices",
+			"browserPermission.devices.label": "Devices",
+			"browserPermission.location.description": "Access this device's geographic location",
+			"browserPermission.location.label": "Location",
+			"browserPermission.microphone.description": "Capture audio from microphones",
+			"browserPermission.microphone.label": "Microphone",
+			"browserPermission.notifications.description": "Display desktop notifications",
+			"browserPermission.notifications.label": "Notifications",
+			"browserPermission.sensors.description": "Read motion and environmental sensors",
+			"browserPermission.sensors.label": "Sensors"
+		},
 		"vs/platform/browserView/common/browserView": {
 			"browserZoomAccessibilityLabel": "图像缩放: {0}%",
 			"browserZoomPercent": "{0}%"
 		},
 		"vs/platform/browserView/electron-main/browserSession": {
 			"browserSession.untrustedFile": "已禁止。文件不在受信任的文件夹中。"
+		},
+		"vs/platform/browserView/electron-main/browserSessionPermissions": {
+			"browser.device.hid": "HID Device {0}",
+			"browser.device.usb": "USB Device {0}"
 		},
 		"vs/platform/browserView/electron-main/browserViewMainService": {
 			"browser.contextMenu.addElementToChat": "将元素添加到聊天",
@@ -3887,18 +3997,14 @@
 		},
 		"vs/sessions/browser/layoutActions": {
 			"agentPanelCloseIcon": "用于关闭面板的图标。",
-			"agentSecondarySidebarToggleClosedIcon": "会话辅助边栏关闭时的图标。",
-			"agentSecondarySidebarToggleOpenIcon": "会话辅助边栏打开时的图标。",
 			"agentSidebarToggleClosedIcon": "会话边栏关闭时的图标。",
 			"agentSidebarToggleOpenIcon": "会话边栏打开时的图标。",
 			"closePanel": "隐藏面板",
-			"openAndCloseSidePanel": "打开/显示和关闭/隐藏侧面板(编辑器区域和辅助栏)",
+			"hideSecondarySideBar": "Hide Secondary Side Bar",
 			"openAndCloseSidebar": "打开/显示和关闭/隐藏边栏",
-			"sidePanelHidden": "侧面板已隐藏",
-			"sidePanelVisible": "侧面板已显示",
+			"showSecondarySideBar": "Show Secondary Side Bar",
 			"sidebarHidden": "主侧边栏已隐藏",
 			"sidebarVisible": "主侧边栏已显示",
-			"toggleSecondarySidebar": "切换侧面板",
 			"toggleSidebar": "切换侧边栏",
 			"toggleWindowAlwaysOnTop": "切换“始终前端显示”"
 		},
@@ -3906,8 +4012,11 @@
 			"auxiliaryBarAriaLabel": "会话详细信息"
 		},
 		"vs/sessions/browser/parts/chatCompositeBar": {
+			"chatCompositeBar.addChat": "New Chat",
 			"chatTabsAriaLabel": "聊天",
 			"closeChat": "关闭",
+			"deleteChat": "Delete Chat",
+			"deleteDraftChat": "Delete Chat",
 			"renameChat": "重命名",
 			"renameChat.aria": "重命名聊天"
 		},
@@ -4015,34 +4124,41 @@
 			"agents": "代理"
 		},
 		"vs/sessions/common/contextkeys": {
-			"activeSessionHasGitRepository": "活动会话是否关联了 Git 存储库",
-			"activeSessionHasGitSyncActionRunning": "活动会话当前是否正在运行 git 同步操作",
-			"activeSessionProviderId": "活动会话的提供程序 ID",
-			"activeSessionType": "活动会话的会话类型",
-			"activeSessionUsesCombinedConfigPicker": "活动会话的提供程序是否提供组合模式和模型配置选取器(用于代替独立选取器的手机布局)",
-			"activeSessionWorkspaceIsVirtual": "活动会话的工作区是否为虚拟环境",
 			"activeSessions": "活动会话面板的标识符",
-			"chatSessionProviderId": "上下文菜单覆盖层中会话的提供程序 ID",
-			"chatSessionSupportsDelete": "上下文菜单覆盖中的会话是否可以删除",
-			"chatSessionSupportsRename": "上下文菜单覆盖中的会话是否可以重命名",
-			"chatSessionType": "上下文菜单覆盖中会话的会话类型",
 			"editorMaximized": "编辑器区域是否已最大化",
-			"isActiveSessionArchived": "活动会话是否已归档(标记为已完成)",
 			"multipleSessionsVisible": "会话部分的网格中是否可见多个会话",
+			"sessionHarnessPickerVisible": "Whether the new-session view's harness (session type) picker is visible — it is hidden when at most one harness can serve the selected workspace",
 			"sessionHasChanges": "会话视图的会话是否有待处理的更改(插入或删除)",
-			"sessionIsArchived": "会话是否已归档(标记为完成)",
+			"sessionHasGitRepository": "Whether the session has an associated git repository",
+			"sessionHasGitSyncActionRunning": "Whether the session has a git sync action currently running",
+			"sessionHasMultipleCommittedChats": "Whether the session view's session has more than one committed (non-draft) chat, which drives the Conversations menu visibility",
+			"sessionHasMultipleOpenChats": "Whether the session view's session has more than one open chat, i.e. the chat tab strip is shown. Used to hide the header New Chat button, which the tab strip then offers instead",
+			"sessionHasPullRequest": "Whether the session view's session is associated with a GitHub pull request",
+			"sessionHasWorkspace": "Whether the session view's session has an associated workspace folder",
+			"sessionId": "The identifier of the session in scope (the active session globally, or a specific session within an isolated component such as the session view or a context menu overlay)",
+			"sessionIsArchived": "Whether the session in scope is archived/marked as done (the active session globally, or a specific session within an isolated component such as the session view or a context menu overlay)",
 			"sessionIsCreated": "会话视图的会话是否已创建(显示聊天视图，而非新会话视图)",
 			"sessionIsMaximized": "会话视图当前是否在会话部分的网格中最大化",
 			"sessionIsRead": "会话是否已标记为已读",
 			"sessionIsSticky": "会话视图的会话是否在网格中固定",
+			"sessionIsolationPickerVisible": "Whether the new-session view's isolation picker is visible — it is shown only when the isolation option is enabled and the workspace has a git repository",
+			"sessionProviderId": "The provider ID of the session in scope (the active session globally, or a specific session within an isolated component such as the session view or a context menu overlay)",
+			"sessionSupportsDelete": "Whether the session can be deleted",
 			"sessionSupportsMultipleChats": "会话视图的会话是否支持多个聊天",
+			"sessionSupportsRename": "Whether the session can be renamed",
+			"sessionType": "The session type of the session in scope (the active session globally, or a specific session within an isolated component such as the session view or a context menu overlay)",
+			"sessionUsesCombinedConfigPicker": "Whether the session's provider offers a combined mode and model configuration picker (used on phone layouts in place of the standalone pickers)",
+			"sessionWorkspaceIsVirtual": "Whether the session's workspace is virtual",
 			"sessionWorkspacePickerGroup": "会话工作区选取器中当前活动的组选项卡",
+			"sessionWorkspacePickerVisible": "Whether the new-session view's workspace picker is rendered (as opposed to being replaced by the no-agent-host empty state)",
 			"sessionsAquariumActive": "会话水族馆覆盖是否处于活动状态",
 			"sessionsCanGoBack": "导航历史记录中是否存在上一个会话",
 			"sessionsCanGoForward": "导航历史记录中是否存在下一个会话",
 			"sessionsFocus": "会话部分是否拥有键盘焦点",
 			"sessionsIsPhoneLayout": "当前布局是否为手机布局",
 			"sessionsKeyboardVisible": "虚拟键盘是否可见",
+			"sessionsPickerVisible": "Whether the sessions picker is visible",
+			"sessionsTitleBarNewSessionEnabled": "Whether the new-session button is shown in the titlebar when the sessions list is hidden (A/B experiment)",
 			"sessionsVisible": "会话部分是否可见",
 			"sessionsWelcomeVisible": "会话欢迎覆盖层是否可见"
 		},
@@ -4061,6 +4177,8 @@
 		"vs/sessions/common/theme": {
 			"activeSessionView.background": "智能体会话窗口中活动会话视图的背景色。",
 			"activeSessionView.foreground": "智能体会话窗口中活动会话视图的前景色。",
+			"agentFeedbackEditorWidget.background": "Background color of the agent feedback widget shown in the editor.",
+			"agentFeedbackEditorWidget.border": "Border color of the agent feedback widget shown in the editor.",
 			"agentFeedbackInputWidget.border": "编辑器中显示的智能体反馈输入小组件的边框颜色。",
 			"agents.background": "智能体会话窗口 shell 和渐变底色的背景色。",
 			"agentsBadge.background": "智能体会话窗口中徽章的背景色。",
@@ -4098,9 +4216,6 @@
 		"vs/sessions/services/sessions/common/session": {
 			"sessionWorkspaceGroup.local": "本地",
 			"sessionWorkspaceGroup.remote": "远程"
-		},
-		"vs/sessions/services/sessions/common/sessionsManagement": {
-			"activeSessionSupportsMultiChat": "当前会话是否支持多个聊天"
 		},
 		"vs/sessions/services/workspace/browser/workspaceContextService": {
 			"agentsWindow": "智能体窗口"
@@ -4143,17 +4258,19 @@
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackEditorInputContribution": {
 			"agentFeedback.add": "添加反馈",
 			"agentFeedback.addAndSubmit": "添加反馈并提交",
+			"agentFeedback.addAtCurrentLine": "Add Feedback at Current Line",
 			"agentFeedback.addComment": "添加批注",
 			"agentFeedback.addFeedback": "添加反馈",
 			"altEnter": "Alt+Enter",
 			"enter": "输入"
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackEditorOverlay": {
+			"agentFeedback.submitCountShort": "Submit {0}",
 			"nOfM": "{0}/{1}",
 			"zero": "0/0"
 		},
 		"vs/sessions/contrib/agentFeedback/browser/agentFeedbackEditorWidgetContribution": {
-			"acceptComment": "Accept",
+			"acceptFeedbackButton": "Accept",
 			"addReplyPlaceholder": "添加批注...",
 			"addToComment": "转到批注",
 			"agentReviewComment": "Agent Review",
@@ -4166,6 +4283,7 @@
 			"nComments": "{0} 条评论",
 			"prReviewComment": "PR 评审",
 			"removeComment": "移除",
+			"removeFeedbackButton": "Remove",
 			"suggestedChangeLine": "建议的更改 • 第 {0} 行",
 			"suggestedChangeLines": "建议的更改 • 第 {0}-{1} 行"
 		},
@@ -4274,11 +4392,26 @@
 			"openInVSCode": "在 VS Code 中打开"
 		},
 		"vs/sessions/contrib/aquarium/browser/aquarium.contribution": {
+			"aquarium.simulateStreak": "Simulate Fish Feeding Streak",
+			"aquarium.simulateStreak.alive": "Alive streak",
+			"aquarium.simulateStreak.aliveDetail": "Show a live feeding streak in the toggle tooltip.",
+			"aquarium.simulateStreak.clear": "Clear streak",
+			"aquarium.simulateStreak.clearDetail": "Remove all streak state.",
+			"aquarium.simulateStreak.countInvalid": "Enter a whole number greater than 0.",
+			"aquarium.simulateStreak.countPrompt": "How many days should the streak be?",
+			"aquarium.simulateStreak.died": "Died streak (revivable)",
+			"aquarium.simulateStreak.diedDetail": "Park a died streak and offer the revival prompt.",
+			"aquarium.simulateStreak.placeholder": "Pick a streak scenario to simulate",
 			"sessions.developerJoy.enabled": "向智能体窗口添加隐藏彩蛋。"
 		},
 		"vs/sessions/contrib/aquarium/browser/aquariumOverlay": {
 			"aquarium.hide": "隐藏水族馆",
-			"aquarium.show": "显示水族馆"
+			"aquarium.reviveBadge": "💔 {0} · Feed again to revive",
+			"aquarium.reviveLabel.one": "{0} — feed a fish to revive your {1} day streak",
+			"aquarium.reviveLabel.other": "{0} — feed a fish to revive your {1} day streak",
+			"aquarium.show": "显示水族馆",
+			"aquarium.streakLabel.one": "{0} — 🔥 {1} day feeding streak",
+			"aquarium.streakLabel.other": "{0} — 🔥 {1} days feeding streak"
 		},
 		"vs/sessions/contrib/changes/browser/changes.contribution": {
 			"changes": "更改",
@@ -4287,8 +4420,12 @@
 			"sessions.changes.openSingleFileDiff": "控制在“更改”视图中单击文件时，是否打开单文件差异编辑器，而不是多文件差异编辑器。"
 		},
 		"vs/sessions/contrib/changes/browser/changesActions": {
-			"agentSessions.viewChanges": "View All Changes",
-			"agentSessions.viewChanges.tooltip": "View All Changes",
+			"agentSessions.changes": "Changes",
+			"agentSessions.changes.file": "{0} file",
+			"agentSessions.changes.files": "{0} files",
+			"agentSessions.viewChanges.ariaLabel": "{0}: {1}, +{2}, -{3}",
+			"agentSessions.viewChanges.tooltip": "View Changes",
+			"agentSessions.viewChanges.tooltip.branch": "View Changes ({0})",
 			"sessions.changes.title": "Session Changes"
 		},
 		"vs/sessions/contrib/changes/browser/changesView": {
@@ -4298,6 +4435,7 @@
 			"changesView.viewChanges": "查看所有更改",
 			"changesViewTree": "更改树",
 			"chatEditing.versionsPicker": "版本",
+			"revealChecks": "Reveal Checks",
 			"sessions.changes.title": "会话更改",
 			"setListViewMode": "以列表形式查看",
 			"setTreeViewMode": "以树形式查看"
@@ -4320,7 +4458,6 @@
 			"ci.checkTitle": "{0}: {1}",
 			"ci.checksLabel": "检查",
 			"ci.checksListAriaLabel": "检查",
-			"ci.fixChecks": "修复检查",
 			"ci.openOnGitHub": "在 GitHub 上打开",
 			"ci.rerunCheck": "重新运行检查",
 			"ci.toggleChecks": "切换检查"
@@ -4487,9 +4624,17 @@
 			"workspaceStorageLabel": "工作区",
 			"workspaceStorageTooltip": "将此任务保存在当前工作区中"
 		},
+		"vs/sessions/contrib/chat/browser/sessionReferenceCompletions": {
+			"currentSessionLabel": "{0} (current)",
+			"untitledSession": "Untitled session"
+		},
 		"vs/sessions/contrib/chat/browser/sessionsChatAccessibilityHelp": {
 			"sessionsChat.changes": "聚焦更改视图 {0}。",
+			"sessionsChat.closeChat": "Activate a chat tab's close button to close (hide) that chat from the tab strip without deleting it; reopen it later from the Conversations menu. The session's main chat cannot be closed.",
+			"sessionsChat.contextReferences": "Type # in the chat input to attach context. Use #file to reference a file or folder, or #session to reference another agent session. Referencing a session together with the /troubleshoot command analyzes that session's logs instead of the current one. Accept a suggestion with Tab or Enter; the reference appears as a pill above the input that you can remove.",
+			"sessionsChat.conversations": "When a session supports multiple chats, a New Chat button is always shown: as a labeled button in the session header while the session has a single open chat, and as a compact button at the end of the chat tab strip once the session has more than one open chat. Activate it to start a new chat. Once the session has more than one committed chat, a Conversations menu is also shown: in the session header while the tab strip is hidden, and at the end of the chat tab strip once it is shown. Open it to reopen a closed chat: each chat is listed with a checkbox, where checked chats are shown as tabs and unchecked chats are closed (hidden).",
 			"sessionsChat.customizations": "聚焦聊天自定义视图 {0}。",
+			"sessionsChat.deleteChat": "To permanently delete a chat, open the chat tab's context menu and choose Delete Chat. This is destructive and cannot be undone.",
 			"sessionsChat.filesView": "聚焦文件资源管理器视图 {0}。",
 			"sessionsChat.history": "使用上下箭头在输入框中浏览请求历史记录。",
 			"sessionsChat.input": "你正在聊天输入框中。输入消息并按 Enter 发送。",
@@ -4497,6 +4642,7 @@
 			"sessionsChat.mobileConfig": "在移动设备上，模式和模型选取器以可点击的标签形式显示在输入框下方。点击标签打开底部工作表，即可更改选择。",
 			"sessionsChat.navigateNextSession": "导航到列表中的下一个会话{0}。",
 			"sessionsChat.navigatePreviousSession": "导航到列表中的上一个会话{0}。",
+			"sessionsChat.openPullRequest": "When the session is associated with a GitHub pull request, the session header shows the pull request number as a button. Activate it to open the pull request on GitHub{0}.",
 			"sessionsChat.overview": "你当前位于智能体窗口中。智能体窗口是用于使用 AI 智能体的专用工作区。它提供聊天界面、用于查看智能体生成的更改的更改视图、文件资源管理器和自定义选项。",
 			"sessionsChat.sessionsView": "聚焦聊天会话视图 {0}。",
 			"sessionsChat.toggleSidePanel": "Toggle the side panel (the editor area together with the auxiliary bar) open or closed{0}.",
@@ -4637,8 +4783,6 @@
 			"maximizeMainEditorPart": "最大化编辑器区域",
 			"openEditorInModal": "在模式编辑器中打开",
 			"openModalEditorInEditor": "在编辑器区域中打开",
-			"pullEditorLeft": "显示辅助侧边栏",
-			"pushEditorRight": "向右移动编辑器",
 			"restoreMainEditorPart": "还原编辑器区域"
 		},
 		"vs/sessions/contrib/files/browser/files.contribution": {
@@ -4652,10 +4796,38 @@
 		"vs/sessions/contrib/files/browser/filesView": {
 			"filesView.noFiles": "文件夹和文件将显示在此处。"
 		},
+		"vs/sessions/contrib/files/browser/workspaceFolderActions": {
+			"agentSessions.files": "Files",
+			"agentSessions.openFilesView.ariaLabel": "Open Files: {0}",
+			"agentSessions.openFilesView.tooltip": "Open Files"
+		},
 		"vs/sessions/contrib/git/browser/git.contribution": {
 			"agentSessionGitHasUpstreamBranch": "当活动代理会话工作树有上游分支时，为 True。",
 			"synchronizeChanges": "与 Git 同步更改(落后 {0}领先 {1})",
 			"synchronizeChangesTitle": "同步更改"
+		},
+		"vs/sessions/contrib/github/browser/pullRequestActions": {
+			"agentSessions.openPullRequest": "Open Pull Request",
+			"agentSessions.openPullRequest.tooltip": "Open Pull Request",
+			"agentSessions.openPullRequest.tooltipWithNumber": "Open Pull Request #{0}"
+		},
+		"vs/sessions/contrib/github/browser/pullRequestHover": {
+			"agentSessions.pullRequestHover.baseFallback": "target",
+			"agentSessions.pullRequestHover.bodyFallback": "No description provided.",
+			"agentSessions.pullRequestHover.headFallback": "source",
+			"agentSessions.pullRequestHover.onDate": "on {0}",
+			"agentSessions.pullRequestHover.titleFallback": "Pull Request #{0}"
+		},
+		"vs/sessions/contrib/layout/browser/baseSessionLayoutController": {
+			"agentSecondarySidebarToggleClosedIcon": "Icon for the sessions secondary sidebar when closed.",
+			"agentSecondarySidebarToggleOpenIcon": "Icon for the sessions secondary sidebar when open.",
+			"openAndCloseSidePanel": "Open/Show and Close/Hide the Side Panel (editor area and auxiliary bar)",
+			"sidePanelHidden": "Side Panel hidden",
+			"sidePanelVisible": "Side Panel shown",
+			"toggleSecondarySidebar": "Toggle Side Panel"
+		},
+		"vs/sessions/contrib/layout/browser/sessions.layout.contribution": {
+			"sessions.layout.autoCollapseSessionsSidebar": "Controls whether the sessions sidebar is automatically collapsed in a narrow Agents window while both the editor and the side panel are open, and shown again once either of them closes."
 		},
 		"vs/sessions/contrib/localAgentHost/browser/localAgentHostSessionsProvider": {
 			"cannotChangeExistingSessionType": "无法更改现有本地智能体主机会话的会话类型。",
@@ -4671,6 +4843,20 @@
 		"vs/sessions/contrib/logs/browser/logs.contribution": {
 			"logs": "日志",
 			"sessionsLogsViewIcon": "在会话窗口中查看日志视图图标。"
+		},
+		"vs/sessions/contrib/onboardingTours/browser/tours/newSessionTour": {
+			"sessions.onboarding.isolation.description": "Use a worktree to work on multiple tasks in the same project without conflicts. Each task stays isolated, so you can experiment freely and safely.",
+			"sessions.onboarding.isolation.title": "Isolate Your Work",
+			"sessions.onboarding.workspace.description": "Choose between the folders and repositories you work in. Run multiple sessions at once in a single workspace, or across many.",
+			"sessions.onboarding.workspace.title": "Work Across Workspaces"
+		},
+		"vs/sessions/contrib/onboardingTours/browser/tours/newSessionViewTour": {
+			"sessions.onboarding.newSessionView.harness.description": "Each has different strengths; choose what works best for your task and switch anytime.",
+			"sessions.onboarding.newSessionView.harness.title": "Choose a Harness",
+			"sessions.onboarding.newSessionView.isolation.description": "Use a worktree to work on multiple tasks in the same project without conflicts. Each task stays isolated, so you can experiment freely and safely.",
+			"sessions.onboarding.newSessionView.isolation.title": "Isolate Your Work",
+			"sessions.onboarding.newSessionView.workspace.description": "Choose between the folders and repositories you work in. Run multiple sessions at once in a single workspace, or across many.",
+			"sessions.onboarding.newSessionView.workspace.title": "Work Across Workspaces"
 		},
 		"vs/sessions/contrib/policyBlocked/browser/sessionsPolicyBlocked": {
 			"accountGate.approvedOrgs": "允许的组织:",
@@ -4699,6 +4885,11 @@
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostModePicker": {
 			"agentHostModePicker.ariaLabel": "智能体模式选取器",
 			"agentHostModePicker.triggerAriaLabel": "选取智能体模式，{0}"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostPermissionPickerDelegate": {
+			"agentHostPermissionPicker.autoApproveHover": "Copilot runs all tools without asking for approval.",
+			"agentHostPermissionPicker.autopilotApprovalsHover": "Copilot runs tools without asking for approval and continues until the task is done.",
+			"agentHostPermissionPicker.defaultApprovalsHover": "Copilot asks before running tools unless your configured settings allow the tool."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionBranchActions": {
 			"copySessionBranchName": "复制会话分支名称"
@@ -4850,6 +5041,7 @@
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/permissionPicker": {
 			"permissionPicker.ariaLabel": "权限选取器",
 			"permissionPicker.triggerAriaLabel": "选择权限级别，{0}",
+			"permissionPicker.triggerAriaLabelWithDescription": "Pick Permission Level, {0}, {1}",
 			"permissions.autoApprove": "绕过审批",
 			"permissions.autoApprove.subtext": "所有工具调用均自动批准",
 			"permissions.autopilot": "Autopilot (预览版)",
@@ -4857,7 +5049,8 @@
 			"permissions.autopilot.subtext": "从头到尾自主迭代",
 			"permissions.default": "默认审批",
 			"permissions.default.subtext": "Copilot 使用你配置的设置",
-			"permissions.learnMore": "了解有关权限的详细信息"
+			"permissions.learnMore": "了解有关权限的详细信息",
+			"permissions.policyDescription": "Disabled by enterprise policy"
 		},
 		"vs/sessions/contrib/providers/localChatSessions/browser/localChatSessions.contribution": {
 			"sessions.chat.localAgent.enabled": "在智能体窗口中启用本地 VS Code 聊天会话。重新加载窗口以使更改生效。"
@@ -5165,26 +5358,47 @@
 			"miSearch": "搜索(&&S)",
 			"openSearch": "搜索"
 		},
+		"vs/sessions/contrib/sessionInputBanners/browser/sessionInputBanners": {
+			"ci.checksFailed": "{0} out of {1} checks failed",
+			"ci.checksFailedPending": "{0}, {1} pending",
+			"ci.dismiss": "Hide for this session",
+			"ci.fixChecks": "Fix Checks",
+			"ci.oneCheckFailed": "1 check failed",
+			"ci.revealChecks": "Reveal Checks",
+			"comments.address": "Address Comments",
+			"comments.agent.many": "{0} agent comments",
+			"comments.agent.one": "1 agent comment",
+			"comments.dismiss": "Hide for this session",
+			"comments.many": "{0} comments",
+			"comments.one": "1 comment",
+			"comments.pr.many": "{0} PR comments",
+			"comments.pr.one": "1 PR comment",
+			"comments.reveal": "Reveal Comments"
+		},
 		"vs/sessions/contrib/sessions/browser/aiCustomizationShortcutsWidget": {
 			"customizations": "自定义"
 		},
 		"vs/sessions/contrib/sessions/browser/customizationsToolbar.contribution": {
 			"agents": "智能体",
-			"customizationAction": "{0}",
 			"hooks": "挂钩",
 			"instructions": "指令",
 			"mcpServers": "MCP 服务器",
+			"overview": "Overview",
 			"plugins": "插件",
-			"sessions.customizations.sidebarMode": "控制智能体边栏中“自定义”部分的显示方式以及单击条目时发生的操作。",
-			"sessions.customizations.sidebarMode.section": "每个自定义类别显示一项。单击某个类别将深度链接到自定义编辑器中该类别的部分。",
-			"sessions.customizations.sidebarMode.single": "显示单个“自定义”条目，而非每个类别一项。单击它将打开自定义欢迎页。",
-			"sessions.customizations.sidebarMode.welcome": "每个自定义类别显示一项。单击某个类别将打开自定义欢迎页。",
-			"skills": "技能"
+			"skills": "技能",
+			"tools": "Tools"
 		},
 		"vs/sessions/contrib/sessions/browser/mobile/mobileOverlayContribution": {
 			"mobileChangesNotAvailable": "此会话尚无文件级更改。",
 			"mobileOpenFileDiff": "打开文件差异",
 			"mobileOpenSessionChanges": "打开会话更改"
+		},
+		"vs/sessions/contrib/sessions/browser/newSessionActionViewItem": {
+			"newCompact": "New",
+			"newSessionButtonAriaLabel": "New Session ({0})",
+			"newSessionButtonAriaLabelWithoutKeybinding": "New Session",
+			"newSessionButtonTitle": "New Session ({0})",
+			"newSessionButtonTitleWithoutKeybinding": "New Session"
 		},
 		"vs/sessions/contrib/sessions/browser/sessionHoverContent": {
 			"agentSessions.fileChanged": "已更改 1 个文件",
@@ -5199,6 +5413,7 @@
 		"vs/sessions/contrib/sessions/browser/sessionsActions": {
 			"chatCompositeBar.addChat": "新建聊天",
 			"chatCompositeBar.close": "关闭",
+			"chatCompositeBar.conversations": "Conversations",
 			"chatCompositeBar.maximize": "最大化会话",
 			"chatCompositeBar.pin": "固定会话",
 			"chatCompositeBar.pinView": "固定视图",
@@ -5222,6 +5437,7 @@
 			"sessionsGoForward": "前进",
 			"sessionsGoForwardTooltip": "前进到下一个会话",
 			"showSessionsPicker": "显示会话选取器",
+			"untitledChat": "Untitled Chat",
 			"untitledSession": "新会话"
 		},
 		"vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget": {
@@ -5231,15 +5447,23 @@
 			"showSessions": "显示会话"
 		},
 		"vs/sessions/contrib/sessions/browser/views/sessionsList": {
+			"addToGroupAction": "Add to Group",
 			"allowAction": "允许",
 			"allowActionOnce": "允许一次",
 			"archived": "完成",
+			"createGroupAction": "Create Group",
+			"deleteGroupAction": "Delete Group",
 			"failed": "失败",
 			"lastSevenDays": "过去 7 天",
+			"moveToGroupAction": "Move to Group",
 			"needsInput": "需要输入",
+			"newGroupName": "New Group",
 			"older": "更早",
 			"pinned": "已固定",
+			"removeFromGroupAction": "Remove from Group",
+			"renameGroupAction": "Rename...",
 			"secondsDuration": "现在",
+			"sessionGroupName": "Group name",
 			"sessionItemAria": "{0}，创建于 {1}",
 			"sessions.dragLabel": "{0} 个会话",
 			"sessionsList": "会话",
@@ -5263,11 +5487,6 @@
 			"filterRead": "读取",
 			"groupByTime": "按时间分组",
 			"groupByWorkspace": "按工作区分组",
-			"newCompact": "新",
-			"newSessionButtonAriaLabel": "新会话({0})",
-			"newSessionButtonAriaLabelWithoutKeybinding": "新会话",
-			"newSessionButtonTitle": "新会话({0})",
-			"newSessionButtonTitleWithoutKeybinding": "新会话",
 			"resetFilters": "重置",
 			"sessionsHeader": "会话",
 			"sortByCreated": "按创建时间排序",
@@ -5281,6 +5500,10 @@
 			"statusNeedsInput": "需要输入"
 		},
 		"vs/sessions/contrib/sessions/browser/views/sessionsViewActions": {
+			"archiveGroupSessions.archive": "Mark All as Done",
+			"archiveGroupSessions.confirm": "Are you sure you want to mark {0} sessions from '{1}' as done?",
+			"archiveGroupSessions.confirmSingle": "Are you sure you want to mark 1 session from '{0}' as done?",
+			"archiveGroupSessions.detail": "You can restore sessions later if needed from the sessions view.",
 			"archivePinnedSectionSessions.confirm": "是否确定要将 {0} 个固定会话标记为已完成?",
 			"archivePinnedSectionSessions.confirmSingle": "是否确定要将 1 个固定会话标记为已完成?",
 			"archiveSection": "将所有内容标记为“已完成”",
@@ -5304,6 +5527,7 @@
 			"find": "查找会话",
 			"groupByTime": "按时间分组",
 			"groupByWorkspace": "按工作区分组",
+			"markAllInGroupAsDone": "Mark All as Done",
 			"markAllRead": "将全部标记为已读",
 			"markAsDone": "标记为完成",
 			"markRead": "标记为已读",
@@ -5313,6 +5537,7 @@
 			"navigatePreviousSession": "转到上一个会话",
 			"navigatePreviousSession.mnemonic": "上一个会话(&&P)",
 			"newSessionForWorkspace": "新会话",
+			"newSessionInGroup": "New Session",
 			"openToTheSide": "在侧边打开",
 			"pinSession": "固定",
 			"refresh": "刷新会话",
@@ -5336,24 +5561,8 @@
 			"openInTerminal": "打开终端",
 			"showAllTerminals": "显示所有终端"
 		},
-		"vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem": {
-			"tunnelHost.hover.connecting": "正在建立隧道连接...",
-			"tunnelHost.hover.enabled": "远程会话访问已启用",
-			"tunnelHost.hover.idle": "允许远程会话访问",
-			"tunnelHost.hover.sharing": "已通过隧道“{0}”启用远程会话访问",
-			"tunnelHost.hover.showOutput": "显示输出",
-			"tunnelHost.toast": "远程会话访问现已启用"
-		},
 		"vs/sessions/contrib/tunnelHost/electron-browser/tunnelHost.contribution": {
-			"showTunnelHostOutput": "显示远程连接输出",
-			"toggleSharing": "允许远程连接",
-			"tunnelHost.category": "远程连接",
-			"tunnelHost.enableMicrosoftAuth": "为代理主机隧道启用 Microsoft 帐户身份验证。禁用时，仅使用 GitHub 身份验证。",
-			"tunnelHost.error": "切换远程连接失败: {0}"
-		},
-		"vs/sessions/contrib/tunnelHost/electron-browser/tunnelHostService": {
-			"tunnelHost.noAuth": "没有可用的身份验证令牌。请登录并重试。",
-			"tunnelHost.outputChannel": "远程连接"
+			"toggleSharing": "Allow Remote Connections"
 		},
 		"vs/sessions/contrib/welcome/browser/sessionsWalkthrough": {
 			"walkthrough.aria": "代理入门演练",
@@ -7925,106 +8134,26 @@
 			"workbench.accounts.showEntitlements": "When enabled, available entitlements for the account will be shown in the accounts menu."
 		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoice.contribution": {
-			"agents.voice.alwaysOnTop": "使“语音模式”窗口始终位于其他窗口之上。",
+			"agents.voice.autoSendDelay": "In toggle voice mode (short tap), automatically finish recording after this many milliseconds of silence. Set to -1 to disable.",
 			"agents.voice.backendUrl": "语音后端 WebSocket URL。留空以使用默认托管后端。设置为例如 `ws://localhost:8000/api/v1/realtime/voice` 以指向在你的计算机上运行的后端。",
 			"agents.voice.enabled": "在聊天视图中启用语音模式面板，用于语音驱动的编码对话。",
+			"agents.voice.sendKeyword": "A keyword phrase (e.g. \"send it\") that, when spoken at the end of an utterance in toggle mode, triggers sending the request immediately. The keyword is stripped from the sent message. Leave empty to disable.",
 			"agents.voice.showTranscript": "语音模式处于活动状态时，在聊天输入区域显示语音脚本覆盖层。",
 			"agents.voice.textToSpeech": "启用后，助手会朗读回复。禁用后，回复仅以文本脚本的形式显示。",
 			"agentsVoice.connecting": "正在连接...",
 			"agentsVoice.disconnect": "断开语音模式连接",
 			"agentsVoice.pttStopInChat": "语音模式: 停止录制",
+			"agentsVoice.selectMicrophone": "Voice: Select Microphone",
 			"agentsVoice.simulateConnection": "语音: 模拟连接(开发)",
 			"agentsVoice.startVoiceInChat": "语音模式",
 			"agentsVoiceConfigurationTitle": "语音模式",
 			"agentsVoicePushToTalk": "语音模式: 按下通话",
+			"current": "(current)",
+			"noMicrophones": "No microphones found",
 			"resetAgentsVoiceOnboarding": "语音: 重置加入",
-			"toggleAgentsVoiceWindow": "语音模式"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceSessionsPicker": {
-			"voiceSessions.placeholder": "选择用于语音输入的会话",
-			"voiceSessions.setTarget": "设为语音目标"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidget": {
-			"agentsVoice.clickMicToTalk": "点击麦克风说话",
-			"agentsVoice.collapseSessions": "折叠会话",
-			"agentsVoice.configureKeybinding": "配置键绑定",
-			"agentsVoice.disconnect": "断开连接",
-			"agentsVoice.feedbackError": "未能提交",
-			"agentsVoice.holdToTalk": "按住 {0} 说话",
-			"agentsVoice.listening": "正在收听",
-			"agentsVoice.minimize": "最小化",
-			"agentsVoice.pushToTalk": "按下通话",
-			"agentsVoice.pushToTalkKey": "按下通话({0})",
-			"agentsVoice.pushToTalkSpace": "按下通话(空格)",
-			"agentsVoice.sendFeedback": "发送反馈",
-			"agentsVoice.sessions": "会话"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/agentsVoiceWidgetBinding": {
-			"agentsVoice.chat": "聊天",
-			"agentsVoice.otherSessions": "其他",
-			"agentsVoice.untitledSession": "无标题会话"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/confirmationComponent": {
-			"agentsVoice.approve": "批准",
-			"agentsVoice.deny": "拒绝",
-			"agentsVoice.openInVSCode": "在 VS Code 中打开"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/feedbackDialog": {
-			"agentsVoice.cancel": "取消",
-			"agentsVoice.feedbackConsent": "提交即表示你同意将会话日志和脚本历史记录包含在反馈中。",
-			"agentsVoice.feedbackError": "无法提交反馈",
-			"agentsVoice.feedbackPlaceholder": "有哪些可以改进的地方?",
-			"agentsVoice.feedbackThanks": "感谢提供反馈！",
-			"agentsVoice.sendFeedback": "发送反馈",
-			"agentsVoice.submit": "提交",
-			"agentsVoice.submitting": "正在提交..."
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/headerComponent": {
-			"agentsVoice.clickMicToTalk": "点击麦克风说话",
-			"agentsVoice.configureKeybinding": "配置键绑定",
-			"agentsVoice.disconnect": "断开连接",
-			"agentsVoice.holdToTalk": "按住 {0} 说话",
-			"agentsVoice.minimize": "最小化",
-			"agentsVoice.openMiniView": "打开迷你视图",
-			"agentsVoice.pushToTalkSpace": "按下通话(空格)",
-			"agentsVoice.sendFeedback": "发送反馈"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/onboardingComponent": {
-			"agentsVoice.changeHotkeySuffix": "即可在任何应用中使用它。",
-			"agentsVoice.changePttKey": "更改按下通话键",
-			"agentsVoice.configureHotkey": "配置键绑定",
-			"agentsVoice.connecting": "正在连接...",
-			"agentsVoice.feedbackDesc": "使用反馈图标，以帮助我们改进你的体验。",
-			"agentsVoice.getStarted": "入门",
-			"agentsVoice.miniViewSuffix": "以在 VS Code 不在前台时进行多任务处理。",
-			"agentsVoice.openMiniView": "打开迷你视图",
-			"agentsVoice.pttDesc": "按下通话",
-			"agentsVoice.pttHoldDesc": "- 说话时按住该键，完成后松开。",
-			"agentsVoice.welcomeDesc": "与同时控制多个编码智能体的助手对话。在工作完成或需要输入时收到通知。",
-			"agentsVoice.welcomeTitle": "欢迎使用语音聊天"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/sessionListComponent": {
-			"agentsVoice.approve": "批准",
-			"agentsVoice.deny": "拒绝",
-			"agentsVoice.newSession": "新会话",
-			"agentsVoice.noActiveSessions": "没有活动会话",
-			"agentsVoice.openInVSCode": "在 VS Code 中打开",
-			"agentsVoice.sendTo": "发送到",
-			"agentsVoice.sendToActive": "发送到(活动)",
-			"agentsVoice.stop": "停止",
-			"agentsVoice.stopSessionAction": "停止会话"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/statusRowsComponent": {
-			"agentsVoice.done": "完成",
-			"agentsVoice.jumpToSession": "跳转到会话",
-			"agentsVoice.needsInput": "需要输入",
-			"agentsVoice.noActiveSessions": "没有活动会话",
-			"agentsVoice.working": "正在处理"
-		},
-		"vs/workbench/contrib/agentsVoice/browser/components/voiceBarComponent": {
-			"agentsVoice.listening": "正在收听",
-			"agentsVoice.speaking": "正在说话...",
-			"agentsVoice.stopSpeech": "停止语音"
+			"selectMic": "Select a microphone for Voice Mode",
+			"systemDefault": "System Default",
+			"unknownDevice": "Unknown Device ({0})"
 		},
 		"vs/workbench/contrib/agentsVoice/browser/transcriptsView/voiceTranscripts.contribution": {
 			"agentsVoice.showTranscripts": "显示语音脚本",
@@ -8361,6 +8490,27 @@
 			"browser.urlOrSearchPlaceholder": "搜索或输入 URL",
 			"browser.urlPlaceholder": "输入 URL"
 		},
+		"vs/workbench/contrib/browserView/electron-browser/features/browserPermissionsFeature": {
+			"browser.device.kind.bluetooth": "a Bluetooth device",
+			"browser.device.kind.hid": "an HID device",
+			"browser.device.kind.serial": "a serial port",
+			"browser.device.kind.usb": "a USB device",
+			"browser.device.placeholder": "Select a device to connect to",
+			"browser.device.title": "{0} wants to connect to {1}",
+			"browser.managePermissions": "Site Permissions",
+			"browser.permissions.allow": "Allow",
+			"browser.permissions.block": "Block",
+			"browser.permissions.noOrigin": "Permissions can only be managed for web pages.",
+			"browser.permissions.placeholder": "Filter permissions",
+			"browser.permissions.prompt": "{0} wants access to {1}",
+			"browser.permissions.saveMany": "Save {0} Changes",
+			"browser.permissions.saveOne": "Save 1 Change",
+			"browser.permissions.state.allowed": "Allowed",
+			"browser.permissions.state.ask": "Ask",
+			"browser.permissions.state.blocked": "Blocked",
+			"browser.permissions.state.default": "{0} (default)",
+			"browser.permissions.title": "Permissions for {0}"
+		},
 		"vs/workbench/contrib/browserView/electron-browser/features/browserRemoteFeatures": {
 			"browser.connectedLocally.file": "文件 URL 在本地提供，不通过远程连接提供。",
 			"browser.connectedLocally.generic": "本地连接",
@@ -8671,6 +8821,7 @@
 			"chat.attachments.removal": "若要移除附加的上下文，请聚焦附件并按 Delete 或 Backspace。",
 			"chat.differencePanel": "聊天视图是一个持久性界面，它还支持导航建议的后续问题，而快速聊天视图是用于发出和查看请求的暂时性界面。",
 			"chat.differenceQuick": "快速聊天视图是用于发出和查看请求的暂时性界面，而面板聊天视图是一个持久性界面，还支持导航建议的后续问题。",
+			"chat.fileChangesDisclosure": "File change summaries show the total files, additions, and deletions. Focus the disclosure and press Enter or Space to show or hide the individual files.",
 			"chat.focusMostRecentTerminal": "若要聚焦运行工具的上一个聊天终端，请调用“聚焦最近聊天终端”命令{0}。",
 			"chat.focusMostRecentTerminalOutput": "若要聚焦上一个聊天终端工具的输出，请调用“聚焦最近聊天终端输出”命令 {0}。",
 			"chat.focusQuestionCarousel": "出现聊天问题时，请在问题和聊天输入之间切换焦点{0}。",
@@ -8964,6 +9115,7 @@
 			"chatDebugLog.openExportedFile": "打开文件"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatPluginActions": {
+			"installFromSourceFailed": "Failed to install plugin: {0}",
 			"installPluginFromSource": "从源提供程序安装插件",
 			"localMarketplace": "本地",
 			"managePluginMarketplaces": "管理插件市场",
@@ -9126,6 +9278,11 @@
 			"cloneFailed": "未能安装插件 \"{0}\": {1}",
 			"preparingMarketplace": "正在准备插件市场 \"{0}\"...",
 			"pullFailed": "更新插件 \"{0}\"失败: {1}",
+			"purgeAndRecloneMarketplace": "Purge Marketplace Cache and Reclone",
+			"purgeMarketplaceFailed": "Failed to purge plugin marketplace '{0}': {1}",
+			"purgeMarketplaceSuccess": "Recloned plugin marketplace '{0}'. Try updating plugins again.",
+			"purgingMarketplace": "Purging plugin marketplace '{0}'...",
+			"recloningMarketplace": "Recloning plugin marketplace '{0}'...",
 			"showGitOutput": "显示 Git 输出",
 			"updatingPlugin": "正在更新插件 \"{0}\"..."
 		},
@@ -9146,13 +9303,19 @@
 			"agentHostHarnessLabel.local": "{0} [智能体主机]"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostChatInputPicker": {
+			"agentHostChatInputPicker.approvalsHover": "Controls whether the agent asks before running tools in this session.",
+			"agentHostChatInputPicker.approvalsLevelHoverReadOnly": "{0} Read-only.",
 			"agentHostChatInputPicker.ariaLabel": "{0} 选取器",
+			"agentHostChatInputPicker.autoApproveHover": "Copilot runs all tools without asking for approval.",
+			"agentHostChatInputPicker.autopilotApprovalsHover": "Copilot runs tools without asking for approval and continues until the task is done.",
 			"agentHostChatInputPicker.boolean.false": "关",
 			"agentHostChatInputPicker.boolean.offLabel": "关",
 			"agentHostChatInputPicker.boolean.onLabel": "开",
 			"agentHostChatInputPicker.boolean.true": "开",
+			"agentHostChatInputPicker.defaultApprovalsHover": "Copilot asks before running tools unless your configured settings allow the tool.",
 			"agentHostChatInputPicker.filter": "筛选...",
 			"agentHostChatInputPicker.learnMorePermissions": "了解有关权限的详细信息",
+			"agentHostChatInputPicker.policyDisabledHover": "Disabled by enterprise policy",
 			"agentHostChatInputPicker.triggerAria": "{0}: {1}",
 			"agentHostChatInputPicker.triggerAriaReadOnly": "{0}: {1}，只读"
 		},
@@ -9164,6 +9327,10 @@
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostFolderPickerActionItem": {
 			"agentHost.selectFolder": "文件夹"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostLanguageModelProvider": {
+			"agentHost.auto.discount": "{0}% discount",
+			"agentHost.auto.tooltip": "Auto selects the best model based on your request complexity and model performance."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostPermissionUiContribution": {
 			"agentHost.permission.allow": "允许",
@@ -9181,8 +9348,6 @@
 			"agentHost.elicit.url.open": "打开 {0}",
 			"agentHost.elicit.url.title": "需要授权",
 			"agentHost.forkedSessionLabel": "分叉会话",
-			"agentHost.responseDetails.credit": "{0} 额度",
-			"agentHost.responseDetails.credits": "{0} 额度",
 			"agentHost.turnError": "错误: ({0}) {1}",
 			"agentHost.workspaceTrust": "AI 功能目前仅在受信任的工作区中受支持。"
 		},
@@ -9195,6 +9360,9 @@
 			"agentFeedback.reveal": "显示所选内容",
 			"agentFeedback.reviewMessage": "选择要向智能体显示的注释。未选中的注释保持隐藏。",
 			"agentFeedback.reviewTitle": "显示未审阅的注释?",
+			"agentHost.responseDetails.credit": "{0} credit",
+			"agentHost.responseDetails.credits": "{0} credits",
+			"agentHost.responseDetails.resolvedModel": "{0} ({1})",
 			"ahp.running": "正在运行 {0}..."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
@@ -9428,11 +9596,15 @@
 		"vs/workbench/contrib/chat/browser/agentSessions/localAgentDisabledInputTipContribution": {
 			"chat.localAgentDisabled.continueInAgentHostCopilot.action": "在智能体主机中继续",
 			"chat.localAgentDisabled.continueInAgentHostCopilot.description": "可以将本地工具历史记录带入与智能体主机的新聊天中。若要继续使用本地工具并隐藏此通知，请将 \"chat.editor.localAgent.enabled\" 设置为 true。",
-			"chat.localAgentDisabled.continueInAgentHostCopilot.message": "继续使用智能体主机。"
+			"chat.localAgentDisabled.continueInAgentHostCopilot.message": "继续使用智能体主机。",
+			"chat.localAgentDisabled.continueInAgentHostCopilot.mute": "Don't Show Again"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/sessionTypeAvailability": {
 			"chat.sessionType.noModels": "无模型可用",
 			"chat.sessionType.noModelsHover": "此智能体没有可用模型。",
+			"chat.sessionType.signInHover": "[Sign in to GitHub Copilot](command:workbench.action.chat.triggerSetup) to use this agent.",
+			"chat.sessionType.signInLink": "[Sign in](command:workbench.action.chat.triggerSetup)",
+			"chat.sessionType.signInMobile": "Requires sign in",
 			"chat.sessionType.upgradeHover": "[升级到 GitHub Copilot Pro](command:workbench.action.chat.upgradePlan)以使用此智能体。",
 			"chat.sessionType.upgradeLink": "[升级](command:workbench.action.chat.upgradePlan)",
 			"chat.sessionType.upgradeMobile": "需要 GitHub Copilot Pro"
@@ -9449,6 +9621,7 @@
 			"aiCustomizationPromptIcon": "提示文件的图标。",
 			"aiCustomizationRunIcon": "运行提示或智能体的图标。",
 			"aiCustomizationSkillIcon": "技能图标。",
+			"aiCustomizationToolsIcon": "Icon for the Tools section.",
 			"aiCustomizationUserIcon": "用户项的图标。",
 			"aiCustomizationViewIcon": "智能体自定义视图图标。",
 			"aiCustomizationWorkspaceIcon": "工作区项图标。"
@@ -9602,6 +9775,8 @@
 			"backToOverviewTooltip": "返回到“概述”",
 			"backToPluginList": "返回到插件",
 			"backToPluginListTooltip": "返回到插件",
+			"backToToolsList": "Back to tools",
+			"backToToolsListTooltip": "Back to tools",
 			"cancelSaveTarget": "取消",
 			"customizationPreviewAriaLabel": "自定义预览",
 			"editorActionButtonFailed": "无法完成提示操作。",
@@ -9644,10 +9819,11 @@
 			"saved": "已保存",
 			"sectionAriaLabelWithCount": "{0}，{1} 项",
 			"sectionsAriaLabel": "智能体自定义部分",
-			"selectHarness": "选择自定义目标",
 			"selectTargetDirectory": "为新自定义文件选择目录",
 			"skills": "技能",
 			"skillsDesc": "创建可重用的技能文件，提供特定领域知识和工作流。",
+			"tools": "Tools",
+			"toolsDesc": "Enable or disable groups of language model tools available to chat.",
 			"userSaveTarget": "用户",
 			"workspaceSaveTarget": "工作区"
 		},
@@ -9675,6 +9851,8 @@
 			"sentToChat": "已发送到聊天 ✓",
 			"skills": "技能",
 			"skillsDesc": "创建可重用的技能文件，提供特定领域知识和工作流。",
+			"tools": "Tools",
+			"toolsDesc": "Enable or disable the tools available to chat.",
 			"welcomeHeadingWithHarness": "{0} 的智能体自定义设置",
 			"welcomeSubtitle": "定制智能体在项目中的工作方式。为整个团队配置工作区自定义，或创建跨项目跟随你的个人自定义。",
 			"workflowInputAriaLabel": "描述你的偏好以自定义智能体",
@@ -9695,15 +9873,35 @@
 			"pluginSourceMarketplace": "来自 {0}",
 			"pluginSourceMarketplaceUnknown": "市场插件"
 		},
+		"vs/workbench/contrib/chat/browser/aiCustomization/embeddedExtensionToolsDetail": {
+			"toolDetailBy": "by {0}",
+			"toolDetailEmpty": "No extension selected.",
+			"toolDetailIncludedTools": "Included Tools",
+			"toolDetailLoadingTools": "Loading tools...",
+			"toolDetailNoTools": "This extension does not contribute any tools.",
+			"toolDetailToolsError": "Unable to load the tools for this extension.",
+			"toolDetailToolsLoaded": "{0} tools",
+			"toolDetailToolsLoadedOne": "1 tool"
+		},
 		"vs/workbench/contrib/chat/browser/aiCustomization/embeddedMcpServerDetail": {
 			"mcpDetailEmpty": "未选择 MCP 服务器。",
 			"mcpScopeUser": "用户",
 			"mcpScopeWorkspace": "工作区"
 		},
+		"vs/workbench/contrib/chat/browser/aiCustomization/galleryItemRenderer": {
+			"galleryItemBy": "by {0}",
+			"galleryItemInstall": "Install",
+			"galleryItemInstalled": "Installed",
+			"galleryItemInstalling": "Installing..."
+		},
 		"vs/workbench/contrib/chat/browser/aiCustomization/mcpListWidget": {
+			"activeSessionGroup": "Active Session",
+			"activeSessionGroupDescription": "MCP servers reported by the active session.",
+			"activeSessionMcpServerOptions": "Server Options",
 			"addMcpServer": "添加 MCP 服务器配置以开始使用",
 			"addServer": "添加服务器",
 			"addServerTooltip": "添加服务器",
+			"authRequired": "Authentication required",
 			"backToInstalled": "返回到已安装的服务器",
 			"browseMarketplace": "浏览 Microsoft 市场",
 			"builtInGroup": "内置",
@@ -9719,9 +9917,6 @@
 			"extensionGroupDescription": "已安装 VS Code 扩展提供的 MCP 服务器。",
 			"fromPlugin": "插件: {0}",
 			"galleryError": "无法加载市场",
-			"install": "安装",
-			"installed": "已安装",
-			"installing": "正在安装...",
 			"learnMoreMcp": "详细了解 MCP 服务器",
 			"loadingGallery": "正在加载市场...",
 			"mcpAccessDisabledByPolicy": "你的组织已禁用 MCP 服务器访问权限。请联系组织管理员获取详细信息。",
@@ -9730,6 +9925,7 @@
 			"mcpAccessDisabledTitle": "MCP 服务器已禁用",
 			"mcpBrowseBack": "返回",
 			"mcpGroupAriaLabel": "{0}、{1} 项，{2}",
+			"mcpServerAriaLabelWithStatus": "{0}, {1}",
 			"mcpServers": "MCP 服务器",
 			"mcpServersDescription": "一种开放标准，允许 AI 使用外部工具和服务。MCP 服务器提供文件操作、数据库、API 等工具。",
 			"mcpServersListAriaLabel": "MCP 服务器",
@@ -9756,10 +9952,10 @@
 		"vs/workbench/contrib/chat/browser/aiCustomization/pluginListWidget": {
 			"addPlugin": "添加插件",
 			"addRemotePlugins": "使用工具栏添加远程插件或从源安装插件。",
+			"backToInstalledPlugins": "Back to Installed Plugins",
 			"browseMarketplace": "浏览商城",
 			"browseMarketplaceUnsupportedWeb": "在 VS Code 网页版中无法浏览 Microsoft 市场。",
 			"browseToAdd": "浏览商城以发现并安装插件",
-			"byPublisher": "创建者: {0}",
 			"collapsed": "已折叠",
 			"createPlugin": "创建插件",
 			"disablePlugin": "禁用 {0} 同步",
@@ -9770,10 +9966,7 @@
 			"enabledGroup": "已在本地启用",
 			"enabledGroupDescription": "安装在此客户端中并可同步到远程会话的插件。",
 			"expanded": "已展开",
-			"install": "安装",
 			"installFromSource": "从源提供程序安装插件",
-			"installed": "已安装",
-			"installing": "正在安装...",
 			"learnMorePlugins": "详细了解智能体插件",
 			"loadingMarketplace": "正在加载商城...",
 			"marketplaceError": "无法加载市场",
@@ -9782,6 +9975,7 @@
 			"noMatchingPlugins": "没有与“{0}”匹配的插件",
 			"noPlugins": "未安装任何插件",
 			"noRemotePlugins": "未配置插件",
+			"pluginBrowseBack": "Back",
 			"pluginGroupAriaLabel": "{0}、{1} 项，{2}",
 			"pluginInstalledItemAriaLabelDisabled": "{0}。已禁用",
 			"pluginInstalledItemAriaLabelEnabled": "{0}。已启用",
@@ -9811,6 +10005,51 @@
 			"hookUnset": "(取消设置)",
 			"onContextTooltip": "当与“{0}”匹配的文件在上下文中时，将自动包含此指令。",
 			"uiIntegrationBadge": "UI 集成"
+		},
+		"vs/workbench/contrib/chat/browser/aiCustomization/toolsListWidget": {
+			"clientToolSet.copilotCli.description": "Copilot CLI",
+			"clientToolSet.copilotCli.detail": "Built-in tools the Copilot CLI agent runs inside its own runtime.",
+			"copilotCliTool.applyPatch": "Apply patches (used by some models instead of edit/create)",
+			"copilotCliTool.askUser": "Ask the user a question",
+			"copilotCliTool.create": "Create new files",
+			"copilotCliTool.edit": "Edit files via string replacement",
+			"copilotCliTool.glob": "Find files matching patterns",
+			"copilotCliTool.grep": "Search for text in files",
+			"copilotCliTool.listAgents": "List available agents",
+			"copilotCliTool.listShell": "List active shell sessions",
+			"copilotCliTool.readAgent": "Check background agent status",
+			"copilotCliTool.readShell": "Read output from a shell session",
+			"copilotCliTool.shell": "Execute commands",
+			"copilotCliTool.skill": "Invoke custom skills",
+			"copilotCliTool.stopShell": "Terminate a shell session",
+			"copilotCliTool.task": "Run subagents",
+			"copilotCliTool.view": "Read files or directories",
+			"copilotCliTool.webFetch": "Fetch and parse web content",
+			"copilotCliTool.writeShell": "Send input to a shell session",
+			"learnMoreTools": "Learn more about tools",
+			"noMatchingTools": "No tools match '{0}'",
+			"searchPlaceholder": "Type to search...",
+			"toolsBrowseBack": "Back",
+			"toolsBrowseError": "Unable to load marketplace",
+			"toolsBrowseLoading": "Loading marketplace...",
+			"toolsBrowseMarketplace": "Browse Marketplace",
+			"toolsBrowseNoResults": "No tool extensions match '{0}'",
+			"toolsBrowsePlaceholder": "Search the Marketplace...",
+			"toolsBrowseTryAgain": "Check your connection and try again",
+			"toolsCollapseAria": "Collapse {0}",
+			"toolsExpandAria": "Expand {0}",
+			"toolsListSubtitle": "Enable or disable the tools available to chat. Disabled tools are not advertised to the agent. Tools other than Copilot CLI run on the client and require it to be connected.",
+			"toolsListTitle": "Tools",
+			"toolsMarketplaceAria": "Tool extensions",
+			"toolsNoMatches": "No tools available.",
+			"toolsRowEnabledOfTotal": "{0} of {1} tools enabled",
+			"toolsSearchAria": "Search tools",
+			"toolsSetCheckbox": "Enable {0}",
+			"toolsSetExtensionDetail": "Tools contributed by {0}",
+			"toolsSetReadOnly": "These are the agent's built-in tools and cannot be changed.",
+			"toolsToolCheckbox": "Enable {0}",
+			"toolsTreeAria": "Tool groups",
+			"tryDifferentSearch": "Try a different search term"
 		},
 		"vs/workbench/contrib/chat/browser/attachments/chatAttachmentResolveService": {
 			"imageTooLarge": "图像太大",
@@ -9898,8 +10137,8 @@
 			"agentSandbox.deniedNetworkDomains2.deprecated": "请改用 {0}",
 			"autoApprove3.description": "全局自动批准也称为“YOLO 模式”，它会完全禁用对所有工作区中所有工具的手动审批，从而允许智能体完全自主地执行操作。此操作极为危险，并且“从不”建议使用，因为即使是 Codespaces 和开发容器等容器化环境也会将用户密钥转发到可能遭到入侵的容器中。\r\n\r\n此功能会禁用关键安全保护，并导致攻击者能够更容易地入侵计算机。\r\n\r\n注意: 此设置仅控制工具审批，不会阻止智能体提问。要自动回答智能体的问题，请使用 `#chat.autoReply#` 设置。",
 			"chat": "聊天",
-			"chat.agent.allowedNetworkDomains": "智能体工具(获取工具、集成浏览器)允许进行网络访问的域。在启用 {0} 或 {1} 时应用。当 {1} 设置为 {2} 时，允许所有域。支持 {3} 等通配符。允许列表和拒绝列表均为空时，所有域均被阻止。拒绝的域(请参阅{4})优先。",
-			"chat.agent.deniedNetworkDomains": "智能体工具(获取工具、集成浏览器)拒绝进行网络访问的域。在启用 {0} 或 {1} 时应用。当 {1} 设置为 {2} 时不适用。优先于 {3}。支持 {4} 等通配符。",
+			"chat.agent.allowedNetworkDomains": "Allowed domains for network access by agent tools (fetch tool, integrated browser). Applies when {0} or {1} is enabled. When {2} is enabled, all domains are allowed. Supports wildcards like {3}. When both allowed and denied lists are empty, all domains are blocked. Denied domains (see {4}) take precedence.",
+			"chat.agent.deniedNetworkDomains": "Denied domains for network access by agent tools (fetch tool, integrated browser). Applies when {0} or {1} is enabled. This does not apply when {2} is enabled. Takes precedence over {3}. Supports wildcards like {4}.",
 			"chat.agent.enabled.description": "启用后，可以从聊天中激活智能体模式，并且可以使用智能体上下文中带有副作用的工具。",
 			"chat.agent.maxRequests": "使用智能体时每轮次允许的最大请求数。达到限制后，将要求确认以继续。",
 			"chat.agent.networkFilter": "启用后，智能体工具(提取工具、集成浏览器)的网络访问将根据 {0} 和 {1} 进行限制。启用 {2} 时，域筛选也会应用于这些工具。",
@@ -9917,10 +10156,9 @@
 			"chat.agent.thinkingMode.fixedScrolling": "在固定高度且自动滚动的流式面板中展示思考过程；单击标题可展开至全高。",
 			"chat.agent.thinkingStyle": "控制如何呈现思考。",
 			"chat.agentHost.ahpJsonlLogging": "启用时，将智能体主机连接的所有 AHP 传输消息记录到窗口日志目录下的 JSONL 文件中。",
-			"chat.agentHost.clientTools": "在智能体主机会话中作为客户端提供工具暴露的工具引用名称。",
 			"chat.agentHost.customTerminalTool.enabled": "启用后，Copilot SDK 会话使用智能体主机终端工具替代，而非 SDK 的默认终端行为。",
 			"chat.agentHost.opus48Prompt.enabled": "启用此选项后，运行 Claude Opus 4.8 模型的 Copilot SDK 会话会在默认系统消息之上应用针对 Opus 4.8 调优的系统提示部分覆盖。",
-			"chat.agentHost.sdkSandbox.enabled": "Copilot SDK 内置 shell 工具的沙盒模式。仅在 `#chat.agentHost.customTerminalTool.enabled#` 为 `false` 时生效；启用智能体主机自带的终端工具时，引擎沙盒由 `#chat.agent.sandbox.enabled#` 控制。",
+			"chat.agentHost.sdkSandbox.enabled": "Sandbox mode for the Copilot SDK's built-in shell tool. Only takes effect when `#chat.agentHost.customTerminalTool.enabled#` is `false`; when the Agent Host's own terminal tool is enabled, the engine sandbox is controlled by `#chat.agent.sandbox.enabled#`. The sandbox applies only to requests that run with default approvals — not when approvals are bypassed — and is not supported on Windows yet.",
 			"chat.agentHost.sdkSandbox.enabled.allowNetwork": "SDK 的内置 shell 工具在沙盒内部运行，并具有不受限制的出站网络访问权限。",
 			"chat.agentHost.sdkSandbox.enabled.off": "未为 SDK 的内置 shell 工具转发沙盒策略 - 命令将在非沙盒环境中运行。",
 			"chat.agentHost.sdkSandbox.enabled.on": "SDK 的内置 shell 工具会在沙盒内部运行，并使用已配置的文件系统策略和受主机列表限制的网络。",
@@ -9959,7 +10197,6 @@
 			"chat.checkpoints.showFileChanges": "控制是否显示聊天检查点文件更改。",
 			"chat.codeBlock.showProgressAnimation.description": "应用编辑时，在代码块药丸形状中显示进度动画。如果禁用，则改为显示进度百分比。",
 			"chat.contextUsage.enabled": "在聊天输入中显示上下文窗口使用情况指示器。",
-			"chat.customizations.harnessSelector.enabled": "控制“聊天自定义”编辑器边栏中是否显示工具选择器。禁用后，编辑器始终显示所有自定义而不进行筛选。",
 			"chat.customizations.structuredPreview.enabled": "控制“聊天自定义”编辑器是否为 Markdown 自定义文件(智能体、技能、指令、提示)显示结构化预览。禁用时，编辑器将始终在嵌入式代码编辑器中打开原始 Markdown。",
 			"chat.defaultConfiguration.approvals.autoApprove": "绕过审批 - 所有工具调用都会自动审批。",
 			"chat.defaultConfiguration.approvals.default": "默认审批 - Copilot 将使用你配置的设置。",
@@ -9968,7 +10205,9 @@
 			"chat.defaultConfiguration.mode.description": "新智能体会话的启动模式。",
 			"chat.defaultConfiguration.mode.interactive": "交互式 - 分步协作。",
 			"chat.defaultConfiguration.mode.plan": "计划 — 先计划，准备好后执行。",
-			"chat.defaultConfiguration.settingDescription": "控制新智能体会话的默认配置(模式和审批行为) (如 Copilot CLI)。你仍然可以针对每个会话更改模式和审批级别，每个会话都会记住之前的配置。",
+			"chat.defaultConfiguration.settingDescription": "Controls the default configuration for new agent sessions (such as Copilot CLI). You can still change the mode and approval behavior per session, and each session remembers what was used.",
+			"chat.defaultModel.description": "The default model for new chat conversations. Use \"auto\" to let Copilot pick a model, a model family name (such as \"opus\" or \"gemini\") to use the latest available model in that family, or a full model id. You can still switch the model within a conversation; each new conversation starts at this model.",
+			"chat.defaultModel.policy": "Sets the default chat model for new conversations. Accepts \"auto\", a model family name (such as \"opus\" or \"gemini\"), or a full model id. Users can still switch the model within a conversation.",
 			"chat.detectParticipant.enabled": "为 panel 聊天启用聊天参与者自动删除功能。",
 			"chat.disableAIFeatures": "禁用和隐藏 GitHub Copilot 提供的内置 AI 功能，包括聊天和内联建议。",
 			"chat.editRequests": "启用在聊天中编辑请求。借助此操作，可以更改请求内容并将其重新提交到模型。",
@@ -9997,6 +10236,7 @@
 			"chat.experimental.incrementalRendering.buffering.paragraph": "缓冲内容至段落分隔处再进行渲染。",
 			"chat.experimental.incrementalRendering.buffering.word": "逐字显示内容。",
 			"chat.experimental.incrementalRendering.enabled": "启用聊天响应流式传输时的增量渲染，并可选择块级动画。",
+			"chat.experimental.permissionsSandboxToggle.enabled": "Controls whether the permissions picker shows an inline \"Sandboxing for terminal\" toggle on the Default Approvals option. The toggle reflects and updates `#chat.agent.sandbox.enabled#`.",
 			"chat.experimentalSessionsWindowOverride": "如果为 true，将针对扩展启用特定于会话窗口的行为。",
 			"chat.exploreAgent.defaultModel.description": "从可用提供程序中选择要用于“浏览”子智能体的默认语言模型。",
 			"chat.extensionToolsEnabled": "使用由第三方扩展提供的工具启用。",
@@ -10147,7 +10387,7 @@
 			"mcp.enterpriseManagedAuth.idp.clientId": "向此设备的 SSO 证书颁发者注册的 OAuth 客户端 ID。",
 			"mcp.enterpriseManagedAuth.idp.clientSecret": "与 `clientId` 配对的 OAuth 客户端密码。仅用于本地开发。",
 			"mcp.enterpriseManagedAuth.idp.issuer": "SSO 授权服务器的 OAuth/OIDC 证书颁发者 URL。必须是 `https://` URL。",
-			"mcp.enterpriseManagedAuth.idp.policy": "用于企业管理的模型上下文协议(MCP)服务器身份验证的 OAuth/OIDC IdP 配置。通过企业策略(Windows 组策略、macOS 托管首选项、Linux `/etc/vscode/policy.json`) 提供。",
+			"mcp.enterpriseManagedAuth.idp.policy": "The OAuth/OIDC IdP configuration used for enterprise-managed Model Context Protocol (MCP) server authentication.",
 			"mcp.gallery.serviceUrl": "配置 MCP 库服务 URL 以连接到以下位置:",
 			"mcp.list": "列出服务器"
 		},
@@ -10792,6 +11032,8 @@
 			"models.contextSize": "上下文大小",
 			"models.deleteAction": "删除",
 			"models.deleteConfirmation": "是否要删除 {0}?",
+			"models.deprecation.link.label": "Migrate",
+			"models.deprecation.link.tooltip": "This provider is deprecated. Migrate to the official extension.",
 			"models.enableModelProvider": "添加模型",
 			"models.goToSettings": "在语言模型中打开(JSON)",
 			"models.hideGroup": "隐藏所有模型",
@@ -10894,6 +11136,9 @@
 			"quota.exhausted.title": "已达到额度限制",
 			"quota.overage.desc": "额外预算现在将支付额外用量的费用。",
 			"quota.overage.title": "已达到额度限制",
+			"quota.trajectory.learnMoreStandalone": "Learn about optimizing usage",
+			"quota.trajectory.learnMoreTooltip": "Learn about optimizing usage",
+			"quota.trajectory.message": "You're likely to exhaust your AI credits before your billing period. {0}.",
 			"rateLimit.resets": "将于 {0} 重置。",
 			"rateLimit.session": "你已使用会话速率限制的 {0}% 额度。",
 			"rateLimit.weekly": "你已使用每周速率限制的 {0}% 额度。",
@@ -10932,6 +11177,7 @@
 			"chatSessionsExtPoint.inputPlaceholder": "要在此会话类型的聊天输入框中显示的占位符文本。",
 			"chatSessionsExtPoint.name": "动态注册的聊天参与者名称(例如: @agent)。不得包含空格。",
 			"chatSessionsExtPoint.order": "此项的显示顺序。",
+			"chatSessionsExtPoint.requiresCopilotSignIn": "Whether the chat session relies on a GitHub Copilot account and so cannot be used until the user signs in. Defaults to false.",
 			"chatSessionsExtPoint.requiresCustomModels": "设置后，聊天会话将显示首选自定义模型的筛选模型选取器。这样就可以将标准模型选取器用于参与的会话。",
 			"chatSessionsExtPoint.supportsAutoModel": "聊天会话是否支持合成的“自动”模型回退。默认为 false。当此项为 true 且无可用模型时，选取器会显示“自动”，而不是“无可用模型”状态。",
 			"chatSessionsExtPoint.supportsFileAttachments": "此聊天会话是否支持附加文件或文件引用。",
@@ -11123,8 +11369,6 @@
 		"vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry": {
 			"chatQuotaExceededStatus": "已达到配额",
 			"chatResumedStatus": "Copilot 已恢复",
-			"chatSessionInProgressStatus": "1 个智能体会话正在进行中",
-			"chatSessionsInProgressStatus": "{0} 个智能体会话正在进行中",
 			"chatStatus": "Copilot 状态",
 			"chatStatusAria": "Copilot 状态",
 			"completionsDisabledStatus": "已禁用内联建议",
@@ -11474,6 +11718,16 @@
 			"riskDefaultOrange": "{0} 可能会修改工作区或通过网络发送数据。",
 			"riskDefaultRed": "{0} 执行的操作难以撤销。"
 		},
+		"vs/workbench/contrib/chat/browser/tools/clientToolSetsContribution": {
+			"clientToolSet.browser.description": "Integrated Browser",
+			"clientToolSet.browser.detail": "Open, navigate, and inspect pages in the built-in browser.",
+			"clientToolSet.notebooks.description": "Jupyter Notebooks",
+			"clientToolSet.notebooks.detail": "Create and edit Jupyter notebooks and run their cells.",
+			"clientToolSet.tasks.description": "Tasks",
+			"clientToolSet.tasks.detail": "Create and run tasks defined in your workspace.",
+			"clientToolSet.vscode.description": "VS Code",
+			"clientToolSet.vscode.detail": "Navigate code, manage extensions, and run built-in VS Code commands."
+		},
 		"vs/workbench/contrib/chat/browser/tools/languageModelToolsConfirmationService": {
 			"allowCombinationGlobally": "始终 {0}",
 			"allowCombinationGloballyTooltip": "始终允许此工具和自变量特定组合而不进行确认。",
@@ -11586,6 +11840,9 @@
 			"chatViewsWelcome.when": "显示欢迎消息的条件。",
 			"vscode.extension.contributes.chatViewsWelcome": "向聊天视图提供欢迎消息"
 		},
+		"vs/workbench/contrib/chat/browser/voiceClient/micCaptureService": {
+			"mic.permissionDenied": "Microphone access was denied. Grant microphone permission in your system settings to use Voice Mode."
+		},
 		"vs/workbench/contrib/chat/browser/voiceClient/voiceToolDispatchService": {
 			"agentsVoice.action.approve": "正在审批...",
 			"agentsVoice.action.autoApprove": "正在自动批准会话...",
@@ -11623,6 +11880,10 @@
 			"enableMoreAIFeatures": "启用更多 AI 功能"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatChangesSummaryPart": {
+			"chat.checkpointFileChanges": "Checkpoint File Changes",
+			"chat.fileChanges.accessibleSummary": "{0}, {1} lines added, {2} lines deleted",
+			"chat.fileChanges.manyFiles": "{0} files changed",
+			"chat.fileChanges.oneFile": "1 file changed",
 			"chat.viewFileChangesSummary": "查看所有文件更改"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatCodeCitationContentPart": {
@@ -11811,6 +12072,8 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatSubagentContentPart": {
 			"chat.subagent.completedDefaultDescription": "运行子智能体",
+			"chat.subagent.creditTooltip": "{0} credit",
+			"chat.subagent.creditsTooltip": "{0} credits",
 			"chat.subagent.defaultDescription": "正在运行子智能体",
 			"chat.subagent.modelTooltip": "模型: {0}",
 			"chat.subagent.pendingConfirmation": "1 个待确认",
@@ -12091,6 +12354,8 @@
 			"chat.planReview.autopilot": "已通过 Autopilot 开始实施",
 			"chat.planReview.feedback": "已提供反馈",
 			"chat.planReview.feedbackInline": "{0}: {1}",
+			"chat.planReview.openFullPlan": "Open full plan file",
+			"chat.planReview.openFullPlanFile": "Open full plan file ({0})",
 			"chat.planReview.rejected": "已拒绝计划",
 			"chat.planReview.required": "需要计划审核",
 			"chat.questionCarouselAlertMany": "需要聊天输入({0} 个问题): {1}",
@@ -12117,6 +12382,11 @@
 			"usedAgent": "[[(重新运行而不使用)]]",
 			"usedAgentSlashCommand": "已使用 {0} [[(重新运行而不使用)]]",
 			"working": "正在工作"
+		},
+		"vs/workbench/contrib/chat/browser/widget/chatRestoreCheckpointActionViewItem": {
+			"chat.restoreCheckpoint.cancelTooltip": "Cancel restoring this checkpoint",
+			"chat.restoreCheckpoint.confirm": "Discard Edits",
+			"chat.restoreCheckpoint.confirmTooltip": "Confirm restoring this checkpoint and discarding later edits"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatWidget": {
 			"agentTitle": "使用智能体构建",
@@ -12168,22 +12438,33 @@
 			"chat.effort.header": "思考工作量",
 			"chat.manageModels": "管理模型...",
 			"chat.manageModels.tooltip": "管理语言模型",
+			"chat.modelPicker.activating": "Activating...",
 			"chat.modelPicker.adminDescription": "联系管理员",
 			"chat.modelPicker.adminHover": "此模型不可用。请与管理员联系以启用它。",
 			"chat.modelPicker.adminLink": "[与管理员联系]({0})",
-			"chat.modelPicker.ariaLabel": "选取模型，{0}",
+			"chat.modelPicker.ariaLabel": "Models, {0}",
+			"chat.modelPicker.ariaLabelRestricted": "Models, unavailable while in Restricted mode",
+			"chat.modelPicker.ariaLabelSetupRequired": "Models, sign in to use Copilot",
 			"chat.modelPicker.auto": "自动",
 			"chat.modelPicker.checkUpdateHover": "此模型需要较新版本的 VS Code。[Update VS Code](command:update.checkForUpdate) 以访问。",
 			"chat.modelPicker.configTooltip": "配置模型",
 			"chat.modelPicker.downloadUpdateHover": "此模型需要较新版本的 VS Code。[下载更新](command:update.downloadUpdate) 以访问。",
 			"chat.modelPicker.effortAriaLabel": "思考工作量: {0}",
+			"chat.modelPicker.modelsLabel": "Models",
 			"chat.modelPicker.noModels": "无模型可用",
 			"chat.modelPicker.otherModels": "其他模型",
 			"chat.modelPicker.pin": "固定模型",
 			"chat.modelPicker.pinned": "已固定",
 			"chat.modelPicker.restartUpdateHover": "此模型需要较新版本的 VS Code。[重启以进行更新](command:update.restartToUpdate) 以访问它。",
+			"chat.modelPicker.restrictedMode": "Models unavailable while in Restricted mode",
+			"chat.modelPicker.restrictedMode.trust": "Trust Workspace to enable models...",
+			"chat.modelPicker.restrictedMode.trustTooltip": "Trust the workspace to enable models.",
 			"chat.modelPicker.search": "搜索模型",
+			"chat.modelPicker.setupRequired": "Sign in to use Copilot",
+			"chat.modelPicker.setupRequired.signIn": "Sign in to use Copilot...",
+			"chat.modelPicker.setupRequired.signInTooltip": "Sign in to GitHub Copilot to choose a model.",
 			"chat.modelPicker.tokensAriaLabel": "上下文大小: {0}",
+			"chat.modelPicker.trustMessage": "Trusting this workspace enables AI models and chat features.",
 			"chat.modelPicker.unpin": "取消固定模型",
 			"chat.modelPicker.updateDescription": "更新 VS Code",
 			"chat.modelPicker.upgradeHover": "[升级到 GitHub Copilot Pro](command:workbench.action.chat.upgradePlan \" \") 以使用最佳模型。",
@@ -12201,6 +12482,7 @@
 			"models.configurable": "可配置",
 			"models.contextSize": "最大上下文",
 			"models.cost": "成本: {0}",
+			"models.cost.unknown": "Unknown",
 			"models.creditsPerMillionTokens": "每 100 万个令牌的额度",
 			"models.defaultContext": "默认",
 			"models.inputCostLabel": "输入",
@@ -12256,7 +12538,9 @@
 			"pastedSymbolReference": "粘贴的符号引用"
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/modelPickerActionItem": {
-			"chat.modelPicker.label": "选取模型"
+			"chat.modelPicker.modelsLabel": "Models",
+			"chat.modelPicker.restrictedHover": "{0} • Unavailable while in Restricted mode. Trust Workspace to enable models.",
+			"chat.modelPicker.setupRequiredHover": "{0} • Sign in to GitHub Copilot to choose a model."
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/modePickerActionItem": {
 			"built-in": "内置",
@@ -12267,6 +12551,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/permissionPickerActionItem": {
 			"permissions.ariaLabel": "权限选取器，{0}",
+			"permissions.ariaLabelWithDescription": "Permission picker, {0}, {1}",
 			"permissions.autoApprove": "绕过审批",
 			"permissions.autoApprove.description": "自动批准所有工具调用并在出错时重试",
 			"permissions.autoApprove.label": "绕过审批",
@@ -12278,7 +12563,10 @@
 			"permissions.default": "默认审批",
 			"permissions.default.description": "使用配置的审批设置",
 			"permissions.default.label": "默认审批",
+			"permissions.default.sandbox.toggle": "Sandboxing for terminal",
+			"permissions.default.sandbox.toggle.title": "Run terminal commands inside a sandbox that restricts file system and network access",
 			"permissions.default.subtext": "Copilot 使用你配置的设置",
+			"permissions.defaultSandboxed.label": "Default Approvals (Sandboxed)",
 			"permissions.ext.locked": "此选项已锁定",
 			"permissions.learnMore": "了解有关权限的详细信息",
 			"permissions.policyDescription": "已被企业策略禁用",
@@ -12333,7 +12621,7 @@
 			"newSession": "新建会话",
 			"sessionInProgress": "智能体会话正在进行中",
 			"sessions": "会话",
-			"voiceMode.clickMicHint": "点击麦克风说话",
+			"voiceMode.clickMicHint": "Click voice mode to talk",
 			"voiceMode.pttHint": "按 {0} 说话"
 		},
 		"vs/workbench/contrib/chat/browser/widgetHosts/viewPane/chatViewTitleControl": {
@@ -12465,6 +12753,7 @@
 			"chatError.quota.additionalSpend": "你已达到计划的额外使用限制。请升级你的计划以继续。",
 			"chatError.quota.business": "你已用尽额度。要继续工作，请联系你组织的 Copilot 管理员或等待你的授权额度更新。",
 			"chatError.quota.default": "你已用尽高级模型配额。对于其他付费高级请求，请联系组织的 Copilot 管理员或等待你的授权额度更新。",
+			"chatError.quota.edu": "You've exhausted your premium model quota. Please enable additional paid premium requests, upgrade to Copilot Pro, or wait for your allowance to renew.",
 			"chatError.quota.free": "你已达到每月聊天消息数配额。请升级到 Copilot Pro 或等待你的授权额度更新。",
 			"chatError.quota.generic": "已超过配额",
 			"chatError.quota.individual": "你已用尽高级模型配额。请启用额外付费高级请求，升级到 Copilot Pro+，或等待授权额度以续订。",
@@ -12475,6 +12764,8 @@
 			"chatError.quota.ubb.businessDate": "你已达到额度限制。要继续工作，请联系你组织的 Copilot 管理员，或等到你的额度在 {0} 重置。",
 			"chatError.quota.ubb.default": "你已达到额度限制。对于其他付费额度，请联系组织的 Copilot 管理员或等待你的额度重置。",
 			"chatError.quota.ubb.defaultDate": "你已达到额度限制。对于其他付费额度，请联系组织的 Copilot 管理员，或等到你的额度在 {0} 重置。",
+			"chatError.quota.ubb.edu": "You've reached your monthly credit limit. Please enable additional paid credits, upgrade to Copilot Pro, or wait for your credits to reset.",
+			"chatError.quota.ubb.eduDate": "You've reached your monthly credit limit. Please enable additional paid credits, upgrade to Copilot Pro, or wait until your credits reset on {0}.",
 			"chatError.quota.ubb.free": "你已达到每月额度限制。请升级到 Copilot Pro 或等待你的额度重置。",
 			"chatError.quota.ubb.freeDate": "你已达到每月额度限制。请升级到 Copilot Pro，或等到你的额度在 {0} 重置。",
 			"chatError.quota.ubb.individual": "你已达到每月额度限制。请启用额外的付费额度、升级到 Copilot Pro+ 或等待你的额度重置。",
@@ -12528,7 +12819,6 @@
 			"newChat": "新建聊天"
 		},
 		"vs/workbench/contrib/chat/common/customizationHarnessService": {
-			"harness.cli": "Copilot CLI",
 			"harness.local": "本地"
 		},
 		"vs/workbench/contrib/chat/common/editing/chatEditingService": {
@@ -12537,6 +12827,8 @@
 			"chatMultidiff.autoGenerated": "对 {0} 个文件的更改"
 		},
 		"vs/workbench/contrib/chat/common/languageModels": {
+			"chat.providerDeprecation.install": "Install Extension",
+			"chat.providerDeprecation.message": "The internal {0} language model provider is being deprecated. Please migrate to the official extension.",
 			"configureLanguageModelGroup": "组名",
 			"enterName": "请输入名称",
 			"enterValue": "输入 {0} 的值",
@@ -12548,6 +12840,8 @@
 			"vscode.extension.contributes.languageModelChatProviders": "提供特定供应商的语言模型聊天提供程序。",
 			"vscode.extension.contributes.languageModels.configuration": "语言模型聊天提供程序的配置选项。",
 			"vscode.extension.contributes.languageModels.configuration.secret": "属性是否为机密。",
+			"vscode.extension.contributes.languageModels.deprecation": "Marks this language model chat provider as deprecated. When set, the Manage Models view renders the provider with a link pointing to a replacement.",
+			"vscode.extension.contributes.languageModels.deprecation.link": "A URL opened when the user clicks the deprecation link shown next to the provider name. Use a 'vscode:extension/<publisher>.<name>' URI to open a replacement extension in the Extensions view.",
 			"vscode.extension.contributes.languageModels.displayName": "语言模型聊天提供程序的显示名称。",
 			"vscode.extension.contributes.languageModels.emptyVendor": "供应商字段不能为空。",
 			"vscode.extension.contributes.languageModels.managementCommand": "用于管理语言模型聊天提供程序的命令，例如“管理 Copilot 模型”。此命令是在聊天模型选取器中使用的。如果未提供，则在选择供应商期间不会呈现齿轮图标。",
@@ -13141,6 +13435,22 @@
 			"exportAgentTracesDB.label": "导出智能体主机跟踪数据库...",
 			"exportAgentTracesDB.notFound": "尚未找到智能体主机跟踪数据库。启用 `#chat.agentHost.otel.dbSpanExporter.enabled#` 并运行智能体会话以填充数据。"
 		},
+		"vs/workbench/contrib/chat/electron-browser/actions/profileAgentHostAction": {
+			"profileAgentHost": "Profile Local Agent Host Process",
+			"profileAgentHost.cpuProfiles": "CPU Profiles",
+			"profileAgentHost.noInspectPort": "Could not enable the Node.js inspector for the agent host process.",
+			"profileAgentHost.notification": "Profiling the local agent host process.",
+			"profileAgentHost.saveDialogTitle": "Save Agent Host Profile",
+			"profileAgentHost.saveFailed": "Failed to save or open the agent host profile: {0}",
+			"profileAgentHost.startFailed": "Failed to start profiling the agent host: {0}",
+			"profileAgentHost.statusAriaLabel": "Profiling Agent Host. Activate to stop profiling.",
+			"profileAgentHost.statusName": "Agent Host Profiler",
+			"profileAgentHost.statusText": "Profiling Agent Host",
+			"profileAgentHost.statusTooltip": "Click to stop profiling.",
+			"profileAgentHost.stop": "Stop",
+			"profileAgentHost.stopFailed": "Failed to stop profiling the agent host: {0}",
+			"stopAgentHostProfile": "Stop Local Agent Host Profile"
+		},
 		"vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions": {
 			"keywordActivation.status.active": "正在侦听“Hey Code”...",
 			"keywordActivation.status.inactive": "正在等待语音聊天结束...",
@@ -13215,6 +13525,25 @@
 			"quit.message": "会话正在进行中。是否确定要退出?",
 			"reloadTheWindow.detail": "如果重新加载窗口，会话将停止。",
 			"reloadTheWindow.message": "会话正在进行中。是否确实要重新加载窗口?"
+		},
+		"vs/workbench/contrib/chat/electron-browser/toggleRemoteConnectionsActionViewItem": {
+			"tunnelHost.hover.connecting": "Establishing tunnel connection...",
+			"tunnelHost.hover.enabled": "Remote session access is enabled",
+			"tunnelHost.hover.idle": "Allow remote session access",
+			"tunnelHost.hover.sharing": "Remote session access enabled via tunnel '{0}'",
+			"tunnelHost.hover.showOutput": "Show Output",
+			"tunnelHost.toast": "Remote session access is now enabled"
+		},
+		"vs/workbench/contrib/chat/electron-browser/tunnelHost.contribution": {
+			"showTunnelHostOutput": "Show Remote Connections Output",
+			"toggleSharing": "Allow Remote Connections",
+			"tunnelHost.category": "Remote Connections",
+			"tunnelHost.enableMicrosoftAuth": "Enable Microsoft account authentication for agent host tunnels. When disabled, only GitHub authentication is used.",
+			"tunnelHost.error": "Failed to toggle remote connections: {0}"
+		},
+		"vs/workbench/contrib/chat/electron-browser/tunnelHostService": {
+			"tunnelHost.noAuth": "No authentication token available. Please sign in and try again.",
+			"tunnelHost.outputChannel": "Remote Connections"
 		},
 		"vs/workbench/contrib/codeActions/browser/codeActionsContribution": {
 			"alwaysSave": "触发由窗口或焦点更改触发的显式保存和自动保存的代码操作。",
@@ -14997,8 +15326,6 @@
 			"noUpdatesAvailable": "所有扩展都是最新的。",
 			"notFound": "找不到扩展“{0}”。",
 			"notInstalled": "未安装扩展“{0}”。请确保你使用包括发布者的完整的扩展 ID，例如 ms-vscode.csharp。",
-			"off": "关",
-			"on": "开",
 			"recently published filter": "最近发布",
 			"recentlyPublishedExtensions": "显示最近发布的扩展",
 			"refreshExtension": "刷新",
@@ -18363,6 +18690,19 @@
 			"statusBarOfflineBorder": "工作台脱机时用来与侧边栏和编辑器区分的状态栏边框颜色。状态栏显示在窗口底部。",
 			"statusBarOfflineForeground": "工作台脱机时的状态栏前景色。状态栏显示在窗口底部"
 		},
+		"vs/workbench/contrib/onboarding/browser/onboarding.contribution": {
+			"onboarding.developerMode": "Map of onboarding scenario/tour id to whether developer mode is enabled for it. When enabled for a scenario, that onboarding tour ignores usage-based eligibility checks (such as how many sessions you have started) and previously persisted shown state. The tour is still shown at most once per window session, so reload the window to show it again.",
+			"onboarding.enabled": "When enabled, onboarding tours and hints may appear automatically to highlight features. Disabling this does not affect tours you start manually.",
+			"onboarding.resetShownState": "Reset Onboarding Shown State"
+		},
+		"vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay": {
+			"spotlight.back": "Back",
+			"spotlight.counter": "{0} of {1}",
+			"spotlight.done": "Done",
+			"spotlight.endTour": "End Tour",
+			"spotlight.endTour.tooltip": "End Tour (Esc)",
+			"spotlight.next": "Next"
+		},
 		"vs/workbench/contrib/outline/browser/outline.contribution": {
 			"filteredTypes.array": "启用后，大纲将显示 `array` 符号。",
 			"filteredTypes.boolean": "启用后，大纲将显示 `boolean` 符号。",
@@ -20091,7 +20431,7 @@
 			"openSurvey": "打开调查",
 			"survey.help.overview": "你正在填写调查表。使用 Tab 键可在问题和选项之间移动。",
 			"survey.help.select": "在问题中，可使用方向键在选项之间移动，并按空格键或 Enter 进行选择。",
-			"survey.help.submit": "在回答完所有问题后，按 Tab 键切到“提交”按钮，然后按 Enter。",
+			"survey.help.submit": "Tab to the Submit button and press Enter once the required question is answered. Additional questions are optional.",
 			"surveyEditorPaneTitle": "调查"
 		},
 		"vs/workbench/contrib/surveys/browser/surveyEditorInput": {
@@ -20099,8 +20439,9 @@
 		},
 		"vs/workbench/contrib/surveys/browser/surveyEditorPane": {
 			"survey.pane.ariaLabel": "调查",
+			"survey.questionOptional": "{0} (optional)",
 			"survey.submitFeedback": "提交反馈",
-			"survey.submitHint": "回答所有问题后才能提交",
+			"survey.submitHint": "Answer the required question to submit",
 			"survey.success.detail": "你的回答有助于我们了解谁最需要它。谢谢。",
 			"survey.success.message": "已发送响应"
 		},
@@ -20117,7 +20458,7 @@
 			"survey.copilotPmf.q2.gettingUnstuck": "摆脱 bug 困扰",
 			"survey.copilotPmf.q2.multiFile": "进行多文件更改",
 			"survey.copilotPmf.q2.noClearValue": "我尚未获得明确的价值",
-			"survey.copilotPmf.q2.other": "其他",
+			"survey.copilotPmf.q2.other": "None of the above",
 			"survey.copilotPmf.q2.planning": "规划方法",
 			"survey.copilotPmf.q2.reviewing": "改进或审阅代码",
 			"survey.copilotPmf.q2.shippingFaster": "更快地交付更改",
@@ -20126,7 +20467,7 @@
 			"survey.copilotPmf.q3.biggerTasks": "难以应对更大的任务",
 			"survey.copilotPmf.q3.context": "缺少存储库或项目上下文",
 			"survey.copilotPmf.q3.cost": "限制、成本或计费",
-			"survey.copilotPmf.q3.other": "其他",
+			"survey.copilotPmf.q3.other": "None of the above",
 			"survey.copilotPmf.q3.reviewingTime": "审阅时间过长",
 			"survey.copilotPmf.q3.security": "安全或权限问题",
 			"survey.copilotPmf.q3.setup": "设置或集成很难",
@@ -21286,6 +21627,9 @@
 		},
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalConfirmationTool": {
 			"confirmTerminalCommandTool.displayName": "确认终端命令",
+			"confirmTerminalCommandTool.sandboxBypass.message": "This command will run outside the sandbox.",
+			"confirmTerminalCommandTool.sandboxBypass.message.reason": "This command will run outside the sandbox.\r\n\r\nReason: {0}",
+			"confirmTerminalCommandTool.sandboxBypass.title": "Run in terminal outside the sandbox?",
 			"confirmTerminalCommandTool.userDescription": "用于确认终端命令的工具"
 		},
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalTool": {
@@ -21421,10 +21765,10 @@
 		},
 		"vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalChatAgentToolsConfiguration": {
 			"agentSandbox.allowAutoApprove": "控制是否自动批准在沙盒内运行的智能体模式终端命令。禁用时，“在终端中运行”工具将使用现有审批流程。仅当启用 {0} 时适用。",
+			"agentSandbox.allowNetwork": "When {0} is enabled, controls whether to allow all network domains in the sandbox. When enabled, the sandbox preserves file system restrictions while relaxing all network restrictions.",
 			"agentSandbox.allowUnsandboxedCommands": "控制当沙盒命令失败或沙盒限制会阻止命令时，智能体模式终端命令在用户确认后是否可在沙盒外运行。仅当启用 {0} 时适用。",
 			"agentSandbox.enabled.deprecated": "请改用 {0}",
-			"agentSandbox.enabledSetting": "控制智能体模式是否使用沙盒来限制工具的操作。启用后，终端等工具将在沙盒环境中运行，以限制对系统的访问。",
-			"agentSandbox.enabledSetting.allowNetworkDescription": "为智能体模式工具启用沙盒，并允许所有网络域。",
+			"agentSandbox.enabledSetting": "Controls whether agent mode uses sandboxing to restrict what tools can do. When enabled, tools like the terminal are run in a sandboxed environment to limit access to the system. Use {0} to allow all network domains.",
 			"agentSandbox.enabledSetting.offDescription": "为代理模式工具禁用沙盒。",
 			"agentSandbox.enabledSetting.onDescription": "为代理模式工具启用沙盒。",
 			"agentSandbox.fileSystemLinux.deprecated": "请改用 {0}",
@@ -21439,11 +21783,11 @@
 			"agentSandbox.macFileSystemSetting.allowWrite": "允许写权限的其他路径的数组。留空则禁止在工作区文件夹、工作区存储文件夹和沙盒临时目录之外进行写入。",
 			"agentSandbox.macFileSystemSetting.denyRead": "拒绝读取访问的路径数组。留空则允许读取所有路径。",
 			"agentSandbox.macFileSystemSetting.denyWrite": "在允许路径中拒绝写入访问的路径数组(优先于 allowWrite)。",
-			"agentSandbox.retryWithAllowNetworkRequests": "控制在用户确认后，智能体模式终端命令是否可以在沙盒中以不受限制的网络访问重试。此项仅在 {0} 设置为 `on` 时适用，并且会在保留文件系统沙盒的同时，放宽已批准命令的网络限制。",
+			"agentSandbox.retryWithAllowNetworkRequests": "Controls whether agent mode terminal commands can retry in the sandbox with unrestricted network access after user confirmation. This applies only when {0} is enabled and preserves file system sandboxing while relaxing network restrictions for an approved command.",
 			"agentSandbox.runtimeSetting": "注意: 此设置仅在启用 {0} 时生效。键/值对将传递到沙盒运行时配置的根目录。",
-			"agentSandbox.windowsEnabledSetting": "控制智能体模式在 Windows 上是否使用沙盒。",
-			"agentSandbox.windowsEnabledSetting.allowNetworkDescription": "在 Windows 上为智能体模式工具启用沙盒，并允许所有网络域。",
+			"agentSandbox.windowsEnabledSetting": "Controls whether agent mode uses sandboxing on Windows. Use {0} to allow all network domains.",
 			"agentSandbox.windowsEnabledSetting.offDescription": "在 Windows 上为智能体模式工具禁用沙盒。",
+			"agentSandbox.windowsEnabledSetting.onDescription": "Enable sandboxing for agent mode tools on Windows.",
 			"agentSandbox.windowsFileSystemSetting": "注意: 此设置仅在启用 {0} 时生效。控制 Windows 上沙盒中的文件系统访问。路径不支持 glob 模式，仅支持字面路径(例如: C:\\src、C:\\Users\\me.ssh、.env)。",
 			"agentSandbox.windowsFileSystemSetting.allowRead": "允许只读访问的其他路径的数组。优先级高于 denyRead。",
 			"agentSandbox.windowsFileSystemSetting.allowWrite": "允许读/写访问的其他路径的数组。留空则禁止在工作区文件夹、工作区存储文件夹和沙盒临时目录之外进行写入。",
@@ -22440,6 +22784,7 @@
 			"downloading": "正在下载 {0} 更新...",
 			"installUpdate...": "安装更新... (1)",
 			"installingUpdate": "正在安装更新...",
+			"noUpdatesAvailable": "There are currently no updates available.",
 			"read the release notes": "欢迎使用 {0} v{1}! 是否要阅读发布说明?",
 			"relaunchDetailInsiders": "按“重新加载”按钮切换到 Insiders 版本的 VS Code。",
 			"relaunchDetailStable": "按“重新加载”按钮切换到稳定版的 VS Code。",
@@ -22459,14 +22804,14 @@
 			"use stable": "稳定(当前)(&&S)"
 		},
 		"vs/workbench/contrib/update/browser/update.contribution": {
-			"applyUpdate": "应用更新...",
+			"applyUpdate": "Apply Update from File...",
 			"checkForUpdates": "检查更新...",
 			"developerCategory": "开发人员",
 			"downloadUpdate": "下载更新",
 			"installUpdate": "安装更新",
 			"mshowReleaseNotes": "显示发行说明(&&R)",
 			"openDownloadPage": "下载 {0}",
-			"pickUpdate": "应用更新",
+			"pickUpdate": "Apply Update from File",
 			"releaseNotesFromFileNone": "无法将当前文件作为发行说明打开",
 			"restartToUpdate": "重启以更新",
 			"showReleaseNotes": "显示发行说明",
@@ -23869,7 +24214,8 @@
 		},
 		"vs/workbench/services/editor/common/editorResolverService": {
 			"editor.diffEditorAssociations": "将 [glob 模式](https://aka.ms/vscode-glob-patterns)配置为编辑器以打开差异视图(例如 `\"*.md\": \"vscode.markdown.preview.editor\"`)。这些设置会覆盖差异视图的 `workbench.editorAssociations`。",
-			"editor.editorAssociations": "将 [glob 模式](https://aka.ms/vscode-glob-patterns)配置到编辑器(例如 `\"*.hex\": \"hexEditor.hexedit\"`)。这些优先于默认行为。"
+			"editor.editorAssociations": "将 [glob 模式](https://aka.ms/vscode-glob-patterns)配置到编辑器(例如 `\"*.hex\": \"hexEditor.hexedit\"`)。这些优先于默认行为。",
+			"editor.markdownDefaultEditorInAgentsWindow": "Controls whether the Markdown editor is used as the default editor for Markdown files in the Agents window."
 		},
 		"vs/workbench/services/extensionManagement/browser/extensionBisect": {
 			"I cannot reproduce": "我无法重现",
@@ -23905,9 +24251,9 @@
 			"cannot change enablement malicious": "无法更改 {0} 扩展的启用，因为它是恶意的",
 			"cannot change enablement virtual workspace": "无法更改 {0} 扩展的启用，因为它不支持虚拟工作区",
 			"cannot change invalid extension enablement": "{0} 扩展的启用无法更改，因为它无效",
-			"cannot disable auth extension": "无法更改 {0} 扩展的启用，因为“设置同步”依赖此扩展。",
-			"cannot disable auth extension in workspace": "无法在工作区中更改 {0} 扩展的启用，因为它提供身份验证提供程序",
 			"cannot disable language pack extension": "无法更改 {0} 扩展的启用，因为它提供语言包。",
+			"cannot disable settings sync auth extension": "Cannot change enablement of {0} extension because Settings Sync depends on it.",
+			"cannot disable settings sync auth extension in workspace": "Cannot change enablement of {0} extension in workspace because Settings Sync depends on it.",
 			"extensionsDisabled": "已暂时禁用所有已安装的扩展。",
 			"noWorkspace": "没有工作区。"
 		},
