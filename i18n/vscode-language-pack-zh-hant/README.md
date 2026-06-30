@@ -47,6 +47,7 @@
 * Kuo-Chen Lien
 * Kevin Yang
 * Hans Chiu
+* Yuhsi Chen
 
 **請享用！**
 
@@ -102,5 +103,6 @@ Special thanks to community contributors for making it available.
 * Kuo-Chen Lien
 * Kevin Yang
 * Hans Chiu
+* Yuhsi Chen
 
 **Enjoy!**
