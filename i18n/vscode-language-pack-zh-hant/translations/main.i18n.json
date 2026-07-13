@@ -624,6 +624,7 @@
 			"inline": "快速建議會顯示為浮水印文字",
 			"inlineCompletionsAccessibilityVerbose": "控制當顯示內嵌完成時，是否應提供協助工具提示給螢幕助讀程式使用者。",
 			"inlineSuggest.edits.allowCodeShifting": "控制顯示建議是否會移動程式碼，以便騰出空間讓建議內嵌。",
+			"inlineSuggest.edits.longDistanceHintContextLineCount": "Controls how many lines of surrounding context are shown above and below the target line in the long distance inline suggestion preview. Set to 0 to only show the target line.",
 			"inlineSuggest.edits.renderSideBySide": "控制是否可以並排顯示較大的建議。",
 			"inlineSuggest.edits.showCollapsed": "控制在跳到建議之前，是否將建議顯示為折疊。",
 			"inlineSuggest.edits.showLongDistanceHint": "控制是否顯示遠端的內嵌建議。",
@@ -948,6 +949,8 @@
 			"isComposing": "編輯器是否處於組合模式",
 			"isEmbeddedDiffEditor": "內容是否為內嵌 Diff 編輯器",
 			"multiDiffEditorAllCollapsed": "是否摺疊多重 Diff 編輯器中的所有檔案",
+			"multiDiffEditorItemAllUnchangedRegionsShown": "Whether all unchanged regions of a multi diff editor file are revealed",
+			"multiDiffEditorRenderSideBySide": "Whether the multi diff editor renders diffs side by side instead of inline",
 			"standaloneColorPickerFocused": "獨立的顏色選擇器是否聚焦",
 			"standaloneColorPickerVisible": "是否顯示獨立的顏色選擇器",
 			"stickyScrollFocused": "自黏捲動是否聚焦",
@@ -2165,22 +2168,11 @@
 			"selectPrevCodeAction.title": "選取上一個動作",
 			"toggleSectionCodeAction.title": "切換區段"
 		},
-		"vs/platform/agentHost/browser/agentHost.config.contribution": {
-			"chat.agentHost.enabled": "啟用時，部分 Agent 會在個別的 Agent 主機處理序中執行。"
-		},
 		"vs/platform/agentHost/browser/agentHostConnectionsService": {
 			"agentHost.connection.ambient": "本機"
 		},
-		"vs/platform/agentHost/common/agentHost.config.contribution": {
-			"chat.agentHost.enabled": "啟用時，部分 Agent 會在個別的 Agent 主機處理序中執行。",
-			"chat.agents.copilotCli.hideExtensionHost": "啟用時，在 Agent 視窗選擇器中隱藏延伸主機 Copilot CLI 項目。需要 `#{0}#`。",
-			"chat.editor.copilotCli.hideExtensionHost": "啟用時，延伸主機 Copilot CLI 項目會在編輯器視窗聊天選擇器中隱藏。",
-			"chat.editor.defaultProvider": "控制新編輯器聊天工作階段預設使用的提供者。",
-			"chat.editor.defaultProvider.copilotAh": "使用 Agent 主機 Copilot CLI",
-			"chat.editor.defaultProvider.copilotEh": "使用延伸主機 Copilot CLI",
-			"chat.editor.defaultProvider.local": "使用內建 VS Code 本機聊天載入器",
-			"chat.editor.localAgent.enabled": "啟用時，在聊天選擇器中顯示 VS Code 本機聊天載入器。",
-			"chatAgentHostConfigurationTitle": "Chat Agent Host"
+		"vs/platform/agentHost/browser/agentHostEnablementService": {
+			"chat.agentHost.enabled": "When enabled, some agents run in a separate agent host process."
 		},
 		"vs/platform/agentHost/common/agentHostCustomizationConfig": {
 			"agentHost.config.claudeUseCopilotProxy.description": "啟用時 (預設值)，Claude Agent 會透過 GitHub Copilot 路由傳送所有要求。停用時，Claude 會使用您自己的認證 (API 金鑰或 Claude 訂用帳戶) 直接與 Anthropic 連線。",
@@ -2193,12 +2185,20 @@
 			"agentHost.config.customizations.uri": "外掛程式 URL",
 			"agentHost.config.defaultShell.description": "主機管理的終端機所使用之殼層可執行檔的絕對路徑。通常會由已連線的 VS Code 用戶端從 `terminal.integrated.agentHostProfile.<os>` 推送過來，並在未設定時改用 `terminal.integrated.defaultProfile.<os>`；若未設定，代理程式主機會返回系統殼層。只支援路徑；工作區設定檔中的 `args` 和 `env` 目前不會傳遞。工作區只會將這項設定推送到本機代理程式主機——遠端代理程式主機的操作人員應直接在遠端電腦的 `agent-host-config.json` 中設定。",
 			"agentHost.config.defaultShell.title": "預設殼層",
-			"agentHost.config.enableCustomTerminalTool.description": "啟用後，Copilot SDK 工作階段會使用代理程式主機終端工具覆寫，而非 SDK 的預設終端行為。",
-			"agentHost.config.enableCustomTerminalTool.title": "使用代理程式主機終端機工具",
-			"agentHost.config.opus48Prompt.description": "啟用時，執行 Claude Opus 4.8 模型的 Copilot SDK 工作階段會在預設系統訊息之上，套用 Opus 4.8 調整的系統提示區段覆寫。",
-			"agentHost.config.opus48Prompt.title": "Opus 4.8 Agent 提示",
-			"agentHost.config.rubberDuck.description": "啟用時，編碼 Agent 會使用橡皮鴨審閱子代理程式，使用互補模型檢閱程式碼變更。",
-			"agentHost.config.rubberDuck.title": "橡皮鴨代理程式"
+			"agentHost.config.githubEnterpriseUri.description": "Optional base URI of a GitHub Enterprise instance (for example \"https://ghe.example.com\" for GitHub Enterprise Server, or \"https://tenant.ghe.com\" for GitHub Enterprise Cloud). When set, the agent host authenticates and makes GitHub API calls against this instance instead of github.com. Normally pushed by the connected VS Code client from the `github-enterprise.uri` setting; remote agent host operators can set it directly in the remote `agent-host-config.json`.",
+			"agentHost.config.githubEnterpriseUri.title": "GitHub Enterprise URI"
+		},
+		"vs/platform/agentHost/common/agentHostEnablementService": {
+			"agentHostEnabled": "Whether the local agent host process is enabled.",
+			"chat.agentHost.enabled": "When enabled, some agents run in a separate agent host process.",
+			"chat.agents.copilotCli.hideExtensionHost": "When enabled, hides the Extension Host Copilot CLI entry from the Agents window picker. Requires `#chat.agentHost.enabled#`.",
+			"chat.editor.copilotCli.hideExtensionHost": "When enabled, hides the Extension Host Copilot CLI entry from the editor window chat picker.",
+			"chat.editor.defaultProvider": "Controls which provider is used as the default for new editor chat sessions.",
+			"chat.editor.defaultProvider.copilotAh": "Use the Agent Host Copilot CLI",
+			"chat.editor.defaultProvider.copilotEh": "Use the Extension Host Copilot CLI",
+			"chat.editor.defaultProvider.local": "Use the built-in VS Code local chat harness",
+			"chat.editor.localAgent.enabled": "When enabled, shows the VS Code local chat harness in the chat picker.",
+			"chatAgentHostConfigurationTitle": "Chat Agent Host"
 		},
 		"vs/platform/agentHost/common/agentHostSchema": {
 			"agentHost.config.autoReplyEnabled.description": "是否已啟用 VS Code 的自動回覆設定。當為 `true` 時，系統會自動回答 `ask_user` 問題，而不會等待使用者，類似於 Autopilot 模式。",
@@ -2226,6 +2226,8 @@
 			"agentHost.config.mcpServers.type.title": "伺服器類型",
 			"agentHost.config.mcpServers.url.description": "對於 `http` 伺服器，MCP 伺服器的端點 URL。",
 			"agentHost.config.mcpServers.url.title": "URL",
+			"agentHost.config.preferLongContextEnabled.description": "Whether Copilot Chat's prefer-long-context setting is enabled. When `true`, models with a free long context window only show the long context option in the picker. When `false` (default), the smaller default context option stays selectable.",
+			"agentHost.config.preferLongContextEnabled.title": "Prefer Long Context",
 			"agentHost.config.sessionSyncEnabled.description": "是否啟用 copilot-sdk CLI 的遠端工作階段同步。",
 			"agentHost.config.sessionSyncEnabled.title": "工作階段同步",
 			"agentHost.config.telemetryLevel.description": "已連線用戶端所要求的最嚴格遙測層級。",
@@ -2302,6 +2304,22 @@
 		"vs/platform/agentHost/common/claudeModelConfig": {
 			"claude.modelThinkingLevel.description": "控制 Claude 使用的推理能力量。",
 			"claude.modelThinkingLevel.title": "思考層級"
+		},
+		"vs/platform/agentHost/common/copilotCliConfig": {
+			"agentHost.config.enableCustomTerminalTool.description": "When enabled, Copilot SDK sessions use Agent Host's terminal tool override instead of the SDK's default terminal behavior.",
+			"agentHost.config.enableCustomTerminalTool.title": "Use Agent Host Terminal Tool",
+			"agentHost.config.modelCapabilityOverrides.description": "Per-model capability overrides for Copilot SDK sessions, keyed by model id. Aliasing a model id to a known `family` routes it to that family's tuned system prompt without changing the model id sent to the runtime. Only affects Copilot SDK sessions; intended for experimentation.",
+			"agentHost.config.modelCapabilityOverrides.entry.description": "A single capability override. The property key is the model id.",
+			"agentHost.config.modelCapabilityOverrides.entry.title": "Capability Override",
+			"agentHost.config.modelCapabilityOverrides.family.description": "Alias the model's family for prompt/capability routing (e.g. `claude-opus-4-8`).",
+			"agentHost.config.modelCapabilityOverrides.family.title": "Family",
+			"agentHost.config.modelCapabilityOverrides.title": "Model Capability Overrides",
+			"agentHost.config.opus48Prompt.description": "When enabled, Copilot SDK sessions running a Claude Opus 4.8 model apply Opus 4.8-tuned system-prompt section overrides on top of the default system message.",
+			"agentHost.config.opus48Prompt.title": "Opus 4.8 Agent Prompt",
+			"agentHost.config.reasoningEffortOverride.description": "Overrides the reasoning effort for Copilot SDK sessions regardless of the per-model picker value. Set it to a level the selected model supports (e.g. `low`, `medium`, `high`, `xhigh`); a value that isn't a recognized effort level is ignored and the session falls back to the picker value. Only affects Copilot SDK sessions; intended for experimentation.",
+			"agentHost.config.reasoningEffortOverride.title": "Reasoning Effort Override",
+			"agentHost.config.rubberDuck.description": "When enabled, the coding agent uses a rubber duck critic subagent to review code changes using a complementary model.",
+			"agentHost.config.rubberDuck.title": "Rubber Duck Agent"
 		},
 		"vs/platform/agentHost/common/reasoningEffort": {
 			"reasoningEffort.high": "高",
@@ -2393,15 +2411,6 @@
 		"vs/platform/agentHost/node/agentHostRenameCommand": {
 			"agentHostSlashCommand.rename.description": "重新命名此聊天"
 		},
-		"vs/platform/agentHost/node/agentHostReviewFileOperationHandler": {
-			"agentHost.changeset.reviewFile.cancelled": "Review file operation was cancelled.",
-			"agentHost.changeset.reviewFile.marked": "Marked `{0}` as reviewed.",
-			"agentHost.changeset.reviewFile.unmarked": "Removed the reviewed mark from `{0}`."
-		},
-		"vs/platform/agentHost/node/agentHostReviewOperationProvider": {
-			"agentHost.changeset.markAsReviewed": "Mark as Reviewed",
-			"agentHost.changeset.markAsUnreviewed": "Mark as Unreviewed"
-		},
 		"vs/platform/agentHost/node/agentHostSyncOperationHandler": {
 			"agentHost.changeset.sync.cancelled": "同步作業已取消。",
 			"agentHost.changeset.sync.synced": "已同步變更。"
@@ -2410,10 +2419,11 @@
 			"agentHost.changeset.sync": "同步變更 {0}↑"
 		},
 		"vs/platform/agentHost/node/agentService": {
-			"agentHost.download.agentSdkTitle": "Downloading {0} agent…",
+			"agentHost.download.agentSdkTitle": "Downloading {0} agent",
 			"agentHost.forkedChatFallback": "分支聊天",
 			"agentHost.forkedSessionFallback": "分支工作階段",
-			"agentHost.forkedTitlePrefix": "已分支:"
+			"agentHost.forkedTitlePrefix": "已分支:",
+			"agentHost.importedSessionFallback": "New Session"
 		},
 		"vs/platform/agentHost/node/claude/claudeAgent": {
 			"claude.sessionConfig.permissionMode": "核准",
@@ -2538,6 +2548,14 @@
 			"codex.sessionConfig.modelReasoningEffortDescription": "控制 Codex 使用的推理能力量。",
 			"codex.sessionConfig.networkAccessEnabled": "網路",
 			"codex.sessionConfig.networkAccessEnabledDescription": "允許沙箱化工具呼叫以進行輸出網路要求。僅於沙箱為工作區寫入時適用。",
+			"codex.sessionConfig.permissionsPreset": "Approvals",
+			"codex.sessionConfig.permissionsPreset.autoReview": "Auto-Review",
+			"codex.sessionConfig.permissionsPreset.autoReviewDescription": "Same workspace access as Default, but approval requests are routed through the auto-reviewer instead of prompting you.",
+			"codex.sessionConfig.permissionsPreset.default": "Default Permissions",
+			"codex.sessionConfig.permissionsPreset.defaultDescription": "Codex can read and edit files in the workspace and run routine local commands. It asks before using the internet or going beyond the workspace.",
+			"codex.sessionConfig.permissionsPreset.fullAccess": "Full Access",
+			"codex.sessionConfig.permissionsPreset.fullAccessDescription": "Codex can edit files outside the workspace and use the internet without asking. Use only when you want full machine access.",
+			"codex.sessionConfig.permissionsPresetDescription": "How much Codex can do on its own before asking for approval.",
 			"codex.sessionConfig.personality": "特質",
 			"codex.sessionConfig.personality.friendly": "友善",
 			"codex.sessionConfig.personality.friendlyDescription": "更溫暖、更具交談語氣。",
@@ -2577,6 +2595,11 @@
 			"agentHost.sessionConfig.isolation.worktree": "工作樹",
 			"agentHost.sessionConfig.isolation.worktreeDescription": "建立用於隔離的 Git 工作樹",
 			"agentHost.sessionConfig.isolationDescription": "Agent 應進行變更的位置",
+			"agentHost.sessionConfig.worktreeBranchPrefix": "Worktree Branch Prefix",
+			"agentHost.sessionConfig.worktreeBranchPrefixDescription": "Prefix applied to the branch created for an isolated worktree.",
+			"agentHost.sessionConfig.worktreeIncludeFiles": "Worktree Include Files",
+			"agentHost.sessionConfig.worktreeIncludeFilesDescription": "Glob patterns for git-ignored files to copy into the isolated worktree.",
+			"agentHost.sessionConfig.worktreeIncludeFilesItem": "Pattern",
 			"copilot.modelContextSize.default": "預設",
 			"copilot.modelContextSize.description": "選取此模型的內容視窗大小。",
 			"copilot.modelContextSize.longerSessions": "較長的工作階段",
@@ -2585,7 +2608,10 @@
 			"copilot.modelThinkingLevel.title": "思考層級",
 			"copilotAgent.description": "Copilot SDK agent running in the local agent host process",
 			"copilotAgent.pluginParseError": "剖析外掛程式時發生錯誤。",
-			"copilotAgent.worktreeCreated": "已建立分支 {0} 的隔離工作樹"
+			"copilotAgent.worktreeCreated": "已建立分支 {0} 的隔離工作樹",
+			"sessionWorkingDirectoryMissing": "This session couldn't be loaded because its working directory no longer exists: {0}",
+			"sessionWorkingDirectoryMissingWithReason": "This session couldn't be loaded because its worktree is missing and could not be recreated: {0}",
+			"worktreeRecreateBranchMissing": "the branch '{0}' no longer exists"
 		},
 		"vs/platform/agentHost/node/copilot/copilotAgentSession": {
 			"agentHost.planReview.autopilot.description": "自動核准所有工具呼叫，並持續執行直到完成。",
@@ -2607,14 +2633,6 @@
 			"copilotAgent.compactionCompleted": "壓縮完成",
 			"copilotSlashCommand.selectSubcommandResult": "/{0} 命令需要選取子命令。可用選項: {1}"
 		},
-		"vs/platform/agentHost/node/copilot/copilotSlashCommandCompletionProvider": {
-			"copilot.command.chronicle.cost.tips": "取得個人化提示，以減少權杖使用量和 Copilot 成本",
-			"copilot.command.chronicle.improve": "取得個人化提示，改善您的聊天工作階段使用量",
-			"copilot.command.chronicle.reindex": "重新建置本機工作階段索引並同步至雲端",
-			"copilot.command.chronicle.search": "依關鍵字、檔案路徑或 PR/問題參考搜尋最近的聊天工作階段",
-			"copilot.command.chronicle.standup": "從最近的聊天工作階段產生站立會議報告",
-			"copilot.command.chronicle.tips": "根據您的聊天工作階段使用模式，取得個人化提示"
-		},
 		"vs/platform/agentHost/node/copilot/copilotSystemNotification": {
 			"agentHost.copilot.systemNotification.agentCompleted": "背景 Agent {0} 已完成",
 			"agentHost.copilot.systemNotification.agentFailed": "背景 Agent {0} 失敗",
@@ -2622,10 +2640,10 @@
 			"agentHost.copilot.systemNotification.instructionDiscovered": "發現的指令: {0}",
 			"agentHost.copilot.systemNotification.newInboxMessage": "來自 {0} 的新收件匣郵件",
 			"agentHost.copilot.systemNotification.shellCompleted": "殼層已完成",
-			"agentHost.copilot.systemNotification.shellDescriptionCompleted": "`{0}` 已完成",
-			"agentHost.copilot.systemNotification.shellIdCompleted": "殼層 `{0}` 已完成"
+			"agentHost.copilot.systemNotification.shellDescriptionCompleted": "`{0}` 已完成"
 		},
 		"vs/platform/agentHost/node/copilot/copilotToolDisplay": {
+			"copilot.permission.create.title": "Create file?",
 			"copilot.permission.default.message": "允許模型呼叫 {0}?",
 			"copilot.permission.default.title": "允許工具呼叫?",
 			"copilot.permission.mcp.defaultTool": "MCP 工具",
@@ -2779,6 +2797,31 @@
 			"toolName.listComments": "列出註解",
 			"toolName.resolveComments": "解決註解",
 			"toolName.viewUnreviewedComments": "檢視註解"
+		},
+		"vs/platform/agentHost/node/shared/sessionServerTools": {
+			"toolComplete.createChat": "Created chat",
+			"toolComplete.createSession": "Created session",
+			"toolComplete.deleteSession": "Deleted session",
+			"toolComplete.getCurrentSession": "Checked current session",
+			"toolComplete.getSessionContext": "Read session context",
+			"toolComplete.listSessions": "Checked sessions",
+			"toolComplete.listSessions.many": "Checked {0} sessions",
+			"toolComplete.listSessions.one": "Checked 1 session",
+			"toolComplete.sendMessage": "Sent message",
+			"toolInvoke.createChat": "Creating chat",
+			"toolInvoke.createSession": "Creating session",
+			"toolInvoke.deleteSession": "Deleting session",
+			"toolInvoke.getCurrentSession": "Checking current session",
+			"toolInvoke.getSessionContext": "Reading session context",
+			"toolInvoke.listSessions": "Checking sessions",
+			"toolInvoke.sendMessage": "Sending message",
+			"toolName.createChat": "Create Chat",
+			"toolName.createSession": "Create Session",
+			"toolName.deleteSession": "Delete Session",
+			"toolName.getCurrentSession": "Get Current Session",
+			"toolName.getSessionContext": "Get Session Context",
+			"toolName.listSessions": "List Sessions",
+			"toolName.sendMessage": "Send Message"
 		},
 		"vs/platform/agentHost/node/sshRemoteAgentHostService": {
 			"ssh.failedToReadPrivateKey": "無法讀取私密金鑰檔案: {0}",
@@ -3786,8 +3829,11 @@
 		},
 		"vs/platform/theme/common/sizes/baseSizes": {
 			"bodyFontSize": "基底字型大小。如果未由元件覆寫，將使用此大小。",
+			"bodyFontSize.deprecated": "Deprecated: use `fontSize.body1` instead.",
 			"bodyFontSizeSmall": "適用於次要內容的小型字型大小。",
+			"bodyFontSizeSmall.deprecated": "Deprecated: use `fontSize.label1` instead.",
 			"bodyFontSizeXSmall": "適用於較不醒目內容的特小型字型大小。",
+			"bodyFontSizeXSmall.deprecated": "Deprecated: use `fontSize.body2` instead.",
 			"codiconFontSize": "codicons 的基底字型大小。",
 			"codiconFontSizeCompact": "codicons 的精簡字型大小。",
 			"cornerRadiusCircle": "適用於完全圓角 UI 元素的圓形圓角半徑。",
@@ -3796,6 +3842,16 @@
 			"cornerRadiusSmall": "適用於精簡 UI 元素的小型圓角半徑。",
 			"cornerRadiusXLarge": "適用於極為醒目 UI 元素的特大型圓角半徑。",
 			"cornerRadiusXSmall": "適用於極為精簡 UI 元素的特小型圓角半徑。",
+			"fontSizeBody1": "Primary body font size.",
+			"fontSizeBody2": "Secondary body font size.",
+			"fontSizeHeading1": "Heading 1 font size (largest heading).",
+			"fontSizeHeading2": "Heading 2 font size (title).",
+			"fontSizeHeading3": "Heading 3 font size (subtitle).",
+			"fontSizeLabel1": "Label 1 font size (section title, tabs).",
+			"fontSizeLabel2": "Label 2 font size (metadata).",
+			"fontSizeLabel3": "Label 3 font size (badge).",
+			"fontWeightRegular": "Regular font weight (400) for body, labels and metadata.",
+			"fontWeightSemiBold": "SemiBold font weight (600) for headings and strong emphasis.",
 			"spacingNone": "沒有間距 (0px)。",
 			"spacingSize100": "間距為 10px。",
 			"spacingSize120": "間距為 12px。",
@@ -4133,6 +4189,11 @@
 		"vs/sessions/browser/parts/sessionReadOnlyBanner": {
 			"sessionReadOnlyBanner.message": "This chat is read-only"
 		},
+		"vs/sessions/browser/parts/sessionView": {
+			"sessionReadOnlyBanner.archived": "Archived sessions are read-only.",
+			"sessionReadOnlyBanner.message": "This chat is read-only",
+			"sessionReadOnlyBanner.restore": "Restore"
+		},
 		"vs/sessions/browser/sessionsSetUpService": {
 			"loading": "正在載入",
 			"sessions.aiDisabled.detail": "啟用 AI 功能以繼續使用 Agent。",
@@ -4154,7 +4215,10 @@
 		},
 		"vs/sessions/common/contextkeys": {
 			"activeSessions": "使用中工作階段面板的識別碼",
-			"agentSessionsSinglePaneDetailChangesOrFiles": "Whether the single-pane detail panel's active editor maps to the Changes or Files detail target",
+			"agentSessionsHasDockedDetails": "Whether the single-pane active editor has a docked detail panel (a managed Changes/Files tab or a text file editor)",
+			"agentSessionsSinglePaneChangesTabMissing": "Whether the single-pane session supports a Changes editor but its tab is not currently open",
+			"agentSessionsSinglePaneFilesTabMissing": "Whether the single-pane session supports a Files tab but its tab is not currently open",
+			"agentSessionsSinglePaneLayoutEnabled": "Whether the Agents window is using the single-pane (docked detail panel) layout. Single source of truth for gating single-pane behaviour — set once by the workbench from the layout it was constructed with; features must read this instead of the underlying setting",
 			"editorMaximized": "編輯器區域是否最大化",
 			"isQuickChatSession": "Whether the session in scope is a workspace-less quick chat",
 			"multipleSessionsVisible": "多個工作階段是否在工作階段組件的方格中可見",
@@ -4190,6 +4254,7 @@
 			"sessionWorkspacePickerGroup": "工作階段工作區選擇器中目前啟用的群組索引標籤",
 			"sessionWorkspacePickerVisible": "是否會顯示新工作階段檢視的工作區選擇器 (而不是由無代理程式主機空白狀態取代)",
 			"sessionsAquariumActive": "是否啟用工作階段水族箱重疊",
+			"sessionsBlockedSessionsVisible": "Whether the blocked-sessions dropdown (surfacing sessions that require input) is open in the sessions titlebar",
 			"sessionsCanGoBack": "瀏覽記錄中是否有上一個工作階段",
 			"sessionsCanGoForward": "瀏覽記錄中是否有下一個工作階段",
 			"sessionsFocus": "工作階段組件是否有鍵盤焦點",
@@ -4466,7 +4531,6 @@
 			"automation.form.day": "Day of week",
 			"automation.form.enabled": "Enabled (the scheduler runs this automation when due)",
 			"automation.form.folderRequired": "Workspace folder is required.",
-			"automation.form.harness": "Copilot CLI",
 			"automation.form.harnessChip.action": "Automations Harness Chip",
 			"automation.form.interval": "Schedule",
 			"automation.form.isolation.folder": "Folder",
@@ -4481,6 +4545,7 @@
 			"automation.form.prompt.placeholder": "Describe what you want to automate",
 			"automation.form.promptRequired": "Prompt is required.",
 			"automation.form.time": "Time",
+			"automation.form.workspacePicker.action": "Automations Workspace Picker",
 			"automation.interval.daily": "Daily",
 			"automation.interval.hourly": "Hourly",
 			"automation.interval.manual": "Manual",
@@ -4497,7 +4562,8 @@
 		},
 		"vs/sessions/contrib/automations/browser/automationRunner": {
 			"automationRunFailed": "Automation '{0}' failed: {1}",
-			"automationRunner.cancelled": "Cancelled"
+			"automationRunner.cancelled": "Cancelled",
+			"automationRunner.sessionFailed": "Agent session failed."
 		},
 		"vs/sessions/contrib/automations/browser/automations.contribution": {
 			"chat.automations.enabled": "Enables the Automations feature: scheduling agent sessions to run on a cadence. When disabled, the Automations entry in the Customizations sidebar, the Automations section in the Customizations editor, and the Automation option in the new-session composer are hidden, and scheduled automations are not dispatched.",
@@ -4516,17 +4582,25 @@
 		},
 		"vs/sessions/contrib/changes/browser/changesActions": {
 			"agentSessions.changes": "變更",
+			"agentSessions.changes.collapseUnchangedRegions": "Collapse Unchanged Regions",
+			"agentSessions.changes.expandFullFile": "Expand Full File",
 			"agentSessions.changes.file": "{0} 個檔案",
 			"agentSessions.changes.files": "{0} 個檔案",
+			"agentSessions.changes.openFile": "Open File",
 			"agentSessions.viewChanges.ariaLabel": "{0}: {1}, +{2}, -{3}",
 			"agentSessions.viewChanges.tooltip": "檢視變更",
 			"agentSessions.viewChanges.tooltip.branch": "檢視變更 ({0})"
+		},
+		"vs/sessions/contrib/changes/browser/changesetReviewActions": {
+			"changeset.notviewed": "Mark as Not Viewed",
+			"changeset.viewed": "Mark as Viewed"
 		},
 		"vs/sessions/contrib/changes/browser/changesView": {
 			"changes": "變更",
 			"changesView.diffStats.file": "1 file",
 			"changesView.diffStats.files": "{0} files",
 			"changesView.diffStats.label": "{0} 個檔案、{1} 個新增項目、{2} 個刪除項目",
+			"changesView.diffStatsLabel": "Changes Stats",
 			"changesView.noChanges": "變更的檔案和其他工作階段成品將顯示在這裡。",
 			"changesView.viewChanges": "檢視所有變更",
 			"changesViewTree": "變更樹狀",
@@ -4537,10 +4611,18 @@
 		},
 		"vs/sessions/contrib/changes/browser/changesViewActions": {
 			"agentSessions.collapseAllDiffs": "Collapse All Diffs",
+			"agentSessions.expandAllDiffs": "Expand All Diffs",
+			"agentSessions.setChangesListViewMode": "View as List",
+			"agentSessions.setChangesTreeViewMode": "View as Tree",
+			"changes": "Changes",
+			"changesView.headerActions": "Changes Actions",
 			"openChanges": "開啟變更",
 			"openChangesView": "變更",
 			"openFile": "開啟 [檔案]",
-			"openPullRequest": "開啟 [提取要求]"
+			"openPullRequest": "開啟 [提取要求]",
+			"showInlineDiff": "Show Inline Diff",
+			"showSideBySideDiff": "Show Side by Side Diff",
+			"toggleDiffView": "Toggle Diff View"
 		},
 		"vs/sessions/contrib/changes/browser/checksActions": {
 			"ci.failedState": "已失敗",
@@ -4579,6 +4661,7 @@
 		},
 		"vs/sessions/contrib/changes/browser/sessionsChangesAccessibilityHelp": {
 			"sessionsChanges.checks": "The Checks section lists the continuous integration checks for the session's pull request. Its header is a button: press Enter or Space to collapse or expand it{0}.",
+			"sessionsChanges.diffView": "File diffs can be shown side by side or inline. Use the Toggle Diff View command to switch between them{0}.",
 			"sessionsChanges.overview": "You are in the Changes view. It shows the files changed by the current session as a tree, followed by two collapsible sections: Other Files and Checks.",
 			"sessionsChanges.sessionFiles": "The Other Files section lists files that were created, edited, or deleted outside the workspace during this session, such as configuration files in your home directory. These files are not part of the workspace and won't be committed.",
 			"sessionsChanges.sessionFilesToggle": "The Other Files header is a button. Press Enter or Space to collapse or expand the list. When expanded, use the arrow keys to move through the files and press Enter to open one: created or deleted files open in an editor, while edited files open as a diff against their pre-session content.",
@@ -4663,6 +4746,13 @@
 			"subSessionTip.ariaLabel": "新增聊天提示",
 			"subSessionTip.dismiss": "關閉提示",
 			"subSessionTip.message": "開始新的平行交談，以延續此工作階段進行的所有變更。"
+		},
+		"vs/sessions/contrib/chat/browser/newChatVoice": {
+			"agentsVoice.connecting": "Connecting...",
+			"agentsVoice.disconnect": "Disconnect Voice Mode",
+			"agentsVoice.openSettings": "Voice Mode Settings",
+			"agentsVoice.pttStopInChat": "Voice Mode: Stop Recording",
+			"agentsVoice.startVoiceInChat": "Voice Mode"
 		},
 		"vs/sessions/contrib/chat/browser/newChatWidget": {
 			"newChatHeader": "New Chat",
@@ -4750,6 +4840,9 @@
 			"workspaceStorageLabel": "工作區",
 			"workspaceStorageTooltip": "將此工作儲存在目前的工作區中"
 		},
+		"vs/sessions/contrib/chat/browser/sessionChatInputToolbar": {
+			"sessions.lastTurnChanges.title": "Last Turn Changes"
+		},
 		"vs/sessions/contrib/chat/browser/sessionReferenceCompletions": {
 			"currentSessionLabel": "{0} (目前)",
 			"untitledSession": "未命名的工作階段"
@@ -4809,6 +4902,10 @@
 		"vs/sessions/contrib/chat/browser/variableCompletions": {
 			"activeFile": "使用中的檔案",
 			"fileEntryDescription": "{0} ({1})"
+		},
+		"vs/sessions/contrib/chat/browser/voiceInputDecorations": {
+			"voiceMode.clickMicHint": "Click voice mode to talk",
+			"voiceMode.pttHint": "Press {0} to talk"
 		},
 		"vs/sessions/contrib/chat/browser/webWorkspacePicker": {
 			"scopedWorkspacePicker.selectFolder": "選取資料夾..."
@@ -4911,8 +5008,10 @@
 			"permissions.learnMore": "進一步了解使用權限"
 		},
 		"vs/sessions/contrib/editor/browser/addTabActions": {
-			"newBrowserTab": "New Browser",
-			"newFileTab": "New File"
+			"newBrowserTab": "Browser",
+			"newChangesTab": "Changes",
+			"newFileTab": "Files",
+			"newSearchTab": "Search"
 		},
 		"vs/sessions/contrib/editor/browser/editor.contribution": {
 			"addFileAsContext": "Add File as Context",
@@ -4924,8 +5023,12 @@
 			"restoreMainEditorPart": "Restore Editor Area"
 		},
 		"vs/sessions/contrib/editor/browser/emptyFileEditor": {
-			"emptyFileEditor.placeholder": "Select a file or search with {0}",
-			"emptyFileEditor.quickOpenFallback": "Quick Open"
+			"emptyFileEditor.description": "Select a file from the Files view",
+			"emptyFileEditor.search": "Search Files",
+			"emptyFileEditor.searchAria": "Search Files ({0})",
+			"emptyFileEditor.searchAriaNoKeybinding": "Search Files",
+			"emptyFileEditor.searchTooltip": "Search Files ({0})",
+			"emptyFileEditor.searchTooltipNoKeybinding": "Search Files"
 		},
 		"vs/sessions/contrib/editor/browser/emptyFileEditor.contribution": {
 			"emptyFileEditor.label": "File"
@@ -4978,7 +5081,7 @@
 			"sessions.layout.autoCollapseSessionsSidebar": "控制當編輯器和側邊面板都開啟時，是否在狹窄的 [代理程式] 視窗中自動摺疊工作階段側邊欄，而在其中一個關閉時再次顯示。",
 			"sessions.layout.singlePaneDetailPanel": "Controls whether the Agents window docks the detail panel inside the editor so a single editor tab bar spans across the editor and the detail panel. Requires a window reload to take effect."
 		},
-		"vs/sessions/contrib/layout/browser/singlePaneDesktopSessionLayoutController": {
+		"vs/sessions/contrib/layout/browser/singlePane/singlePaneResponsiveSidebarStrategy": {
 			"toggleDetails": "Toggle Details"
 		},
 		"vs/sessions/contrib/localAgentHost/browser/localAgentHostSessionsProvider": {
@@ -5026,6 +5129,33 @@
 			"policyBlocked.openVSCode": "開啟 VS Code",
 			"policyBlocked.title": "代理程式已停用"
 		},
+		"vs/sessions/contrib/promptTimeline/browser/promptTimeline.contribution": {
+			"sessions.promptTimeline.enabled": "Controls whether the prompt timeline rail is shown alongside the chat transcript in the Agents window. The rail lets you scan and jump between the prompts you have sent."
+		},
+		"vs/sessions/contrib/promptTimeline/browser/promptTimelineActions": {
+			"promptTimeline.category": "Chat",
+			"promptTimeline.emptyPrompt": "(empty prompt)",
+			"promptTimeline.goToPrompt": "Go to Prompt...",
+			"promptTimeline.nFiles": "{0} files",
+			"promptTimeline.oneFile": "1 file",
+			"promptTimeline.pickPlaceholder": "Go to a prompt in this chat",
+			"promptTimeline.statDetail": "+{0} −{1} · {2}"
+		},
+		"vs/sessions/contrib/promptTimeline/browser/promptTimelineCard": {
+			"promptTimeline.groupedCount": "{0} prompts",
+			"promptTimeline.nFiles": "{0} files",
+			"promptTimeline.noEdits": "no edits",
+			"promptTimeline.oneFile": "1 file",
+			"promptTimeline.reviewChangesForPrompt": "Review Changes for Prompt: {0}"
+		},
+		"vs/sessions/contrib/promptTimeline/browser/promptTimelineModel": {
+			"promptTimeline.reviewTitle": "Changes · {0}",
+			"promptTimeline.tick": "Prompt: {0}",
+			"promptTimeline.tickGrouped": "{0} prompts starting with: {1}"
+		},
+		"vs/sessions/contrib/promptTimeline/browser/promptTimelineRulerRail": {
+			"promptTimeline.railLabel": "Prompt timeline"
+		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostAgentPicker": {
 			"agentHostAgentPicker": "代理程式"
 		},
@@ -5033,6 +5163,11 @@
 			"agentHostClaudePermissionModePicker.ariaLabel": "核准選擇器",
 			"agentHostClaudePermissionModePicker.triggerAriaLabel": "選取核准，{0}",
 			"permissions.learnMore": "進一步了解使用權限"
+		},
+		"vs/sessions/contrib/providers/agentHost/browser/agentHostCodexApprovalsPicker": {
+			"agentHostCodexApprovalsPicker.ariaLabel": "Approvals Picker",
+			"agentHostCodexApprovalsPicker.triggerAriaLabel": "Pick Approvals, {0}",
+			"codexApprovals.learnMore": "Learn more about permissions"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostModePicker": {
 			"agentHostModePicker.ariaLabel": "代理程式模式選擇器",
@@ -5052,8 +5187,10 @@
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/agentHostSessionConfigPicker": {
 			"agentHostNewSessionApprovePicker": "工作階段核准",
+			"agentHostNewSessionCodexApprovalsPicker": "Approvals",
 			"agentHostNewSessionModePicker": "代理程式模式",
 			"agentHostNewSessionPermissionModePicker": "核准",
+			"agentHostRunningSessionCodexApprovalsPicker": "Approvals",
 			"agentHostRunningSessionConfigPicker": "工作階段核准",
 			"agentHostRunningSessionModePicker": "代理程式模式",
 			"agentHostRunningSessionPermissionModePicker": "核准",
@@ -5063,6 +5200,7 @@
 			"agentHostSessionConfig.boolean.onLabel": "開啟",
 			"agentHostSessionConfig.boolean.true": "開啟",
 			"agentHostSessionConfig.filter": "篩選選項...",
+			"agentHostSessionConfig.isolation.worktree": "New Worktree",
 			"agentHostSessionConfig.triggerAria": "{0}: {1}",
 			"agentHostSessionConfig.triggerAriaReadOnly": "{0}: {1}，唯讀",
 			"agentHostSessionConfigPicker": "工作階段設定",
@@ -5100,9 +5238,6 @@
 			"agentSessionSettings.saveHint": "編輯下方的值並儲存以套用。會忽略未知或非可變動屬性。"
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/baseAgentHostSessionsProvider": {
-			"agentHost.download.megabytes": "{0} MB",
-			"agentHost.download.percent": "{0}%",
-			"agentHost.download.titleFallback": "Downloading…",
 			"copilotCLI": "Copilot",
 			"deleteChat.confirm": "確定要刪除此聊天?",
 			"deleteChat.delete": "刪除",
@@ -5111,13 +5246,14 @@
 			"new session": "新增工作階段",
 			"newChatTab": "新增聊天",
 			"noAgents": "Agent 主機尚未通告任何 Agent。",
-			"notConnectedSend": "無法傳送要求: 未連線至遠端 Agent 主機。"
+			"notConnectedSend": "無法傳送要求: 未連線至遠端 Agent 主機。",
+			"sessionNotCommitted": "Agent host session was not committed."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/exportDebugLogsAction": {
 			"exportAgentHostDebugLogs": "匯出代理程式主機偵錯記錄..."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/localAgentHost.contribution": {
-			"sessions.chat.agentHost.defaultSessionsProvider": "啟用時，本機代理程式主機做為預設工作階段提供者，其工作階段類型會先顯示在 Agent 視窗中。需要 `#{0}#`。"
+			"sessions.chat.agentHost.defaultSessionsProvider": "When enabled, the local agent host is used as the default sessions provider and its session types are shown first in the Agents window. Requires `#chat.agentHost.enabled#`."
 		},
 		"vs/sessions/contrib/providers/agentHost/browser/localAgentHostSessionsProvider": {
 			"localAgentHostLabel": "本機代理程式主機"
@@ -5185,10 +5321,8 @@
 			"sessionWorkspaceGroup.github": "GitHub"
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/isolationPicker": {
-			"isolationMode.folder": "資料夾",
-			"isolationMode.worktree": "工作樹",
-			"isolationPicker.ariaLabel": "隔離模式",
-			"isolationPicker.triggerAriaLabel": "挑選隔離模式，{0}"
+			"isolationMode.worktree": "New Worktree",
+			"isolationPicker.checkboxAriaLabel": "Worktree isolation"
 		},
 		"vs/sessions/contrib/providers/copilotChatSessions/browser/mobilePermissionPicker": {
 			"permissionPicker.title": "核准",
@@ -5539,6 +5673,18 @@
 		"vs/sessions/contrib/sessions/browser/aiCustomizationShortcutsWidget": {
 			"customizations": "自訂"
 		},
+		"vs/sessions/contrib/sessions/browser/blockedSessionsIndicatorModel": {
+			"nSessionsFailingCI": "{0} sessions are failing CI",
+			"nSessionsQuestion": "{0} sessions have questions",
+			"nSessionsRequireInput": "{0} sessions require input",
+			"nSessionsTerminalApproval": "{0} sessions require terminal approval",
+			"nSessionsUnresolvedComments": "{0} sessions have unresolved comments",
+			"oneSessionFailingCI": "1 session is failing CI",
+			"oneSessionQuestion": "1 session has a question",
+			"oneSessionRequiresInput": "1 session requires input",
+			"oneSessionTerminalApproval": "1 session requires terminal approval",
+			"oneSessionUnresolvedComments": "1 session has unresolved comments"
+		},
 		"vs/sessions/contrib/sessions/browser/blockedSessionsList": {
 			"sessionsRequiringInput": "Sessions requiring input"
 		},
@@ -5558,13 +5704,6 @@
 			"mobileOpenFileDiff": "開啟檔案差異",
 			"mobileOpenSessionChanges": "開啟工作階段變更"
 		},
-		"vs/sessions/contrib/sessions/browser/newSessionActionViewItem": {
-			"newCompact": "新增",
-			"newSessionButtonAriaLabel": "新增工作階段 ({0})",
-			"newSessionButtonAriaLabelWithoutKeybinding": "新增工作階段",
-			"newSessionButtonTitle": "新增工作階段 ({0})",
-			"newSessionButtonTitleWithoutKeybinding": "新增工作階段"
-		},
 		"vs/sessions/contrib/sessions/browser/sessionHoverContent": {
 			"agentSessions.fileChanged": "已變更 1 個檔案",
 			"agentSessions.filesChanged": "已變更 {0} 個檔案"
@@ -5573,10 +5712,11 @@
 			"agentSessions.view.label": "工作階段",
 			"agentSessionsViewIcon": "代理程式工作階段檢視的圖示",
 			"miSessions": "工作階段(&S)",
-			"sessions.list.showEmptyDefaultGroups": "Controls whether the default groups (Pinned, Chats) are shown in the sessions list even when they are empty."
+			"sessions.list.showEmptyDefaultGroups": "Controls whether the Chats group is shown in the sessions list even when it is empty."
 		},
 		"vs/sessions/contrib/sessions/browser/sessionsActions": {
 			"chatCompositeBar.addChat": "新增聊天",
+			"chatCompositeBar.addChat.compact": "New Chat",
 			"chatCompositeBar.close": "關閉",
 			"chatCompositeBar.conversations": "交談",
 			"chatCompositeBar.maximize": "最大化工作階段",
@@ -5599,7 +5739,16 @@
 			"miSessionsForward": "轉寄(&&F)",
 			"navigateNextChat": "Go to Next Chat",
 			"navigatePreviousChat": "Go to Previous Chat",
+			"newChatButtonAriaLabel": "New Chat ({0})",
+			"newChatButtonAriaLabelWithoutKeybinding": "New Chat",
+			"newChatButtonTitle": "New Chat ({0})",
+			"newChatButtonTitleWithoutKeybinding": "New Chat",
+			"newCompact": "New",
 			"newSession": "新增工作階段",
+			"newSessionButtonAriaLabel": "New Session ({0})",
+			"newSessionButtonAriaLabelWithoutKeybinding": "New Session",
+			"newSessionButtonTitle": "New Session ({0})",
+			"newSessionButtonTitleWithoutKeybinding": "New Session",
 			"openChatsGroup": "Open",
 			"otherSessions": "其他工作階段",
 			"quickSwitchNextChat": "Quick Switch to Next Chat",
@@ -5620,17 +5769,7 @@
 			"agentSessionsControl": "代理程式工作階段",
 			"agentSessionsShowSessions": "顯示工作階段",
 			"nSessionsApproved": "Approved {0} sessions",
-			"nSessionsFailingCI": "{0} sessions are failing CI",
-			"nSessionsQuestion": "{0} sessions have questions",
-			"nSessionsRequireInput": "{0} sessions require input",
-			"nSessionsTerminalApproval": "{0} sessions require terminal approval",
-			"nSessionsUnresolvedComments": "{0} sessions have unresolved comments",
 			"oneSessionApproved": "Approved 1 session",
-			"oneSessionFailingCI": "1 session is failing CI",
-			"oneSessionQuestion": "1 session has a question",
-			"oneSessionRequiresInput": "1 session requires input",
-			"oneSessionTerminalApproval": "1 session requires terminal approval",
-			"oneSessionUnresolvedComments": "1 session has unresolved comments",
 			"showAllSessions": "Show All Sessions",
 			"showSessions": "顯示工作階段"
 		},
@@ -5647,8 +5786,8 @@
 			"needsInput": "需要輸入",
 			"newGroupName": "新群組",
 			"noChats": "No chats",
-			"noPinnedSessions": "No pinned sessions",
 			"older": "更早",
+			"pendingVoiceResponse": "Voice response ready",
 			"pinned": "已釘選",
 			"recent": "Recent",
 			"removeFromGroupAction": "從群組移除",
@@ -5718,7 +5857,6 @@
 			"groupByWorkspace": "依工作區群組",
 			"markAllInGroupAsDone": "全部標記為 [已完成]",
 			"markAllRead": "全部標示為讀取",
-			"markAsDone": "標示為已完成",
 			"markRead": "標記為已讀取",
 			"markUnread": "標示為未讀取",
 			"navigateNextSession": "前往下一個工作階段",
@@ -6589,6 +6727,7 @@
 			"filteredTypes.typeParameter": "啟用時，階層連結顯示「typeParameter」符號。",
 			"filteredTypes.variable": "啟用時，階層連結顯示「變數」符號。",
 			"icons": "使用圖示轉譯階層連結項目。",
+			"showEditorType": "Controls whether the breadcrumbs bar shows a dropdown to switch between the editors that can open the current file (for example the text editor and a custom editor). The dropdown only appears when a more specialized editor is available.",
 			"symbolPathSeparator": "複製階層連結符號路徑時所使用的分隔符號。",
 			"symbolSortOrder": "控制符號在階層連結大綱檢視中如何排序。",
 			"symbolSortOrder.name": "依字母順序顯示符號大綱。",
@@ -6611,6 +6750,7 @@
 			"cmd.toggle": "切換軌跡",
 			"cmd.toggle.short": "階層連結",
 			"cmd.toggle2": "階層連結",
+			"editorType.hover": "Editor: {0}",
 			"empty": "沒有任何元素",
 			"miBreadcrumbs2": "階層連結(&&B)",
 			"separatorIcon": "階層連結中分隔符號的圖示。"
@@ -6943,7 +7083,8 @@
 			"groupAriaLabelLong": "{0}: 編輯器群組 {1}",
 			"groupLabel": "群組 {0}",
 			"groupLabelLong": "{0}: 群組 {1}",
-			"moveErrorDetails": "請先嘗試儲存或還原編輯器，然後重試。"
+			"moveErrorDetails": "請先嘗試儲存或還原編輯器，然後重試。",
+			"reopenWith": "Reopen Editor With"
 		},
 		"vs/workbench/browser/parts/editor/editorGroupWatermark": {
 			"watermark.findInFiles": "在檔案中尋找",
@@ -7051,6 +7192,15 @@
 			"ariaLabelEditorActions": "編輯器動作",
 			"ariaLabelEditorActionsLayout": "編輯器版面配置動作",
 			"draggedEditorGroup": "{0} (+{1})"
+		},
+		"vs/workbench/browser/parts/editor/editorTypePicker": {
+			"builtinProviderDisplayName": "Built-in",
+			"editorType.labelWithSource": "{0} - {1}",
+			"editorType.openModified": "Open Modified",
+			"editorType.openOriginal": "Open Original",
+			"editorType.setDefault": "Set Default for '{0}'",
+			"editorType.setDefaultDiff": "Set Default (Diff Only) for '{0}'",
+			"textDiffEditor": "Text Diff Editor"
 		},
 		"vs/workbench/browser/parts/editor/modalEditorPart": {
 			"modalEditorPart": "模型編輯器區域",
@@ -8337,14 +8487,22 @@
 			"workbench.accounts.showEntitlements": "When enabled, available entitlements for the account will be shown in the accounts menu."
 		},
 		"vs/workbench/contrib/agentsVoice/browser/agentsVoice.contribution": {
-			"agents.voice.autoSendDelay": "在切換式語音模式 (短按) 中，當靜音達指定毫秒數後，會自動結束錄音。設定為 -1 以停用。",
 			"agents.voice.backendUrl": "語音後端 WebSocket URL。保留空白以使用預設託管後端。例如，設定為 `ws://localhost:8000/api/v1/realtime/voice` 以指向在您電腦上執行的後端。",
 			"agents.voice.enabled": "針對語音驅動的編碼交談，在聊天檢視中啟用 [語音模式] 面板。",
-			"agents.voice.sendKeyword": "在切換模式下，當使用者於語句結尾說出關鍵字語句 (例如「傳送」) 時，系統會立即傳送該要求。該關鍵字不會包含在傳送的訊息中。保留空白以停用。",
-			"agents.voice.showTranscript": "當語音模式為使用中時，在聊天輸入區域中顯示語音文字記錄覆疊。",
-			"agents.voice.textToSpeech": "啟用時，助理會大聲朗讀回應。停用時，回應只會顯示為文字記錄。",
+			"agents.voice.handsFree": "When enabled, voice mode automatically re-enters listening after the assistant finishes speaking, so you can hold a hands-free back-and-forth conversation. When disabled, you start each turn manually. This controls only the auto-listen loop; how a turn ends is controlled by {0} and {1}.",
+			"agents.voice.showTranscript": "Show the voice transcript overlay in the chat input area while voice mode is active. Enable this to read responses as text when `#agents.voice.speakResponses#` is disabled.",
+			"agents.voice.speakResponses": "When enabled, the assistant reads responses aloud. When disabled, responses are not spoken; enable `#agents.voice.showTranscript#` to read them as a text transcript instead.",
+			"agents.voice.turn.silenceMs": "Trailing silence in milliseconds before the backend ends the turn automatically. Set to `-1` to disable ending the turn on silence, in which case the turn ends only via a stop phrase ({0}) or manually. When enabled, the backend clamps this to its supported range (currently 200-5000 ms) and is the source of truth.",
+			"agents.voice.turn.silenceMs.disabled": "Do not end the turn on trailing silence.",
+			"agents.voice.turn.stopPhrases": "Phrases that end the turn when spoken at the end of an utterance. Leave empty to disable ending the turn on a stop phrase, in which case the turn ends only on trailing silence ({0}) or manually. The backend strips the matched phrase from the transcript before it reaches the agent.",
+			"agents.voice.voice": "The voice used when the assistant reads responses aloud. Changing this while voice mode is connected takes effect immediately.",
+			"agents.voice.voice.daniel": "Daniel.",
+			"agents.voice.voice.kevin": "Kevin.",
+			"agents.voice.voice.maya": "Maya.",
+			"agents.voice.voice.victoria": "Victoria.",
 			"agentsVoice.connecting": "正在連線...",
 			"agentsVoice.disconnect": "中斷語音模式",
+			"agentsVoice.openSettings": "Voice Mode Settings",
 			"agentsVoice.pttStopInChat": "語音模式: 停止錄製",
 			"agentsVoice.selectMicrophone": "語音: 選取麥克風",
 			"agentsVoice.simulateConnection": "語音: 模擬連線 (開發)",
@@ -9217,6 +9375,7 @@
 			"interactive.copyItem.status": "已複製到剪貼簿"
 		},
 		"vs/workbench/contrib/chat/browser/actions/chatDeveloperActions": {
+			"workbench.action.chat.agentHostNetworkDiagnostics.label": "Network Diagnostics",
 			"workbench.action.chat.clearRecentlyUsedLanguageModels.label": "清除最近使用的語言模型",
 			"workbench.action.chat.inspectAgentHostSubscriptions.label": "檢查代理程式主機訂用帳戶",
 			"workbench.action.chat.inspectChatModel.label": "檢查聊天模型",
@@ -9246,7 +9405,6 @@
 			"interactive.cancel.label": "取消",
 			"interactive.cancelEdit.label": "取消編輯",
 			"interactive.changeModel.label": "變更模型",
-			"interactive.openAutomationsWorkspacePicker.label": "Open Automations Workspace Picker",
 			"interactive.openChatSessionPrimaryPicker.label": "開啟主要工作階段選擇器",
 			"interactive.openDelegationPicker.label": "開啟委派選擇器",
 			"interactive.openModePicker.label": "開啟代理程式選擇器",
@@ -9259,7 +9417,6 @@
 			"interactive.switchToNextModel.label": "切換到下一個模型",
 			"interactive.switchToNextPinnedModel.label": "切換至下一個已釘選模型",
 			"interactive.toggleAgent.label": "切換到下一個代理程式",
-			"selectAutomationsWorkspace": "Select Workspace Folder",
 			"selectWorkspace": "選取目標工作區",
 			"sendToAgent": "傳送給代理程式",
 			"setChatMode": "設定代理程式",
@@ -9544,6 +9701,11 @@
 			"agentHost.modePicker": "Agent 模式",
 			"agentHost.permissionModePicker": "核准"
 		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostDownloadProgress": {
+			"agentHost.download.megabytes": "{0} MB",
+			"agentHost.download.percent": "{0}%",
+			"agentHost.download.titleFallback": "Downloading"
+		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostFolderPickerActionItem": {
 			"agentHost.selectFolder": "資料夾"
 		},
@@ -9566,11 +9728,38 @@
 			"agentHost.elicit.url.open": "開啟 {0}",
 			"agentHost.elicit.url.title": "需要授權",
 			"agentHost.forkedSessionLabel": "分支工作階段",
+			"agentHost.preparingSession": "Preparing session…",
+			"agentHost.sessionLoadFailed": "This session couldn't be loaded.",
+			"agentHost.sessionLoadFailedLabel": "Couldn't open session",
 			"agentHost.turnError": "錯誤: ({0}) {1}",
 			"agentHost.workspaceTrust": "AI 功能目前僅在受信任的工作區中受到支援。"
 		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSettings.contribution": {
+			"agentHostSettings.label": "Host Settings",
+			"openAgentHostSettings": "Open Host Settings"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostSettingsFileSystemProvider": {
+			"agentHostSettings.header": "Agent host settings.",
+			"agentHostSettings.notObject": "Agent host settings must be a JSON object.",
+			"agentHostSettings.parseError": "Failed to parse agent host settings as JSON.",
+			"agentHostSettings.saveHint": "Edit values below and save to apply. Unknown properties are ignored."
+		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostTerminalContribution": {
 			"agentHostTerminal.local": "本機"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentSessionSettings.contribution": {
+			"agentSessionSettings.label": "Session Settings",
+			"openAgentSessionSettings": "Open Session Settings"
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentSessionSettingsFileSystemProvider": {
+			"chatAgentSessionSettings.header": "Session settings for this agent host session.",
+			"chatAgentSessionSettings.notObject": "Agent session settings must be a JSON object.",
+			"chatAgentSessionSettings.parseError": "Failed to parse agent session settings as JSON.",
+			"chatAgentSessionSettings.saveHint": "Edit values below and save to apply. Unknown or non-mutable properties are ignored."
+		},
+		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/importLocalConversationToAgentSession": {
+			"chat.importConversation.subagent": "Subagent",
+			"chat.importConversation.toolFailed": "Tool failed."
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentHost/stateToProgressAdapter": {
 			"agentFeedback.many": "{0} 則註解",
@@ -9580,7 +9769,16 @@
 			"agentFeedback.reviewTitle": "顯示未檢閱的註解?",
 			"agentHost.responseDetails.credit": "{0} 點點數",
 			"agentHost.responseDetails.credits": "{0} 點點數",
-			"agentHost.responseDetails.resolvedModel": "{0} ({1})"
+			"agentHost.responseDetails.resolvedModel": "{0} ({1})",
+			"contextAttribution.category.system": "System",
+			"contextAttribution.category.userContext": "User Context",
+			"contextAttribution.label.mcpTools": "MCP Tools",
+			"contextAttribution.label.messages": "Messages",
+			"contextAttribution.label.plugins": "Plugins",
+			"contextAttribution.label.skills": "Skills",
+			"contextAttribution.label.subAgents": "Sub-agents",
+			"contextAttribution.label.toolDefinitions": "Tool Definitions",
+			"contextAttribution.label.toolResults": "Tool Results"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/agentSessionHoverWidget": {
 			"agentSessionCompleted": "已完成",
@@ -9733,6 +9931,7 @@
 			"date.fromNow.days.multiple.ago": "2 天前",
 			"date.fromNow.days.singular": "1 天",
 			"date.fromNow.days.singular.ago": "1 天前",
+			"pendingVoiceResponse": "Voice response ready",
 			"secondsDuration": "現在"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionProjection": {
@@ -9810,12 +10009,6 @@
 			"showAgentSessionsQuickAccess": "顯示代理程式工作階段",
 			"showCommandsQuickAccess": "顯示命令 (統一)",
 			"showFilesQuickAccess": "顯示檔案 (統一)"
-		},
-		"vs/workbench/contrib/chat/browser/agentSessions/localAgentDisabledInputTipContribution": {
-			"chat.localAgentDisabled.continueInAgentHostCopilot.action": "在代理程式主機中繼續",
-			"chat.localAgentDisabled.continueInAgentHostCopilot.description": "您可以將本機載入器歷程記錄帶入與代理程式主機的新聊天中。若要改為持續使用本機載入器並隱藏此通知，請將 \"chat.editor.localAgent.enabled\" 設定為 true。",
-			"chat.localAgentDisabled.continueInAgentHostCopilot.message": "繼續使用代理程式主機。",
-			"chat.localAgentDisabled.continueInAgentHostCopilot.mute": "不要再顯示"
 		},
 		"vs/workbench/contrib/chat/browser/agentSessions/sessionTypeAvailability": {
 			"chat.sessionType.noModels": "沒有可用的模型",
@@ -9996,6 +10189,8 @@
 			"backToOverviewTooltip": "返回概觀",
 			"backToPluginList": "返回外掛程式",
 			"backToPluginListTooltip": "返回外掛程式",
+			"backToPromptMigration": "Back to Migrate Prompt Files",
+			"backToPromptMigrationTooltip": "Back to Migrate Prompt Files",
 			"backToToolsList": "返回工具",
 			"backToToolsListTooltip": "返回工具",
 			"cancelSaveTarget": "取消",
@@ -10015,9 +10210,14 @@
 			"instructions": "指示",
 			"instructionsDesc": "設定可引導您工作區或使用者設定檔 AI 行為的一律開啟指示。",
 			"learnMoreModels": "深入了解語言模型",
+			"learnMoreSkills": "Learn more about agent skills",
 			"localHarnessLabel": "本機",
 			"mcpServers": "MCP 伺服器",
 			"mcpServersDesc": "使用自訂工具和資料來源連線可延伸 AI 功能的外部工具伺服器。",
+			"migrationShortcutAriaLabel": "Migrate prompt files to skills",
+			"migrationShortcutAriaLabelWithCount": "Prompts, {0} deprecated prompt files need migration",
+			"migrationShortcutLabel": "Migrate Prompts",
+			"migrationShortcutTooltip": "Convert deprecated prompt files to skills",
 			"models": "模型",
 			"modelsDesc": "設定及管理可用的語言模型。",
 			"modelsDescription": "瀏覽並管理不同提供者的語言模型。選取用於聊天、程式碼完成及其他 AI 功能中的模型。",
@@ -10029,6 +10229,34 @@
 			"previewNoBody": "此檔案中找不到 Markdown 本文。",
 			"previewNoFrontMatter": "此檔案中找不到中繼資料。",
 			"previewUnknownFieldDescription": "自訂中繼資料欄位 `{0}`。",
+			"promptMigrationConfirmButton": "Convert to Skills",
+			"promptMigrationConfirmDetailUser": "This converts {0} user prompt files into skills for the active harness.",
+			"promptMigrationConfirmDetailWorkspace": "This converts {0} workspace prompt files into skills for the active harness.",
+			"promptMigrationConfirmDetailWorkspaceAndUser": "This converts {0} workspace prompt files and {1} user prompt files into skills for the active harness.",
+			"promptMigrationConfirmMessage": "Convert prompt files to skills?",
+			"promptMigrationConverted": "Converted {0} prompt files to skills.",
+			"promptMigrationConvertedWithReview": "Converted {0} prompt files to skills. Review migrated skills that used unsupported prompt headers: {1}.",
+			"promptMigrationDeletePromptFilesCheckbox": "Delete original prompt files after migration",
+			"promptMigrationFilesFailed": "Failed to migrate {0} prompt files: {1}.",
+			"promptMigrationFilesFailedWithRemainder": "Failed to migrate {0} prompt files: {1}, and {2} more.",
+			"promptMigrationNoFilesConverted": "No prompt files were converted.",
+			"promptMigrationNoSkillFolders": "No skill folders are configured for the active harness.",
+			"promptMigrationPageButton": "Migrate",
+			"promptMigrationPageButtonTooltip": "Convert selected prompt files to skills",
+			"promptMigrationPageButtonWithCount": "Migrate ({0})",
+			"promptMigrationPageDescription": "Select prompt files to convert into skills for the active harness.",
+			"promptMigrationPageDescriptionUser": "Prompt files are not supported for this harness. Found {0} user prompt files that local VS Code can still run, but {1} ignores. Convert them to skills to keep them available.",
+			"promptMigrationPageDescriptionWorkspace": "Prompt files are not supported for this harness. Found {0} workspace prompt files that local VS Code can still run, but {1} ignores. Convert them to skills to keep them available.",
+			"promptMigrationPageDescriptionWorkspaceAndUser": "Prompt files are not supported for this harness. Found {0} prompt files ({1} workspace, {2} user) that local VS Code can still run, but {3} ignores. Convert them to skills to keep them available.",
+			"promptMigrationPageEmpty": "No prompt files are available to migrate.",
+			"promptMigrationPageTitle": "Migrate Prompt Files",
+			"promptMigrationPickWorkspaceSkillFolder": "Select a workspace skill folder for migrated prompts",
+			"promptMigrationSearchEmpty": "No prompt files match your search.",
+			"promptMigrationSearchPlaceholder": "Type to search...",
+			"promptMigrationSelectAriaLabel": "Select {0}",
+			"promptMigrationSelectGroupAriaLabel": "Select all {0} prompt files",
+			"promptMigrationUserGroup": "User",
+			"promptMigrationWorkspaceGroup": "Workspace",
 			"prompts": "提示",
 			"promptsDesc": "可重複使用的提示範本，可透過斜線命令叫用。",
 			"saveBuiltinCopyAndChooseLocation": "儲存覆寫",
@@ -10040,7 +10268,6 @@
 			"saved": "已儲存",
 			"sectionAriaLabelWithCount": "{0}，{1} 個項目",
 			"sectionsAriaLabel": "代理程式自訂區段",
-			"selectTargetDirectory": "選取目錄以存放新的自訂檔案",
 			"skills": "技能",
 			"skillsDesc": "建立可提供網域特定知識與工作流程的可重複使用的技能檔案。",
 			"tools": "工具",
@@ -10057,6 +10284,8 @@
 			"agentsDesc": "使用特殊角色、工具存取和特定工作的指示來定義自訂代理程式。",
 			"browse": "瀏覽...",
 			"browseCategoryAriaLabel": "瀏覽 {0}...",
+			"convertPromptFilesAriaLabel": "Convert prompt files to skills",
+			"convertToSkills": "Convert to Skills...",
 			"gettingStartedDesc": "描述您的喜好設定和慣例來草擬代理程式、技能和指示。",
 			"gettingStartedTitle": "自訂您的代理程式",
 			"hooks": "勾點",
@@ -10065,10 +10294,14 @@
 			"instructionsDesc": "設定可引導您工作區或使用者設定檔 AI 行為的一律開啟指示。",
 			"mcpServers": "MCP 伺服器",
 			"mcpServersDesc": "使用自訂工具和資料來源連線可延伸 AI 功能的外部工具伺服器。",
+			"migratePromptFiles": "Migrate",
 			"new": "新增...",
 			"newCategoryAriaLabel": "新增 {0}...",
 			"plugins": "外掛程式",
 			"pluginsDesc": "安裝和管理可新增其他工具、技能和整合的代理程式外掛程式。",
+			"promptMigrationCardDescriptionUser": "Prompt files are deprecated for this harness. Found {0} global prompt files that local VS Code can still run, but {1} ignores. Convert them to skills to keep them available.",
+			"promptMigrationCardDescriptionWorkspace": "Prompt files are deprecated for this harness. Found {0} workspace prompt files that local VS Code can still run, but {1} ignores. Convert them to skills to keep them available.",
+			"promptMigrationCardDescriptionWorkspaceAndUser": "Prompt files are deprecated for this harness. Found {0} prompt files ({1} workspace, {2} global) that local VS Code can still run, but {3} ignores. Convert them to skills to keep them available.",
 			"sentToChat": "已傳送至聊天 ✓",
 			"skills": "技能",
 			"skillsDesc": "建立可提供網域特定知識與工作流程的可重複使用的技能檔案。",
@@ -10196,7 +10429,11 @@
 		"vs/workbench/contrib/chat/browser/aiCustomization/mcpListWidget": {
 			"activeSessionGroup": "使用中工作階段",
 			"activeSessionGroupDescription": "使用中工作階段報告的 MCP 伺服器。",
+			"activeSessionMcpServerDisable": "Disable Server",
+			"activeSessionMcpServerEnable": "Enable Server",
 			"activeSessionMcpServerOptions": "伺服器選項",
+			"activeSessionMcpServerStart": "Start Server",
+			"activeSessionMcpServerStop": "Stop Server",
 			"addMcpServer": "新增 MCP 伺服器設定以開始使用",
 			"addServer": "新增伺服器",
 			"addServerTooltip": "新增伺服器",
@@ -10458,9 +10695,14 @@
 			"chat.agent.thinkingMode.collapsedPreview": "思考部分將首先展開，當我們到達非思考部分時便會摺疊。",
 			"chat.agent.thinkingMode.fixedScrolling": "在固定高度且會自動捲動的串流面板中顯示思考內容: 按一下標題以展開至完整高度。",
 			"chat.agent.thinkingStyle": "控制思考的呈現方式。",
+			"chat.agentHost.agentDebugLog.enabled": "Enable agent debug logging for agent host sessions: surface their debug events in the agent debug panel. Takes effect immediately; only sessions that run while this is enabled are captured.",
+			"chat.agentHost.agentDebugLog.maxEventsInMemory": "Maximum number of debug events kept in memory per agent host session for the agent debug panel. Older events beyond this limit are dropped from the in-memory buffer, which also lowers the totals (such as token usage) shown in the panel overview.",
 			"chat.agentHost.ahpJsonlLogging": "啟用時，會將代理程式主機連線的所有 AHP 傳輸訊息記錄到視窗的記錄目錄下的 JSONL 檔案。",
 			"chat.agentHost.customTerminalTool.enabled": "啟用後，Copilot SDK 工作階段會使用 Agent 主機終端工具覆寫，而非 SDK 的預設終端行為。",
+			"chat.agentHost.modelCapabilityOverrides": "Per-model capability overrides for Copilot SDK agent sessions, keyed by model id, intended for evaluating preview models against an existing model's profile. For each model id, declare an aliased `family` (for example `claude-opus-4-8`) to route the model to that family's tuned system prompt without a code change; the model id sent to the runtime is unaffected. Only affects Copilot CLI agent sessions.\r\n\r\n**Note**: This is an advanced setting for experimentation.",
+			"chat.agentHost.modelCapabilityOverrides.family": "Alias the model's family for prompt/capability routing (e.g. `claude-opus-4-8`).",
 			"chat.agentHost.opus48Prompt.enabled": "啟用時，執行 Claude Opus 4.8 模型的 Copilot SDK 工作階段會在預設系統訊息之上，套用 Opus 4.8 調整的系統提示區段覆寫。",
+			"chat.agentHost.reasoningEffortOverride": "Overrides the reasoning effort for Copilot SDK agent sessions regardless of the per-model picker value. Set it to a level the selected model supports (for example `low`, `medium`, `high`, or `xhigh`) — choosing a level the model does not support may be rejected by the model. A value that isn't a recognized effort level is ignored and the session falls back to the picker value. Applied when a session is created and when its model changes. Only affects Copilot CLI agent sessions.\r\n\r\n**Note**: This is an advanced setting for experimentation.",
 			"chat.agentHost.sdkSandbox.enabled": "Copilot SDK 內建殼層工具的沙箱模式。只有當 `#chat.agentHost.customTerminalTool.enabled#` 為 `false` 時，才會生效; 啟用 Agent 主機自己的終端工具時，引擎沙箱會由 `#chat.agent.sandbox.enabled#` 控制。沙箱只適用於使用預設核准執行的要求，略過核准時不適用，並且目前尚不支援 Windows。",
 			"chat.agentHost.sdkSandbox.enabled.allowNetwork": "SDK 的內建殼層工具在沙箱內執行，具有不受限的輸出網路存取權。",
 			"chat.agentHost.sdkSandbox.enabled.off": "未針對 SDK 的內建殼層工具轉送沙箱原則 — 命令不會在沙箱內執行。",
@@ -10470,7 +10712,7 @@
 			"chat.agentSkillsLocations.description": "指定可用於聊天工作階段的代理程式技能 (`{0}`) 位置。[深入了解]({1})。\r\n\r\n每個路徑應包含帶有 SKILL.md 檔案的技能子資料夾 (例如，若您有 `my-skills/skillA/SKILL.md`，請新增 `my-skills`)。相對路徑會從工作區的根目錄解析。",
 			"chat.agentSkillsLocations.invalidPath": "路徑必須為相對路徑或以 '~/ ' 開頭。不支援絕對路徑及 '\\' 分隔符號。",
 			"chat.agentSkillsLocations.title": "代理程式技能位置",
-			"chat.agents.claude.preferAgentHost": "啟用後，從 Agent 視窗開啟的 Claude 工作階段會在 Agent 主機處理序內執行，而不是在 GitHub Copilot Chat 延伸模組。每個視窗只有一個 Claude 實作介面。需要 `#{0}#`。",
+			"chat.agents.claude.preferAgentHost": "When enabled, Claude sessions opened from the Agents Window run inside the agent host process instead of the GitHub Copilot Chat extension. Only one Claude implementation surfaces per window. Requires `#chat.agentHost.enabled#`.",
 			"chat.agents.config.locations.description": "指定自訂代理程式檔案的位置 (`*{0}`)。[深入了解]({1})。\r\n\r\n相對路徑會從工作區的根目錄解析。",
 			"chat.agents.config.locations.title": "代理程式檔案位置",
 			"chat.agentsControl.badge": "將 Agent 狀態顯示為命令中心旁的徽章。",
@@ -10507,6 +10749,7 @@
 			"chat.checkpoints.showFileChanges": "控制是否顯示聊天檢查點檔案變更。",
 			"chat.codeBlock.showProgressAnimation.description": "套用編輯時，在程式碼區塊膠囊中顯示進度動畫。若停用，則顯示進度百分比。",
 			"chat.contextUsage.enabled": "在聊天輸入中顯示上下文視窗使用方式指示器。",
+			"chat.customizations.promptMigration.enabled": "Controls whether the Chat Customizations editor shows the prompt file migration affordances for agent-host harnesses. When disabled, the migration card and sidebar shortcut are hidden.",
 			"chat.customizations.structuredPreview.enabled": "控制 Chat 自訂設定編輯器是否顯示 Markdown 自訂檔案 (代理程式、技能、指示、提示) 的結構化預覽。停用時，編輯器一律會在內嵌程式碼編輯器中開啟原始 Markdown。",
 			"chat.defaultConfiguration.approvals.autoApprove": "略過核准 — 所有工具呼叫都會自動核准。",
 			"chat.defaultConfiguration.approvals.default": "預設核准 — Copilot 會使用您的設定。",
@@ -10553,7 +10796,6 @@
 			"chat.extensionUnification.enabled": "啟用 GitHub Copilot 擴充的統一。啟用時，所有 GitHub Copilot 功能都是從 GitHub Copilot Chat 擴充提供。停用時，GitHub Copilot 和 GitHub Copilot Chat 擴充會獨立運作。",
 			"chat.fontFamily": "控制聊天訊息中的字型系列。",
 			"chat.fontSize": "控制聊天訊息中的字型大小 (像素)。",
-			"chat.generalPurposeAgent.enabled": "控制內建通用代理程式是否可作為子代理程式使用。",
 			"chat.growthNotification": "控制是否在代理程式工作階段檢視中顯示成長通知，以鼓勵新使用者嘗試 Copilot。",
 			"chat.hookFilesLocations.description": "指定勾點組態檔的路徑，這些組態檔會定義自訂殼層命令，以在代理程式的工作流程中的策略點執行。[深入了解]({0})。\r\n\r\n相對路徑會從工作區的根目錄解析。支援 Copilot 勾點 (`*.json`) 和 Claude Code 勾點 (`settings.json`、 `settings.local.json`)。",
 			"chat.hookFilesLocations.invalidPath": "路徑必須為相對路徑或以 '~/ ' 開頭。不支援絕對路徑及 '\\' 分隔符號。",
@@ -10618,7 +10860,7 @@
 			"chat.planReview.inlineEditor.enabled": "啟用時，計劃檢閱小工具會將編輯器內嵌載入，而不是開啟在獨立的編輯器索引標籤中。",
 			"chat.pluginLocations": "要探索的外掛程式目錄。每個金鑰都是直接指向外掛程式資料夾的路徑，而值則用於啟用 (`true`) 或停用 (`false`) 該路徑。路徑可以是絕對路徑、相對於工作區根目錄的路徑，或以 `~/` 開頭的使用者主目錄。",
 			"chat.plugins.enabled": "在聊天中啟用 Agent 外掛程式整合。",
-			"chat.plugins.enabledPlugins": "控制啟用或停用哪些 [代理程式外掛程式](https://aka.ms/vscode-agent-plugins)。索引鍵是 `<plugin>@<marketplace>` 形式的外掛程式識別碼 (其中市集定義於 {1} 中); 其值會啟用 (`true`) 或停用 (`false`) 外掛程式。與 {0} 中以路徑為索引鍵的項目一起探索。依原則設定時，只允許載入此處對應至 `true` 的外掛程式。",
+			"chat.plugins.enabledPlugins": "Controls which [agent plugins](https://aka.ms/vscode-agent-plugins) are enabled or disabled. Keys are plugin IDs in `<plugin>@<marketplace>` form (where marketplace is defined in {1}); values enable (`true`) or disable (`false`) the plugin. Discovered alongside the path-keyed entries in {0}. When set by policy, entries are additive: plugins mapped to `true` are enabled in addition to the user's own plugins, and only plugins mapped to `false` are blocked from loading.",
 			"chat.plugins.enabledPlugins.policy": "外掛程式啟用。索引鍵是 `{plugin}@{marketplace}` 格式的外掛程式識別碼; 值會啟用或停用外掛程式。",
 			"chat.plugins.extraMarketplaces": "企業管理的額外外掛程式市集。與 {0} 聯集。",
 			"chat.plugins.extraMarketplaces.policy": "要查詢的額外外掛程式市集。索引鍵是市集名稱; 值為 GitHub 速記 (`owner/repo[#ref]`) 或 Git URI (`{url}[#ref]`)。",
@@ -10655,6 +10897,7 @@
 			"chat.tools.terminal.simpleCollapsible": "啟用時，終端機工具呼叫會一律顯示在可摺疊的容器中，並具有簡易檢視。",
 			"chat.tools.todos.showWidget": "控制是否在聊天輸入上方顯示待辦清單 Widget。啟用時，Widget 會顯示代理程式所建立的待辦清單項目，並隨著進度更新。",
 			"chat.turnStatusPills": "Controls which agent turn status pills are shown above the chat input while a turn is in progress and inside the completed response. Only applies to agent sessions.",
+			"chat.turnStatusPills.browser": "Show a \"Live Browser\" pill to open the integrated browser at the last URL a browser tool opened in the turn.",
 			"chat.turnStatusPills.changes": "Show a pill summarizing the files changed and the lines added and removed in the turn.",
 			"chat.turnStatusPills.preview": "Show a pill to preview a Markdown or HTML file created or edited in the turn.",
 			"chat.undoRequests.restoreInput": "控制是否應在提出復原要求時還原聊天的輸入。輸入將會填入已還原要求的文字。",
@@ -10705,14 +10948,66 @@
 			"mcp.list": "列出伺服器"
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/agentHostChatDebugProvider": {
+			"agentHost.debug.aborted": "Aborted",
+			"agentHost.debug.agentDiscovery": "Agent Discovery",
+			"agentHost.debug.compaction": "Context Compaction",
+			"agentHost.debug.compactionFailed": "Context Compaction Failed",
+			"agentHost.debug.compactionTokens": "system={0}, conversation={1}, tools={2} tokens",
+			"agentHost.debug.customizationDisabled": "disabled",
+			"agentHost.debug.customizationDiscovery": "Customization Discovery",
+			"agentHost.debug.customizationLoaded": "{0} loaded",
+			"agentHost.debug.customizationLoadedSkipped": "{0} loaded, {1} disabled",
+			"agentHost.debug.customizationsResolved": "Resolve Customizations",
+			"agentHost.debug.customizationsResolvedDetails": "{0} skills, {1} agents, {2} hooks, {3} instructions",
 			"agentHost.debug.fullPrompt": "完整提示",
+			"agentHost.debug.hookDiscovery": "Hook Discovery",
+			"agentHost.debug.hookError": "Error Occurred",
+			"agentHost.debug.hookErrorContext": "Error During {0}",
+			"agentHost.debug.hookFailed": "Hook Failed: {0}",
+			"agentHost.debug.hookRan": "Hook: {0}",
+			"agentHost.debug.hookRecoverable": "Recoverable; retrying",
+			"agentHost.debug.hookUnrecoverable": "Unrecoverable",
+			"agentHost.debug.mcpDiscovery": "MCP Server Discovery",
+			"agentHost.debug.modelChangeEffort": "{0} (reasoningEffort={1})",
+			"agentHost.debug.modelChangeFromTo": "{0} → {1}",
+			"agentHost.debug.modelChanged": "Model Changed",
+			"agentHost.debug.permissionIntention": "intention: {0}",
+			"agentHost.debug.permissionKind": "kind: {0}",
+			"agentHost.debug.permissionPath": "path: {0}",
+			"agentHost.debug.permissionPending": "Awaiting Permission: {0}",
+			"agentHost.debug.permissionPendingValue": "pending",
+			"agentHost.debug.permissionResolved": "Permission {0}: {1}",
+			"agentHost.debug.permissionResult": "result: {0}",
+			"agentHost.debug.promptDiscovery": "Prompt Discovery",
 			"agentHost.debug.reasoning": "正在推理",
 			"agentHost.debug.response": "回應",
+			"agentHost.debug.ruleDiscovery": "Instructions Discovery",
+			"agentHost.debug.sessionCliVersion": "CLI {0}",
+			"agentHost.debug.sessionError": "Error",
+			"agentHost.debug.sessionErrorTyped": "Error ({0})",
+			"agentHost.debug.sessionRepoBranch": "{0}@{1}",
 			"agentHost.debug.sessionStarted": "工作階段已啟動",
 			"agentHost.debug.sessionStartedDetails": "model={0}, reasoningEffort={1}",
 			"agentHost.debug.sessionStartedModel": "模型={0}",
+			"agentHost.debug.sessionWarning": "Warning",
+			"agentHost.debug.sessionWarningTyped": "Warning ({0})",
+			"agentHost.debug.skillDiscovery": "Skill Discovery",
+			"agentHost.debug.skillInvoked": "Skill Invoked: {0}",
+			"agentHost.debug.subagentModel": "model: {0}",
+			"agentHost.debug.subagentName": "agent: {0}",
+			"agentHost.debug.subagentTokens": "tokens: {0}",
+			"agentHost.debug.subagentToolCalls": "tool calls: {0}",
+			"agentHost.debug.unknownError": "Unknown error",
 			"agentHost.debug.untitledSession": "Copilot CLI 工作階段 {0}",
 			"agentHost.debug.userRequest": "使用者要求"
+		},
+		"vs/workbench/contrib/chat/browser/chatDebug/agentHostLogSources": {
+			"agentHostLogs.channel": "{0} (Log)",
+			"agentHostLogs.cliLog": "Copilot CLI Logs",
+			"agentHostLogs.events": "Session Events (events.jsonl)",
+			"agentHostLogs.remoteProcess": "Remote Agent Host Log (agenthost.log)",
+			"agentHostLogs.wire": "AHP Log",
+			"agentHostLogs.wireN": "AHP Log — {0}"
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/chatCustomizationDiscoveryRenderer": {
 			"chatDebug.configureLocations": "設定位置",
@@ -10796,6 +11091,7 @@
 			"chatDebug.cache.modelTurn": "模型回合",
 			"chatDebug.cache.msChip": "[{0}毫秒]",
 			"chatDebug.cache.noFindings": "沒有此要求配對的結果。",
+			"chatDebug.cache.noSignatureNote": "The request-side prompt (system instructions, tool catalog, and input messages) was not captured for this session, so the prompt-signature diff and root-cause findings are unavailable. The cache-hit numbers above come from reported token usage.",
 			"chatDebug.cache.noTurns": "尚未為此工作階段記錄任何模型回合。",
 			"chatDebug.cache.noTurnsForAgents": "沒有模型輪次與所選的代理程式篩選條件相符。",
 			"chatDebug.cache.notPresent": "(不存在)",
@@ -10954,6 +11250,11 @@
 		"vs/workbench/contrib/chat/browser/chatDebug/chatDebugEditorInput": {
 			"chatDebugEditorLabelIcon": "聊天偵錯編輯器標籤的圖示。",
 			"chatDebugInputName": "Agent 偵錯記錄"
+		},
+		"vs/workbench/contrib/chat/browser/chatDebug/chatDebugEnablement": {
+			"chatDebug.loggingDisabled": "Agent debug logging is turned off. Enable it to capture and view debug logs for this session.",
+			"chatDebug.openSetting": "Enable in Settings",
+			"chatDebug.wireLogLoggingDisabled": "AHP logging is turned off. Enable it and reproduce the issue to capture and view client↔host protocol frames for this session."
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/chatDebugEventDetailRenderer": {
 			"chatDebug.detail.agent": "Agent: {0}",
@@ -11118,6 +11419,7 @@
 		},
 		"vs/workbench/contrib/chat/browser/chatDebug/chatDebugOverviewView": {
 			"chatDebug.agentFlowChart": "Agent 流程圖",
+			"chatDebug.ahpLog": "AHP Log",
 			"chatDebug.cacheExplorer": "快取總管",
 			"chatDebug.detail.created": "已建立",
 			"chatDebug.detail.lastActivity": "上次活動",
@@ -11156,6 +11458,51 @@
 			"chatDebug.toolCall.statusLabel": "狀態: {0}",
 			"chatDebug.toolCall.success": "成功",
 			"chatDebug.toolCall.toolLabel": "工具: {0}"
+		},
+		"vs/workbench/contrib/chat/browser/chatDebug/chatDebugWireLogView": {
+			"chatDebug.ahpLog": "AHP Log",
+			"chatDebug.title": "Agent Debug Logs",
+			"chatDebug.wireLog.badge.notification": "notify",
+			"chatDebug.wireLog.badge.request": "request",
+			"chatDebug.wireLog.badge.response": "response",
+			"chatDebug.wireLog.chip.errors": "{0} errors",
+			"chatDebug.wireLog.chip.frames": "{0} frames",
+			"chatDebug.wireLog.chip.pending": "{0} pending",
+			"chatDebug.wireLog.chip.requests": "{0} requests",
+			"chatDebug.wireLog.chip.slowest": "slowest {0}",
+			"chatDebug.wireLog.disabledHint": "AHP logging is disabled — enable {0} and reproduce to capture client↔host protocol frames.",
+			"chatDebug.wireLog.empty": "The AHP log is empty.",
+			"chatDebug.wireLog.enableToCapture": "No AHP log is available. Enable {0} and reproduce the issue to capture protocol frames.",
+			"chatDebug.wireLog.error": "Failed to read AHP log: {0}",
+			"chatDebug.wireLog.filterAria": "Filter AHP log frames",
+			"chatDebug.wireLog.filterPlaceholder": "Filter by method, type, or id",
+			"chatDebug.wireLog.footerRemote": "remote",
+			"chatDebug.wireLog.footerTail": "Showing the most recent frames",
+			"chatDebug.wireLog.frameId": "id: {0}",
+			"chatDebug.wireLog.inbound": "Agent Host → VS Code",
+			"chatDebug.wireLog.loadMore": "Load More ({0})",
+			"chatDebug.wireLog.loadMoreTitle": "Load more frames",
+			"chatDebug.wireLog.loading": "Loading…",
+			"chatDebug.wireLog.ms": "{0} ms",
+			"chatDebug.wireLog.noFrames": "No AHP log was found yet for this session. Interact with the agent to capture protocol frames.",
+			"chatDebug.wireLog.noMatches": "No frames match '{0}'.",
+			"chatDebug.wireLog.notAgentHost": "The AHP Log is available for Agent Host sessions.",
+			"chatDebug.wireLog.openFile": "Open Full File",
+			"chatDebug.wireLog.outbound": "VS Code → Agent Host",
+			"chatDebug.wireLog.refresh": "Refresh",
+			"chatDebug.wireLog.responseLabel": "(response)",
+			"chatDebug.wireLog.s": "{0} s",
+			"chatDebug.wireLog.section.error": "Error",
+			"chatDebug.wireLog.section.params": "Params",
+			"chatDebug.wireLog.section.responseError": "Response Error",
+			"chatDebug.wireLog.section.result": "Result",
+			"chatDebug.wireLog.showingCount": "Showing {0} of {1} frames",
+			"chatDebug.wireLog.sourceLabel": "AHP log file",
+			"chatDebug.wireLog.statusError": "error",
+			"chatDebug.wireLog.statusErrorCode": "error {0}",
+			"chatDebug.wireLog.statusPending": "pending",
+			"chatDebug.wireLog.truncatedFrame": "Large payload values were elided in the log. Open the full file for complete data.",
+			"chatDebug.wireLog.unavailable": "This AHP log is unavailable."
 		},
 		"vs/workbench/contrib/chat/browser/chatEditing/chatEditingActions": {
 			"accept": "保留",
@@ -11431,6 +11778,9 @@
 			"showExtension": "顯示延伸模組",
 			"vscode.extension.contributes.chatParticipant": "參與聊天參與者"
 		},
+		"vs/workbench/contrib/chat/browser/chatPromoNotification": {
+			"chat.promo.endsAt": "Ends {0}."
+		},
 		"vs/workbench/contrib/chat/browser/chatQuotaNotification": {
 			"manageBudget": "管理預算",
 			"manageBudget2": "管理預算",
@@ -11645,6 +11995,8 @@
 			"manageBudget": "管理預算",
 			"modelLabel": "模型",
 			"premiumChatsLabel": "進階要求",
+			"premiumCreditsUsed": "{0} used",
+			"premiumCreditsUsedCompact": "{0} used",
 			"premiumIncluded": "隨附於貴組織的方案。",
 			"premiumIncludedCompact": "{0} 已包含在貴組織的方案中。",
 			"premiumLimitReached": "已達組織限制。",
@@ -11689,6 +12041,11 @@
 			"completionsSnoozedStatus": "內嵌建議已延遲",
 			"copilotDisabledStatus": "Copilot 已停用",
 			"signIn": "登入"
+		},
+		"vs/workbench/contrib/chat/browser/chatTerminalCommandPaste": {
+			"paste": "Paste",
+			"pasteAndDontAskAgain": "Paste and Don't Ask Again",
+			"terminalCommandPasteWarning": "The pasted text starts with \"{0}\", which will run the message as a terminal command when sent. Paste anyway?"
 		},
 		"vs/workbench/contrib/chat/browser/chatTipCatalog": {
 			"tip.agentsWindow": "在 [代理程序視窗]](命令: {0} [開啟代理程序視窗) 中同時處理多個專案。",
@@ -12156,6 +12513,7 @@
 			"vscode.extension.contributes.chatViewsWelcome": "在聊天檢視中提供歡迎訊息"
 		},
 		"vs/workbench/contrib/chat/browser/voiceClient/micCaptureService": {
+			"mic.hardwareMuted": "Your microphone appears to be muted or disabled, possibly by a hardware switch. Voice Mode won't hear you until it's re-enabled.",
 			"mic.permissionDenied": "麥克風存取遭拒。請在系統設定中授與麥克風權限，以使用 [語音模式]。"
 		},
 		"vs/workbench/contrib/chat/browser/voiceClient/voiceToolDispatchService": {
@@ -12437,6 +12795,7 @@
 			"chat.thinking.deletedFile": "已刪除 {0}",
 			"chat.thinking.deletions": "{0} 個刪除",
 			"chat.thinking.deletions.one": "1 個刪除",
+			"chat.thinking.duration.seconds": "{0}s",
 			"chat.thinking.editedFile": "已編輯 {0}",
 			"chat.thinking.editingFile": "已編輯檔案",
 			"chat.thinking.editingFiles": "正在編輯檔案",
@@ -12462,6 +12821,7 @@
 			"chat.thinking.thinking.5": "正在評估",
 			"chat.thinking.thinking.6": "處理中",
 			"chat.thinking.titleWithDiff": "{0}、{1}、{2}",
+			"chat.thinking.titleWithDuration": "{0} - {1}",
 			"chat.thinking.tool.1": "正在處理",
 			"chat.thinking.tool.2": "正在準備",
 			"chat.thinking.tool.3": "正在載入",
@@ -12507,6 +12867,13 @@
 			"treeAriaLabel": "檔案樹狀結構"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatTurnPillsPart": {
+			"chat.turnChanges.accessibleSummary": "{0}, {1} lines added, {2} lines deleted",
+			"chat.turnChanges.manyFiles": "{0} files changed",
+			"chat.turnChanges.oneFile": "1 file changed",
+			"chat.turnChanges.preview": "Preview",
+			"chat.turnChanges.viewAllAccessible": "View all file changes, {0} lines added, {1} lines deleted",
+			"chat.turnPreview.tooltip": "Open Preview: {0}",
+			"chat.viewTurnFileChangesSummary": "View All File Changes",
 			"chatTurnPills.changes.title": "Turn File Changes"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/chatWorkspaceEditContentPart": {
@@ -12559,10 +12926,12 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatModifiedFilesConfirmationSubPart": {
 			"manyFilesChanged": "{0} 個檔案已變更",
+			"manyFilesCreated": "{0} files created",
 			"modifiedFilesAllChangesTitle": "所有變更",
 			"modifiedFilesCounts": "已新增 {0} 行，已移除 {1} 行",
 			"modifiedFilesSummaryWithCounts": "{0}，已新增 {1} 行，已移除 {2} 行",
 			"oneFileChanged": "1 個檔案已變更",
+			"oneFileCreated": "1 file created",
 			"viewAllChanges": "檢視所有變更"
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatSandboxPrerequisiteConfirmationSubPart": {
@@ -12723,11 +13092,12 @@
 		},
 		"vs/workbench/contrib/chat/browser/widget/chatTurnPills": {
 			"chatTurnPills.ariaLabel": "Turn status",
+			"chatTurnPills.browser.label": "Live Browser",
+			"chatTurnPills.browser.tooltip": "Open Live Browser: {0}",
 			"chatTurnPills.changes.ariaLabel": "View Changes: {0}, +{1}, -{2}",
 			"chatTurnPills.changes.file": "{0} File",
 			"chatTurnPills.changes.files": "{0} Files",
 			"chatTurnPills.changes.tooltip": "View Changes",
-			"chatTurnPills.preview.description": "preview",
 			"chatTurnPills.preview.label": "Open Preview",
 			"chatTurnPills.preview.more": "Show All Previewable Files",
 			"chatTurnPills.preview.tooltipOne": "Open Preview: {0}"
@@ -12822,6 +13192,9 @@
 			"chat.priceCategory.medium": "中成本",
 			"chat.priceCategory.unknown": "{0} 成本",
 			"chat.priceCategory.veryHigh": "非常高成本",
+			"chat.promo.discount": "{0}% discount",
+			"chat.promo.discountBadge": "{0}% discount",
+			"chat.promo.endsAt": "Ends {0}.",
 			"chat.tokens.header": "內容大小",
 			"models.cacheCostLabel": "快取讀取",
 			"models.cacheWriteCostLabel": "快取寫入",
@@ -12888,6 +13261,13 @@
 			"chat.modelPicker.modelsLabel": "模型",
 			"chat.modelPicker.restrictedHover": "{0} • 無法在 [受限模式] 中使用模型。請信任工作區以啟用模型。",
 			"chat.modelPicker.setupRequiredHover": "{0} • 登入 GitHub Copilot 以選擇模型。"
+		},
+		"vs/workbench/contrib/chat/browser/widget/input/modelProviderIcons": {
+			"chatModelProviderClaudeIcon": "Icon for Claude models.",
+			"chatModelProviderCopilotIcon": "Icon for Copilot models.",
+			"chatModelProviderGeminiIcon": "Icon for Gemini models.",
+			"chatModelProviderGenericIcon": "Icon for other model providers.",
+			"chatModelProviderOpenAIIcon": "Icon for OpenAI models."
 		},
 		"vs/workbench/contrib/chat/browser/widget/input/modePickerActionItem": {
 			"built-in": "內建",
@@ -13645,6 +14025,7 @@
 			"source.userData": "全域 （隨設定同步漫遊，僅供 VS Code 使用)"
 		},
 		"vs/workbench/contrib/chat/common/promptSyntax/service/promptsServiceImpl": {
+			"builtin.capitalized": "Built-in",
 			"extension.with.id": "擴充: {0}",
 			"plugin.capitalized": "外掛程式",
 			"user-data-dir.capitalized": "使用者資料"
@@ -14468,12 +14849,13 @@
 		"vs/workbench/contrib/customEditor/common/extensionPoint": {
 			"contributes.customEditors": "已提供自訂編輯器。",
 			"contributes.displayName": "人類看得懂的自訂編輯器名稱。這是在選取要使用的編輯器時，向使用者顯示的名稱。",
-			"contributes.priority": "控制當使用者開啟檔案、Diff 或合併編輯器時，是否自動啟用自訂編輯器。這可能會由使用 `workbench.editorAssociations` 或 `workbench.diffEditorAssociations` 設定的使用者覆寫。",
+			"contributes.priority": "Controls if the custom editor is enabled automatically when the user opens a file, diff, or merge editor. This may be overridden by users using the `workbench.editorAssociations` or `workbench.diffEditorAssociations` setting. When omitted, the custom editor defaults to `default` for the normal editor and `never` for diff and merge editors, so it is not used for diffs or merges unless it opts in.",
 			"contributes.priority.default": "使用者開啟資源時，只要沒有為該資源註冊其他預設的自訂編輯器，即會自動使用此編輯器。",
-			"contributes.priority.diffEditor": "控制當使用者開啟 Diff 時，是否自動啟用自訂編輯器。未指定時，會使用 `textEditor` 的值。",
-			"contributes.priority.mergeEditor": "控制當使用者開啟合併編輯器時，是否自動啟用自訂編輯器。未指定時，會使用 `textEditor` 的值。",
+			"contributes.priority.diffEditor": "Controls if the custom editor is enabled automatically when the user opens a diff. When not specified this defaults to `never`, so the custom editor is not used for diffs unless it opts in.",
+			"contributes.priority.mergeEditor": "Controls if the custom editor is enabled automatically when the user opens a merge editor. When not specified this defaults to `never`, so the custom editor is not used for merges unless it opts in.",
+			"contributes.priority.never": "The editor is never automatically used, and it is also skipped when the user points a `workbench.editorAssociations` entry at it. It can still be opened via the `Reopen With` command or the specialized `workbench.diffEditorAssociations` setting.",
 			"contributes.priority.option": "使用者開啟資源時不會自動使用此編輯器，但使用者可以使用 `Reopen With` 命令切換到該編輯器。",
-			"contributes.priority.textEditor": "控制使用者開啟檔案時是否自動啟用自訂編輯器。這是基底值: 未指定 `diffEditor` 或 `mergeEditor` 時，會倒退回此值。",
+			"contributes.priority.textEditor": "Controls if the custom editor is enabled automatically when the user opens a file. `diffEditor` and `mergeEditor` do not inherit this value; when they are not specified they default to `never`.",
 			"contributes.selector": "已啟用自訂編輯器的 Glob 集合。",
 			"contributes.selector.filenamePattern": "已啟用自訂編輯器的 Glob。",
 			"contributes.viewType": "自訂編輯器的識別碼。所有自訂編輯器的識別碼均不得重複，因此建議您將延伸模組識別碼包含在 `viewType` 中。使用 `vscode.registerCustomEditorProvider` 註冊自訂編輯器時，以及在 `onCustomEditor:${id}` 中[啟用事件](https://code.visualstudio.com/api/references/activation-events) 時會使用 `viewType`。",
@@ -17694,12 +18076,15 @@
 			"mcp.agentHost.enable": "啟用伺服器",
 			"mcp.agentHost.noServers": "沒有 MCP 伺服器",
 			"mcp.agentHost.noServers.description": "此工作階段不會公開任何 MCP 伺服器",
+			"mcp.agentHost.restartUnsupported": "Restarting MCP server '{0}' is not supported for agent-host servers. Stop and start the server instead.",
 			"mcp.agentHost.showLocal": "顯示本機設定的伺服器...",
+			"mcp.agentHost.startError": "Failed to start MCP server '{0}': {1}",
 			"mcp.agentHost.status.authRequired": "需要驗證",
 			"mcp.agentHost.status.error": "錯誤",
 			"mcp.agentHost.status.ready": "執行中",
 			"mcp.agentHost.status.starting": "正在啟動",
 			"mcp.agentHost.status.stopped": "已停止",
+			"mcp.agentHost.stopError": "Failed to stop MCP server '{0}': {1}",
 			"mcp.agentHostOptions": "Agent 主機伺服器選項",
 			"mcp.autoStart": "傳送聊天訊息時自動啟動 MCP 伺服器",
 			"mcp.browseResources": "瀏覽資源...",
@@ -17875,10 +18260,13 @@
 			"mcp.start": "開始",
 			"mcp.stop": "停止",
 			"mcp.variableNotFound": "找不到變數 `{0}`，您是指 ${{1}} 嗎?",
+			"server.authRequired": "Authentication Required",
 			"server.disabled": "已停用",
 			"server.error": "錯誤",
 			"server.promptcount": "{0} 提示",
 			"server.running": "正在執行",
+			"server.runningInOneOtherSession": "(Running in 1 session)",
+			"server.runningInOtherSessions": "(Running in {0} sessions)",
 			"server.starting": "正在啟動",
 			"server.toolCount": "{0} 個工具"
 		},
@@ -24589,10 +24977,12 @@
 			"editorResolver.conflictingDefaults": "資源有多個可用的預設編輯器。",
 			"editorResolver.keepDefault": "保留 {0}",
 			"promptOpenWith.configureDefault": "設定 '{0}' 的預設編輯器...",
+			"promptOpenWith.configureDefaultDiff": "Configure default editor (diff only) for '{0}'...",
 			"promptOpenWith.currentDefault": "預設",
 			"promptOpenWith.currentDefaultAndActive": "使用中及預設",
 			"promptOpenWith.currentlyActive": "使用中",
 			"promptOpenWith.placeHolder": "選取 '{0}' 的編輯器",
+			"promptOpenWith.updateDefaultDiffPlaceHolder": "Select new default editor (diff only) for '{0}'",
 			"promptOpenWith.updateDefaultPlaceHolder": "選取 '{0}' 的新預設編輯器"
 		},
 		"vs/workbench/services/editor/common/editorResolverService": {
