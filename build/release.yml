@@ -6,17 +6,16 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 # This pipeline needs a variable called `languagePack` set to the name of the directory that
 # contains the language pack we want to work with. Set this via the Azure Pipelines UI.
 
-trigger: none
-pr: none
+# Trigger a release when strings change in the main branch.
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - i18n
 
-schedules:
-  # Run every Wednesday
-  - cron: '0 9 * * Wed'
-    displayName: Weekly Release Schedule
-    always: true
-    branches:
-      include:
-        - main
+pr: none
 
 resources:
   repositories:
@@ -32,6 +31,7 @@ extends:
     publishExtension: true
     useContinuousReleaseSignal: false
     usePreReleaseChannel: false
+    ghCreateRelease: false
     workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
     buildSteps:
       - pwsh: |
@@ -39,4 +39,9 @@ extends:
           $patch = Get-Date -Format yyyyMMddHH
           npm version "$($version.Major).$($version.Minor).$patch"
         displayName: Update version
+        workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
+
+      - pwsh: |
+          Join-Path $env:BUILD_SOURCESDIRECTORY LICENSE.md | Copy-Item -Destination .
+        displayName: Copy LICENSE.md file
         workingDirectory: $(Build.SourcesDirectory)/i18n/$(languagePack)
