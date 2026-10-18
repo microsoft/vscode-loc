@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+# Packages every Language Pack independently from its extension manifest.
 
 name: CI
 
@@ -19,12 +19,13 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - id: set-matrix
         run: |
+          # Discover pack directories so newly added packs are built without updating this workflow.
           $obj = @{
-            languagePack = Get-ChildItem i18n | ForEach-Object Name
+            languagePack = Get-ChildItem i18n -Directory -Filter 'vscode-language-pack-*' | ForEach-Object Name
           }
           "matrix=$($obj | ConvertTo-Json -Depth 100 -Compress)" >> $env:GITHUB_OUTPUT
         shell: pwsh
@@ -36,7 +37,7 @@ jobs:
       matrix: ${{fromJSON(needs.determine-matrix.outputs.matrix)}}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Generate Name
         run: node -e "console.log('PACKAGE_NAME=' + require('./i18n/${{ matrix.languagePack }}/package.json').name + '-v' + require('./i18n/${{ matrix.languagePack }}/package.json').version)" >> $GITHUB_ENV
@@ -48,7 +49,7 @@ jobs:
         run: cd ./i18n/${{ matrix.languagePack }} && npx @vscode/vsce package -o ${{ env.PACKAGE_NAME }}.vsix
 
       - name: Publish Test Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ env.PACKAGE_NAME }}.vsix
           path: ./i18n/${{ matrix.languagePack }}/${{ env.PACKAGE_NAME }}.vsix

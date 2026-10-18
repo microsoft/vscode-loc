@@ -1,22 +1,24 @@
 #  Paquete de idioma español para VS Code
 
-El paquete de idioma español proporciona una experiencia de UI localizada para VS Code.
+El paquete de idioma español proporciona una experiencia de interfaz de usuario localizada para VS Code. Requiere una versión de VS Code compatible con la versión del paquete instalada.
 
 ## Uso
 
-Puede invalidar el idioma predeterminado de la interfaz de usuario si establece explícitamente el idioma de VS Code con el comando "Configure Display Language". 
-Presione "Ctrl+Mayús+P" para que aparezca la instancia de "Paleta de comandos" y empiece a escribir "display" para filtrar y mostrar el comando "Configure Display Language".
-Presione "Entrar" y se mostrará una lista de los idiomas instalados por configuración regional, con la actual resaltada. Seleccione otra "configuración regional" para cambiar el idioma de la interfaz de usuario.
-Vea [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) para más información.
+1. Instale el paquete desde [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-es) o selecciónelo cuando VS Code lo recomiende.
+2. Abra la Paleta de comandos con `Ctrl+Mayús+P`, ejecute **Configure Display Language** y seleccione `es`.
+3. Reinicie VS Code cuando se le solicite para aplicar el cambio.
+
+También puede seleccionar otro idioma desde el mismo comando. Consulte la [documentación oficial sobre el idioma de presentación](https://code.visualstudio.com/docs/configure/locales) para obtener más información.
 
 ## Cómo contribuir
 
-Para obtener información sobre la mejora de traducción, cree una incidencia en el repositorio [vscode-loc](https://github.com/microsoft/vscode-loc).
-Las cadenas de traducción se mantienen en la plataforma de localización de Microsoft. Solo pueden realizarse cambios en dicha plataforma y, después, exportarlos al repositorio vscode-loc, por lo que no se aceptarán solicitudes de incorporación de cambios "pull request" en ese repositorio.
+Para informar de un problema de traducción, abra una [incidencia](https://github.com/microsoft/vscode-loc/issues/new) en el repositorio [vscode-loc](https://github.com/microsoft/vscode-loc).
+
+Las cadenas de traducción se mantienen en la plataforma de localización de Microsoft y se exportan a este repositorio. Por ello, no se aceptan solicitudes de incorporación de cambios que modifiquen traducciones. Las contribuciones de documentación, metadatos o configuración se revisan a criterio de las personas encargadas del mantenimiento.
 
 ## Licencia
 
-El código fuente y las cadenas se someten a la licencia [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md).
+El código fuente y las cadenas se distribuyen bajo la licencia [MIT](https://github.com/microsoft/vscode-loc/blob/main/LICENSE.md).
 
 ## Reconocimientos
 
@@ -65,27 +67,25 @@ Especial agradecimiento a quienes contribuyen a la comunidad por hacerlo disponi
 
 #  Spanish Language Pack for VS Code
 
-Spanish Language Pack provides localized UI experience for VS Code.
+Spanish Language Pack provides a localized user-interface experience for VS Code. It requires a VS Code version compatible with the installed package version.
 
 ## Usage
 
-You can override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
+1. Install the pack from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-es), or select it when VS Code recommends it.
+2. Open the Command Palette with `Ctrl+Shift+P`, run **Configure Display Language**, and select `es`.
+3. Restart VS Code when prompted to apply the change.
 
-Press `Ctrl+Shift+P` to bring up the **Command Palette** then start typing `display` to filter and display the **Configure Display Language** command.
-
-Press `Enter` and a list of installed languages by locale is displayed, with the current locale highlighted. Select another `locale` to switch UI language.
-
-See [Docs](https://go.microsoft.com/fwlink/?LinkId=761051) for more information.
+You can select another display language from the same command. See the [official display-language documentation](https://code.visualstudio.com/docs/configure/locales) for more information.
 
 ## Contributing
 
-For feedback of translation improvement, please create Issue in [vscode-loc](https://github.com/microsoft/vscode-loc) repo.
+To report a translation issue, [create an issue](https://github.com/microsoft/vscode-loc/issues/new) in the [vscode-loc](https://github.com/microsoft/vscode-loc) repository.
 
-The translation strings are maintained in Microsoft Localization Platform. Change can only be made in Microsoft Localization Platform then export to vscode-loc repo. So pull request won't be accepted in vscode-loc repo.
+Translation strings are maintained in the Microsoft Localization Platform and exported to this repository. Therefore, pull requests that change translations are not accepted. Documentation, metadata, and configuration contributions are reviewed at the maintainers' discretion.
 
 ## License
 
-The source code and strings are licensed under the [MIT](https://github.com/Microsoft/vscode-loc/blob/master/LICENSE.md) license.
+The source code and strings are licensed under the [MIT](https://github.com/microsoft/vscode-loc/blob/main/LICENSE.md) license.
 
 ## Credits
 
