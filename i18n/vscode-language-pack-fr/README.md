@@ -4,9 +4,10 @@ Le module linguistique français fournit une expérience d'interface utilisateur
 
 ## Utilisation
 
-Vous pouvez remplacer la langue d'IU par défaut en définissant explicitement la langue d'affichage de VS Code à l'aide de la commande **Configurer la langue d'affichage**.
-Appuyez sur `Ctrl+Maj+P` pour faire apparaître la Palette de commandes, puis commencez à taper `afficher` pour filtrer le contenu et afficher la commande **Configurer la langue d'affichage**.
-Appuyez sur `Entrée` pour afficher une liste de langues installées en fonction des paramètres régionaux. Les paramètres régionaux actuels sont en surbrillance. Sélectionnez une autre entrée relative aux paramètres régionaux pour changer de langue d'IU.
+<!-- Keep "Configure Display Language" in English: if the user is reading this, VSCode is most likely not in French -->
+Vous pouvez remplacer la langue d'affichage par défaut en définissant explicitement la langue d'affichage de VS Code à l'aide de la commande **Configure Display Language** (Configurer la langue d'affichage).
+Appuyez sur `Ctrl+Maj+P` pour faire apparaître la Palette de commandes, puis commencez à taper `afficher` pour filtrer le contenu et afficher la commande **Configure Display Language**.
+Appuyez sur `Entrée` pour afficher une liste de langues installées en fonction des paramètres régionaux. Les paramètres régionaux actuels sont en surbrillance. Sélectionnez une autre entrée relative aux paramètres régionaux pour changer de langue d'affichage.
 
 Consultez la [documentation](https://go.microsoft.com/fwlink/?LinkId=761051) pour plus d'informations.
 
@@ -81,7 +82,7 @@ The source code and strings are licensed under the [MIT](https://github.com/Micr
 
 ## Credits
 
-French Language Pack had received contribution through "By the community, for the community" community localization effort. 
+French Language Pack had received contribution through "By the community, for the community" community localization effort.
 
 Special thanks to community contributors for making it available.
 
